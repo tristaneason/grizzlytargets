@@ -1,3 +1,79 @@
+22.02.2021 - ver 6.6.0
+  - New: prettyPhoto removed and Lightbox2 added to the plugin (prettyPhoto will stay for backward compatibility)
+  - New: Call to Action element allows to align titles and select tags
+  - New: FlexSlider updated to 2.7.2 version and RTL support improved in WooCommerce products
+  - Update: $post variable added to the grid items filter ‘vc_gitem_post_data_get_link_real_title’
+  - Update: Catalan translation added
+  - Fix: Frontend editor initialization works properly
+  - Fix: Drag and drop for section element works properly in the backend editor
+  - Fix: WPBakery button in the Gutenberg editor works properly
+  - Fix: Request element parameters are passed properly in the edit form
+
+16.12.2020 - ver 6.5.0
+  - Update: Compatibility with WordPress 5.6
+  - Update: Compatibility with PHP8
+  - Fix: Template saving works properly
+  - Fix: Super admin editor access in multisite works properly
+  - Fix: setPost() method do_action_ref_array passes arguments correctly
+  - Fix: Modify with selected grid template loads properly
+  - Fix: Edit with WPBakery in Gutenberg control appears correctly
+  - Fix: Edit form loading spinner displayed correctly
+
+17.11.2020 - ver 6.4.2
+  - Fix: WooCommerce 4.7 compatibility issues resolved
+
+24.09.2020 - ver 6.4.1
+  - Fix: Role manager unfiltered html access improved
+  - Fix: Role manager Frontend editor access improved
+  - Update: German translation updated
+
+11.09.2020 - ver 6.4.0
+  - New: Rank Math SEO compatibility introduced
+  - New: Option to exclude categories in the loop parameters
+  - New: Option to ignore sticky posts in the loop parameters
+  - Update: jquery updated to jquery-core
+  - Update: show_in_rest is checked for Gutenberg compatibility
+  - Update: setTitle allows HTML entities
+  - Update: Role manager access improved for WordPress user roles
+  - Fix: Multisite setup works properly for super admin user role
+  - Fix: Yoast SEO latest version is fully compatible with the editor
+  - Fix: Autocomplete works properly
+
+21.08.2020 - ver 6.3.0
+  - Added: Role manager for unfiltered_html available
+  - Update: Filter for screen sizes in the navigation bar
+  - Update: Trigger event to prepare tab content
+  - Update: Description for the limit in WooCommerce shortcodes
+  - Update: LiteSpeed cache compatibility updated
+  - Update: Flickr element render API
+  - Update: HTML for image captions enabled
+  - Fix: Posts grid elements with "load more" option animates properly
+  - Fix: Dependency for not_empty in vc_link attribute type
+  - Fix: Target blank link selector
+  - Fix: Entity characters in french language
+  - Fix: Class vc_tta-o-non-responsive on parent nodes
+  - Fix: Undo/redo content disappearing with edit-only access
+
+20.04.2020 - ver 6.2.0
+  - Update: Performance improvements for the editor
+  - Update: Filter for ajax grid rendering added
+  - Update: Filters for post_custom_css and shortcodes_custom_css added
+  - Update: NL translation added for the plugin
+  - Update: BR translation added for the plugin
+  - Update: Standards and code styles updated
+  - Update: Classic and Gutenberg editor toggle updated
+  - Update: Portrait video support added
+  - Compatibility: Rank Math SEO compatibility improved
+  - Fix: Ajax add to cart works properly
+  - Fix: Plugin update works properly with multi-language version
+  - Fix: Sorted_list attribute works properly
+  - Fix: Shop Manager role works properly with the plugin
+  - Fix: Post id works properly in the preview mode
+  - Fix: Loading configuration works properly
+  - Fix: Order by post works properly
+  - Fix: oEmbed works properly in text blocks
+  - Fix: addShortcodesCustomCss works properly
+
 13.12.2019 - ver 6.1.0
   - Added: Catalan, Ukrainian, Hungarian translations
   - Update: WordPress 5.3 Compatibility

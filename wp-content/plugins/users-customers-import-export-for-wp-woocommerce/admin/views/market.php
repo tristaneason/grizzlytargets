@@ -97,7 +97,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <li style="text-align: center;"><?php echo __('30 Day Money Back Guarantee','users-customers-import-export-for-wp-woocommerce'); ?></li>
                 <li style="text-align: center;"><?php echo __('Fast and Superior Support','users-customers-import-export-for-wp-woocommerce'); ?></li>
                 <li style="text-align: center;">
-                    <a href="https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/?utm_source=free_plugin_sidebar&utm_medium=user_imp_exp_basic&utm_campaign=User_Import_Export&utm_content=2.0.8" target="_blank" class="button button-primary button-go-pro"><?php _e('Upgrade to Premium', 'users-customers-import-export-for-wp-woocommerce'); ?></a>
+                    <a href="https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/?utm_source=free_plugin_sidebar&utm_medium=user_imp_exp_basic&utm_campaign=User_Import_Export&utm_content=2.0.9" target="_blank" class="button button-primary button-go-pro"><?php _e('Upgrade to Premium', 'users-customers-import-export-for-wp-woocommerce'); ?></a>
                 </li>
         </ul>
     <span>

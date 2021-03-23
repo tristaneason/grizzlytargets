@@ -363,7 +363,7 @@ if ( ! function_exists( 'wpb_resize' ) ) {
 	 * @return array
 	 * @since 4.2
 	 */
-	function wpb_resize( $attach_id = null, $img_url = null, $width, $height, $crop = false ) {
+	function wpb_resize( $attach_id, $img_url, $width, $height, $crop = false ) {
 		// this is an attachment, so we have the ID
 		$image_src = array();
 		if ( $attach_id ) {
@@ -845,7 +845,7 @@ function vc_parse_multi_attribute( $value, $default = array() ) {
 		foreach ( $params_pairs as $pair ) {
 			$param = preg_split( '/\:/', $pair );
 			if ( ! empty( $param[0] ) && isset( $param[1] ) ) {
-				$result[ $param[0] ] = rawurldecode( $param[1] );
+				$result[ $param[0] ] = trim( rawurldecode( $param[1] ) );
 			}
 		}
 	}
@@ -1313,7 +1313,18 @@ function vc_is_responsive_disabled() {
  * @throws \Exception
  */
 function vc_do_shortcode( $atts, $content = null, $tag = null ) {
-	return Vc_Shortcodes_Manager::getInstance()->getElementClass( $tag )->output( $atts, $content );
+	ob_start();
+	echo Vc_Shortcodes_Manager::getInstance()->getElementClass( $tag )->output( $atts, $content );
+	$content = ob_get_clean();
+	// @codingStandardsIgnoreStart
+	global $wp_embed;
+	if ( is_object( $wp_embed ) ) {
+		$content = $wp_embed->run_shortcode( $content );
+		$content = $wp_embed->autoembed( $content );
+		// @codingStandardsIgnoreEnd
+	}
+
+	return $content;
 }
 
 /**
@@ -1396,4 +1407,36 @@ function wpb_widget_title( $params = array( 'title' => '' ) ) {
 	$output = '<h2 class="wpb_heading' . esc_attr( $extraclass ) . '">' . esc_html( $params['title'] ) . '</h2>';
 
 	return apply_filters( 'wpb_widget_title', $output, $params );
+}
+
+/**
+ * Used to remove raw_html/raw_js elements from content
+ * @param $content
+ * @return string|string[]|null
+ * @since 6.3.0
+ */
+function wpb_remove_custom_html( $content ) {
+	if ( ! vc_user_access()->part( 'unfiltered_html' )->checkStateAny( true, null )->get() ) {
+		// html encoded shortcodes
+		$regex = vc_get_shortcode_regex( implode( '|', apply_filters( 'wpb_custom_html_elements', array(
+			'vc_raw_html',
+			'vc_raw_js',
+		) ) ) );
+
+		// custom on click
+		$button_regex = vc_get_shortcode_regex( 'vc_btn' );
+		$content = preg_replace_callback( '/' . $button_regex . '/', 'wpb_remove_custom_onclick', $content );
+
+		$content = preg_replace( '/' . $regex . '/', '', $content );
+	}
+
+	return $content;
+}
+
+function wpb_remove_custom_onclick( $match ) {
+	if ( strpos( $match[3], 'custom_onclick' ) !== false ) {
+		return '';
+	}
+
+	return $match[0];
 }

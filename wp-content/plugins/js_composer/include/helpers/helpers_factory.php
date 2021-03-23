@@ -478,7 +478,7 @@ function vc_user_roles_get_all() {
 	foreach ( $vc_roles->getParts() as $part ) {
 		$partObj = vc_user_access()->part( $part );
 		$capabilities[ $part ] = array(
-			'state' => $partObj->getState(),
+			'state' => (is_multisite() && is_super_admin()) ? true : $partObj->getState(),
 			'state_key' => $partObj->getStateKey(),
 			'capabilities' => $partObj->getAllCaps(),
 		);
@@ -492,8 +492,29 @@ function vc_user_roles_get_all() {
  *
  * @return string
  */
-function vc_generate_nonce( $data ) {
+function vc_generate_nonce( $data, $from_esi = false ) {
+	if ( ! $from_esi && ! vc_is_frontend_editor() ) {
+		if ( method_exists( 'LiteSpeed_Cache_API', 'esi_enabled' ) && LiteSpeed_Cache_API::esi_enabled() ) {
+			if ( method_exists( 'LiteSpeed_Cache_API', 'v' ) && LiteSpeed_Cache_API::v( '1.3' ) ) {
+				$params = array( 'data' => $data );
+
+				return LiteSpeed_Cache_API::esi_url( 'js_composer', 'WPBakery Page Builder', $params, 'default', true );// The last parameter is to remove ESI comment wrapper
+			}
+		}
+	}
+
 	return wp_create_nonce( is_array( $data ) ? ( 'vc-nonce-' . implode( '|', $data ) ) : ( 'vc-nonce-' . $data ) );
+}
+
+/**
+ * @param $params
+ *
+ * @return string
+ */
+function vc_hook_esi( $params ) {
+	$data = $params['data'];
+	echo vc_generate_nonce( $data, true );
+	exit;
 }
 
 /**
@@ -529,7 +550,7 @@ function vc_verify_public_nonce( $nonce = '' ) {
  * @return bool|mixed|void
  * @throws \Exception
  */
-function vc_check_post_type( $type ) {
+function vc_check_post_type( $type = '' ) {
 	if ( empty( $type ) ) {
 		$type = get_post_type();
 	}
@@ -557,7 +578,9 @@ function vc_check_post_type( $type ) {
  */
 function vc_user_access_check_shortcode_edit( $shortcode ) {
 	$do_check = apply_filters( 'vc_user_access_check-shortcode_edit', null, $shortcode );
-
+	if ( is_multisite() && is_super_admin() ) {
+		return true;
+	}
 	if ( is_null( $do_check ) ) {
 		$state_check = vc_user_access()->part( 'shortcodes' )->checkStateAny( true, 'edit', null )->get();
 		if ( $state_check ) {
@@ -577,7 +600,9 @@ function vc_user_access_check_shortcode_edit( $shortcode ) {
  */
 function vc_user_access_check_shortcode_all( $shortcode ) {
 	$do_check = apply_filters( 'vc_user_access_check-shortcode_all', null, $shortcode );
-
+	if ( is_multisite() && is_super_admin() ) {
+		return true;
+	}
 	if ( is_null( $do_check ) ) {
 		return vc_user_access()->part( 'shortcodes' )->checkStateAny( true, 'custom', null )->can( $shortcode . '_all' )->get();
 	} else {

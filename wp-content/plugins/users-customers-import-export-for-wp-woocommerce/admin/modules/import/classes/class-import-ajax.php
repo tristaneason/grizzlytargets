@@ -1,7 +1,7 @@
 <?php
 /**
  * Ajax section of the Import module
- *     
+ *   
  *
  * @package  Wt_Import_Export_For_Woo
  */

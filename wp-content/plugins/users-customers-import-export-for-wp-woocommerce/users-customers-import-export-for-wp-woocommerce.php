@@ -1,12 +1,12 @@
 <?php
 
 /*
-  Plugin Name: WordPress Users & WooCommerce Customers Import Export
+  Plugin Name: WordPress Users & WooCommerce Customers Import Export(BASIC)
   Plugin URI: https://wordpress.org/plugins/users-customers-import-export-for-wp-woocommerce/
   Description: Export and Import User/Customers details From and To your WordPress/WooCommerce.
   Author: WebToffee
   Author URI: https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/
-  Version: 2.0.8
+  Version: 2.0.9
   WC tested up to: 5.1.0
   Text Domain: users-customers-import-export-for-wp-woocommerce
   License: GPLv3
@@ -43,7 +43,7 @@ if ( ! defined( 'WT_IEW_DEBUG_BASIC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'WT_U_IEW_VERSION', '2.0.8' );
+define( 'WT_U_IEW_VERSION', '2.0.9' );
 
 /**
  * The code that runs during plugin activation.

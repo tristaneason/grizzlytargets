@@ -96,6 +96,16 @@ function wppfm_create_mpn_wc_variation_support_field( $loop, $variation_data, $v
 		)
 	);
 
+	// Add the GTIN text field to the variation cards.
+	woocommerce_wp_text_input(
+		array(
+			'id'          => 'wppfm_product_gtin',
+			'label'       => 'Product GTIN',
+			'desc_tip'    => true,
+			'description' => __( 'GTIN refers to a products Global Trade Item Number. You can also use a UPC, EAN, JAN, ISBN or ITF-14 number here.', 'wp-product-feed-manager' ),
+		)
+	);
+
 	echo '</div>';
 }
 

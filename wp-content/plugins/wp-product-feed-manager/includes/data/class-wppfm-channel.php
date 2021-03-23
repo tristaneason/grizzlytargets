@@ -368,5 +368,5 @@ if ( ! class_exists( 'WPPFM_Channel' ) ) :
 		}
 	}
 
-	// end of Channel class
+	// end of Wppfm_Channel_Info class
 endif;

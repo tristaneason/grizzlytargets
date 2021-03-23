@@ -5,7 +5,7 @@ Tags: user import, user export, csv, woocommerce, customers, import, export, exp
 Requires at least: 3.0.1
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 2.0.8
+Stable tag: 2.0.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -218,6 +218,8 @@ Yes, you can update the user data with the help of this plugin. The users will b
 12. WordPress user import export log
 
 == Changelog ==
+= 2.0.9 =
+* Plugin name update.
 = 2.0.8 =
 * Tested OK with WC 5.1.0 and WP 5.7
 * Check existing users default with user_email while importing.
@@ -372,6 +374,5 @@ Yes, you can update the user data with the help of this plugin. The users will b
 
 == Upgrade Notice ==
 
-= 2.0.8 =
-* Tested OK with WC 5.1.0 and WP 5.7
-* Check existing users default with user_email while importing.
+= 2.0.9 =
+* Plugin name update.

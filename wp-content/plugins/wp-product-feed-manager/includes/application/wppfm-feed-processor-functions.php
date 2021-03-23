@@ -71,7 +71,7 @@ trait WPPFM_Feed_Processor_Functions {
 
 		array_unshift( $meta_parent_ids, $product_id ); // Add the product id to the parent ids.
 
-		$meta_data = $queries_class->read_meta_data( $product_id, $parent_product_id, $meta_parent_ids, $this->_pre_data['database_fields']['meta_fields'] );
+		$meta_data = $queries_class->read_meta_data( $product_id, $parent_product_id, $meta_parent_ids, $this->_pre_data['database_fields']['meta_fields'], $this->_pre_data['include_vars'] );
 
 		foreach ( $meta_data as $meta ) {
 			$meta_value = $prep_meta_class->prep_meta_values( $meta, $this->_feed_data->language );

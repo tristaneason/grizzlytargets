@@ -47,6 +47,8 @@ function wppfm_feed_manager_main_page() {
  */
 function wppfm_main_admin_page() {
 	$start = new WPPFM_Main_Admin_Page();
+
+	// now let's get things going
 	$start->show();
 }
 
