@@ -21,3 +21,7 @@ node_modules/
 *.log
 *.sql
 *.sqlite
+php_errorlog
+
+# ignore config files
+.htaccess
