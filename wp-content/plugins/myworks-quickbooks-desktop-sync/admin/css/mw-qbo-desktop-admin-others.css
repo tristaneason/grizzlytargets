@@ -1,0 +1,9 @@
+td.mw_qbo_desktop_inv_status.column-mw_qbo_desktop_inv_status i.fa.fa-check-circle.mwqd_wo_ic,td.mw_qbo_desktop_inv_status.column-mw_qbo_desktop_inv_status i.fa.fa-times-circle.mwqd_wo_ic ,td.mw_qbo_desktop_inv_status.column-mw_qbo_desktop_inv_status a.mwqd_wo_aqb{background-color: green;color: #fff !important;padding: 0px 5px;border-radius: 4px;font-style: normal;position: relative;font-size: 12px;left: 20px;text-align: center;line-height: 24px;display: inline-block;}
+td.mw_qbo_desktop_inv_status.column-mw_qbo_desktop_inv_status i.fa.fa-check-circle.mwqd_wo_ic:before ,td.mw_qbo_desktop_inv_status.column-mw_qbo_desktop_inv_status i.fa.fa-times-circle.mwqd_wo_ic:before,td.mw_qbo_desktop_inv_status.column-mw_qbo_desktop_inv_status a.mwqd_wo_aqb:before{content: "";height: 12px;width: 12px;display: inline-block;position: absolute;left: -20px;background-color: green;border-radius: 50%;top: 7px;}
+td.mw_qbo_desktop_inv_status.column-mw_qbo_desktop_inv_status i.fa.fa-times-circle.mwqd_wo_ic,td.mw_qbo_desktop_inv_status.column-mw_qbo_desktop_inv_status i.fa.fa-times-circle.mwqd_wo_ic:before { background-color: red;}
+td.mw_qbo_desktop_inv_status.column-mw_qbo_desktop_inv_status a.mwqd_wo_aqb:before{opacity:0;}
+td.mw_qbo_desktop_inv_status.column-mw_qbo_desktop_inv_status a.mwqd_wo_aqb {background-color: #013e7f;display:block;margin-top:5px;max-width: 80px;}
+/* 17-10-2017 */
+input[type=checkbox]:disabled {
+    cursor: no-drop;
+}

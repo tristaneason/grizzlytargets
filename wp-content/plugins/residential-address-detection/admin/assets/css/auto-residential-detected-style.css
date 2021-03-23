@@ -1,0 +1,284 @@
+.en_woo_addons_always_include_residential_fee_style th{
+    font-weight: 400 !important;
+}
+.residential_delivery_options_label_heading_style th label,
+.residential_delivery_options_label_description_style th label,
+.residential_delivery_options_plans_style th label,
+.residential_delivery_current_subscription_style th label,
+.residential_delivery_current_usage_style th label,
+.residential_delivery_options_label_heading_plan_to_disable_style th label,
+.residential_delivery_options_label_heading_plan_to_plan_style th label,
+.residential_delivery_options_error_label_style th label,
+.suspend_automatic_detection_of_residential_addresses_style th
+{
+    margin-left: 10px !important;
+    font-weight: 400;
+}
+.en_default_unconfirmed_address_types_to_style th label{
+    margin-left: 10px !important;
+}
+.suspend_automatic_detection_of_residential_addresses_style th{
+    position: relative;
+    padding-left: 10px;
+}
+.residential_delivery_options_label_heading_style{
+    border-left: 2px solid lightgrey;
+    border-top: 2px solid lightgrey;
+    border-right : 2px solid lightgrey;
+}
+.residential_delivery_options_label_description_style{
+    border-left: 2px solid lightgrey; 
+    border-right : 2px solid lightgrey;
+}
+.residential_delivery_options_addon_description_style{
+    border-left: none; 
+    border-right : none;
+}
+.residential_delivery_options_plans_style{
+    border-left: 2px solid lightgrey;
+    border-right : 2px solid lightgrey;
+}
+.residential_delivery_current_subscription_style{
+    border-left: 2px solid lightgrey;
+    border-right : 2px solid lightgrey;
+
+}
+.residential_delivery_current_usage_style{
+    border-left: 2px solid lightgrey;
+    border-right : 2px solid lightgrey;
+}
+.suspend_automatic_detection_of_residential_addresses_style{
+    border-left: 2px solid lightgrey;
+    border-right : 2px solid lightgrey;
+}
+.en_default_unconfirmed_address_types_to_style{
+    border-left: 2px solid lightgrey;
+    border-right : 2px solid lightgrey;
+    border-bottom : 2px solid lightgrey;
+}
+
+.en_residential_addresses_template_start_style {
+    display: none;
+}
+
+.en_residential_addresses_template_table_start .en_default_unconfirmed_address_types_to_style,
+.en_residential_addresses_template_table_start .residential_delivery_options_label_heading_style,
+.en_residential_addresses_template_table_start .residential_delivery_options_label_description_style,
+.en_residential_addresses_template_table_start .residential_delivery_options_addon_description_style,
+.en_residential_addresses_template_table_start .residential_delivery_options_plans_style,
+.en_residential_addresses_template_table_start .residential_delivery_current_subscription_style,
+.en_residential_addresses_template_table_start .residential_delivery_current_usage_style,
+.en_residential_addresses_template_table_start .suspend_automatic_detection_of_residential_addresses_style {
+    border: none;
+}
+
+.sm_success_message ,
+.error_label_message {
+    display: none;
+    height: 57px;
+}
+
+.sm_success_message td{
+    padding: 5px 5px;
+    color: #4F8A10;
+    background-color: #DFF2BF;
+}
+
+.error_label_message td{
+    padding: 5px 5px;
+    color: #D8000C;
+    background-color: #FFD2D2;
+}
+
+/* popup success message auto residential detect disable to plan */
+.residential_delivery_options_label_heading_plan_to_plan_style td,.residential_delivery_options_label_heading_plan_to_disable_style td,.residential_delivery_options_error_label_style td{
+    margin: 4px !important;
+}
+
+/* popup notification disable to plan */
+.sm_notification_disable_to_plan_overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 9999;
+}
+.sm_notification_disable_to_plan_overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+.sm_wwe_small_notifi_disabl_to_plan {
+    margin: 70px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 40%;
+    position: relative;
+    transition: all 5s ease-in-out;
+}
+.sm_wwe_small_notifi_disabl_to_plan h2 {
+    margin-top: 0;
+    color: #333;
+    font-family: Tahoma, Arial, sans-serif;
+}
+.sm_wwe_small_notifi_disabl_to_plan .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+}
+.sm_wwe_small_notifi_disabl_to_plan .close:hover {
+    color: #ea6153;
+}
+.sm_wwe_small_notifi_disabl_to_plan .content {
+    max-height: 30%;
+    overflow: auto;
+}
+.sm_wwe_small_notifi_disabl_to_plan .content label {
+    cursor: default;
+}
+
+.sm_wwe_small_notifi_disabl_to_plan .content label{
+    font-weight: 900;
+}
+.sm_wwe_small_notifi_disabl_to_plan .content .sm_add_warehouse_input{
+    width: 80%;
+    text-align: right;
+}
+.sm_wwe_small_notifi_disabl_to_plan .content .sm_add_warehouse_input input{
+    border-radius: 5px;
+    margin: 10px;
+    width: 70%;
+}
+.confirmation_p{
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    font-size: 15px;
+    font-weight: normal;
+    padding: 25px 3px;
+}
+.confirmation_btns{
+    margin-right: 40px;
+    text-align: right;
+    margin-top: 20px;
+}
+.cancel_plan{
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 5px 10px;
+    text-decoration: none;
+}
+.cancel_plan:hover{
+    text-decoration: none;
+}
+.confirm_plan{
+    background: #008ec2;
+    border-color: #006799;
+    border-image: none;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    color: #fff;
+    padding: 5px 10px;
+    text-decoration: none;
+}
+.confirm_plan:hover{
+    text-decoration: none;
+    color: #fff;
+}
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+.alert-plan-messages {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-align: justify;
+
+}
+.residential_delivery_plugin_name_style,
+.residential_delivery_subscription_status_style{
+    display: none;
+}
+
+label[for='residential_delivery_options_label_heading'],
+label[for='auto_residential_delivery_plan_auto_renew'],
+label[for='residential_delivery_current_subscription'],
+label[for='residential_delivery_current_usage'],
+.suspend_automatic_detection_of_residential_addresses_style .titledesc {
+    font-weight: 600 !important;
+}
+
+tr.residential_delivery_options_label_description_style th{
+    display: none;
+}
+
+.en_res_add_new_address_btn {
+    float: right;
+    cursor: pointer;
+    color: #0073aa;
+}
+
+label[for='residential_delivery_options_label'],
+label[for='en_default_unconfirmed_address_types_label'],
+label[for='residential_delivery_options_label_heading'] {
+    display: block; 
+    font-size: 1.15em; 
+    font-weight: 600;
+}
+
+.suspend_automatic_detection_of_residential_addresses_style .titledesc,
+label[for='auto_residential_delivery_plan_auto_renew'],
+label[for='en_default_unconfirmed_address_types_to'],
+label[for='residential_delivery_current_subscription'],
+label[for='residential_delivery_current_usage'] { 
+    font-weight: 500 !important;
+}
+
+.en_residential_addresses_template_table_start .residential_delivery_options_label_description_style td{
+    padding: 0px !important;
+}
+
+.en_residential_addresses_template_table_start .residential_delivery_options_label_heading_style th label {
+    margin-left: 0px !important;
+}
+
+.en-default-unconfirmed-address-change {
+    color: green;
+    font-weight: 600;
+    margin: 10px;
+}
+
+.residential_delivery_current_subscription_style td p,
+.residential_delivery_current_usage_style td p {
+    font-style: normal;
+}
+
+.en_residential_addresses_template_table_start input[type="radio"],  
+.en_residential_addresses_template_table_start input[type="checkbox"] {
+    width: 0px !important;
+}
+
+.en_residential_addresses_template_table_start .residential_delivery_options_label_description_style td .err ,
+.en_residential_addresses_template_table_start .residential_delivery_current_subscription_style td .err ,
+.en_residential_addresses_template_table_start .residential_delivery_current_usage_style td .err {
+    display: none;
+}

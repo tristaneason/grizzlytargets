@@ -1,0 +1,73 @@
+// Reset
+@import url("~normalize.css");
+
+// General Styles
+$font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+$main-bg: #ffffff;
+$header-bg: #222;
+$footer-bg: #fff;
+
+p {
+  margin: 0;
+}
+
+body {
+  background: $main-bg;
+  font-family: $font-family;
+  display: flex;
+  color: #666;
+  flex-direction: column;
+  width: 100%;
+  text-rendering: optimizelegibility !important;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.cfw-small {
+  font-size: 0.875em;
+  color: #737373;
+}
+
+.cfw-link {
+  color: #e9a81d;
+  text-decoration: none;
+}
+
+.cfw-module-title {
+  margin: 0;
+}
+
+// Import parts
+@import "compatibility/bluesnap";
+@import "compatibility/checkout-add-ons";
+@import "compatibility/paytrace-gateway";
+@import "compatibility/paypal-express";
+@import "compatibility/tickera";
+@import "compatibility/sv-wc-payment";
+@import "compatibility/points-rewards";
+@import "compatibility/braintree";
+@import "compatibility/stripe";
+@import "compatibility/amazon-pay";
+@import "compatibility/woocommerce-hear-about-us";
+@import "compatibility/craftyclicks";
+@import "compatibility/woocommerce-subscriptions";
+@import "compatibility/mailchimp-for-woocommerce";
+@import "compatibility/klarna";
+@import "compatibility/cielo";
+@import "compatibility/tocheckout";
+@import "compatibility/woocommerce-germanized";
+@import "compatibility/wc-postcode-checker";
+@import "compatibility/eu-vat-number";
+@import "compatibility/yith-deals";
+@import "compatibility/webshipper";
+@import "compatibility/order-delivery-date";
+@import "compatibility/mondial-relay";
+@import "compatibility/woocommerce-address-validation";
+@import "compatibility/square";
+@import "compatibility/square-recurring";
+@import "compatibility/woo-square-pro";
+@import "template/form";
+@import "template/header";
+@import "template/content";
+@import "template/footer";
+@import "compatibility/woocommerce";

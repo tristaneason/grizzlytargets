@@ -1,0 +1,1681 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce Product Feed Manager\n"
+"POT-Creation-Date: 2020-11-07 15:46+0100\n"
+"PO-Revision-Date: 2020-11-07 15:46+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 2.4.1\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: wp-product-feed-manager.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: includes/application/class-feed-master.php:114
+#, fuzzy
+#| msgid ""
+#| "1428 - Failed to load the feed data, please to generate a feed in the "
+#| "foreground mode (see Settings page) and then try the background mode "
+#| "again."
+msgid ""
+"1428 - Failed to load the feed data, please try to generate a feed in the "
+"foreground mode (see Settings page) and then try the background mode again."
+msgstr ""
+"1428 - Échec du chargement des données de flux, veuillez générer un flux en "
+"mode de premier plan (voir page Paramètres), puis réessayer le mode "
+"d’arrière-plan."
+
+#. translators: %s: Folder where the feeds are stored
+#: includes/application/class-feed-master.php:223
+#, php-format
+msgid ""
+"1430 - %s is not a writable folder. Make sure you have admin rights to this "
+"folder."
+msgstr ""
+"1430 - %s n'est pas un dossier inscriptible. Assurez-vous d'avoir les droits "
+"d'administrateur pour ce répertoire."
+
+#: includes/application/class-feed-master.php:565
+#: includes/user-interface/class-wppfm-i18n-scripts.php:87
+msgid "Fill with a static value"
+msgstr "Remplir avec une valeur statique"
+
+#: includes/application/class-feed-master.php:566
+#: includes/application/class-feed-master.php:571
+msgid "Use the settings in the Merchant Center"
+msgstr "Utilisez les paramètres du Merchant Center"
+
+#: includes/application/wppfm-feed-processing-support.php:65
+#, php-format
+msgid ""
+"2131 - Please try to refresh the page and open a support ticket at %s if the "
+"issue persists."
+msgstr ""
+"2131 - Veuillez essayer de rafraîchir la page et d'ouvrir un ticket "
+"d'assistance sur %s si le problème persiste."
+
+#: includes/application/wppfm-support-fields.php:25
+msgid ""
+"Brand name of the product. If the product has no brand name you can use the "
+"manufacturer or supplier name."
+msgstr ""
+"Nom de marque du produit. Si le produit n’a pas de nom de marque, vous "
+"pouvez utiliser le nom du fabricant ou du fournisseur."
+
+#: includes/application/wppfm-support-fields.php:36
+msgid ""
+"GTIN refers to a products Global Trade Item Number. You can also use a UPC, "
+"EAN, JAN, ISBN or ITF-14 number here."
+msgstr ""
+"GTIN se réfère à un produit Global Trade Item Number. Vous pouvez également "
+"utiliser un numéro UPC, EAN, JAN, ISBN ou ITF-14 ici."
+
+#: includes/application/wppfm-support-fields.php:47
+#: includes/application/wppfm-support-fields.php:94
+msgid "Add your product's Manufacturer Part Number (MPN)."
+msgstr "Ajoutez le numéro de pièce du fabricant (MPN) de votre produit."
+
+#: includes/application/wppfm-support-fields.php:92
+msgid "Product MPN"
+msgstr "MPN du produit"
+
+#: includes/data/class-wppfm-ajax-data.php:175
+msgid ""
+"Could not add custom fields because I could not identify the channel.\n"
+"\t\t\t\t\t\t\t\t\tIf not already done add the correct channel in the Manage "
+"Channels page.\n"
+"\t\t\t\t\t\t\t\t\tAlso try to deactivate and then activate the plugin."
+msgstr ""
+"Impossible d'ajouter des champs personnalisés parce que je ne pouvais pas "
+"identifier le canal. \n"
+"\t\t\t\t\t\t\t\t\tSi ce n'est pas déjà fait, ajoutez le bon canal dans la "
+"page Gérer les canaux. \n"
+"\t\t\t\t\t\t\t\t\tEssayez également de désactiver puis d'activer le plugin."
+
+#: includes/data/class-wppfm-ajax-data.php:184
+#: includes/data/class-wppfm-data.php:238
+msgid ""
+"Could not identify the channel.\n"
+"\t\t\t\t\t\t\t\tTry to deactivate and then activate the plugin.\n"
+"\t\t\t\t\t\t\t\tIf that does not work remove the plugin through the "
+"WordPress Plugins page and than reinstall and activate it again."
+msgstr ""
+"Impossible d'identifier le canal. \n"
+"\t\t\t\t\t\t\t\tEssayez de désactiver puis d'activer le plugin. \n"
+"\t\t\t\t\t\t\t\tSi cela ne fonctionne pas, supprimez le plugin via la page "
+"WordPress Plugins, puis réinstallez-le et activez-le à nouveau."
+
+#. translators: %s: Title of the feed file
+#. translators: %s: Selected backup file
+#: includes/data/class-wppfm-ajax-file.php:129
+#: includes/data/class-wppfm-db-management.php:288
+#, php-format
+msgid "Could not find file %s."
+msgstr "Impossible de trouver les %s des fichiers."
+
+#: includes/data/class-wppfm-ajax-file.php:132
+#: includes/data/class-wppfm-db-management.php:290
+msgid ""
+"Error deleting the feed. You do not have the correct authorities to delete "
+"the file."
+msgstr ""
+"Erreur de suppression du flux. Vous n'avez pas les autorisations nécessaires "
+"pour supprimer le fichier."
+
+#: includes/data/class-wppfm-ajax-file.php:191
+#: includes/user-interface/class-wppfm-i18n-scripts.php:37
+msgid ""
+"Error writing the feed. You do not have the correct authorities to write the "
+"file."
+msgstr ""
+"Erreur dans l'écriture du flux. Vous n'avez pas les autorisations "
+"nécessaires pour écrire le fichier."
+
+#: includes/data/class-wppfm-ajax-file.php:376
+msgid "Feed processing data cleared"
+msgstr "Données de traitement des aliments pour animaux effacées"
+
+#. translators: clearing the feed data failed
+#: includes/data/class-wppfm-ajax-file.php:380
+msgid "Clearing failed!"
+msgstr "Le nettoyage a échoué !"
+
+#: includes/data/class-wppfm-channel-ftp.php:44
+#, php-format
+msgid ""
+"You have no read/write permission to the %s folder. \n"
+"\t\t\t\t\t\t\tPlease update the file permissions of this folder to make it "
+"writable and then try installing a channel again."
+msgstr ""
+"Vous n'avez pas les droits de lecture/écriture dans le dossier %s. \n"
+"\t\t\t\t\tVeuillez mettre à jour les permissions de ce dossier pour le "
+"rendre accessible en écriture, puis essayez à nouveau d'installer un canal."
+
+#: includes/data/class-wppfm-channel.php:153
+#, php-format
+msgid ""
+"2832 - Failed to connect with the wp marketingrobot server. Please wait a "
+"few minutes and try again. If the issue persists, open a support ticket at "
+"%s."
+msgstr ""
+"2832-impossible de se connecter avec le serveur wpmarketingrobot. Veuillez "
+"patienter quelques minutes et réessayer. Si le problème persiste, ouvrez un "
+"ticket de support à %s."
+
+#: includes/data/class-wppfm-channel.php:196
+#, php-format
+msgid "2141 - Please open a support ticket at %s for support on this issue."
+msgstr ""
+"2141 - Veuillez ouvrir un ticket d'assistance sur %s pour obtenir une "
+"assistance sur ce problème."
+
+#. translators: %s: Name of a channel
+#: includes/data/class-wppfm-channel.php:246
+#, php-format
+msgid ""
+"Channel %s is not installed correctly. Please try to Deactivate and then "
+"Activate the Feed Manager Plugin in your Plugins page."
+msgstr ""
+"Le canal %s n'est pas installé correctement. Veuillez essayer de désactiver "
+"puis d'activer le plugin de gestion des flux dans votre page Plugins."
+
+#: includes/data/class-wppfm-channel.php:346
+#, php-format
+msgid ""
+"Channel %s is not supported by your current plugin version. Please update "
+"your plugin to the latest version and try uploading this channel again."
+msgstr ""
+"Le canal %s n'est pas supporté par votre version actuelle du plugin. "
+"Veuillez mettre à jour votre plugin avec la dernière version et essayez de "
+"télécharger à nouveau ce canal."
+
+#: includes/data/class-wppfm-data.php:229
+msgid ""
+"Could not add custom fields because I could not identify the channel.\n"
+"\t\t\t\t\t\t\t\tIf not already done add the correct channel in the Manage "
+"Channels page.\n"
+"\t\t\t\t\t\t\t\tAlso try to deactivate and then activate the plugin."
+msgstr ""
+"Impossible d'ajouter des champs personnalisés parce que je ne pouvais pas "
+"identifier le canal. \n"
+"\t\t\t\t\t\t\t\t\tSi ce n'est pas déjà fait, ajoutez le bon canal dans la "
+"page Gérer les canaux. \n"
+"\t\t\t\t\t\t\t\t\tEssayez également de désactiver puis d'activer le plugin."
+
+#: includes/data/class-wppfm-db-management.php:56
+msgid "Feed needs to be generated first"
+msgstr "L’alimentation doit d’abord être générée"
+
+#: includes/data/class-wppfm-db-management.php:132
+msgid ""
+"A backup file with the selected name already exists. Please choose an other "
+"name or delete the existing file first."
+msgstr ""
+"Un fichier de sauvegarde portant le nom sélectionné existe déjà. Veuillez "
+"choisir un autre nom ou supprimer le fichier existant en premier."
+
+#: includes/data/class-wppfm-db-management.php:200
+msgid ""
+"The backup file is of an older version of the database and can not be "
+"restored as it is not compatible with the current database."
+msgstr ""
+"Le fichier de sauvegarde est d'une version plus ancienne de la base de "
+"données et ne peut pas être restauré car il n'est pas compatible avec la "
+"base de données actuelle."
+
+#: includes/data/class-wppfm-db-management.php:271
+msgid "A backup file with the selected name does not exists."
+msgstr "Il n'existe pas de fichier de sauvegarde portant le nom sélectionné."
+
+#. translators: %s: selected backup file name
+#: includes/data/class-wppfm-db-management.php:310
+#, php-format
+msgid "Failed to make a copy of %s"
+msgstr "Échec de la copie de %s"
+
+#: includes/data/class-wppfm-file.php:47 includes/data/class-wppfm-file.php:89
+msgid "Unable to open the file containing the categories"
+msgstr "Impossible d'ouvrir le fichier contenant les catégories"
+
+#. translators: %s: Folder that holds the backup files
+#: includes/data/class-wppfm-file.php:141
+#, php-format
+msgid ""
+"1432 - %s is not a writable folder. Make sure you have admin rights to this "
+"folder."
+msgstr ""
+"1432 - %s n'est pas un dossier inscriptible. Assurez-vous d'avoir les droits "
+"d'administrateur de ce dossier."
+
+#. translators: %s: Selected backup file
+#: includes/data/class-wppfm-file.php:151
+#, php-format
+msgid "1433 - Could not write the %s file."
+msgstr "1433 - Impossible d'écrire le fichier %s."
+
+#: includes/libraries/wpmr_plugin_updater.php:239
+#, php-format
+msgid ""
+"There is a new version of %1$s available. %2$sView version %3$s details%4$s."
+msgstr ""
+"Une nouvelle version de %1$s est disponible. %2$sVoir la version %3$s détails"
+"%4$s."
+
+#: includes/libraries/wpmr_plugin_updater.php:247
+#, php-format
+msgid ""
+"There is a new version of %1$s available. %2$sView version %3$s details%4$s "
+"or %5$supdate now%6$s."
+msgstr ""
+"Une nouvelle version de %1$s est disponible. %2$sVoir la version %3$s details"
+"%4$s ou %5$smettre à jour maintenant%6$s."
+
+#: includes/libraries/wpmr_plugin_updater.php:490
+msgid "You do not have permission to install plugin updates"
+msgstr "Vous n'avez pas la permission d'installer les mises à jour des plugins"
+
+#: includes/libraries/wpmr_plugin_updater.php:490
+msgid "Error"
+msgstr "Erreur"
+
+#: includes/libraries/wppfm-background-process.php:683
+#, php-format
+msgid "Every %d minute"
+msgid_plural "Every %d minutes"
+msgstr[0] "Toutes les %d minutes"
+msgstr[1] "Toutes les %d minutes"
+
+#: includes/libraries/wppfm-background-process.php:724
+msgid ""
+"Could not schedule the cron event required to start the feed process. Please "
+"check if your wp cron is configured correctly and is running."
+msgstr ""
+"Impossible de planifier l'événement cron requis pour démarrer le processus "
+"d'alimentation. S'Il vous plaît vérifier si votre WP cron est configuré "
+"correctement et est en cours d'exécution."
+
+#: includes/packages/logger/wp-product-feed-manager-logger.php:73
+msgid ""
+"The logger code is now integrated in the Feed Manager plugin. To prevent "
+"conflicts please deactivate and remove the \"WooCommerce Product Feed "
+"Manager Logger\" plugin from your Plugins page."
+msgstr ""
+"Le code de l'enregistreur est maintenant intégré dans le plugin Feed "
+"Manager. Pour éviter les conflits, veuillez désactiver et supprimer le plug-"
+"in \"Enregistreur du gestionnaire de flux de produits WooCommerce\" de votre "
+"page Plugins."
+
+#: includes/packages/wpml/includes/wppfm-wpml-functions.php:23
+msgid "-- Select the language of the feed --"
+msgstr "-- Sélectionnez la langue du flux --"
+
+#: includes/packages/wpml/includes/wppfm-wpml-functions.php:135
+msgid ""
+"WPML support is now integrated in the Feed Manager plugin. To prevent "
+"conflicts please deactivate and remove the \"WooCommerce Product Feed "
+"Manager WPML Support\" plugin from your Plugins page."
+msgstr ""
+"Le support WPML est maintenant intégré dans le plugin Feed Manager. Pour "
+"éviter les conflits, veuillez désactiver et supprimer le plug-in \"Support "
+"WPML Support de WooCommerce Product Feed Manager\" de votre page Plugins."
+
+#. translators: %s: old channel folder
+#: includes/setup/class-wppfm-folders.php:59
+#, php-format
+msgid ""
+"Unable to remove the %s folder. This folder is not required any more. Please "
+"try removing this folder manually using ftp software or an equivalent "
+"methode."
+msgstr ""
+"Impossible de supprimer le dossier %s. Ce dossier n'est plus nécessaire. "
+"Veuillez essayer de supprimer ce dossier manuellement en utilisant un "
+"logiciel ftp ou une méthode équivalente."
+
+#: includes/user-interface/abstract-wppfm-attribute-mapping-wrapper.php:26
+msgid "Attribute Mapping"
+msgstr "Cartographie des attributs"
+
+#: includes/user-interface/abstract-wppfm-category-wrapper.php:61
+msgid "No shop categories found."
+msgstr "Aucune catégorie de boutique trouvée."
+
+#: includes/user-interface/class-wppfm-add-options-page.php:48
+msgid "Feed Manager Settings"
+msgstr "Paramètres du gestionnaire de flux"
+
+#: includes/user-interface/class-wppfm-admin-page.php:33
+#: includes/user-interface/wppfm-admin-menu-functions.php:22
+msgid "Feed List"
+msgstr "Liste des flux"
+
+#: includes/user-interface/class-wppfm-admin-page.php:38
+#: includes/user-interface/wppfm-admin-menu-functions.php:29
+msgid "Product Feed"
+msgstr "Produits"
+
+#: includes/user-interface/class-wppfm-admin-page.php:66
+msgid "Manage your feeds with ease"
+msgstr "Gérez vos flux en toute simplicité"
+
+#: includes/user-interface/class-wppfm-admin-page.php:68
+msgid "Click here for the documentation"
+msgstr "Cliquez ici pour la documentation (English)"
+
+#: includes/user-interface/class-wppfm-admin-page.php:69
+msgid "Something not working? Click here for support"
+msgstr "Quelque chose ne marche pas ? Cliquez ici pour obtenir de l'aide"
+
+#: includes/user-interface/class-wppfm-admin-page.php:86
+msgid ""
+"Your key seems to be expired. If you are sure you have a valid key, please "
+"open a ticket at wpmarketingrobot.com/support/"
+msgstr ""
+"Votre clé semble expirée. Si vous êtes sûr d'avoir une clé valide, veuillez "
+"ouvrir un ticket sur wpmarketingrobot.com/support/"
+
+#: includes/user-interface/class-wppfm-admin-page.php:88
+msgid "Plugin License Options"
+msgstr "Options de licence du plugin"
+
+#: includes/user-interface/class-wppfm-admin-page.php:94
+msgid "License Key"
+msgstr "Clé de licence"
+
+#: includes/user-interface/class-wppfm-admin-page.php:102
+msgid "I accept your Terms and Conditions"
+msgstr "J'accepte vos Termes et Conditions"
+
+#: includes/user-interface/class-wppfm-admin-page.php:106
+#: includes/user-interface/class-wppfm-admin-page.php:110
+msgid "Activate License"
+msgstr "Activer la licence"
+
+#: includes/user-interface/class-wppfm-feed-form-control.php:29
+msgid "Select your product source"
+msgstr "Sélectionnez votre source de produits"
+
+#: includes/user-interface/class-wppfm-feed-form-control.php:53
+msgid "-- Select your merchant --"
+msgstr "-- Sélectionnez votre marchand --"
+
+#: includes/user-interface/class-wppfm-feed-form-control.php:61
+msgid ""
+"You first need to install a channel before you can add a feed. Open the "
+"Manage Channels page and install at least one channel."
+msgstr ""
+"Vous devez d'abord installer un canal avant de pouvoir ajouter un flux. "
+"Ouvrez la page Gérer les canaux et installez au moins un canal."
+
+#: includes/user-interface/class-wppfm-feed-form-control.php:74
+msgid "-- Select your target country --"
+msgstr "-- Sélectionnez votre pays cible --"
+
+#: includes/user-interface/class-wppfm-feed-form-control.php:87
+msgid "Every"
+msgstr "Tous les"
+
+#: includes/user-interface/class-wppfm-feed-form-control.php:88
+msgid "day(s) at"
+msgstr "jour(s) à"
+
+#: includes/user-interface/class-wppfm-feed-form-control.php:89
+msgid "Every day at"
+msgstr "Tous les jours à"
+
+#: includes/user-interface/class-wppfm-feed-form-control.php:93
+msgid "for"
+msgstr "répété"
+
+#: includes/user-interface/class-wppfm-feed-form-control.php:95
+msgid "time(s) a day"
+msgstr "fois par jour"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:29
+msgid "You are using characters in your file name that are not allowed!"
+msgstr ""
+"Vous utilisez des caractères dans votre nom de fichier qui ne sont pas "
+"autorisés !"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:30
+msgid "You already have a feed with this name! Please use another name."
+msgstr "Vous avez déjà un flux avec ce nom! Veuillez utiliser un autre nom."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:31
+msgid "The url you entered is invalid. Please try again"
+msgstr "Le traitement a échoué, veuillez réessayer"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:32
+msgid "Saving the data to the database has failed! Please try again."
+msgstr ""
+"La sauvegarde des données dans la base de données a échoué ! Veuillez "
+"réessayer."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:33
+msgid "no category required"
+msgstr "aucune catégorie requise"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:34
+msgid "no feed generated"
+msgstr "aucun flux généré"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:35
+msgid "Started processing your feed in the background."
+msgstr "Nous avons commencé à traiter votre flux en arrière-plan."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:36
+msgid ""
+"Pushed the feed into the background queue. Processing starts after all other "
+"feeds are processed."
+msgstr ""
+"Mettez le flux dans la file d'attente en arrière-plan. Le traitement "
+"commence après le traitement de tous les autres flux."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:38
+msgid ""
+"Error generating the feed. Feed generation initialization failed. Please "
+"check your error logs for more information about the issue."
+msgstr ""
+"Erreur lors de la génération du flux. L'initialisation de la génération de "
+"flux a échoué. Consultez vos journaux d’erreurs pour plus d’informations sur "
+"le problème."
+
+#. translators: %xmlResult%: a string containing the error message
+#: includes/user-interface/class-wppfm-i18n-scripts.php:40
+msgid "Generating the feed has failed! Error return code = %xmlResult%"
+msgstr "La génération du flux a échoué ! Code de retour d'erreur = %xmlResult%"
+
+#. translators: %feedname%: name of the feed
+#: includes/user-interface/class-wppfm-i18n-scripts.php:42
+msgid "The status of feed %feedname% is unknown."
+msgstr "Le statut de feed %feedname% est inconnu."
+
+#. translators: %feedname%: name of the feed
+#: includes/user-interface/class-wppfm-i18n-scripts.php:44
+msgid "Product feed %feedname% is now ready. It contains %prodnr% products."
+msgstr ""
+"Le flux produit %feedname% est maintenant prêt. Il contient des produits "
+"%prodnr%."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:45
+msgid ""
+"Still processing the feed in the background. You can wait for it to finish, "
+"but you can also close this form if you want."
+msgstr ""
+"Encore en train de traiter le flux en arrière-plan. Vous pouvez attendre "
+"qu'il soit terminé, mais vous pouvez également fermer ce formulaire si vous "
+"le souhaitez."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:46
+msgid ""
+"This feed has been added to the feed queue and will be processed when it is "
+"next."
+msgstr ""
+"Ce flux a été ajouté à la file d'attente du flux et sera traité lorsqu'il "
+"sera le prochain."
+
+#. translators: %feedname%: name of the feed
+#: includes/user-interface/class-wppfm-i18n-scripts.php:48
+msgid "Product feed %feedname% has some errors!"
+msgstr "Le flux produit %feedname% a quelques erreurs !"
+
+#. translators: %feedname%: name of the feed
+#: includes/user-interface/class-wppfm-i18n-scripts.php:50
+msgid "Product feed %feedname% has failed!"
+msgstr "L'alimentation du produit %feedname% a échoué !"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:51
+msgid ""
+"The option to add product variations to the feed is not available in the "
+"free version. Unlock this option by upgrading to the Premium plugin. For "
+"more information goto https://www.wpmarketingrobot.com/."
+msgstr ""
+"L'option d'ajouter des variations de produits au flux n'est pas disponible "
+"dans la version gratuite. Déverrouillez cette option en passant au plugin "
+"Premium. Pour plus d'informations, consultez le site https://www."
+"wpmarketingrobot.com/."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:52
+msgid "Select a sub-category"
+msgstr "Sélectionnez une sous-catégorie"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:53
+msgid "Select by category number"
+msgstr "Sélectionner par numéro de catégorie"
+
+#. translators: %feedname%: name of the feed
+#: includes/user-interface/class-wppfm-i18n-scripts.php:55
+#, php-format
+msgid "You already have a field %fieldname% defined!"
+msgstr "Vous avez déjà un champ %fieldname% défini !"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:56
+msgid "Make sure to select all source fields before adding a new one!"
+msgstr ""
+"Assurez-vous de sélectionner tous les champs source avant d'en ajouter un "
+"nouveau !"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:57
+msgid "Please fill in the current condition before adding a new one!"
+msgstr "Veuillez remplir l'état actuel avant d'en ajouter un nouveau !"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:58
+msgid "Please select a source field first before you select the conditions."
+msgstr ""
+"Veuillez d'abord sélectionner une zone source avant de sélectionner les "
+"conditions."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:59
+msgid "Please select a valid source before adding a condition to that source."
+msgstr ""
+"Veuillez sélectionner une source valide avant d'ajouter une condition à "
+"cette source."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:60
+msgid ""
+"The Advanced Filter option is not available in the free version. Unlock the "
+"Advanced Filter option by upgrading to the Premium plugin. For more "
+"information goto https://www.wpmarketingrobot.com/."
+msgstr ""
+"L'option Filtre avancé n'est pas disponible dans la version gratuite. "
+"Déverrouillez l'option Filtre avancé en passant au plugin Premium. Pour plus "
+"d'informations, consultez le site http://www.wpmarketingrobot.com/."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:61
+msgid "except the ones where"
+msgstr "sauf ceux où"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:62
+msgid "Please fill in the filter values before adding a new one"
+msgstr "Veuillez remplir les valeurs du filtre avant d'en ajouter un nouveau"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:63
+msgid "No separator"
+msgstr "Pas de séparateur"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:64
+msgid "space"
+msgstr "espace"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:65
+msgid "comma"
+msgstr "virgule"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:66
+msgid "point"
+msgstr "point"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:67
+msgid "semicolon"
+msgstr "point-virgule"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:68
+msgid "colon"
+msgstr "deux-points"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:69
+msgid "dash"
+msgstr "tiret"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:70
+msgid "slash"
+msgstr "barre oblique"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:71
+msgid "backslash"
+msgstr "barre oblique inversée"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:72
+msgid "double pipe"
+msgstr "double canalisation"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:73
+msgid "underscore"
+msgstr "souligner"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:74
+msgid "other"
+msgstr "autre"
+
+#. translators: %other%: either the word "other" or an empty space
+#: includes/user-interface/class-wppfm-i18n-scripts.php:76
+msgid "for all %other% products"
+msgstr "pour tous les produits %other%"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:77
+msgid "edit values"
+msgstr "modifier les valeurs"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:78
+msgid "and change values"
+msgstr "et modifier les valeurs"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:79
+msgid "remove value editor"
+msgstr "supprimer l'éditeur de valeurs"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:80
+msgid "to"
+msgstr "jusqu'à"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:81
+msgid "with element name"
+msgstr "avec le nom de l'élément"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:82
+msgid "Defined by the Category Mapping Table."
+msgstr "Défini par le tableau de correspondance des catégories."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:83
+msgid "Use advised source"
+msgstr "Utiliser la source conseillée"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:84
+msgid "Combine source fields"
+msgstr "Combiner les champs source"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:85
+#: includes/user-interface/class-wppfm-product-feed-category-wrapper.php:28
+msgid "Category Mapping"
+msgstr "Cartographie des catégories"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:86
+msgid "Select a source field"
+msgstr "Sélectionnez une zone source"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:88
+msgid "Map to Default Category"
+msgstr "Plan d'accès à la catégorie par défaut"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:89
+msgid "Use Shop Category"
+msgstr "Catégorie d'utilisation de la boutique"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:90
+msgid "an empty field"
+msgstr "un champ vide"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:91
+msgid "Add recommended output"
+msgstr "Ajouter la sortie recommandée"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:92
+msgid "Add optional output"
+msgstr "Ajouter une sortie optionnelle"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:93
+msgid ""
+"You've not selected a Shop Category in the Category Mapping Table. With no "
+"Shop Category selected, your feed will be empty. Are you sure you still want "
+"to save this feed?"
+msgstr ""
+"Vous n'avez pas sélectionné de catégorie de boutique dans la table de "
+"correspondance des catégories. Si aucune catégorie de boutique n'est "
+"sélectionnée, votre flux sera vide. Etes-vous sûr de vouloir toujours garder "
+"ce flux ?"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:94
+msgid "A file name is required!"
+msgstr "Un nom de fichier est requis !"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:95
+msgid ""
+"Add at least one query in the previous change value row before adding a new "
+"row."
+msgstr ""
+"Ajoutez au moins une requête dans la ligne de valeur de modification "
+"précédente avant d'ajouter une nouvelle ligne."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:96
+msgid "Please first fill in a change value option before adding a query to it."
+msgstr ""
+"Veuillez d'abord remplir une option de modification de la valeur avant d'y "
+"ajouter une requête."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:115
+#: includes/user-interface/class-wppfm-list-table.php:105
+msgid "Processing the feed, please wait..."
+msgstr "Traitement du flux, veuillez patienter...."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:116
+msgid "Processing failed, please try again"
+msgstr "Le traitement a échoué, veuillez réessayer"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:117
+#: includes/user-interface/class-wppfm-list-table.php:154
+msgid "In processing queue"
+msgstr "Dans la file d'attente de traitement"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:118
+msgid "No data found"
+msgstr "Aucune donnée trouvée"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:119
+#: includes/user-interface/class-wppfm-list-table.php:183
+msgid "Auto-off"
+msgstr "Arrêt automatique"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:120
+#: includes/user-interface/class-wppfm-list-table.php:183
+msgid "Auto-on"
+msgstr "Démarrage automatique"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:121
+#: includes/user-interface/class-wppfm-list-table.php:187
+#: includes/user-interface/class-wppfm-list-table.php:218
+msgid "Edit"
+msgstr "Modifier"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:122
+#: includes/user-interface/class-wppfm-list-table.php:188
+msgid "View"
+msgstr "Afficher"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:123
+msgid "Other"
+msgstr "Autre"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:124
+#: includes/user-interface/class-wppfm-list-table.php:107
+#: includes/user-interface/class-wppfm-list-table.php:163
+msgid "Unknown"
+msgstr "Inconnu"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:125
+#: includes/user-interface/class-wppfm-list-table.php:148
+msgid "Ready (manual)"
+msgstr "Prêt (manuel)"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:126
+#: includes/user-interface/class-wppfm-list-table.php:151
+msgid "Processing"
+msgstr "Traitement"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:127
+#: includes/user-interface/class-wppfm-list-table.php:157
+msgid "Has errors"
+msgstr "Comporte des erreurs"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:128
+#: includes/user-interface/class-wppfm-list-table.php:160
+msgid "Failed processing"
+msgstr "Échec du traitement"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:129
+#: includes/user-interface/class-wppfm-i18n-scripts.php:234
+#: includes/user-interface/class-wppfm-list-table.php:145
+msgid "Ready (auto)"
+msgstr "Prêt (auto)"
+
+#. translators: %feedname%: name of the feed
+#: includes/user-interface/class-wppfm-i18n-scripts.php:131
+msgid "Added a copy of feed %feedname% to the list."
+msgstr "Ajout d'une copie de flux %feedname% à la liste."
+
+#. translators: %feedname%: name of the feed
+#: includes/user-interface/class-wppfm-i18n-scripts.php:133
+msgid "Please confirm you want to delete feed %feedname%."
+msgstr "Veuillez confirmer que vous souhaitez supprimer le flux %feedname%."
+
+#. translators: %feedname%: name of the feed
+#: includes/user-interface/class-wppfm-i18n-scripts.php:135
+msgid "Feed %feedname% removed from the server."
+msgstr "Le flux %feedname% a été supprimé du serveur."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:136
+msgid "Feed Language"
+msgstr "Langue du flux"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:137
+msgid "This feed does not yet exists, please (re)generate this feed first."
+msgstr ""
+"Ce flux n’existe pas encore, s’il vous plaît (re)générer ce flux en premier."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:156
+msgid "First enter a file name for the backup file."
+msgstr "Entrez d'abord un nom de fichier pour le fichier de sauvegarde."
+
+#. translators: %backup_file_name%: name of the backup file
+#: includes/user-interface/class-wppfm-i18n-scripts.php:158
+msgid "Please confirm you want to delete backup %backup_file_name%."
+msgstr ""
+"Veuillez confirmer que vous voulez supprimer la sauvegarde "
+"%backup_file_name_name%."
+
+#. translators: %backup_file_name%: name of the backup file
+#: includes/user-interface/class-wppfm-i18n-scripts.php:160
+#, php-format
+msgid "%backup_file_name% deleted."
+msgstr "%backup_file_name% supprimé."
+
+#. translators: %backup_file_name%: name of the backup file
+#: includes/user-interface/class-wppfm-i18n-scripts.php:162
+msgid ""
+"Are you sure you want to restore backup %backup_file_name%? This will "
+"overwrite your current settings and feed data!"
+msgstr ""
+"Êtes-vous sûr de vouloir restaurer la sauvegarde %backup_file_name_name% ? "
+"Cela écrasera vos paramètres actuels et vos données d'alimentation !"
+
+#. translators: %backup_file_name%: name of the backup file
+#: includes/user-interface/class-wppfm-i18n-scripts.php:164
+msgid "%backup_file_name% restored"
+msgstr "%backup_file_name_name% restauré"
+
+#. translators: %backup_file_name%: name of the backup file
+#: includes/user-interface/class-wppfm-i18n-scripts.php:166
+#, php-format
+msgid "%backup_file_name% duplicated"
+msgstr "%backup_file_name_name% dupliqué"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:183
+msgid "Restore"
+msgstr "Restaurer"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:184
+msgid "No backup found"
+msgstr "Aucune sauvegarde trouvée"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:203
+msgid ""
+"Please confirm you want to remove this channel! Removing this channel will "
+"also remove all its feed files."
+msgstr ""
+"Veuillez confirmer que vous souhaitez supprimer ce canal ! La suppression de "
+"ce canal supprimera également tous ses fichiers de flux."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:221
+msgid "edit"
+msgstr "éditer"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:222
+msgid "select"
+msgstr "sélectionner"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:223
+msgid "selected"
+msgstr "sélectionnés"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:224
+msgid "delete"
+msgstr "effacer"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:225
+msgid "remove"
+msgstr "retirer"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:226
+msgid "add"
+msgstr "ajouter"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:227
+msgid "if"
+msgstr "si"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:228
+msgid "or"
+msgstr "ou"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:229
+msgid "and"
+msgstr "et"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:230
+msgid ""
+"All products from the selected Shop Categories will be included in the feed"
+msgstr ""
+"Tous les produits des catégories de boutiques sélectionnées seront inclus "
+"dans le flux"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:231
+#: includes/user-interface/class-wppfm-list-table.php:191
+msgid "Duplicate"
+msgstr "Dupliquer"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:232
+#: includes/user-interface/class-wppfm-list-table.php:192
+#: includes/user-interface/class-wppfm-list-table.php:220
+msgid "Regenerate"
+msgstr "Régénération"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:233
+#: includes/user-interface/class-wppfm-list-table.php:189
+#: includes/user-interface/class-wppfm-list-table.php:219
+msgid "Delete"
+msgstr "Supprimer"
+
+#: includes/user-interface/class-wppfm-main-admin-page.php:51
+msgid "Feed List Table"
+msgstr "Liste des flux"
+
+#: includes/user-interface/class-wppfm-main-admin-page.php:51
+msgid "Use the table below to manage your existing feeds."
+msgstr "Utilisez le tableau ci-dessous pour gérer vos flux existants."
+
+#: includes/user-interface/class-wppfm-main-admin-page.php:76
+msgid "Name"
+msgstr "Nom"
+
+#: includes/user-interface/class-wppfm-main-admin-page.php:77
+msgid "Url"
+msgstr "Url"
+
+#: includes/user-interface/class-wppfm-main-admin-page.php:78
+msgid "Updated"
+msgstr "Mise à jour"
+
+#: includes/user-interface/class-wppfm-main-admin-page.php:79
+#: includes/user-interface/elements/class-wppfm-category-selector-element.php:37
+msgid "Products"
+msgstr "Produits"
+
+#: includes/user-interface/class-wppfm-main-admin-page.php:83
+msgid "Type"
+msgstr "Sorte"
+
+#: includes/user-interface/class-wppfm-main-admin-page.php:86
+msgid "Status"
+msgstr "Statut"
+
+#: includes/user-interface/class-wppfm-main-admin-page.php:87
+#: includes/user-interface/class-wppfm-options-page.php:166
+msgid "Actions"
+msgstr "Actions"
+
+#: includes/user-interface/class-wppfm-main-admin-page.php:113
+msgid "Add New Feed"
+msgstr "Ajouter un nouveau flux"
+
+#. translators: %s: link to the support page
+#: includes/user-interface/class-wppfm-manage-channels-page.php:46
+#, php-format
+msgid ""
+"2127 - Try refreshing the page and Please open a support ticket at %s if the "
+"issue persists."
+msgstr ""
+"2127 - Essayez de rafraîchir la page et Veuillez ouvrir un ticket "
+"d'assistance sur %s si le problème persiste."
+
+#: includes/user-interface/class-wppfm-manage-channels-page.php:89
+msgid "Installed Channels:"
+msgstr "Canaux installés :"
+
+#: includes/user-interface/class-wppfm-manage-channels-page.php:90
+msgid "The following channels are ready to use"
+msgstr "Les canaux suivants sont prêts à l'emploi"
+
+#: includes/user-interface/class-wppfm-manage-channels-page.php:100
+msgid "Uninstalled Channels:"
+msgstr "Canaux désinstallés :"
+
+#: includes/user-interface/class-wppfm-manage-channels-page.php:101
+msgid "The following channels are ready to be installed"
+msgstr "Les canaux suivants sont prêts à être installés"
+
+#: includes/user-interface/class-wppfm-manage-channels-page.php:114
+msgid ""
+"No channels available. Please check if your license is current and active on "
+"the Feed Manager tab"
+msgstr ""
+"Aucun canal disponible. Veuillez vérifier si votre licence est à jour et "
+"active dans l'onglet Gestionnaire de flux"
+
+#. translators: %s: link to the support page
+#: includes/user-interface/class-wppfm-manage-channels-page.php:118
+#, php-format
+msgid ""
+"2965 - Please try to refresh the page and Please open a support ticket at %s "
+"if the issue persists."
+msgstr ""
+"2965 - S'il vous plaît essayer de rafraichir la page et s'il vous plaît "
+"ouvrir un billet de soutien à %s si le problème persiste."
+
+#. translators: %s: Version number of installed channel
+#: includes/user-interface/class-wppfm-manage-channels-page.php:142
+#: includes/user-interface/class-wppfm-manage-channels-page.php:145
+#, php-format
+msgid "Version %s"
+msgstr "Version %s"
+
+#. translators: Channel version unknown
+#: includes/user-interface/class-wppfm-manage-channels-page.php:149
+msgid "Version unknown"
+msgstr "Version inconnue"
+
+#: includes/user-interface/class-wppfm-manage-channels-page.php:154
+#, php-format
+msgid "Version %1$s. New version %2$s available!"
+msgstr "Version %1$s. Nouvelle version %2$s disponible !"
+
+#. translators: %s: channel name
+#: includes/user-interface/class-wppfm-manage-channels-page.php:175
+#, php-format
+msgid "Remove the %s channel."
+msgstr "Supprimez le canal %s."
+
+#: includes/user-interface/class-wppfm-manage-channels-page.php:176
+msgid "Remove"
+msgstr "Retirer"
+
+#: includes/user-interface/class-wppfm-manage-channels-page.php:182
+msgid "Update this channel to the latest version"
+msgstr "Mettre à jour ce canal à la dernière version"
+
+#: includes/user-interface/class-wppfm-manage-channels-page.php:183
+msgid "Update"
+msgstr "Mise à jour"
+
+#. translators: %s: channel name
+#: includes/user-interface/class-wppfm-manage-channels-page.php:191
+#, php-format
+msgid "Install the %s channel."
+msgstr "Installez le canal %s."
+
+#: includes/user-interface/class-wppfm-manage-channels-page.php:192
+#: includes/user-interface/class-wppfm-manage-channels-page.php:196
+msgid "Install"
+msgstr "Installer"
+
+#: includes/user-interface/class-wppfm-manage-channels-page.php:195
+msgid ""
+"The maximum number of channels for your license has been reached. Please "
+"remove an unused channel or upgrade your license."
+msgstr ""
+"Le nombre maximum de canaux pour votre licence a été atteint. Veuillez "
+"supprimer un canal inutilisé ou mettre à jour votre licence."
+
+#: includes/user-interface/class-wppfm-options-page.php:67
+msgid "Auto feed fix"
+msgstr "Correction de l'alimentation automatique"
+
+#: includes/user-interface/class-wppfm-options-page.php:72
+msgid "Automatically try regenerating feeds that are failed (default off)."
+msgstr ""
+"Corrige automatiquement les flux qui échouent (désactivée par défaut). "
+"Modifiez ce paramètre si un flux échoue en permanence."
+
+#: includes/user-interface/class-wppfm-options-page.php:73
+msgid ""
+"Leaving this option on can put extra strain on your server when feeds keep "
+"failing."
+msgstr ""
+"Laisser cette option sur peut mettre la contrainte supplémentaire sur votre "
+"serveur quand les flux continuent à échouer."
+
+#: includes/user-interface/class-wppfm-options-page.php:77
+msgid "Disable background processing"
+msgstr "Désactiver le traitement en arrière-plan"
+
+#: includes/user-interface/class-wppfm-options-page.php:82
+msgid ""
+"Process feeds directly instead of in the background (default off). Try this "
+"option when feeds keep getting stuck in processing. "
+msgstr ""
+"L'alimentation du processus se fait directement au lieu d'être en arrière-"
+"plan (désactivée par défaut). Essayez cette option lorsque les flux sont "
+"bloqués en cours de traitement. "
+
+#: includes/user-interface/class-wppfm-options-page.php:83
+msgid ""
+"WARNING: When this option is selected the system can only update one feed at "
+"a time. Make sure to deconflict your feeds auto-update schedules to prevent "
+"more than one feed auto-updates at a time."
+msgstr ""
+"AVERTISSEMENT: lorsque cette option est sélectionnée, le système ne peut "
+"mettre à jour qu'un flux à la fois. Veillez à éliminer les programmations de "
+"mise à jour automatique de vos flux afin d'empêcher plusieurs mises à jour "
+"automatiques à la fois."
+
+#: includes/user-interface/class-wppfm-options-page.php:87
+msgid "Feed process logger"
+msgstr "Enregistreur de processus d'alimentation"
+
+#: includes/user-interface/class-wppfm-options-page.php:92
+msgid ""
+"When switched on, generates an extensive log of the feed process (default "
+"off)."
+msgstr ""
+"Lorsqu'il est activé, génère un journal détaillé du processus de flux "
+"(désactivé par défaut)."
+
+#: includes/user-interface/class-wppfm-options-page.php:93
+msgid "Switch this option only on request of the help desk. "
+msgstr ""
+"Basculez cette option uniquement à la demande du service d'assistance. "
+
+#: includes/user-interface/class-wppfm-options-page.php:98
+msgid "Show product identifiers"
+msgstr "Afficher les identifiants de produits"
+
+#: includes/user-interface/class-wppfm-options-page.php:103
+msgid ""
+"When switched on, adds Brand, GTIN and MPN product identifiers to the "
+"products (default off)."
+msgstr ""
+"Lorsqu’il est activé, ajoute brand, GTIN et MPN identifiants produits pour "
+"les produits (par défaut)."
+
+#: includes/user-interface/class-wppfm-options-page.php:104
+msgid ""
+"This option will add product identifier input fields to the Inventory card "
+"of your products. The MPN identifier is also added to the product variations."
+msgstr ""
+"Cette option ajoutera des champs d’entrée d’identification de produit à la "
+"carte d’inventaire de vos produits. L’identifiant MPN est également ajouté "
+"aux variations du produit."
+
+#: includes/user-interface/class-wppfm-options-page.php:111
+msgid "WPML: Use full resolution URLs"
+msgstr "WPML: utiliser des URL en pleine résolution"
+
+#: includes/user-interface/class-wppfm-options-page.php:116
+msgid "Enables full conversion of hard-coded URLs (default off)."
+msgstr ""
+"Permet la conversion complète des URL codées en dur (désactivé par défaut)."
+
+#: includes/user-interface/class-wppfm-options-page.php:117
+msgid ""
+"Use this option if you're using WPML and are getting incorrect URLs in your "
+"feed. This option will slightly increase the load on the database when "
+"processing a feed."
+msgstr ""
+"Utilisez cette option si vous utilisez WPML et que vous obtenez des URL "
+"incorrectes dans votre flux. Cette option augmentera légèrement la charge "
+"sur la base de données lors du traitement d'un flux."
+
+#: includes/user-interface/class-wppfm-options-page.php:122
+msgid "Third party attributes"
+msgstr "Attributs de tiers"
+
+#: includes/user-interface/class-wppfm-options-page.php:127
+msgid ""
+"Enter comma separated keywords and wildcards to use third party attributes."
+msgstr ""
+"Entrez des mots-clés et des caractères génériques séparés par des virgules "
+"pour utiliser des attributs tiers."
+
+#: includes/user-interface/class-wppfm-options-page.php:131
+msgid "Notice recipient"
+msgstr "Destinataire de l'avis"
+
+#: includes/user-interface/class-wppfm-options-page.php:136
+msgid ""
+"Enter the email address of the person you want to be notified when a feed "
+"fails during an automatic feed update."
+msgstr ""
+"Saisissez l'adresse e-mail de la personne que vous souhaitez notifier "
+"lorsqu'un flux échoue lors d'une mise à jour automatique des flux."
+
+#: includes/user-interface/class-wppfm-options-page.php:140
+#: includes/user-interface/class-wppfm-options-page.php:143
+msgid "Clear feed process"
+msgstr "Purger le processus d'alimentation"
+
+#: includes/user-interface/class-wppfm-options-page.php:145
+msgid ""
+"Use this option when feeds get stuck processing - does not delete your "
+"current feeds or settings."
+msgstr ""
+"Utilisez cette option lorsque le traitement des flux est bloqué - ne "
+"supprime pas vos flux ou paramètres actuels."
+
+#: includes/user-interface/class-wppfm-options-page.php:149
+msgid "Re-initialize"
+msgstr "Réinitialiser"
+
+#: includes/user-interface/class-wppfm-options-page.php:152
+msgid "Re-initiate plugin"
+msgstr "Réinitialiser le plugin"
+
+#: includes/user-interface/class-wppfm-options-page.php:154
+msgid ""
+"Updates the tables if required, re-initiates the cron events and resets the "
+"stored license - does not delete your current feeds or settings."
+msgstr ""
+"Met à jour les tables si nécessaire, réinitialise les événements cron et "
+"réinitialise la licence stockée - ne supprime pas vos flux ou paramètres "
+"actuels."
+
+#: includes/user-interface/class-wppfm-options-page.php:158
+msgid "Backups"
+msgstr "Sauvegardes"
+
+#: includes/user-interface/class-wppfm-options-page.php:164
+msgid "File name"
+msgstr "Nom de fichier"
+
+#: includes/user-interface/class-wppfm-options-page.php:165
+msgid "Backup date"
+msgstr "Date de sauvegarde"
+
+#: includes/user-interface/class-wppfm-options-page.php:171
+msgid "Add new backup"
+msgstr "Ajouter une nouvelle sauvegarde"
+
+#: includes/user-interface/class-wppfm-options-page.php:176
+msgid "Backup current feeds"
+msgstr "Flux actuels de sauvegarde"
+
+#: includes/user-interface/class-wppfm-options-page.php:177
+msgid "Cancel backup"
+msgstr "Annuler la sauvegarde"
+
+#: includes/user-interface/class-wppfm-product-feed-page.php:50
+msgid "Here you can edit the parameters of your feed."
+msgstr "Ici, vous pouvez modifier les paramètres de votre flux."
+
+#: includes/user-interface/class-wppfm-product-feed-page.php:51
+msgid ""
+"Here you can setup your new feed. Start by entering a name for your feed and "
+"selecting a channel."
+msgstr ""
+"Ici, vous pouvez configurer votre nouveau flux. Commencez par entrer un nom "
+"pour votre flux et en sélectionnant un canal."
+
+#: includes/user-interface/class-wppfm-product-feed-page.php:65
+msgid "Edit Product Feed"
+msgstr "Modifier l’alimentation du produit"
+
+#: includes/user-interface/elements/class-wppfm-attribute-selector-element.php:27
+msgid "Required attributes"
+msgstr "Attributs requis"
+
+#: includes/user-interface/elements/class-wppfm-attribute-selector-element.php:42
+msgid "Highly recommended attributes"
+msgstr "Attributes fortement recommandé"
+
+#: includes/user-interface/elements/class-wppfm-attribute-selector-element.php:57
+msgid "Recommended attributes"
+msgstr "Attributes recommandé"
+
+#: includes/user-interface/elements/class-wppfm-attribute-selector-element.php:72
+msgid "Optional attributes"
+msgstr "Attributs facultatifs"
+
+#: includes/user-interface/elements/class-wppfm-attribute-selector-element.php:87
+msgid "Custom attributes"
+msgstr "Attributs personnalisés"
+
+#: includes/user-interface/elements/class-wppfm-attribute-selector-element.php:101
+msgid "Add to feed"
+msgstr "Ajouter au flux"
+
+#: includes/user-interface/elements/class-wppfm-attribute-selector-element.php:103
+msgid "From WooCommerce source"
+msgstr "A partir de la source WooCommerce"
+
+#: includes/user-interface/elements/class-wppfm-attribute-selector-element.php:104
+msgid "Condition"
+msgstr "Condition"
+
+#: includes/user-interface/elements/class-wppfm-category-selector-element.php:28
+msgid "Feed Category"
+msgstr "Catégorie d'aliment"
+
+#: includes/user-interface/elements/class-wppfm-category-selector-element.php:28
+msgid "Description"
+msgstr "Description"
+
+#: includes/user-interface/elements/class-wppfm-category-selector-element.php:35
+msgid "Shop Category"
+msgstr "Catégorie Boutique"
+
+#: includes/user-interface/elements/class-wppfm-form-element.php:105
+msgid "Save & Generate Feed"
+msgstr "Enregistrer et générer des flux"
+
+#: includes/user-interface/elements/class-wppfm-form-element.php:108
+msgid "Save Feed"
+msgstr "Enregistrer les flux"
+
+#: includes/user-interface/elements/class-wppfm-form-element.php:111
+msgid "View Feed"
+msgstr "Enegistrer afficher"
+
+#: includes/user-interface/elements/class-wppfm-form-element.php:124
+msgid "Open Feed List"
+msgstr "Ouvrir la liste des flux"
+
+#: includes/user-interface/elements/class-wppfm-main-input-selector-element.php:27
+msgid "File Name"
+msgstr "Nom de fichier"
+
+#: includes/user-interface/elements/class-wppfm-main-input-selector-element.php:40
+msgid "Products source"
+msgstr "Source des produits"
+
+#: includes/user-interface/elements/class-wppfm-main-input-selector-element.php:53
+msgid "Channel"
+msgstr "Canal"
+
+#: includes/user-interface/elements/class-wppfm-main-input-selector-element.php:66
+msgid "Target Country"
+msgstr "Pays cible"
+
+#: includes/user-interface/elements/class-wppfm-main-input-selector-element.php:79
+msgid "Default Category"
+msgstr "Catégorie par défaut"
+
+#: includes/user-interface/elements/class-wppfm-main-input-selector-element.php:92
+msgid "Aggregator Shop"
+msgstr "Boutique d'agrégats"
+
+#: includes/user-interface/elements/class-wppfm-main-input-selector-element.php:105
+msgid "Include Product Variations"
+msgstr "Inclure les variations du produit"
+
+#: includes/user-interface/elements/class-wppfm-main-input-selector-element.php:118
+msgid "Feed Title"
+msgstr "Titre du flux"
+
+#: includes/user-interface/elements/class-wppfm-main-input-selector-element.php:131
+msgid "Feed Description"
+msgstr "Description de l'aliment"
+
+#: includes/user-interface/elements/class-wppfm-main-input-selector-element.php:146
+msgid "Update Schedule"
+msgstr "Calendrier des mises à jour"
+
+#: includes/user-interface/wppfm-admin-actions.php:20
+msgid "WP Feed Manager"
+msgstr "Gestionnaire de flux WP"
+
+#: includes/user-interface/wppfm-admin-actions.php:21
+msgid "Feed Manager"
+msgstr "Gestionnaire de flux"
+
+#: includes/user-interface/wppfm-admin-actions.php:36
+#, php-format
+msgid "%d channel update"
+msgid_plural "%d channel updates"
+msgstr[0] "Mise à jour du canal %d"
+msgstr[1] "%d Mises à jour des canaux"
+
+#: includes/user-interface/wppfm-admin-actions.php:47
+#, php-format
+msgid "Manage Channels %s"
+msgstr "Gérer les canaux %s"
+
+#: includes/user-interface/wppfm-admin-actions.php:57
+msgid "Manage Channels"
+msgstr "Gérer les canaux"
+
+#: includes/user-interface/wppfm-admin-actions.php:68
+#: includes/user-interface/wppfm-admin-actions.php:69
+msgid "Settings"
+msgstr "Réglages"
+
+#: includes/user-interface/wppfm-admin-actions.php:85
+msgid ""
+"Due to the latest update your Feed Manager backups are no longer valid! "
+"Please open the Feed Manager Settings page, remove all your backups in and "
+"make a new one."
+msgstr ""
+"En raison de la dernière mise à jour, vos sauvegardes de gestion de flux ne "
+"sont plus valides ! Veuillez ouvrir la page Paramètres du gestionnaire de "
+"flux, supprimer toutes vos sauvegardes et en créer une nouvelle."
+
+#. translators: %s: link to the support page
+#: includes/user-interface/wppfm-admin-actions.php:175
+#, php-format
+msgid ""
+"2121 - Activating your license failed. Please open a support ticket at %s "
+"for support on this issue."
+msgstr ""
+"2121 - L'activation de votre licence a échoué. Veuillez ouvrir un ticket "
+"d'assistance sur %s pour obtenir de l'aide à ce sujet."
+
+#: includes/user-interface/wppfm-admin-actions.php:194
+#, php-format
+msgid ""
+"An error has occurred. It is possible that the wpmarketingrobot website is "
+"down.\n"
+"\t\t\t\t\t\tPlease check if wpmarketingrobot.com is still active. If not, or "
+"if this error consist, please contact\n"
+"\t\t\t\t\t\tauke@wpmarketingrobot.com. Error Message: %s"
+msgstr ""
+"Une erreur s'est produite. Il est possible que le site web de "
+"wpmarketingrobot soit en panne. \n"
+"\t\t\t\tVeuillez vérifier si wpmarketingrobot.com est toujours actif. Si ce "
+"n'est pas le cas, ou si cette erreur se produit, veuillez contacter \n"
+"\t\t\t\tauke@wpmarketingrobot.com. Message d'erreur : %s"
+
+#: includes/user-interface/wppfm-admin-actions.php:244
+#, php-format
+msgid ""
+"You have an invalid or expired license key for your %1$s plugin.\n"
+"\t\t\t\tPlease <a href=\"%2$scheckout/?edd_license_key="
+"%3$s&utm_source=client-"
+"admin&utm_medium=renewal_link&utm_campaign=license_expired\">\n"
+"\t\t\t\tclick here to go to the Licenses renewal page</a> to keep the plugin "
+"working and your product feeds valid."
+msgstr ""
+"Vous avez une clé de licence invalide ou expirée pour votre plugin %1$s. \n"
+"\t\t\tVeuillez <a href=\"%2$scheckout/?edd_license_key="
+"%3$s&utm_source=client-"
+"admin&utm_medium=renewal_link&utm_campaign=license_expired\"> \n"
+"\t\t\tcliquez ici pour aller à la page de renouvellement des licences </a> "
+"pour que le plugin continue à fonctionner et que les flux de votre produit "
+"soient valides."
+
+#: includes/user-interface/wppfm-admin-actions.php:261
+#, php-format
+msgid ""
+"The license key for your %1$s plugin is expiring soon. If you wish you can "
+"<a href=\"%2$scheckout/?edd_license_key=%3$s&utm_source=client-"
+"admin&utm_medium=renewal_link&utm_campaign=license_renewal\">\n"
+"\t\t\t\t\tclick here</a> to renew your license key directly so you can be "
+"sure your product feeds keep working."
+msgstr ""
+"La clé de licence de votre plugin %1$s expire bientôt. \n"
+"\t\t\tSi vous le souhaitez, vous pouvez <a href=\"%2$scheckout/?"
+"edd_license_key=%3$s&utm_source=client-"
+"admin&utm_medium=renewal_link&utm_campaign=license_renewal\">. \n"
+"\t\t\tcliquez ici </a> pour renouveler votre clé de licence directement afin "
+"de vous assurer que vos flux de produits continuent à fonctionner."
+
+#: includes/user-interface/wppfm-admin-filters.php:25
+msgid "Starter Guide"
+msgstr "Guide de démarrage"
+
+#: includes/user-interface/wppfm-admin-filters.php:28
+msgid "Go Premium"
+msgstr "Go Premium"
+
+#: includes/user-interface/wppfm-admin-filters.php:30
+msgid "Get Support"
+msgstr "Obtenir de l'aide"
+
+#: includes/user-interface/wppfm-admin-menu-functions.php:165
+msgid "About Us"
+msgstr "À propos de nous"
+
+#: includes/user-interface/wppfm-admin-menu-functions.php:166
+msgid "Contact Us"
+msgstr "Contactez-nous"
+
+#: includes/user-interface/wppfm-admin-menu-functions.php:167
+msgid "Terms and Conditions"
+msgstr "Conditions d'utilisation"
+
+#: includes/user-interface/wppfm-admin-menu-functions.php:168
+msgid "Documentation"
+msgstr "Documentation"
+
+#. translators: %s: five stars link
+#: includes/user-interface/wppfm-admin-menu-functions.php:172
+#, php-format
+msgid ""
+"If you like working with our Feed Manager please leave us a %s rating. A "
+"huge thanks in advance!"
+msgstr ""
+"Si vous aimez travailler avec notre gestionnaire d’alimentation s’il vous "
+"plaît laissez-nous une note de %s. Un grand merci d’avance!"
+
+#: includes/user-interface/wppfm-admin-menu-functions.php:256
+#, php-format
+msgid ""
+"2122 - Checking your license failed. Please open a support ticket at %s for "
+"support on this issue."
+msgstr ""
+"2122 - La vérification de votre licence a échoué. Veuillez ouvrir un ticket "
+"d'assistance sur %s pour obtenir de l'aide à ce sujet."
+
+#. translators: %s: Error message
+#: includes/user-interface/wppfm-messaging-functions.php:123
+#, php-format
+msgid ""
+"There was an error but I was unable to store the error message in the log "
+"file. The message was %s"
+msgstr ""
+"Il y a eu une erreur mais je ne suis pas parvenu à stocker le message "
+"d'erreur dans le fichier journal. Le message était %s"
+
+#: includes/user-interface/wppfm-messaging-functions.php:145
+#, php-format
+msgid ""
+"This plugin requires WooCommerce version %1$s as a minimum!\n"
+"\t\t\t\tIt seems you have installed WooCommerce version %2$s which is a "
+"version that is not supported.\n"
+"\t\t\t\tPlease update to the latest version ***"
+msgstr ""
+"Ce plugin nécessite au minimum la version %1$s de WooCommerce ! \n"
+"\t\t\t\tIl semble que vous ayez installé WooCommerce version %2$s qui est "
+"une version qui n'est pas supportée. \n"
+"\t\t\t\tVeuillez mettre à jour vers au moins la version 3.0.0. ***"
+
+#: includes/user-interface/wppfm-messaging-functions.php:166
+msgid ""
+"This plugin only works in conjunction with the WooCommerce Plugin!\n"
+"\t\t\t\tIt seems you have not installed the WooCommerce Plugin yet, so "
+"please do so before using this Plugin."
+msgstr ""
+"Ce plugin ne fonctionne qu'en conjonction avec le plugin WooCommerce ! \n"
+"\t\t\t\tIl semble que vous n'ayez pas encore installé le plugin WooCommerce, "
+"donc veuillez le faire avant d'utiliser ce plugin."
+
+#. translators: %s: link to information about the WooCommerce plugin
+#: includes/user-interface/wppfm-messaging-functions.php:171
+#, php-format
+msgid ""
+"You can find more information about the Woocommerce Plugin %sby clicking "
+"here</a>."
+msgstr ""
+"Vous pouvez trouver plus d'informations sur le plugin Woocommerce %scliquant "
+"ici </a>."
+
+#: wp-product-feed-manager.php:78
+msgid "Cloning is not allowed"
+msgstr "Le clonage n'est pas autorisé"
+
+#: wp-product-feed-manager.php:89
+msgid "Unserializing instances of this class is not allowed"
+msgstr "La dé sérialisation des instances de cette classe n'est pas autorisée"
+
+#. Plugin Name of the plugin/theme
+msgid "WooCommerce Product Feed Manager"
+msgstr "Gestionnaire de flux de produits WooCommerce"
+
+#. Plugin URI of the plugin/theme
+#. Author URI of the plugin/theme
+msgid "https://www.wpmarketingrobot.com"
+msgstr "https://www.wpmarketingrobot.com"
+
+#. Description of the plugin/theme
+msgid ""
+"An easy to use WordPress plugin that generates and submits your product "
+"feeds to merchant centres."
+msgstr ""
+"Un plugin WordPress facile à utiliser qui génère et soumet vos flux de "
+"produits aux centres commerciaux."
+
+#. Author of the plugin/theme
+msgid "Michel Jongbloed"
+msgstr "Michel Jongbloed"
+
+#~ msgid ""
+#~ "Could not identify the channel. \n"
+#~ "\t\t\t\t\t\t\t\tTry to deactivate and then activate the plugin. \n"
+#~ "\t\t\t\t\t\t\t\tIf that does not work remove the plugin through the "
+#~ "WordPress Plugins page and than reinstall and activate it again."
+#~ msgstr ""
+#~ "Impossible d'identifier le canal. \n"
+#~ "\t\t\t\t\t\t\t\tEssayez de désactiver puis d'activer le plugin. \n"
+#~ "\t\t\t\t\t\t\t\tSi cela ne fonctionne pas, supprimez le plugin via la "
+#~ "page WordPress Plugins, puis réinstallez-le et activez-le à nouveau."
+
+#~ msgid "1428 - Failed to load the feed data"
+#~ msgstr "1428 - Impossible de charger les données du flux"
+
+#~ msgid "Like Our Plugin? We'd Love Your Feedback"
+#~ msgstr "Vous aimez notre plugin ? Nous aimerions avoir vos commentaires"
+
+#~ msgid "Basic Feed Options"
+#~ msgstr "Options d'alimentation de base"
+
+#~ msgid "Add or Edit Feed"
+#~ msgstr "Ajouter ou modifier un flux"
+
+#~ msgid "Required"
+#~ msgstr "Requis"
+
+#~ msgid "Optional"
+#~ msgstr "Facultatif"
+
+#~ msgid "Add Feed"
+#~ msgstr "Ajouter un flux"
+
+#~ msgid ""
+#~ "2166 - Failed to make a wp_remote_post connection. Please open the "
+#~ "Settings page, click the Clear feed process button and try again. If the "
+#~ "issue persists, open a support ticket at %s."
+#~ msgstr ""
+#~ "2166-impossible de faire une connexion wp_remote_post. Veuillez ouvrir la "
+#~ "page Paramètres, cliquez sur le bouton Effacer le processus "
+#~ "d'alimentation et réessayez. Si le problème persiste, ouvrez un ticket de "
+#~ "support à %s."
+
+#~ msgid "You have insufficient rights to use %s"
+#~ msgstr "Vous n'avez pas suffisamment de droits pour utiliser %s"
+
+#~ msgid "You are not allowed to do this!"
+#~ msgstr "Vous n'avez pas le droit de faire cela!"
+
+#~ msgid ""
+#~ "The installation of channel %s failed. Unable to unpack the channel file "
+#~ "in folder %s. Please make sure you have read/write permission for this "
+#~ "folder."
+#~ msgstr ""
+#~ "L'installation des %s de canal a échoué. Impossible de décompresser le "
+#~ "fichier du canal dans le dossier %s. Veuillez vous assurer que vous avez "
+#~ "les droits de lecture/écriture pour ce dossier."
+
+#~ msgid ""
+#~ "Could not identify the correct categorymap for the product with ID: %s! \n"
+#~ "\t\t\t\t\tPlease check the category settings of this product."
+#~ msgstr ""
+#~ "Impossible d'identifier la carte de catégorie correcte pour le produit "
+#~ "avec l'ID : %s ! \n"
+#~ "\t\t\t\t\tVeuillez vérifier les paramètres de catégorie de ce produit."
+
+#~ msgid "Batch process time limit"
+#~ msgstr "Délai de traitement par lots"
+
+#~ msgid "seconds."
+#~ msgstr "secondes."
+
+#~ msgid ""
+#~ "Try to increase this time limit if your feeds keep failing in processing "
+#~ "(default 90 seconds)."
+#~ msgstr ""
+#~ "Essayez d'augmenter ce délai si vos flux échouent en cours de traitement "
+#~ "(par défaut 90 secondes)."

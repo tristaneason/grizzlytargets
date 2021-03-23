@@ -1,0 +1,7 @@
+{
+  "name": "wp-sheet-editor-woocommerce", "version": "1.0.0", "devDependencies": {
+    "grunt": "~0.4.1", "grunt-contrib-clean": "^1.0.0", "grunt-contrib-compress": "^0.13.0", "grunt-contrib-copy": "~0.6.0"
+  }, "dependencies": {
+    "load-grunt-tasks": "~0.2.0"
+  }, "vgDistName": "woo-bulk-edit-products-spreadsheet"
+}

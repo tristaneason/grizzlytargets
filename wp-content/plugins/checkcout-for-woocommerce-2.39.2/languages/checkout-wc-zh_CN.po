@@ -1,0 +1,964 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Checkout for WooCommerce\n"
+"POT-Creation-Date: 2019-11-06 09:56-0500\n"
+"PO-Revision-Date: 2019-11-06 09:57-0500\n"
+"Last-Translator: Clifton Griffin <clif@checkoutwc.com>\n"
+"Language-Team: \n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.4\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: checkout-for-woocommerce.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: functions.php:8
+msgid "First Name"
+msgstr "名字"
+
+#: functions.php:13
+msgid "Last Name"
+msgstr "姓"
+
+#: functions.php:808
+msgid "Remove Item"
+msgstr "删除项目"
+
+#: functions.php:826
+msgid "Edit"
+msgstr "编辑"
+
+#: functions.php:932 functions.php:939
+msgid "Not Calculated"
+msgstr "未计算"
+
+#: functions.php:937
+msgid "Not Available"
+msgstr "不可用"
+
+#: functions.php:950
+msgid "Complete Order"
+msgstr "已完成的订单"
+
+#: functions.php:983 templates/copify/content.php:62
+#: templates/copify/thank-you.php:130 templates/default/content.php:55
+#: templates/default/thank-you.php:118 templates/futurist/content.php:53
+#: templates/futurist/thank-you.php:118
+msgid "Payment method"
+msgstr "付款方法"
+
+#: functions.php:992
+msgid ""
+"All transactions are secure and encrypted. Credit card information is never "
+"stored on our servers."
+msgstr "所有的交易都是安全和加密。信用卡信息永远不会存储在我们的服务器上。"
+
+#: functions.php:1003
+msgid "Your order is free. No payment is required."
+msgstr "您的订单是免费的。不需要付款。"
+
+#: functions.php:1091
+msgid "Same as shipping address"
+msgstr "跟邮寄地址一样"
+
+#: functions.php:1101
+msgid "Use a different billing address"
+msgstr "使用不同的帐单地址"
+
+#: functions.php:1218 templates/copify/content.php:175
+#: templates/copify/thank-you.php:146 templates/default/content.php:168
+#: templates/default/thank-you.php:134 templates/futurist/content.php:172
+#: templates/futurist/thank-you.php:134
+msgid "Billing address"
+msgstr "帳單地址"
+
+#: functions.php:1312
+msgid "Return to cart"
+msgstr "返回到购物车"
+
+#: functions.php:1316
+msgid "Continue to shipping method"
+msgstr "继续运送方式"
+
+#: functions.php:1320
+msgid "Continue to payment method"
+msgstr "继续付款方式"
+
+#: functions.php:1324
+msgid "Return to customer information"
+msgstr "返回到客户信息"
+
+#: functions.php:1328
+msgid "Return to shipping information"
+msgstr "返回到发货信息"
+
+#: includes/Compatibility/Base.php:172
+msgid "Or"
+msgstr "或"
+
+#: includes/Compatibility/Gateways/PayPalForWooCommerce.php:102
+msgid "Logged in with PayPal. Please continue your order below."
+msgstr "与PayPal签约。 请继续下面的订单。"
+
+#. Plugin Name of the plugin/theme
+#: includes/Core/Admin.php:108 includes/Core/Admin.php:144
+#: includes/Core/Customizer.php:256 includes/Main.php:840
+msgid "Checkout for WooCommerce"
+msgstr "Checkout for WooCommerce"
+
+#: includes/Core/Admin.php:108
+msgid "CheckoutWC"
+msgstr "CheckoutWC"
+
+#: includes/Core/Admin.php:111 includes/Core/Customizer.php:269
+#: includes/Main.php:848
+msgid "General"
+msgstr "一般"
+
+#: includes/Core/Admin.php:112 includes/Core/Customizer.php:315
+#: includes/Core/Customizer.php:332 includes/Main.php:857
+msgid "Template"
+msgstr "模板"
+
+#: includes/Core/Admin.php:113 includes/Core/Customizer.php:346
+#: includes/Core/Customizer.php:383 includes/Main.php:866
+msgid "Design"
+msgstr "设计"
+
+#: includes/Core/Admin.php:116
+msgid "Addons"
+msgstr "插件"
+
+#: includes/Core/Admin.php:119 includes/Main.php:875
+msgid "License"
+msgstr "许可证"
+
+#: includes/Core/Admin.php:120 includes/Main.php:884
+msgid "Support"
+msgstr "支持"
+
+#: includes/Core/Admin.php:121
+msgid "Recommended Plugins"
+msgstr "推荐插件"
+
+#: includes/Core/Admin.php:145 includes/Core/Customizer.php:259
+msgid ""
+"Checkout for WooCommerce provides a beautiful, conversion optimized checkout "
+"template for WooCommerce."
+msgstr "结帐 WooCommerce 提供了一个美丽的, 转换优化的 WooCommerce 结帐模板."
+
+#: includes/Core/Admin.php:172 includes/Core/Customizer.php:280
+msgid "Enable / Disable"
+msgstr "启用/停用"
+
+#: includes/Core/Admin.php:176
+msgid "Use Checkout for WooCommerce Template"
+msgstr "使用Checkout进行WooCommerce模板"
+
+#: includes/Core/Admin.php:177
+msgid ""
+"Enable or disable Checkout for WooCommerce theme. (NOTE: Theme is always "
+"enabled for admin users.)"
+msgstr "启用或禁用 WooCommerce 主题的签出。(注： 主题始终为管理员用户启用。)"
+
+#: includes/Core/Admin.php:183 includes/Core/Customizer.php:291
+msgid "Header Scripts"
+msgstr "页眉脚本"
+
+#: includes/Core/Admin.php:189
+msgid ""
+"This code will output immediately before the closing <code>&lt;/head&gt;</"
+"code> tag in the document source."
+msgstr "此代码将在文档源中的关闭 <code>&lt;/head&gt;</code> 标记之前立即输出。"
+
+#: includes/Core/Admin.php:197 includes/Core/Customizer.php:302
+msgid "Footer Scripts"
+msgstr "頁尾腳本"
+
+#: includes/Core/Admin.php:203
+msgid ""
+"This code will output immediately before the closing <code>&lt;/body&gt;</"
+"code> tag in the document source."
+msgstr "此代码将在文档源中的关闭 <code>&lt;/body&gt;</code> 标记之前立即输出。"
+
+#: includes/Core/Admin.php:215
+msgid "Enable Usage Tracking"
+msgstr "启用使用率跟踪"
+
+#: includes/Core/Admin.php:221
+msgid "Allow Checkout for WooCommerce to track plugin usage?"
+msgstr "允许Checkout for WooCommerce跟踪插件使用情况？"
+
+#: includes/Core/Admin.php:229
+msgid "Stat Collection Data Viewer"
+msgstr "统计数据查看器"
+
+#: includes/Core/Admin.php:247
+msgid "Premium Features"
+msgstr "高级功能"
+
+#: includes/Core/Admin.php:256
+msgid "Cart Editing"
+msgstr "购物车编辑"
+
+#: includes/Core/Admin.php:260
+msgid "Enable cart editing."
+msgstr "启用购物车编辑。"
+
+#: includes/Core/Admin.php:261
+msgid ""
+"Enable or disable cart editing feature. Allows customer to remove or adjust "
+"quantity of cart items."
+msgstr "启用或禁用购物车编辑功能。允许客户移除或调整购物车数量。"
+
+#: includes/Core/Admin.php:267
+msgid "Cart Editing Empty Cart Redirect"
+msgstr "购物车编辑空车重定向"
+
+#: includes/Core/Admin.php:273
+msgid "URL to redirect to when customer empties cart from checkout page."
+msgstr "客户从结帐页面清空购物车时重定向到的网址。"
+
+#: includes/Core/Admin.php:274
+msgid "If left blank, customer will be redirected to the cart page."
+msgstr "如果留空，客户将被重定向到购物车页面。"
+
+#: includes/Core/Admin.php:283
+msgid "Order Pay"
+msgstr "订单支付"
+
+#: includes/Core/Admin.php:287
+msgid "Enable support for order pay page."
+msgstr "启用对订单付款页面的支持。"
+
+#: includes/Core/Admin.php:288
+msgid "Use checkout template for order pay page."
+msgstr "使用结帐模板进行订单付款页面。"
+
+#: includes/Core/Admin.php:295
+msgid "Thank You Page"
+msgstr "谢谢页面"
+
+#: includes/Core/Admin.php:299
+msgid "Enable support for thank you page."
+msgstr "启用感谢页面支持。"
+
+#: includes/Core/Admin.php:300
+msgid ""
+"Enable thank you page / order received template. This template is also used "
+"when viewing orders in My Account."
+msgstr ""
+"启用“谢谢页面” /“收到订单”模板。在“我的帐户”中查看订单时，也会使用此模板。"
+
+#: includes/Core/Admin.php:307
+msgid "Order Statuses"
+msgstr "订单状态"
+
+#: includes/Core/Admin.php:318
+msgid "The statuses to show on the thank you page."
+msgstr "在“谢谢”页面上显示的状态。"
+
+#: includes/Core/Admin.php:325
+msgid "Map Embed"
+msgstr "地图嵌入"
+
+#: includes/Core/Admin.php:329
+msgid "Enable map embed."
+msgstr "启用地图嵌入。"
+
+#: includes/Core/Admin.php:330
+msgid "Enable or disable map embed on thank you page. Requires Google API key."
+msgstr "启用或禁用在“感谢页面”上嵌入的地图。需要Google API密钥。"
+
+#: includes/Core/Admin.php:337
+msgid "Address Autocomplete"
+msgstr "地址自动完成"
+
+#: includes/Core/Admin.php:341
+msgid "Enable address autocomplete."
+msgstr "启用地址自动填充功能。"
+
+#: includes/Core/Admin.php:342
+msgid ""
+"Enable or disable address autocomplete feature. Requires Google API key."
+msgstr "启用或禁用地址自动完成功能。需要Google API密钥。"
+
+#: includes/Core/Admin.php:348
+msgid "Google API Key"
+msgstr "Google API密钥"
+
+#: includes/Core/Admin.php:354
+msgid ""
+"Google API Key. Available in the <a target=\"_blank\" href=\"https://"
+"developers.google.com/places/web-service/get-api-key\">Google Cloud Platform "
+"Console</a>."
+msgstr ""
+"Google API密钥。在<a target=\"_blank\" href=\"https://developers.google.com/"
+"places/web-service/get-api-key\">Google Cloud Platform Console中</a>可用。"
+
+#: includes/Core/Admin.php:370
+msgid "License Upgrade Required"
+msgstr "需要许可证升级"
+
+#: includes/Core/Admin.php:370
+msgid "A Growth or Developer License is required to enable these features."
+msgstr "要启用这些功能，必须具有成长许可证或开发人员许可证。"
+
+#: includes/Core/Admin.php:371
+#, php-format
+msgid ""
+"You can upgrade your license in <a target=\"_blank\" href=\"%1$s\">My "
+"Account</a>. For help upgrading your license, <a target=\"_blank\" href="
+"\"%2$s\">click here.</a>"
+msgstr ""
+"您可以在“ <a target=\"_blank\" href=\"%1$s\">我的帐户”中</a>升级许可证。有关"
+"升级许可证的帮助， <a target=\"_blank\" href=\"%2$s\">请单击此处。</a>"
+
+#: includes/Core/Admin.php:386
+msgid "Templates"
+msgstr "模板"
+
+#: includes/Core/Admin.php:407
+msgid "Active: "
+msgstr "启动: "
+
+#: includes/Core/Admin.php:415
+msgid "Activate"
+msgstr "激活"
+
+#: includes/Core/Admin.php:438
+msgid "Global Settings"
+msgstr "全局设置"
+
+#: includes/Core/Admin.php:439
+msgid "These settings apply to all themes."
+msgstr "这些设置适用于所有主题。"
+
+#: includes/Core/Admin.php:444 includes/Core/Customizer.php:358
+msgid "Logo"
+msgstr "标识"
+
+#: includes/Core/Admin.php:450
+msgid "Upload image"
+msgstr "上传图片"
+
+#: includes/Core/Admin.php:453
+msgid "Clear Logo"
+msgstr "删除徽标"
+
+#: includes/Core/Admin.php:459 includes/Core/Customizer.php:370
+msgid "Footer Text"
+msgstr "页脚文本"
+
+#: includes/Core/Admin.php:465
+msgid ""
+"If left blank, a standard copyright notice will be displayed. Set to a "
+"single space to override this behavior."
+msgstr "如果保留空白, 将显示标准版权声明。设置为单个空格以覆盖此行为。"
+
+#: includes/Core/Admin.php:473
+msgid "Cart Summary Mobile Label"
+msgstr "购物车摘要移动标签"
+
+#: includes/Core/Admin.php:479
+msgid "Example: Show order summary and coupons"
+msgstr "示例：显示订单摘要和优惠券"
+
+#: includes/Core/Admin.php:480
+msgid "If left blank, this default will be used: "
+msgstr "如果留空，将使用此默认值: "
+
+#: includes/Core/Admin.php:480 templates/copify/content.php:308
+#: templates/copify/order-pay.php:140 templates/copify/thank-you.php:209
+#: templates/default/content.php:284 templates/default/order-pay.php:111
+#: templates/default/thank-you.php:181 templates/futurist/content.php:288
+#: templates/futurist/order-pay.php:116 templates/futurist/thank-you.php:181
+msgid "Show order summary"
+msgstr "显示订单总结"
+
+#: includes/Core/Admin.php:488 includes/Core/Customizer.php:383
+msgid "Theme Specific Settings"
+msgstr "主题特定设置"
+
+#: includes/Core/Admin.php:498 includes/Core/Customizer.php:396
+msgid "Header Background Color"
+msgstr "页眉背景色"
+
+#: includes/Core/Admin.php:508 includes/Core/Customizer.php:410
+msgid "Header Text Color"
+msgstr "页眉文本颜色"
+
+#: includes/Core/Admin.php:518 includes/Core/Customizer.php:424
+msgid "Footer Background Color"
+msgstr "页脚背景颜色"
+
+#: includes/Core/Admin.php:528 includes/Core/Customizer.php:438
+msgid "Footer Text Color"
+msgstr "页脚文字颜色"
+
+#: includes/Core/Admin.php:538 includes/Core/Customizer.php:452
+msgid "Summary Background Color"
+msgstr "概要背景颜色"
+
+#: includes/Core/Admin.php:548 includes/Core/Customizer.php:466
+msgid "Primary Button Color"
+msgstr "主按钮颜色"
+
+#: includes/Core/Admin.php:557 includes/Core/Customizer.php:480
+msgid "Primary Button Text Color"
+msgstr "主按钮文字颜色"
+
+#: includes/Core/Admin.php:566 includes/Core/Customizer.php:494
+msgid "Secondary Button Color"
+msgstr "次级按钮颜色"
+
+#: includes/Core/Admin.php:575 includes/Core/Customizer.php:508
+msgid "Secondary Button Text Color"
+msgstr "次要按钮文字颜色"
+
+#: includes/Core/Admin.php:584 includes/Core/Customizer.php:522
+msgid "Link Color"
+msgstr "链接颜色"
+
+#: includes/Core/Admin.php:593 includes/Core/Customizer.php:535
+msgid "Custom CSS"
+msgstr "自定义样式"
+
+#: includes/Core/Admin.php:599
+msgid ""
+"Add Custom CSS rules to fully control the appearance of the checkout "
+"template."
+msgstr "添加自定义 CSS 规则以完全控制签出模板的外观。"
+
+#: includes/Core/Admin.php:666
+msgid "Need help?"
+msgstr "需要幫助？"
+
+#: includes/Core/Admin.php:668
+msgid "Excellent support is in our DNA."
+msgstr "我们的 DNA 有很好的支持."
+
+#: includes/Core/Admin.php:670
+msgid "Contact Support"
+msgstr "联系支持"
+
+#: includes/Core/Admin.php:706
+msgid ""
+"The WooCommerce ecosystem is full of fantastic plugins. Here are a few that "
+"work really well with CheckoutWC that we wholeheartedly recommend to our "
+"customers. (A few of these links may include affiliate tracking. This does "
+"not impact our decision to include a plugin.)"
+msgstr ""
+"WooCommerce生态系统充满了梦幻般的插件。以下是我们竭诚向客户推荐的一些与"
+"CheckoutWC配合得非常好的产品。 （其中一些链接可能包括联盟会员跟踪。这不会影响"
+"我们决定添加插件。）"
+
+#: includes/Core/Admin.php:729
+msgid "More Info"
+msgstr "更多信息"
+
+#: includes/Core/Admin.php:886
+msgid "Checkout for WooCommerce: Warning incompatible plugins detected!"
+msgstr "结帐WooCommerce：检测到警告不兼容的插件！"
+
+#: includes/Core/Admin.php:894
+msgid "Please deactivate these plugins to avoid problems with your checkout!"
+msgstr "请停用这些插件以避免结帐时出现问题！"
+
+#: includes/Core/Admin.php:907
+#, php-format
+msgid ""
+"Checkout for WooCommerce: Your license key appears to have expired. Please "
+"verify that your license key is valid or <a target=\"_blank\" href=\"https://"
+"www.checkoutwc.com/checkout/?edd_license_key=%s\">renew your license now</a> "
+"to restore full functionality."
+msgstr ""
+"Checkout for WooCommerce: 您的许可证密钥似乎已过期。请验证您的许可证密钥是否"
+"有效，或<a target=\"_blank\" href=\"https://www.checkoutwc.com/checkout/?"
+"edd_license_key=%s\">立即续订许可证</a>以恢复完整功能。"
+
+#: includes/Core/Admin.php:910
+msgid ""
+"Checkout for WooCommerce: Your license key is missing or invalid. Please "
+"verify that your license key is valid or <a target=\"_blank\" href=\"https://"
+"www.checkoutwc.com/\">purchase a license</a> to restore full functionality."
+msgstr ""
+"Checkout for WooCommerce: 您的许可证密钥丢失或无效。请验证您的许可证密钥是否"
+"有效，或<a target=\"_blank\" href=\"https://www.checkoutwc.com/\">购买许可证"
+"</a>以恢复完整功能。"
+
+#: includes/Core/Admin.php:915
+msgid ""
+"Thank you for installing Checkout for WooCommerce! To get started, click on "
+"<strong>License</strong> below and activate your license key!"
+msgstr ""
+"感谢您为 WooCommerce 安装结帐!要开始, 请单击下面的<strong>许可证</strong>并激"
+"活您的许可证密钥!"
+
+#: includes/Core/Admin.php:939
+msgid "Settings"
+msgstr "设置"
+
+#: includes/Core/Admin.php:992
+msgid "Phone"
+msgstr "电话"
+
+#: includes/Core/Customizer.php:387
+msgid ""
+"These settings only apply to the currently active template. If you switch "
+"templates in the customizer, these settings will become unavailable but "
+"saving will publish any changes here prior to switching templates!"
+msgstr ""
+"这些设置仅适用于当前活动的模板。如果您在自定义程序中切换模板, 这些设置将变得"
+"不可用, 但保存将在切换模板之前在此处发布任何更改!"
+
+#: includes/Main.php:478
+msgid ""
+"Activation failed: Please activate WooCommerce in order to use Checkout for "
+"WooCommerce"
+msgstr "激活失败：请激活WooCommerce以便为WooCommerce使用Checkout"
+
+#: includes/Main.php:625
+msgid "Please enter a new quantity:"
+msgstr "请输入新的数量："
+
+#: includes/Main.php:630 templates/copify/content.php:177
+#: templates/copify/content.php:217 templates/copify/thank-you.php:138
+#: templates/default/content.php:170 templates/default/content.php:210
+#: templates/default/thank-you.php:126 templates/futurist/content.php:174
+#: templates/futurist/content.php:214 templates/futurist/thank-you.php:126
+msgid "Shipping address"
+msgstr "配送地址"
+
+#: includes/Main.php:642
+msgid "Error processing checkout. Please try again."
+msgstr "处理结帐错误。 请再试一次。"
+
+#: includes/Stats/StatCollection.php:678
+msgid ""
+"Allow Checkout for WooCommerce to track plugin usage? Help make Checkout for "
+"WooCommerce better."
+msgstr ""
+"允许Checkout for WooCommerce跟踪插件使用情况？帮助更好地检查WooCommerce。"
+
+#: includes/Stats/StatCollection.php:681
+msgid "Allow"
+msgstr "允许"
+
+#: includes/Stats/StatCollection.php:682
+msgid "Do not allow"
+msgstr "不允许"
+
+#: templates/copify/content.php:50 templates/copify/content.php:79
+#: templates/copify/thank-you.php:123 templates/default/content.php:43
+#: templates/default/content.php:72 templates/default/thank-you.php:111
+#: templates/futurist/content.php:41 templates/futurist/content.php:76
+#: templates/futurist/thank-you.php:111
+msgid "Customer information"
+msgstr "客户信息"
+
+#: templates/copify/content.php:56 templates/copify/content.php:232
+#: templates/copify/thank-you.php:156 templates/default/content.php:49
+#: templates/default/content.php:225 templates/default/thank-you.php:144
+#: templates/futurist/content.php:47 templates/futurist/content.php:229
+#: templates/futurist/thank-you.php:144
+msgid "Shipping method"
+msgstr "يەتكۈزۈش ئۇسۇلى"
+
+#: templates/copify/content.php:89 templates/default/content.php:82
+#: templates/futurist/content.php:86
+msgid "Already have an account with us?"
+msgstr "已经拥有账户?"
+
+#: templates/copify/content.php:93 templates/default/content.php:86
+#: templates/futurist/content.php:90
+msgid "Log in for a faster checkout experience."
+msgstr "登录以获得更快的结账体验。"
+
+#: templates/copify/content.php:101 templates/copify/content.php:102
+#: templates/default/content.php:94 templates/default/content.php:95
+#: templates/futurist/content.php:98 templates/futurist/content.php:99
+msgid "Email"
+msgstr "电子邮件"
+
+#: templates/copify/content.php:110 templates/copify/content.php:111
+#: templates/default/content.php:101 templates/default/content.php:102
+#: templates/futurist/content.php:107 templates/futurist/content.php:108
+msgid "Password"
+msgstr "密码"
+
+#: templates/copify/content.php:115 templates/copify/order-pay.php:70
+#: templates/default/content.php:106 templates/default/order-pay.php:59
+#: templates/futurist/content.php:112 templates/futurist/order-pay.php:63
+msgid "Login"
+msgstr "登录"
+
+#: templates/copify/content.php:118 templates/default/content.php:109
+#: templates/futurist/content.php:115
+msgid "Login is optional. You may continue with your order below."
+msgstr "登录是可选的。你可以继续你按以下的顺序。"
+
+#: templates/copify/content.php:128 templates/default/content.php:121
+#: templates/futurist/content.php:125
+#, php-format
+msgid "Create %s shopping account."
+msgstr "创建 %s 购物帐户。"
+
+#: templates/copify/content.php:130 templates/default/content.php:123
+#: templates/futurist/content.php:127
+msgid "If you do not have an account, we will create one for you."
+msgstr "如果您没有帐户, 我们将为您创建一个帐户。"
+
+#: templates/copify/content.php:155 templates/default/content.php:148
+#: templates/futurist/content.php:152
+#, php-format
+msgid "Welcome back, %s (%s)."
+msgstr "欢迎回来, %s ( %s)。"
+
+#: templates/copify/content.php:158 templates/default/content.php:151
+#: templates/futurist/content.php:155
+msgid "Log out."
+msgstr "注销。"
+
+#: templates/copify/content.php:173 templates/default/content.php:166
+#: templates/futurist/content.php:170
+msgid "Billing and Shipping address"
+msgstr "结算和送货地址"
+
+#: templates/copify/content.php:223 templates/default/content.php:216
+#: templates/futurist/content.php:220
+msgid "Edit shipping address"
+msgstr "编辑送货地址"
+
+#: templates/copify/content.php:234 templates/default/content.php:227
+#: templates/futurist/content.php:231
+msgid "Select a shipping method:"
+msgstr "選擇其它配送方式:"
+
+#: templates/copify/content.php:335 templates/default/content.php:310
+#: templates/futurist/content.php:318
+msgid "Enter Promo Code"
+msgstr "输入促销代码"
+
+#: templates/copify/content.php:340 templates/default/content.php:315
+#: templates/futurist/content.php:323
+msgid "Apply"
+msgstr "应用"
+
+#: templates/copify/order-pay.php:72 templates/default/order-pay.php:61
+#: templates/futurist/order-pay.php:65
+msgid "Lost your password?"
+msgstr "忘记密码？"
+
+#: templates/copify/thank-you.php:34 templates/default/thank-you.php:22
+#: templates/futurist/thank-you.php:22
+#, php-format
+msgid "Order %s"
+msgstr "订单 %s"
+
+#: templates/copify/thank-you.php:35 templates/default/thank-you.php:23
+#: templates/futurist/thank-you.php:23
+#, php-format
+msgid "Thank you %s!"
+msgstr "谢谢 %s!"
+
+#: templates/copify/thank-you.php:96 templates/default/thank-you.php:84
+#: templates/futurist/thank-you.php:84
+msgid "Order status"
+msgstr "订单状态"
+
+#: templates/copify/thank-you.php:113 templates/default/thank-you.php:101
+#: templates/futurist/thank-you.php:101
+msgid "Order updates"
+msgstr "订单更新"
+
+#: templates/copify/thank-you.php:115 templates/default/thank-you.php:103
+#: templates/futurist/thank-you.php:103
+msgid "You’ll get shipping and delivery updates by email."
+msgstr "您将通过电子邮件获得运输和交货更新。"
+
+#: templates/copify/thank-you.php:126 templates/default/thank-you.php:114
+#: templates/futurist/thank-you.php:114
+msgid "Contact information"
+msgstr "联系信息"
+
+#: templates/futurist/content.php:304 templates/futurist/order-pay.php:131
+msgid "Your Cart"
+msgstr "您的购物车"
+
+#. Plugin URI of the plugin/theme
+msgid "https://www.CheckoutWC.com"
+msgstr "https://www.CheckoutWC.com"
+
+#. Description of the plugin/theme
+msgid "Beautiful, conversion optimized checkout templates for WooCommerce."
+msgstr "漂亮的，经过转换优化的WooCommerce结帐模板。"
+
+#. Author of the plugin/theme
+msgid "Objectiv"
+msgstr "Objectiv"
+
+#. Author URI of the plugin/theme
+msgid "https://objectiv.co"
+msgstr "https://objectiv.co"
+
+#~ msgid "N/A"
+#~ msgstr "N/A"
+
+#~ msgid ""
+#~ "There is a new version of %1$s available. %2$sView version %3$s details"
+#~ "%4$s."
+#~ msgstr "有一个新版本的%1$s可用。 %2$s View版本%3$s细节%4$s."
+
+#~ msgid ""
+#~ "There is a new version of %1$s available. %2$sView version %3$s details"
+#~ "%4$s or %5$supdate now%6$s."
+#~ msgstr ""
+#~ "有一个新版本的%1$s可用。 %2$s View版本 %3$s 详细信息%4$s 或%5$supdate now"
+#~ "%6$s."
+
+#~ msgid "You do not have permission to install plugin updates"
+#~ msgstr "你没有安装插件更新的权限"
+
+#~ msgid "Error"
+#~ msgstr "错误"
+
+#~ msgid "Subtotal"
+#~ msgstr "小计"
+
+#~ msgid "Shipping"
+#~ msgstr "运输"
+
+#~ msgid "Total"
+#~ msgstr "共计"
+
+#~ msgid ""
+#~ "You are using a legacy child theme which will be disabled in a future "
+#~ "version. Changing theme settings is not possible for legacy themes."
+#~ msgstr ""
+#~ "您使用的是将在未来版本中禁用的旧式子主题。对于旧式主题, 更改主题设置是不可"
+#~ "能的。"
+
+#~ msgid ""
+#~ "It looks like you are using a legacy checkout theme, located in %s. "
+#~ "Legacy themes are deprecated and you should upgrade to the new theme "
+#~ "structure as soon as possible to prevent problems with future release. "
+#~ "For more information, <a target=\"_blank\" href=\"https://www.checkoutwc."
+#~ "com/docs/developer-api/template-files/upgrading-legacy-custom-templates/"
+#~ "\">read our migration guide.</a>"
+#~ msgstr ""
+#~ "它看起来像您正在使用的旧签出主题, 位于%s 中. 旧版主题已弃用, 您应尽快升级"
+#~ "到新的主题结构, 以防止将来发布问题。有关详细信息, 请<a target=\"_blank\" "
+#~ "href=\"https://www.checkoutwc.com/docs/developer-api/template-files/"
+#~ "upgrading-legacy-custom-templates/\">阅读我们的迁移指南.</a>"
+
+#~ msgid "Taxes"
+#~ msgstr "税额"
+
+#~ msgid "Show Phone Fields"
+#~ msgstr "显示电话字段"
+
+#~ msgid "Enable billing and shipping phone fields"
+#~ msgstr "启用计费和送货电话字段"
+
+#~ msgid ""
+#~ "Enable or disable billing and shipping phone fields as required fields. "
+#~ "(Default: Disabled)"
+#~ msgstr "启用或禁用所需的计费和送货电话字段。(默认值: 已禁用)"
+
+#~ msgid "First name"
+#~ msgstr "姓氏"
+
+#~ msgid "Last name"
+#~ msgstr "名字"
+
+#~ msgid "Address"
+#~ msgstr "地址"
+
+#~ msgid "Street address"
+#~ msgstr "街道地址"
+
+#~ msgid "Apt, suite, etc."
+#~ msgstr "Apt，Suite，Bldg。"
+
+#~ msgid "Company name"
+#~ msgstr "公司名称"
+
+#~ msgid "Country"
+#~ msgstr "國家"
+
+#~ msgid "Postcode / ZIP"
+#~ msgstr "邮政编码"
+
+#~ msgid "State / County"
+#~ msgstr "省/市"
+
+#~ msgid "Town / City"
+#~ msgstr "城市"
+
+#~ msgid "required"
+#~ msgstr "必要的"
+
+#~ msgid "Select a country&hellip;"
+#~ msgstr "选择一个国家＆hellip;"
+
+#~ msgid "Update country"
+#~ msgstr "更新国家"
+
+#~ msgid "Select a state&hellip;"
+#~ msgstr "选择一个地区&hellip;"
+
+#~ msgid "Choose an option"
+#~ msgstr "选择一个选项"
+
+#~ msgctxt "shipping packages"
+#~ msgid "Shipping"
+#~ msgid_plural "Shipping %d"
+#~ msgstr[0] "运输"
+
+#~ msgid ""
+#~ "There are no shipping methods available. Please double check your "
+#~ "address, or contact us if you need any help."
+#~ msgstr ""
+#~ "没有可用的运送方式。请仔细检查您的地址，如果您需要任何帮助，请联系我们。"
+
+#~ msgid ""
+#~ "Sorry, it seems that there are no available payment methods for your "
+#~ "location. Please contact us if you require assistance or wish to make "
+#~ "alternate arrangements."
+#~ msgstr ""
+#~ "很抱歉，似乎你所在的位置没有可用的付款方式。如果您需要帮助请联系我们，或希"
+#~ "望使其他安排。"
+
+#~ msgid "Checkout is not available whilst your cart is empty."
+#~ msgstr "当您的购物车为空时, 结帐不可用。"
+
+#~ msgid "Select an option&hellip;"
+#~ msgstr "选择一个选项&hellip;"
+
+#~ msgctxt "enhanced select"
+#~ msgid "No matches found"
+#~ msgstr "找不到匹配项"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Loading failed"
+#~ msgstr "加载失败"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Please enter 1 or more characters"
+#~ msgstr "请输入1个或更多字符"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Please enter %qty% or more characters"
+#~ msgstr "请输入％qty％或更多字符"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Please delete 1 character"
+#~ msgstr "请删除1个字符"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Please delete %qty% characters"
+#~ msgstr "请删除 %qty% 个字符"
+
+#~ msgctxt "enhanced select"
+#~ msgid "You can only select 1 item"
+#~ msgstr "您只能选择1个项目"
+
+#~ msgctxt "enhanced select"
+#~ msgid "You can only select %qty% items"
+#~ msgstr "您只能选择％qty％项目"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Loading more results&hellip;"
+#~ msgstr "载入更多结果＆hellip;"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Searching&hellip;"
+#~ msgstr "搜索&hellip;"
+
+#~ msgid "Cart"
+#~ msgstr "购物车"
+
+#~ msgid ""
+#~ "There is a new version of %1$s available. <a target=\"_blank\" class="
+#~ "\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
+#~ msgstr ""
+#~ "有一个新版本的 %1$s 可用. <a target=\"_blank\" class=\"thickbox\" href="
+#~ "\"%2$s\">查看版本 %3$s 详情</a>."
+
+#~ msgid ""
+#~ "There is a new version of %1$s available. <a target=\"_blank\" class="
+#~ "\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a href=\"%4$s"
+#~ "\">update now</a>."
+#~ msgstr ""
+#~ "有一个新的版本 %1$s 可用。<a target=\"_blank\" class=\"thickbox\" href="
+#~ "\"%2$s\">视图版本 %3$s 细节</a> 或者 <a href=\"%4$s\">现在更新</a>."
+
+#~ msgid ""
+#~ "There are no shipping methods available. Please ensure that your address "
+#~ "has been entered correctly, or contact us if you need any help."
+#~ msgstr ""
+#~ "没有可用的运送方式。 请确保您的地址已正确输入，如果您需要任何帮助，请联系"
+#~ "我们。"
+
+#~ msgctxt "checkout-wc"
+#~ msgid "Apt, suite, etc. (optional)"
+#~ msgstr "Apt，Suite，Bldg。 （可选）"
+
+#~ msgid ""
+#~ "If you do not have an account, the information provided here will be used "
+#~ "to create an account on checkout."
+#~ msgstr "如果您没有帐户，这里提供的信息将用于在结帐时创建一个帐户。"
+
+#~ msgid ""
+#~ "We can't wait to help you with Checkout for WooCommerce! Please fill out "
+#~ "the following form and one of our support staff will respond within 12-24 "
+#~ "hours. (average)"
+#~ msgstr ""
+#~ "我们迫不及待要帮你结帐 WooCommerce!请填写以下表格, 我们的一名支持人员将在"
+#~ "12-24 小时内回复。平均)"
+
+#~ msgid "Many issues are addressed in our documentation:"
+#~ msgstr "我们的文档中讨论了许多问题:"
+
+#~ msgid "View Documentation"
+#~ msgstr "查看文档"
+
+#~ msgid ""
+#~ "If you need help for something not covered in our documentation, please "
+#~ "click this button to file a support request:"
+#~ msgstr "如果您需要我们文档中未涉及的内容的帮助, 请单击此按钮以提交支持请求:"
+
+#~ msgid "Support Request"
+#~ msgstr "要求支持"
+
+#~ msgid "Create a %s shopping account."
+#~ msgstr "创建购物帐户 %s。"
+
+#~ msgid ""
+#~ "Shipping costs will be calculated once you have provided your address."
+#~ msgstr "一旦您提供地址，运费将会计算在内。"
+
+#~ msgid "Apartment, suite, unit etc."
+#~ msgstr "公寓，套房，單位等。"
+
+#~ msgid "Shipping Address"
+#~ msgstr "邮寄地址"
+
+#~ msgid "Header Shadow Color"
+#~ msgstr "標題陰影顏色"
+
+#~ msgid "Brandon Tassone"
+#~ msgstr "Brandon Tassone"
+
+#~ msgid "Welcome"
+#~ msgstr "欢迎"

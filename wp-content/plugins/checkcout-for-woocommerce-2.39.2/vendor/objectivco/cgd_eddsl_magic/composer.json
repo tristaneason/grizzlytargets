@@ -1,0 +1,19 @@
+{
+    "name": "objectivco/cgd_eddsl_magic",
+    "description": "A drop-in class that magically manages Easy Digital Downloads Software Licensing for plugins and themes.",
+    "type": "library",
+    "license": "GPL-3.0+",
+    "authors": [
+        {
+            "name": "Clifton Griffin",
+            "email": "clif@objectiv.co"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.2.0"
+    },
+    "autoload": {
+        "classmap": ["src/CGD_EDDSL_Magic.php"]
+    }
+}

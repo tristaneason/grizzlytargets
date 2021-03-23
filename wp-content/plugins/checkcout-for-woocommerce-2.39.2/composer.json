@@ -1,0 +1,35 @@
+{
+    "name": "objectivco/checkout-for-woocommerce",
+    "description": "A beautiful, responsive and conversion optimized checkout theme for WooCommerce.",
+    "type": "wordpress-plugin",
+    "config": {
+        "optimize-autoloader": true,
+        "classmap-authoritative": true
+    },
+    "authors": [
+        {
+            "name": "Clifton Griffin",
+            "email": "clif@checkoutwc.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Objectiv\\Plugins\\Checkout\\": "includes/"
+        },
+        "files": ["constants.php", "functions.php"]
+    },
+    "require-dev": {
+        "kint-php/kint": "^3.2",
+        "phpcompatibility/php-compatibility": "*",
+        "dealerdirect/phpcodesniffer-composer-installer": "*"
+    },
+    "require": {
+        "objectivco/wordpress-simple-settings": "^0.5.0",
+        "objectivco/cgd_eddsl_magic": "^0.5.3",
+        "objectivco/wp_tabbed_navigation": "^0.2.0",
+        "objectivco/booster-seat": "^1.0.10",
+        "symfony/finder": "^3.4.29",
+        "php": ">=5.6.0"
+    },
+    "prefer-stable": true
+}

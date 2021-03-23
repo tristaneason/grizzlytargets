@@ -1,0 +1,1009 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Checkout for WooCommerce\n"
+"POT-Creation-Date: 2019-11-06 09:56-0500\n"
+"PO-Revision-Date: 2019-11-06 10:02-0500\n"
+"Last-Translator: Clifton Griffin <clif@checkoutwc.com>\n"
+"Language-Team: \n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.4\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: checkout-for-woocommerce.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: functions.php:8
+msgid "First Name"
+msgstr "名"
+
+#: functions.php:13
+msgid "Last Name"
+msgstr "姓"
+
+#: functions.php:808
+msgid "Remove Item"
+msgstr "アイテムを削除"
+
+#: functions.php:826
+msgid "Edit"
+msgstr "編集"
+
+#: functions.php:932 functions.php:939
+msgid "Not Calculated"
+msgstr "計算されない"
+
+#: functions.php:937
+msgid "Not Available"
+msgstr "使用不可"
+
+#: functions.php:950
+msgid "Complete Order"
+msgstr "完全な注文"
+
+#: functions.php:983 templates/copify/content.php:62
+#: templates/copify/thank-you.php:130 templates/default/content.php:55
+#: templates/default/thank-you.php:118 templates/futurist/content.php:53
+#: templates/futurist/thank-you.php:118
+msgid "Payment method"
+msgstr "お支払方法"
+
+#: functions.php:992
+msgid ""
+"All transactions are secure and encrypted. Credit card information is never "
+"stored on our servers."
+msgstr ""
+"すべてのトランザクションは、安全で暗号化されたです。クレジット カード情報は、"
+"当社のサーバーに決して保存されます。"
+
+#: functions.php:1003
+msgid "Your order is free. No payment is required."
+msgstr "あなたの注文は無料です。支払いは必要ありません。"
+
+#: functions.php:1091
+msgid "Same as shipping address"
+msgstr "配送先住所と同じ"
+
+#: functions.php:1101
+msgid "Use a different billing address"
+msgstr "異なる請求先住所を使用します"
+
+#: functions.php:1218 templates/copify/content.php:175
+#: templates/copify/thank-you.php:146 templates/default/content.php:168
+#: templates/default/thank-you.php:134 templates/futurist/content.php:172
+#: templates/futurist/thank-you.php:134
+msgid "Billing address"
+msgstr "お客様情報"
+
+#: functions.php:1312
+msgid "Return to cart"
+msgstr "戻る"
+
+#: functions.php:1316
+msgid "Continue to shipping method"
+msgstr "配送方法に進む"
+
+#: functions.php:1320
+msgid "Continue to payment method"
+msgstr "お支払い方法に進みます"
+
+#: functions.php:1324
+msgid "Return to customer information"
+msgstr "顧客情報に戻る"
+
+#: functions.php:1328
+msgid "Return to shipping information"
+msgstr "配送情報に戻る"
+
+#: includes/Compatibility/Base.php:172
+msgid "Or"
+msgstr "それか"
+
+#: includes/Compatibility/Gateways/PayPalForWooCommerce.php:102
+msgid "Logged in with PayPal. Please continue your order below."
+msgstr "PayPal でログインしています。以下のご注文を継続してください。"
+
+#. Plugin Name of the plugin/theme
+#: includes/Core/Admin.php:108 includes/Core/Admin.php:144
+#: includes/Core/Customizer.php:256 includes/Main.php:840
+msgid "Checkout for WooCommerce"
+msgstr "Checkout for WooCommerce"
+
+#: includes/Core/Admin.php:108
+msgid "CheckoutWC"
+msgstr "CheckoutWC"
+
+#: includes/Core/Admin.php:111 includes/Core/Customizer.php:269
+#: includes/Main.php:848
+msgid "General"
+msgstr "一般"
+
+#: includes/Core/Admin.php:112 includes/Core/Customizer.php:315
+#: includes/Core/Customizer.php:332 includes/Main.php:857
+msgid "Template"
+msgstr "テンプレート"
+
+#: includes/Core/Admin.php:113 includes/Core/Customizer.php:346
+#: includes/Core/Customizer.php:383 includes/Main.php:866
+msgid "Design"
+msgstr "デザイン"
+
+#: includes/Core/Admin.php:116
+msgid "Addons"
+msgstr "アドオン"
+
+#: includes/Core/Admin.php:119 includes/Main.php:875
+msgid "License"
+msgstr "ライセンス"
+
+#: includes/Core/Admin.php:120 includes/Main.php:884
+msgid "Support"
+msgstr "サポート"
+
+#: includes/Core/Admin.php:121
+msgid "Recommended Plugins"
+msgstr "おすすめプラグイン"
+
+#: includes/Core/Admin.php:145 includes/Core/Customizer.php:259
+msgid ""
+"Checkout for WooCommerce provides a beautiful, conversion optimized checkout "
+"template for WooCommerce."
+msgstr ""
+"Woocommerce のためのチェックアウトは、Woocommerce のための美しい、変換最適化"
+"されたチェックアウトテンプレートを提供します."
+
+#: includes/Core/Admin.php:172 includes/Core/Customizer.php:280
+msgid "Enable / Disable"
+msgstr "有効化/無効化"
+
+#: includes/Core/Admin.php:176
+msgid "Use Checkout for WooCommerce Template"
+msgstr "WooCommerce テンプレートのチェック アウトを使用します。"
+
+#: includes/Core/Admin.php:177
+msgid ""
+"Enable or disable Checkout for WooCommerce theme. (NOTE: Theme is always "
+"enabled for admin users.)"
+msgstr ""
+"WooCommerce テーマのチェックアウトを有効または無効にします。(注: テーマは常に"
+"管理者ユーザーに対して有効になります。"
+
+#: includes/Core/Admin.php:183 includes/Core/Customizer.php:291
+msgid "Header Scripts"
+msgstr "ヘッダー スクリプト"
+
+#: includes/Core/Admin.php:189
+msgid ""
+"This code will output immediately before the closing <code>&lt;/head&gt;</"
+"code> tag in the document source."
+msgstr ""
+"このコードは、ドキュメントソース内の <code>&lt;/head&gt;</code> タグを閉じる"
+"直前に出力されます。"
+
+#: includes/Core/Admin.php:197 includes/Core/Customizer.php:302
+msgid "Footer Scripts"
+msgstr "フッタースクリプト"
+
+#: includes/Core/Admin.php:203
+msgid ""
+"This code will output immediately before the closing <code>&lt;/body&gt;</"
+"code> tag in the document source."
+msgstr ""
+"このコードは、ドキュメントソース内の <code>&lt;/body&gt;</code> タグを閉じる"
+"直前に出力されます。"
+
+#: includes/Core/Admin.php:215
+msgid "Enable Usage Tracking"
+msgstr "Enable Usage Tracking"
+
+#: includes/Core/Admin.php:221
+msgid "Allow Checkout for WooCommerce to track plugin usage?"
+msgstr "WooCommerceのチェックアウトでプラグインの使用状況を追跡できますか？"
+
+#: includes/Core/Admin.php:229
+msgid "Stat Collection Data Viewer"
+msgstr "統計収集データビューア"
+
+#: includes/Core/Admin.php:247
+msgid "Premium Features"
+msgstr "プレミアム機能"
+
+#: includes/Core/Admin.php:256
+msgid "Cart Editing"
+msgstr "カート編集"
+
+#: includes/Core/Admin.php:260
+msgid "Enable cart editing."
+msgstr "カート編集を有効にします。"
+
+#: includes/Core/Admin.php:261
+msgid ""
+"Enable or disable cart editing feature. Allows customer to remove or adjust "
+"quantity of cart items."
+msgstr ""
+"カート編集機能を有効または無効にします。顧客がカート品目の数量を削除または調"
+"整できるようにします。"
+
+#: includes/Core/Admin.php:267
+msgid "Cart Editing Empty Cart Redirect"
+msgstr "カート編集空のカートリダイレクト"
+
+#: includes/Core/Admin.php:273
+msgid "URL to redirect to when customer empties cart from checkout page."
+msgstr ""
+"顧客がチェックアウトページからカートを空にしたときにリダイレクトするURL。"
+
+#: includes/Core/Admin.php:274
+msgid "If left blank, customer will be redirected to the cart page."
+msgstr "空白のままにした場合、顧客はカートページにリダイレクトされます。"
+
+#: includes/Core/Admin.php:283
+msgid "Order Pay"
+msgstr "注文の支払い"
+
+#: includes/Core/Admin.php:287
+msgid "Enable support for order pay page."
+msgstr "注文支払いページのサポートを有効にします。"
+
+#: includes/Core/Admin.php:288
+msgid "Use checkout template for order pay page."
+msgstr "注文の支払いページにチェックアウトテンプレートを使用します。"
+
+#: includes/Core/Admin.php:295
+msgid "Thank You Page"
+msgstr "ありがとうページ"
+
+#: includes/Core/Admin.php:299
+msgid "Enable support for thank you page."
+msgstr "サンキューページのサポートを有効にします。"
+
+#: includes/Core/Admin.php:300
+msgid ""
+"Enable thank you page / order received template. This template is also used "
+"when viewing orders in My Account."
+msgstr ""
+"サンキューページ/受注テンプレートを有効にします。このテンプレートは、マイアカ"
+"ウントで注文を表示するときにも使用されます。"
+
+#: includes/Core/Admin.php:307
+msgid "Order Statuses"
+msgstr "注文状況"
+
+#: includes/Core/Admin.php:318
+msgid "The statuses to show on the thank you page."
+msgstr "サンキューページに表示するステータス。"
+
+#: includes/Core/Admin.php:325
+msgid "Map Embed"
+msgstr "地図の埋め込み"
+
+#: includes/Core/Admin.php:329
+msgid "Enable map embed."
+msgstr "マップの埋め込みを有効にします。"
+
+#: includes/Core/Admin.php:330
+msgid "Enable or disable map embed on thank you page. Requires Google API key."
+msgstr ""
+"サンキューページでのマップの埋め込みを有効または無効にします。 Google APIキー"
+"が必要です。"
+
+#: includes/Core/Admin.php:337
+msgid "Address Autocomplete"
+msgstr "アドレスオートコンプリート"
+
+#: includes/Core/Admin.php:341
+msgid "Enable address autocomplete."
+msgstr "アドレスのオートコンプリートを有効にします。"
+
+#: includes/Core/Admin.php:342
+msgid ""
+"Enable or disable address autocomplete feature. Requires Google API key."
+msgstr ""
+"アドレスのオートコンプリート機能を有効または無効にします。 Google APIキーが必"
+"要です。"
+
+#: includes/Core/Admin.php:348
+msgid "Google API Key"
+msgstr "Google APIキー"
+
+#: includes/Core/Admin.php:354
+msgid ""
+"Google API Key. Available in the <a target=\"_blank\" href=\"https://"
+"developers.google.com/places/web-service/get-api-key\">Google Cloud Platform "
+"Console</a>."
+msgstr ""
+"Google APIキー。 <a target=\"_blank\" href=\"https://developers.google.com/"
+"places/web-service/get-api-key\">Google Cloud Platform Consoleで</a>利用でき"
+"ます。"
+
+#: includes/Core/Admin.php:370
+msgid "License Upgrade Required"
+msgstr "ライセンスのアップグレードが必要"
+
+#: includes/Core/Admin.php:370
+msgid "A Growth or Developer License is required to enable these features."
+msgstr ""
+"これらの機能を有効にするには、GrowthまたはDeveloperライセンスが必要です。"
+
+#: includes/Core/Admin.php:371
+#, php-format
+msgid ""
+"You can upgrade your license in <a target=\"_blank\" href=\"%1$s\">My "
+"Account</a>. For help upgrading your license, <a target=\"_blank\" href="
+"\"%2$s\">click here.</a>"
+msgstr ""
+"<a target=\"_blank\" href=\"%1$s\">マイアカウントで</a>ライセンスをアップグ"
+"レードできます。ライセンスのアップグレードについては、 <a target=\"_blank\" "
+"href=\"%2$s\">ここをクリックしてください。</a>"
+
+#: includes/Core/Admin.php:386
+msgid "Templates"
+msgstr "テンプレート"
+
+#: includes/Core/Admin.php:407
+msgid "Active: "
+msgstr "有効: "
+
+#: includes/Core/Admin.php:415
+msgid "Activate"
+msgstr "有効化"
+
+#: includes/Core/Admin.php:438
+msgid "Global Settings"
+msgstr "グローバル設定"
+
+#: includes/Core/Admin.php:439
+msgid "These settings apply to all themes."
+msgstr "これらの設定はすべてのテーマに適用されます。"
+
+#: includes/Core/Admin.php:444 includes/Core/Customizer.php:358
+msgid "Logo"
+msgstr "ロゴ"
+
+#: includes/Core/Admin.php:450
+msgid "Upload image"
+msgstr "画像のアップロード"
+
+#: includes/Core/Admin.php:453
+msgid "Clear Logo"
+msgstr "明確なロゴ"
+
+#: includes/Core/Admin.php:459 includes/Core/Customizer.php:370
+msgid "Footer Text"
+msgstr "フッターテキスト"
+
+#: includes/Core/Admin.php:465
+msgid ""
+"If left blank, a standard copyright notice will be displayed. Set to a "
+"single space to override this behavior."
+msgstr ""
+"空白のままにすると、標準の著作権表記が表示されます。この動作をオーバーライド"
+"するには、1つの領域に設定します。"
+
+#: includes/Core/Admin.php:473
+msgid "Cart Summary Mobile Label"
+msgstr "カートの概要モバイルラベル"
+
+#: includes/Core/Admin.php:479
+msgid "Example: Show order summary and coupons"
+msgstr "例：注文の概要とクーポンを表示する"
+
+#: includes/Core/Admin.php:480
+msgid "If left blank, this default will be used: "
+msgstr "空白のままにすると、このデフォルトが使用されます。"
+
+#: includes/Core/Admin.php:480 templates/copify/content.php:308
+#: templates/copify/order-pay.php:140 templates/copify/thank-you.php:209
+#: templates/default/content.php:284 templates/default/order-pay.php:111
+#: templates/default/thank-you.php:181 templates/futurist/content.php:288
+#: templates/futurist/order-pay.php:116 templates/futurist/thank-you.php:181
+msgid "Show order summary"
+msgstr "注文の要約を表示する"
+
+#: includes/Core/Admin.php:488 includes/Core/Customizer.php:383
+msgid "Theme Specific Settings"
+msgstr "テーマ固有の設定"
+
+#: includes/Core/Admin.php:498 includes/Core/Customizer.php:396
+msgid "Header Background Color"
+msgstr "ヘッダー 背景色"
+
+#: includes/Core/Admin.php:508 includes/Core/Customizer.php:410
+msgid "Header Text Color"
+msgstr "ヘッダーテキストの色"
+
+#: includes/Core/Admin.php:518 includes/Core/Customizer.php:424
+msgid "Footer Background Color"
+msgstr "フッターの背景色"
+
+#: includes/Core/Admin.php:528 includes/Core/Customizer.php:438
+msgid "Footer Text Color"
+msgstr "フッターテキスト色"
+
+#: includes/Core/Admin.php:538 includes/Core/Customizer.php:452
+msgid "Summary Background Color"
+msgstr "概要の背景色"
+
+#: includes/Core/Admin.php:548 includes/Core/Customizer.php:466
+msgid "Primary Button Color"
+msgstr "主ボタンの色"
+
+#: includes/Core/Admin.php:557 includes/Core/Customizer.php:480
+msgid "Primary Button Text Color"
+msgstr "プライマリボタンのテキストの色"
+
+#: includes/Core/Admin.php:566 includes/Core/Customizer.php:494
+msgid "Secondary Button Color"
+msgstr "2次ボタンの色"
+
+#: includes/Core/Admin.php:575 includes/Core/Customizer.php:508
+msgid "Secondary Button Text Color"
+msgstr "セカンダリボタンのテキストの色"
+
+#: includes/Core/Admin.php:584 includes/Core/Customizer.php:522
+msgid "Link Color"
+msgstr "リンクの色"
+
+#: includes/Core/Admin.php:593 includes/Core/Customizer.php:535
+msgid "Custom CSS"
+msgstr "カスタム CSS"
+
+#: includes/Core/Admin.php:599
+msgid ""
+"Add Custom CSS rules to fully control the appearance of the checkout "
+"template."
+msgstr ""
+"カスタム CSS ルールを追加して、チェックアウトテンプレートの外観を完全に制御し"
+"ます。"
+
+#: includes/Core/Admin.php:666
+msgid "Need help?"
+msgstr "ヘルプが必要ですか?"
+
+#: includes/Core/Admin.php:668
+msgid "Excellent support is in our DNA."
+msgstr "優れたサポートが私たちの DNA です。"
+
+#: includes/Core/Admin.php:670
+msgid "Contact Support"
+msgstr "サポートに問い合わせる"
+
+#: includes/Core/Admin.php:706
+msgid ""
+"The WooCommerce ecosystem is full of fantastic plugins. Here are a few that "
+"work really well with CheckoutWC that we wholeheartedly recommend to our "
+"customers. (A few of these links may include affiliate tracking. This does "
+"not impact our decision to include a plugin.)"
+msgstr ""
+"WooCommerceエコシステムは素晴らしいプラグインでいっぱいです。ここに私達が心か"
+"ら私達の顧客に推薦するCheckoutWCと本当にうまくいく少数があります。 （これらの"
+"リンクのいくつかはアフィリエイトトラッキングを含むかもしれません。これはプラ"
+"グインを含めるという私たちの決定に影響を与えません。）"
+
+#: includes/Core/Admin.php:729
+msgid "More Info"
+msgstr "詳細情報"
+
+#: includes/Core/Admin.php:886
+msgid "Checkout for WooCommerce: Warning incompatible plugins detected!"
+msgstr "WooCommerceのチェックアウト：互換性のないプラグインが検出されました！"
+
+#: includes/Core/Admin.php:894
+msgid "Please deactivate these plugins to avoid problems with your checkout!"
+msgstr ""
+"チェックアウトに関する問題を回避するには、これらのプラグインを無効にしてくだ"
+"さい！"
+
+#: includes/Core/Admin.php:907
+#, php-format
+msgid ""
+"Checkout for WooCommerce: Your license key appears to have expired. Please "
+"verify that your license key is valid or <a target=\"_blank\" href=\"https://"
+"www.checkoutwc.com/checkout/?edd_license_key=%s\">renew your license now</a> "
+"to restore full functionality."
+msgstr ""
+"Checkout for WooCommerce: ライセンスキーの有効期限が切れているように見えま"
+"す。ライセンスキーが有効かどうか、または < ターゲット = \"_blank\" href = "
+"\"https://www.checkoutwc.com/checkout/? edd_license_key = %s\" > ライセンスを"
+"更新して、完全な機能を復元することを確認してください </a>。"
+
+#: includes/Core/Admin.php:910
+msgid ""
+"Checkout for WooCommerce: Your license key is missing or invalid. Please "
+"verify that your license key is valid or <a target=\"_blank\" href=\"https://"
+"www.checkoutwc.com/\">purchase a license</a> to restore full functionality."
+msgstr ""
+"Checkout for WooCommerce: ライセンスキーが見つからないか、無効です。ライセン"
+"スキーが有効かどうか、または < ターゲット = \"_blank\" href = \"https://www."
+"checkoutwc.com/\" > ライセンス </a> を購入してフル機能を復元することを確認し"
+"てください。"
+
+#: includes/Core/Admin.php:915
+msgid ""
+"Thank you for installing Checkout for WooCommerce! To get started, click on "
+"<strong>License</strong> below and activate your license key!"
+msgstr ""
+"WooCommerceのチェックアウトをインストールしていただきありがとうございます。開"
+"始するには、下の[ <strong>ライセンス</strong> ]をクリックしてライセンスキーを"
+"有効にしてください。"
+
+#: includes/Core/Admin.php:939
+msgid "Settings"
+msgstr "設定"
+
+#: includes/Core/Admin.php:992
+msgid "Phone"
+msgstr "電話番号"
+
+#: includes/Core/Customizer.php:387
+msgid ""
+"These settings only apply to the currently active template. If you switch "
+"templates in the customizer, these settings will become unavailable but "
+"saving will publish any changes here prior to switching templates!"
+msgstr ""
+"これらの設定は、現在アクティブなテンプレートにのみ適用されます。カスタマイザ"
+"でテンプレートを切り替えると、これらの設定は使用できなくなりますが、テンプ"
+"レートを切り替える前に、ここで変更内容が発行されます。"
+
+#: includes/Main.php:478
+msgid ""
+"Activation failed: Please activate WooCommerce in order to use Checkout for "
+"WooCommerce"
+msgstr ""
+"アクティベーションに失敗しました: WooCommerce のためのチェックアウトを使用す"
+"るために WooCommerce をアクティブにしてください"
+
+#: includes/Main.php:625
+msgid "Please enter a new quantity:"
+msgstr "新しい数量を入力してください："
+
+#: includes/Main.php:630 templates/copify/content.php:177
+#: templates/copify/content.php:217 templates/copify/thank-you.php:138
+#: templates/default/content.php:170 templates/default/content.php:210
+#: templates/default/thank-you.php:126 templates/futurist/content.php:174
+#: templates/futurist/content.php:214 templates/futurist/thank-you.php:126
+msgid "Shipping address"
+msgstr "お届け先住所"
+
+#: includes/Main.php:642
+msgid "Error processing checkout. Please try again."
+msgstr "チェックアウトの処理エラーです。もう一度やり直してください。"
+
+#: includes/Stats/StatCollection.php:678
+msgid ""
+"Allow Checkout for WooCommerce to track plugin usage? Help make Checkout for "
+"WooCommerce better."
+msgstr ""
+"WooCommerceのチェックアウトでプラグインの使用状況を追跡できますか？ "
+"WooCommerceのチェックアウトを改善するのに役立ちます。"
+
+#: includes/Stats/StatCollection.php:681
+msgid "Allow"
+msgstr "許可"
+
+#: includes/Stats/StatCollection.php:682
+msgid "Do not allow"
+msgstr "許可しない"
+
+#: templates/copify/content.php:50 templates/copify/content.php:79
+#: templates/copify/thank-you.php:123 templates/default/content.php:43
+#: templates/default/content.php:72 templates/default/thank-you.php:111
+#: templates/futurist/content.php:41 templates/futurist/content.php:76
+#: templates/futurist/thank-you.php:111
+msgid "Customer information"
+msgstr "顧客情報"
+
+#: templates/copify/content.php:56 templates/copify/content.php:232
+#: templates/copify/thank-you.php:156 templates/default/content.php:49
+#: templates/default/content.php:225 templates/default/thank-you.php:144
+#: templates/futurist/content.php:47 templates/futurist/content.php:229
+#: templates/futurist/thank-you.php:144
+msgid "Shipping method"
+msgstr "発送方法"
+
+#: templates/copify/content.php:89 templates/default/content.php:82
+#: templates/futurist/content.php:86
+msgid "Already have an account with us?"
+msgstr "既に私たちと口座をお持ちですか？"
+
+#: templates/copify/content.php:93 templates/default/content.php:86
+#: templates/futurist/content.php:90
+msgid "Log in for a faster checkout experience."
+msgstr "より速いチェックアウトの経験のためにログインしてください。"
+
+#: templates/copify/content.php:101 templates/copify/content.php:102
+#: templates/default/content.php:94 templates/default/content.php:95
+#: templates/futurist/content.php:98 templates/futurist/content.php:99
+msgid "Email"
+msgstr "メール"
+
+#: templates/copify/content.php:110 templates/copify/content.php:111
+#: templates/default/content.php:101 templates/default/content.php:102
+#: templates/futurist/content.php:107 templates/futurist/content.php:108
+msgid "Password"
+msgstr "パスワード"
+
+#: templates/copify/content.php:115 templates/copify/order-pay.php:70
+#: templates/default/content.php:106 templates/default/order-pay.php:59
+#: templates/futurist/content.php:112 templates/futurist/order-pay.php:63
+msgid "Login"
+msgstr "ログイン"
+
+#: templates/copify/content.php:118 templates/default/content.php:109
+#: templates/futurist/content.php:115
+msgid "Login is optional. You may continue with your order below."
+msgstr "ログインはオプションです。以下のご注文の続行することがあります。"
+
+#: templates/copify/content.php:128 templates/default/content.php:121
+#: templates/futurist/content.php:125
+#, php-format
+msgid "Create %s shopping account."
+msgstr "ショッピング アカウント %s を作成します。"
+
+#: templates/copify/content.php:130 templates/default/content.php:123
+#: templates/futurist/content.php:127
+msgid "If you do not have an account, we will create one for you."
+msgstr ""
+"あなたがアカウントを持っていない場合は、我々はあなたのために1つを作成します。"
+
+#: templates/copify/content.php:155 templates/default/content.php:148
+#: templates/futurist/content.php:152
+#, php-format
+msgid "Welcome back, %s (%s)."
+msgstr "ようこそ、 %s ( %s) に戻ります。"
+
+#: templates/copify/content.php:158 templates/default/content.php:151
+#: templates/futurist/content.php:155
+msgid "Log out."
+msgstr "ログアウト."
+
+#: templates/copify/content.php:173 templates/default/content.php:166
+#: templates/futurist/content.php:170
+msgid "Billing and Shipping address"
+msgstr "請求先および配送先住所"
+
+#: templates/copify/content.php:223 templates/default/content.php:216
+#: templates/futurist/content.php:220
+msgid "Edit shipping address"
+msgstr "配送先住所を編集する"
+
+#: templates/copify/content.php:234 templates/default/content.php:227
+#: templates/futurist/content.php:231
+msgid "Select a shipping method:"
+msgstr "発送方法を選択してください。:"
+
+#: templates/copify/content.php:335 templates/default/content.php:310
+#: templates/futurist/content.php:318
+msgid "Enter Promo Code"
+msgstr "プロモーションコードを入力"
+
+#: templates/copify/content.php:340 templates/default/content.php:315
+#: templates/futurist/content.php:323
+msgid "Apply"
+msgstr "許可"
+
+#: templates/copify/order-pay.php:72 templates/default/order-pay.php:61
+#: templates/futurist/order-pay.php:65
+msgid "Lost your password?"
+msgstr "パスワードをお忘れですか？"
+
+#: templates/copify/thank-you.php:34 templates/default/thank-you.php:22
+#: templates/futurist/thank-you.php:22
+#, php-format
+msgid "Order %s"
+msgstr "注文%s"
+
+#: templates/copify/thank-you.php:35 templates/default/thank-you.php:23
+#: templates/futurist/thank-you.php:23
+#, php-format
+msgid "Thank you %s!"
+msgstr "ありがとう、%s!"
+
+#: templates/copify/thank-you.php:96 templates/default/thank-you.php:84
+#: templates/futurist/thank-you.php:84
+msgid "Order status"
+msgstr "注文ステータス"
+
+#: templates/copify/thank-you.php:113 templates/default/thank-you.php:101
+#: templates/futurist/thank-you.php:101
+msgid "Order updates"
+msgstr "注文ステータスの更新"
+
+#: templates/copify/thank-you.php:115 templates/default/thank-you.php:103
+#: templates/futurist/thank-you.php:103
+msgid "You’ll get shipping and delivery updates by email."
+msgstr "メールで配送と配送の最新情報を入手できます。"
+
+#: templates/copify/thank-you.php:126 templates/default/thank-you.php:114
+#: templates/futurist/thank-you.php:114
+msgid "Contact information"
+msgstr "連絡先情報"
+
+#: templates/futurist/content.php:304 templates/futurist/order-pay.php:131
+msgid "Your Cart"
+msgstr "カート"
+
+#. Plugin URI of the plugin/theme
+msgid "https://www.CheckoutWC.com"
+msgstr "https://www.CheckoutWC.com"
+
+#. Description of the plugin/theme
+msgid "Beautiful, conversion optimized checkout templates for WooCommerce."
+msgstr "WooCommerce用の美しい、変換に最適化されたチェックアウトテンプレート。"
+
+#. Author of the plugin/theme
+msgid "Objectiv"
+msgstr "Objectiv"
+
+#. Author URI of the plugin/theme
+msgid "https://objectiv.co"
+msgstr "https://objectiv.co"
+
+#~ msgid "N/A"
+#~ msgstr "該当なし"
+
+#~ msgid ""
+#~ "There is a new version of %1$s available. %2$sView version %3$s details"
+#~ "%4$s."
+#~ msgstr ""
+#~ "利用可能な%1$sの新しいバージョンがあります。 %2$sViewバージョン%3$sの詳"
+#~ "細%4$s。"
+
+#~ msgid ""
+#~ "There is a new version of %1$s available. %2$sView version %3$s details"
+#~ "%4$s or %5$supdate now%6$s."
+#~ msgstr ""
+#~ "利用可能な %1$s の新しいバージョンがあります。%2$sバージョン %3$sの詳"
+#~ "細%4$sを確認するか、%5$s今すぐ更新%6$sしてください。"
+
+#~ msgid "You do not have permission to install plugin updates"
+#~ msgstr "プラグインを更新する権限がありません"
+
+#~ msgid "Error"
+#~ msgstr "エラー"
+
+#~ msgid ""
+#~ "You are using a legacy child theme which will be disabled in a future "
+#~ "version. Changing theme settings is not possible for legacy themes."
+#~ msgstr ""
+#~ "将来のバージョンで無効になるレガシ子テーマを使用しています。従来のテーマで"
+#~ "は、テーマの設定を変更することはできません。"
+
+#~ msgid ""
+#~ "It looks like you are using a legacy checkout theme, located in %s. "
+#~ "Legacy themes are deprecated and you should upgrade to the new theme "
+#~ "structure as soon as possible to prevent problems with future release. "
+#~ "For more information, <a target=\"_blank\" href=\"https://www.checkoutwc."
+#~ "com/docs/developer-api/template-files/upgrading-legacy-custom-templates/"
+#~ "\">read our migration guide.</a>"
+#~ msgstr ""
+#~ "%s にあるレガシチェックアウトのテーマを使用しているように見えます。レガシ"
+#~ "テーマは廃止され、将来のリリースに関する問題を防ぐために、できるだけ早く新"
+#~ "しいテーマ構造にアップグレードする必要があります。詳細については、<a "
+#~ "target=\"_blank\" href=\"https://www.checkoutwc.com/docs/developer-api/"
+#~ "template-files/upgrading-legacy-custom-templates/\">移行ガイドを参照してく"
+#~ "ださい。 </a>"
+
+#~ msgid "Subtotal"
+#~ msgstr "小計"
+
+#~ msgid "Shipping"
+#~ msgstr "送料"
+
+#~ msgid "Taxes"
+#~ msgstr "税金"
+
+#~ msgid "Total"
+#~ msgstr "合計"
+
+#~ msgid "Show Phone Fields"
+#~ msgstr "電話フィールドの表示"
+
+#~ msgid "Enable billing and shipping phone fields"
+#~ msgstr "請求と出荷の電話フィールドを有効にする"
+
+#~ msgid ""
+#~ "Enable or disable billing and shipping phone fields as required fields. "
+#~ "(Default: Disabled)"
+#~ msgstr ""
+#~ "請求および出荷の電話フィールドを必須フィールドとして有効または無効にしま"
+#~ "す。(デフォルト: 無効)"
+
+#~ msgid "First name"
+#~ msgstr "名"
+
+#~ msgid "Last name"
+#~ msgstr "氏"
+
+#~ msgid "Address"
+#~ msgstr "住所"
+
+#~ msgid "Street address"
+#~ msgstr "住所"
+
+#~ msgid "Apt, suite, etc."
+#~ msgstr "アパートメント、スイートなど"
+
+#~ msgid "Company name"
+#~ msgstr "事業所名"
+
+#~ msgid "Country"
+#~ msgstr "国"
+
+#~ msgid "Postcode / ZIP"
+#~ msgstr "郵便番号"
+
+#~ msgid "State / County"
+#~ msgstr "都道府県 (State / Prefecture)"
+
+#~ msgid "Town / City"
+#~ msgstr "市区町村 (City)"
+
+#~ msgid "required"
+#~ msgstr "必須"
+
+#~ msgid "Select a country&hellip;"
+#~ msgstr "国を選択&hellip;"
+
+#~ msgid "Update country"
+#~ msgstr "更新语种"
+
+#~ msgid "Select a state&hellip;"
+#~ msgstr "郵便番号;"
+
+#~ msgid "Choose an option"
+#~ msgstr "オプションを選択してください"
+
+#~ msgctxt "shipping packages"
+#~ msgid "Shipping"
+#~ msgid_plural "Shipping %d"
+#~ msgstr[0] "送料 %d"
+
+#~ msgid ""
+#~ "There are no shipping methods available. Please double check your "
+#~ "address, or contact us if you need any help."
+#~ msgstr "利用可能な配送方法がありません。お問合わせください。"
+
+#~ msgid ""
+#~ "Sorry, it seems that there are no available payment methods for your "
+#~ "location. Please contact us if you require assistance or wish to make "
+#~ "alternate arrangements."
+#~ msgstr ""
+#~ "申し訳ありませんがあなたの居住地で利用可能なお支払い方法がないようです。あ"
+#~ "なたがヘルプを必要とするか、または代替の手段を試したい場合は、運営管理にお"
+#~ "問い合わせください。"
+
+#~ msgid "Checkout is not available whilst your cart is empty."
+#~ msgstr "カートが空の間、チェックアウトは利用できません。"
+
+#~ msgid "Select an option&hellip;"
+#~ msgstr "オプションを選択&hellip;"
+
+#~ msgctxt "enhanced select"
+#~ msgid "No matches found"
+#~ msgstr "一致するものが見つかりませんでした。"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Loading failed"
+#~ msgstr "読み込み失敗"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Please enter 1 or more characters"
+#~ msgstr "1文字以上の文字を入力してください。"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Please enter %qty% or more characters"
+#~ msgstr "％qty％以上の文字を入力してください"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Please delete 1 character"
+#~ msgstr "1文字削除してください。"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Please delete %qty% characters"
+#~ msgstr "%qty%文字削除してください。"
+
+#~ msgctxt "enhanced select"
+#~ msgid "You can only select 1 item"
+#~ msgstr "1つのみ選択可能です"
+
+#~ msgctxt "enhanced select"
+#~ msgid "You can only select %qty% items"
+#~ msgstr "％qty％個のアイテムしか選択できません"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Loading more results&hellip;"
+#~ msgstr "結果をさらに読み込む&hellip;"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Searching&hellip;"
+#~ msgstr "検索中&hellip;"
+
+#~ msgid "Cart"
+#~ msgstr "カート"
+
+#~ msgid ""
+#~ "There is a new version of %1$s available. <a target=\"_blank\" class="
+#~ "\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
+#~ msgstr ""
+#~ "利用可能な %1$s の新しいバージョンがあります。<a target=\"_blank\" class="
+#~ "\"thickbox\" href=\"%2$s\">バージョン %3$s の詳細を表示</a>します。"
+
+#~ msgid ""
+#~ "There is a new version of %1$s available. <a target=\"_blank\" class="
+#~ "\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a href=\"%4$s"
+#~ "\">update now</a>."
+#~ msgstr ""
+#~ "利用可能な %1$s の新しいバージョンがあります。<a target=\"_blank\" class="
+#~ "\"thickbox\" href=\"%2$s\">%3$s バージョンの詳細を表示</a> か <a href="
+#~ "\"%4$s\">今すぐ更新</a>。"
+
+#~ msgid ""
+#~ "There are no shipping methods available. Please ensure that your address "
+#~ "has been entered correctly, or contact us if you need any help."
+#~ msgstr "利用可能な配送方法がありません。お問合わせください。"
+
+#~ msgctxt "checkout-wc"
+#~ msgid "Apt, suite, etc. (optional)"
+#~ msgstr "アパートメント、スイートなど（オプション）"
+
+#~ msgid ""
+#~ "If you do not have an account, the information provided here will be used "
+#~ "to create an account on checkout."
+#~ msgstr ""
+#~ "アカウントを持っていない場合、ここで提供される情報はチェック アウト時のア"
+#~ "カウントを作成する使用されます。"
+
+#~ msgid ""
+#~ "We can't wait to help you with Checkout for WooCommerce! Please fill out "
+#~ "the following form and one of our support staff will respond within 12-24 "
+#~ "hours. (average)"
+#~ msgstr ""
+#~ "WooCommerceのCheckoutでお手伝いします。以下のフォームに記入し、当社のサ"
+#~ "ポートスタッフの1人が12〜24時間以内に返答します。 （平均）"
+
+#~ msgid "Many issues are addressed in our documentation:"
+#~ msgstr "私たちのドキュメントには、多くの問題が取り上げられています。"
+
+#~ msgid "View Documentation"
+#~ msgstr "ドキュメンテーションを表示"
+
+#~ msgid ""
+#~ "If you need help for something not covered in our documentation, please "
+#~ "click this button to file a support request:"
+#~ msgstr ""
+#~ "ドキュメントに記載されていないものについて助けが必要な場合は、このボタンを"
+#~ "クリックしてサポートリクエストを提出してください："
+
+#~ msgid "Support Request"
+#~ msgstr "サポートリクエスト"
+
+#~ msgid "Create a %s shopping account."
+#~ msgstr "ショッピング アカウント %s を作成します。"
+
+#~ msgid ""
+#~ "Shipping costs will be calculated once you have provided your address."
+#~ msgstr "送料を計算するためには、住所の登録が必要です。"
+
+#~ msgid "Apartment, suite, unit etc."
+#~ msgstr "アパート、スイート、ユニットなど。"
+
+#~ msgid "Shipping Address"
+#~ msgstr "配送元住所"
+
+#~ msgid "Header Shadow Color"
+#~ msgstr "ヘッダーの影の色"
+
+#~ msgid "Brandon Tassone"
+#~ msgstr "Brandon Tassone"
+
+#~ msgid "Welcome"
+#~ msgstr "ようこそ"

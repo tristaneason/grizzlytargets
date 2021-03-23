@@ -1,0 +1,19 @@
+/*!
+  Template Name:   	Midas
+  Author:           Brandon Tassone
+  Author URI:       https://objectiv.co/
+  Description:  	The base Checkout For WooCommerce plugin theme.
+  Version:      	2.0.0
+  Supports:         header-background, footer-background, order-pay, order-received
+ */
+
+@import "~bourbon/core/bourbon";
+@import "~bourbon-neat/core/neat";
+
+@import "grid";
+@import "template/content";
+
+.wrap {
+  max-width: $wrap-width;
+  margin: auto;
+}

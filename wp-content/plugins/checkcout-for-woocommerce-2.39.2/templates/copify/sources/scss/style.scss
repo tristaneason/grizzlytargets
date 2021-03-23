@@ -1,0 +1,20 @@
+/*!
+  Template Name:   	Copify
+  Author:           Brandon Tassone
+  Author URI:       https://objectiv.co/
+  Description:  	A theme inspired by Shopify.
+  Version:      	2.0.0
+  Supports:         summary-background, order-pay, order-received
+ */
+
+@import "~bourbon/core/bourbon";
+@import "~bourbon-neat/core/neat";
+
+@import "grid";
+@import "template/content";
+@import "template/header";
+
+.wrap {
+  max-width: $wrap-width;
+  margin: auto;
+}

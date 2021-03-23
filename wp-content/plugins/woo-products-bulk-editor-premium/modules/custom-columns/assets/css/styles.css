@@ -1,0 +1,33 @@
+.custom-columns-page-content label + input[type="text"],
+.custom-columns-page-content label + select,
+.custom-columns-page-content label + input[type="number"] {
+    display: block;
+}
+
+.custom-columns-page-content input[type="number"],
+.custom-columns-page-content input[type="text"],
+.custom-columns-page-content select {
+	width: 100%;
+}
+
+.custom-columns-page-content {
+    max-width: 500px;
+    margin: 0 auto;
+}
+.custom-columns-page-content .field-container {
+    margin-bottom: 15px;
+}
+.column-wrapper {
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid;
+}
+h3.column-title {
+    margin: 10px;
+}
+.mode {
+    margin: 40px 0;
+}
+.column-fields-wrapper {
+	height: auto !important;
+}

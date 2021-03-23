@@ -1,0 +1,50 @@
+#fedex_pickup_info{
+	width: 15ch;
+}
+
+.ph_fedex_variation_class_select, .ph_fedex_variation_class_text
+{
+	width: 50% !important;
+	display: block;
+}
+
+.ph_fedex_other_details
+{
+	font-size: 15px !important;
+	margin: 0px 10px 10px 10px !important;
+	padding: 0px !important;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.ph_fedex_var_other_details
+{
+	font-size: 15px !important;
+	padding: 5px 0px !important;
+	margin: 0px !important;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.toggle_symbol, .var_toggle_symbol
+{
+	float: right;
+}
+
+.toggle_symbol::after,
+.var_toggle_symbol::after
+{
+	content: '\25B6';
+	
+}
+
+.toggle_symbol_click::after,
+.var_toggle_symbol_click::after
+{
+	content: '\25BC' !important;
+	
+}
+
+.ph_fedex_hide_show_var_product_fields{
+	display: none;
+}

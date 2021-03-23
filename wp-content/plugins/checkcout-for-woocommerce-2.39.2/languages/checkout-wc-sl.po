@@ -1,0 +1,799 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Checkout for WooCommerce\n"
+"POT-Creation-Date: 2019-11-06 09:56-0500\n"
+"PO-Revision-Date: 2019-11-06 09:58-0500\n"
+"Last-Translator: Clifton Griffin <clif@checkoutwc.com>\n"
+"Language-Team: support@checkoutwc.com\n"
+"Language: sl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100>=3 && n"
+"%100<=4 ? 2 : 3);\n"
+"X-Generator: Poedit 2.2.4\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: checkout-for-woocommerce.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SearchPathExcluded-1: dist\n"
+"X-Poedit-SearchPathExcluded-2: vendor\n"
+
+#: functions.php:8
+msgid "First Name"
+msgstr "Ime"
+
+#: functions.php:13
+msgid "Last Name"
+msgstr "Priimek"
+
+#: functions.php:808
+msgid "Remove Item"
+msgstr "Odstrani vnos"
+
+#: functions.php:826
+msgid "Edit"
+msgstr "Uredi"
+
+#: functions.php:932 functions.php:939
+msgid "Not Calculated"
+msgstr "Ni izračunano"
+
+#: functions.php:937
+msgid "Not Available"
+msgstr "Ni na voljo"
+
+#: functions.php:950
+msgid "Complete Order"
+msgstr "Popolna naročilo"
+
+#: functions.php:983 templates/copify/content.php:62
+#: templates/copify/thank-you.php:130 templates/default/content.php:55
+#: templates/default/thank-you.php:118 templates/futurist/content.php:53
+#: templates/futurist/thank-you.php:118
+msgid "Payment method"
+msgstr "Načini plačila"
+
+#: functions.php:992
+msgid ""
+"All transactions are secure and encrypted. Credit card information is never "
+"stored on our servers."
+msgstr ""
+"Vse transakcije so varne in šifrirane. Podatki o kreditni kartici se nikoli "
+"ne shranijo na naših strežnikih."
+
+#: functions.php:1003
+msgid "Your order is free. No payment is required."
+msgstr "Vaše naročilo je brezplačno. Plačilo ni potrebno."
+
+#: functions.php:1091
+msgid "Same as shipping address"
+msgstr "Enako kot naslov za dostavo"
+
+#: functions.php:1101
+msgid "Use a different billing address"
+msgstr "Uporabite drug naslov za izstavitev računa"
+
+#: functions.php:1218 templates/copify/content.php:175
+#: templates/copify/thank-you.php:146 templates/default/content.php:168
+#: templates/default/thank-you.php:134 templates/futurist/content.php:172
+#: templates/futurist/thank-you.php:134
+msgid "Billing address"
+msgstr "Naslov naročnika"
+
+#: functions.php:1312
+msgid "Return to cart"
+msgstr "Nazaj v košarico"
+
+#: functions.php:1316
+msgid "Continue to shipping method"
+msgstr "Nadaljujte z načinom dostave"
+
+#: functions.php:1320
+msgid "Continue to payment method"
+msgstr "Nadaljujte z načinom plačila"
+
+#: functions.php:1324
+msgid "Return to customer information"
+msgstr "Vrnite se na podatke o strankah"
+
+#: functions.php:1328
+msgid "Return to shipping information"
+msgstr "Vrnite se na informacije o pošiljanju"
+
+#: includes/Compatibility/Base.php:172
+msgid "Or"
+msgstr "Or"
+
+#: includes/Compatibility/Gateways/PayPalForWooCommerce.php:102
+msgid "Logged in with PayPal. Please continue your order below."
+msgstr "Prijavljen s storitvijo PayPal. Nadaljujte z naročilom spodaj."
+
+#. Plugin Name of the plugin/theme
+#: includes/Core/Admin.php:108 includes/Core/Admin.php:144
+#: includes/Core/Customizer.php:256 includes/Main.php:840
+msgid "Checkout for WooCommerce"
+msgstr "Checkout za WooCommerce"
+
+#: includes/Core/Admin.php:108
+msgid "CheckoutWC"
+msgstr "CheckoutWC"
+
+#: includes/Core/Admin.php:111 includes/Core/Customizer.php:269
+#: includes/Main.php:848
+msgid "General"
+msgstr "Splošno"
+
+#: includes/Core/Admin.php:112 includes/Core/Customizer.php:315
+#: includes/Core/Customizer.php:332 includes/Main.php:857
+msgid "Template"
+msgstr "Predloga"
+
+#: includes/Core/Admin.php:113 includes/Core/Customizer.php:346
+#: includes/Core/Customizer.php:383 includes/Main.php:866
+msgid "Design"
+msgstr "Izgled"
+
+#: includes/Core/Admin.php:116
+msgid "Addons"
+msgstr "Dodatki"
+
+#: includes/Core/Admin.php:119 includes/Main.php:875
+msgid "License"
+msgstr "Licenca"
+
+#: includes/Core/Admin.php:120 includes/Main.php:884
+msgid "Support"
+msgstr "Podpora"
+
+#: includes/Core/Admin.php:121
+msgid "Recommended Plugins"
+msgstr "Priporočeni vtičniki"
+
+#: includes/Core/Admin.php:145 includes/Core/Customizer.php:259
+msgid ""
+"Checkout for WooCommerce provides a beautiful, conversion optimized checkout "
+"template for WooCommerce."
+msgstr ""
+"Checkout za WooCommerce ponuja lepe, optimizirane pretvorbe predloge za "
+"WooCommerce."
+
+#: includes/Core/Admin.php:172 includes/Core/Customizer.php:280
+msgid "Enable / Disable"
+msgstr "Omogoči/onemogoči"
+
+#: includes/Core/Admin.php:176
+msgid "Use Checkout for WooCommerce Template"
+msgstr "Uporabite Checkout za predlogo WooCommerce"
+
+#: includes/Core/Admin.php:177
+msgid ""
+"Enable or disable Checkout for WooCommerce theme. (NOTE: Theme is always "
+"enabled for admin users.)"
+msgstr ""
+"Omogočite ali onemogočite temo storitve Checkout za WooCommerce. (OPOMBA: "
+"tema je vedno omogočena za skrbniške uporabnike.)"
+
+#: includes/Core/Admin.php:183 includes/Core/Customizer.php:291
+msgid "Header Scripts"
+msgstr "Skripti glave"
+
+#: includes/Core/Admin.php:189
+msgid ""
+"This code will output immediately before the closing <code>&lt;/head&gt;</"
+"code> tag in the document source."
+msgstr ""
+"Ta koda bo izpisana neposredno pred zaključno oznako <code>&lt;/head&gt;</"
+"code> v viru dokumenta."
+
+#: includes/Core/Admin.php:197 includes/Core/Customizer.php:302
+msgid "Footer Scripts"
+msgstr "Skripti za nogo"
+
+#: includes/Core/Admin.php:203
+msgid ""
+"This code will output immediately before the closing <code>&lt;/body&gt;</"
+"code> tag in the document source."
+msgstr ""
+"Ta koda se bo izpisala tik pred zapiralno oznako <code>&lt;/body&gt;</code> "
+"v viru dokumenta."
+
+#: includes/Core/Admin.php:215
+msgid "Enable Usage Tracking"
+msgstr "Omogoči sledenje uporabe"
+
+#: includes/Core/Admin.php:221
+msgid "Allow Checkout for WooCommerce to track plugin usage?"
+msgstr "Dovoli Checkout za WooCommerce za sledenje uporabe vtičnika?"
+
+#: includes/Core/Admin.php:229
+msgid "Stat Collection Data Viewer"
+msgstr "Stat Zbirka podatkov"
+
+#: includes/Core/Admin.php:247
+msgid "Premium Features"
+msgstr "Premium možnosi"
+
+#: includes/Core/Admin.php:256
+msgid "Cart Editing"
+msgstr "Urejanje košarice"
+
+#: includes/Core/Admin.php:260
+msgid "Enable cart editing."
+msgstr "Omogoči urejanje košarice."
+
+#: includes/Core/Admin.php:261
+msgid ""
+"Enable or disable cart editing feature. Allows customer to remove or adjust "
+"quantity of cart items."
+msgstr ""
+"Omogoči ali onemogoči funkcijo urejanja vozička. Stranki omogoča, da "
+"odstrani ali prilagodi količino košarice."
+
+#: includes/Core/Admin.php:267
+msgid "Cart Editing Empty Cart Redirect"
+msgstr "Urejanje košarice Preusmeritev prazne košarice"
+
+#: includes/Core/Admin.php:273
+msgid "URL to redirect to when customer empties cart from checkout page."
+msgstr "URL za preusmeritev, ko stranka izprazni voziček na strani za prevzem."
+
+#: includes/Core/Admin.php:274
+msgid "If left blank, customer will be redirected to the cart page."
+msgstr "Če pustite prazno, bo stranka preusmerjena na stran vozička."
+
+#: includes/Core/Admin.php:283
+msgid "Order Pay"
+msgstr "Naroči plačilo"
+
+#: includes/Core/Admin.php:287
+msgid "Enable support for order pay page."
+msgstr "Omogoči stran za plačilo naročila."
+
+#: includes/Core/Admin.php:288
+msgid "Use checkout template for order pay page."
+msgstr "Uporabite checkout predlogo za plačilo strani."
+
+#: includes/Core/Admin.php:295
+msgid "Thank You Page"
+msgstr "Hvala stran"
+
+#: includes/Core/Admin.php:299
+msgid "Enable support for thank you page."
+msgstr "Omogočite podporo strani za zahvalo."
+
+#: includes/Core/Admin.php:300
+msgid ""
+"Enable thank you page / order received template. This template is also used "
+"when viewing orders in My Account."
+msgstr ""
+"Omogoči prejeto predlogo za stran za zahvalo / naročilo. Ta predloga se "
+"uporablja tudi pri ogledu naročil v Mojem računu."
+
+#: includes/Core/Admin.php:307
+msgid "Order Statuses"
+msgstr "Naročite statuse"
+
+#: includes/Core/Admin.php:318
+msgid "The statuses to show on the thank you page."
+msgstr "Statusi, ki se prikažejo na strani z zahvalo."
+
+#: includes/Core/Admin.php:325
+msgid "Map Embed"
+msgstr "Vdelava zemljevida"
+
+#: includes/Core/Admin.php:329
+msgid "Enable map embed."
+msgstr "Omogoči vdelavo zemljevida"
+
+#: includes/Core/Admin.php:330
+msgid "Enable or disable map embed on thank you page. Requires Google API key."
+msgstr ""
+"Omogočanje ali onemogočanje vdelave zemljevida na strani zahvale. Zahteva "
+"ključ Google API."
+
+#: includes/Core/Admin.php:337
+msgid "Address Autocomplete"
+msgstr "Samodokončanje naslova"
+
+#: includes/Core/Admin.php:341
+msgid "Enable address autocomplete."
+msgstr "Omogoči samodokončanje naslova."
+
+#: includes/Core/Admin.php:342
+msgid ""
+"Enable or disable address autocomplete feature. Requires Google API key."
+msgstr ""
+"Omogoči ali onemogoči funkcijo samodejnega dokončanja naslova. Zahteva ključ "
+"Google API."
+
+#: includes/Core/Admin.php:348
+msgid "Google API Key"
+msgstr "Google API Ključ"
+
+#: includes/Core/Admin.php:354
+msgid ""
+"Google API Key. Available in the <a target=\"_blank\" href=\"https://"
+"developers.google.com/places/web-service/get-api-key\">Google Cloud Platform "
+"Console</a>."
+msgstr ""
+"Ključ Google API. Na voljo v <a target=\"_blank\" href=\"https://developers."
+"google.com/places/web-service/get-api-key\">konzoli Google Cloud Platform</"
+"a> ."
+
+#: includes/Core/Admin.php:370
+msgid "License Upgrade Required"
+msgstr "Potrebna je nadgradnja licence"
+
+#: includes/Core/Admin.php:370
+msgid "A Growth or Developer License is required to enable these features."
+msgstr "Za omogočanje teh funkcij je potrebna licenca za rast ali razvoj."
+
+#: includes/Core/Admin.php:371
+#, php-format
+msgid ""
+"You can upgrade your license in <a target=\"_blank\" href=\"%1$s\">My "
+"Account</a>. For help upgrading your license, <a target=\"_blank\" href="
+"\"%2$s\">click here.</a>"
+msgstr ""
+"Licenco lahko nadgradite v » <a target=\"_blank\" href=\"%1$s\">Moj račun«</"
+"a> . Za pomoč pri nadgradnji licence <a target=\"_blank\" href=\"%2$s"
+"\">kliknite tukaj.</a>"
+
+#: includes/Core/Admin.php:386
+msgid "Templates"
+msgstr "Predloge"
+
+#: includes/Core/Admin.php:407
+msgid "Active: "
+msgstr "Aktivno:"
+
+#: includes/Core/Admin.php:415
+msgid "Activate"
+msgstr "Aktiviraj"
+
+#: includes/Core/Admin.php:438
+msgid "Global Settings"
+msgstr "Globalne nastavitve"
+
+#: includes/Core/Admin.php:439
+msgid "These settings apply to all themes."
+msgstr "Te nastavitve veljajo za vse teme."
+
+#: includes/Core/Admin.php:444 includes/Core/Customizer.php:358
+msgid "Logo"
+msgstr "Logotip"
+
+#: includes/Core/Admin.php:450
+msgid "Upload image"
+msgstr "Naloži sliko"
+
+#: includes/Core/Admin.php:453
+msgid "Clear Logo"
+msgstr "Počisti logotip"
+
+#: includes/Core/Admin.php:459 includes/Core/Customizer.php:370
+msgid "Footer Text"
+msgstr "Besedilo v nogi"
+
+#: includes/Core/Admin.php:465
+msgid ""
+"If left blank, a standard copyright notice will be displayed. Set to a "
+"single space to override this behavior."
+msgstr ""
+"Če pustite prazno, se bo prikazalo standardno obvestilo o avtorskih "
+"pravicah. Nastavite na en presledek, da preglasite to vedenje."
+
+#: includes/Core/Admin.php:473
+msgid "Cart Summary Mobile Label"
+msgstr "Oznaka za košarico Povzetek Mobile Label"
+
+#: includes/Core/Admin.php:479
+msgid "Example: Show order summary and coupons"
+msgstr "Primer: Prikaži povzetek naročila in kupone"
+
+#: includes/Core/Admin.php:480
+msgid "If left blank, this default will be used: "
+msgstr "Če je prazno, bo uporabljeno to privzeto:"
+
+#: includes/Core/Admin.php:480 templates/copify/content.php:308
+#: templates/copify/order-pay.php:140 templates/copify/thank-you.php:209
+#: templates/default/content.php:284 templates/default/order-pay.php:111
+#: templates/default/thank-you.php:181 templates/futurist/content.php:288
+#: templates/futurist/order-pay.php:116 templates/futurist/thank-you.php:181
+msgid "Show order summary"
+msgstr "Prikaži povzetek naročila"
+
+#: includes/Core/Admin.php:488 includes/Core/Customizer.php:383
+msgid "Theme Specific Settings"
+msgstr "Posebne nastavitve za temo"
+
+#: includes/Core/Admin.php:498 includes/Core/Customizer.php:396
+msgid "Header Background Color"
+msgstr "Barva ozadja Glave"
+
+#: includes/Core/Admin.php:508 includes/Core/Customizer.php:410
+msgid "Header Text Color"
+msgstr "Barva besedila v glavi"
+
+#: includes/Core/Admin.php:518 includes/Core/Customizer.php:424
+msgid "Footer Background Color"
+msgstr "Barva ozadja za nogo"
+
+#: includes/Core/Admin.php:528 includes/Core/Customizer.php:438
+msgid "Footer Text Color"
+msgstr "Barva besedila v Nogi"
+
+#: includes/Core/Admin.php:538 includes/Core/Customizer.php:452
+msgid "Summary Background Color"
+msgstr "Povzetek barve ozadja"
+
+#: includes/Core/Admin.php:548 includes/Core/Customizer.php:466
+msgid "Primary Button Color"
+msgstr "Barva primarnega gumba"
+
+#: includes/Core/Admin.php:557 includes/Core/Customizer.php:480
+msgid "Primary Button Text Color"
+msgstr "Barva besedila primarnega gumba"
+
+#: includes/Core/Admin.php:566 includes/Core/Customizer.php:494
+msgid "Secondary Button Color"
+msgstr "Barva sekundarnega gumba"
+
+#: includes/Core/Admin.php:575 includes/Core/Customizer.php:508
+msgid "Secondary Button Text Color"
+msgstr "Barva besedila sekundarnega gumba"
+
+#: includes/Core/Admin.php:584 includes/Core/Customizer.php:522
+msgid "Link Color"
+msgstr "Barva povezave"
+
+#: includes/Core/Admin.php:593 includes/Core/Customizer.php:535
+msgid "Custom CSS"
+msgstr "CSS po meri"
+
+#: includes/Core/Admin.php:599
+msgid ""
+"Add Custom CSS rules to fully control the appearance of the checkout "
+"template."
+msgstr ""
+"Dodajte pravila CSS po meri, da v celoti nadzirate videz predloge za prevzem."
+
+#: includes/Core/Admin.php:666
+msgid "Need help?"
+msgstr "Potrebuješ pomoč?"
+
+#: includes/Core/Admin.php:668
+msgid "Excellent support is in our DNA."
+msgstr "Odlična podpora je v naši DNK."
+
+#: includes/Core/Admin.php:670
+msgid "Contact Support"
+msgstr "Obrnite se na podporo"
+
+#: includes/Core/Admin.php:706
+msgid ""
+"The WooCommerce ecosystem is full of fantastic plugins. Here are a few that "
+"work really well with CheckoutWC that we wholeheartedly recommend to our "
+"customers. (A few of these links may include affiliate tracking. This does "
+"not impact our decision to include a plugin.)"
+msgstr ""
+"Ekosistem WooCommerce je poln fantastičnih dodatkov. Tukaj je nekaj, ki zelo "
+"dobro delujejo s programom CheckoutWC, ki ga iskreno priporočamo našim "
+"strankam. (Nekatere od teh povezav lahko vključujejo sledenje affiliate-jem. "
+"To ne vpliva na našo odločitev o vključitvi dodatka.)"
+
+#: includes/Core/Admin.php:729
+msgid "More Info"
+msgstr "Več informacij"
+
+#: includes/Core/Admin.php:886
+msgid "Checkout for WooCommerce: Warning incompatible plugins detected!"
+msgstr "Dovoli Checkout za WooCommerce za sledenje uporabe vtičnika?"
+
+#: includes/Core/Admin.php:894
+msgid "Please deactivate these plugins to avoid problems with your checkout!"
+msgstr "Izključite te vtičnike, da se izognete težavam pri nakupu!"
+
+#: includes/Core/Admin.php:907
+#, php-format
+msgid ""
+"Checkout for WooCommerce: Your license key appears to have expired. Please "
+"verify that your license key is valid or <a target=\"_blank\" href=\"https://"
+"www.checkoutwc.com/checkout/?edd_license_key=%s\">renew your license now</a> "
+"to restore full functionality."
+msgstr ""
+"Checkout za WooCommerce: zdi se, da je vaš licenčni ključ potekel. "
+"Preverite, ali je vaš licenčni ključ veljaven ali <a target=\"_blank\" href="
+"\"https://www.checkoutwc.com/checkout/?edd_license_key=%s\">obnovite licenco,"
+"</a> da obnovite polno funkcionalnost."
+
+#: includes/Core/Admin.php:910
+msgid ""
+"Checkout for WooCommerce: Your license key is missing or invalid. Please "
+"verify that your license key is valid or <a target=\"_blank\" href=\"https://"
+"www.checkoutwc.com/\">purchase a license</a> to restore full functionality."
+msgstr ""
+"Checkout za WooCommerce: licenčni ključ manjka ali je neveljaven. Preverite, "
+"ali je licenčni ključ veljaven ali <a target=\"_blank\" href=\"https://www."
+"checkoutwc.com/\">kupite licenco</a> za obnovitev polne funkcionalnosti."
+
+#: includes/Core/Admin.php:915
+msgid ""
+"Thank you for installing Checkout for WooCommerce! To get started, click on "
+"<strong>License</strong> below and activate your license key!"
+msgstr ""
+"Hvala, ker ste namestili Checkout za WooCommerce! Za začetek kliknite "
+"spodnjo <strong>licenco</strong> in aktivirajte licenčni ključ!"
+
+#: includes/Core/Admin.php:939
+msgid "Settings"
+msgstr "Nastavitve"
+
+#: includes/Core/Admin.php:992
+msgid "Phone"
+msgstr "Telefon"
+
+#: includes/Core/Customizer.php:387
+msgid ""
+"These settings only apply to the currently active template. If you switch "
+"templates in the customizer, these settings will become unavailable but "
+"saving will publish any changes here prior to switching templates!"
+msgstr ""
+"Te nastavitve veljajo samo za trenutno aktivno predlogo. Če zamenjate "
+"predloge v prilagodilniku, bodo te nastavitve postale nedostopne, vendar bo "
+"shranjevanje tukaj objavilo vse spremembe pred zamenjavo predlog!"
+
+#: includes/Main.php:478
+msgid ""
+"Activation failed: Please activate WooCommerce in order to use Checkout for "
+"WooCommerce"
+msgstr ""
+"Aktivacija ni uspela: aktivirajte WooCommerce, če želite uporabljati "
+"Checkout za WooCommerce"
+
+#: includes/Main.php:625
+msgid "Please enter a new quantity:"
+msgstr "Vnesite novo količino:"
+
+#: includes/Main.php:630 templates/copify/content.php:177
+#: templates/copify/content.php:217 templates/copify/thank-you.php:138
+#: templates/default/content.php:170 templates/default/content.php:210
+#: templates/default/thank-you.php:126 templates/futurist/content.php:174
+#: templates/futurist/content.php:214 templates/futurist/thank-you.php:126
+msgid "Shipping address"
+msgstr "Naslov za dostavo"
+
+#: includes/Main.php:642
+msgid "Error processing checkout. Please try again."
+msgstr "Napaka pri obdelavi blagajne. Prosim poskusite ponovno."
+
+#: includes/Stats/StatCollection.php:678
+msgid ""
+"Allow Checkout for WooCommerce to track plugin usage? Help make Checkout for "
+"WooCommerce better."
+msgstr ""
+"Dovoli Checkout za WooCommerce za sledenje uporabe vtičnika? Pomagajte, da "
+"je boljši Checkout za WooCommerce."
+
+#: includes/Stats/StatCollection.php:681
+msgid "Allow"
+msgstr "Dovoli"
+
+#: includes/Stats/StatCollection.php:682
+msgid "Do not allow"
+msgstr "Ne omogočajo"
+
+#: templates/copify/content.php:50 templates/copify/content.php:79
+#: templates/copify/thank-you.php:123 templates/default/content.php:43
+#: templates/default/content.php:72 templates/default/thank-you.php:111
+#: templates/futurist/content.php:41 templates/futurist/content.php:76
+#: templates/futurist/thank-you.php:111
+msgid "Customer information"
+msgstr "Informacije za stranke"
+
+#: templates/copify/content.php:56 templates/copify/content.php:232
+#: templates/copify/thank-you.php:156 templates/default/content.php:49
+#: templates/default/content.php:225 templates/default/thank-you.php:144
+#: templates/futurist/content.php:47 templates/futurist/content.php:229
+#: templates/futurist/thank-you.php:144
+msgid "Shipping method"
+msgstr "Način dostave"
+
+#: templates/copify/content.php:89 templates/default/content.php:82
+#: templates/futurist/content.php:86
+msgid "Already have an account with us?"
+msgstr "Že imate račun pri nas?"
+
+#: templates/copify/content.php:93 templates/default/content.php:86
+#: templates/futurist/content.php:90
+msgid "Log in for a faster checkout experience."
+msgstr "Prijavite se za hitrejšo izkušnjo nakupa."
+
+#: templates/copify/content.php:101 templates/copify/content.php:102
+#: templates/default/content.php:94 templates/default/content.php:95
+#: templates/futurist/content.php:98 templates/futurist/content.php:99
+msgid "Email"
+msgstr "E-naslov"
+
+#: templates/copify/content.php:110 templates/copify/content.php:111
+#: templates/default/content.php:101 templates/default/content.php:102
+#: templates/futurist/content.php:107 templates/futurist/content.php:108
+msgid "Password"
+msgstr "Geslo"
+
+#: templates/copify/content.php:115 templates/copify/order-pay.php:70
+#: templates/default/content.php:106 templates/default/order-pay.php:59
+#: templates/futurist/content.php:112 templates/futurist/order-pay.php:63
+msgid "Login"
+msgstr "Prijava"
+
+#: templates/copify/content.php:118 templates/default/content.php:109
+#: templates/futurist/content.php:115
+msgid "Login is optional. You may continue with your order below."
+msgstr "Prijava ni obvezna. Nadaljnje naročilo lahko nadaljujete spodaj."
+
+#: templates/copify/content.php:128 templates/default/content.php:121
+#: templates/futurist/content.php:125
+#, php-format
+msgid "Create %s shopping account."
+msgstr "Ustvarite račun za nakup %s."
+
+#: templates/copify/content.php:130 templates/default/content.php:123
+#: templates/futurist/content.php:127
+msgid "If you do not have an account, we will create one for you."
+msgstr "Če nimate računa, ga bomo ustvarili za vas."
+
+#: templates/copify/content.php:155 templates/default/content.php:148
+#: templates/futurist/content.php:152
+#, php-format
+msgid "Welcome back, %s (%s)."
+msgstr "Dobrodošli nazaj, %s ( %s)."
+
+#: templates/copify/content.php:158 templates/default/content.php:151
+#: templates/futurist/content.php:155
+msgid "Log out."
+msgstr "Odjava."
+
+#: templates/copify/content.php:173 templates/default/content.php:166
+#: templates/futurist/content.php:170
+msgid "Billing and Shipping address"
+msgstr "Naslov za obračun in pošiljanje"
+
+#: templates/copify/content.php:223 templates/default/content.php:216
+#: templates/futurist/content.php:220
+msgid "Edit shipping address"
+msgstr "Uredite naslov za dostavo"
+
+#: templates/copify/content.php:234 templates/default/content.php:227
+#: templates/futurist/content.php:231
+msgid "Select a shipping method:"
+msgstr "Izberite način dostave:"
+
+#: templates/copify/content.php:335 templates/default/content.php:310
+#: templates/futurist/content.php:318
+msgid "Enter Promo Code"
+msgstr "Vnesite promocijsko kodo"
+
+#: templates/copify/content.php:340 templates/default/content.php:315
+#: templates/futurist/content.php:323
+msgid "Apply"
+msgstr "Uporabi"
+
+#: templates/copify/order-pay.php:72 templates/default/order-pay.php:61
+#: templates/futurist/order-pay.php:65
+msgid "Lost your password?"
+msgstr "Pozabljeno geslo?"
+
+#: templates/copify/thank-you.php:34 templates/default/thank-you.php:22
+#: templates/futurist/thank-you.php:22
+#, php-format
+msgid "Order %s"
+msgstr "Naročilo %s"
+
+#: templates/copify/thank-you.php:35 templates/default/thank-you.php:23
+#: templates/futurist/thank-you.php:23
+#, php-format
+msgid "Thank you %s!"
+msgstr "Hvala %s!"
+
+#: templates/copify/thank-you.php:96 templates/default/thank-you.php:84
+#: templates/futurist/thank-you.php:84
+msgid "Order status"
+msgstr "Zaključek naročila"
+
+#: templates/copify/thank-you.php:113 templates/default/thank-you.php:101
+#: templates/futurist/thank-you.php:101
+msgid "Order updates"
+msgstr "Posodobitve naročila"
+
+#: templates/copify/thank-you.php:115 templates/default/thank-you.php:103
+#: templates/futurist/thank-you.php:103
+msgid "You’ll get shipping and delivery updates by email."
+msgstr "Posodobitve dostave in dostave boste prejeli po e-pošti."
+
+#: templates/copify/thank-you.php:126 templates/default/thank-you.php:114
+#: templates/futurist/thank-you.php:114
+msgid "Contact information"
+msgstr "Kontaktni podatki"
+
+#: templates/futurist/content.php:304 templates/futurist/order-pay.php:131
+msgid "Your Cart"
+msgstr "Vaša košarica"
+
+#. Plugin URI of the plugin/theme
+msgid "https://www.CheckoutWC.com"
+msgstr "https://www.CheckoutWC.com"
+
+#. Description of the plugin/theme
+msgid "Beautiful, conversion optimized checkout templates for WooCommerce."
+msgstr "Beautiful, conversion optimized checkout template for WooCommerce."
+
+#. Author of the plugin/theme
+msgid "Objectiv"
+msgstr "Objectiv"
+
+#. Author URI of the plugin/theme
+msgid "https://objectiv.co"
+msgstr "https://objectiv.co"
+
+#~ msgid "N/A"
+#~ msgstr "Ni na voljo"
+
+#, fuzzy
+#~ msgid ""
+#~ "You are using a legacy child theme which will be disabled in a future "
+#~ "version. Changing theme settings is not possible for legacy themes."
+#~ msgstr ""
+#~ "Uporabljate starejšo otroško temo, ki bo v prihodnji različici "
+#~ "onemogočena. Spreminjanje nastavitev teme ni mogoče za starejše teme."
+
+#, fuzzy
+#~ msgid ""
+#~ "It looks like you are using a legacy checkout theme, located in %s. "
+#~ "Legacy themes are deprecated and you should upgrade to the new theme "
+#~ "structure as soon as possible to prevent problems with future release. "
+#~ "For more information, <a target=\"_blank\" href=\"https://www.checkoutwc."
+#~ "com/docs/developer-api/template-files/upgrading-legacy-custom-templates/"
+#~ "\">read our migration guide.</a>"
+#~ msgstr ""
+#~ "Izgleda, da uporabljate starejšo temo za prevzem, ki se nahaja v %s. "
+#~ "Podedovane teme so opuščene in nadgradite na novo strukturo teme čim "
+#~ "prej, da preprečite težave pri prihodnji izdaji. Za več informacij <a "
+#~ "target=\"_blank\" href=\"https://www.checkoutwc.com/docs/developer-api/"
+#~ "template-files/upgrading-legacy-custom-templates/\">preberite naš vodnik "
+#~ "za selitev.</a>"
+
+#~ msgid "Subtotal"
+#~ msgstr "Skupaj"
+
+#~ msgid "Shipping"
+#~ msgstr "Dostava"
+
+#, fuzzy
+#~ msgid "Taxes"
+#~ msgstr "Davki"
+
+#~ msgid "Total"
+#~ msgstr "Skupaj"
+
+#, fuzzy
+#~ msgid "Show Phone Fields"
+#~ msgstr "Pokaži telefonska polja"
+
+#, fuzzy
+#~ msgid "Enable billing and shipping phone fields"
+#~ msgstr "Omogoči telefonska polja za obračunavanje in pošiljanje"
+
+#, fuzzy
+#~ msgid ""
+#~ "Enable or disable billing and shipping phone fields as required fields. "
+#~ "(Default: Disabled)"
+#~ msgstr ""
+#~ "Omogočite ali onemogočite polja za zaračunavanje in pošiljanje po "
+#~ "telefonu kot obvezna polja. (Privzeto: onemogočeno)"

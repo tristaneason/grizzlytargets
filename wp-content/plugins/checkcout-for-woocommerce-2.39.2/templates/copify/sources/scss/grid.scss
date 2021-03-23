@@ -1,0 +1,61 @@
+$columns: 12;
+$grid: (
+  columns: 12,
+  gutter: 20px,
+  media: 1200px,
+  direction: ltr
+);
+
+$grid-sg: (
+  columns: 12,
+  gutter: 10px,
+  media: 1200px,
+  direction: ltr
+);
+
+$wrap-width: 1140px + map-get($grid, gutter) * 2;
+
+.cfw-container {
+  @include grid-container;
+}
+
+.cfw-collapse {
+  @include grid-collapse;
+}
+
+@for $i from 1 through $columns {
+  .cfw-column-#{$i} {
+    @include grid-column($i, $grid);
+  }
+}
+
+.cfw-sg-container {
+  padding: 0;
+  @include grid-collapse($grid-sg);
+
+  @for $i from 1 through $columns {
+    .cfw-column-#{$i} {
+      @include grid-column($i, $grid-sg);
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .cfw-input-wrap-row {
+    margin-bottom: 0 !important;
+  }
+
+  @for $i from 1 through $columns {
+    .cfw-column-#{$i} {
+      @include grid-column(12, $grid);
+    }
+
+    .cfw-sg-container .cfw-column-#{$i} {
+      @include grid-column(12, $grid-sg);
+    }
+
+    .cfw-input-wrap-row .cfw-column-#{$i} {
+      margin-bottom: 1em;
+    }
+  }
+}

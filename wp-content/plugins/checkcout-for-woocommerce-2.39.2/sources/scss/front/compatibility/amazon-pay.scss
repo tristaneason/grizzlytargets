@@ -1,0 +1,66 @@
+#amazon_addressbook_widget, #amazon_wallet_widget, #amazon_consent_widget {
+  iframe {
+    border: none !important;
+  }
+
+  .widget-container {
+    height: auto !important;
+  }
+}
+
+#checkout.has-overlay, #cfw-deductors-list.has-overlay {
+  position: relative;
+  overflow: hidden;
+
+  .amazon-pay-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    opacity: 0.9;
+    z-index: 99999;
+  }
+
+  .widget-container {
+    max-height: 300px;
+  }
+}
+
+#cfw-payment-request-buttons {
+
+  .wc-amazon-payments-advanced-populated {
+    max-width: 140px;
+    width: 100%;
+    margin-right: 4px;
+  }
+
+  .wc-amazon-payments-advanced-info {
+    text-indent: -9999999px;
+    background: none;
+    padding: 0;
+    clear: none;
+    border: none;
+    border-radius: 4px;
+    overflow: hidden;
+    display: block;
+    margin: 0;
+
+    #pay_with_amazon {
+      float: left;
+      margin: 0;
+      line-height: 0;
+      width: 140px;
+      height: 35px;
+      background: #f4d281 url('../images/amazon-pay.png') no-repeat center;
+      background-size: 75%;
+
+      img {
+        opacity: 0;
+        width: 100% !important;
+        height: 100%;
+      }
+    }
+  }
+}

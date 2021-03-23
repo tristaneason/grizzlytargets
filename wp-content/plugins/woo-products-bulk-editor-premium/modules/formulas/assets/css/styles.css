@@ -1,0 +1,68 @@
+.formula-builder .action-fields .relationship:first-child,
+.formula-builder .action-fields .relationship-and {
+    display: none;
+}
+
+.formula-builder label {
+    display: block;
+}
+.formula-builder input,.formula-builder select, .formula-builder textarea {
+    display: block;
+    margin: 8px auto;
+    width: 53%;
+}
+.formula-builder textarea {
+    height: 27px;
+}
+
+/*Simple tabs start*/
+.vgse-simple-tabs a {
+    padding: 5px;
+    text-decoration: none;
+    color: black;
+    border-bottom: 1px solid #999;
+}
+.vgse-simple-tabs li {
+    float: left;
+    display: inline-block;
+    margin: 0;
+    padding: 6px 0;
+}
+.vgse-simple-tabs {
+    overflow: auto;
+    margin: 0;
+}
+.vgse-simple-tabs a.active {
+    border: 1px solid #999;
+    border-bottom: 0;
+}
+.vgse-simple-tab-content {
+    display: none;
+}
+.vgse-simple-tab-content.active {
+    display: block;
+}
+.vgse-simple-tabs a:focus {
+    box-shadow: none;
+}
+/*Simple tabs end*/
+#ongoing-formulas li {
+    text-align: left;
+    border-bottom:  1px solid #999;
+    padding: 10px;
+}
+
+button.delete-saved-formula {
+    float: right;
+}
+
+/*Simplify formulas modal*/
+.modal-formula ul.vgse-simple-tabs,
+.modal-formula li.apply-to-future-posts-field,
+.modal-formula button.remodal-secundario.save-formula,
+.modal-formula .formula-field {
+    display: none;
+}
+.formula-builder .action-title,.formula-builder .action-description {
+    margin: 0;
+}

@@ -1,0 +1,16 @@
+{
+  "name": "copify-checkout-template",
+  "version": "1.0.0",
+  "description": "### Development installation instructions",
+  "scripts": {
+    "dev": "npx webpack --env development",
+    "production": "npx webpack -p",
+    "watch": "npx webpack --env development --watch"
+  },
+  "devDependencies": {
+    "bourbon": "^5.1.0",
+    "bourbon-neat": "^2.1.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9"
+  }
+}

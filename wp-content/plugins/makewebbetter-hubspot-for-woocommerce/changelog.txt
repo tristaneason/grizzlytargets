@@ -1,0 +1,22 @@
+ *** HubSpot for WooCommerce Changelog ***
+
+2020-10-18 - version 1.0.6
+* Fix - Deal update issue.
+
+2020-09-30 - version 1.0.5
+* Fix - Source tracking. 
+
+2020-06-23 - version 1.0.4
+* Fix - Session issue and minor bugs. 
+
+2020-05-21 - version 1.0.3
+* Add - Shipment tracking and re-sync deals.
+
+2020-05-15 - version 1.0.2
+* Add - Multi site support.
+
+2020-05-07 - version 1.0.1
+* Fix - Contact sync from sync tab.
+
+2020-01-24 - version 1.0.0
+* Initial release.

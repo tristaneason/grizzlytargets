@@ -1,0 +1,113 @@
+/**
+ * Deprecated
+ * Fallback for bourbon equivalent
+ */
+@mixin clearfix() {
+  *zoom: 1;
+
+  &::before,
+  &::after {
+    content: ' ';
+    display: table;
+  }
+
+  &::after {
+    clear: both;
+  }
+}
+
+/**
+ * Forms
+ */
+.clear {
+  @include clearfix();
+}
+
+fieldset {
+  margin-top: 0.5em; /* for WooCommerce Subscription Gifting */
+  padding: 0;
+  border: 0;
+  min-width: inherit;
+}
+
+form {
+  #cfw_additional_fields_container, #payment, #wc_checkout_add_ons, #mailchimp_for_woocommerce {
+    .form-row {
+      padding: 0;
+      @include clearfix();
+      display: block;
+
+      label {
+        display: block;
+
+        &.checkbox {
+          display: inline;
+        }
+      }
+
+      select {
+        width: 100%;
+        background-color: #fff;
+      }
+
+      .input-text {
+        box-sizing: border-box;
+        width: 100%;
+      }
+    }
+
+    .form-row-first {
+      float: left;
+
+      /*rtl:raw:
+      float: right;
+      */
+    }
+
+    .form-row-last {
+      float: right;
+    }
+
+    .form-row-first,
+    .form-row-last {
+      width: 47%;
+      overflow: visible;
+
+      @media(max-width: 660px) {
+        width: calc(100% + 20px);
+        float: none;
+      }
+    }
+
+    .cfw-sg-container {
+      &.form-row-first,
+      &.form-row-last {
+        width: 52%;
+
+        @media(max-width: 660px) {
+          width: calc(100% + 20px);
+        }
+      }
+    }
+
+    .form-row-wide {
+      clear: both;
+    }
+  }
+}
+
+#payment {
+  .form-row {
+    select {
+      width: auto;
+    }
+  }
+}
+
+body.checkout-wc .woocommerce-checkout input[type=checkbox], input.input-checkbox {
+  margin-right: 0.25em;
+}
+
+p.form-row {
+  margin: 0.5em 0;
+}

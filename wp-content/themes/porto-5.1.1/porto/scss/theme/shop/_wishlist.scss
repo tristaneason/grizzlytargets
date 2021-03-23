@@ -1,0 +1,80 @@
+
+.shop_table.wishlist_table {
+    margin-bottom: 15px;
+    tr td {
+        text-align: $left;
+
+        @media #{$screen-medium} {
+            text-align: center;
+        }
+    }
+}
+
+.woocommerce table.shop_table.wishlist_table {
+    thead {
+        th,
+        td {
+            border: none;
+            padding: 10px;
+        }
+    }
+    tbody,
+    tfoot {
+        th,
+        td {
+            padding: 10px;
+        }
+    }
+}
+
+.shop_table.wishlist_table,
+.woocommerce table.wishlist_table {
+    font-size: 100%;
+
+    .add_to_cart.button {
+        display: inline-block !important;
+    }
+
+    .yith-wcwl-add-to-wishlist {
+        display: none;
+    }
+
+    .wishlist-empty {
+        text-align: center;
+    }
+
+    .quickview {
+        margin-#{$left}: 10px;
+    }
+}
+
+.woocommerce #content table.shop_table.wishlist_table.cart a.remove {
+    &:hover {
+        background: transparent;
+    }
+}
+
+.blockUI {
+    background: #fff !important;
+}
+
+.sidebar-content #yith-ajaxsearchform .btn {
+    color: #fff;
+    border-width: 1px;
+}
+
+.sidebar-content .autocomplete-suggestions {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.sidebar-content .autocomplete-suggestion {
+    padding-#{$left}: 8px;
+    padding-#{$right}: 8px;
+}
+
+.wishlist_table .add_to_cart.button {
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 34px;
+}

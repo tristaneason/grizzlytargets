@@ -1,0 +1,296 @@
+.txt-upper {
+    text-transform: uppercase;
+}
+
+.txt-capital {
+    text-transform: capitalize;
+}
+
+#en_res_address_no_record>td {
+    color: red;
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
+    line-height: 5vw;
+}
+/**
+* Address Section
+*/
+
+.en_residential_address_table {
+    font-family: 'Arial';
+    margin: 25px auto;
+    border-collapse: collapse;
+    border: 1px solid #eee;
+    background: #fff;
+    width: 100%;
+}
+
+.en_residential_address_table .en_res_heading,
+.en_res_data {
+    color: #555;
+    padding: 15px;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.en_residential_address_table .en_res_heading {
+    background: #fff none repeat scroll 0 0;
+    border-bottom: 1px solid #e1e1e1;
+    color: #0073aa;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+#en_residential_address_table tbody>tr:nth-of-type(even) {
+    background: #f9f9f9;
+}
+
+.en_res_data a img {
+    margin-left: 5px;
+    width: 17px;
+}
+
+.en_res_icon_link {
+    text-decoration: none;
+}
+
+.en_res_icon_link:hover {
+    opacity: 0.7;
+}
+
+.en_res_add_address_btn {
+    background: #006799;
+    border: medium none;
+    border-radius: 3px;
+    color: #fff;
+    padding: 7px 20px;
+    text-decoration: none;
+    text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
+}
+
+.en_success_alert {
+    background: #fff none repeat scroll 0 0;
+    border-left: 4px solid #0c990c;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    margin: 0.5vw 0 0.5vw 0;
+    padding: 1px 12px;
+    display: none;
+}
+
+.en_error_alert {
+    background: #fff none repeat scroll 0 0;
+    border-left: 4px solid #dc3232;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    margin: 0.5vw 0 0.5vw 0;
+    padding: 1px 12px;
+    display: none;
+}
+/* ===== Address table End ====== */
+/**
+ * ====================================================================
+ * ========================= Address Popup CSS Starts Here ============
+ * ====================================================================
+ */
+
+.en_res_address_overlay ,
+.en_res_delete_address_overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 9999;
+}
+
+.en_res_address_overlay:target 
+.en_res_delete_address_overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+.en_res_add_address_popup {
+    margin: 5% auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 40%;
+    position: relative;
+    transition: all 2s ease-in-out;
+}
+
+.en_res_add_address_popup h2 {
+    margin-top: 0;
+    color: #333;
+    font-family: Tahoma, Arial, sans-serif;
+}
+
+.en_res_add_address_popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+}
+
+.en_res_add_address_popup .close:hover {
+    color: #ea6153;
+}
+
+.en_res_add_address_popup .en_res_popup_content {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 450px;
+}
+
+.en_res_add_address_popup .en_res_popup_content label {
+    cursor: default;
+    font-weight: 900;
+}
+
+.en_res_add_address_popup .en_res_popup_content .en_res_address_form_input {
+    width: 100%;
+    clear: both;
+}
+
+.en_res_add_address_popup .en_res_popup_content .en_res_address_form_input input[type="text"],
+.en_res_add_address_popup .en_res_popup_content .en_res_address_form_input select {
+    margin: 10px;
+    width: 60%;
+    padding: 5px;
+    float: right;
+    height: 40px;
+    margin-bottom: 0px !important;
+}
+
+.en_res_add_address_popup .en_res_popup_content .en_res_address_form_input label {
+    font-weight: 600;
+    float: left;
+    line-height: 3.5;
+}
+
+.en-label-div-radio label {
+    width: 36%;
+    line-height: 1.6em !important;
+    margin-top: 10px;
+}
+
+label[for="en_res_nickname"]:after,
+label[for="en_res_address_addr"]:after,
+label[for="en_res_address_zip"]:after,
+label[for="en_res_address_city"]:after,
+label[for="en_res_address_state"]:after,
+label[for="en_res_country_code"]:after,
+label[for="en_res_address_type"]:after {
+    content: " *";
+    color: red;
+}
+
+.en-label-div-input-radio span {
+    margin: 10px;
+}
+
+.en_res_address_radio_label {
+    float: none !important;
+    margin-right: 10px;
+}
+
+.save_res_address_form {
+    background: #298cba none repeat scroll 0 0;
+    border: medium none;
+    color: #fff;
+    text-decoration: none;
+    padding: 7px 20px;
+    cursor: pointer;
+    border-radius: 2px;
+    font-size: 14px;
+    background-image: -webkit-linear-gradient(top, #0085ba, #2980b9);
+    background-image: -moz-linear-gradient(top, #0085ba, #2980b9);
+    background-image: -ms-linear-gradient(top, #0085ba, #2980b9);
+    background-image: -o-linear-gradient(top, #0085ba, #2980b9);
+    background-image: linear-gradient(to bottom, #0085ba, #2980b9);
+    float: right;
+    margin: 10px !important;
+}
+
+.save_res_address_form:hover {
+    opacity: 0.8;
+}
+
+.save_res_address_form:focus+div#en_res_add_address_btn {
+    display: none;
+}
+
+.en_res_address_err {
+    color: #ff0000;
+    font-size: 11px;
+    margin: 0 0 0 38%;
+}
+
+.en_res_already_exist {
+    background: #f1f1f1 none repeat scroll 0 0;
+    border-left: 4px solid #dc3232;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    margin: 5px 15px 2px 0px;
+    padding: 10px 12px;
+    display: none;
+}
+
+.en_res_not_allowed,
+.en_res_zero_results {
+    background: #f1f1f1 none repeat scroll 0 0;
+    border-left: 4px solid #dc3232;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    padding: 1px 12px;
+    display: none;
+}
+
+.dynamic_res_address_error,
+.en_res_wrng_credential {
+    background: #f1f1f1 none repeat scroll 0 0;
+    border-left: 4px solid #dc3232;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    padding: 1px 12px;
+    display: none;
+    width: 93%;
+}
+
+.en-res-form-btns {
+    float: right;
+    margin-top: 5px;
+    width: 100%;
+}
+
+#settings_tab_rad_address p.submit,
+.en_residential_addresses_template p.submit {
+    display: none;
+}
+/* ======= Address popup End ===== */
+/** 
+ * ===== Media Queries CSS ===== */
+
+@media screen and (max-width: 782px) {
+    .en-label-div-input-radio {
+        width: 40%;
+    }
+}
+
+.en_rad_cancel_delete {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 5px 10px;
+    text-decoration: none;
+}
+
+.residential_delivery_options_label_description_style td p {
+    font-style: normal !important;
+}

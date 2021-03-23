@@ -1,0 +1,845 @@
+li[data-slug="woocommerce"] > label > span {
+	display: none!important;
+}
+
+.wp-core-ui .woocommerce-button {
+	background-color: #bb77ae!important;
+	border-color: #A36597!important;;
+	-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.25),0 1px 0 #A36597!important;;
+	box-shadow: inset 0 1px 0 rgba(255,255,255,.25),0 1px 0 #A36597!important;;
+	text-shadow: 0 -1px 1px #A36597,1px 0 1px #A36597,0 1px 1px #A36597,-1px 0 1px #A36597!important;;
+	opacity: 1;
+}
+
+.porto-setup-content ul {
+	list-style: none;
+	padding-left: 0;
+}
+
+.porto-setup-content p.lead{
+	font-size: 1.2em;
+	color:#000;
+	border-bottom: 1px solid #eee;
+	padding-bottom: 15px;
+}
+.porto-setup-content p.success{
+	color: #08c !important;
+}
+.porto-setup-content p.error{
+	color: red!important;
+}
+
+.porto-setup-content p, .porto-setup-content table {
+	font-size: 1em;
+	line-height: 1.75em;
+	color: #666
+}
+
+.porto-setup-content .plugins-used {
+	display: none;
+}
+
+.porto-setup-content .theme-name {
+	font-size: 12px;
+	text-transform: uppercase;
+	white-space: nowrap;
+	text-align: center;
+	height: 18px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	margin-bottom: 0;
+	padding: 8px 0;
+}
+
+.porto-setup-content li.separator {
+	border-top: 1px solid #eee;
+	margin-top: 15px;
+	padding-top: 10px;
+	margin-bottom: 2px;
+}
+
+body {
+	margin: 30px auto 24px;
+	box-shadow: none;
+	background: #f1f1f1;
+	padding: 0;
+	max-width: 768px;
+	font-family: 'Open Sans', sans-serif;
+}
+
+#porto-logo {
+	border: 0;
+	margin: 0 0 24px;
+	padding: 0;
+	text-align: center
+}
+
+#porto-logo a:focus {
+	box-shadow: none;
+}
+
+#porto-logo img {
+	max-width: 50%
+}
+
+.porto-setup-content {
+	box-shadow: 0 1px 3px rgba(0, 0, 0, .13);
+	padding: 24px 24px 0;
+	background: #fff;
+	overflow: hidden;
+	zoom: 1
+}
+
+.porto-setup-content h1, .porto-setup-content h2, .porto-setup-content h3,  .porto-setup-content table {
+	margin: 0 0 20px;
+	border: 0;
+	padding: 0;
+	color: #666;
+	clear: none
+}
+.porto-setup-content table{
+	margin:0;
+}
+
+.porto-setup-content p {
+	margin: 0 0 20px
+}
+
+.porto-setup-content li p {
+	margin-bottom: 5px;
+}
+
+.porto-setup-content li .checkbox {
+	font-weight: 600;
+}
+
+.porto-setup-content li .checkbox span {
+	font-weight: 400;
+}
+
+.porto-setup-content a {
+	color: #08c
+}
+
+.porto-setup-content a:focus, .porto-setup-content a:hover {
+	color: #111
+}
+
+.porto-setup-content .form-table th {
+	width: 35%;
+	vertical-align: top;
+	font-weight: 400
+}
+
+.porto-setup-content .form-table td {
+	vertical-align: top
+}
+
+.porto-setup-content .form-table td input, .porto-setup-content .form-table td select {
+	width: 100%;
+	box-sizing: border-box
+}
+
+.porto-setup-content .form-table td input[size] {
+	width: auto
+}
+
+.porto-setup-content .form-table td .description {
+	line-height: 1.5em;
+	display: block;
+	margin-top: .25em;
+	color: #999;
+	font-style: italic
+}
+
+.porto-setup-content .form-table td .input-checkbox, .porto-setup-content .form-table td .input-radio {
+	width: auto;
+	box-sizing: inherit;
+	padding: inherit;
+	margin: 0 .5em 0 0;
+	box-shadow: none
+}
+
+.porto-setup-content .form-table .section_title td {
+	padding: 0
+}
+
+.porto-setup-content .form-table .section_title td h2, .porto-setup-content .form-table .section_title td p {
+	margin: 12px 0 0
+}
+
+.porto-setup-content .form-table td, .porto-setup-content .form-table th {
+	padding: 12px 0;
+	margin: 0;
+	border: 0
+}
+
+.porto-setup-content .form-table td:first-child, .porto-setup-content .form-table th:first-child {
+	padding-right: 1em
+}
+
+.porto-setup-content .form-table table.tax-rates {
+	width: 100%;
+	font-size: .92em
+}
+
+.porto-setup-content .form-table table.tax-rates th {
+	padding: 0;
+	text-align: center;
+	width: auto;
+	vertical-align: middle
+}
+
+.porto-setup-content .form-table table.tax-rates td {
+	border: 1px solid #eee;
+	padding: 6px;
+	text-align: center;
+	vertical-align: middle
+}
+
+.porto-setup-content .form-table table.tax-rates td input {
+	outline: 0;
+	border: 0;
+	padding: 0;
+	box-shadow: none;
+	text-align: center
+}
+
+.porto-setup-content .form-table table.tax-rates td.sort {
+	cursor: move;
+	color: #ccc
+}
+
+.porto-setup-content .form-table table.tax-rates td.sort:before {
+	content: "\f333";
+	font-family: dashicons
+}
+
+.porto-setup-content .form-table table.tax-rates .add {
+	padding: 1em 0 0 1em;
+	line-height: 1em;
+	font-size: 1em;
+	width: 0;
+	margin: 6px 0 0;
+	height: 0;
+	overflow: hidden;
+	position: relative;
+	display: inline-block
+}
+
+.porto-setup-content .form-table table.tax-rates .add:before {
+	content: "\f502";
+	font-family: dashicons;
+	position: absolute;
+	left: 0;
+	top: 0
+}
+
+.porto-setup-content .form-table table.tax-rates .remove {
+	padding: 1em 0 0 1em;
+	line-height: 1em;
+	font-size: 1em;
+	width: 0;
+	margin: 0;
+	height: 0;
+	overflow: hidden;
+	position: relative;
+	display: inline-block
+}
+
+.porto-setup-content .form-table table.tax-rates .remove:before {
+	content: "\f182";
+	font-family: dashicons;
+	position: absolute;
+	left: 0;
+	top: 0
+}
+
+.porto-setup-content .porto-setup-plugins {
+	width: 100%;
+	border-top: 1px solid #eee
+}
+
+.porto-setup-content .porto-setup-plugins thead th {
+	display: none
+}
+
+.porto-setup-content .porto-setup-plugins .plugin-name {
+	width: 30%;
+	font-weight: 700
+}
+
+.porto-setup-content .porto-setup-plugins td, .porto-setup-content .porto-setup-plugins th {
+	padding: 14px 0;
+	border-bottom: 1px solid #eee
+}
+
+.porto-setup-content .porto-setup-plugins td:first-child, .porto-setup-content .porto-setup-plugins th:first-child {
+	padding-right: 9px
+}
+
+.porto-setup-content .porto-setup-plugins th {
+	padding-top: 0
+}
+
+.porto-setup-content .porto-setup-plugins .page-options p {
+	color: #777;
+	margin: 6px 0 0 24px;
+	line-height: 1.75em
+}
+
+.porto-setup-content .porto-setup-plugins .page-options p input {
+	vertical-align: middle;
+	margin: 1px 0 0;
+	height: 1.75em;
+	width: 1.75em;
+	line-height: 1.75em
+}
+
+.porto-setup-content .porto-setup-plugins .page-options p label {
+	line-height: 1
+}
+
+@media screen and (max-width: 782px) {
+	.porto-setup-content .form-table tbody th {
+		width: auto
+	}
+}
+
+.porto-setup-content .twitter-share-button {
+	float: right
+}
+
+.porto-setup-content .porto-setup-next-steps {
+	overflow: hidden;
+	margin: 0 0 24px
+}
+
+.porto-setup-content .porto-setup-next-steps h2 {
+	margin-bottom: 12px
+}
+
+.porto-setup-content .porto-setup-next-steps .porto-setup-next-steps-first {
+	float: left;
+	width: 50%;
+	box-sizing: border-box
+}
+
+.porto-setup-content .porto-setup-next-steps .porto-setup-next-steps-last {
+	float: right;
+	width: 50%;
+	box-sizing: border-box
+}
+
+.porto-setup-content .porto-setup-next-steps ul {
+	padding: 0 2em 0 0;
+	list-style: none;
+	margin: 0 0 -.75em
+}
+
+.porto-setup-content .porto-setup-next-steps ul li a {
+	display: block;
+	padding: 0 0 .75em
+}
+
+.porto-setup-content .porto-setup-next-steps ul .setup-product a {
+	text-align: center;
+	font-size: 1em;
+	padding: 1em;
+	line-height: 1.75em;
+	height: auto;
+	margin: 0 0 .75em;
+	opacity: 1;
+}
+.porto-setup-content .porto-setup-next-steps ul .setup-product a.button-primary {
+	background-color: #08c;
+	border-color: #08c;
+	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 0 rgba(0, 0, 0, .15);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 0 rgba(0, 0, 0, .15)
+}
+
+.porto-setup-content .porto-setup-next-steps ul li a:before {
+	color: #82878c;
+	font: 400 20px/1 dashicons;
+	speak: none;
+	display: inline-block;
+	padding: 0 10px 0 0;
+	top: 1px;
+	position: relative;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-decoration: none !important;
+	vertical-align: top
+}
+
+.porto-setup-content .porto-setup-next-steps ul .documentation a:before {
+	content: "\f331"
+}
+
+.porto-setup-content .porto-setup-next-steps ul .howto a:before {
+	content: "\f223"
+}
+
+.porto-setup-content .porto-setup-next-steps ul .rating a:before {
+	content: "\f155"
+}
+
+.porto-setup-content .porto-setup-next-steps ul .support a:before {
+	content: "\f307"
+}
+
+.porto-setup-content .updated, .porto-setup-content .woocommerce-language-pack, .porto-setup-content .woocommerce-tracker {
+	padding: 24px 24px 0;
+	margin: 0 0 24px;
+	overflow: hidden;
+	background: #f5f5f5
+}
+
+.porto-setup-content .updated p, .porto-setup-content .woocommerce-language-pack p, .porto-setup-content .woocommerce-tracker p {
+	padding: 0;
+	margin: 0 0 12px
+}
+
+.porto-setup-content .updated p:last-child, .porto-setup-content .woocommerce-language-pack p:last-child, .porto-setup-content .woocommerce-tracker p:last-child {
+	margin: 0 0 24px
+}
+
+.porto-setup-steps {
+	padding: 0 0 24px;
+	margin: 0;
+	list-style: none;
+	overflow: hidden;
+	color: #ccc;
+	width: 100%;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex
+}
+
+.porto-setup-steps li {
+	width: 20%;
+	padding: 3px 0 .8em;
+	margin: 0;
+	text-align: center;
+	position: relative;
+	border-bottom: 4px solid #ccc;
+	line-height: 1.4em;
+	display: -webkit-flex; display: -ms-flexbox; display: flex;
+	-webkit-align-items: center; -ms-align-items: center; align-items: center; -ms-flex-align: center;
+	-webkit-justify-content: center; -ms-justify-content: center; justify-content: center; -ms-flex-pack: center;
+}
+
+.porto-setup-steps li:before {
+	content: "";
+	border: 4px solid #ccc;
+	border-radius: 100%;
+	width: 4px;
+	height: 4px;
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	margin-left: -6px;
+	margin-bottom: -8px;
+	background: #fff
+}
+
+.porto-setup-steps li a {
+	text-decoration: none;
+	word-break: break-word;
+}
+.porto-setup-steps li.active {
+	border-color: #08c;
+	color: #08c
+}
+.porto-setup-steps li.active a{
+	color: #08c
+}
+
+.porto-setup-steps li.active:before {
+	border-color: #08c
+}
+
+.porto-setup-steps li.done {
+	border-color: #08c;
+	color: #08c
+}
+.porto-setup-steps li.done a {
+	color: #08c
+}
+
+.porto-setup-steps li.done:before {
+	border-color: #08c;
+	background: #08c
+}
+
+.porto-setup .porto-setup-actions:after {
+	content: '';
+	display: table;
+	clear: both;
+}
+
+.porto-setup .porto-setup-actions .button {
+	float: right;
+	font-size: 1.25em;
+	padding: .5em 1em;
+	line-height: 1em;
+	margin-right: .5em;
+	height: auto
+}
+
+.porto-setup .porto-setup-actions .button-primary {
+	margin: 0;
+	float: right;
+	opacity: 1;
+}
+
+.wc-return-to-dashboard {
+	font-size: .85em;
+	color: #b5b5b5;
+	margin: 1.18em 0;
+	display: block;
+	text-align: center
+}
+
+
+.dtbaker_loading_button_current{
+	color:#CCC !important;
+	text-align: center;
+
+}
+.porto-setup-wizard-plugins li{
+	position: relative;
+}
+.porto-setup-wizard-plugins li span{
+	padding: 0 0 0 10px;
+	font-size: 0.9em;
+	color: #08c;
+	display: inline-block;
+	position: relative;
+}
+.porto-setup-wizard-plugins li.installing .spinner{
+	visibility: visible;
+}
+.porto-setup-wizard-plugins li .spinner{
+	display: inline-block;
+	position: absolute;
+}
+.porto-setup-pages{
+	width:100%;
+}
+.porto-setup-pages .check{
+	width:35px;
+}
+.porto-setup-pages .item{
+	width:90px;
+}
+.porto-setup-pages td,
+.porto-setup-pages th{
+	padding:5px;
+}
+.porto-setup-pages .status{
+	display: none;
+}
+.porto-setup-pages.installing .status{
+	display: table-cell;
+}
+.porto-setup-pages.installing .status span{
+	display: inline-block;
+	position: relative;
+}
+.porto-setup-pages.installing .description{
+	display: none;
+}
+
+.porto-setup-pages.installing .spinner{
+	visibility: visible;
+}
+.porto-setup-pages .spinner{
+	display: inline-block;
+	position: absolute;
+}
+
+
+.demo-sort-filters ul {
+	list-style: none;
+	padding-left: 0;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	margin-top: 0;
+}
+
+.demo-sort-filters ul li {
+	margin-right: 20px;
+}
+
+.demo-sort-filters ul a {
+	font-size: 11px;
+	text-decoration: none;
+	color: #777;
+	text-transform: uppercase;
+	font-weight: 700;
+	box-shadow: none;
+}
+
+.demo-sort-filters .active a {
+	color: #fff;
+	background: #08c;
+	border-radius: 4px;
+	padding: 5px 12px;
+}
+
+#theme-install-demos {
+	max-height: 300px;
+	overflow: auto;
+	overflow-x: hidden;
+	margin-left: -8px;
+	margin-right: -8px;
+}
+
+#theme-install-demos .theme {
+	float: left;
+	padding: 0 8px;
+	margin: 0 0 16px 0;
+	width: 25%;
+	cursor: default;
+	border: none;
+	box-shadow: none;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+
+#theme-install-demos .theme:hover .theme-wrapper {
+	box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+}
+
+#theme-install-demos .theme img {
+	width: 100%;
+	height: auto;
+}
+
+.porto-install-demo {
+	font-size: 14px;
+	padding-bottom: 40px;
+	background: #fff;
+	padding: 20px;
+	max-width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#porto-install-options label {
+	display: block;
+	margin-bottom: 8px;
+}
+
+.porto-install-demo img {
+	max-width: 100%;
+	height: auto;
+}
+
+.porto-install-demo .porto-install-options-section {
+  padding-bottom: 0.5em;
+}
+
+.porto-install-demo .plugins-used {
+	padding: 0;
+	margin: 0;
+}
+
+.porto-install-demo .plugins-used > li {
+	display: table;
+	width: 100%;
+}
+
+.porto-install-demo .plugins-used > li > * {
+	display: table-cell;
+	vertical-align: top;
+}
+
+.porto-install-demo .plugins-used .thumb {
+	width: 40px;
+	padding-right: 8px;
+}
+
+.porto-install-demo .plugins-used h5 {
+	font-size: 14px;
+	margin: 0 0 4px 0;
+}
+
+.porto-install-demo .plugins-used p {
+	margin: 0;
+	font-size: 13px;
+}
+
+.porto-install-demo .more-options {
+  display: block;
+  float: right;
+  text-align: center;
+  cursor: pointer;
+  font-size: 11px;
+  padding-right: 10px;
+  text-transform: uppercase;
+  position: relative;
+}
+.porto-install-demo .more-options:after {
+  content: '';
+  border-top: 4px solid #21293c;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top: -2px;
+}
+.porto-install-demo .more-options.opened:after {
+  border-top: none;
+  border-bottom: 4px solid #21293c;
+}
+
+.porto-demo-install {
+  position: relative;
+  padding-left: 27px;
+}
+@-webkit-keyframes spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(359deg);
+		transform: rotate(359deg);
+	}
+}
+@keyframes spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(359deg);
+		transform: rotate(359deg);
+	}
+}
+.porto-demo-install i.porto-ajax-loader {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  margin-top: -11px;
+  display: inline-block;
+  border: 2px solid transparent;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  border-radius: 20px;
+  border-top-color: #08c !important;
+  -webkit-animation: spin 0.75s infinite linear;
+  animation: spin 0.75s infinite linear;
+}
+.porto-demo-install i.porto-ajax-loader:before {
+	content: '';
+	position: absolute;
+	left: -2px;
+	top: -2px;
+	width: inherit;
+	height: inherit;
+	border: inherit;
+	border-radius: inherit;
+	border-top-color: inherit;
+	-webkit-animation: spin 1.5s infinite ease;
+	animation: spin 1.5s infinite ease;
+}
+.import-progress-bar {
+	margin-top: 10px;
+	background: #ccc;
+	width: 100%;
+	height: 20px;
+	border: 1px solid #ccc;
+}
+.import-progress-bar div {
+	background: #08c;
+	height: 20px;
+}
+
+#current-logo img {
+	vertical-align: middle;
+	max-height: 340px;
+	max-width: 340px;
+	padding: 5px;
+	margin-bottom: 0;
+	margin-right: 15px;
+	border: 1px solid #e3e3e3;
+	background: #f4f4f4;
+	border-radius: 4px;
+}
+
+.system-status > li {
+	margin-bottom: 14px;
+}
+.system-status > li .label {
+	display: inline-block;
+	width: 200px;
+}
+.system-status .dashicons-yes {
+	color: green;
+}
+.system-status .dashicons-no {
+	color: #f00;
+}
+.system-status .status-notice {
+	margin-top: 0;
+	font-size: 12px;
+	color: #777;
+}
+.system-status li.info {
+	font-size: 11px;
+	color: #999;
+}
+
+.system-status li p { margin-bottom: 0; }
+
+.btn {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 6px 12px;
+  transition: background 0.3s ease;
+  width: 100%;
+}
+.btn:disabled {
+	cursor: default;
+}
+.btn-primary {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #0088cc;
+  border: 1px solid;
+  border-color: #0088cc #0088cc #006699;
+}
+.btn-primary:not(:disabled):hover, .btn-primary:not(:disabled):focus, .btn-primary:not(:disabled):active {
+	color: #ffffff;
+	background-color: #0077b3;
+	border-color: #0088cc #0088cc #005580;
+}
+.btn-primary[disabled] {
+  background-color: #0088cc;
+  border-color: #0088cc;
+  pointer-events: none;
+}
+.btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled]:active {
+  background-color: #0088cc;
+  border-color: #0088cc;
+}
+.btn-quaternary {
+	color: #ffffff;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #383f48;
+	border: 1px solid;
+	border-color: #383f48;
+	border-color: #383f48 #383f48 #22262b;
+}
+.btn-quaternary:not(:disabled):hover, .btn-quaternary:not(:disabled):focus, .btn-quaternary:not(:disabled):active {
+	color: #ffffff;
+	background-color: #2d323a;
+	border-color: #383f48 #383f48 #17191d;
+}

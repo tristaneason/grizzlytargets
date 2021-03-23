@@ -1,0 +1,623 @@
+# Copyright (C) 2021 SkyVerge
+# This file is distributed under the GNU General Public License v3.0.
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce Authorize.Net Gateway 3.5.0\n"
+"Report-Msgid-Bugs-To: "
+"https://woocommerce.com/my-account/marketplace-ticket-form/\n"
+"POT-Creation-Date: 2021-03-02 15:47:20+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2021-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: class-wc-authorize-net-cim.php:144
+#. translators: %1$s error message, %2$s <a> tag, %3$s </a> tag
+msgid ""
+"Oops! It looks like an error occurred while installing the new plugin: "
+"%1$s. We recommend you to %2$sdownload%3$s and install it manually."
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:354
+msgid "Province"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:359
+msgid "Island"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:363
+msgid "State"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:368
+msgid "County"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:374
+msgid "District"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:378
+msgid "Region"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:417
+msgid ""
+"%1$sThank you for migrating to the Authorize.Net Emulation Gateway "
+"plugin!%2$s You may now safely %3$sdeactivate WooCommerce "
+"Authorize.Net%4$s. If you need assistance using the new plugin, please "
+"%5$scontact support%6$s."
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:452
+msgid "Disable Emulation Gateway"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:476
+msgid "Configure Emulator"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:480
+msgid "Configure eChecks"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:484
+msgid "Configure Credit Cards"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:505
+msgid "You do not have sufficient permissions"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:509
+msgid "Authorize.Net Emulation is now disabled"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:511
+msgid "Authorize.Net Emulation is now enabled"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:524
+msgid "Could not %1$s Authorize.Net Emulation. %1$s"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:552
+msgid "Authorize.Net AIM"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:553
+msgid "Authorize.Net SIM"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:554
+msgid "Authorize.Net DPM"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:559
+msgid ""
+"Migration successful! %1$s was deactivated, and %2$s has been "
+"%3$sconfigured with your previous settings%4$s."
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:594
+msgid ""
+"Thanks for installing the WooCommerce Authorize.Net Gateway! To start "
+"accepting payments, %sset your Authorize.Net API credentials%s. Need help? "
+"See the %sdocumentation%s."
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:655
+msgid ""
+"Unable to get a Public Client Key from your Authorize.Net account. Please "
+"%1$scontact Authorize.Net%2$s to set up your Public Client Key. "
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:662
+msgid ""
+"Unable to reach your Authorize.Net account. Please double check your API "
+"Login ID & Transaction Key to ensure payments can be processed."
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:688
+msgid ""
+"The CIM Add-On is not enabled on your Authorize.Net account. Please "
+"%1$scontact Authorize.Net%2$s to enable CIM. You will be unable to process "
+"transactions until CIM is enabled. "
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:724
+msgid ""
+"%1$sHeads up!%2$s We are deprecating support for the emulation gateway in "
+"WooCommerce Authorize.Net on %3$s. After that date, the emulation gateway "
+"will be removed from WooCommerce Authorize.Net. To keep using the emulation "
+"gateway, please migrate to our Authorize.Net Emulation for WooCommerce "
+"plugin. We will support this plugin until %4$sthe end of your current "
+"WooCommerce Authorize.Net subscription.%5$s"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:732
+msgid "Learn more"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:733
+msgid "Migrate to Authorize.Net Emulation Gateway"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:786
+msgid "Shipping Address ID"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:800
+msgid "The shipping profile ID for the user. Only edit this if necessary."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "WooCommerce Authorize.Net Gateway"
+msgstr ""
+
+#: includes/Emulation/API/Response.php:93
+#: includes/api/profile/class-wc-authorize-net-cim-api-profile-response.php:140
+msgid "Could not parse direct response."
+msgstr ""
+
+#: includes/Emulation/API.php:164
+#: includes/api/class-wc-authorize-net-cim-api.php:793
+msgid "HTTP %s: %s"
+msgstr ""
+
+#: includes/Emulation/Credit_Card.php:71
+msgid "Authorize.Net Emulation"
+msgstr ""
+
+#: includes/Emulation/Credit_Card.php:72
+msgid ""
+"Allow customers to securely pay using their credit cards via a payment "
+"processor that supports Authorize.Net Emulation."
+msgstr ""
+
+#: includes/Emulation/Credit_Card.php:84
+#: includes/class-wc-gateway-authorize-net-cim-credit-card.php:74
+#: includes/class-wc-gateway-authorize-net-cim-echeck.php:75
+msgid "Production"
+msgstr ""
+
+#: includes/Emulation/Credit_Card.php:85
+#: includes/class-wc-gateway-authorize-net-cim-credit-card.php:74
+#: includes/class-wc-gateway-authorize-net-cim-echeck.php:75
+msgid "Test"
+msgstr ""
+
+#: includes/Emulation/Credit_Card.php:106
+msgid "Payment Gateway URL"
+msgstr ""
+
+#: includes/Emulation/Credit_Card.php:109
+msgid ""
+"The URL to post transaction requests to. Your payment processor should "
+"provide this to you."
+msgstr ""
+
+#: includes/Emulation/Credit_Card.php:114
+#: includes/class-wc-gateway-authorize-net-cim.php:143
+msgid "API Login ID"
+msgstr ""
+
+#: includes/Emulation/Credit_Card.php:117
+#: includes/class-wc-gateway-authorize-net-cim.php:146
+msgid "Your Authorize.Net API Login ID"
+msgstr ""
+
+#: includes/Emulation/Credit_Card.php:121
+#: includes/class-wc-gateway-authorize-net-cim.php:150
+msgid "API Transaction Key"
+msgstr ""
+
+#: includes/Emulation/Credit_Card.php:124
+#: includes/class-wc-gateway-authorize-net-cim.php:153
+msgid "Your Authorize.Net API Transaction Key"
+msgstr ""
+
+#: includes/Emulation/Credit_Card.php:128
+msgid "Test Payment Gateway URL"
+msgstr ""
+
+#: includes/Emulation/Credit_Card.php:131
+msgid ""
+"The test URL to post transaction requests to. Your payment processor should "
+"provide this to you."
+msgstr ""
+
+#: includes/Emulation/Credit_Card.php:136
+#: includes/class-wc-gateway-authorize-net-cim.php:164
+msgid "Test API Login ID"
+msgstr ""
+
+#: includes/Emulation/Credit_Card.php:139
+#: includes/class-wc-gateway-authorize-net-cim.php:167
+msgid "Your test Authorize.Net API Login ID"
+msgstr ""
+
+#: includes/Emulation/Credit_Card.php:143
+#: includes/class-wc-gateway-authorize-net-cim.php:171
+msgid "Test API Transaction Key"
+msgstr ""
+
+#: includes/Emulation/Credit_Card.php:146
+#: includes/class-wc-gateway-authorize-net-cim.php:174
+msgid "Your test Authorize.Net API Transaction Key"
+msgstr ""
+
+#: includes/Handlers/Hosted_Payment_Handler.php:105
+#: includes/Payment_Form.php:160
+#: includes/class-wc-gateway-authorize-net-cim-echeck.php:218
+#: includes/class-wc-gateway-authorize-net-cim.php:388
+msgid "An error occurred, please try again or try an alternate form of payment."
+msgstr ""
+
+#: includes/api/Hosted/Payment_Form_Request.php:138
+#: includes/api/transaction/abstract-wc-authorize-net-cim-api-transaction-request.php:126
+msgid "Fee"
+msgstr ""
+
+#: includes/api/Hosted/Payment_Form_Request.php:139
+#: includes/api/transaction/abstract-wc-authorize-net-cim-api-transaction-request.php:127
+msgid "Order Fee"
+msgstr ""
+
+#: includes/api/Hosted/Payment_Form_Request.php:177
+#: includes/api/transaction/abstract-wc-authorize-net-cim-api-transaction-request.php:163
+msgid "Order Taxes"
+msgstr ""
+
+#: includes/api/Hosted/Payment_Form_Request.php:201
+#: includes/api/transaction/abstract-wc-authorize-net-cim-api-transaction-request.php:186
+msgid "Order Shipping"
+msgstr ""
+
+#: includes/api/Hosted/Payment_Form_Request.php:250
+msgid "Pay"
+msgstr ""
+
+#: includes/api/Hosted/Payment_Form_Request.php:260
+msgid "Cancel"
+msgstr ""
+
+#: includes/api/abstract-wc-authorize-net-cim-api-response.php:98
+#: includes/api/abstract-wc-authorize-net-cim-api-response.php:114
+msgid "N/A"
+msgstr ""
+
+#: includes/api/class-wc-authorize-net-cim-api-response-message-helper.php:154
+msgid "Oops, sorry! A temporary error occurred. Please try again in 5 minutes."
+msgstr ""
+
+#: includes/api/class-wc-authorize-net-cim-api-response-message-helper.php:158
+msgid ""
+"This transaction was authorized successfully, but could not be settled. "
+"Please contact us."
+msgstr ""
+
+#: includes/api/class-wc-authorize-net-cim-api-response-message-helper.php:162
+msgid ""
+"The name and/or bank account type does not match. Please re-enter and try "
+"again."
+msgstr ""
+
+#: includes/api/class-wc-authorize-net-cim-api.php:812
+msgid "Code: %s, Message: %s"
+msgstr ""
+
+#: includes/api/class-wc-authorize-net-cim-api.php:816
+msgid ""
+"Test request detected -- please disable test mode in your Authorize.Net "
+"control panel and use a separate Authorize.Net test account for testing."
+msgstr ""
+
+#: includes/api/profile/class-wc-authorize-net-cim-api-profile-response.php:246
+msgid "Code: %s - %s"
+msgstr ""
+
+#: includes/api/transaction/class-wc-authorize-net-cim-api-non-profile-transaction-response.php:132
+msgid "Message Code: %s - %s"
+msgstr ""
+
+#: includes/api/transaction/class-wc-authorize-net-cim-api-non-profile-transaction-response.php:141
+msgid "Error Code: %s - %s"
+msgstr ""
+
+#: includes/class-wc-authorize-net-cim-payment-profile-editor.php:77
+msgid "Profile ID"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-credit-card.php:52
+msgid "Authorize.Net Credit Card"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-credit-card.php:53
+msgid "Allow customers to securely pay using their credit cards with Authorize.Net."
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-credit-card.php:103
+msgid "Add payment method"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-credit-card.php:105
+msgid "Place order"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-credit-card.php:264
+#. translators: Placeholders: %1$s - <strong> tag, %2$s - </strong> tag
+msgid ""
+"%1$sPossible fraud detected based on your Authorize.Net Fraud Filter "
+"configuration.%2$s Please review the transaction from your merchant account "
+"before processing."
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-credit-card.php:270
+#. translators: Placeholders: %s - an AVS result code, such as "A"
+msgid "AVS Result: %s"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-credit-card.php:275
+#. translators: Placeholders: %s - a CSC result code, such as "N"
+msgid "CSC Result: %s"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-credit-card.php:309
+msgid "Order is missing customer profile ID."
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-credit-card.php:325
+msgid ""
+"The transaction cannot be partially refunded until it has settled. You can "
+"either wait for settlement to process or use the full order total to void "
+"the transaction."
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-credit-card.php:327
+msgid ""
+"The transaction cannot be partially refunded until it has been captured and "
+"settled. Please capture the order or use the full order total to void the "
+"transaction."
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-credit-card.php:349
+msgid ""
+"Order is missing the last four digits or expiration date of the credit card "
+"used."
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-credit-card.php:354
+msgid "%s Refund error - %s"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-echeck.php:61
+msgid "Authorize.Net eCheck"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-echeck.php:62
+msgid ""
+"Allow customers to securely pay using their checking/savings accounts with "
+"Authorize.Net."
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-echeck.php:107
+msgid "Authorization"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-echeck.php:108
+msgid "Display an authorization confirmation message at checkout"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-echeck.php:114
+msgid "Authorization Message"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-echeck.php:117
+#: includes/class-wc-gateway-authorize-net-cim-echeck.php:132
+msgid ""
+"Use these tags to customize your message: %1$s{merchant_name}%2$s, "
+"%1$s{order_date}%2$s, and %1$s{order_total}%2$s"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-echeck.php:129
+msgid "Recurring Authorization Message"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-echeck.php:396
+msgid ""
+"By clicking the button below, I authorize %1$s to charge my bank account on "
+"%2$s for the amount of %3$s."
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim-echeck.php:414
+msgid ""
+"By clicking the button below, I authorize %1$s to charge my bank account "
+"for the amount of %2$s on %3$s, then according to the above recurring "
+"totals thereafter."
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim.php:157
+msgid "API Signature Key"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim.php:160
+msgid "Your Authorize.Net API Signature Key, used for verifying webhooks"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim.php:178
+msgid "Test API Signature Key"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim.php:181
+msgid "Your test Authorize.Net API Signature Key, used for processing webhooks"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim.php:202
+msgid "Inline"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim.php:206
+msgid "Lightbox"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim.php:210
+msgid "Hosted"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim.php:218
+msgid "Payment form type"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim.php:221
+msgid "Select the desired payment form behavior at checkout."
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim.php:256
+msgid ""
+"Display an embedded payment form on the pay page for PCI-DSS SAQ A "
+"compliance."
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim.php:263
+msgid ""
+"Display the payment form as a lightbox at checkout for PCI-DSS SAQ A "
+"compliance."
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim.php:265
+msgid "Display the payment form inline at checkout for PCI-DSS SAQ A-EP compliance."
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim.php:796
+msgid "Payment Profile ID"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim.php:797
+msgid "Customer Profile ID"
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim.php:818
+msgid "Payment Profile ID must be numeric."
+msgstr ""
+
+#: includes/class-wc-gateway-authorize-net-cim.php:823
+msgid "Customer Profile ID must be numeric."
+msgstr ""
+
+#: includes/webhooks/abstract-wc-authorize-net-cim-customer-webhook.php:56
+msgid "The payment method has been deleted from the Authorize.Net merchant account."
+msgstr ""
+
+#: includes/webhooks/abstract-wc-authorize-net-cim-customer-webhook.php:58
+msgid ""
+"The customer profile has been deleted from the Authorize.Net merchant "
+"account."
+msgstr ""
+
+#: includes/webhooks/class-wc-authorize-net-cim-webhooks.php:359
+msgid "%1$s supports webhooks to help keep your customer's payment methods in sync."
+msgstr ""
+
+#: includes/webhooks/class-wc-authorize-net-cim-webhooks.php:373
+msgid "Click here to enable webhooks &raquo;"
+msgstr ""
+
+#: includes/webhooks/class-wc-authorize-net-cim-webhooks.php:377
+msgid "Click here to learn more about setting up webhooks &raquo;"
+msgstr ""
+
+#: includes/webhooks/class-wc-authorize-net-cim-webhooks.php:386
+msgid ""
+"%1$s webhooks are currently disabled because your %2$sSignature Key%3$s is "
+"missing. %4$sPlease review the documentation%5$s for setting up webhook "
+"support."
+msgstr ""
+
+#: includes/webhooks/class-wc-authorize-net-cim-webhooks.php:414
+msgid "Webhooks Enabled"
+msgstr ""
+
+#: includes/webhooks/class-wc-authorize-net-cim-webhooks.php:415
+msgid "Displays whether or not webhooks are enabled for this gateway."
+msgstr ""
+
+#: includes/webhooks/class-wc-authorize-net-cim-webhooks.php:418
+msgid "Inherited"
+msgstr ""
+
+#: includes/webhooks/class-wc-authorize-net-cim-webhooks.php:424
+msgid "No signature key configured"
+msgstr ""
+
+#: includes/webhooks/class-wc-authorize-net-cim-webhooks.php:424
+msgid "Not generated"
+msgstr ""
+
+#: includes/webhooks/class-wc-authorize-net-cim-webhooks.php:448
+msgid "You do not have permission to access this page."
+msgstr ""
+
+#: includes/webhooks/class-wc-authorize-net-cim-webhooks.php:452
+msgid "Success! Webhooks have been enabled."
+msgstr ""
+
+#: includes/webhooks/class-wc-authorize-net-cim-webhooks.php:454
+msgid "Error creating webhooks. Please check the debug logs."
+msgstr ""
+
+#: includes/webhooks/class-wc-authorize-net-cim-webhooks.php:479
+msgid "Reset Authorize.Net Webhooks"
+msgstr ""
+
+#: includes/webhooks/class-wc-authorize-net-cim-webhooks.php:480
+msgid "Reset webhooks now"
+msgstr ""
+
+#: includes/webhooks/class-wc-authorize-net-cim-webhooks.php:481
+msgid ""
+"This will reset your Authorize.Net webhooks - useful if your site URL has "
+"changed or you aren't recieving customer profile updates."
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://www.woocommerce.com/products/authorize-net-cim/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Adds the Authorize.Net Payment Gateway to your WooCommerce site, allowing "
+"customers to securely save their credit card or bank account to their "
+"account for use with single purchases, pre-orders, subscriptions, and more!"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "SkyVerge"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.woocommerce.com/"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:520
+msgctxt "an action for a plugin feature"
+msgid "disable"
+msgstr ""
+
+#: class-wc-authorize-net-cim.php:520
+msgctxt "an action for a plugin feature"
+msgid "enable"
+msgstr ""
+
+#: includes/api/Hosted/Payment_Form_Request.php:77
+#: includes/api/transaction/class-wc-authorize-net-cim-api-non-profile-transaction-request.php:95
+#: includes/api/transaction/class-wc-authorize-net-cim-api-non-profile-transaction-request.php:193
+#: includes/api/transaction/class-wc-authorize-net-cim-api-non-profile-transaction-request.php:218
+#: includes/api/transaction/class-wc-authorize-net-cim-api-profile-transaction-request.php:81
+#: includes/api/transaction/class-wc-authorize-net-cim-api-profile-transaction-request.php:133
+msgctxt "hash before the order number"
+msgid "#"
+msgstr ""

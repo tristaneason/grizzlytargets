@@ -1,0 +1,782 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Checkout for WooCommerce\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-11-06 09:56-0500\n"
+"PO-Revision-Date: 2019-11-06 10:05-0500\n"
+"Last-Translator: Clifton Griffin <clif@checkoutwc.com>\n"
+"Language-Team: Dansk\n"
+"Language: da_DK\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.4\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: checkout-for-woocommerce.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Loco-Version: 2.3.0; wp-5.2.2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SearchPathExcluded-1: dist\n"
+"X-Poedit-SearchPathExcluded-2: vendor\n"
+
+#: functions.php:8
+msgid "First Name"
+msgstr "Fornavn"
+
+#: functions.php:13
+msgid "Last Name"
+msgstr "Efternavn"
+
+#: functions.php:808
+msgid "Remove Item"
+msgstr "Fjern vare"
+
+#: functions.php:826
+msgid "Edit"
+msgstr "Rediger"
+
+#: functions.php:932 functions.php:939
+msgid "Not Calculated"
+msgstr "Ikke beregnet"
+
+#: functions.php:937
+msgid "Not Available"
+msgstr "Ikke tilgængelig"
+
+#: functions.php:950
+msgid "Complete Order"
+msgstr "Ordren udføres"
+
+#: functions.php:983 templates/copify/content.php:62
+#: templates/copify/thank-you.php:130 templates/default/content.php:55
+#: templates/default/thank-you.php:118 templates/futurist/content.php:53
+#: templates/futurist/thank-you.php:118
+msgid "Payment method"
+msgstr "Betalingsmetode"
+
+#: functions.php:992
+msgid ""
+"All transactions are secure and encrypted. Credit card information is never "
+"stored on our servers."
+msgstr ""
+"Alle transaktioner er sikre og krypterede. Kreditkortoplysninger gemmes "
+"aldrig på vores servere."
+
+#: functions.php:1003
+msgid "Your order is free. No payment is required."
+msgstr "Din ordre er gratis. Ingen betaling er påkrævet."
+
+#: functions.php:1091
+msgid "Same as shipping address"
+msgstr "Samme som forsendelsesadresse"
+
+#: functions.php:1101
+msgid "Use a different billing address"
+msgstr "Brug en anden faktureringsadresse"
+
+#: functions.php:1218 templates/copify/content.php:175
+#: templates/copify/thank-you.php:146 templates/default/content.php:168
+#: templates/default/thank-you.php:134 templates/futurist/content.php:172
+#: templates/futurist/thank-you.php:134
+msgid "Billing address"
+msgstr "Faktura adresse"
+
+#: functions.php:1312
+msgid "Return to cart"
+msgstr "Tilbage til kurv"
+
+#: functions.php:1316
+msgid "Continue to shipping method"
+msgstr "Fortsæt med forsendelsesmetode"
+
+#: functions.php:1320
+msgid "Continue to payment method"
+msgstr "Fortsæt til betalingsmetode"
+
+#: functions.php:1324
+msgid "Return to customer information"
+msgstr "Tilbage til kundeoplysninger"
+
+#: functions.php:1328
+msgid "Return to shipping information"
+msgstr "Tilbage til forsendelsesoplysninger"
+
+#: includes/Compatibility/Base.php:172
+msgid "Or"
+msgstr "Eller"
+
+#: includes/Compatibility/Gateways/PayPalForWooCommerce.php:102
+msgid "Logged in with PayPal. Please continue your order below."
+msgstr "Logget ind med PayPal. Fortsæt din bestilling nedenfor."
+
+#. Plugin Name of the plugin/theme
+#: includes/Core/Admin.php:108 includes/Core/Admin.php:144
+#: includes/Core/Customizer.php:256 includes/Main.php:840
+msgid "Checkout for WooCommerce"
+msgstr "Checkout for WooCommerce"
+
+#: includes/Core/Admin.php:108
+msgid "CheckoutWC"
+msgstr "CheckoutWC"
+
+#: includes/Core/Admin.php:111 includes/Core/Customizer.php:269
+#: includes/Main.php:848
+msgid "General"
+msgstr "Generelt"
+
+#: includes/Core/Admin.php:112 includes/Core/Customizer.php:315
+#: includes/Core/Customizer.php:332 includes/Main.php:857
+msgid "Template"
+msgstr "Skabelon"
+
+#: includes/Core/Admin.php:113 includes/Core/Customizer.php:346
+#: includes/Core/Customizer.php:383 includes/Main.php:866
+msgid "Design"
+msgstr "Design"
+
+#: includes/Core/Admin.php:116
+msgid "Addons"
+msgstr "Tilføjelser"
+
+#: includes/Core/Admin.php:119 includes/Main.php:875
+msgid "License"
+msgstr "Licens"
+
+#: includes/Core/Admin.php:120 includes/Main.php:884
+msgid "Support"
+msgstr "Support"
+
+#: includes/Core/Admin.php:121
+msgid "Recommended Plugins"
+msgstr "Anbefalede Plugins"
+
+#: includes/Core/Admin.php:145 includes/Core/Customizer.php:259
+msgid ""
+"Checkout for WooCommerce provides a beautiful, conversion optimized checkout "
+"template for WooCommerce."
+msgstr ""
+"Checkout for WooCommerce giver en smuk konverteringsoptimeret "
+"checkoutskabelon til WooCommerce."
+
+#: includes/Core/Admin.php:172 includes/Core/Customizer.php:280
+msgid "Enable / Disable"
+msgstr "Aktiver / Deaktiver"
+
+#: includes/Core/Admin.php:176
+msgid "Use Checkout for WooCommerce Template"
+msgstr "Brug Checkout for WooCommerce-skabelon"
+
+#: includes/Core/Admin.php:177
+msgid ""
+"Enable or disable Checkout for WooCommerce theme. (NOTE: Theme is always "
+"enabled for admin users.)"
+msgstr ""
+"Aktivér eller deaktiver Checkout for WooCommerce-tema. (BEMÆRK: Tema er "
+"altid aktiveret for admin-brugere.)"
+
+#: includes/Core/Admin.php:183 includes/Core/Customizer.php:291
+msgid "Header Scripts"
+msgstr "Header scripts"
+
+#: includes/Core/Admin.php:189
+msgid ""
+"This code will output immediately before the closing <code>&lt;/head&gt;</"
+"code> tag in the document source."
+msgstr ""
+"Denne kode udgives umiddelbart før det afsluttende <code>&lt;/head&gt;</"
+"code> -tag i dokumentkilden."
+
+#: includes/Core/Admin.php:197 includes/Core/Customizer.php:302
+msgid "Footer Scripts"
+msgstr "Footer scripts"
+
+#: includes/Core/Admin.php:203
+msgid ""
+"This code will output immediately before the closing <code>&lt;/body&gt;</"
+"code> tag in the document source."
+msgstr ""
+"Denne kode udskrives umiddelbart før den afsluttende <code>&lt;/body&gt;</"
+"code> tag i dokumentkilden."
+
+#: includes/Core/Admin.php:215
+msgid "Enable Usage Tracking"
+msgstr "Aktivér brugssporing"
+
+#: includes/Core/Admin.php:221
+msgid "Allow Checkout for WooCommerce to track plugin usage?"
+msgstr "Tillad Checkout for WooCommerce at spore plugin brug?"
+
+#: includes/Core/Admin.php:229
+msgid "Stat Collection Data Viewer"
+msgstr "Stat Collection Data Viewer"
+
+#: includes/Core/Admin.php:247
+msgid "Premium Features"
+msgstr "Premium funktioner"
+
+#: includes/Core/Admin.php:256
+msgid "Cart Editing"
+msgstr "Indkøbskurvredigering"
+
+#: includes/Core/Admin.php:260
+msgid "Enable cart editing."
+msgstr "Aktivér vognredigering."
+
+#: includes/Core/Admin.php:261
+msgid ""
+"Enable or disable cart editing feature. Allows customer to remove or adjust "
+"quantity of cart items."
+msgstr ""
+"Aktivér eller deaktiver vognredigeringsfunktionen. Tillader kunden at fjerne "
+"eller justere mængden af kurvemner."
+
+#: includes/Core/Admin.php:267
+msgid "Cart Editing Empty Cart Redirect"
+msgstr "Indkøbskurv Redigering Tøm kurv omdirigering"
+
+#: includes/Core/Admin.php:273
+msgid "URL to redirect to when customer empties cart from checkout page."
+msgstr "URL for at omdirigere til, når kunden tømmer vogn fra checkout side."
+
+#: includes/Core/Admin.php:274
+msgid "If left blank, customer will be redirected to the cart page."
+msgstr "Hvis der er tomt, vil kunden blive omdirigeret til vognsiden."
+
+#: includes/Core/Admin.php:283
+msgid "Order Pay"
+msgstr "Bestil løn"
+
+#: includes/Core/Admin.php:287
+msgid "Enable support for order pay page."
+msgstr "Aktivér support til side med ordreløn."
+
+#: includes/Core/Admin.php:288
+msgid "Use checkout template for order pay page."
+msgstr "Brug kasseskabelonen til ordrebetalingssiden."
+
+#: includes/Core/Admin.php:295
+msgid "Thank You Page"
+msgstr "Tak-side"
+
+#: includes/Core/Admin.php:299
+msgid "Enable support for thank you page."
+msgstr "Aktivér support til takkesiden."
+
+#: includes/Core/Admin.php:300
+msgid ""
+"Enable thank you page / order received template. This template is also used "
+"when viewing orders in My Account."
+msgstr ""
+"Aktivér takkeside / ordre modtaget skabelon. Denne skabelon bruges også ved "
+"visning af ordrer i Min konto."
+
+#: includes/Core/Admin.php:307
+msgid "Order Statuses"
+msgstr "Ordrestatusser"
+
+#: includes/Core/Admin.php:318
+msgid "The statuses to show on the thank you page."
+msgstr "Statusene, der skal vises på takkesiden."
+
+#: includes/Core/Admin.php:325
+msgid "Map Embed"
+msgstr "Kortindlejring"
+
+#: includes/Core/Admin.php:329
+msgid "Enable map embed."
+msgstr "Aktivér kortindlejring."
+
+#: includes/Core/Admin.php:330
+msgid "Enable or disable map embed on thank you page. Requires Google API key."
+msgstr ""
+"Aktivér eller deaktiver kortindlejring på takkesiden. Kræver Google API-"
+"nøgle."
+
+#: includes/Core/Admin.php:337
+msgid "Address Autocomplete"
+msgstr "Adresse Autofuldførelse"
+
+#: includes/Core/Admin.php:341
+msgid "Enable address autocomplete."
+msgstr "Aktivér adressen autofuldførelse."
+
+#: includes/Core/Admin.php:342
+msgid ""
+"Enable or disable address autocomplete feature. Requires Google API key."
+msgstr ""
+"Aktivér eller deaktiver automatisk autofuldførelse af adresse. Kræver Google "
+"API-nøgle."
+
+#: includes/Core/Admin.php:348
+msgid "Google API Key"
+msgstr "Google API-nøgle"
+
+#: includes/Core/Admin.php:354
+msgid ""
+"Google API Key. Available in the <a target=\"_blank\" href=\"https://"
+"developers.google.com/places/web-service/get-api-key\">Google Cloud Platform "
+"Console</a>."
+msgstr ""
+"Google API-nøgle. Fås i <a target=\"_blank\" href=\"https://developers."
+"google.com/places/web-service/get-api-key\">Google Cloud Platform Console</"
+"a> ."
+
+#: includes/Core/Admin.php:370
+msgid "License Upgrade Required"
+msgstr "Opgradering af licens kræves"
+
+#: includes/Core/Admin.php:370
+msgid "A Growth or Developer License is required to enable these features."
+msgstr ""
+"En vækst- eller udviklerlicens er påkrævet for at aktivere disse funktioner."
+
+#: includes/Core/Admin.php:371
+#, php-format
+msgid ""
+"You can upgrade your license in <a target=\"_blank\" href=\"%1$s\">My "
+"Account</a>. For help upgrading your license, <a target=\"_blank\" href="
+"\"%2$s\">click here.</a>"
+msgstr ""
+"Du kan opgradere dit licens i <a target=\"_blank\" href=\"%1$s\">Min konto</"
+"a> . For hjælp med at opgradere din licens, <a target=\"_blank\" href=\"%2$s"
+"\">klik her.</a>"
+
+#: includes/Core/Admin.php:386
+msgid "Templates"
+msgstr "Skabeloner"
+
+#: includes/Core/Admin.php:407
+msgid "Active: "
+msgstr "Aktiv: "
+
+#: includes/Core/Admin.php:415
+msgid "Activate"
+msgstr "Aktiver"
+
+#: includes/Core/Admin.php:438
+msgid "Global Settings"
+msgstr "Globale indstillinger"
+
+#: includes/Core/Admin.php:439
+msgid "These settings apply to all themes."
+msgstr "Disse indstillinger gælder for alle temaer."
+
+#: includes/Core/Admin.php:444 includes/Core/Customizer.php:358
+msgid "Logo"
+msgstr "Logo"
+
+#: includes/Core/Admin.php:450
+msgid "Upload image"
+msgstr "Upload billede"
+
+#: includes/Core/Admin.php:453
+msgid "Clear Logo"
+msgstr "Ryd Logo"
+
+#: includes/Core/Admin.php:459 includes/Core/Customizer.php:370
+msgid "Footer Text"
+msgstr "Sidefodstekst"
+
+#: includes/Core/Admin.php:465
+msgid ""
+"If left blank, a standard copyright notice will be displayed. Set to a "
+"single space to override this behavior."
+msgstr ""
+"Hvis der er tomt, vises en standardophavsret til ophavsret. Indstil til et "
+"enkelt rum for at tilsidesætte denne adfærd."
+
+#: includes/Core/Admin.php:473
+msgid "Cart Summary Mobile Label"
+msgstr "Kurvoversigt Mobil etiket"
+
+#: includes/Core/Admin.php:479
+msgid "Example: Show order summary and coupons"
+msgstr "Eksempel: Vis ordreoversigt og kuponer"
+
+#: includes/Core/Admin.php:480
+msgid "If left blank, this default will be used: "
+msgstr "Hvis der er tomt, vil denne standard blive brugt: "
+
+#: includes/Core/Admin.php:480 templates/copify/content.php:308
+#: templates/copify/order-pay.php:140 templates/copify/thank-you.php:209
+#: templates/default/content.php:284 templates/default/order-pay.php:111
+#: templates/default/thank-you.php:181 templates/futurist/content.php:288
+#: templates/futurist/order-pay.php:116 templates/futurist/thank-you.php:181
+msgid "Show order summary"
+msgstr "Vis ordreoversigt"
+
+#: includes/Core/Admin.php:488 includes/Core/Customizer.php:383
+msgid "Theme Specific Settings"
+msgstr "Tema-specifikke indstillinger"
+
+#: includes/Core/Admin.php:498 includes/Core/Customizer.php:396
+msgid "Header Background Color"
+msgstr "Header baggrundsfarve"
+
+#: includes/Core/Admin.php:508 includes/Core/Customizer.php:410
+msgid "Header Text Color"
+msgstr "Sidehoved tekst farve"
+
+#: includes/Core/Admin.php:518 includes/Core/Customizer.php:424
+msgid "Footer Background Color"
+msgstr "Sidefods baggrundsfarve"
+
+#: includes/Core/Admin.php:528 includes/Core/Customizer.php:438
+msgid "Footer Text Color"
+msgstr "Sidefod tekst farve"
+
+#: includes/Core/Admin.php:538 includes/Core/Customizer.php:452
+msgid "Summary Background Color"
+msgstr "Sammendrag Baggrundsfarve"
+
+#: includes/Core/Admin.php:548 includes/Core/Customizer.php:466
+msgid "Primary Button Color"
+msgstr "Primær knapfarve"
+
+#: includes/Core/Admin.php:557 includes/Core/Customizer.php:480
+msgid "Primary Button Text Color"
+msgstr "Primær knap-tekstfarve"
+
+#: includes/Core/Admin.php:566 includes/Core/Customizer.php:494
+msgid "Secondary Button Color"
+msgstr "Sekundær knapfarve"
+
+#: includes/Core/Admin.php:575 includes/Core/Customizer.php:508
+msgid "Secondary Button Text Color"
+msgstr "Sekundær knap-tekstfarve"
+
+#: includes/Core/Admin.php:584 includes/Core/Customizer.php:522
+msgid "Link Color"
+msgstr "Linkfarve"
+
+#: includes/Core/Admin.php:593 includes/Core/Customizer.php:535
+msgid "Custom CSS"
+msgstr "Brugerdefineret CSS"
+
+#: includes/Core/Admin.php:599
+msgid ""
+"Add Custom CSS rules to fully control the appearance of the checkout "
+"template."
+msgstr ""
+"Tilføj tilpassede CSS-regler for fuldt ud at kontrollere udseendet af "
+"checkoutskabelonen."
+
+#: includes/Core/Admin.php:666
+msgid "Need help?"
+msgstr "Brug for hjælp?"
+
+#: includes/Core/Admin.php:668
+msgid "Excellent support is in our DNA."
+msgstr "Fremragende support er i vores DNA."
+
+#: includes/Core/Admin.php:670
+msgid "Contact Support"
+msgstr "Kontakt support"
+
+#: includes/Core/Admin.php:706
+msgid ""
+"The WooCommerce ecosystem is full of fantastic plugins. Here are a few that "
+"work really well with CheckoutWC that we wholeheartedly recommend to our "
+"customers. (A few of these links may include affiliate tracking. This does "
+"not impact our decision to include a plugin.)"
+msgstr ""
+"WooCommerce økosystemet er fuld af fantastiske plugins. Her er et par der "
+"fungerer rigtig godt med CheckoutWC, som vi helhjertet anbefaler til vores "
+"kunder. (Nogle af disse links kan omfatte affiliate tracking. Dette påvirker "
+"ikke vores beslutning om at inkludere et plugin.)"
+
+#: includes/Core/Admin.php:729
+msgid "More Info"
+msgstr "Mere info"
+
+#: includes/Core/Admin.php:886
+msgid "Checkout for WooCommerce: Warning incompatible plugins detected!"
+msgstr "Checkout for WooCommerce: Advarsel, inkompatible plugins blev fundet!"
+
+#: includes/Core/Admin.php:894
+msgid "Please deactivate these plugins to avoid problems with your checkout!"
+msgstr "Deaktiver venligst disse plugins for at undgå problemer med din kasse!"
+
+#: includes/Core/Admin.php:907
+#, php-format
+msgid ""
+"Checkout for WooCommerce: Your license key appears to have expired. Please "
+"verify that your license key is valid or <a target=\"_blank\" href=\"https://"
+"www.checkoutwc.com/checkout/?edd_license_key=%s\">renew your license now</a> "
+"to restore full functionality."
+msgstr ""
+"Checkout for WooCommerce: Din licensnøgle ser ud til at være udløbet. "
+"Bekræft venligst, at din licensnøgle er gyldig, eller <a target=\"_blank\" "
+"href=\"https://www.checkoutwc.com/checkout/?edd_license_key=%s\">forny din "
+"licens nu for</a> at gendanne fuld funktionalitet."
+
+#: includes/Core/Admin.php:910
+msgid ""
+"Checkout for WooCommerce: Your license key is missing or invalid. Please "
+"verify that your license key is valid or <a target=\"_blank\" href=\"https://"
+"www.checkoutwc.com/\">purchase a license</a> to restore full functionality."
+msgstr ""
+"Checkout for WooCommerce: Din licensnøgle mangler eller er ugyldig. Bekræft "
+"venligst, at din licensnøgle er gyldig, eller <a target=\"_blank\" href="
+"\"https://www.checkoutwc.com/\">køb en licens for</a> at gendanne hele "
+"funktionaliteten."
+
+#: includes/Core/Admin.php:915
+msgid ""
+"Thank you for installing Checkout for WooCommerce! To get started, click on "
+"<strong>License</strong> below and activate your license key!"
+msgstr ""
+"Tak fordi du installerede Checkout for WooCommerce! For at komme i gang skal "
+"du klikke på <strong>Licens</strong> nedenfor og aktivere din licensnøgle!"
+
+#: includes/Core/Admin.php:939
+msgid "Settings"
+msgstr "Indstillinger"
+
+#: includes/Core/Admin.php:992
+msgid "Phone"
+msgstr "Telefon"
+
+#: includes/Core/Customizer.php:387
+msgid ""
+"These settings only apply to the currently active template. If you switch "
+"templates in the customizer, these settings will become unavailable but "
+"saving will publish any changes here prior to switching templates!"
+msgstr ""
+"Disse indstillinger gælder kun for den aktuelt aktive skabelon. Hvis du "
+"skifter skabeloner i tilpasseren, bliver disse indstillinger ikke "
+"tilgængelige, men gemmer vil offentliggøre eventuelle ændringer her, før "
+"skifte skabeloner!"
+
+#: includes/Main.php:478
+msgid ""
+"Activation failed: Please activate WooCommerce in order to use Checkout for "
+"WooCommerce"
+msgstr ""
+"Aktivering mislykkedes: Aktiver venligst WooCommerce for at bruge Checkout "
+"for WooCommerce"
+
+#: includes/Main.php:625
+msgid "Please enter a new quantity:"
+msgstr "Indtast en ny mængde:"
+
+#: includes/Main.php:630 templates/copify/content.php:177
+#: templates/copify/content.php:217 templates/copify/thank-you.php:138
+#: templates/default/content.php:170 templates/default/content.php:210
+#: templates/default/thank-you.php:126 templates/futurist/content.php:174
+#: templates/futurist/content.php:214 templates/futurist/thank-you.php:126
+msgid "Shipping address"
+msgstr "Leverings adresse"
+
+#: includes/Main.php:642
+msgid "Error processing checkout. Please try again."
+msgstr ""
+
+#: includes/Stats/StatCollection.php:678
+msgid ""
+"Allow Checkout for WooCommerce to track plugin usage? Help make Checkout for "
+"WooCommerce better."
+msgstr ""
+"Tillad Checkout for WooCommerce at spore plugin brug? Hjælp til at gøre "
+"Checkout for WooCommerce bedre."
+
+#: includes/Stats/StatCollection.php:681
+msgid "Allow"
+msgstr "Tillad"
+
+#: includes/Stats/StatCollection.php:682
+msgid "Do not allow"
+msgstr "Tillad ikke"
+
+#: templates/copify/content.php:50 templates/copify/content.php:79
+#: templates/copify/thank-you.php:123 templates/default/content.php:43
+#: templates/default/content.php:72 templates/default/thank-you.php:111
+#: templates/futurist/content.php:41 templates/futurist/content.php:76
+#: templates/futurist/thank-you.php:111
+msgid "Customer information"
+msgstr "Kundeinformation"
+
+#: templates/copify/content.php:56 templates/copify/content.php:232
+#: templates/copify/thank-you.php:156 templates/default/content.php:49
+#: templates/default/content.php:225 templates/default/thank-you.php:144
+#: templates/futurist/content.php:47 templates/futurist/content.php:229
+#: templates/futurist/thank-you.php:144
+msgid "Shipping method"
+msgstr "Forsendelsesmetode"
+
+#: templates/copify/content.php:89 templates/default/content.php:82
+#: templates/futurist/content.php:86
+msgid "Already have an account with us?"
+msgstr "Har du allerede en konto hos os?"
+
+#: templates/copify/content.php:93 templates/default/content.php:86
+#: templates/futurist/content.php:90
+msgid "Log in for a faster checkout experience."
+msgstr "Log ind for en hurtigere checkout oplevelse."
+
+#: templates/copify/content.php:101 templates/copify/content.php:102
+#: templates/default/content.php:94 templates/default/content.php:95
+#: templates/futurist/content.php:98 templates/futurist/content.php:99
+msgid "Email"
+msgstr "E-mail"
+
+#: templates/copify/content.php:110 templates/copify/content.php:111
+#: templates/default/content.php:101 templates/default/content.php:102
+#: templates/futurist/content.php:107 templates/futurist/content.php:108
+msgid "Password"
+msgstr "Adgangskode"
+
+#: templates/copify/content.php:115 templates/copify/order-pay.php:70
+#: templates/default/content.php:106 templates/default/order-pay.php:59
+#: templates/futurist/content.php:112 templates/futurist/order-pay.php:63
+msgid "Login"
+msgstr "Log ind"
+
+#: templates/copify/content.php:118 templates/default/content.php:109
+#: templates/futurist/content.php:115
+msgid "Login is optional. You may continue with your order below."
+msgstr "Login er valgfrit. Du kan fortsætte med din ordre nedenfor."
+
+#: templates/copify/content.php:128 templates/default/content.php:121
+#: templates/futurist/content.php:125
+#, php-format
+msgid "Create %s shopping account."
+msgstr "Opret %s shoppingkonto."
+
+#: templates/copify/content.php:130 templates/default/content.php:123
+#: templates/futurist/content.php:127
+msgid "If you do not have an account, we will create one for you."
+msgstr "Hvis du ikke har en bruger, opretter vi en til dig."
+
+#: templates/copify/content.php:155 templates/default/content.php:148
+#: templates/futurist/content.php:152
+#, php-format
+msgid "Welcome back, %s (%s)."
+msgstr "Velkommen tilbage, %s ( %s)."
+
+#: templates/copify/content.php:158 templates/default/content.php:151
+#: templates/futurist/content.php:155
+msgid "Log out."
+msgstr "Log ud."
+
+#: templates/copify/content.php:173 templates/default/content.php:166
+#: templates/futurist/content.php:170
+msgid "Billing and Shipping address"
+msgstr "Fakturerings- og forsendelsesadresse"
+
+#: templates/copify/content.php:223 templates/default/content.php:216
+#: templates/futurist/content.php:220
+msgid "Edit shipping address"
+msgstr "Rediger leveringsadresse"
+
+#: templates/copify/content.php:234 templates/default/content.php:227
+#: templates/futurist/content.php:231
+msgid "Select a shipping method:"
+msgstr "Vælg en forsendelsesmetode:"
+
+#: templates/copify/content.php:335 templates/default/content.php:310
+#: templates/futurist/content.php:318
+msgid "Enter Promo Code"
+msgstr "Indtast kampagnekode"
+
+#: templates/copify/content.php:340 templates/default/content.php:315
+#: templates/futurist/content.php:323
+msgid "Apply"
+msgstr "Anvend"
+
+#: templates/copify/order-pay.php:72 templates/default/order-pay.php:61
+#: templates/futurist/order-pay.php:65
+msgid "Lost your password?"
+msgstr "Glemt din adgangskode?"
+
+#: templates/copify/thank-you.php:34 templates/default/thank-you.php:22
+#: templates/futurist/thank-you.php:22
+#, php-format
+msgid "Order %s"
+msgstr "Ordre %s"
+
+#: templates/copify/thank-you.php:35 templates/default/thank-you.php:23
+#: templates/futurist/thank-you.php:23
+#, php-format
+msgid "Thank you %s!"
+msgstr "Tak %s!"
+
+#: templates/copify/thank-you.php:96 templates/default/thank-you.php:84
+#: templates/futurist/thank-you.php:84
+msgid "Order status"
+msgstr "Bestillings status"
+
+#: templates/copify/thank-you.php:113 templates/default/thank-you.php:101
+#: templates/futurist/thank-you.php:101
+msgid "Order updates"
+msgstr "Ordreopdateringer"
+
+#: templates/copify/thank-you.php:115 templates/default/thank-you.php:103
+#: templates/futurist/thank-you.php:103
+msgid "You’ll get shipping and delivery updates by email."
+msgstr "Du modtager forsendelses- og leveringsopdateringer via e-mail."
+
+#: templates/copify/thank-you.php:126 templates/default/thank-you.php:114
+#: templates/futurist/thank-you.php:114
+msgid "Contact information"
+msgstr "Kontaktoplysninger"
+
+#: templates/futurist/content.php:304 templates/futurist/order-pay.php:131
+msgid "Your Cart"
+msgstr "Din kurv"
+
+#. Plugin URI of the plugin/theme
+msgid "https://www.CheckoutWC.com"
+msgstr "https://www.CheckoutWC.com"
+
+#. Description of the plugin/theme
+msgid "Beautiful, conversion optimized checkout templates for WooCommerce."
+msgstr "Smuk konvertering optimeret checkout skabelon til WooCommerce."
+
+#. Author of the plugin/theme
+msgid "Objectiv"
+msgstr "Objektiv"
+
+#. Author URI of the plugin/theme
+msgid "https://objectiv.co"
+msgstr "https://objectiv.co"
+
+#~ msgid ""
+#~ "You are using a legacy child theme which will be disabled in a future "
+#~ "version. Changing theme settings is not possible for legacy themes."
+#~ msgstr ""
+#~ "Du bruger et ældre childtema, som vil blive deaktiveret i en fremtidig "
+#~ "version. Ændring af temaindstillinger er ikke muligt for gamle temaer."
+
+#~ msgid ""
+#~ "It looks like you are using a legacy checkout theme, located in %s. "
+#~ "Legacy themes are deprecated and you should upgrade to the new theme "
+#~ "structure as soon as possible to prevent problems with future release. "
+#~ "For more information, <a target=\"_blank\" href=\"https://www.checkoutwc."
+#~ "com/docs/developer-api/template-files/upgrading-legacy-custom-templates/"
+#~ "\">read our migration guide.</a>"
+#~ msgstr ""
+#~ "Det ser ud til at du bruger et legitimt checkout-tema, der er placeret i "
+#~ "%s. Legacy-temaer fjernes, og du bør hurtigst muligt opgradere til den "
+#~ "nye temastruktur for at forhindre problemer med fremtidig udgivelse. For "
+#~ "mere information, <a target=\"_blank\" href=\"https://www.checkoutwc.com/"
+#~ "docs/developer-api/template-files/upgrading-legacy-custom-templates/"
+#~ "\">læs vores migreringsvejledning.</a>"
+
+#~ msgid "Subtotal"
+#~ msgstr "Subtotal"
+
+#~ msgid "Shipping"
+#~ msgstr "Forsendelse"
+
+#~ msgid "Taxes"
+#~ msgstr "Moms"
+
+#~ msgid "Total"
+#~ msgstr "Total"

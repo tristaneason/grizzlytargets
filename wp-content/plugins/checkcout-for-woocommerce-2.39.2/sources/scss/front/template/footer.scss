@@ -1,0 +1,16 @@
+#cfw-footer {
+  text-align: center;
+  background: $footer-bg;
+  color: #999999;
+  font-size: 0.825em;
+}
+
+#cfw-footer .cfw-footer-inner {
+  padding: 40px 0;
+}
+
+#wp_footer {
+  & > *:not(#wpadminbar):not(.pakkelabels-modal):not(.shipmondo-modal) {
+    display: none;
+  }
+}

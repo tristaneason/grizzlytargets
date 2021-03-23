@@ -1,0 +1,60 @@
+$wrap-row-bot-margin: map-get($grid-sg, gutter) * 1.25;
+
+html {
+  background-color: #ffffff !important;
+}
+
+#cfw-login-slide {
+  display: none;
+  margin-bottom: $wrap-row-bot-margin;
+}
+
+.cfw-input-wrap-row {
+  margin-bottom: $wrap-row-bot-margin;
+
+  &:after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.pad-bottom .form-row {
+  margin-bottom: $wrap-row-bot-margin;
+}
+
+#cfw-breadcrumb {
+  list-style-type: none;
+  margin: 0 0 1.5em 0;
+  padding: 0;
+  display: flex;
+
+  li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    & > a {
+      font-size: 0.75em;
+      text-decoration: none;
+      color: #333;
+    }
+
+    &:not(.active) > a {
+      color: rgba(0,0,0,0.5);
+    }
+
+    &:not(:last-child):after {
+      content: " ";
+      width: 12px;
+      height: 12px;
+      background: url(./assets/img/arrow-right.svg) no-repeat 50% 50%;
+      background-size: 12px 12px;
+      padding-left: 15px;
+    }
+  }
+}

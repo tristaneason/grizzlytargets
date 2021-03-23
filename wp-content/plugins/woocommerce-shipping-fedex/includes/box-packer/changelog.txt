@@ -1,0 +1,13 @@
+== Changelog ==
+
+= 1.0.2 - 2018-09-20
+* Update - `WC_Boxpack::add_box` Add `$max_weight` and `$type` optional parameters.
+* Update - `WC_Boxpack::__construct` Add 'prefer_packets' option.
+
+= 1.0.1 - 2017-06-08 =
+* Update - Added type of box when packing.
+* Update - Add set_type method.
+
+= 1.0.0 - ?-?-? =
+
+* Untracked Changes

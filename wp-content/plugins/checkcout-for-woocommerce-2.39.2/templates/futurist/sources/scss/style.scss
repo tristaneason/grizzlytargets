@@ -1,0 +1,20 @@
+/*!
+  Template Name:   	Futurist
+  Author:           Brandon Tassone
+  Author URI:       https://objectiv.co/
+  Description:  	A modern twist on our classic theme.
+  Version:      	2.0.0
+  Supports:         header-background, footer-background, order-pay, order-received
+ */
+
+@import "~bourbon/core/bourbon";
+@import "~bourbon-neat/core/neat";
+
+@import "grid";
+@import "template/header";
+@import "template/content";
+
+.wrap {
+  max-width: $wrap-width;
+  margin: auto;
+}

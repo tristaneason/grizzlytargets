@@ -1,0 +1,826 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Checkout for WooCommerce\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-11-06 09:56-0500\n"
+"PO-Revision-Date: 2019-11-06 10:03-0500\n"
+"Last-Translator: Clifton Griffin <clif@checkoutwc.com>\n"
+"Language-Team: Magyar\n"
+"Language: hu_HU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 2.2.4\n"
+"X-Loco-Version: 2.2.0; wp-5.1\n"
+
+#: functions.php:8
+msgid "First Name"
+msgstr "Keresztnév"
+
+#: functions.php:13
+msgid "Last Name"
+msgstr "Vezetéknév"
+
+#: functions.php:808
+msgid "Remove Item"
+msgstr "Tétel eltávolítása"
+
+#: functions.php:826
+msgid "Edit"
+msgstr "Szerkesztés"
+
+#: functions.php:932 functions.php:939
+msgid "Not Calculated"
+msgstr "Nem számított"
+
+#: functions.php:937
+msgid "Not Available"
+msgstr "Nem elérhető"
+
+#: functions.php:950
+msgid "Complete Order"
+msgstr "Vásárlás befejezése"
+
+#: functions.php:983 templates/copify/content.php:62
+#: templates/copify/thank-you.php:130 templates/default/content.php:55
+#: templates/default/thank-you.php:118 templates/futurist/content.php:53
+#: templates/futurist/thank-you.php:118
+msgid "Payment method"
+msgstr "Fizetési mód"
+
+#: functions.php:992
+msgid ""
+"All transactions are secure and encrypted. Credit card information is never "
+"stored on our servers."
+msgstr ""
+"Minden tranzakció titkosítva van. A bankártyád adatai nincsenek tárolva a "
+"szerverünkön."
+
+#: functions.php:1003
+msgid "Your order is free. No payment is required."
+msgstr "A vásárlás összege 0 Ft, nincs szükség fizetésre."
+
+#: functions.php:1091
+msgid "Same as shipping address"
+msgstr "Ugyanaz mint a szállítási cím"
+
+#: functions.php:1101
+msgid "Use a different billing address"
+msgstr "Más számlázási címet adok meg"
+
+#: functions.php:1218 templates/copify/content.php:175
+#: templates/copify/thank-you.php:146 templates/default/content.php:168
+#: templates/default/thank-you.php:134 templates/futurist/content.php:172
+#: templates/futurist/thank-you.php:134
+msgid "Billing address"
+msgstr "Számlázási adatok"
+
+#: functions.php:1312
+msgid "Return to cart"
+msgstr "Vissza a kosárhoz"
+
+#: functions.php:1316
+msgid "Continue to shipping method"
+msgstr "Fizetési mód megadása"
+
+#: functions.php:1320
+msgid "Continue to payment method"
+msgstr "Fizetési mód választása"
+
+#: functions.php:1324
+msgid "Return to customer information"
+msgstr "Vissza a személyes adatokhoz"
+
+#: functions.php:1328
+msgid "Return to shipping information"
+msgstr "Szállítási mód megadása"
+
+#: includes/Compatibility/Base.php:172
+msgid "Or"
+msgstr "Vagy"
+
+#: includes/Compatibility/Gateways/PayPalForWooCommerce.php:102
+msgid "Logged in with PayPal. Please continue your order below."
+msgstr "Belépett a PayPal szolgáltatással. Kérjük, folytassa a megrendelését."
+
+#. Plugin Name of the plugin/theme
+#: includes/Core/Admin.php:108 includes/Core/Admin.php:144
+#: includes/Core/Customizer.php:256 includes/Main.php:840
+msgid "Checkout for WooCommerce"
+msgstr "Checkout a WooCommerce számára"
+
+#: includes/Core/Admin.php:108
+msgid "CheckoutWC"
+msgstr "CheckoutWC"
+
+#: includes/Core/Admin.php:111 includes/Core/Customizer.php:269
+#: includes/Main.php:848
+msgid "General"
+msgstr "Általános"
+
+#: includes/Core/Admin.php:112 includes/Core/Customizer.php:315
+#: includes/Core/Customizer.php:332 includes/Main.php:857
+msgid "Template"
+msgstr "Sablon"
+
+#: includes/Core/Admin.php:113 includes/Core/Customizer.php:346
+#: includes/Core/Customizer.php:383 includes/Main.php:866
+msgid "Design"
+msgstr "Kinézet"
+
+#: includes/Core/Admin.php:116
+msgid "Addons"
+msgstr "Bővítmények"
+
+#: includes/Core/Admin.php:119 includes/Main.php:875
+msgid "License"
+msgstr "Licensz"
+
+#: includes/Core/Admin.php:120 includes/Main.php:884
+msgid "Support"
+msgstr "Támogatás"
+
+#: includes/Core/Admin.php:121
+msgid "Recommended Plugins"
+msgstr "Ajánlott bővítmények"
+
+#: includes/Core/Admin.php:145 includes/Core/Customizer.php:259
+msgid ""
+"Checkout for WooCommerce provides a beautiful, conversion optimized checkout "
+"template for WooCommerce."
+msgstr ""
+"A WooCommerce Checkoutja a WooCommerce számára egy szép, konverzióval "
+"optimalizált pénztár sablont biztosít."
+
+#: includes/Core/Admin.php:172 includes/Core/Customizer.php:280
+msgid "Enable / Disable"
+msgstr "Engedélyezés / Tiltás"
+
+#: includes/Core/Admin.php:176
+msgid "Use Checkout for WooCommerce Template"
+msgstr "Használja a Checkout szolgáltatást a WooCommerce sablonhoz"
+
+#: includes/Core/Admin.php:177
+msgid ""
+"Enable or disable Checkout for WooCommerce theme. (NOTE: Theme is always "
+"enabled for admin users.)"
+msgstr ""
+"A Checkout engedélyezése vagy letiltása a WooCommerce témához. (MEGJEGYZÉS: "
+"A téma mindig engedélyezett az adminisztrátori felhasználók számára.)"
+
+#: includes/Core/Admin.php:183 includes/Core/Customizer.php:291
+msgid "Header Scripts"
+msgstr "Fejléc parancsfájlok"
+
+#: includes/Core/Admin.php:189
+msgid ""
+"This code will output immediately before the closing <code>&lt;/head&gt;</"
+"code> tag in the document source."
+msgstr ""
+"Ezt a kódot közvetlenül a dokumentum forrásának záró <code>&lt;/head&gt;</"
+"code> címke előtt adja ki."
+
+#: includes/Core/Admin.php:197 includes/Core/Customizer.php:302
+msgid "Footer Scripts"
+msgstr "Lábléc parancsfájlok"
+
+#: includes/Core/Admin.php:203
+msgid ""
+"This code will output immediately before the closing <code>&lt;/body&gt;</"
+"code> tag in the document source."
+msgstr ""
+"Ezt a kódot közvetlenül a dokumentumforrás záró <code>&lt;/body&gt;</code> "
+"címke előtt adja ki."
+
+#: includes/Core/Admin.php:215
+msgid "Enable Usage Tracking"
+msgstr "Használati követés engedélyezése"
+
+#: includes/Core/Admin.php:221
+msgid "Allow Checkout for WooCommerce to track plugin usage?"
+msgstr ""
+"Engedélyezze a Checkout-ot a WooCommerce számára a plugin használatának "
+"követésére?"
+
+#: includes/Core/Admin.php:229
+msgid "Stat Collection Data Viewer"
+msgstr "Stat Gyűjtemény Data Viewer"
+
+#: includes/Core/Admin.php:247
+msgid "Premium Features"
+msgstr "Prémium Funkciók"
+
+#: includes/Core/Admin.php:256
+msgid "Cart Editing"
+msgstr "Kosár szerkesztése"
+
+#: includes/Core/Admin.php:260
+msgid "Enable cart editing."
+msgstr "A kosár szerkesztésének engedélyezése."
+
+#: includes/Core/Admin.php:261
+msgid ""
+"Enable or disable cart editing feature. Allows customer to remove or adjust "
+"quantity of cart items."
+msgstr ""
+"A kosárszerkesztő funkció engedélyezése vagy letiltása. Lehetővé teszi az "
+"ügyfél számára, hogy eltávolítsa vagy állítsa be a kosarakat."
+
+#: includes/Core/Admin.php:267
+msgid "Cart Editing Empty Cart Redirect"
+msgstr "Kosár szerkesztése üres kosár átirányítása"
+
+#: includes/Core/Admin.php:273
+msgid "URL to redirect to when customer empties cart from checkout page."
+msgstr ""
+"URL-cím, amely átirányítja a vásárlót, ha a vásárlónk kiüríti a kosarat a "
+"fizetési oldalról."
+
+#: includes/Core/Admin.php:274
+msgid "If left blank, customer will be redirected to the cart page."
+msgstr "Ha üres marad, az ügyfél átirányításra kerül a kosár oldalára."
+
+#: includes/Core/Admin.php:283
+msgid "Order Pay"
+msgstr "Rendelés fizetés"
+
+#: includes/Core/Admin.php:287
+msgid "Enable support for order pay page."
+msgstr "A megrendelés fizetés oldal támogatásának engedélyezése."
+
+#: includes/Core/Admin.php:288
+msgid "Use checkout template for order pay page."
+msgstr "Használja a pénztár sablont a fizetési oldalra."
+
+#: includes/Core/Admin.php:295
+msgid "Thank You Page"
+msgstr "Köszönöm oldal"
+
+#: includes/Core/Admin.php:299
+msgid "Enable support for thank you page."
+msgstr "Támogatás engedélyezése a köszönő oldal számára."
+
+#: includes/Core/Admin.php:300
+msgid ""
+"Enable thank you page / order received template. This template is also used "
+"when viewing orders in My Account."
+msgstr ""
+"Engedélyezze a köszönő oldal / megrendelés kapott sablont. Ezt a sablont "
+"akkor is használják, ha megrendeléseket tekint a Saját fiókban."
+
+#: includes/Core/Admin.php:307
+msgid "Order Statuses"
+msgstr "Rendelési állapotok"
+
+#: includes/Core/Admin.php:318
+msgid "The statuses to show on the thank you page."
+msgstr "A köszönő oldalon megjelenő állapotok."
+
+#: includes/Core/Admin.php:325
+msgid "Map Embed"
+msgstr "Térkép beágyazása"
+
+#: includes/Core/Admin.php:329
+msgid "Enable map embed."
+msgstr "A térkép beágyazásának engedélyezése."
+
+#: includes/Core/Admin.php:330
+msgid "Enable or disable map embed on thank you page. Requires Google API key."
+msgstr ""
+"A térkép beágyazásának engedélyezése vagy letiltása a köszönő oldalon. "
+"Szükséges a Google API kulcs."
+
+#: includes/Core/Admin.php:337
+msgid "Address Autocomplete"
+msgstr "Automatikus kiegészítés"
+
+#: includes/Core/Admin.php:341
+msgid "Enable address autocomplete."
+msgstr "Cím automatikus engedélyezése engedélyezve."
+
+#: includes/Core/Admin.php:342
+msgid ""
+"Enable or disable address autocomplete feature. Requires Google API key."
+msgstr ""
+"A cím automatikus kiegészítése funkció engedélyezése vagy letiltása. "
+"Szükséges a Google API kulcs."
+
+#: includes/Core/Admin.php:348
+msgid "Google API Key"
+msgstr "Google API Kulcs"
+
+#: includes/Core/Admin.php:354
+msgid ""
+"Google API Key. Available in the <a target=\"_blank\" href=\"https://"
+"developers.google.com/places/web-service/get-api-key\">Google Cloud Platform "
+"Console</a>."
+msgstr ""
+"Google API kulcs. Elérhető a <a target=\"_blank\" href=\"https://developers."
+"google.com/places/web-service/get-api-key\">Google Cloud Platform Console-"
+"ban</a> ."
+
+#: includes/Core/Admin.php:370
+msgid "License Upgrade Required"
+msgstr "Licencfrissítés szükséges"
+
+#: includes/Core/Admin.php:370
+msgid "A Growth or Developer License is required to enable these features."
+msgstr ""
+"Ezen szolgáltatások engedélyezéséhez növekedési vagy fejlesztői licenc "
+"szükséges."
+
+#: includes/Core/Admin.php:371
+#, php-format
+msgid ""
+"You can upgrade your license in <a target=\"_blank\" href=\"%1$s\">My "
+"Account</a>. For help upgrading your license, <a target=\"_blank\" href="
+"\"%2$s\">click here.</a>"
+msgstr ""
+"A licencet frissítheti a <a target=\"_blank\" href=\"%1$s\">Saját fiókban</"
+"a> . A licenc frissítéséhez <a target=\"_blank\" href=\"%2$s\">kattintson "
+"ide.</a>"
+
+#: includes/Core/Admin.php:386
+msgid "Templates"
+msgstr "Sablonok"
+
+#: includes/Core/Admin.php:407
+msgid "Active: "
+msgstr "Aktív: "
+
+#: includes/Core/Admin.php:415
+msgid "Activate"
+msgstr "Aktiválás"
+
+#: includes/Core/Admin.php:438
+msgid "Global Settings"
+msgstr "Globális beállítások"
+
+#: includes/Core/Admin.php:439
+msgid "These settings apply to all themes."
+msgstr "Ezek a beállítások minden témára vonatkoznak."
+
+#: includes/Core/Admin.php:444 includes/Core/Customizer.php:358
+msgid "Logo"
+msgstr "Logó"
+
+#: includes/Core/Admin.php:450
+msgid "Upload image"
+msgstr "Kép feltöltése"
+
+#: includes/Core/Admin.php:453
+msgid "Clear Logo"
+msgstr "Logó törlése"
+
+#: includes/Core/Admin.php:459 includes/Core/Customizer.php:370
+msgid "Footer Text"
+msgstr "Lábléc szöveg"
+
+#: includes/Core/Admin.php:465
+msgid ""
+"If left blank, a standard copyright notice will be displayed. Set to a "
+"single space to override this behavior."
+msgstr ""
+"Ha üresen hagyja, megjelenik egy szabványos szerzői jogi figyelmeztetés. "
+"Állítsa be egy helyet a viselkedés felülbírálásához."
+
+#: includes/Core/Admin.php:473
+msgid "Cart Summary Mobile Label"
+msgstr "Kosár összefoglaló Mobil címke"
+
+#: includes/Core/Admin.php:479
+msgid "Example: Show order summary and coupons"
+msgstr "Példa: Rendelési összegzés és kuponok megjelenítése"
+
+#: includes/Core/Admin.php:480
+msgid "If left blank, this default will be used: "
+msgstr "Ha üresen hagyja, akkor ez az alapértelmezett:"
+
+#: includes/Core/Admin.php:480 templates/copify/content.php:308
+#: templates/copify/order-pay.php:140 templates/copify/thank-you.php:209
+#: templates/default/content.php:284 templates/default/order-pay.php:111
+#: templates/default/thank-you.php:181 templates/futurist/content.php:288
+#: templates/futurist/order-pay.php:116 templates/futurist/thank-you.php:181
+msgid "Show order summary"
+msgstr "Mutasd a kosár tartalmát"
+
+#: includes/Core/Admin.php:488 includes/Core/Customizer.php:383
+msgid "Theme Specific Settings"
+msgstr "Témaspecifikus beállítások"
+
+#: includes/Core/Admin.php:498 includes/Core/Customizer.php:396
+msgid "Header Background Color"
+msgstr "Fejléc háttér színe"
+
+#: includes/Core/Admin.php:508 includes/Core/Customizer.php:410
+msgid "Header Text Color"
+msgstr "Fejléc szövegszín"
+
+#: includes/Core/Admin.php:518 includes/Core/Customizer.php:424
+msgid "Footer Background Color"
+msgstr "Lábléc háttérszíne"
+
+#: includes/Core/Admin.php:528 includes/Core/Customizer.php:438
+msgid "Footer Text Color"
+msgstr "Lábléc szöveg szín"
+
+#: includes/Core/Admin.php:538 includes/Core/Customizer.php:452
+msgid "Summary Background Color"
+msgstr "Összefoglaló háttérszín"
+
+#: includes/Core/Admin.php:548 includes/Core/Customizer.php:466
+msgid "Primary Button Color"
+msgstr "Elsődleges gomb szín"
+
+#: includes/Core/Admin.php:557 includes/Core/Customizer.php:480
+msgid "Primary Button Text Color"
+msgstr "Elsődleges gomb szöveg színe"
+
+#: includes/Core/Admin.php:566 includes/Core/Customizer.php:494
+msgid "Secondary Button Color"
+msgstr "Másodlagos gomb színe"
+
+#: includes/Core/Admin.php:575 includes/Core/Customizer.php:508
+msgid "Secondary Button Text Color"
+msgstr "Másodlagos gombszöveg színe"
+
+#: includes/Core/Admin.php:584 includes/Core/Customizer.php:522
+msgid "Link Color"
+msgstr "Link színe"
+
+#: includes/Core/Admin.php:593 includes/Core/Customizer.php:535
+msgid "Custom CSS"
+msgstr "Egyedi CSS"
+
+#: includes/Core/Admin.php:599
+msgid ""
+"Add Custom CSS rules to fully control the appearance of the checkout "
+"template."
+msgstr ""
+"Adjon hozzá egyéni CSS szabályokat a pénztár sablon megjelenésének teljes "
+"szabályozásához."
+
+#: includes/Core/Admin.php:666
+msgid "Need help?"
+msgstr "Segítség kell?"
+
+#: includes/Core/Admin.php:668
+msgid "Excellent support is in our DNA."
+msgstr "Kiváló támogatás a DNS-ben."
+
+#: includes/Core/Admin.php:670
+msgid "Contact Support"
+msgstr "Kapcsolat az ügyfélszolgálattal"
+
+#: includes/Core/Admin.php:706
+msgid ""
+"The WooCommerce ecosystem is full of fantastic plugins. Here are a few that "
+"work really well with CheckoutWC that we wholeheartedly recommend to our "
+"customers. (A few of these links may include affiliate tracking. This does "
+"not impact our decision to include a plugin.)"
+msgstr ""
+"A WooCommerce ökoszisztéma tele van fantasztikus bővítményekkel. Íme néhány, "
+"ami igazán jól működik a CheckoutWC-vel, amit szívesen ajánlunk "
+"ügyfeleinknek. (Néhány ilyen link tartalmazhat affiliate nyomon követést. Ez "
+"nem befolyásolja a plugin beillesztését.)"
+
+#: includes/Core/Admin.php:729
+msgid "More Info"
+msgstr "További infók"
+
+#: includes/Core/Admin.php:886
+msgid "Checkout for WooCommerce: Warning incompatible plugins detected!"
+msgstr ""
+"Pénztár a WooCommerce számára: Figyelem: az összeférhetetlen plug-inek "
+"észlelve!"
+
+#: includes/Core/Admin.php:894
+msgid "Please deactivate these plugins to avoid problems with your checkout!"
+msgstr ""
+"Kérjük, kapcsolja ki ezeket a plugineket, hogy elkerülje a fizetéssel "
+"kapcsolatos problémákat!"
+
+#: includes/Core/Admin.php:907
+#, php-format
+msgid ""
+"Checkout for WooCommerce: Your license key appears to have expired. Please "
+"verify that your license key is valid or <a target=\"_blank\" href=\"https://"
+"www.checkoutwc.com/checkout/?edd_license_key=%s\">renew your license now</a> "
+"to restore full functionality."
+msgstr ""
+"Checkout for WooCommerce: A licenckulcs lejárt. Kérjük, ellenőrizze, hogy a "
+"licenckulcs érvényes-e, vagy <a target=\"_blank\" href=\"https://www."
+"checkoutwc.com/checkout/?edd_license_key=%s\">megújíthatja a licencét a</a> "
+"teljes funkcionalitás helyreállításához."
+
+#: includes/Core/Admin.php:910
+msgid ""
+"Checkout for WooCommerce: Your license key is missing or invalid. Please "
+"verify that your license key is valid or <a target=\"_blank\" href=\"https://"
+"www.checkoutwc.com/\">purchase a license</a> to restore full functionality."
+msgstr ""
+"Checkout for WooCommerce: A licenckulcs hiányzik vagy érvénytelen. "
+"Ellenőrizze, hogy a licenckulcs érvényes-e, vagy <a target=\"_blank\" href="
+"\"https://www.checkoutwc.com/\">vásároljon licencet</a> a teljes "
+"funkcionalitás helyreállításához."
+
+#: includes/Core/Admin.php:915
+msgid ""
+"Thank you for installing Checkout for WooCommerce! To get started, click on "
+"<strong>License</strong> below and activate your license key!"
+msgstr ""
+"Köszönjük, hogy telepítette a Checkout szolgáltatást a WooCommerce számára! "
+"Az induláshoz kattintson a <strong>Licencre</strong> , és aktiválja a "
+"licenckulcsot!"
+
+#: includes/Core/Admin.php:939
+msgid "Settings"
+msgstr "Beállítások"
+
+#: includes/Core/Admin.php:992
+msgid "Phone"
+msgstr "Telefonszám"
+
+#: includes/Core/Customizer.php:387
+msgid ""
+"These settings only apply to the currently active template. If you switch "
+"templates in the customizer, these settings will become unavailable but "
+"saving will publish any changes here prior to switching templates!"
+msgstr ""
+"Ezek a beállítások csak az aktuálisan aktív sablonra vonatkoznak. Ha "
+"sablonokat vált át a testreszabón, ezek a beállítások nem érhetők el, de a "
+"mentés a sablonok cseréjét megelőzően közzéteszi a változtatásokat!"
+
+#: includes/Main.php:478
+msgid ""
+"Activation failed: Please activate WooCommerce in order to use Checkout for "
+"WooCommerce"
+msgstr ""
+"Az aktiválás sikertelen: aktiválja a WooCommerce alkalmazást a Checkout "
+"használatához a WooCommerce számára"
+
+#: includes/Main.php:625
+msgid "Please enter a new quantity:"
+msgstr "Adjon meg egy új mennyiséget:"
+
+#: includes/Main.php:630 templates/copify/content.php:177
+#: templates/copify/content.php:217 templates/copify/thank-you.php:138
+#: templates/default/content.php:170 templates/default/content.php:210
+#: templates/default/thank-you.php:126 templates/futurist/content.php:174
+#: templates/futurist/content.php:214 templates/futurist/thank-you.php:126
+msgid "Shipping address"
+msgstr "Szállítási cím"
+
+#: includes/Main.php:642
+msgid "Error processing checkout. Please try again."
+msgstr "Hiba a fizetés feldolgozásakor. Kérjük, próbálja meg újra."
+
+#: includes/Stats/StatCollection.php:678
+msgid ""
+"Allow Checkout for WooCommerce to track plugin usage? Help make Checkout for "
+"WooCommerce better."
+msgstr ""
+"Engedélyezze a Checkout-ot a WooCommerce számára a plugin használatának "
+"követésére? Segítsen a Checkout-nak a WooCommerce számára jobbá tenni."
+
+#: includes/Stats/StatCollection.php:681
+msgid "Allow"
+msgstr "Engedélyezés"
+
+#: includes/Stats/StatCollection.php:682
+msgid "Do not allow"
+msgstr "Nem enged"
+
+#: templates/copify/content.php:50 templates/copify/content.php:79
+#: templates/copify/thank-you.php:123 templates/default/content.php:43
+#: templates/default/content.php:72 templates/default/thank-you.php:111
+#: templates/futurist/content.php:41 templates/futurist/content.php:76
+#: templates/futurist/thank-you.php:111
+msgid "Customer information"
+msgstr "Személyes adatok"
+
+#: templates/copify/content.php:56 templates/copify/content.php:232
+#: templates/copify/thank-you.php:156 templates/default/content.php:49
+#: templates/default/content.php:225 templates/default/thank-you.php:144
+#: templates/futurist/content.php:47 templates/futurist/content.php:229
+#: templates/futurist/thank-you.php:144
+msgid "Shipping method"
+msgstr "Szállítási mód"
+
+#: templates/copify/content.php:89 templates/default/content.php:82
+#: templates/futurist/content.php:86
+msgid "Already have an account with us?"
+msgstr "Van már CharmClub fiókod?"
+
+#: templates/copify/content.php:93 templates/default/content.php:86
+#: templates/futurist/content.php:90
+msgid "Log in for a faster checkout experience."
+msgstr "Jelentkezz be a gyorsabb vásárlási élményért."
+
+#: templates/copify/content.php:101 templates/copify/content.php:102
+#: templates/default/content.php:94 templates/default/content.php:95
+#: templates/futurist/content.php:98 templates/futurist/content.php:99
+msgid "Email"
+msgstr "E-mail cím"
+
+#: templates/copify/content.php:110 templates/copify/content.php:111
+#: templates/default/content.php:101 templates/default/content.php:102
+#: templates/futurist/content.php:107 templates/futurist/content.php:108
+msgid "Password"
+msgstr "Jelszó"
+
+#: templates/copify/content.php:115 templates/copify/order-pay.php:70
+#: templates/default/content.php:106 templates/default/order-pay.php:59
+#: templates/futurist/content.php:112 templates/futurist/order-pay.php:63
+msgid "Login"
+msgstr "Bejelentkezés"
+
+#: templates/copify/content.php:118 templates/default/content.php:109
+#: templates/futurist/content.php:115
+msgid "Login is optional. You may continue with your order below."
+msgstr ""
+"A bejelentkezés nem kötelező. Folytathatja a megrendelését az alábbiak "
+"szerint."
+
+#: templates/copify/content.php:128 templates/default/content.php:121
+#: templates/futurist/content.php:125
+#, php-format
+msgid "Create %s shopping account."
+msgstr "%s vásárlási fiók létrehozása."
+
+#: templates/copify/content.php:130 templates/default/content.php:123
+#: templates/futurist/content.php:127
+msgid "If you do not have an account, we will create one for you."
+msgstr "Ha nincs fiókja, akkor létrehozunk egyet az Ön számára."
+
+#: templates/copify/content.php:155 templates/default/content.php:148
+#: templates/futurist/content.php:152
+#, php-format
+msgid "Welcome back, %s (%s)."
+msgstr "Üdv újra, %s (%s)."
+
+#: templates/copify/content.php:158 templates/default/content.php:151
+#: templates/futurist/content.php:155
+msgid "Log out."
+msgstr "Kijelentkezés."
+
+#: templates/copify/content.php:173 templates/default/content.php:166
+#: templates/futurist/content.php:170
+msgid "Billing and Shipping address"
+msgstr "Számlázási és szállítási cím"
+
+#: templates/copify/content.php:223 templates/default/content.php:216
+#: templates/futurist/content.php:220
+msgid "Edit shipping address"
+msgstr "Szállítási cím szerkesztése"
+
+#: templates/copify/content.php:234 templates/default/content.php:227
+#: templates/futurist/content.php:231
+msgid "Select a shipping method:"
+msgstr "Kérjük válassz fizetési módot:"
+
+#: templates/copify/content.php:335 templates/default/content.php:310
+#: templates/futurist/content.php:318
+msgid "Enter Promo Code"
+msgstr "Kuponkód"
+
+#: templates/copify/content.php:340 templates/default/content.php:315
+#: templates/futurist/content.php:323
+msgid "Apply"
+msgstr "Beváltom"
+
+#: templates/copify/order-pay.php:72 templates/default/order-pay.php:61
+#: templates/futurist/order-pay.php:65
+msgid "Lost your password?"
+msgstr "Elfelejtette a jelszavát?"
+
+#: templates/copify/thank-you.php:34 templates/default/thank-you.php:22
+#: templates/futurist/thank-you.php:22
+#, php-format
+msgid "Order %s"
+msgstr "%s rendelése"
+
+#: templates/copify/thank-you.php:35 templates/default/thank-you.php:23
+#: templates/futurist/thank-you.php:23
+#, php-format
+msgid "Thank you %s!"
+msgstr "Köszönöm nektek %s!"
+
+#: templates/copify/thank-you.php:96 templates/default/thank-you.php:84
+#: templates/futurist/thank-you.php:84
+msgid "Order status"
+msgstr "Rendelés állapota"
+
+#: templates/copify/thank-you.php:113 templates/default/thank-you.php:101
+#: templates/futurist/thank-you.php:101
+msgid "Order updates"
+msgstr "Rendelési frissítések"
+
+#: templates/copify/thank-you.php:115 templates/default/thank-you.php:103
+#: templates/futurist/thank-you.php:103
+msgid "You’ll get shipping and delivery updates by email."
+msgstr "E-mailben kapsz szállítási és kézbesítési frissítéseket."
+
+#: templates/copify/thank-you.php:126 templates/default/thank-you.php:114
+#: templates/futurist/thank-you.php:114
+msgid "Contact information"
+msgstr "Elérhetőség"
+
+#: templates/futurist/content.php:304 templates/futurist/order-pay.php:131
+msgid "Your Cart"
+msgstr "Kosarad"
+
+#. Plugin URI of the plugin/theme
+msgid "https://www.CheckoutWC.com"
+msgstr "https://www.CheckoutWC.com"
+
+#. Description of the plugin/theme
+msgid "Beautiful, conversion optimized checkout templates for WooCommerce."
+msgstr ""
+"Gyönyörű, átalakított optimalizált pénztár sablonok a WooCommerce számára."
+
+#. Author of the plugin/theme
+msgid "Objectiv"
+msgstr "Objectiv"
+
+#. Author URI of the plugin/theme
+msgid "https://objectiv.co"
+msgstr "https://objectiv.co"
+
+#~ msgid ""
+#~ "You are using a legacy child theme which will be disabled in a future "
+#~ "version. Changing theme settings is not possible for legacy themes."
+#~ msgstr ""
+#~ "Olyan örökölt gyermek témát használ, amely a jövőben le lesz tiltva. A "
+#~ "témakör beállításainak módosítása nem lehetséges a régi témák esetében."
+
+#~ msgid ""
+#~ "It looks like you are using a legacy checkout theme, located in %s. "
+#~ "Legacy themes are deprecated and you should upgrade to the new theme "
+#~ "structure as soon as possible to prevent problems with future release. "
+#~ "For more information, <a target=\"_blank\" href=\"https://www.checkoutwc."
+#~ "com/docs/developer-api/template-files/upgrading-legacy-custom-templates/"
+#~ "\">read our migration guide.</a>"
+#~ msgstr ""
+#~ "Úgy néz ki, mintha egy öreg pénztár témát használna, amely %s-ban "
+#~ "található. Az örökölt témák elavultak, és a lehető leghamarabb "
+#~ "frissítenie kell az új témakört, hogy megelőzze a jövőbeli kiadások "
+#~ "problémáit. További információért <a target=\"_blank\" href=\"https://www."
+#~ "checkoutwc.com/docs/developer-api/template-files/upgrading-legacy-custom-"
+#~ "templates/\">olvassa el a migrációs útmutatót.</a>"
+
+#~ msgid "Subtotal"
+#~ msgstr "Részösszeg"
+
+#~ msgid "Shipping"
+#~ msgstr "Szállítás"
+
+#~ msgid "Taxes"
+#~ msgstr "ÁFA tartalom"
+
+#~ msgid "Total"
+#~ msgstr "Összesen"
+
+#~ msgid "Show Phone Fields"
+#~ msgstr "Telefonmezők megjelenítése"
+
+#~ msgid "Enable billing and shipping phone fields"
+#~ msgstr "Számlázási és szállítási telefonmezők engedélyezése"
+
+#~ msgid ""
+#~ "Enable or disable billing and shipping phone fields as required fields. "
+#~ "(Default: Disabled)"
+#~ msgstr ""
+#~ "Engedélyezze vagy tiltsa le a számlázási és szállítási telefon mezőket, "
+#~ "mint kötelező mezőket. (Alapértelmezés: Letiltva)"
+
+#~ msgid "First name"
+#~ msgstr "Keresztnév"
+
+#~ msgid "Last name"
+#~ msgstr "Vezetéknév"
+
+#~ msgid "Address"
+#~ msgstr "Utca, házszám"
+
+#~ msgid "Street address"
+#~ msgstr "Utca, házszám"
+
+#~ msgid "Apt, suite, etc."
+#~ msgstr "Egyéb, emelet ajtó."
+
+#~ msgid "Company name"
+#~ msgstr "Cégnév (nem kötelező)"
+
+#~ msgid "Country"
+#~ msgstr "Ország"
+
+#~ msgid "Postcode / ZIP"
+#~ msgstr "Irányítószám"
+
+#~ msgid "State / County"
+#~ msgstr "Megye"
+
+#~ msgid "Town / City"
+#~ msgstr "Város"

@@ -1,0 +1,10 @@
+<wpml-config>
+
+  <admin-texts>
+    <key name="pewc_product_total_label" />
+    <key name="pewc_options_total_label" />
+    <key name="pewc_flatrate_total_label" />
+    <key name="pewc_grand_total_label" />
+  </admin-texts>
+
+</wpml-config>

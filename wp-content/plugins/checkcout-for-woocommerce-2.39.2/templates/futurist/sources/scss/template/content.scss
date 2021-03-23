@@ -1,0 +1,270 @@
+$wrap-row-bot-margin: map-get($grid-sg, gutter) * 1.25;
+$breadcrumb-margin: 1.5em;
+
+html {
+  background-color: #ffffff !important;
+}
+
+#cfw-login-slide {
+  display: none;
+  margin-bottom: $wrap-row-bot-margin;
+}
+
+.cfw-input-wrap-row {
+  margin-bottom: $wrap-row-bot-margin;
+
+  &:after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.pad-bottom .form-row {
+  margin-bottom: $wrap-row-bot-margin;
+}
+
+#cfw-breadcrumb {
+  list-style-type: none;
+  margin: 0 0 2em 0;
+  padding: 0;
+  display: flex;
+  position: relative;
+  max-width: 540px;
+  width: 100%;
+
+  &:after {
+    content: " ";
+    width: calc(100% - #{$breadcrumb-margin*2});
+    height: 1px;
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  li {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0 $breadcrumb-margin;
+    position: relative;
+    z-index: 2;
+    padding: 0 1em;
+    background: #fff;
+    width: 25%;
+    font-size: 0.75em;
+
+    &:first-child { margin-left: 0; }
+    &:last-child { margin-right: 0; }
+
+    & > a {
+      display: block;
+      text-decoration: none;
+      text-transform: uppercase;
+      max-width: 75px;
+      text-align: center;
+
+      &:after {
+        content: " ";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    &:not(.active) > a {
+
+    }
+
+    &:before {
+      content: " ";
+      display: block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-bottom: 0.8em;
+    }
+  }
+}
+
+.cfw-breadcrumb-container {
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.cfw-module-title {
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 1em;
+}
+
+.cfw-input-wrap-row {
+  margin-bottom: 16px;
+}
+
+#cfw-cart-details {
+  padding-right: 0;
+}
+
+#cfw-cart-details-collapse-wrap {
+  background: #f8f8f8;
+  padding: 1.5em;
+  box-sizing: border-box;
+
+  & > .cfw-module-title {
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #bfbfbf;
+  }
+}
+
+#cfw-cart-list {
+  margin-bottom: 0;
+}
+
+#cfw-deductors-list {
+  margin: 1.5em 0;
+  padding-top: 1em;
+  border-top: 1px solid #bfbfbf;
+  border-bottom: 1px solid #bfbfbf;
+
+  .cfw-input-wrap-row {
+    margin-bottom: 1em;
+  }
+}
+
+#cfw-totals-list {
+  margin-bottom: 0;
+
+  .cfw-totals-normal {
+    & > *:first-child {
+      padding-top: 0;
+    }
+
+    .cfw-flex-row {
+      border-bottom: none !important;
+    }
+  }
+
+  #cfw-cart-total {
+    border-top: 1px solid #bfbfbf;
+    border-bottom: none;
+    padding-bottom: 0;
+    padding-top: 1.5em;
+  }
+}
+
+.cfw-other-totals {
+  //margin-top: 1.5em;
+  //padding-top: 1.5em;
+
+  .recurring-totals th {
+    padding-bottom: 1.5em;
+    padding-top: 0;
+    border-bottom: 1px solid #bfbfbf;
+  }
+
+  .order-total th, .order-total td{
+
+  }
+
+  .shipping.recurring-total {
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+
+      li {
+        margin-bottom: 0.35em;
+        font-size: 0.9em;
+
+        input {
+          margin-right: 0.3em;
+        }
+
+        &:last-child { margin-bottom: 0; }
+      }
+    }
+  }
+
+  .order-total {
+    & > th, & > td {
+      border-top: 1px solid #bfbfbf !important;
+      border-bottom: 1px solid #bfbfbf !important;
+      padding: 1.5em 0 !important;
+    }
+  }
+
+  .first-payment-date small {
+    margin-top: 1em;
+  }
+}
+
+@media(max-width: 770px) {
+
+  #cfw-breadcrumb {
+    overflow: hidden;
+    margin-bottom: 20px;
+
+    &:first-child {
+      margin-left: -4%;
+    }
+
+    &:last-child {
+      margin-right: -2%;
+    }
+  }
+
+  #cfw-header {
+    margin-bottom: 20px;
+  }
+
+  #cfw-cart-details-collapse-wrap {
+    padding: 0;
+    background: none;
+  }
+
+  #cfw-cart-details-review-bar {
+    .cfw-column-8 {
+      font-size: 0.9em;
+    }
+    .cfw-column-4 {
+      margin-right: 20px;
+    }
+  }
+
+  #cfw-cart-list {
+    .cfw-cart-row {
+      .cfw-cart-item-subtotal {
+        margin-right: 20px;
+      }
+    }
+  }
+}
+
+@media(max-width: 445px) {
+
+  #cfw-breadcrumb {
+
+    li {
+      padding: 0 5px;
+      margin: 0 5px;
+
+      &:before {
+        width: 14px;
+        height: 14px;
+      }
+    }
+
+    &:after {
+      top: 8px;
+    }
+  }
+}

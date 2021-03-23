@@ -1,0 +1,729 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Checkout for WooCommerce\n"
+"POT-Creation-Date: 2019-11-06 09:56-0500\n"
+"PO-Revision-Date: 2019-11-06 10:03-0500\n"
+"Last-Translator: Clifton Griffin <clif@checkoutwc.com>\n"
+"Language-Team: support@checkoutwc.com\n"
+"Language: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
+"2 : 3);\n"
+"X-Generator: Poedit 2.2.4\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: checkout-for-woocommerce.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SearchPathExcluded-1: dist\n"
+"X-Poedit-SearchPathExcluded-2: vendor\n"
+
+#: functions.php:8
+msgid "First Name"
+msgstr "שם פרטי"
+
+#: functions.php:13
+msgid "Last Name"
+msgstr "שם משפחה"
+
+#: functions.php:808
+msgid "Remove Item"
+msgstr "הסר פריט"
+
+#: functions.php:826
+msgid "Edit"
+msgstr "ערוך"
+
+#: functions.php:932 functions.php:939
+msgid "Not Calculated"
+msgstr "לא מחושב"
+
+#: functions.php:937
+msgid "Not Available"
+msgstr "לא להורדה"
+
+#: functions.php:950
+msgid "Complete Order"
+msgstr "הזמנה מלאה"
+
+#: functions.php:983 templates/copify/content.php:62
+#: templates/copify/thank-you.php:130 templates/default/content.php:55
+#: templates/default/thank-you.php:118 templates/futurist/content.php:53
+#: templates/futurist/thank-you.php:118
+msgid "Payment method"
+msgstr "אמצעי תשלום"
+
+#: functions.php:992
+msgid ""
+"All transactions are secure and encrypted. Credit card information is never "
+"stored on our servers."
+msgstr ""
+"כל העסקאות מאובטחות ומוצפנות. מידע על כרטיסי אשראי לעולם לא נשמר בשרתים שלנו."
+
+#: functions.php:1003
+msgid "Your order is free. No payment is required."
+msgstr "ההזמנה שלך היא בחינם. אין צורך בתשלום."
+
+#: functions.php:1091
+msgid "Same as shipping address"
+msgstr "זהה לכתובת המשלוח"
+
+#: functions.php:1101
+msgid "Use a different billing address"
+msgstr "השתמש בכתובת חיוב שונה"
+
+#: functions.php:1218 templates/copify/content.php:175
+#: templates/copify/thank-you.php:146 templates/default/content.php:168
+#: templates/default/thank-you.php:134 templates/futurist/content.php:172
+#: templates/futurist/thank-you.php:134
+msgid "Billing address"
+msgstr "כתובת חיוב"
+
+#: functions.php:1312
+msgid "Return to cart"
+msgstr "חזרה לסל הקניות"
+
+#: functions.php:1316
+msgid "Continue to shipping method"
+msgstr "המשך לשיטת המשלוח"
+
+#: functions.php:1320
+msgid "Continue to payment method"
+msgstr "המשך - לשיטת התשלום"
+
+#: functions.php:1324
+msgid "Return to customer information"
+msgstr "חזור למידע על לקוחות"
+
+#: functions.php:1328
+msgid "Return to shipping information"
+msgstr "חזור למידע למשלוח"
+
+#: includes/Compatibility/Base.php:172
+msgid "Or"
+msgstr "או"
+
+#: includes/Compatibility/Gateways/PayPalForWooCommerce.php:102
+msgid "Logged in with PayPal. Please continue your order below."
+msgstr "התחבר באמצעות PayPal. אנא המשך בהזמנה שלך למטה."
+
+#. Plugin Name of the plugin/theme
+#: includes/Core/Admin.php:108 includes/Core/Admin.php:144
+#: includes/Core/Customizer.php:256 includes/Main.php:840
+msgid "Checkout for WooCommerce"
+msgstr "‫Checkout for WooCommerce"
+
+#: includes/Core/Admin.php:108
+msgid "CheckoutWC"
+msgstr "‫CheckoutWC"
+
+#: includes/Core/Admin.php:111 includes/Core/Customizer.php:269
+#: includes/Main.php:848
+msgid "General"
+msgstr "כללי"
+
+#: includes/Core/Admin.php:112 includes/Core/Customizer.php:315
+#: includes/Core/Customizer.php:332 includes/Main.php:857
+msgid "Template"
+msgstr "תבנית"
+
+#: includes/Core/Admin.php:113 includes/Core/Customizer.php:346
+#: includes/Core/Customizer.php:383 includes/Main.php:866
+msgid "Design"
+msgstr "עיצוב"
+
+#: includes/Core/Admin.php:116
+msgid "Addons"
+msgstr "הרחבות"
+
+#: includes/Core/Admin.php:119 includes/Main.php:875
+msgid "License"
+msgstr "רישיון"
+
+#: includes/Core/Admin.php:120 includes/Main.php:884
+msgid "Support"
+msgstr "תמיכה"
+
+#: includes/Core/Admin.php:121
+msgid "Recommended Plugins"
+msgstr "תוספים מומלצים"
+
+#: includes/Core/Admin.php:145 includes/Core/Customizer.php:259
+msgid ""
+"Checkout for WooCommerce provides a beautiful, conversion optimized checkout "
+"template for WooCommerce."
+msgstr ""
+"‫Checkout ל- WooCommerce מספק תבנית Checkout יפה וממוטבת להמרות עבור "
+"WooCommerce."
+
+#: includes/Core/Admin.php:172 includes/Core/Customizer.php:280
+msgid "Enable / Disable"
+msgstr "הפעל / השבת"
+
+#: includes/Core/Admin.php:176
+msgid "Use Checkout for WooCommerce Template"
+msgstr "השתמש ב- Checkout לתבנית WooCommerce"
+
+#: includes/Core/Admin.php:177
+msgid ""
+"Enable or disable Checkout for WooCommerce theme. (NOTE: Theme is always "
+"enabled for admin users.)"
+msgstr ""
+"הפעל או השבת את Checkout לנושא WooCommerce. (הערה: נושא תמיד מופעל עבור "
+"משתמשי מנהל.)"
+
+#: includes/Core/Admin.php:183 includes/Core/Customizer.php:291
+msgid "Header Scripts"
+msgstr "תסריטים לכותרות"
+
+#: includes/Core/Admin.php:189
+msgid ""
+"This code will output immediately before the closing <code>&lt;/head&gt;</"
+"code> tag in the document source."
+msgstr ""
+"קוד זה ייצא מייד לפני תג הסגירה <code>&lt;/head&gt;</code> במקור המסמך."
+
+#: includes/Core/Admin.php:197 includes/Core/Customizer.php:302
+msgid "Footer Scripts"
+msgstr "תסריטים לתחתית כותרת תחתונה"
+
+#: includes/Core/Admin.php:203
+msgid ""
+"This code will output immediately before the closing <code>&lt;/body&gt;</"
+"code> tag in the document source."
+msgstr "קוד זה ייצא מיד לפני תג הסגירה <code>&lt;/body&gt;</code> במקור המסמך."
+
+#: includes/Core/Admin.php:215
+msgid "Enable Usage Tracking"
+msgstr "אפשר מעקב אחר שימוש"
+
+#: includes/Core/Admin.php:221
+msgid "Allow Checkout for WooCommerce to track plugin usage?"
+msgstr "האם לאפשר ל- Checkout ל- WooCommerce לעקוב אחר השימוש בתוספים?"
+
+#: includes/Core/Admin.php:229
+msgid "Stat Collection Data Viewer"
+msgstr "מציג נתוני אוסף נתונים"
+
+#: includes/Core/Admin.php:247
+msgid "Premium Features"
+msgstr "תכונות בגרסת הפרימיום"
+
+#: includes/Core/Admin.php:256
+msgid "Cart Editing"
+msgstr "עריכת עגלה"
+
+#: includes/Core/Admin.php:260
+msgid "Enable cart editing."
+msgstr "אפשר עריכת עגלה."
+
+#: includes/Core/Admin.php:261
+msgid ""
+"Enable or disable cart editing feature. Allows customer to remove or adjust "
+"quantity of cart items."
+msgstr ""
+"הפעל או השבת את תכונת עריכת העגלה. מאפשר ללקוח להסיר או להתאים את כמות פריטי "
+"העגלה."
+
+#: includes/Core/Admin.php:267
+msgid "Cart Editing Empty Cart Redirect"
+msgstr "עריכת סל לעגלה הפניה מחדש של עגלה"
+
+#: includes/Core/Admin.php:273
+msgid "URL to redirect to when customer empties cart from checkout page."
+msgstr "כתובת אתר להפניה מחדש כאשר הלקוח מרוקן את העגלה מדף הקופה."
+
+#: includes/Core/Admin.php:274
+msgid "If left blank, customer will be redirected to the cart page."
+msgstr "אם יישאר ריק, הלקוח יופנה לדף העגלה."
+
+#: includes/Core/Admin.php:283
+msgid "Order Pay"
+msgstr "שכר הזמנה"
+
+#: includes/Core/Admin.php:287
+msgid "Enable support for order pay page."
+msgstr "אפשר תמיכה לדף תשלום שכר הזמנה."
+
+#: includes/Core/Admin.php:288
+msgid "Use checkout template for order pay page."
+msgstr "השתמש בתבנית לקופה לדף תשלום הזמנה."
+
+#: includes/Core/Admin.php:295
+msgid "Thank You Page"
+msgstr "עמוד תודה"
+
+#: includes/Core/Admin.php:299
+msgid "Enable support for thank you page."
+msgstr "אפשר תמיכה לדף תודה."
+
+#: includes/Core/Admin.php:300
+msgid ""
+"Enable thank you page / order received template. This template is also used "
+"when viewing orders in My Account."
+msgstr ""
+"אפשר תבנית תודה / הזמנה שהתקבלה. תבנית זו משמשת גם בעת הצגת הזמנות בחשבון "
+"שלי."
+
+#: includes/Core/Admin.php:307
+msgid "Order Statuses"
+msgstr "מצבי הזמנות"
+
+#: includes/Core/Admin.php:318
+msgid "The statuses to show on the thank you page."
+msgstr "הסטטוסים שיוצגו בדף התודה."
+
+#: includes/Core/Admin.php:325
+msgid "Map Embed"
+msgstr "שבץ מפה"
+
+#: includes/Core/Admin.php:329
+msgid "Enable map embed."
+msgstr "אפשר הטמעת מפה."
+
+#: includes/Core/Admin.php:330
+msgid "Enable or disable map embed on thank you page. Requires Google API key."
+msgstr "הפעל או השבת מפה המוטמעת בדף תודה. נדרש מפתח API של Google."
+
+#: includes/Core/Admin.php:337
+msgid "Address Autocomplete"
+msgstr "השלמה אוטומטית של כתובת"
+
+#: includes/Core/Admin.php:341
+msgid "Enable address autocomplete."
+msgstr "אפשר השלמה אוטומטית של כתובת."
+
+#: includes/Core/Admin.php:342
+msgid ""
+"Enable or disable address autocomplete feature. Requires Google API key."
+msgstr ""
+"הפעל או השבת את תכונת ההשלמה האוטומטית של הכתובת. נדרש מפתח API של Google."
+
+#: includes/Core/Admin.php:348
+msgid "Google API Key"
+msgstr "מפתח API של גוגל"
+
+#: includes/Core/Admin.php:354
+msgid ""
+"Google API Key. Available in the <a target=\"_blank\" href=\"https://"
+"developers.google.com/places/web-service/get-api-key\">Google Cloud Platform "
+"Console</a>."
+msgstr ""
+
+#: includes/Core/Admin.php:370
+msgid "License Upgrade Required"
+msgstr "חובה לשדרג רישיון"
+
+#: includes/Core/Admin.php:370
+msgid "A Growth or Developer License is required to enable these features."
+msgstr "רישיון צמיחה או מפתחים נדרש כדי לאפשר תכונות אלה."
+
+#: includes/Core/Admin.php:371
+#, php-format
+msgid ""
+"You can upgrade your license in <a target=\"_blank\" href=\"%1$s\">My "
+"Account</a>. For help upgrading your license, <a target=\"_blank\" href="
+"\"%2$s\">click here.</a>"
+msgstr ""
+"אתה יכול לשדרג את הרישיון <a target=\"_blank\" href=\"%1$s\">בחשבון שלי</"
+"a> . לעזרה בשדרוג הרישיון שלך, <a target=\"_blank\" href=\"%2$s\">לחץ כאן.</"
+"a>"
+
+#: includes/Core/Admin.php:386
+msgid "Templates"
+msgstr "תבניות"
+
+#: includes/Core/Admin.php:407
+msgid "Active: "
+msgstr "מופעל?"
+
+#: includes/Core/Admin.php:415
+msgid "Activate"
+msgstr "הפעל"
+
+#: includes/Core/Admin.php:438
+msgid "Global Settings"
+msgstr "הגדרות כלליות"
+
+#: includes/Core/Admin.php:439
+msgid "These settings apply to all themes."
+msgstr "הגדרות אלה חלות על כל הנושאים."
+
+#: includes/Core/Admin.php:444 includes/Core/Customizer.php:358
+msgid "Logo"
+msgstr "לוגו"
+
+#: includes/Core/Admin.php:450
+msgid "Upload image"
+msgstr "העלאת תמונה"
+
+#: includes/Core/Admin.php:453
+msgid "Clear Logo"
+msgstr "לוגו ברור"
+
+#: includes/Core/Admin.php:459 includes/Core/Customizer.php:370
+msgid "Footer Text"
+msgstr "טקסט פוטר"
+
+#: includes/Core/Admin.php:465
+msgid ""
+"If left blank, a standard copyright notice will be displayed. Set to a "
+"single space to override this behavior."
+msgstr ""
+"אם תשאיר ריק, תוצג הודעה על זכויות יוצרים רגילה. הגדר לחלל בודד כדי לעקוף "
+"התנהגות זו."
+
+#: includes/Core/Admin.php:473
+msgid "Cart Summary Mobile Label"
+msgstr "תווית הסל של הסל"
+
+#: includes/Core/Admin.php:479
+msgid "Example: Show order summary and coupons"
+msgstr "דוגמה: הצג סיכום הזמנות וקופונים"
+
+#: includes/Core/Admin.php:480
+msgid "If left blank, this default will be used: "
+msgstr "אם יישאר ריק, ברירת מחדל זו תשתמש:"
+
+#: includes/Core/Admin.php:480 templates/copify/content.php:308
+#: templates/copify/order-pay.php:140 templates/copify/thank-you.php:209
+#: templates/default/content.php:284 templates/default/order-pay.php:111
+#: templates/default/thank-you.php:181 templates/futurist/content.php:288
+#: templates/futurist/order-pay.php:116 templates/futurist/thank-you.php:181
+msgid "Show order summary"
+msgstr "הצג סיכום הזמנה"
+
+#: includes/Core/Admin.php:488 includes/Core/Customizer.php:383
+msgid "Theme Specific Settings"
+msgstr "הגדרות ספציפיות לנושא"
+
+#: includes/Core/Admin.php:498 includes/Core/Customizer.php:396
+msgid "Header Background Color"
+msgstr "צבע רקע הדר"
+
+#: includes/Core/Admin.php:508 includes/Core/Customizer.php:410
+msgid "Header Text Color"
+msgstr "צבע הטקסט בסרגל העליון של האתר"
+
+#: includes/Core/Admin.php:518 includes/Core/Customizer.php:424
+msgid "Footer Background Color"
+msgstr "צבע רקע שול פוטר"
+
+#: includes/Core/Admin.php:528 includes/Core/Customizer.php:438
+msgid "Footer Text Color"
+msgstr "צבע טקסט הפוטר"
+
+#: includes/Core/Admin.php:538 includes/Core/Customizer.php:452
+msgid "Summary Background Color"
+msgstr "צבע רקע סיכום"
+
+#: includes/Core/Admin.php:548 includes/Core/Customizer.php:466
+msgid "Primary Button Color"
+msgstr "צבע כפתור ראשי"
+
+#: includes/Core/Admin.php:557 includes/Core/Customizer.php:480
+msgid "Primary Button Text Color"
+msgstr "צבע טקסט כפתור ראשי"
+
+#: includes/Core/Admin.php:566 includes/Core/Customizer.php:494
+msgid "Secondary Button Color"
+msgstr "צבע כפתור משני"
+
+#: includes/Core/Admin.php:575 includes/Core/Customizer.php:508
+msgid "Secondary Button Text Color"
+msgstr "צבע הטקסט של הכפתורים המשניים"
+
+#: includes/Core/Admin.php:584 includes/Core/Customizer.php:522
+msgid "Link Color"
+msgstr "צבע קישור"
+
+#: includes/Core/Admin.php:593 includes/Core/Customizer.php:535
+msgid "Custom CSS"
+msgstr "CSS מותאם אישית"
+
+#: includes/Core/Admin.php:599
+msgid ""
+"Add Custom CSS rules to fully control the appearance of the checkout "
+"template."
+msgstr "הוסף כללי CSS מותאמים אישית כדי לשלוט במלואם על המראה של תבנית התשלום."
+
+#: includes/Core/Admin.php:666
+msgid "Need help?"
+msgstr "זקוק לעזרה?"
+
+#: includes/Core/Admin.php:668
+msgid "Excellent support is in our DNA."
+msgstr "תמיכה מצוינת נמצאת ב- DNA שלנו."
+
+#: includes/Core/Admin.php:670
+msgid "Contact Support"
+msgstr "צור קשר עם תמיכה"
+
+#: includes/Core/Admin.php:706
+msgid ""
+"The WooCommerce ecosystem is full of fantastic plugins. Here are a few that "
+"work really well with CheckoutWC that we wholeheartedly recommend to our "
+"customers. (A few of these links may include affiliate tracking. This does "
+"not impact our decision to include a plugin.)"
+msgstr ""
+"המערכת האקולוגית WooCommerce מלאה בתוספים פנטסטיים. הנה כמה שעובדים ממש טוב "
+"עם CheckoutWC שאנו ממליצים להם בלב שלם ללקוחות שלנו. (כמה מקישורים אלו "
+"עשויים לכלול מעקב אחר גורמים שותפים. זה לא משפיע על החלטתנו לכלול תוסף.)"
+
+#: includes/Core/Admin.php:729
+msgid "More Info"
+msgstr "מידע נוסף"
+
+#: includes/Core/Admin.php:886
+msgid "Checkout for WooCommerce: Warning incompatible plugins detected!"
+msgstr "‫Checkout ל- WooCommerce: זוהו תוספים לא תואמים אזהרה!"
+
+#: includes/Core/Admin.php:894
+msgid "Please deactivate these plugins to avoid problems with your checkout!"
+msgstr "בטל את הפלאגינים הללו כדי למנוע בעיות בקופה שלך!"
+
+#: includes/Core/Admin.php:907
+#, php-format
+msgid ""
+"Checkout for WooCommerce: Your license key appears to have expired. Please "
+"verify that your license key is valid or <a target=\"_blank\" href=\"https://"
+"www.checkoutwc.com/checkout/?edd_license_key=%s\">renew your license now</a> "
+"to restore full functionality."
+msgstr ""
+"‫Checkout ל- WooCommerce: נראה כי מפתח הרישיון פג. אנא ודא שמפתח הרישיון שלך "
+"תקף או <a target=\"_blank\" href=\"https://www.checkoutwc.com/checkout/?"
+"edd_license_key=%s\">חידוש את הרישיון שלך עכשיו</a> כדי לשחזר את "
+"הפונקציונליות המלאה."
+
+#: includes/Core/Admin.php:910
+msgid ""
+"Checkout for WooCommerce: Your license key is missing or invalid. Please "
+"verify that your license key is valid or <a target=\"_blank\" href=\"https://"
+"www.checkoutwc.com/\">purchase a license</a> to restore full functionality."
+msgstr ""
+"‫Checkout ל- WooCommerce: מפתח הרישיון שלך חסר או לא תקף. אנא ודא שמפתח "
+"הרישיון שלך תקף או <a target=\"_blank\" href=\"https://www.checkoutwc.com/"
+"\">רכוש רישיון</a> לשחזור הפונקציונליות המלאה."
+
+#: includes/Core/Admin.php:915
+msgid ""
+"Thank you for installing Checkout for WooCommerce! To get started, click on "
+"<strong>License</strong> below and activate your license key!"
+msgstr ""
+"תודה שהתקנת את Checkout ל- WooCommerce! כדי להתחיל, לחץ על <strong>הרישיון</"
+"strong> למטה והפעל את מפתח הרישיון שלך!"
+
+#: includes/Core/Admin.php:939
+msgid "Settings"
+msgstr "הגדרות"
+
+#: includes/Core/Admin.php:992
+msgid "Phone"
+msgstr "טלפון"
+
+#: includes/Core/Customizer.php:387
+msgid ""
+"These settings only apply to the currently active template. If you switch "
+"templates in the customizer, these settings will become unavailable but "
+"saving will publish any changes here prior to switching templates!"
+msgstr ""
+"הגדרות אלה חלות רק על התבנית הפעילה כרגע. אם אתה מחליף תבניות בהתאמה אישית, "
+"הגדרות אלה יהפכו ללא זמינות אך החיסכון יפרסם כאן כל שינוי לפני שתחלף תבניות!"
+
+#: includes/Main.php:478
+msgid ""
+"Activation failed: Please activate WooCommerce in order to use Checkout for "
+"WooCommerce"
+msgstr ""
+"ההפעלה נכשלה: אנא הפעל את WooCommerce כדי להשתמש ב- Checkout עבור WooCommerce"
+
+#: includes/Main.php:625
+msgid "Please enter a new quantity:"
+msgstr "אנא הכנס כמות חדשה:"
+
+#: includes/Main.php:630 templates/copify/content.php:177
+#: templates/copify/content.php:217 templates/copify/thank-you.php:138
+#: templates/default/content.php:170 templates/default/content.php:210
+#: templates/default/thank-you.php:126 templates/futurist/content.php:174
+#: templates/futurist/content.php:214 templates/futurist/thank-you.php:126
+msgid "Shipping address"
+msgstr "כתובת למשלוח"
+
+#: includes/Main.php:642
+msgid "Error processing checkout. Please try again."
+msgstr "שגיאה בעיבוד הקופה. בבקשה נסה שוב."
+
+#: includes/Stats/StatCollection.php:678
+msgid ""
+"Allow Checkout for WooCommerce to track plugin usage? Help make Checkout for "
+"WooCommerce better."
+msgstr ""
+"האם לאפשר ל- Checkout ל- WooCommerce לעקוב אחר השימוש בתוספים? עזור לשפר את "
+"Checkout ל- WooCommerce."
+
+#: includes/Stats/StatCollection.php:681
+msgid "Allow"
+msgstr "לאפשר"
+
+#: includes/Stats/StatCollection.php:682
+msgid "Do not allow"
+msgstr "אל תאפשר"
+
+#: templates/copify/content.php:50 templates/copify/content.php:79
+#: templates/copify/thank-you.php:123 templates/default/content.php:43
+#: templates/default/content.php:72 templates/default/thank-you.php:111
+#: templates/futurist/content.php:41 templates/futurist/content.php:76
+#: templates/futurist/thank-you.php:111
+msgid "Customer information"
+msgstr "מידע ללקוחות"
+
+#: templates/copify/content.php:56 templates/copify/content.php:232
+#: templates/copify/thank-you.php:156 templates/default/content.php:49
+#: templates/default/content.php:225 templates/default/thank-you.php:144
+#: templates/futurist/content.php:47 templates/futurist/content.php:229
+#: templates/futurist/thank-you.php:144
+msgid "Shipping method"
+msgstr "שיטת המשלוח"
+
+#: templates/copify/content.php:89 templates/default/content.php:82
+#: templates/futurist/content.php:86
+msgid "Already have an account with us?"
+msgstr "כבר יש לך איתנו חשבון?"
+
+#: templates/copify/content.php:93 templates/default/content.php:86
+#: templates/futurist/content.php:90
+msgid "Log in for a faster checkout experience."
+msgstr "התחבר לחווית קנייה מהירה יותר."
+
+#: templates/copify/content.php:101 templates/copify/content.php:102
+#: templates/default/content.php:94 templates/default/content.php:95
+#: templates/futurist/content.php:98 templates/futurist/content.php:99
+msgid "Email"
+msgstr "אימייל"
+
+#: templates/copify/content.php:110 templates/copify/content.php:111
+#: templates/default/content.php:101 templates/default/content.php:102
+#: templates/futurist/content.php:107 templates/futurist/content.php:108
+msgid "Password"
+msgstr "סיסמה"
+
+#: templates/copify/content.php:115 templates/copify/order-pay.php:70
+#: templates/default/content.php:106 templates/default/order-pay.php:59
+#: templates/futurist/content.php:112 templates/futurist/order-pay.php:63
+msgid "Login"
+msgstr "התחבר"
+
+#: templates/copify/content.php:118 templates/default/content.php:109
+#: templates/futurist/content.php:115
+msgid "Login is optional. You may continue with your order below."
+msgstr "הכניסה היא לא חובה. אתה יכול להמשיך בהזמנה שלך למטה."
+
+#: templates/copify/content.php:128 templates/default/content.php:121
+#: templates/futurist/content.php:125
+#, php-format
+msgid "Create %s shopping account."
+msgstr "צור חשבון קניות של %s."
+
+#: templates/copify/content.php:130 templates/default/content.php:123
+#: templates/futurist/content.php:127
+msgid "If you do not have an account, we will create one for you."
+msgstr "אם אין לך חשבון, אנו ניצור לך חשבון."
+
+#: templates/copify/content.php:155 templates/default/content.php:148
+#: templates/futurist/content.php:152
+#, php-format
+msgid "Welcome back, %s (%s)."
+msgstr "ברוך הבא, %s ( %s)."
+
+#: templates/copify/content.php:158 templates/default/content.php:151
+#: templates/futurist/content.php:155
+msgid "Log out."
+msgstr "התנתק"
+
+#: templates/copify/content.php:173 templates/default/content.php:166
+#: templates/futurist/content.php:170
+msgid "Billing and Shipping address"
+msgstr "כתובת לחיוב ומשלוח"
+
+#: templates/copify/content.php:223 templates/default/content.php:216
+#: templates/futurist/content.php:220
+msgid "Edit shipping address"
+msgstr "עריכת כתובת משלוח"
+
+#: templates/copify/content.php:234 templates/default/content.php:227
+#: templates/futurist/content.php:231
+msgid "Select a shipping method:"
+msgstr "בחר שיטת משלוח:"
+
+#: templates/copify/content.php:335 templates/default/content.php:310
+#: templates/futurist/content.php:318
+msgid "Enter Promo Code"
+msgstr "הכנס את קוד הזיכוי"
+
+#: templates/copify/content.php:340 templates/default/content.php:315
+#: templates/futurist/content.php:323
+msgid "Apply"
+msgstr "החל"
+
+#: templates/copify/order-pay.php:72 templates/default/order-pay.php:61
+#: templates/futurist/order-pay.php:65
+msgid "Lost your password?"
+msgstr "איפוס סיסמה?"
+
+#: templates/copify/thank-you.php:34 templates/default/thank-you.php:22
+#: templates/futurist/thank-you.php:22
+#, php-format
+msgid "Order %s"
+msgstr "הזמנה %s"
+
+#: templates/copify/thank-you.php:35 templates/default/thank-you.php:23
+#: templates/futurist/thank-you.php:23
+#, php-format
+msgid "Thank you %s!"
+msgstr "תודה %s!"
+
+#: templates/copify/thank-you.php:96 templates/default/thank-you.php:84
+#: templates/futurist/thank-you.php:84
+msgid "Order status"
+msgstr "סטטוס ההזמנה"
+
+#: templates/copify/thank-you.php:113 templates/default/thank-you.php:101
+#: templates/futurist/thank-you.php:101
+msgid "Order updates"
+msgstr "עדכוני הזמנה"
+
+#: templates/copify/thank-you.php:115 templates/default/thank-you.php:103
+#: templates/futurist/thank-you.php:103
+msgid "You’ll get shipping and delivery updates by email."
+msgstr "תקבל עדכוני משלוח ומשלוח באמצעות הדוא\"ל."
+
+#: templates/copify/thank-you.php:126 templates/default/thank-you.php:114
+#: templates/futurist/thank-you.php:114
+msgid "Contact information"
+msgstr "פרטי התקשרות"
+
+#: templates/futurist/content.php:304 templates/futurist/order-pay.php:131
+msgid "Your Cart"
+msgstr "סל  קניות"
+
+#. Plugin URI of the plugin/theme
+msgid "https://www.CheckoutWC.com"
+msgstr "‫https://www.CheckoutWC.com"
+
+#. Description of the plugin/theme
+msgid "Beautiful, conversion optimized checkout templates for WooCommerce."
+msgstr "תבניות קופה אופטימיזציה להמרה יפה עבור WooCommerce."
+
+#. Author of the plugin/theme
+msgid "Objectiv"
+msgstr "אובייקטיבי"
+
+#. Author URI of the plugin/theme
+msgid "https://objectiv.co"
+msgstr "‫https://objectiv.co"

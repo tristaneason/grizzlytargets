@@ -1,0 +1,1032 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Checkout for WooCommerce\n"
+"POT-Creation-Date: 2019-11-06 09:56-0500\n"
+"PO-Revision-Date: 2019-11-06 10:02-0500\n"
+"Last-Translator: Clifton Griffin <clif@checkoutwc.com>\n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.4\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: checkout-for-woocommerce.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: functions.php:8
+msgid "First Name"
+msgstr "Nome"
+
+#: functions.php:13
+msgid "Last Name"
+msgstr "Cognome"
+
+#: functions.php:808
+msgid "Remove Item"
+msgstr "Rimuovi Articolo"
+
+#: functions.php:826
+msgid "Edit"
+msgstr "Modifica"
+
+#: functions.php:932 functions.php:939
+msgid "Not Calculated"
+msgstr "Non calcolato"
+
+#: functions.php:937
+msgid "Not Available"
+msgstr "Non disponibile"
+
+#: functions.php:950
+msgid "Complete Order"
+msgstr "Completa l’ordine"
+
+#: functions.php:983 templates/copify/content.php:62
+#: templates/copify/thank-you.php:130 templates/default/content.php:55
+#: templates/default/thank-you.php:118 templates/futurist/content.php:53
+#: templates/futurist/thank-you.php:118
+msgid "Payment method"
+msgstr "Metodo di pagamento"
+
+#: functions.php:992
+msgid ""
+"All transactions are secure and encrypted. Credit card information is never "
+"stored on our servers."
+msgstr ""
+"Tutte le transazioni sono protette e criptate. Carta di credito non vengono "
+"memorizzate sui nostri server."
+
+#: functions.php:1003
+msgid "Your order is free. No payment is required."
+msgstr "Il tuo ordine è gratuito. Nessun pagamento è richiesto."
+
+#: functions.php:1091
+msgid "Same as shipping address"
+msgstr "Uguale all'indirizzo di spedizione"
+
+#: functions.php:1101
+msgid "Use a different billing address"
+msgstr "Utilizza un indirizzo di fatturazione diverso"
+
+#: functions.php:1218 templates/copify/content.php:175
+#: templates/copify/thank-you.php:146 templates/default/content.php:168
+#: templates/default/thank-you.php:134 templates/futurist/content.php:172
+#: templates/futurist/thank-you.php:134
+msgid "Billing address"
+msgstr "Indirizzo di fatturazione"
+
+#: functions.php:1312
+msgid "Return to cart"
+msgstr "Torna al carrello"
+
+#: functions.php:1316
+msgid "Continue to shipping method"
+msgstr "Continuare a metodo di spedizione"
+
+#: functions.php:1320
+msgid "Continue to payment method"
+msgstr "Passare al metodo di pagamento"
+
+#: functions.php:1324
+msgid "Return to customer information"
+msgstr "Torna a informazioni cliente"
+
+#: functions.php:1328
+msgid "Return to shipping information"
+msgstr "Torna a informazioni sulla spedizione"
+
+#: includes/Compatibility/Base.php:172
+msgid "Or"
+msgstr "Oppure"
+
+#: includes/Compatibility/Gateways/PayPalForWooCommerce.php:102
+msgid "Logged in with PayPal. Please continue your order below."
+msgstr "Loggato con PayPal. Si prega di continuare il vostro ordine qui sotto."
+
+#. Plugin Name of the plugin/theme
+#: includes/Core/Admin.php:108 includes/Core/Admin.php:144
+#: includes/Core/Customizer.php:256 includes/Main.php:840
+msgid "Checkout for WooCommerce"
+msgstr "Checkout per WooCommerce"
+
+#: includes/Core/Admin.php:108
+msgid "CheckoutWC"
+msgstr "CheckoutWC"
+
+#: includes/Core/Admin.php:111 includes/Core/Customizer.php:269
+#: includes/Main.php:848
+msgid "General"
+msgstr "Impostazioni generali"
+
+#: includes/Core/Admin.php:112 includes/Core/Customizer.php:315
+#: includes/Core/Customizer.php:332 includes/Main.php:857
+msgid "Template"
+msgstr "Modello"
+
+#: includes/Core/Admin.php:113 includes/Core/Customizer.php:346
+#: includes/Core/Customizer.php:383 includes/Main.php:866
+msgid "Design"
+msgstr "Grafica"
+
+#: includes/Core/Admin.php:116
+msgid "Addons"
+msgstr "Componenti aggiuntivi"
+
+#: includes/Core/Admin.php:119 includes/Main.php:875
+msgid "License"
+msgstr "Licenza"
+
+#: includes/Core/Admin.php:120 includes/Main.php:884
+msgid "Support"
+msgstr "Supporto"
+
+#: includes/Core/Admin.php:121
+msgid "Recommended Plugins"
+msgstr "Plugins Raccomandati"
+
+#: includes/Core/Admin.php:145 includes/Core/Customizer.php:259
+msgid ""
+"Checkout for WooCommerce provides a beautiful, conversion optimized checkout "
+"template for WooCommerce."
+msgstr ""
+"Checkout per WooCommerce fornisce una bella, conversione ottimizzato modello "
+"di checkout per WooCommerce."
+
+#: includes/Core/Admin.php:172 includes/Core/Customizer.php:280
+msgid "Enable / Disable"
+msgstr "Abilita / Disabilita"
+
+#: includes/Core/Admin.php:176
+msgid "Use Checkout for WooCommerce Template"
+msgstr "Utilizzare Checkout per WooCommerce modello"
+
+#: includes/Core/Admin.php:177
+msgid ""
+"Enable or disable Checkout for WooCommerce theme. (NOTE: Theme is always "
+"enabled for admin users.)"
+msgstr ""
+"Abilita o disattiva la funzione Checkout for WooCommerce. (NOTA: il tema è "
+"sempre abilitato per gli amministratori.)"
+
+#: includes/Core/Admin.php:183 includes/Core/Customizer.php:291
+msgid "Header Scripts"
+msgstr "Intestazione scripts"
+
+#: includes/Core/Admin.php:189
+msgid ""
+"This code will output immediately before the closing <code>&lt;/head&gt;</"
+"code> tag in the document source."
+msgstr ""
+"Questo codice verrà generato immediatamente prima del tag <code>&lt;/head&gt;"
+"</code> di chiusura nell’origine del documento."
+
+#: includes/Core/Admin.php:197 includes/Core/Customizer.php:302
+msgid "Footer Scripts"
+msgstr "Script piè di pagina"
+
+#: includes/Core/Admin.php:203
+msgid ""
+"This code will output immediately before the closing <code>&lt;/body&gt;</"
+"code> tag in the document source."
+msgstr ""
+"Questo codice verrà generato immediatamente prima del tag <code>&lt;/body&gt;"
+"</code> di chiusura nell’origine del documento."
+
+#: includes/Core/Admin.php:215
+msgid "Enable Usage Tracking"
+msgstr "Abilita il monitoraggio dell'utilizzo"
+
+#: includes/Core/Admin.php:221
+msgid "Allow Checkout for WooCommerce to track plugin usage?"
+msgstr ""
+"Consentire Checkout per WooCommerce per tenere traccia dell'uso del plugin?"
+
+#: includes/Core/Admin.php:229
+msgid "Stat Collection Data Viewer"
+msgstr "Visualizzatore di dati sulla raccolta delle statistiche"
+
+#: includes/Core/Admin.php:247
+msgid "Premium Features"
+msgstr "Funzioni Premium"
+
+#: includes/Core/Admin.php:256
+msgid "Cart Editing"
+msgstr "Modifica del carrello"
+
+#: includes/Core/Admin.php:260
+msgid "Enable cart editing."
+msgstr "Abilita la modifica del carrello."
+
+#: includes/Core/Admin.php:261
+msgid ""
+"Enable or disable cart editing feature. Allows customer to remove or adjust "
+"quantity of cart items."
+msgstr ""
+"Abilita o disabilita la funzione di modifica del carrello. Consente al "
+"cliente di rimuovere o regolare la quantità di articoli del carrello."
+
+#: includes/Core/Admin.php:267
+msgid "Cart Editing Empty Cart Redirect"
+msgstr "Carrello Modifica Carrello vuoto Carrello reindirizzamento"
+
+#: includes/Core/Admin.php:273
+msgid "URL to redirect to when customer empties cart from checkout page."
+msgstr ""
+"URL per reindirizzare a quando il cliente svuota il carrello dalla pagina di "
+"checkout."
+
+#: includes/Core/Admin.php:274
+msgid "If left blank, customer will be redirected to the cart page."
+msgstr ""
+"Se lasciato vuoto, il cliente verrà reindirizzato alla pagina del carrello."
+
+#: includes/Core/Admin.php:283
+msgid "Order Pay"
+msgstr "Ordine Paga"
+
+#: includes/Core/Admin.php:287
+msgid "Enable support for order pay page."
+msgstr "Abilita il supporto per la pagina del pagamento dell'ordine."
+
+#: includes/Core/Admin.php:288
+msgid "Use checkout template for order pay page."
+msgstr "Utilizzare il modello di cassa per la pagina di pagamento dell'ordine."
+
+#: includes/Core/Admin.php:295
+msgid "Thank You Page"
+msgstr "Pagina dei ringraziamenti"
+
+#: includes/Core/Admin.php:299
+msgid "Enable support for thank you page."
+msgstr "Attivare il supporto per la pagina di ringraziamento."
+
+#: includes/Core/Admin.php:300
+msgid ""
+"Enable thank you page / order received template. This template is also used "
+"when viewing orders in My Account."
+msgstr ""
+"Abilita pagina di ringraziamento / ordine ricevuto modello. Questo modello "
+"viene utilizzato anche per visualizzare gli ordini in Il mio account."
+
+#: includes/Core/Admin.php:307
+msgid "Order Statuses"
+msgstr "Stati dell'ordine"
+
+#: includes/Core/Admin.php:318
+msgid "The statuses to show on the thank you page."
+msgstr "Gli stati da mostrare nella pagina di ringraziamento."
+
+#: includes/Core/Admin.php:325
+msgid "Map Embed"
+msgstr "Mappa Incorporare"
+
+#: includes/Core/Admin.php:329
+msgid "Enable map embed."
+msgstr "Attivare l'embed mappa."
+
+#: includes/Core/Admin.php:330
+msgid "Enable or disable map embed on thank you page. Requires Google API key."
+msgstr ""
+"Abilita o disabilita l'incorporazione della mappa nella pagina di "
+"ringraziamento. Richiede la chiave API di Google."
+
+#: includes/Core/Admin.php:337
+msgid "Address Autocomplete"
+msgstr "Completamento automatico Indirizzo"
+
+#: includes/Core/Admin.php:341
+msgid "Enable address autocomplete."
+msgstr "Abilita completamento automatico dell'indirizzo."
+
+#: includes/Core/Admin.php:342
+msgid ""
+"Enable or disable address autocomplete feature. Requires Google API key."
+msgstr ""
+"Abilita o disabilita la funzione di completamento automatico dell'indirizzo. "
+"Richiede la chiave API di Google."
+
+#: includes/Core/Admin.php:348
+msgid "Google API Key"
+msgstr "Chiave API Google"
+
+#: includes/Core/Admin.php:354
+msgid ""
+"Google API Key. Available in the <a target=\"_blank\" href=\"https://"
+"developers.google.com/places/web-service/get-api-key\">Google Cloud Platform "
+"Console</a>."
+msgstr ""
+"Chiave Google API Key. Disponibile nella <a target=\"_blank\" href=\"https://"
+"developers.google.com/places/web-service/get-api-key\">Google Cloud Platform "
+"Console</a>."
+
+#: includes/Core/Admin.php:370
+msgid "License Upgrade Required"
+msgstr "Aggiornamento della licenza richiesto"
+
+#: includes/Core/Admin.php:370
+msgid "A Growth or Developer License is required to enable these features."
+msgstr ""
+"Per abilitare queste funzioni è necessaria una licenza di crescita o di "
+"sviluppo."
+
+#: includes/Core/Admin.php:371
+#, php-format
+msgid ""
+"You can upgrade your license in <a target=\"_blank\" href=\"%1$s\">My "
+"Account</a>. For help upgrading your license, <a target=\"_blank\" href="
+"\"%2$s\">click here.</a>"
+msgstr ""
+"È possibile aggiornare la licenza in <a target=\"_blank\" href=\"%1$s\">Il "
+"mio account</a>. Per informazioni sull'aggiornamento della licenza, fare <a "
+"target=\"_blank\" href=\"%2$s\">clic qui.</a>"
+
+#: includes/Core/Admin.php:386
+msgid "Templates"
+msgstr "Modelli"
+
+#: includes/Core/Admin.php:407
+msgid "Active: "
+msgstr "Attiva: "
+
+#: includes/Core/Admin.php:415
+msgid "Activate"
+msgstr "Attiva"
+
+#: includes/Core/Admin.php:438
+msgid "Global Settings"
+msgstr "Impostazioni Globali"
+
+#: includes/Core/Admin.php:439
+msgid "These settings apply to all themes."
+msgstr "Queste impostazioni si applicano a tutti i temi."
+
+#: includes/Core/Admin.php:444 includes/Core/Customizer.php:358
+msgid "Logo"
+msgstr "Logo"
+
+#: includes/Core/Admin.php:450
+msgid "Upload image"
+msgstr "Carica Immagine"
+
+#: includes/Core/Admin.php:453
+msgid "Clear Logo"
+msgstr "Logo chiaro"
+
+#: includes/Core/Admin.php:459 includes/Core/Customizer.php:370
+msgid "Footer Text"
+msgstr "Testo piè di pagina"
+
+#: includes/Core/Admin.php:465
+msgid ""
+"If left blank, a standard copyright notice will be displayed. Set to a "
+"single space to override this behavior."
+msgstr ""
+"Se lasciato vuoto, verrà visualizzato un avviso di copyright standard. "
+"Impostare su un singolo spazio per eseguire l’override di questo "
+"comportamento."
+
+#: includes/Core/Admin.php:473
+msgid "Cart Summary Mobile Label"
+msgstr "Sintesi del carrello Etichetta mobile"
+
+#: includes/Core/Admin.php:479
+msgid "Example: Show order summary and coupons"
+msgstr "Esempio: Mostra il riepilogo dell'ordine e i coupon"
+
+#: includes/Core/Admin.php:480
+msgid "If left blank, this default will be used: "
+msgstr "Se lasciato vuoto, verrà utilizzato questo valore predefinito"
+
+#: includes/Core/Admin.php:480 templates/copify/content.php:308
+#: templates/copify/order-pay.php:140 templates/copify/thank-you.php:209
+#: templates/default/content.php:284 templates/default/order-pay.php:111
+#: templates/default/thank-you.php:181 templates/futurist/content.php:288
+#: templates/futurist/order-pay.php:116 templates/futurist/thank-you.php:181
+msgid "Show order summary"
+msgstr "Mostra riepilogo ordine"
+
+#: includes/Core/Admin.php:488 includes/Core/Customizer.php:383
+msgid "Theme Specific Settings"
+msgstr "Impostazioni specifiche del tema"
+
+#: includes/Core/Admin.php:498 includes/Core/Customizer.php:396
+msgid "Header Background Color"
+msgstr "Colore di sfondo dell’header"
+
+#: includes/Core/Admin.php:508 includes/Core/Customizer.php:410
+msgid "Header Text Color"
+msgstr "Colore Testo Header"
+
+#: includes/Core/Admin.php:518 includes/Core/Customizer.php:424
+msgid "Footer Background Color"
+msgstr "Colore Sfondo del Footer"
+
+#: includes/Core/Admin.php:528 includes/Core/Customizer.php:438
+msgid "Footer Text Color"
+msgstr "Colore Testo Footer"
+
+#: includes/Core/Admin.php:538 includes/Core/Customizer.php:452
+msgid "Summary Background Color"
+msgstr "Riepilogo colore di sfondo"
+
+#: includes/Core/Admin.php:548 includes/Core/Customizer.php:466
+msgid "Primary Button Color"
+msgstr "Colore pulsante principale"
+
+#: includes/Core/Admin.php:557 includes/Core/Customizer.php:480
+msgid "Primary Button Text Color"
+msgstr "Colore del testo pulsante principale"
+
+#: includes/Core/Admin.php:566 includes/Core/Customizer.php:494
+msgid "Secondary Button Color"
+msgstr "Colore pulsante secondario"
+
+#: includes/Core/Admin.php:575 includes/Core/Customizer.php:508
+msgid "Secondary Button Text Color"
+msgstr "Colore del testo pulsante secondario"
+
+#: includes/Core/Admin.php:584 includes/Core/Customizer.php:522
+msgid "Link Color"
+msgstr "Colore link"
+
+#: includes/Core/Admin.php:593 includes/Core/Customizer.php:535
+msgid "Custom CSS"
+msgstr "CSS personalizzato"
+
+#: includes/Core/Admin.php:599
+msgid ""
+"Add Custom CSS rules to fully control the appearance of the checkout "
+"template."
+msgstr ""
+"Aggiungere regole CSS personalizzato per controllare completamente l'aspetto "
+"del modello di check-out."
+
+#: includes/Core/Admin.php:666
+msgid "Need help?"
+msgstr "Bisogno di aiuto?"
+
+#: includes/Core/Admin.php:668
+msgid "Excellent support is in our DNA."
+msgstr "Un eccellente supporto è nel nostro DNA."
+
+#: includes/Core/Admin.php:670
+msgid "Contact Support"
+msgstr "Contatta il supporto"
+
+#: includes/Core/Admin.php:706
+msgid ""
+"The WooCommerce ecosystem is full of fantastic plugins. Here are a few that "
+"work really well with CheckoutWC that we wholeheartedly recommend to our "
+"customers. (A few of these links may include affiliate tracking. This does "
+"not impact our decision to include a plugin.)"
+msgstr ""
+"L'ecosistema WooCommerce è pieno di fantastici plugin. Qui ce ne sono alcuni "
+"che funzionano molto bene con CheckoutWC che raccomandiamo vivamente ai "
+"nostri clienti. (Alcuni di questi link possono includere il monitoraggio "
+"degli affiliati. Questo non influisce sulla nostra decisione di includere un "
+"plugin.)"
+
+#: includes/Core/Admin.php:729
+msgid "More Info"
+msgstr "Più Info"
+
+#: includes/Core/Admin.php:886
+msgid "Checkout for WooCommerce: Warning incompatible plugins detected!"
+msgstr ""
+"Vai alla cassa per WooCommerce: Avvertenza: sono stati rilevati plugin "
+"incompatibili!"
+
+#: includes/Core/Admin.php:894
+msgid "Please deactivate these plugins to avoid problems with your checkout!"
+msgstr "Disattivare questi plugin per evitare problemi alla cassa!"
+
+#: includes/Core/Admin.php:907
+#, php-format
+msgid ""
+"Checkout for WooCommerce: Your license key appears to have expired. Please "
+"verify that your license key is valid or <a target=\"_blank\" href=\"https://"
+"www.checkoutwc.com/checkout/?edd_license_key=%s\">renew your license now</a> "
+"to restore full functionality."
+msgstr ""
+"Checkout for WooCommerce: La tua chiave di licenza sembra essere scaduta. "
+"Verifica che la chiave di licenza sia valida o <a target=\"_blank\" href="
+"\"https://www.checkoutwc.com/checkout/?edd_license_key=%s\">rinnovi la tua "
+"licenza ora</a> per ripristinare la funzionalità completa."
+
+#: includes/Core/Admin.php:910
+msgid ""
+"Checkout for WooCommerce: Your license key is missing or invalid. Please "
+"verify that your license key is valid or <a target=\"_blank\" href=\"https://"
+"www.checkoutwc.com/\">purchase a license</a> to restore full functionality."
+msgstr ""
+"Checkout for WooCommerce: La tua chiave di licenza è mancante o non valida. "
+"Verifica che sia valida la chiave di licenza o <a target=\"_blank\" href="
+"\"https://www.checkoutwc.com/\">acquista una licenza</a> per ripristinare "
+"tutte le funzionalità."
+
+#: includes/Core/Admin.php:915
+msgid ""
+"Thank you for installing Checkout for WooCommerce! To get started, click on "
+"<strong>License</strong> below and activate your license key!"
+msgstr ""
+"Grazie per aver installato Checkout per WooCommerce! Per iniziare, fai clic "
+"su <strong>Licenza</strong> di seguito e attiva la tua chiave di licenza!"
+
+#: includes/Core/Admin.php:939
+msgid "Settings"
+msgstr "Impostazioni"
+
+#: includes/Core/Admin.php:992
+msgid "Phone"
+msgstr "Telefono"
+
+#: includes/Core/Customizer.php:387
+msgid ""
+"These settings only apply to the currently active template. If you switch "
+"templates in the customizer, these settings will become unavailable but "
+"saving will publish any changes here prior to switching templates!"
+msgstr ""
+"Queste impostazioni si applicano solo al modello attualmente attivo. Se "
+"cambiate i modelli nel Customizer, queste regolazioni diventeranno non "
+"disponibili ma il saving pubblicherà tutte le modifiche qui prima dei "
+"modelli di commutazione!"
+
+#: includes/Main.php:478
+msgid ""
+"Activation failed: Please activate WooCommerce in order to use Checkout for "
+"WooCommerce"
+msgstr ""
+"Attivazione non riuscita: si prega di attivare WooCommerce per poter "
+"utilizzare Checkout per WooCommerce"
+
+#: includes/Main.php:625
+msgid "Please enter a new quantity:"
+msgstr "Si prega di inserire una nuova quantità:"
+
+#: includes/Main.php:630 templates/copify/content.php:177
+#: templates/copify/content.php:217 templates/copify/thank-you.php:138
+#: templates/default/content.php:170 templates/default/content.php:210
+#: templates/default/thank-you.php:126 templates/futurist/content.php:174
+#: templates/futurist/content.php:214 templates/futurist/thank-you.php:126
+msgid "Shipping address"
+msgstr "Indirizzo di consegna"
+
+#: includes/Main.php:642
+msgid "Error processing checkout. Please try again."
+msgstr "Errore durante l'acquisto. Per favore ritenta."
+
+#: includes/Stats/StatCollection.php:678
+msgid ""
+"Allow Checkout for WooCommerce to track plugin usage? Help make Checkout for "
+"WooCommerce better."
+msgstr ""
+"Consentire Checkout per WooCommerce per tenere traccia dell'uso del plugin? "
+"Aiuta a migliorare l'acquisto di WooCommerce."
+
+#: includes/Stats/StatCollection.php:681
+msgid "Allow"
+msgstr "Permettere"
+
+#: includes/Stats/StatCollection.php:682
+msgid "Do not allow"
+msgstr "Non consentire"
+
+#: templates/copify/content.php:50 templates/copify/content.php:79
+#: templates/copify/thank-you.php:123 templates/default/content.php:43
+#: templates/default/content.php:72 templates/default/thank-you.php:111
+#: templates/futurist/content.php:41 templates/futurist/content.php:76
+#: templates/futurist/thank-you.php:111
+msgid "Customer information"
+msgstr "Informazioni sul cliente"
+
+#: templates/copify/content.php:56 templates/copify/content.php:232
+#: templates/copify/thank-you.php:156 templates/default/content.php:49
+#: templates/default/content.php:225 templates/default/thank-you.php:144
+#: templates/futurist/content.php:47 templates/futurist/content.php:229
+#: templates/futurist/thank-you.php:144
+msgid "Shipping method"
+msgstr "Metodo di spedizione"
+
+#: templates/copify/content.php:89 templates/default/content.php:82
+#: templates/futurist/content.php:86
+msgid "Already have an account with us?"
+msgstr "Hai già un account?"
+
+#: templates/copify/content.php:93 templates/default/content.php:86
+#: templates/futurist/content.php:90
+msgid "Log in for a faster checkout experience."
+msgstr "Accedi per un'esperienza di checkout più veloce."
+
+#: templates/copify/content.php:101 templates/copify/content.php:102
+#: templates/default/content.php:94 templates/default/content.php:95
+#: templates/futurist/content.php:98 templates/futurist/content.php:99
+msgid "Email"
+msgstr "E-mail"
+
+#: templates/copify/content.php:110 templates/copify/content.php:111
+#: templates/default/content.php:101 templates/default/content.php:102
+#: templates/futurist/content.php:107 templates/futurist/content.php:108
+msgid "Password"
+msgstr "Password"
+
+#: templates/copify/content.php:115 templates/copify/order-pay.php:70
+#: templates/default/content.php:106 templates/default/order-pay.php:59
+#: templates/futurist/content.php:112 templates/futurist/order-pay.php:63
+msgid "Login"
+msgstr "Accedi"
+
+#: templates/copify/content.php:118 templates/default/content.php:109
+#: templates/futurist/content.php:115
+msgid "Login is optional. You may continue with your order below."
+msgstr ""
+"Il login è opzionale. Potete continuare con il vostro ordine qui sotto."
+
+#: templates/copify/content.php:128 templates/default/content.php:121
+#: templates/futurist/content.php:125
+#, php-format
+msgid "Create %s shopping account."
+msgstr "Crea account di acquisto %s."
+
+#: templates/copify/content.php:130 templates/default/content.php:123
+#: templates/futurist/content.php:127
+msgid "If you do not have an account, we will create one for you."
+msgstr "Se non hai un account, ne creeremo uno per te."
+
+#: templates/copify/content.php:155 templates/default/content.php:148
+#: templates/futurist/content.php:152
+#, php-format
+msgid "Welcome back, %s (%s)."
+msgstr "Bentornato, %s ( %s)."
+
+#: templates/copify/content.php:158 templates/default/content.php:151
+#: templates/futurist/content.php:155
+msgid "Log out."
+msgstr "Esci."
+
+#: templates/copify/content.php:173 templates/default/content.php:166
+#: templates/futurist/content.php:170
+msgid "Billing and Shipping address"
+msgstr "Indirizzo di fatturazione e spedizione"
+
+#: templates/copify/content.php:223 templates/default/content.php:216
+#: templates/futurist/content.php:220
+msgid "Edit shipping address"
+msgstr "Modifica indirizzo di spedizione"
+
+#: templates/copify/content.php:234 templates/default/content.php:227
+#: templates/futurist/content.php:231
+msgid "Select a shipping method:"
+msgstr "Seleziona un servizio di spedizione:"
+
+#: templates/copify/content.php:335 templates/default/content.php:310
+#: templates/futurist/content.php:318
+msgid "Enter Promo Code"
+msgstr "Inserire il codice promozionale"
+
+#: templates/copify/content.php:340 templates/default/content.php:315
+#: templates/futurist/content.php:323
+msgid "Apply"
+msgstr "Applica"
+
+#: templates/copify/order-pay.php:72 templates/default/order-pay.php:61
+#: templates/futurist/order-pay.php:65
+msgid "Lost your password?"
+msgstr "Password dimenticata?"
+
+#: templates/copify/thank-you.php:34 templates/default/thank-you.php:22
+#: templates/futurist/thank-you.php:22
+#, php-format
+msgid "Order %s"
+msgstr "Ordine %s"
+
+#: templates/copify/thank-you.php:35 templates/default/thank-you.php:23
+#: templates/futurist/thank-you.php:23
+#, php-format
+msgid "Thank you %s!"
+msgstr "Grazie %s!"
+
+#: templates/copify/thank-you.php:96 templates/default/thank-you.php:84
+#: templates/futurist/thank-you.php:84
+msgid "Order status"
+msgstr "Stato ordini"
+
+#: templates/copify/thank-you.php:113 templates/default/thank-you.php:101
+#: templates/futurist/thank-you.php:101
+msgid "Order updates"
+msgstr "Aggiornamenti ordine"
+
+#: templates/copify/thank-you.php:115 templates/default/thank-you.php:103
+#: templates/futurist/thank-you.php:103
+msgid "You’ll get shipping and delivery updates by email."
+msgstr ""
+"Riceverai gli aggiornamenti per la spedizione e la consegna via e-mail."
+
+#: templates/copify/thank-you.php:126 templates/default/thank-you.php:114
+#: templates/futurist/thank-you.php:114
+msgid "Contact information"
+msgstr "Informazioni di Contatto"
+
+#: templates/futurist/content.php:304 templates/futurist/order-pay.php:131
+msgid "Your Cart"
+msgstr "Il Tuo Carrello"
+
+#. Plugin URI of the plugin/theme
+msgid "https://www.CheckoutWC.com"
+msgstr "https://www.CheckoutWC.com"
+
+#. Description of the plugin/theme
+msgid "Beautiful, conversion optimized checkout templates for WooCommerce."
+msgstr "Bellissimi modelli di cassa ottimizzati per il WooCommerce."
+
+#. Author of the plugin/theme
+msgid "Objectiv"
+msgstr "Objectiv"
+
+#. Author URI of the plugin/theme
+msgid "https://objectiv.co"
+msgstr "https://objectiv.co"
+
+#~ msgid ""
+#~ "There is a new version of %1$s available. %2$sView version %3$s details"
+#~ "%4$s."
+#~ msgstr ""
+#~ "C’è una nuova versione disponibile di %1$s, %2$s Vedi versione %3$s "
+#~ "dettagli %4$s."
+
+#~ msgid ""
+#~ "There is a new version of %1$s available. %2$sView version %3$s details"
+#~ "%4$s or %5$supdate now%6$s."
+#~ msgstr ""
+#~ "C'è una nuova versione di %1$s disponibile. %2$sVedi versione %3$s "
+#~ "dettagli %4$s o %5$saggiorna adesso%6$s."
+
+#~ msgid "You do not have permission to install plugin updates"
+#~ msgstr ""
+#~ "Non si dispone delle autorizzazioni necessarie per aggiornare il plugin"
+
+#~ msgid "Error"
+#~ msgstr "Error"
+
+#~ msgid ""
+#~ "You are using a legacy child theme which will be disabled in a future "
+#~ "version. Changing theme settings is not possible for legacy themes."
+#~ msgstr ""
+#~ "Si utilizza un tema figlio legacy che verrà disattivato in una versione "
+#~ "futura. Modificare le impostazioni del tema non è possibile per i temi "
+#~ "legacy."
+
+#~ msgid ""
+#~ "It looks like you are using a legacy checkout theme, located in %s. "
+#~ "Legacy themes are deprecated and you should upgrade to the new theme "
+#~ "structure as soon as possible to prevent problems with future release. "
+#~ "For more information, <a target=\"_blank\" href=\"https://www.checkoutwc."
+#~ "com/docs/developer-api/template-files/upgrading-legacy-custom-templates/"
+#~ "\">read our migration guide.</a>"
+#~ msgstr ""
+#~ "Sembra che si sta utilizzando un tema di checkout legacy, che si trova in "
+#~ "%s. temi legacy sono deprecati e si dovrebbe aggiornare alla nuova "
+#~ "struttura tema il più presto possibile per evitare problemi con il "
+#~ "rilascio futuro. Per ulteriori informazioni, <a target=\"_ blank\" href="
+#~ "\"https://www.checkoutwc.com/docs/developer-api/template-files/upgrading-"
+#~ "legacy-custom-templates/\" >leggere la nostra guida alla migrazione.</a>"
+
+#~ msgid "Subtotal"
+#~ msgstr "Subtotale"
+
+#~ msgid "Shipping"
+#~ msgstr "Spedizione"
+
+#~ msgid "Taxes"
+#~ msgstr "Iva"
+
+#~ msgid "Total"
+#~ msgstr "Totale"
+
+#~ msgid "Show Phone Fields"
+#~ msgstr "Mostra campi telefono"
+
+#~ msgid "Enable billing and shipping phone fields"
+#~ msgstr "Abilita campi telefonici di fatturazione e spedizione"
+
+#~ msgid ""
+#~ "Enable or disable billing and shipping phone fields as required fields. "
+#~ "(Default: Disabled)"
+#~ msgstr ""
+#~ "Abilita o Disabilita i campi telefonici di fatturazione e spedizione come "
+#~ "campi obbligatori. (Predefinito: disattivato)"
+
+#~ msgid "First name"
+#~ msgstr "Nome"
+
+#~ msgid "Last name"
+#~ msgstr "Cognome"
+
+#~ msgid "Address"
+#~ msgstr "Indirizzo"
+
+#~ msgid "Street address"
+#~ msgstr "Indirizzo"
+
+#~ msgid "Apt, suite, etc."
+#~ msgstr "APT, suite, ecc."
+
+#~ msgid "Company name"
+#~ msgstr "Azienda"
+
+#~ msgid "Country"
+#~ msgstr "Paese"
+
+#~ msgid "Postcode / ZIP"
+#~ msgstr "CAP"
+
+#~ msgid "State / County"
+#~ msgstr "Stato"
+
+#~ msgid "Town / City"
+#~ msgstr "Città"
+
+#~ msgid "required"
+#~ msgstr "richiesto"
+
+#~ msgid "Select a country&hellip;"
+#~ msgstr "Seleziona la nazione&hellip;"
+
+#~ msgid "Update country"
+#~ msgstr "Aggiorna Stato"
+
+#~ msgid "Select a state&hellip;"
+#~ msgstr "Seleziona uno stato&hellip;"
+
+#~ msgid "Choose an option"
+#~ msgstr "Scegli un’opzione"
+
+#~ msgctxt "shipping packages"
+#~ msgid "Shipping"
+#~ msgid_plural "Shipping %d"
+#~ msgstr[0] "Spedizione"
+#~ msgstr[1] "Spedizione %d"
+
+#~ msgid ""
+#~ "There are no shipping methods available. Please double check your "
+#~ "address, or contact us if you need any help."
+#~ msgstr ""
+#~ "Non ci sono metodi di spedizione disponibili. Per favore controlla "
+#~ "nuovamente il tuo indirizzo o contattaci se hai bisogno di assistenza."
+
+#~ msgid ""
+#~ "Sorry, it seems that there are no available payment methods for your "
+#~ "location. Please contact us if you require assistance or wish to make "
+#~ "alternate arrangements."
+#~ msgstr ""
+#~ "Ci dispiace, sembra non ci siano metodi di pagamento disponibili per il "
+#~ "tuo Paese. Ti invitiamo a contattarci se hai bisogno di assistenza o per "
+#~ "richiedere ulteriori informazioni."
+
+#~ msgid "Checkout is not available whilst your cart is empty."
+#~ msgstr "Cassa non è disponibile, il carrello è vuoto ."
+
+#~ msgid "Select an option&hellip;"
+#~ msgstr "Seleziona un opzione&hellip;"
+
+#~ msgctxt "enhanced select"
+#~ msgid "No matches found"
+#~ msgstr "Nessun risultato trovato"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Loading failed"
+#~ msgstr "Caricamento fallito"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Please enter 1 or more characters"
+#~ msgstr "Si prega di inserire 1 o più caratteri"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Please enter %qty% or more characters"
+#~ msgstr "Inserisci %qty% o più caratteri"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Please delete 1 character"
+#~ msgstr "Si prega di cancellare 1 carattere"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Please delete %qty% characters"
+#~ msgstr "Si prega di cancellare %qty% caratteri"
+
+#~ msgctxt "enhanced select"
+#~ msgid "You can only select 1 item"
+#~ msgstr "Puoi selezionare solo 1 articolo"
+
+#~ msgctxt "enhanced select"
+#~ msgid "You can only select %qty% items"
+#~ msgstr "Puoi selezionare solo %qty% elementi"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Loading more results&hellip;"
+#~ msgstr "Caricamento di altri risultati&hellip;"
+
+#~ msgctxt "enhanced select"
+#~ msgid "Searching&hellip;"
+#~ msgstr "Cercando&hellip;"
+
+#~ msgid "Cart"
+#~ msgstr "Carrello"
+
+#~ msgid ""
+#~ "There is a new version of %1$s available. <a target=\"_blank\" class="
+#~ "\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
+#~ msgstr ""
+#~ "E’ disponibile una nuova versione di %1$s . <a target=\"_blank\" class="
+#~ "\"thickbox\" href=\"%2$s\">Guarda i dettagli della versione %3$s</a>."
+
+#~ msgid ""
+#~ "There is a new version of %1$s available. <a target=\"_blank\" class="
+#~ "\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a href=\"%4$s"
+#~ "\">update now</a>."
+#~ msgstr ""
+#~ "È disponibile una nuova versione di %1$s. <a target=\"_blank\" class="
+#~ "\"thickbox\" href=\"%2$s\">Visualizza i dettagli della versione %3$s</a> "
+#~ "oppure <a href=\"%4$s\">aggiornala ora</a>."
+
+#~ msgid ""
+#~ "There are no shipping methods available. Please ensure that your address "
+#~ "has been entered correctly, or contact us if you need any help."
+#~ msgstr ""
+#~ "Non ci sono metodi di spedizione disponibili. Assicurati che il tuo "
+#~ "indirizzo sia stato inserito correttamente o contattaci se hai bisogno di "
+#~ "aiuto."
+
+#~ msgctxt "checkout-wc"
+#~ msgid "Apt, suite, etc. (optional)"
+#~ msgstr "APT, suite, ecc (opzionale)"
+
+#~ msgid ""
+#~ "If you do not have an account, the information provided here will be used "
+#~ "to create an account on checkout."
+#~ msgstr ""
+#~ "Se non hai un account, le informazioni qui fornite saranno utilizzate per "
+#~ "creare un account alla volta."
+
+#~ msgid ""
+#~ "We can't wait to help you with Checkout for WooCommerce! Please fill out "
+#~ "the following form and one of our support staff will respond within 12-24 "
+#~ "hours. (average)"
+#~ msgstr ""
+#~ "Non vediamo l'ora di aiutarti con Checkout per WooCommerce! Si prega di "
+#~ "compilare il seguente modulo e uno dei nostri staff di supporto "
+#~ "risponderà entro 12-24 ore. (media)"
+
+#~ msgid "Many issues are addressed in our documentation:"
+#~ msgstr "Molti problemi sono trattati nella nostra documentazione:"
+
+#~ msgid "View Documentation"
+#~ msgstr "Vedi la documentazione"
+
+#~ msgid ""
+#~ "If you need help for something not covered in our documentation, please "
+#~ "click this button to file a support request:"
+#~ msgstr ""
+#~ "Se hai bisogno di aiuto per qualcosa che non è coperto dalla nostra "
+#~ "documentazione, fai clic su questo pulsante per inviare una richiesta di "
+#~ "supporto:"
+
+#~ msgid "Support Request"
+#~ msgstr "Richiesta di assistenza"
+
+#~ msgid ""
+#~ "Checkout for WooCommerce requires WooCommerce Stripe Payment Gateway 3.2."
+#~ "x. You currently have version "
+#~ msgstr ""
+#~ "Il checkout per WooCommerce richiede WooCommerce Stripe Payment Gateway "
+#~ "3.2.x. Attualmente hai la versione "
+
+#~ msgid "Create a %s shopping account."
+#~ msgstr "Creare un %s conto di shopping."
+
+#~ msgid ""
+#~ "Shipping costs will be calculated once you have provided your address."
+#~ msgstr ""
+#~ "Le spese di spedizione saranno calcolate in seguito, dopo che avrai "
+#~ "fornito il tuo indirizzo."
+
+#~ msgid "Apartment, suite, unit etc."
+#~ msgstr "Appartamento, suite, palazzo ecc "
+
+#~ msgid "Shipping Address"
+#~ msgstr "Indirizzo spedizione"
+
+#~ msgid "Header Shadow Color"
+#~ msgstr "Colore di ombreggiatura di intestazione"
+
+#~ msgid "Brandon Tassone"
+#~ msgstr "Brandon Tassone"
+
+#~ msgid "Welcome"
+#~ msgstr "Benvenuto"
