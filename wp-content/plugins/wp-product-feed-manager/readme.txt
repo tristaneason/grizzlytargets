@@ -5,7 +5,7 @@ Tags: Google Merchant Export, Product feed, woocommerce, Google product feed exp
 Requires at least: 5.4
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 1.29.1
+Stable tag: 1.29.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -96,6 +96,9 @@ In case it does please do submit your feed in your Google Merchant center and ch
 3. Save and generate your feed
 
 == Changelog ==
+= 1.29.2 - 26/03/2021 =
+* Updated an issue that prevented Regular Prices from Variable Products to be included in the feeds.
+
 = 1.29.1 - 20/03/2021 =
 * Fixed an issue that prevented Regular Prices from Variable Products to be included in the feeds.
 

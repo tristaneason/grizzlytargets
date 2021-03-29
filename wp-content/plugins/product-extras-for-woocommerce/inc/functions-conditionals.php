@@ -1408,6 +1408,8 @@ function pewc_is_group_visible( $group_id, $group, $posted ) {
 
 	// Iterate through each condition
 	$match = pewc_get_group_condition_match( $group_id );
+	$action = pewc_get_group_condition_action( $group_id, $group );
+
 	$is_group_visible = false;
 
 	if( $match == 'all' ) {
@@ -1419,6 +1421,11 @@ function pewc_is_group_visible( $group_id, $group, $posted ) {
 		$field_id = $condition['field'];
 		$field_value = isset( $posted[$field_id] ) ? $posted[$field_id] : false;
 		$meets_condition = pewc_is_field_visible( $field_value, $condition['rule'], $condition['value'] );
+
+		// Reverse the visibility for groups that are hidden
+		if( $action == 'hide' ) {
+			$meets_condition = ! $meets_condition;
+		}
 
 		if( $meets_condition && $match =='any' ) {
 			return true;
@@ -1437,6 +1444,7 @@ function pewc_is_group_visible( $group_id, $group, $posted ) {
  * @since 3.8.0
  */
 function pewc_is_field_visible( $field_value, $rule, $required_value ) {
+
 	if( $rule == 'is' || $rule == 'cost-equals' ) {
 		if( is_array( $field_value ) ) { // Radio button values
 			return in_array( $required_value, $field_value );
@@ -1453,6 +1461,7 @@ function pewc_is_field_visible( $field_value, $rule, $required_value ) {
 	} else if( $rule == 'less-than' || $rule == 'less-than-equals' ) {
 		return $field_value <= $required_value;
 	}
+	
 }
 
 /**

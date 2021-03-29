@@ -188,6 +188,12 @@ function pewc_duplicate_groups_and_fields( $duplicate, $product, $overwrite=true
 			update_post_meta( $duplicate_group_id, 'group_description', $group_description );
 			update_post_meta( $duplicate_group_id, 'group_layout', $group_layout );
 
+			$group_action = get_post_meta( $group_id, 'condition_action', true );
+			$group_match = pewc_get_group_condition_match( $group_id );
+			$group_conditions = pewc_get_group_conditions( $group_id ); // Group conditions are updated after mapping below
+			update_post_meta( $duplicate_group_id, 'condition_action', $group_action );
+			update_post_meta( $duplicate_group_id, 'condition_match', $group_match );
+
 			// Find each field in each group, duplicate and assign new IDs
 			$product_fields = pewc_get_group_fields( $group_id );
 			$duplicate_fields[$duplicate_group_id] = array();
@@ -248,6 +254,20 @@ function pewc_duplicate_groups_and_fields( $duplicate, $product, $overwrite=true
 				}
 
 			}
+
+			// Update group conditions with new IDs
+			if( $group_conditions ) {
+				foreach( $group_conditions as $group_index=>$group_condition ) {
+					$ids = explode( '_', $group_condition['field'] );
+					$old_group_id = $ids[2];
+					$old_field_id = $ids[3];
+					$new_group_id = $map_groups[$old_group_id];
+					$new_field_id = $map_fields[$old_field_id];
+					$group_condition['field'] = 'pewc_group_' . $new_group_id . '_' . $new_field_id;
+					$group_conditions[$group_index] = $group_condition;
+				}
+			}
+			update_post_meta( $duplicate_group_id, 'conditions', $group_conditions );
 
 			// Now we have to update the group field IDs
 			update_post_meta( $duplicate_group_id, 'field_ids', array_keys( $duplicate_fields[$duplicate_group_id] ) );

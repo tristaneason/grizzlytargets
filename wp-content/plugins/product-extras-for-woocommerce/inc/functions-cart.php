@@ -384,18 +384,6 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 								}
 							}
 
-							// Calculate price for multiply fields
-							if( ! empty( $item['multiply'] ) && ( $field_type == 'number' || $field_type == 'name_price' ) ) {
-								if( ! $is_flat_rate ) {
-									$price = $value * $price;
-								} else {
-									$flat_rate_items[$field_id] = array(
-										'label'		=> $label,
-										'price'		=> $value * floatval( $field_price )
-									);
-								}
-							}
-
 							// Calculate price for percentage fields
 							if( $is_percentage && $field_type != 'calculation' ) {
 								if( ! $is_flat_rate ) {
@@ -405,6 +393,18 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 									$flat_rate_items[$field_id] = array(
 										'label'		=> $label,
 										'price'		=> pewc_calculate_percentage_price( $field_price, $product )
+									);
+								}
+							}
+
+							// Calculate price for multiply fields
+							if( ! empty( $item['multiply'] ) && ( $field_type == 'number' || $field_type == 'name_price' ) ) {
+								if( ! $is_flat_rate ) {
+									$price = $value * $price;
+								} else {
+									$flat_rate_items[$field_id] = array(
+										'label'		=> $label,
+										'price'		=> $value * floatval( $field_price )
 									);
 								}
 							}
@@ -739,6 +739,8 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 
 		}
 
+		// Add some quantities?
+
 	} else if( ! empty( $_FILES ) ) {
 
 		// Standard method
@@ -811,7 +813,8 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 								'type'			=> $file['type'][$i],
 								'tmp_name'	=> $file['tmp_name'][$i],
 								'error'			=> $file['error'][$i],
-								'size'			=> $file['size'][$i]
+								'size'			=> $file['size'][$i],
+								'quantity'	=> isset( $_POST[$id . '_extra_fields'][$i] ) ? $_POST[$id . '_extra_fields'][$i] : false
 							);
 
 							if( isset( $file['url'][$i] ) ) {
@@ -1359,6 +1362,14 @@ function pewc_get_item_data( $other_data, $cart_item ) {
 										$display .= sprintf(
 											'<br><span>%s</span>',
 											$file['display']
+										);
+									}
+
+									if( ! empty( $file['quantity'] ) ) {
+										$display .= sprintf(
+											'%s: %s',
+											__( 'Quantity', 'pewc' ),
+											$file['quantity']
 										);
 									}
 

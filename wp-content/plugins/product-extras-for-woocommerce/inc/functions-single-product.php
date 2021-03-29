@@ -116,7 +116,11 @@ function pewc_enqueue_scripts() {
 		'product_gallery'				=> apply_filters( 'pewc_product_gallery', '.images' ),
 		'product_img_wrap'			=> apply_filters( 'pewc_product_img_wrap', '.woocommerce-product-gallery__image, .woocommerce-product-gallery__image--placeholder' ),
 		'calculations_timer'		=> apply_filters( 'pewc_calculations_timer', 0 ),
-		'conditions_timer'			=> apply_filters( 'pewc_conditions_timer', 0 )
+		'conditions_timer'			=> apply_filters( 'pewc_conditions_timer', 0 ),
+		'remove_spaces'					=> apply_filters( 'pewc_remove_spaces_in_text', 'no' ),
+		'math_round'						=> apply_filters( 'pewc_math_round', 'no' ),
+		'disable_button_calcs'	=> apply_filters( 'pewc_disable_button_calcs', 'no' ),
+		'null_signifier'				=> apply_filters( 'pewc_look_up_table_null_signifier', '*' )
 	);
 
 	if( is_product() ) {
@@ -538,7 +542,9 @@ function pewc_product_extra_fields() {
 											do_action( 'pewc_before_include_frontend_template', $item, $id, $group_layout, $file );
 
 											$path = pewc_include_frontend_template( $file );
-											include( $path );
+											if( $path ) {
+												include( $path );
+											}
 
 											/**
 											 * @hooked pewc_after_frontend_template	10

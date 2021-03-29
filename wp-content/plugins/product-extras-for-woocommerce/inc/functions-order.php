@@ -111,6 +111,14 @@ function pewc_get_uploaded_files_per_field( $field, $order_id, $product_id, $car
 
 				}
 
+				if( ! empty( $file['quantity'] ) ) {
+					$display_name .= sprintf(
+						' [%s: %s]',
+						__( 'Quantity', 'pewc' ),
+						$file['quantity']
+					);
+				}
+
 				$uploaded_files[] = sprintf(
 					'<a href="%s" target="_blank">%s</a>',
 					esc_url( $url ),
@@ -197,10 +205,20 @@ function pewc_order_item_name( $product_name, $item ) {
 										$img = '';
 									}
 
+									$display_name = $file['display'];
+
+									if( ! empty( $file['quantity'] ) ) {
+										$display_name .= sprintf(
+											' [%s: %s]',
+											__( 'Quantity', 'pewc' ),
+											$file['quantity']
+										);
+									}
+
 									$display .= sprintf(
 										'<br><span class="pewc-order-item-item"><a target="_blank" href="%s">%s</a></span>%s',
 										$file['url'],
-										$file['display'],
+										$display_name,
 										$img
 									);
 
@@ -468,6 +486,14 @@ function pewc_rename_uploaded_files_item_meta( $item ) {
 									$new_item_meta['groups'][$group_id][$field_id]['files'][$index]['file'] = $new_file_name;
 									$new_item_meta['groups'][$group_id][$field_id]['files'][$index]['url'] = $new_url;
 									$new_item_meta['groups'][$group_id][$field_id]['files'][$index]['display'] = $new_display_name;
+
+									if( ! empty( $file['quantity'] ) ) {
+										$new_display_name .= sprintf(
+											' [%s: %s]',
+											__( 'Quantity', 'pewc' ),
+											$file['quantity']
+										);
+									}
 
 									$uploaded_files_meta[] = sprintf(
 										'<a href="%s" target="_blank">%s</a>',

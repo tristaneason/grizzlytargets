@@ -2883,32 +2883,6 @@ if ( ! class_exists( 'WPCleverWoosb' ) && class_exists( 'WC_Product' ) ) {
 			return $bundles;
 		}
 
-		function woosb_low_stock( $product ) {
-			if ( 'no' === get_option( 'woocommerce_notify_low_stock', 'yes' ) ) {
-				return;
-			}
-
-			$message = '';
-			$subject = sprintf( '[%s] %s', WC_Email::get_blogname(), esc_html__( 'Bundle(s) low in stock', 'woo-product-bundle' ) );
-
-			$product_id = $product->get_id();
-			if ( $bundles = $this->woosb_get_bundles( $product_id ) ) {
-				foreach ( $bundles as $bundle ) {
-					$message .= sprintf( esc_html__( '%s is low in stock.', 'woo-product-bundle' ), html_entity_decode( strip_tags( $bundle->get_formatted_name() ), ENT_QUOTES, get_bloginfo( 'charset' ) ) ) . ' <a href="' . get_edit_post_link( $bundle->get_id() ) . '" target="_blank">#' . $bundle->get_id() . '</a><br/>';
-				}
-
-				$message .= sprintf( esc_html__( '%1$s is low in stock. There are %2$d left.', 'woo-product-bundle' ), html_entity_decode( strip_tags( $product->get_formatted_name() ), ENT_QUOTES, get_bloginfo( 'charset' ) ), html_entity_decode( strip_tags( $product->get_stock_quantity() ) ) ) . ' <a href="' . get_edit_post_link( $product_id ) . '" target="_blank">#' . $product_id . '</a>';
-
-				wp_mail(
-					apply_filters( 'woocommerce_email_recipient_low_stock', get_option( 'woocommerce_stock_email_recipient' ), $bundle ),
-					apply_filters( 'woocommerce_email_subject_low_stock', $subject, $bundle ),
-					apply_filters( 'woocommerce_email_content_low_stock', $message, $bundle ),
-					apply_filters( 'woocommerce_email_headers', 'Content-Type: text/html; charset=UTF-8', 'low_stock', $bundle ),
-					apply_filters( 'woocommerce_email_attachments', array(), 'low_stock', $bundle )
-				);
-			}
-		}
-
 		function woosb_display_post_states( $states, $post ) {
 			if ( 'product' == get_post_type( $post->ID ) ) {
 				if ( ( $_product = wc_get_product( $post->ID ) ) && $_product->is_type( 'woosb' ) ) {
@@ -2977,11 +2951,37 @@ if ( ! class_exists( 'WPCleverWoosb' ) && class_exists( 'WC_Product' ) ) {
 				$message .= sprintf( esc_html__( '%s is out of stock.', 'woo-product-bundle' ), html_entity_decode( strip_tags( $product->get_formatted_name() ), ENT_QUOTES, get_bloginfo( 'charset' ) ) ) . ' <a href="' . get_edit_post_link( $product_id ) . '" target="_blank">#' . $product_id . '</a>';
 
 				wp_mail(
-					apply_filters( 'woocommerce_email_recipient_no_stock', get_option( 'woocommerce_stock_email_recipient' ), $bundle ),
-					apply_filters( 'woocommerce_email_subject_no_stock', $subject, $bundle ),
-					apply_filters( 'woocommerce_email_content_no_stock', $message, $bundle ),
-					apply_filters( 'woocommerce_email_headers', 'Content-Type: text/html; charset=UTF-8', 'no_stock', $bundle ),
-					apply_filters( 'woocommerce_email_attachments', array(), 'no_stock', $bundle )
+					apply_filters( 'woocommerce_email_recipient_no_stock', get_option( 'woocommerce_stock_email_recipient' ), $product, null ),
+					apply_filters( 'woocommerce_email_subject_no_stock', $subject, $product, null ),
+					apply_filters( 'woocommerce_email_content_no_stock', $message, $product ),
+					apply_filters( 'woocommerce_email_headers', 'Content-Type: text/html; charset=UTF-8', 'no_stock', $product, null ),
+					apply_filters( 'woocommerce_email_attachments', array(), 'no_stock', $product, null )
+				);
+			}
+		}
+
+		function woosb_low_stock( $product ) {
+			if ( 'no' === get_option( 'woocommerce_notify_low_stock', 'yes' ) ) {
+				return;
+			}
+
+			$message = '';
+			$subject = sprintf( '[%s] %s', WC_Email::get_blogname(), esc_html__( 'Bundle(s) low in stock', 'woo-product-bundle' ) );
+
+			$product_id = $product->get_id();
+			if ( $bundles = $this->woosb_get_bundles( $product_id ) ) {
+				foreach ( $bundles as $bundle ) {
+					$message .= sprintf( esc_html__( '%s is low in stock.', 'woo-product-bundle' ), html_entity_decode( strip_tags( $bundle->get_formatted_name() ), ENT_QUOTES, get_bloginfo( 'charset' ) ) ) . ' <a href="' . get_edit_post_link( $bundle->get_id() ) . '" target="_blank">#' . $bundle->get_id() . '</a><br/>';
+				}
+
+				$message .= sprintf( esc_html__( '%1$s is low in stock. There are %2$d left.', 'woo-product-bundle' ), html_entity_decode( strip_tags( $product->get_formatted_name() ), ENT_QUOTES, get_bloginfo( 'charset' ) ), html_entity_decode( strip_tags( $product->get_stock_quantity() ) ) ) . ' <a href="' . get_edit_post_link( $product_id ) . '" target="_blank">#' . $product_id . '</a>';
+
+				wp_mail(
+					apply_filters( 'woocommerce_email_recipient_low_stock', get_option( 'woocommerce_stock_email_recipient' ), $product, null ),
+					apply_filters( 'woocommerce_email_subject_low_stock', $subject, $product, null ),
+					apply_filters( 'woocommerce_email_content_low_stock', $message, $product ),
+					apply_filters( 'woocommerce_email_headers', 'Content-Type: text/html; charset=UTF-8', 'low_stock', $product, null ),
+					apply_filters( 'woocommerce_email_attachments', array(), 'low_stock', $product, null )
 				);
 			}
 		}

@@ -3,7 +3,7 @@ Contributors: Gareth Harris
 Tags: add-ons, ecommerce
 Requires at least: 4.7
 Tested up to: 5.7
-Stable tag: 3.8.8
+Stable tag: 3.8.9
 Allow your users to customise products through additional fields
 
 == Description ==
@@ -48,6 +48,19 @@ WooCommerce Product Add Ons Ultimate allows your users to customise products thr
 * modal pop-up with child product after added to cart
 
 == Changelog ==
+
+= 3.8.9, 25 March 2021 =
+* Added: pewc_after_upload_script_init and pewc_dz_tpl_td actions
+* Added: quantity param in $file object for uploads
+* Added: pewc_remove_spaces_in_text filter
+* Added: look up tables empty cells return null
+* Fixed: group conditions not hiding correctly in the cart
+* Fixed: group conditions not duplicating correctly
+* Fixed: multiply price for number fields using percentage pricing
+* Fixed: Multiply Price setting not saving on new number field
+* Fixed: calculations always rounding to 2 decimal places
+* Fixed: group conditions based on select box fields
+* Updated: removed pewc_license_admin_notices nag
 
 = 3.8.8, 11 March 2021 =
 * Added: pewc_image_uploaded action

@@ -32,7 +32,9 @@ function pewc_has_product_extra_groups( $product_id ) {
 
 		// Set the transient
 		set_transient( 'pewc_has_extra_fields_' . $product_id, $has_fields, pewc_get_transient_expiration() );
+
 	}
+	
 	return $has_fields;
 }
 

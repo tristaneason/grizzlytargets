@@ -354,12 +354,12 @@ if ( ! class_exists( 'WPPFM_Queries' ) ) :
 		 * @param string $parent_product_id     The product id of the parent.
 		 * @param array  $record_ids            All record ids.
 		 * @param array  $meta_columns          List with meta fields.
-		 * @param bool   $include_variations    Feed should include variation data.
 		 *
 		 * @return array    Array with the meta data from the specified product.
 		 */
-		public function read_meta_data( $product_id, $parent_product_id, $record_ids, $meta_columns, $include_variations ) {
-			$data = array();
+		public function read_meta_data( $product_id, $parent_product_id, $record_ids, $meta_columns ) {
+			$data         = array();
+			$product_type = WC_Product_Factory::get_product_type( $product_id );
 
 			foreach ( $meta_columns as $column ) {
 				$taxonomy = get_taxonomy( $column );
@@ -378,11 +378,12 @@ if ( ! class_exists( 'WPPFM_Queries' ) ) :
 				}
 
 				foreach ( $record_ids as $rec_id ) {
-					if ( ! $include_variations && $rec_id !== $product_id && '_regular_price' !== $column ) {
-						// Continue to next meta item if the the meta data is from a product variation and the feed should not include variation data.
-						// The only exception for this is the _regular_price attribute because that would prevent some variable products to get a price element.
-						// @since: 2.19.0.
-						continue;
+					if ( $rec_id !== $product_id && 'simple' === $product_type ) {
+						if ( get_post_meta( $rec_id, '_variation_description' ) ) {
+							// Skip old meta variation data from a previous variation product that was converted to a simple product.
+							// @since 2.20.0.
+							continue;
+						}
 					}
 
 					$value = get_post_meta( $rec_id, $column, true );

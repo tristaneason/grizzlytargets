@@ -433,6 +433,15 @@ function pewc_get_products_settings() {
 			'default'	=> 'no',
 			'std'			=> 'no'
 		),
+		'pewc_display_child_products_as_meta' => array(
+			'name'		=> __( 'Display child products as metadata', 'pewc' ),
+			'type'		=> 'checkbox',
+			'desc_tip'	=> true,
+			'desc'		=> __( 'Enable this to display child products as metadata for parent products in the cart.', 'pewc' ),
+			'id'			=> 'pewc_display_child_products_as_meta',
+			'default'	=> 'no',
+			'std'			=> 'no'
+		),
 		'pewc_hide_parent_products_cart' => array(
 			'name'		=> __( 'Hide parent products in the cart', 'pewc' ),
 			'type'		=> 'checkbox',

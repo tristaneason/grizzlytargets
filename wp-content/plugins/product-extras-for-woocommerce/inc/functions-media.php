@@ -424,6 +424,7 @@ function pewc_dropzone_template() {
 						<div class="dz-error-message"><span data-dz-errormessage></span></div>
 						<div class="dz-size" data-dz-size></div>
 					</td>
+					<?php do_action( 'pewc_dz_tpl_td' ); ?>
 					<td class="pewc-dz-remove-wrapper"><img src="<?php echo esc_url( PEWC_PLUGIN_URL . 'assets/images/remove.png' )?>" data-dz-remove></td>
 				</tr>
 			</tbody>

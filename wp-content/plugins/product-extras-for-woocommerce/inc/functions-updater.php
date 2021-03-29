@@ -279,7 +279,7 @@ function pewc_license_admin_notices() {
 	}
 
 }
-add_action( 'admin_notices', 'pewc_license_admin_notices' );
+// add_action( 'admin_notices', 'pewc_license_admin_notices' );
 
 /**
  * Display license status message

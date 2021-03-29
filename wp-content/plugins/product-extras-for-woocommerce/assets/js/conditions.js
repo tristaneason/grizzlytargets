@@ -10,14 +10,15 @@
 
 				this.initial_check();
 				$( '.pewc-condition-trigger input' ).on( 'change input keyup paste', this.trigger_condition_check );
-				$( '.pewc-condition-trigger select' ).on( 'change', this.trigger_condition_check );
+				$( 'body' ).on( 'change', '.pewc-condition-trigger select', this.trigger_condition_check );
 				$( '.pewc-calculation-trigger input' ).on( 'change input keyup paste', this.trigger_calculation );
 
 				if( pewc_vars.conditions_timer > 0 ) {
 					$( '.pewc-field-triggers-condition input' ).on( 'change input keyup paste', this.trigger_field_condition_check );
+					$( '.pewc-field-triggers-condition select' ).on( 'update change', this.trigger_field_condition_check );
+					$( '.pewc-calculation-value' ).on( 'calculation_field_updated', this.trigger_field_condition_check );
 					$( '.qty' ).on( 'change input keyup paste', this.trigger_quantity_condition_check );
 					$( 'body' ).on( 'pewc_reset_field_condition', this.trigger_field_reset_condition_check );
-					$( 'body' ).on( 'pewc_image_uploaded', this.trigger_upload_updated );
 					if( typeof pewc_cost_triggers !== 'undefined' && pewc_cost_triggers.length > 0 ) {
 						var cost_interval = setInterval(
 							this.trigger_cost_condition_check,
@@ -83,13 +84,6 @@
 					var action = $( '#pewc-group-' + groups[g] ).attr( 'data-condition-action' );
 					pewc_conditions.assign_group_classes( conditions_obtain, action, groups[g] );
 				}
-
-			},
-
-			trigger_upload_updated: function( e, id, num_files ) {
-
-				console.log( id );
-				console.log( num_files );
 
 			},
 
@@ -202,9 +196,9 @@
 				}
 				for( var i in conditions ) {
 					var condition = conditions[i];
-					// var value = this.get_field_value( condition.field, condition.field_type );
+					var field_value = this.get_field_value( $( '.' + condition.field ).attr( 'data-field-id' ), condition.field_type );
 					var meets_condition = this.field_meets_condition( field_value, condition.rule, condition.value );
-					if( meets_condition && match =='any' ) {
+					if( meets_condition && match == 'any' ) {
 						return true;
 					} else if( ! meets_condition && match =='all' ) {
 						return false;
@@ -218,10 +212,10 @@
 			// Get the value of the specified field
 			get_field_value: function( field_id, field_type ) {
 				var field_wrapper = $( '.' + field_id.replace( 'field', 'group' ) );
-				var input_fields = ['text','number','calculation'];
+				var input_fields = ['text','number'];
 				if( input_fields.includes( field_type ) ) {
 					return $( '.pewc-field-' + field_id + ' input' ).val();
-				} else if( field_type == 'select' ) {
+				} else if( field_type == 'select' || field_type == 'select-box' ) {
 					return $( '.pewc-field-' + field_id + ' select' ).val();
 				} else if( field_type == 'checkbox_group' ) {
 					var field_value = [];
@@ -259,6 +253,8 @@
 					return $( '#pewc_total_calc_price' ).val();
 				} else if( field_type == 'upload' ) {
 					return $( '.pewc-field-' + field_id ).find( '.pewc-number-uploads' ).val();
+				} else if( field_type == 'calculation' ) {
+					return $( '.pewc-field-' + field_id + ' .pewc-calculation-value' ).val();
 				}
 
 			},

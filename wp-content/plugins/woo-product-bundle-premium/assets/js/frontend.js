@@ -678,6 +678,10 @@ function woosb_container(id) {
     return woosb_vars.container_selector;
   }
 
+  if (jQuery('.woosb-wrap-' + id).closest('.woosb-container').length) {
+    return '.woosb-container';
+  }
+
   if (jQuery('.woosb-wrap-' + id).closest('#product-' + id).length) {
     return '#product-' + id;
   }

@@ -111,7 +111,7 @@ function pewc_get_pewc_groups( $post_id ) {
 	}
 
 	return $groups;
-	
+
 }
 
 

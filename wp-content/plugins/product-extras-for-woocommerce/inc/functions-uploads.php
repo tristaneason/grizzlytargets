@@ -20,7 +20,7 @@ function pewc_ajax_upload_script( $id, $field, $multiply_price ) {
 		Dropzone.autoDiscover = false;
 		jQuery(document).ready(function( $ ) {
 
-			<?php do_action( 'pewc_start_upload_script' ); ?>
+			<?php do_action( 'pewc_start_upload_script', $id, $field ); ?>
 
 			var ajaxUrl = pewc_vars.ajaxurl;
 
@@ -50,7 +50,7 @@ function pewc_ajax_upload_script( $id, $field, $multiply_price ) {
 				timeout: <?php echo apply_filters( 'pewc_dropzone_timeout', 30000, $id ); ?>,
 				<?php do_action( 'pewc_end_upload_options', $id, $field ); ?>
 				init: function() {
-					<?php do_action( 'pewc_start_upload_script_init', $id ); ?>
+					<?php do_action( 'pewc_start_upload_script_init', $id, $field ); ?>
 					this.on( 'sendingmultiple', function( file, xhr, formData ) {
 						<?php if( pewc_disable_add_to_cart_upload() ) { ?>
 							$( 'body' ).find( 'form.cart .single_add_to_cart_button' ).attr( 'disabled', true );
@@ -144,10 +144,15 @@ function pewc_ajax_upload_script( $id, $field, $multiply_price ) {
 							}
 						});
 					});
+
 					this.on( 'error', function( file, response ) {
 						console.log( 'error' );
 					});
+
 				},
+
+				<?php do_action( 'pewc_after_upload_script_init', $id, $field ); ?>
+				
 			});
 
 			<?php do_action( 'pewc_end_upload_script', $id, $field ); ?>

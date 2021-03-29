@@ -661,6 +661,61 @@ add_filter( 'woocommerce_widget_cart_item_visible', 'pewc_hide_child_product_in_
 add_filter( 'woocommerce_checkout_cart_item_visible', 'pewc_hide_child_product_in_cart', 10, 3 );
 
 /**
+ * Hide child products in the cart
+ * @since 3.7.21
+ */
+function pewc_display_child_products_as_meta() {
+	$display_meta = get_option( 'pewc_display_child_products_as_meta', 'no' );
+  return $display_meta;
+}
+
+/**
+ * Display child products as cart meta
+ * @since 3.8.9
+ */
+function pewc_display_child_product_meta( $display, $field ) {
+
+	if( pewc_display_child_products_as_meta() != 'yes' ) {
+		return false;
+	}
+	return true;
+
+}
+add_filter( 'pewc_display_child_product_meta', 'pewc_display_child_product_meta', 10, 2 );
+
+/**
+ * Replace child product IDs with product names in cart meta
+ * @since 3.8.9
+ */
+function pewc_replace_child_ids_with_titles( $value, $field ) {
+
+	if( pewc_display_child_products_as_meta() != 'yes' ) {
+		return $value;
+	}
+
+	if( isset( $field['type'] ) && $field['type'] == 'products' ) {
+
+		$ids = explode( ',', $value );
+		if( $ids ) {
+			$new_value = array();
+			foreach( $ids as $id ) {
+				$id = trim( $id );
+				$product = wc_get_product( $id );
+				if( is_object( $product ) ) {
+					$new_value[] = $product->get_title();
+				}
+			}
+			return join( ', ', $new_value );
+		}
+
+	}
+
+	return $value;
+
+}
+add_filter( 'pewc_filter_item_value_in_cart', 'pewc_replace_child_ids_with_titles', 10, 2 );
+
+/**
  * Hide parent products in the cart
  * @since 3.7.21
  */

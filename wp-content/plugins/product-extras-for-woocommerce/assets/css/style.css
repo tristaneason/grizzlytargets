@@ -811,6 +811,9 @@ table.pewc-summary-sub-panel-table {
 .pewc-summary-panel-field-row-inactive {
 	display: none
 }
+.pewc-field-checkbox .pewc-summary-panel-separator {
+	display: none;
+}
 th.pewc-summary-panel-price,
 th#pewc-summary-panel-subtotal,
 td.pewc-summary-panel-price {

@@ -55,7 +55,7 @@ if ( ! class_exists( 'WPCleverKit' ) ) {
 				'file' => 'wpc-added-to-cart-notification.php'
 			),
 			'wpc-ajax-add-to-cart'           => array(
-				'name' => 'WPC Ajax Add to Cart for WooCommerce',
+				'name' => 'WPC AJAX Add to Cart for WooCommerce',
 				'slug' => 'wpc-ajax-add-to-cart',
 				'file' => 'wpc-ajax-add-to-cart.php'
 			),

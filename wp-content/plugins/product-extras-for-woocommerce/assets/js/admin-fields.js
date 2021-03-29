@@ -410,8 +410,8 @@ jQuery( function( $ ) {
         			.attr( 'name', '_product_extra_groups_' + group_id + '_' + new_item_id + '[multiple_uploads]' );
 
             $( clone_item )
-              .find( '.pewc-multiply-price' )
-        			.attr( 'name', '_product_extra_groups_' + group_id + '_' + new_item_id + '[multiply_price]' );
+              .find( '.pewc-field-multiply' )
+        			.attr( 'name', '_product_extra_groups_' + group_id + '_' + new_item_id + '[multiply]' );
 
             $( clone_item )
               .find( '.pewc-field-max-files' )
@@ -529,6 +529,11 @@ jQuery( function( $ ) {
           // Repopulate condition field values
           $( 'body' ).trigger( 'update_field_names_object' );
           $( document.body ).trigger( 'pewc_cloned_field', [ clone_field, new_field_id ] ); // DWS
+
+          var action = $( field ).find( '.pewc-condition-action' ).val();
+          var rule = $( field ).find( '.pewc-condition-condition' ).val();
+          $( clone_field ).find( '.pewc-condition-action' ).val( action );
+          $( clone_field ).find( '.pewc-condition-condtion' ).val( rule );
 
           // Set the duplicated group's condition fields to their new versions
           $( clone_field ).find( '.pewc-condition-field' ).each( function() {
