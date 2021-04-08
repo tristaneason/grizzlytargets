@@ -114,6 +114,11 @@
     background-color: #d30005;
 }
 
+/* Secure Checkout Image on Product Pages */
+.wp-image-10152 {
+	display: none;
+}
+
 /* Customize CSS */
 .cfw-shipping-methods-list li label {
     display: initial;
