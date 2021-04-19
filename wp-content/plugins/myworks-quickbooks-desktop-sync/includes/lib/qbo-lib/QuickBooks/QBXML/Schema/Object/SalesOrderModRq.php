@@ -104,6 +104,10 @@ class QuickBooks_QBXML_Schema_Object_SalesOrderModRq extends QuickBooks_QBXML_Sc
   'SalesOrderLineMod Amount' => 'AMTTYPE',
   'SalesOrderLineMod InventorySiteRef ListID' => 'IDTYPE',
   'SalesOrderLineMod InventorySiteRef FullName' => 'STRTYPE',
+  //
+  'SalesOrderLineMod InventorySiteLocationRef ListID' => 'IDTYPE',
+  'SalesOrderLineMod InventorySiteLocationRef FullName' => 'STRTYPE',
+  
   'SalesOrderLineMod SalesTaxCodeRef ListID' => 'IDTYPE',
   'SalesOrderLineMod SalesTaxCodeRef FullName' => 'STRTYPE',
   'SalesOrderLineMod IsManuallyClosed' => 'BOOLTYPE',
@@ -215,6 +219,10 @@ class QuickBooks_QBXML_Schema_Object_SalesOrderModRq extends QuickBooks_QBXML_Sc
   'SalesOrderLineMod Amount' => 0,
   'SalesOrderLineMod InventorySiteRef ListID' => 0,
   'SalesOrderLineMod InventorySiteRef FullName' => 209,
+  //
+  'SalesOrderLineMod InventorySiteLocationRef ListID' => 0,
+  'SalesOrderLineMod InventorySiteLocationRef FullName' => 209,
+  
   'SalesOrderLineMod SalesTaxCodeRef ListID' => 0,
   'SalesOrderLineMod SalesTaxCodeRef FullName' => 209,
   'SalesOrderLineMod IsManuallyClosed' => 0,
@@ -326,6 +334,10 @@ class QuickBooks_QBXML_Schema_Object_SalesOrderModRq extends QuickBooks_QBXML_Sc
   'SalesOrderLineMod Amount' => true,
   'SalesOrderLineMod InventorySiteRef ListID' => true,
   'SalesOrderLineMod InventorySiteRef FullName' => true,
+  //
+  'SalesOrderLineMod InventorySiteLocationRef ListID' => true,
+  'SalesOrderLineMod InventorySiteLocationRef FullName' => true,
+  
   'SalesOrderLineMod SalesTaxCodeRef ListID' => true,
   'SalesOrderLineMod SalesTaxCodeRef FullName' => true,
   'SalesOrderLineMod IsManuallyClosed' => true,
@@ -435,6 +447,10 @@ class QuickBooks_QBXML_Schema_Object_SalesOrderModRq extends QuickBooks_QBXML_Sc
   'SalesOrderLineMod Amount' => 999.99,
   'SalesOrderLineMod InventorySiteRef ListID' => 999.99,
   'SalesOrderLineMod InventorySiteRef FullName' => 999.99,
+  //
+  'SalesOrderLineMod InventorySiteLocationRef ListID' => 999.99,
+  'SalesOrderLineMod InventorySiteLocationRef FullName' => 999.99,
+  
   'SalesOrderLineMod SalesTaxCodeRef ListID' => 999.99,
   'SalesOrderLineMod SalesTaxCodeRef FullName' => 999.99,
   'SalesOrderLineMod IsManuallyClosed' => 999.99,
@@ -546,6 +562,10 @@ class QuickBooks_QBXML_Schema_Object_SalesOrderModRq extends QuickBooks_QBXML_Sc
   'SalesOrderLineMod Amount' => false,
   'SalesOrderLineMod InventorySiteRef ListID' => false,
   'SalesOrderLineMod InventorySiteRef FullName' => false,
+  //
+  'SalesOrderLineMod InventorySiteLocationRef ListID' => false,
+  'SalesOrderLineMod InventorySiteLocationRef FullName' => false,
+  
   'SalesOrderLineMod SalesTaxCodeRef ListID' => false,
   'SalesOrderLineMod SalesTaxCodeRef FullName' => false,
   'SalesOrderLineMod IsManuallyClosed' => false,
@@ -669,6 +689,10 @@ class QuickBooks_QBXML_Schema_Object_SalesOrderModRq extends QuickBooks_QBXML_Sc
   66 => 'SalesOrderLineMod Amount',
   'SalesOrderLineMod InventorySiteRef ListID',
   'SalesOrderLineMod InventorySiteRef FullName',
+  //
+  'SalesOrderLineMod InventorySiteLocationRef ListID',
+  'SalesOrderLineMod InventorySiteLocationRef FullName',
+  
   'SalesOrderLineMod LotNumber',
   'SalesOrderLineMod SalesTaxCodeRef ListID',
   'SalesOrderLineMod SalesTaxCodeRef FullName',

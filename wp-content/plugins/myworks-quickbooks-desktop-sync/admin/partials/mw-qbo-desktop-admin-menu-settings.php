@@ -42,7 +42,10 @@ if(isset($_POST['mw_wc_qbd_desk_settings']) && check_admin_referer( 'myworks_wc_
 	
 	update_option('mw_wc_qbo_desk_customer_match_by_zipcode', isset($_POST['mw_wc_qbo_desk_customer_match_by_zipcode'])?$_POST['mw_wc_qbo_desk_customer_match_by_zipcode']:'');	
 	
-	update_option('mw_wc_qbo_desk_wc_cus_view_name', isset($_POST['mw_wc_qbo_desk_wc_cus_view_name'])?$_POST['mw_wc_qbo_desk_wc_cus_view_name']:'display_name');
+	update_option('mw_wc_qbo_desk_wc_cus_view_name', isset($_POST['mw_wc_qbo_desk_wc_cus_view_name'])?$_POST['mw_wc_qbo_desk_wc_cus_view_name']:'display_name');	
+	
+	update_option('mw_wc_qbo_desk_dmcb_fval', isset($_POST['mw_wc_qbo_desk_dmcb_fval'])?$_POST['mw_wc_qbo_desk_dmcb_fval']:'email');
+	
 	
 	update_option('mw_wc_qbo_desk_qb_cus_view_name', isset($_POST['mw_wc_qbo_desk_qb_cus_view_name'])?$_POST['mw_wc_qbo_desk_qb_cus_view_name']:'d_name');
 	
@@ -51,7 +54,7 @@ if(isset($_POST['mw_wc_qbd_desk_settings']) && check_admin_referer( 'myworks_wc_
 	
 	update_option('mw_wc_qbo_desk_default_qbo_cogs_account', isset($_POST['mw_wc_qbo_desk_default_qbo_cogs_account'])?$_POST['mw_wc_qbo_desk_default_qbo_cogs_account']:'');
 	
-	update_option('mw_wc_qbo_desk_wc_cust_role', isset($_POST['mw_wc_qbo_desk_wc_cust_role'])?implode(',',$_POST['mw_wc_qbo_desk_wc_cust_role']):'');
+	//update_option('mw_wc_qbo_desk_wc_cust_role', isset($_POST['mw_wc_qbo_desk_wc_cust_role'])?implode(',',$_POST['mw_wc_qbo_desk_wc_cust_role']):'');
 	
 	update_option('mw_wc_qbo_desk_specific_order_status', isset($_POST['mw_wc_qbo_desk_specific_order_status'])?implode(',',$_POST['mw_wc_qbo_desk_specific_order_status']):'');
 	
@@ -71,8 +74,14 @@ if(isset($_POST['mw_wc_qbd_desk_settings']) && check_admin_referer( 'myworks_wc_
 	
 	update_option('mw_wc_qbo_desk_cus_push_rep_othername', isset($_POST['mw_wc_qbo_desk_cus_push_rep_othername'])?$_POST['mw_wc_qbo_desk_cus_push_rep_othername']:'');
 	
-	update_option('mw_wc_qbo_desk_cus_push_customertype', isset($_POST['mw_wc_qbo_desk_cus_push_customertype'])?$_POST['mw_wc_qbo_desk_cus_push_customertype']:'');
+	update_option('mw_wc_qbo_desk_cus_push_customertype', isset($_POST['mw_wc_qbo_desk_cus_push_customertype'])?$_POST['mw_wc_qbo_desk_cus_push_customertype']:'');	
 	
+	//
+	update_option('mw_wc_qbo_desk_cus_push_d_pterm', isset($_POST['mw_wc_qbo_desk_cus_push_d_pterm'])?$_POST['mw_wc_qbo_desk_cus_push_d_pterm']:'');
+	
+	update_option('mw_wc_qbo_desk_cus_push_d_pmethod', isset($_POST['mw_wc_qbo_desk_cus_push_d_pmethod'])?$_POST['mw_wc_qbo_desk_cus_push_d_pmethod']:'');
+	
+	update_option('mw_wc_qbo_desk_cus_push_d_plevel', isset($_POST['mw_wc_qbo_desk_cus_push_d_plevel'])?$_POST['mw_wc_qbo_desk_cus_push_d_plevel']:'');	
 	
 	update_option('mw_wc_qbo_desk_cus_push_append_client_id', isset($_POST['mw_wc_qbo_desk_cus_push_append_client_id'])?$_POST['mw_wc_qbo_desk_cus_push_append_client_id']:'');
 	
@@ -103,6 +112,8 @@ if(isset($_POST['mw_wc_qbd_desk_settings']) && check_admin_referer( 'myworks_wc_
 	update_option('mw_wc_qbo_desk_odr_tax_as_li', isset($_POST['mw_wc_qbo_desk_odr_tax_as_li'])?$_POST['mw_wc_qbo_desk_odr_tax_as_li']:'');
 	
 	update_option('mw_wc_qbo_desk_otli_qbd_product', isset($_POST['mw_wc_qbo_desk_otli_qbd_product'])?$_POST['mw_wc_qbo_desk_otli_qbd_product']:'');
+	
+	update_option('mw_wc_qbo_desk_otli_qbd_salestax', isset($_POST['mw_wc_qbo_desk_otli_qbd_salestax'])?$_POST['mw_wc_qbo_desk_otli_qbd_salestax']:'');
 	
 	update_option('mw_wc_qbo_desk_pull_prd_price_field', isset($_POST['mw_wc_qbo_desk_pull_prd_price_field'])?$_POST['mw_wc_qbo_desk_pull_prd_price_field']:'');
 	
@@ -161,7 +172,13 @@ if(isset($_POST['mw_wc_qbd_desk_settings']) && check_admin_referer( 'myworks_wc_
 	}
 	
 	
-	update_option('mw_wc_qbo_desk_invoice_memo', isset($_POST['mw_wc_qbo_desk_invoice_memo'])?$_POST['mw_wc_qbo_desk_invoice_memo']:'');
+	//update_option('mw_wc_qbo_desk_invoice_memo', isset($_POST['mw_wc_qbo_desk_invoice_memo'])?$_POST['mw_wc_qbo_desk_invoice_memo']:'');
+	//	
+	update_option('mw_wc_qbo_desk_sync_ord_notes_to_qbq_as', isset($_POST['mw_wc_qbo_desk_sync_ord_notes_to_qbq_as'])?$_POST['mw_wc_qbo_desk_sync_ord_notes_to_qbq_as']:'');
+	
+	update_option('mw_wc_qbo_desk_woo_ord_note_li_qbo_item', isset($_POST['mw_wc_qbo_desk_woo_ord_note_li_qbo_item'])?$_POST['mw_wc_qbo_desk_woo_ord_note_li_qbo_item']:'');
+	//
+	update_option('mw_wc_qbo_desk_extra_sales_ord_sync', isset($_POST['mw_wc_qbo_desk_extra_sales_ord_sync'])?$_POST['mw_wc_qbo_desk_extra_sales_ord_sync']:'');
 	
 	update_option('mw_wc_qbo_desk_cname_into_memo', isset($_POST['mw_wc_qbo_desk_cname_into_memo'])?$_POST['mw_wc_qbo_desk_cname_into_memo']:'');
 	
@@ -171,14 +188,19 @@ if(isset($_POST['mw_wc_qbd_desk_settings']) && check_admin_referer( 'myworks_wc_
 
 	update_option('mw_wc_qbo_desk_all_order_to_customer', isset($_POST['mw_wc_qbo_desk_all_order_to_customer'])?$_POST['mw_wc_qbo_desk_all_order_to_customer']:'');
 	/**/
-	if($_POST['mw_wc_qbo_desk_all_order_to_customer'] == 'true'){
+	if(isset($_POST['mw_wc_qbo_desk_all_order_to_customer']) && $_POST['mw_wc_qbo_desk_all_order_to_customer'] == 'true'){
 		$mw_wc_qbo_desk_aotc_rcm_data = '';
+		//
+		$mw_wc_qbo_desk_aotc_scjm_data = '';
 		if(isset($_POST['saoqc_wr']) && is_array($_POST['saoqc_wr']) && isset($_POST['saoqc_qc']) && is_array($_POST['saoqc_qc'])){
 			if(is_array($_POST['saoqc_wr']) && !empty($_POST['saoqc_wr']) && is_array($_POST['saoqc_qc']) && !empty($_POST['saoqc_qc'])){
 				if(count($_POST['saoqc_wr']) == count($_POST['saoqc_qc'])){
 					$saoqc_wr = $_POST['saoqc_wr'];
 					$saoqc_qc = $_POST['saoqc_qc'];
+					
 					$aotc_rcm_data = array();
+					//
+					$aotc_scj_data = array();
 					foreach($saoqc_wr as $k => $v){
 						if(!empty($v)){
 							$v = trim($v);
@@ -186,17 +208,28 @@ if(isset($_POST['mw_wc_qbd_desk_settings']) && check_admin_referer( 'myworks_wc_
 								$qv = trim($saoqc_qc[$k]);
 								$aotc_rcm_data[$v] = $qv;
 							}
+							
+							//							
+							if(isset($_POST['saoqc_scj_'.$v]) && !empty($_POST['saoqc_scj_'.$v])){
+								$aotc_scj_data[$v] = $_POST['saoqc_scj_'.$v];
+							}							
 						}
 					}
 					
 					if(!empty($aotc_rcm_data)){
 						$mw_wc_qbo_desk_aotc_rcm_data = $aotc_rcm_data;
-					}					
+					}
+					
+					if(!empty($aotc_scj_data)){
+						$mw_wc_qbo_desk_aotc_scjm_data = $aotc_scj_data;
+					}
 				}
 			}
 		}
+		
 		//$MWQDC_LB->_p($mw_wc_qbo_desk_aotc_rcm_data);die;
 		update_option('mw_wc_qbo_desk_aotc_rcm_data',$mw_wc_qbo_desk_aotc_rcm_data);
+		update_option('mw_wc_qbo_desk_aotc_scjm_data',$mw_wc_qbo_desk_aotc_scjm_data);
 	}
 	
 	/*
@@ -206,6 +239,7 @@ if(isset($_POST['mw_wc_qbd_desk_settings']) && check_admin_referer( 'myworks_wc_
 	update_option('mw_wc_qbo_desk_ord_bill_addr_map', isset($_POST['mw_wc_qbo_desk_ord_bill_addr_map'])?$_POST['mw_wc_qbo_desk_ord_bill_addr_map']:'');
 	update_option('mw_wc_qbo_desk_ord_ship_addr_map', isset($_POST['mw_wc_qbo_desk_ord_ship_addr_map'])?$_POST['mw_wc_qbo_desk_ord_ship_addr_map']:'');	
 	
+	update_option('mw_wc_qbo_desk_wolim_iqilid_desc', isset($_POST['mw_wc_qbo_desk_wolim_iqilid_desc'])?$_POST['mw_wc_qbo_desk_wolim_iqilid_desc']:'');
 	update_option('mw_wc_qbo_desk_add_sku_af_lid', isset($_POST['mw_wc_qbo_desk_add_sku_af_lid'])?$_POST['mw_wc_qbo_desk_add_sku_af_lid']:'');
 	
 	update_option('mw_wc_qbo_desk_skip_os_lid', isset($_POST['mw_wc_qbo_desk_skip_os_lid'])?$_POST['mw_wc_qbo_desk_skip_os_lid']:'');
@@ -218,12 +252,23 @@ if(isset($_POST['mw_wc_qbd_desk_settings']) && check_admin_referer( 'myworks_wc_
 	
 	update_option('mw_wc_qbo_desk_qbo_push_invoice_is_print_true', isset($_POST['mw_wc_qbo_desk_qbo_push_invoice_is_print_true'])?$_POST['mw_wc_qbo_desk_qbo_push_invoice_is_print_true']:'');
 	
+	//
+	update_option('mw_wc_qbo_desk_qbo_push_invoice_is_email_true', isset($_POST['mw_wc_qbo_desk_qbo_push_invoice_is_email_true'])?$_POST['mw_wc_qbo_desk_qbo_push_invoice_is_email_true']:'');	
+	
+	update_option('mw_wc_qbo_desk_qbo_push_invoice_as_pending', isset($_POST['mw_wc_qbo_desk_qbo_push_invoice_as_pending'])?$_POST['mw_wc_qbo_desk_qbo_push_invoice_as_pending']:'');
+	
+	update_option('mw_wc_qbo_desk_qb_ns_shipping_li_if_z', isset($_POST['mw_wc_qbo_desk_qb_ns_shipping_li_if_z'])?$_POST['mw_wc_qbo_desk_qb_ns_shipping_li_if_z']:'');
+	
 	update_option('mw_wc_qbo_desk_order_status_after_qbd_sync', isset($_POST['mw_wc_qbo_desk_order_status_after_qbd_sync'])?$_POST['mw_wc_qbo_desk_order_status_after_qbd_sync']:'');	
 	
 	//
 	update_option('mw_wc_qbo_desk_order_sync_qbd_dt_fld', isset($_POST['mw_wc_qbo_desk_order_sync_qbd_dt_fld'])?$_POST['mw_wc_qbo_desk_order_sync_qbd_dt_fld']:'');
+
+
+	update_option('mw_wc_qbo_desk_qb_pmnt_ref_num_vf', isset($_POST['mw_wc_qbo_desk_qb_pmnt_ref_num_vf'])?$_POST['mw_wc_qbo_desk_qb_pmnt_ref_num_vf']:'');
 	
 	update_option('mw_wc_qbo_desk_pull_enable', isset($_POST['mw_wc_qbo_desk_pull_enable'])?$_POST['mw_wc_qbo_desk_pull_enable']:'');
+	update_option('mw_wc_qbo_desk_use_max_as_qoh_iasmbly_invnt_pull', isset($_POST['mw_wc_qbo_desk_use_max_as_qoh_iasmbly_invnt_pull'])?$_POST['mw_wc_qbo_desk_use_max_as_qoh_iasmbly_invnt_pull']:'');	
 	
 	update_option('mw_wc_qbo_desk_rt_push_enable', isset($_POST['mw_wc_qbo_desk_rt_push_enable'])?$_POST['mw_wc_qbo_desk_rt_push_enable']:'');
 	update_option('mw_wc_qbo_desk_rt_pull_enable', isset($_POST['mw_wc_qbo_desk_rt_pull_enable'])?$_POST['mw_wc_qbo_desk_rt_pull_enable']:'');
@@ -242,7 +287,8 @@ if(isset($_POST['mw_wc_qbd_desk_settings']) && check_admin_referer( 'myworks_wc_
 	
 	update_option('mw_wc_qbo_desk_qbd_timezone_for_calc', isset($_POST['mw_wc_qbo_desk_qbd_timezone_for_calc'])?$_POST['mw_wc_qbo_desk_qbd_timezone_for_calc']:'');
 	
-	update_option('mw_wc_qbo_desk_select2_status', isset($_POST['mw_wc_qbo_desk_select2_status'])?$_POST['mw_wc_qbo_desk_select2_status']:'');
+	update_option('mw_wc_qbo_desk_select2_status', isset($_POST['mw_wc_qbo_desk_select2_status'])?$_POST['mw_wc_qbo_desk_select2_status']:'');	
+	update_option('mw_wc_qbo_desk_auto_refresh_new_cust_prod', isset($_POST['mw_wc_qbo_desk_auto_refresh_new_cust_prod'])?$_POST['mw_wc_qbo_desk_auto_refresh_new_cust_prod']:'f');
 	update_option('mw_wc_qbo_desk_select2_ajax', isset($_POST['mw_wc_qbo_desk_select2_ajax'])?$_POST['mw_wc_qbo_desk_select2_ajax']:'');
 	
 	update_option('mw_wc_qbo_desk_add_xml_req_into_log', isset($_POST['mw_wc_qbo_desk_add_xml_req_into_log'])?$_POST['mw_wc_qbo_desk_add_xml_req_into_log']:'');	
@@ -294,6 +340,10 @@ if(!$MWQDC_LB->option_checked('mw_wc_qbo_desk_select2_ajax')){
 	$list_selected.='jQuery(\'#mw_wc_qbo_desk_default_coupon_code\').val(\''.$MWQDC_LB->get_option('mw_wc_qbo_desk_default_coupon_code').'\');';
 	
 	$list_selected.='jQuery(\'#mw_wc_qbo_desk_otli_qbd_product\').val(\''.$MWQDC_LB->get_option('mw_wc_qbo_desk_otli_qbd_product').'\');';
+	
+	$list_selected.='jQuery(\'#mw_wc_qbo_desk_otli_qbd_salestax\').val(\''.$MWQDC_LB->get_option('mw_wc_qbo_desk_otli_qbd_salestax').'\');';
+	//
+	$list_selected.='jQuery(\'#mw_wc_qbo_desk_woo_ord_note_li_qbo_item\').val(\''.$MWQDC_LB->get_option('mw_wc_qbo_desk_woo_ord_note_li_qbo_item').'\');';
 }
 
 
@@ -411,7 +461,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 											<div class="row">
 												<div class="input-field col s12 m12 l12">
 													<p>
-														<select name="mw_wc_qbo_desk_default_qbo_product_account" id="mw_wc_qbo_desk_default_qbo_product_account" class="filled-in production-option mw_wc_qbo_desk_select">
+														<select name="mw_wc_qbo_desk_default_qbo_product_account" id="mw_wc_qbo_desk_default_qbo_product_account" class="filled-in production-option mw_wc_qbo_desk_select dd_qoia">
 														<option value=""></option>
 														<?php echo $qbo_account_options;?>
 											            </select>
@@ -435,7 +485,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 											<div class="row">
 												<div class="input-field col s12 m12 l12">
 													<p>
-														<select name="mw_wc_qbo_desk_default_qbo_asset_account" id="mw_wc_qbo_desk_default_qbo_asset_account" class="filled-in production-option mw_wc_qbo_desk_select">
+														<select name="mw_wc_qbo_desk_default_qbo_asset_account" id="mw_wc_qbo_desk_default_qbo_asset_account" class="filled-in production-option mw_wc_qbo_desk_select dd_qoiaa">
 														<option value=""></option>
 											            <?php echo $qbo_account_options ?>
 											            </select>
@@ -460,7 +510,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 											<div class="row">
 												<div class="input-field col s12 m12 l12">
 													<p>
-														<select name="mw_wc_qbo_desk_default_qbo_cogs_account" id="mw_wc_qbo_desk_default_qbo_cogs_account" class="filled-in production-option mw_wc_qbo_desk_select">
+														<select name="mw_wc_qbo_desk_default_qbo_cogs_account" id="mw_wc_qbo_desk_default_qbo_cogs_account" class="filled-in production-option mw_wc_qbo_desk_select dd_qocgsa">
 														<option value=""></option>
 											            <?php echo $qbo_account_options ?>
 											            </select>
@@ -617,16 +667,25 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 										</td>
 									</tr>
 									
-									<?php if($MWQDC_LB->is_plugin_active('woocommerce-aelia-currencyswitcher')):?>
+									<?php
+										//$acs_p_active = $MWQDC_LB->is_plugin_active('woocommerce-aelia-currencyswitcher');
+										$acs_p_active = false;
+									?>
+									
+									<?php if($MWQDC_LB->get_qbo_company_setting('IsMultiCurrencyOn') || $acs_p_active):?>
 									<?php
 										$aelia_enabled_currencies = array();
-										$wc_aelia_currency_switcher = get_option('wc_aelia_currency_switcher');
-										if(is_array($wc_aelia_currency_switcher) && count($wc_aelia_currency_switcher)){
-											if(isset($wc_aelia_currency_switcher['enabled_currencies']) && is_array($wc_aelia_currency_switcher['enabled_currencies'])){
-												$aelia_enabled_currencies = $wc_aelia_currency_switcher['enabled_currencies'];
-												$aelia_enabled_currencies = array_combine($aelia_enabled_currencies, $aelia_enabled_currencies);
+										if($acs_p_active){
+											$wc_aelia_currency_switcher = get_option('wc_aelia_currency_switcher');
+											if(is_array($wc_aelia_currency_switcher) && count($wc_aelia_currency_switcher)){
+												if(isset($wc_aelia_currency_switcher['enabled_currencies']) && is_array($wc_aelia_currency_switcher['enabled_currencies'])){
+													$aelia_enabled_currencies = $wc_aelia_currency_switcher['enabled_currencies'];
+													$aelia_enabled_currencies = array_combine($aelia_enabled_currencies, $aelia_enabled_currencies);
+												}
 											}
-										}
+										}else{
+											$aelia_enabled_currencies = $MWQDC_LB->get_world_currency_list();
+										}										
 									?>
 									<tr>
 										<th class="title-description">
@@ -837,6 +896,30 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 									</tr>
 									<?php endif;?>
 									
+									<!--*-->
+									<?php if(!$MWQDC_LB->option_checked('mw_wc_qbo_desk_order_as_sales_order')):?>
+									<tr id="tr_esos">
+										<th class="title-description">
+									    	<?php echo __('Sync Sales Order to QuickBooks with order','mw_wc_qbo_desk') ?>
+									    	
+									    </th>
+										<td>
+											<div class="row">
+												<div class="input-field col s12 m12 l12">
+													<p>
+														<input type="checkbox" class="filled-in mwqs_st_chk  production-option" name="mw_wc_qbo_desk_extra_sales_ord_sync" id="mw_wc_qbo_desk_extra_sales_ord_sync" value="true" <?php if($MWQDC_LB->get_option('mw_wc_qbo_desk_extra_sales_ord_sync')=='true') echo 'checked' ?>>
+													</p>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+											  <span class="tooltiptext"><?php echo __('If this setting is on, It will sync a sales order to QuickBooks in addition to the existing “sync WooCommerce order as” setting.','mw_wc_qbo_desk') ?></span>
+											</div>
+										</td>
+									</tr>
+									<?php endif;?>
+									
 									<tr>
 										<th class="title-description">
 									    	<?php echo __('Block syncing orders before ID','mw_wc_qbo_desk') ?>
@@ -854,10 +937,10 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 											  <span class="tooltiptext"><?php echo __('Disable/block syncing WooCommerce orders before this Order ID to QuickBooks Desktop. Default is 0 as previous orders will not be synced anyways unless edited and saved.','mw_wc_qbo_desk') ?></span>
 											</div>
 										</td>
-									</tr>
+									</tr>									
 									
-									
-									<tr>
+									<!--Not in use For Now-->
+									<tr style="display:none;">
 										<th class="title-description">
 									    	<?php echo __('Sync Order Notes to Statement Memo','mw_wc_qbo_desk') ?>
 									    	
@@ -876,6 +959,72 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 											  <span class="tooltiptext"><?php echo __('Check to enable the syncing of the WooCommerce Order Note contents to the QBO Invoice Memo field.','mw_wc_qbo_desk') ?></span>
 											</div>
 										</td>
+									</tr>
+									
+									<tr>
+										<th class="title-description">
+									    	<?php _e('Sync Order Notes to QuickBooks as','mw_wc_qbo_desk') ?>
+									    </th>
+										<td>
+											<div class="row">
+												<div class="input-field col s12 m12 l12">
+													<p>
+														<?php 
+															$sync_ord_notes_to_qbq_as = $MWQDC_LB->get_option('mw_wc_qbo_desk_sync_ord_notes_to_qbq_as');
+														?>
+														<select name="mw_wc_qbo_desk_sync_ord_notes_to_qbq_as" id="mw_wc_qbo_desk_sync_ord_notes_to_qbq_as" class="filled-in production-option mw_wc_qbo_desk_select">
+														<option value=""></option>
+															<?php echo  $MWQDC_LB->only_option($sync_ord_notes_to_qbq_as,array('s_memo'=>'Statement Memo','l_item'=>'Line Item'));?>
+														</select>
+													</p>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+											  <span class="tooltiptext"><?php echo __('Choose to sync WooCommerce Order Note contents into one of these options.','mw_wc_qbo_desk') ?></span>
+											</div>
+										</td>
+									</tr>
+									
+									<tr id="won_lip_tr" <?php if($sync_ord_notes_to_qbq_as != 'l_item'){echo ' style="display:none;"';}?>>
+										<th class="title-description">
+									    	<?php echo __('Order Note Line Item Product','mw_wc_qbo_desk') ?>
+									    </th>
+										<td>
+											<div class="row">
+												<div class="input-field col s12 m12 l12">
+													<p>
+														<?php
+															$dd_options = '<option value=""></option>';
+															$dd_ext_class = '';
+															if($MWQDC_LB->option_checked('mw_wc_qbo_desk_select2_ajax')){
+																$dd_ext_class = 'mwqs_dynamic_select_desk';
+																if($MWQDC_LB->get_option('mw_wc_qbo_desk_woo_ord_note_li_qbo_item')!=''){
+																	$itemid = $MWQDC_LB->get_option('mw_wc_qbo_desk_woo_ord_note_li_qbo_item');
+																	$qb_item_name = $MWQDC_LB->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_items','name','qbd_id',$itemid);
+																	if($qb_item_name!=''){
+																		$dd_options = '<option value="'.$itemid.'">'.$qb_item_name.'</option>';
+																	}
+																}
+															}else{
+																$dd_options.=$qbo_product_options;
+															}
+														?>													
+														
+														<select name="mw_wc_qbo_desk_woo_ord_note_li_qbo_item" id="mw_wc_qbo_desk_woo_ord_note_li_qbo_item" class="filled-in production-option mw_wc_qbo_desk_select <?php echo $dd_ext_class;?>">
+															<?php echo $dd_options;?>
+														</select>
+														
+													</p>
+												</div>
+											</div>
+										</td>
+	                                    <td>
+	                                        <div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+										  <span class="tooltiptext"><?php echo __('QuickBooks Desktop Product assigned to order note line item.','mw_wc_qbo_desk') ?></span>
+										</div>
+	                                    </td>
 									</tr>
 									
 									<tr>
@@ -901,7 +1050,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 									
 									<tr>
 										<th class="title-description">
-									    	<?php echo __('Use QuickBooks # Sequence','mw_wc_qbo_desk') ?>
+									    	<?php echo __('Use next QuickBooks Order #','mw_wc_qbo_desk') ?>
 									    	
 									    </th>
 										<td>
@@ -1026,6 +1175,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 									<?php if(is_array($wu_roles) && count($wu_roles)):?>
 									<?php
 										$mw_wc_qbo_desk_aotc_rcm_data = get_option('mw_wc_qbo_desk_aotc_rcm_data');
+										$mw_wc_qbo_desk_aotc_scjm_data = get_option('mw_wc_qbo_desk_aotc_scjm_data');
 									?>
 									<tr id="saoqc_tr" <?php if($MWQDC_LB->get_option('mw_wc_qbo_desk_all_order_to_customer')!='true') echo 'style="display: none;"' ?>>
 										<th class="title-description">
@@ -1041,6 +1191,9 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 													</td>
 													<?php
 													$custId = (is_array($mw_wc_qbo_desk_aotc_rcm_data) && isset($mw_wc_qbo_desk_aotc_rcm_data[$role_name]))?$mw_wc_qbo_desk_aotc_rcm_data[$role_name]:'';
+													//
+													$scj_dsbl = (empty($custId) || $custId == 'Individual')?' disabled="disabled"':'';
+													$scj_chkd = (empty($scj_dsbl) && is_array($mw_wc_qbo_desk_aotc_scjm_data) && isset($mw_wc_qbo_desk_aotc_scjm_data[$role_name]))?' checked="checked"':'';
 													
 													$dd_options = '<option value="Individual">Individual</option>';
 													$dd_ext_class = '';
@@ -1061,7 +1214,11 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 													<td>												
 														<select id="saoqc_qc_<?php echo $role_name;?>" name="saoqc_qc[]" class="filled-in production-option mw_wc_qbo_desk_select_cus <?php echo $dd_ext_class;?>">
 															<?php echo $dd_options;?>
-														</select>
+														</select>														
+													</td>
+													
+													<td width="5%">
+														<input <?php echo $scj_dsbl;?> <?php echo $scj_chkd;?> title="Sync customers as Sub-Customer/Job into QuickBooks" type="checkbox" id="saoqc_scj_<?php echo $role_name;?>" name="saoqc_scj_<?php echo $role_name;?>" value="<?php echo $role_name;?>">
 													</td>
 												</tr>
 												<?php endforeach;?>
@@ -1074,6 +1231,10 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 													
 													<?php
 													$custId = (is_array($mw_wc_qbo_desk_aotc_rcm_data) && isset($mw_wc_qbo_desk_aotc_rcm_data['wc_guest_user']))?$mw_wc_qbo_desk_aotc_rcm_data['wc_guest_user']:'';
+													//
+													$scj_dsbl = (empty($custId) || $custId == 'Individual')?' disabled="disabled"':'';
+													$scj_chkd = (empty($scj_dsbl) && is_array($mw_wc_qbo_desk_aotc_scjm_data) && isset($mw_wc_qbo_desk_aotc_scjm_data['wc_guest_user']))?' checked="checked"':'';
+													
 													$dd_options = '<option value="Individual">Individual</option>';
 													$dd_ext_class = '';
 													if($MWQDC_LB->option_checked('mw_wc_qbo_desk_select2_ajax')){
@@ -1093,7 +1254,11 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 													<td>												
 														<select id="saoqc_qc_wc_guest_user" name="saoqc_qc[]" class="filled-in production-option mw_wc_qbo_desk_select_cus <?php echo $dd_ext_class;?>">
 															<?php echo $dd_options;?>
-														</select>
+														</select>														
+													</td>
+													
+													<td width="5%">
+														<input <?php echo $scj_dsbl;?> <?php echo $scj_chkd;?> title="Sync customers as Sub-Customer/Job into QuickBooks" type="checkbox" id="saoqc_scj_wc_guest_user" name="saoqc_scj_<?php echo $role_name;?>" value="wc_guest_user">
 													</td>
 												</tr>
 											</table>
@@ -1185,6 +1350,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 														{_shipping_city}&nbsp;													
 														{_shipping_state}&nbsp;
 														{_shipping_postcode}&nbsp;
+														{_billing_phone}&nbsp;	
 														{_shipping_country}&nbsp;
 														<?php 
 														$sa_ext_f = $MWQDC_LB->ord_sa_ext_formats();
@@ -1198,6 +1364,27 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 										<td>
 											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
 											  <span class="tooltiptext"><?php echo __('Enter address fields separeted by newline','mw_wc_qbo_desk') ?></span>
+											</div>
+										</td>
+									</tr>
+									
+									<tr>
+										<th class="title-description">
+									    	<?php echo __('Sync Meta Data to Line Item Description','mw_wc_qbo_desk') ?>
+									    	
+									    </th>
+										<td>
+											<div class="row">
+												<div class="input-field col s12 m12 l12">
+													<p>
+														<input type="checkbox" class="filled-in mwqs_st_chk  production-option" name="mw_wc_qbo_desk_wolim_iqilid_desc" id="mw_wc_qbo_desk_wolim_iqilid_desc" value="true" <?php if($MWQDC_LB->get_option('mw_wc_qbo_desk_wolim_iqilid_desc')=='true') echo 'checked' ?>>
+													</p>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+											  <span class="tooltiptext"><?php echo __('Turn on to add WooCommerce Custom Order line item meta into Invoice /Sales Receipts Line Item Description.','mw_wc_qbo_desk') ?></span>
 											</div>
 										</td>
 									</tr>
@@ -1338,7 +1525,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 									
 									<tr>
 										<th class="title-description">
-									    	<?php echo __('Set QuickBooks order date according to the most recent order push date ','mw_wc_qbo_desk') ?>
+									    	<?php echo __('Use today\'s date for QuickBooks order date','mw_wc_qbo_desk') ?>
 									    	
 									    </th>
 										<td>
@@ -1381,7 +1568,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 									<!--#_#-->
 									<tr>
 										<th class="title-description">
-									    	<?php _e('WooCommerce order status after synced into QuickBooks','mw_wc_qbo_desk') ?>
+									    	<?php _e('Change WooCommerce order status after syncing into QuickBooks','mw_wc_qbo_desk') ?>
 									    </th>
 										<td>
 											<div class="row">
@@ -1408,7 +1595,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 									
 									<tr>
 										<th class="title-description">
-									    	<?php echo __('Use QuickBooks Billing Address For Existing QuickBooks Customer','mw_wc_qbo_desk') ?>
+									    	<?php echo __('Use existing customer\'s QuickBooks Billing Address for order BillTo address','mw_wc_qbo_desk') ?>
 									    	
 									    </th>
 										<td>
@@ -1451,7 +1638,28 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 									
 									<tr>
 										<th class="title-description">
-									    	<?php echo __('Select QuickBooks Subtotal Product','mw_wc_qbo_desk') ?>
+									    	<?php echo __('Set order To Be Emailed when synced','mw_wc_qbo_desk') ?>
+									    	
+									    </th>
+										<td>
+											<div class="row">
+												<div class="input-field col s12 m12 l12">
+													<p>
+														<input type="checkbox" class="filled-in mwqs_st_chk  production-option" name="mw_wc_qbo_desk_qbo_push_invoice_is_email_true" id="mw_wc_qbo_desk_qbo_push_invoice_is_email_true" value="true" <?php if($MWQDC_LB->get_option('mw_wc_qbo_desk_qbo_push_invoice_is_email_true')=='true') echo 'checked' ?>>
+													</p>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+											  <span class="tooltiptext"><?php echo __('Check to set the QuickBooks Desktop order as ToBeEmailed once synced into QuickBooks.','mw_wc_qbo_desk') ?></span>
+											</div>
+										</td>
+									</tr>
+									
+									<tr>
+										<th class="title-description">
+									    	<?php echo __('Add Subtotal line item at the end of order','mw_wc_qbo_desk') ?>
 									    	
 									    </th>
 										<td>
@@ -1492,7 +1700,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 									
 									<tr>
 										<th class="title-description">
-									    	<?php _e('Orders Date When Syncing Into QuickBooks','mw_wc_qbo_desk') ?>
+									    	<?php _e('Date for QuickBooks Order','mw_wc_qbo_desk') ?>
 									    </th>
 										<td>
 											<div class="row">
@@ -1515,6 +1723,77 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 										<td>
 											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
 											  <span class="tooltiptext"><?php echo __('Orders date field value when syncing into QuickBooks.','mw_wc_qbo_desk') ?></span>
+											</div>
+										</td>
+									</tr>
+									
+									<tr>
+										<th class="title-description">
+									    	<?php echo __('Mark invoice as Pending in QuickBooks when synced','mw_wc_qbo_desk') ?>
+									    	
+									    </th>
+										<td>
+											<div class="row">
+												<div class="input-field col s12 m12 l12">
+													<p>
+														<input type="checkbox" class="filled-in mwqs_st_chk  production-option" name="mw_wc_qbo_desk_qbo_push_invoice_as_pending" id="mw_wc_qbo_desk_qbo_push_invoice_as_pending" value="true" <?php if($MWQDC_LB->get_option('mw_wc_qbo_desk_qbo_push_invoice_as_pending')=='true') echo 'checked' ?>>
+													</p>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+											  <span class="tooltiptext"><?php echo __('Check to set the QuickBooks Desktop order as Pending once synced into QuickBooks.','mw_wc_qbo_desk') ?></span>
+											</div>
+										</td>
+									</tr>
+
+									<tr>
+										<th class="title-description">
+									    	<?php _e('Value for QuickBooks Payment Reference Number','mw_wc_qbo_desk') ?>
+									    </th>
+										<td>
+											<div class="row">
+												<div class="input-field col s12 m12 l12">
+													<p>
+														<?php 
+															$mw_wc_qbo_desk_qb_pmnt_ref_num_vf = $MWQDC_LB->get_option('mw_wc_qbo_desk_qb_pmnt_ref_num_vf');
+															$qb_prn_vl = array(
+																'TXN_ID' => 'Transaction ID',
+																'O_ID_NUM' => 'Order Number',
+															);
+														?>
+														<select name="mw_wc_qbo_desk_qb_pmnt_ref_num_vf" id="mw_wc_qbo_desk_qb_pmnt_ref_num_vf" class="filled-in production-option mw_wc_qbo_desk_select">
+															<?php echo  $MWQDC_LB->only_option($mw_wc_qbo_desk_qb_pmnt_ref_num_vf,$qb_prn_vl);?>
+														</select>
+													</p>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+											  <span class="tooltiptext"><?php echo __('Select the payment reference number value for QuickBooks payment sync','mw_wc_qbo_desk') ?></span>
+											</div>
+										</td>
+									</tr>
+									
+									<tr>
+										<th class="title-description">
+									    	<?php echo __('Do not sync shipping line item with orders, if shipping is $0','mw_wc_qbo_desk') ?>
+									    	
+									    </th>
+										<td>
+											<div class="row">
+												<div class="input-field col s12 m12 l12">
+													<p>
+														<input type="checkbox" class="filled-in mwqs_st_chk  production-option" name="mw_wc_qbo_desk_qb_ns_shipping_li_if_z" id="mw_wc_qbo_desk_qb_ns_shipping_li_if_z" value="true" <?php if($MWQDC_LB->get_option('mw_wc_qbo_desk_qb_ns_shipping_li_if_z')=='true') echo 'checked' ?>>
+													</p>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+											  <span class="tooltiptext"><?php echo __('Check to not sync shipping line item with orders into QuickBooks, if shipping is $0.','mw_wc_qbo_desk') ?></span>
 											</div>
 										</td>
 									</tr>
@@ -1569,6 +1848,76 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 												<td>
 													<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
 													  <span class="tooltiptext"><?php echo __('Choose your QBD Customer Type.','mw_wc_qbo_desk') ?></span>
+													</div>
+												</td>
+											</tr>
+											
+											<!-- New -->
+											<tr>
+												<th class="title-description">
+													<?php echo __('Payment Term assigned to new customers','mw_wc_qbo_desk') ?>
+													
+												</th>
+												<td>
+													<div class="row">
+														<div class="input-field col s12 m12 l12">
+															<select name="mw_wc_qbo_desk_cus_push_d_pterm" id="mw_wc_qbo_desk_cus_push_d_pterm" class="mw_wc_qbo_desk_select">
+															<option value=""></option>
+															<?php echo $MWQDC_LB->option_html($MWQDC_LB->get_option('mw_wc_qbo_desk_cus_push_d_pterm'), $wpdb->prefix.'mw_wc_qbo_desk_qbd_list_term','qbd_id','name','','name ASC','',true);?>
+															</select>
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+													  <span class="tooltiptext"><?php echo __('Choose your default payment term for new customers.','mw_wc_qbo_desk') ?></span>
+													</div>
+												</td>
+											</tr>
+											
+											<tr>
+												<th class="title-description">
+													<?php echo __('Payment Method assigned to new customers','mw_wc_qbo_desk') ?>
+													
+												</th>
+												<td>
+													<div class="row">
+														<div class="input-field col s12 m12 l12">
+															<select name="mw_wc_qbo_desk_cus_push_d_pmethod" id="mw_wc_qbo_desk_cus_push_d_pmethod" class="mw_wc_qbo_desk_select">
+															<option value=""></option>
+															<?php echo $MWQDC_LB->option_html($MWQDC_LB->get_option('mw_wc_qbo_desk_cus_push_d_pmethod'), $wpdb->prefix.'mw_wc_qbo_desk_qbd_list_paymentmethod','qbd_id','name','','name ASC','',true);?>
+															</select>
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+													  <span class="tooltiptext"><?php echo __('Choose your default payment method for new customers.','mw_wc_qbo_desk') ?></span>
+													</div>
+												</td>
+											</tr>
+											
+											<?php 
+												$price_l_arr = get_option('mw_wc_qbo_desk_qb_price_level_name_list');
+											?>
+											<tr>
+												<th class="title-description">
+													<?php echo __(' Price Level assigned to new customers','mw_wc_qbo_desk') ?>
+													
+												</th>
+												<td>
+													<div class="row">
+														<div class="input-field col s12 m12 l12">
+															<select name="mw_wc_qbo_desk_cus_push_d_plevel" id="mw_wc_qbo_desk_cus_push_d_plevel" class="mw_wc_qbo_desk_select">
+															<option value=""></option>
+															<?php $MWQDC_LB->only_option($MWQDC_LB->get_option('mw_wc_qbo_desk_cus_push_d_plevel'),$price_l_arr,'ListID','Name')?>
+															</select>
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+													  <span class="tooltiptext"><?php echo __('Choose your default price level for new customers.','mw_wc_qbo_desk') ?></span>
 													</div>
 												</td>
 											</tr>
@@ -1789,7 +2138,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 									<tr>
 										<th class="title-description">
 									    	<?php echo __('Sync WooCommerce Order Tax as a Line Item','mw_wc_qbo_desk') ?>
-											</br><span style="font-size:10px;color:grey;">If enabled, this will override/invalidate any tax mappings set in MyWorks Sync > Map > Taxes, </br>and sync order tax as a line item instead of assigning it to a rate in QuickBooks.</span> 
+											</br><span style="font-size:10px;color:grey;">Used for Automated Sales Tax compatibility. If enabled, this will sync order tax as a line item instead of assigning it to a rate in QuickBooks from tax mappings in MyWorks Sync > Map > Taxes.</span> 
 									    	
 									    </th>
 										<td>
@@ -1810,7 +2159,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 									
 									<tr id="otli_qp_tr" <?php if($MWQDC_LB->get_option('mw_wc_qbo_desk_odr_tax_as_li')!='true') echo 'style="display:none;"' ?>>
 										<th class="title-description">
-									    	<?php echo __('QuickBooks Product for Sales Tax line item','mw_wc_qbo_desk') ?>
+									    	<?php echo __('QuickBooks Sales Tax Line Item','mw_wc_qbo_desk') ?>
 									    	
 									    </th>
 										<td>
@@ -1844,10 +2193,34 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 										</td>
 	                                    <td>
 	                                        <div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
-											  <span class="tooltiptext"><?php echo __('Choose a QuickBooks Product that will be the line item in the QuickBooks Invoice/Sales Receipt to represent the sales tax from the WooCommerce Order.') ?></span>
+											  <span class="tooltiptext"><?php echo __('Choose a QuickBooks Item (sales tax item) that will be the line item in the QuickBooks Invoice/Sales Receipt to represent the sales tax from the WooCommerce Order. This should NOT be the same as the setting below.') ?></span>
 											</div>
 	                                    </td>
 									</tr>
+									
+									<?php if($MWQDC_LB->get_option('mw_wc_qbo_desk_sl_tax_map_entity') != 'Sales_Tax_Codes'):?>
+									<tr id="otli_qst_tr" <?php if($MWQDC_LB->get_option('mw_wc_qbo_desk_odr_tax_as_li')!='true') echo 'style="display:none;"' ?>>
+										<th class="title-description">
+									    	<?php echo __('QuickBooks Sales Tax Rate','mw_wc_qbo_desk') ?>
+									    	
+									    </th>
+										<td>
+											<div class="row">
+												<div class="input-field col s12 m12 l12">
+													<select name="mw_wc_qbo_desk_otli_qbd_salestax" id="mw_wc_qbo_desk_otli_qbd_salestax" class="mw_wc_qbo_desk_select">
+										            <option value=""></option>
+													<?php echo $MWQDC_LB->get_qbd_item_sales_tax_dd_options();?>
+										            </select>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+											  <span class="tooltiptext"><?php echo __('Choose a QuickBooks Sales Tax Item/Rate that will be used as the rate for the order in QuickBooks. This should be a 0% tax rate to ensure the order is not double taxed. This should NOT be the same as the setting above.','mw_wc_qbo_desk') ?></span>
+											</div>
+										</td>
+									</tr>
+									<?php endif;?>
 									
 	            				</tbody>
 								</table>
@@ -1859,7 +2232,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 							<div class="myworks-wc-qbd-sync-table-responsive">
 								<table class="mw-qbo-sync-settings-table mwqs_setting_tab_body_body">
 								<tbody>                				
-									<tr>
+									<tr style="display:none;">
 										<th class="title-description">
 									    	<?php _e('Recognize additional roles as Customers','mw_wc_qbo_desk') ?>
 									    </th>
@@ -1914,12 +2287,48 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 										</td>
 										<td>
 											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
-											  <span class="tooltiptext"><?php echo __('Choose the WooCommerce client name values you would like to be assigned to the QBD "Display Name As" client field. This setting will determine the value in the QuickBooks Desktop Display Name for clients synced over. Choose either first/last name OR Company name - not both.<br><b>Available Tags: {firstname} , {lastname} , {companyname} ,{email} ,{display_name}</b>','mw_wc_qbo_desk') ?></span>
+											  <span class="tooltiptext"><?php echo __('Choose the WooCommerce client name values you would like to be assigned to the QBD "Display Name As" client field. This setting will determine the value in the QuickBooks Desktop Display Name for clients synced over. Choose either first/last name OR Company name - not both.<br><b>Available Tags: {firstname} , {lastname} , {companyname} ,{email} ,{display_name}, {phone_number}</b>','mw_wc_qbo_desk') ?></span>
 											</div>
 										</td>
 									</tr>
 									
+									<?php 
+										$dmcb_opt = array(
+											'm_email' => 'Mapping -> Email',
+											'm_uid_accn' => 'Mapping -> User ID (Account Num)',
+											'm_email_dn' => 'Mapping > Email > Display Name',
+											'm_email_dn_zc' => 'Mapping > Email > Display Name (with matching zip code)',
+											'o_bfl_name' => 'Order Billing First + Last Name',
+											'o_bc_name' => 'Order Billing Company Name',
+											'o_sfl_name' => 'Order Shipping First + Last Name',
+											'o_sc_name' => 'Order Shipping Company Name'
+										);
+									?>
+									
 									<tr>
+										<th class="title-description">
+									    	<?php echo __('Determine matching customers by','mw_wc_qbo_desk') ?>
+									    	
+									    </th>
+										<td>
+											<div class="row">
+												<div class="input-field col s12 m12 l12">
+													<p>
+														<select name="mw_wc_qbo_desk_dmcb_fval" id="mw_wc_qbo_desk_dmcb_fval" class="filled-in production-option mw_wc_qbo_desk_select">										            
+														<?php $MWQDC_LB->only_option($MWQDC_LB->get_option('mw_wc_qbo_desk_dmcb_fval'),$dmcb_opt)?>
+											            </select>
+													</p>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+											  <span class="tooltiptext"><?php echo __('Set the order of logic that will be followed to determine if a matching customer is in QuickBooks when syncing an order, or if a new customer should be created. The selected option will determine the display name of new customers created as well.','mw_wc_qbo_desk') ?></span>
+											</div>
+										</td>
+									</tr>
+									
+									<tr style="display:none;">
 										<th class="title-description">
 									    	<?php echo __('Use Display Name (if no email match found) to determine a matching customer','mw_wc_qbo_desk') ?>
 									    	
@@ -1938,7 +2347,8 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 										</td>
 									</tr>
 									
-									<tr id="tr_mw_wc_qbo_desk_customer_match_by_zipcode" <?php if($MWQDC_LB->get_option('mw_wc_qbo_desk_customer_match_by_name')!='true') echo 'style="display:none;"' ?>>
+									<?php $disable_this = true;?>
+									<tr id="tr_mw_wc_qbo_desk_customer_match_by_zipcode" <?php if($MWQDC_LB->get_option('mw_wc_qbo_desk_customer_match_by_name')!='true' || $disable_this) echo 'style="display:none;"' ?>>
 										<th class="title-description">
 									    	<?php echo __('Use Zip Code along with Display Name to validate a matching customer','mw_wc_qbo_desk') ?>
 									    	
@@ -1957,7 +2367,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 										</td>
 									</tr>
 									
-									<tr>
+									<tr style="display:none;">
 										<th class="title-description">
 									    	<?php echo __('Use Billing Company Name instead of Email to determine matching customers','mw_wc_qbo_desk') ?>
 									    	
@@ -2092,7 +2502,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 								<tbody>								
 									<tr>
 										<th class="title-description">
-									    	<?php echo __('Show Pull Page Tab','mw_wc_qbo_desk') ?>
+									    	<?php echo __('Show Pull tab in MyWorks sidebar','mw_wc_qbo_desk') ?>
 									    	
 									    </th>
 										<td>
@@ -2104,14 +2514,14 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 										</td>
 										<td>
 											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
-											  <span class="tooltiptext"><?php echo __('This will enable you to use the manual pull pages to manually pull data into WooCommerce from QuickBooks','mw_wc_qbo_desk') ?></span>
+											  <span class="tooltiptext"><?php echo __('This will enable the Pull menu to pull invenory levels from QuickBooks into WooCommerce.','mw_wc_qbo_desk') ?></span>
 											</div>
 										</td>
 									</tr>
 									
 									<tr>
 										<th class="title-description">
-									    	<?php echo __('QuickBooks Product Price Field to pull from','mw_wc_qbo_desk') ?>
+									    	<?php echo __('QuickBooks Product Price to sync pricing','mw_wc_qbo_desk') ?>
 									    	
 									    </th>
 										<td>
@@ -2128,7 +2538,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 										</td>
 										<td>
 											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
-											  <span class="tooltiptext"><?php echo __('Choose the quickbook field for pull price','mw_wc_qbo_desk') ?></span>
+											  <span class="tooltiptext"><?php echo __('Choose the QuickBooks field to use when syncing pricing up from QuickBooks into WooCommerce','mw_wc_qbo_desk') ?></span>
 											</div>
 										</td>
 									</tr>
@@ -2137,11 +2547,12 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 										$qi_qpf_list = [
 										'QuantityOnHand'=>'Quantity On Hand',
 										'AvailableQuantity'=>'Available Quantity(QuantityOnHand - QuantityOnSalesOrder)',
+										'Amount_on_Purchase_Order' => 'Amount on Purchase Order (QuantityOnHand - [QuantityOnSalesOrder+QuantityOnPurchaseOrder])',
 										];
 									?>
 									<tr>
 										<th class="title-description">
-									    	<?php echo __('QuickBooks Inventory Quantity Field to pull from','mw_wc_qbo_desk') ?>
+									    	<?php echo __('QuickBooks inventory calculation format','mw_wc_qbo_desk') ?>
 									    	
 									    </th>
 										<td>
@@ -2157,7 +2568,26 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 										</td>
 										<td>
 											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
-											  <span class="tooltiptext"><?php echo __('Choose the quickbook field for pull inventory quantity','mw_wc_qbo_desk') ?></span>
+											  <span class="tooltiptext"><?php echo __('Choose the formula to use for calculating inventory when syncing inventory from QuickBooks into WooCommerce.','mw_wc_qbo_desk') ?></span>
+											</div>
+										</td>
+									</tr>
+									
+									<tr>
+										<th class="title-description">
+									    	<?php echo __('Use "Max" inventory value when syncing inventory for Inventory Assembly Items','mw_wc_qbo_desk') ?>
+									    	
+									    </th>
+										<td>
+											<div class="row">
+												<div class="input-field col s12 m12 l12">
+													<input type="checkbox" class="filled-in mwqs_st_chk  production-option" name="mw_wc_qbo_desk_use_max_as_qoh_iasmbly_invnt_pull" id="mw_wc_qbo_desk_use_max_as_qoh_iasmbly_invnt_pull" value="true" <?php if($MWQDC_LB->get_option('mw_wc_qbo_desk_use_max_as_qoh_iasmbly_invnt_pull')=='true') echo 'checked' ?>>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+											  <span class="tooltiptext"><?php echo __('Use "Max Available to be Built" field when syncing inventory for Inventory Assembly items from QuickBooks into WooCommerce.','mw_wc_qbo_desk') ?></span>
 											</div>
 										</td>
 									</tr>
@@ -2174,14 +2604,14 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 							<tbody>
 								<tr class="wc_qb_tr">
 									<td colspan="3" height="50">
-										<b><?php echo __('WooCommerce -> QuickBooks Desktop','mw_wc_qbo_desk') ?></b>
+										
 										
 									</td>									
 								</tr>
 								
 								<tr>
 									<th class="title-description">
-								    	<?php echo __('Enable Automatic Sync','mw_wc_qbo_desk') ?>
+								    	<b><?php echo __('WooCommerce -> QuickBooks Desktop','mw_wc_qbo_desk') ?></b>
 								    	
 								    </th>
 									<td>
@@ -2195,7 +2625,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 									</td>
 									<td>
 										<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
-										  <span class="tooltiptext"><?php echo __('This is the master switch. Turn on to automatically add the below data types to the queue when they are added in QuickBooks.','mw_wc_qbo_desk') ?></span>
+										  <span class="tooltiptext"><?php echo __('This is the master switch. Turn on to automatically sync new data for the below types into QuickBooks from WooComerce when the Web Connector runs.','mw_wc_qbo_desk') ?></span>
 										</div>
 									</td>
 								</tr>
@@ -2211,7 +2641,8 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 												<p>
 													<?php
 													//
-													$mwqbd_qbo_rt_push_items = array('customer' => 'Customer ', 'order' => 'Order', 'product' => 'Product', 'variation' => 'Variation', 'inventory' => 'Inventory', 'payment' => 'Payment') 
+													$mwqbd_qbo_rt_push_items = array('customer' => 'Customer ', 'order' => 'Order', 'product' => 'Product', 'variation' => 'Variation', 'payment' => 'Payment');
+													//, 'inventory' => 'Inventory'
 													?>
 													<?php $rpi_val_arr = explode(',',$MWQDC_LB->get_option('mw_wc_qbo_desk_rt_push_items'));?>
 													<?php foreach($mwqbd_qbo_rt_push_items as $rpi_key => $rpi_val):?>
@@ -2232,21 +2663,21 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 									</td>
 									<td>
 										<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
-										  <span class="tooltiptext"><?php echo __('Choose sync items (you can choose multiple items).','mw_wc_qbo_desk') ?></span>
+										  <span class="tooltiptext"><?php echo __('Choose the new data that should automatically sync to QuickBooks when created in WooCommerce.','mw_wc_qbo_desk') ?></span>
 										</div>
 									</td>
 								</tr>
 								
 								<tr class="wc_qb_tr">
 									<td colspan="3" height="50">
-										<b><?php echo __('QuickBooks Desktop -> WooCommerce','mw_wc_qbo_desk') ?></b>
+										
 										
 									</td>									
 								</tr>
 								
 								<tr>
 									<th class="title-description">
-								    	<?php echo __('Enable Automatic Sync','mw_wc_qbo_desk') ?>
+								    	<b><?php echo __('QuickBooks Desktop -> WooCommerce','mw_wc_qbo_desk') ?></b>
 								    	
 								    </th>
 									<td>
@@ -2260,7 +2691,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 									</td>
 									<td>
 										<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
-										  <span class="tooltiptext"><?php echo __('This is the master switch. Turn on to automatically sync the below data types into WooCommerce from QuickBooks when the Web Connector runs.','mw_wc_qbo_desk') ?></span>
+										  <span class="tooltiptext"><?php echo __('This is the master switch. Turn on to automatically sync changes for the below data types from QuickBooks into WooComerce when the Web Connector runs.','mw_wc_qbo_desk') ?></span>
 										</div>
 									</td>
 								</tr>
@@ -2299,7 +2730,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 									</td>
 									<td>
 										<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
-										  <span class="tooltiptext"><?php echo __('Select the data types to automatically sync.','mw_wc_qbo_desk') ?></span>
+										  <span class="tooltiptext"><?php echo __('Choose the data that should automatically sync to WooCommerce when changed in QuickBooks.','mw_wc_qbo_desk') ?></span>
 										</div>
 									</td>
 								</tr>
@@ -2365,7 +2796,7 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 								<?php //if(!$MWQDC_LB->option_checked('mw_wc_qbo_desk_rt_all_invnt_pull')){echo 'style="display:none;"';}?>
 								<tr id="qbd_s_all_rt_p_invnt_ti_tr">
 									<th class="title-description">
-								    	<?php echo __('Time Interval For Realtime Inventory/Pricing Pull','mw_wc_qbo_desk') ?>
+								    	<?php echo __('Sync Inventory/Pricing once only','mw_wc_qbo_desk') ?>
 								    	
 								    </th>
 									<td>
@@ -2408,6 +2839,33 @@ $list_selected.='jQuery(\'#mw_wc_qbo_desk_default_qbo_cogs_account\').val(\''.$M
 							<div class="myworks-wc-qbd-sync-table-responsive">
 							<table class="mw-qbo-sync-settings-table mwqs_setting_tab_body">
 							<tbody>
+								<tr height="50">
+									<td colspan="3">
+										<b><?php echo __('Auto Refresh Data','mw_wc_qbo_desk') ?></b>										
+									</td>									
+								</tr>
+
+								<tr>
+									<th class="title-description">
+								    	<?php echo __('Automatically recognize new QuickBooks customers/products','mw_wc_qbo_desk') ?>
+								    	
+								    </th>
+									<td>
+										<div class="row">
+											<div class="input-field col s12 m12 l12">
+												<p>
+													<input type="checkbox" class="filled-in mwqs_st_chk  production-option" name="mw_wc_qbo_desk_auto_refresh_new_cust_prod" id="mw_wc_qbo_desk_auto_refresh_new_cust_prod" value="true" <?php if($MWQDC_LB->get_option('mw_wc_qbo_desk_auto_refresh_new_cust_prod')=='true') echo 'checked' ?>>
+												</p>
+											</div>
+										</div>
+									</td>
+									<td>
+										<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+										  <span class="tooltiptext"><?php echo __('Automatically recognize new QuickBooks customers/products in every web connector request.','mw_wc_qbo_desk') ?></span>
+										</div>
+									</td>
+								</tr>
+								
 								<tr height="50">
 									<td colspan="3">
 										<b><?php echo __('Plugin Dropdown Settings','mw_wc_qbo_desk') ?></b>										
@@ -2668,6 +3126,12 @@ jQuery(document).ready(function($){
 			$('#mwoqsa_rm').fadeIn("slow");
 		}else{
 			$('#mwoqsa_rm').fadeOut("slow");
+		}		
+		
+		if($(this).attr('id') == 'wo_qsa_so'){
+			$('#tr_esos').fadeOut("slow");			
+		}else{
+			$('#tr_esos').fadeIn("slow");
 		}
 	});
 })
@@ -2715,6 +3179,23 @@ jQuery(document).ready(function($){
         } else {			
 			jQuery('#otli_qp_tr').fadeOut("slow");
         }
+		
+		<?php if($MWQDC_LB->get_option('mw_wc_qbo_desk_sl_tax_map_entity') != 'Sales_Tax_Codes'):?>
+		if(jQuery("#mw_wc_qbo_desk_odr_tax_as_li").is(':checked')) {			
+			jQuery('#otli_qst_tr').fadeIn("slow");			
+        } else {			
+			jQuery('#otli_qst_tr').fadeOut("slow");
+        }
+		<?php endif;?>
+	});
+	
+	/**/
+	jQuery("select[name='mw_wc_qbo_desk_sync_ord_notes_to_qbq_as']").change(function() {
+		if(this.value == 'l_item'){
+			jQuery('#won_lip_tr').fadeIn("slow");
+		}else{
+			jQuery('#won_lip_tr').fadeOut("slow");
+		}
 	});
 	
 	
@@ -2754,6 +3235,40 @@ jQuery(document).ready(function($){
 					jQuery('#wp_avnu_msg').html('Error!');
 			   }
 			});
+		}
+	});
+	
+	/**/
+	$('.dd_qoia option').filter(function() {
+	return $.trim(this.text).indexOf('(Income)') === -1;
+	}).remove();
+	//$(".dd_qoba").prepend('<option value=""></option>');
+	
+	$('.dd_qoiaa option').filter(function() {
+	return $.trim(this.text).indexOf('(OtherCurrentAsset)') === -1;
+	}).remove();
+	
+	$('.dd_qocgsa option').filter(function() {
+	return $.trim(this.text).indexOf('(CostOfGoodsSold)') === -1;
+	}).remove();
+	
+	/**/
+	jQuery("select[name='saoqc_qc[]']").each(function() {		
+		if(this.value == 'Individual' || this.value == ''){
+			jQuery(this).parent('td').next('td').children('input').attr('title','');
+			jQuery(this).parent('td').next('td').children('input').prop("checked", false);
+			jQuery(this).parent('td').next('td').children('input').attr('disabled','disabled');			
+		}
+	});
+	
+	jQuery("select[name='saoqc_qc[]']").change(function() {
+		if(this.value == 'Individual' || this.value == ''){
+			jQuery(this).parent('td').next('td').children('input').attr('title','');
+			jQuery(this).parent('td').next('td').children('input').prop("checked", false);
+			jQuery(this).parent('td').next('td').children('input').attr('disabled','disabled');
+		}else{
+			jQuery(this).parent('td').next('td').children('input').attr('title','Sync customers as Sub-Customer/Job into QuickBooks');
+			jQuery(this).parent('td').next('td').children('input').removeAttr('disabled');
 		}
 	});
 	

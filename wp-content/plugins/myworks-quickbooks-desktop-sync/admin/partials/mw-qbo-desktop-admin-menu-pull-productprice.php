@@ -32,12 +32,34 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 		$whr.= " AND `name` LIKE '%$productprice_pull_search%' ";
 	}
 	
-	$total_records = $wpdb->get_var("SELECT COUNT(*) FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_items` WHERE `id` >0 {$whr} ");
+	$c_sql = "
+	SELECT COUNT(DISTINCT(qi.id))
+	FROM 
+	`".$wpdb->prefix."mw_wc_qbo_desk_qbd_items` qi
+	LEFT JOIN `".$wpdb->prefix."mw_wc_qbo_desk_qbd_product_pairs` pp ON (qi.qbd_id = pp.quickbook_product_id)
+	LEFT JOIN `".$wpdb->prefix."mw_wc_qbo_desk_qbd_variation_pairs` vp ON (qi.qbd_id = vp.quickbook_product_id)	
+	WHERE qi.`id` >0 
+	AND (pp.wc_product_id >0 OR  vp.wc_variation_id > 0)
+	{$whr}
+	";
+	//echo $c_sql;
+	$total_records = $wpdb->get_var($c_sql);
 	$offset = $MWQDC_LB->get_offset($MWQDC_LB->get_page_var(),$items_per_page);
 
 	$pagination_links = $MWQDC_LB->get_paginate_links($total_records,$items_per_page);
-
-	$productprice_q = "SELECT * FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_items` WHERE `id` >0 {$whr} ORDER BY `id` DESC LIMIT {$offset} , {$items_per_page} ";
+	
+	$productprice_q = "
+	SELECT DISTINCT qi.* , pp.wc_product_id, vp.wc_variation_id
+	FROM 
+	`".$wpdb->prefix."mw_wc_qbo_desk_qbd_items` qi
+	LEFT JOIN `".$wpdb->prefix."mw_wc_qbo_desk_qbd_product_pairs` pp ON (qi.qbd_id = pp.quickbook_product_id)
+	LEFT JOIN `".$wpdb->prefix."mw_wc_qbo_desk_qbd_variation_pairs` vp ON (qi.qbd_id = vp.quickbook_product_id) 
+	WHERE qi.`id` >0 
+	AND (pp.wc_product_id >0 OR  vp.wc_variation_id > 0)
+	{$whr} 
+	ORDER BY qi.`id` DESC 
+	LIMIT {$offset} , {$items_per_page} ";
+	//echo $productprice_q;
 	$qbd_productprice_list = $MWQDC_LB->get_data($productprice_q);
 	//$MWQDC_LB->_p($qbd_productprice_list);
 	
@@ -105,6 +127,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 									$sync_status_html = '<i class="fa fa-times-circle" style="color:red"></i>';
 									if(isset($p_val['wc_product_id']) && (int) $p_val['wc_product_id']){
 										$wc_product_id = (int) $p_val['wc_product_id'];
+									}elseif(isset($p_val['wc_variation_id']) && (int) $p_val['wc_variation_id']){
+										$wc_product_id = (int) $p_val['wc_variation_id'];
 									}else{
 										$wc_product_id = (int) $MWQDC_LB->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_product_pairs','wc_product_id','quickbook_product_id',$p_val['qbd_id']);
 										
@@ -112,6 +136,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 											$wc_product_id = (int) $MWQDC_LB->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_variation_pairs','wc_variation_id','quickbook_product_id',$p_val['qbd_id']);
 										}
 									}
+									
 									if($wc_product_id>0){
 										$sync_status_html = '<i title="Mapped to #'.$wc_product_id.'" class="fa fa-check-circle" style="color:green"></i>';
 										$wc_price = get_post_meta($wc_product_id,'_price',true);

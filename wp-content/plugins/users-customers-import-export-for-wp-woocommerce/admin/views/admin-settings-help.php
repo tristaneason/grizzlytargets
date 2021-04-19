@@ -16,7 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 			        <img src="<?php echo WT_U_IEW_PLUGIN_URL;?>assets/images/documentation.png">
 			        <h3><?php _e('Documentation'); ?></h3>
 			        <p><?php _e('Refer to our documentation to set up and get started.'); ?></p>
-			        <a target="_blank" href="https://www.webtoffee.com/category/documentation/" class="button button-primary">
+			        <a target="_blank" href="https://www.webtoffee.com/user-import-export-plugin-wordpress-user-guide/" class="button button-primary">
 			            <?php _e('Documentation'); ?>        
 			        </a>
 			    </li>
@@ -33,14 +33,9 @@ if ( ! defined( 'WPINC' ) ) {
 		<div class="wt_iew_sub_tab_content" data-id="help-doc">
 			<h3><?php _e( 'Help Docs' ); ?></h3>
 			<ul class="wf-help-links">
-				<li>
-					<img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/sample-csv.png">
-					<h3><?php _e( 'Sample User CSV' ); ?></h3>
-					<p><?php _e( 'Familiarize yourself with the sample CSV.' ); ?></p>
-					<a target="_blank" href="https://www.webtoffee.com/wp-content/uploads/2020/10/Sample_Users.csv" class="button button-primary">
-						<?php _e( 'Get Sample CSV' ); ?>        
-					</a>
-				</li>
+				<?php do_action( 'wt_user_addon_basic_help_content' ); ?>
+				<?php do_action( 'wt_order_addon_basic_help_content' ); ?>
+				<?php do_action( 'wt_coupon_addon_basic_help_content' ); ?>
 			</ul>
 		</div>
 	</div>

@@ -49,7 +49,7 @@ class MW_QBO_Desktop_Admin {
 	 * @param      string    $version    The version of this plugin.
 	 */
 	 
-	private $cur_db_version = '1.4.3';
+	private $cur_db_version = '1.4.7';
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
@@ -62,6 +62,7 @@ class MW_QBO_Desktop_Admin {
 		
 		$MWQDC_AD = $this;
 		
+		require_once plugin_dir_path( __FILE__ ).'class-mw-qbo-desktop-admin-ext.php';
 		require_once plugin_dir_path( __FILE__ ).'class-mw-qbo-desktop-ajax-actions.php';
 	}
 
@@ -344,6 +345,12 @@ class MW_QBO_Desktop_Admin {
 						$sql = "ALTER TABLE `{$wpdb->prefix}mw_wc_qbo_desk_qbd_map_paymentmethod` ADD `order_sync_as` VARCHAR(255) NOT NULL AFTER `enable_refund`;";
 						$wpdb->query($sql);
 						$is_db_updated = true;			
+					}					
+					
+					if(!array_key_exists("qb_cr_ba_id",$v)){
+						$sql = "ALTER TABLE `{$wpdb->prefix}mw_wc_qbo_desk_qbd_map_paymentmethod` ADD `qb_cr_ba_id` VARCHAR(255) NOT NULL AFTER `order_sync_as`;";
+						$wpdb->query($sql);
+						$is_db_updated = true;			
 					}
 					
 					//
@@ -353,8 +360,21 @@ class MW_QBO_Desktop_Admin {
 						$is_db_updated = true;			
 					}
 					
-					if(!array_key_exists("qb_cr_ba_id",$v)){
-						$sql = "ALTER TABLE `{$wpdb->prefix}mw_wc_qbo_desk_qbd_map_paymentmethod` ADD `qb_cr_ba_id` VARCHAR(255) NOT NULL AFTER `order_sync_as`;";
+					if(!array_key_exists("inv_due_date_days",$v)){
+						$sql = "ALTER TABLE `{$wpdb->prefix}mw_wc_qbo_desk_qbd_map_paymentmethod` ADD `inv_due_date_days` INT(3) NOT NULL AFTER `qb_ip_ar_acc_id`;";
+						$wpdb->query($sql);
+						$is_db_updated = true;
+					}
+					
+					//
+					if(!array_key_exists("enable_tfnli",$v)){
+						$sql = "ALTER TABLE `{$wpdb->prefix}mw_wc_qbo_desk_qbd_map_paymentmethod` ADD `enable_tfnli` INT(1) NOT NULL AFTER `inv_due_date_days`;";
+						$wpdb->query($sql);
+						$is_db_updated = true;					
+					}
+					
+					if(!array_key_exists("tfnli_item_ref",$v)){
+						$sql = "ALTER TABLE `{$wpdb->prefix}mw_wc_qbo_desk_qbd_map_paymentmethod` ADD `tfnli_item_ref` VARCHAR(255) NOT NULL AFTER `enable_tfnli`;";
 						$wpdb->query($sql);
 						$is_db_updated = true;			
 					}
@@ -400,6 +420,12 @@ class MW_QBO_Desktop_Admin {
 					
 					if(!array_key_exists("qb_ar_acc_id",$v)){
 						$sql = "ALTER TABLE `{$wpdb->prefix}mw_wc_qbo_desk_qbd_product_pairs` ADD `qb_ar_acc_id` VARCHAR(255) NOT NULL AFTER `a_line_item_desc`;";
+						$wpdb->query($sql);
+						$is_db_updated = true;					
+					}
+					
+					if(!array_key_exists("qb_ivnt_site",$v)){
+						$sql = "ALTER TABLE `{$wpdb->prefix}mw_wc_qbo_desk_qbd_product_pairs` ADD `qb_ivnt_site` VARCHAR(255) NOT NULL AFTER `qb_ar_acc_id`;";
 						$wpdb->query($sql);
 						$is_db_updated = true;					
 					}
@@ -547,9 +573,18 @@ class MW_QBO_Desktop_Admin {
 	}
 	
 	public function mw_qbo_desktop_admin_init(){
-		if(!session_id()) {
-			session_start();
+		global $MWQDC_LB;
+		if(!session_id() && $this->is_allow_php_session()) {
+			session_start();			
 		}
+		
+		/**/
+		if(session_id()){
+			$is_wlv = (isset($_POST['action']) && $_POST['action'] == 'woocommerce_load_variations')?true:false;
+			if(!$is_wlv){
+				$MWQDC_LB->unset_session('mw_qvdf_s2_js');			
+			}
+		}		
 		
 		$this->mw_wc_qbo_enable_big_select_join();
 		/**/
@@ -564,6 +599,45 @@ class MW_QBO_Desktop_Admin {
 		$this->qwc_user_pass_notice();
 		
 		$this->mw_qbo_desktop_bulk_action_admin_footer();
+		
+		//
+		add_action( 'post_submitbox_misc_actions', array($this,'sync_uiiqb_cb_field'));
+	}
+	
+	/**/
+	protected function is_allow_php_session(){
+		if(isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'theme-editor.php') !== false){
+			return false;
+		}
+		
+		if(isset($_SERVER['SCRIPT_FILENAME']) && strpos($_SERVER['SCRIPT_FILENAME'], 'theme-editor.php') !== false){
+			return false;
+		}
+		
+		if((isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php') !== false) || (isset($_SERVER['SCRIPT_FILENAME']) && strpos($_SERVER['SCRIPT_FILENAME'], 'admin-ajax.php') !== false)){
+			//_wp_http_referer
+			if(isset($_POST['action']) && $_POST['action'] == 'edit-theme-plugin-file'){
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	//
+	public function sync_uiiqb_cb_field($post){
+		global $MWQDC_LB;
+		if($post->post_type != 'product' || $MWQDC_LB->is_plg_lc_p_l()){return '';}
+		$mwqb_sync_uiiqb = (int) get_post_meta($post->ID, 'mwqb_sync_uiiqb', true);
+		//$_manage_stock = get_post_meta($post->ID, '_manage_stock', true);
+		//if($_manage_stock != 'yes'){return '';}
+		echo '
+		<div class="misc-pub-section misc-pub-section-last">
+		<span id="timestamp">'
+		. '<label>
+		<input type="checkbox"' . ($mwqb_sync_uiiqb == 1 ? ' checked="checked" ' : null) . 'value="1" name="mwqb_sync_uiiqb" /> Sync updated inventory to QuickBooks</label>'
+		.'</span></div>
+		';		
 	}
 	
 	public function qwc_user_pass_notice(){
@@ -585,9 +659,11 @@ class MW_QBO_Desktop_Admin {
 					}
 					
 					if($is_qup_ntc){
-						function qbd_admin_notice_qwc_up(){
-							echo '<div class="notice notice-error mwqbd_admin_notice"><p>'.__('Please add Quickbooks Web Connector (QWC) username and password in connection page','mw_wc_qbo_desk').'</p></div>';
-						}
+						if(!function_exists('qbd_admin_notice_qwc_up')){
+							function qbd_admin_notice_qwc_up(){
+								echo '<div class="notice notice-error mwqbd_admin_notice"><p>'.__('Please add Quickbooks Web Connector (QWC) username and password in connection page','mw_wc_qbo_desk').'</p></div>';
+							}
+						}						
 						add_action( 'admin_notices', 'qbd_admin_notice_qwc_up' );
 					}			
 				}
@@ -612,7 +688,7 @@ class MW_QBO_Desktop_Admin {
 					<div class="myworks-trial-container text-btn" style="position: relative;">
 						<img width="20"  alt="MyWorks Desktop Sync" title="MyWorks Desktop Sync" src="'.$image.'">&nbsp;
 						<h3><b>'.(int) $MWQDC_LB->get_option('mw_wc_qbo_desk_trial_days_left').'</b> &nbsp;DAYS LEFT ON YOUR FREE TRIAL</h3>
-						<a target="_blank" href="https://myworks.design/account/clientarea.php?action=productdetails&id='.$MWQDC_LB->get_option('mw_wc_qbo_desk_trial_license_serviceid').'" class="btn btn-info" role="button">UPGRADE NOW!
+						<a target="_blank" href="https://myworks.software/account/clientarea.php?action=productdetails&id='.$MWQDC_LB->get_option('mw_wc_qbo_desk_trial_license_serviceid').'" class="btn btn-info" role="button">UPGRADE NOW!
 						</a></br>
 						&nbsp;
 						<a id="mwqs_tl_chk_again" style="font-size:12px;text-align: center;" href="javascript:void(0);">Check Again...</a>
@@ -661,155 +737,172 @@ class MW_QBO_Desktop_Admin {
 		add_action('admin_footer-edit.php', 'custom_bulk_admin_footer');
 		add_action('load-edit.php', 'custom_bulk_atq_process');
 		
-		function custom_bulk_admin_footer() {
-			global $MWQDC_LB;
-			global $post_type;
-			if($post_type == 'shop_order') {
-				//
-				//if($MWQDC_LB->is_pl_res_tml()){return '';}
-				
-				$wco_ids = $MWQDC_LB->get_session_val('wc_order_id_list_ba_atq',array(),true);				
-			?>
-			<script type="text/javascript">
-				jQuery(document).ready(function($) {					
-					/*
-					jQuery('<option>').val('mw_qbd_add_to_queue').text('<?php _e('Add to Queue')?>').appendTo("select[name='action']");
-					jQuery('<option>').val('mw_qbd_add_to_queue').text('<?php _e('Add to Queue')?>').appendTo("select[name='action2']");
-					*/
+		if(!function_exists('custom_bulk_admin_footer')){
+			function custom_bulk_admin_footer() {
+				global $MWQDC_LB;
+				global $post_type;
+				if($post_type == 'shop_order') {
+					//
+					//if($MWQDC_LB->is_pl_res_tml()){return '';}
 					
-					
-					var optgroup = $('<optgroup>');
-					optgroup.attr('label','QuickBooks Sync');					
-					var option = $('<option>').val('mw_qbd_add_to_queue').text('<?php _e('Add to Queue')?>');
-					optgroup.append(option);
-					
-					var optgroup_2 = $('<optgroup>');
-					optgroup_2.attr('label','QuickBooks Sync');					
-					var option = $('<option>').val('mw_qbd_add_to_queue').text('<?php _e('Add to Queue')?>');
-					optgroup_2.append(option);
-					
-					optgroup.appendTo("select[name='action']");
-					optgroup_2.appendTo("select[name='action2']");					
-					
-					<?php 
-						if(is_array($wco_ids) && count($wco_ids)):
-						$sync_window_url = $MWQDC_LB->get_sync_window_url().'&sync_type=push&item_ids='.implode(',',$wco_ids).'&item_type=invoice&fwop=1';
-					?>
-					popUpWindowDesk('<?php echo $sync_window_url;?>','mw_qs_invoice_push_desk',0,0,650,350);
-					<?php endif;?>
-				});
-			</script>
-			<?php
+					$wco_ids = $MWQDC_LB->get_session_val('wc_order_id_list_ba_atq',array(),true);				
+				?>
+				<script type="text/javascript">
+					jQuery(document).ready(function($) {					
+						/*
+						jQuery('<option>').val('mw_qbd_add_to_queue').text('<?php _e('Add to Queue')?>').appendTo("select[name='action']");
+						jQuery('<option>').val('mw_qbd_add_to_queue').text('<?php _e('Add to Queue')?>').appendTo("select[name='action2']");
+						*/
+						
+						
+						var optgroup = $('<optgroup>');
+						optgroup.attr('label','QuickBooks Sync');					
+						var option = $('<option>').val('mw_qbd_add_to_queue').text('<?php _e('Add to Queue')?>');
+						optgroup.append(option);
+						
+						var optgroup_2 = $('<optgroup>');
+						optgroup_2.attr('label','QuickBooks Sync');					
+						var option = $('<option>').val('mw_qbd_add_to_queue').text('<?php _e('Add to Queue')?>');
+						optgroup_2.append(option);
+						
+						optgroup.appendTo("select[name='action']");
+						optgroup_2.appendTo("select[name='action2']");					
+						
+						<?php 
+							if(is_array($wco_ids) && count($wco_ids)):
+							$sync_window_url = $MWQDC_LB->get_sync_window_url().'&sync_type=push&item_ids='.implode(',',$wco_ids).'&item_type=invoice&fwop=1';
+						?>
+						popUpWindowDesk('<?php echo $sync_window_url;?>','mw_qs_invoice_push_desk',0,0,650,350);
+						<?php endif;?>
+					});
+				</script>
+				<?php
+				}
 			}
 		}
 		
-		function custom_bulk_atq_process(){
-			global $MWQDC_LB;
-			global $typenow;
-			$post_type = $typenow;
-			
-			if($post_type == 'shop_order') {
-				$wp_list_table = _get_list_table('WP_Posts_List_Table');
-				$action = $wp_list_table->current_action();
-				$allowed_actions = array("mw_qbd_add_to_queue");
-				if(!in_array($action, $allowed_actions)) return;
+		if(!function_exists('custom_bulk_atq_process')){
+			function custom_bulk_atq_process(){
+				global $MWQDC_LB;
+				global $typenow;
+				$post_type = $typenow;
 				
-				check_admin_referer('bulk-posts');
-				if(isset($_REQUEST['post'])) {
-					$post_ids = array_map('intval', $_REQUEST['post']);
-				}
-				
-				if(empty($post_ids)) return;
-				$sendback = remove_query_arg( array('queued', 'untrashed', 'deleted', 'ids'), wp_get_referer() );
-				if ( ! $sendback )
-					$sendback = admin_url( "edit.php?post_type=$post_type" );
-				
-				$pagenum = $wp_list_table->get_pagenum();
-				$sendback = add_query_arg( 'paged', $pagenum, $sendback );
-				
-				switch($action) {
-					case 'mw_qbd_add_to_queue':
-					$queued = 0;
-					$MWQDC_LB->set_session_val('wc_order_id_list_ba_atq',$post_ids);
-					//$sendback = add_query_arg( array('queued' => $queued, 'ids' => join(',', $post_ids) ), $sendback );
-					break;
+				if($post_type == 'shop_order') {
+					$wp_list_table = _get_list_table('WP_Posts_List_Table');
+					$action = $wp_list_table->current_action();
+					$allowed_actions = array("mw_qbd_add_to_queue");
+					if(!in_array($action, $allowed_actions)) return;
 					
-					default: return;
+					check_admin_referer('bulk-posts');
+					if(isset($_REQUEST['post'])) {
+						$post_ids = array_map('intval', $_REQUEST['post']);
+					}
+					
+					if(empty($post_ids)) return;
+					$sendback = remove_query_arg( array('queued', 'untrashed', 'deleted', 'ids'), wp_get_referer() );
+					if ( ! $sendback )
+						$sendback = admin_url( "edit.php?post_type=$post_type" );
+					
+					$pagenum = $wp_list_table->get_pagenum();
+					$sendback = add_query_arg( 'paged', $pagenum, $sendback );
+					
+					switch($action) {
+						case 'mw_qbd_add_to_queue':
+						$queued = 0;
+						$MWQDC_LB->set_session_val('wc_order_id_list_ba_atq',$post_ids);
+						//$sendback = add_query_arg( array('queued' => $queued, 'ids' => join(',', $post_ids) ), $sendback );
+						break;
+						
+						default: return;
+					}
+					
+					$sendback = remove_query_arg( array('action', 'action2', 'tags_input', 'post_author', 'comment_status', 'ping_status', '_status',  'post', 'bulk_edit', 'post_view'), $sendback );
+					
+					wp_redirect($sendback);
+					exit();
 				}
-				
-				$sendback = remove_query_arg( array('action', 'action2', 'tags_input', 'post_author', 'comment_status', 'ping_status', '_status',  'post', 'bulk_edit', 'post_view'), $sendback );
-				
-				wp_redirect($sendback);
-				exit();
 			}
 		}
+		
 	}
 	
 	public function mw_qbo_desktop_add_qbo_status_column(){
 		add_filter( 'manage_edit-shop_order_columns', 'custom_shop_order_column',11);
-		function custom_shop_order_column($columns){
-		    $columns['mw_qbo_desktop_inv_status'] = __( 'QBD Status','mw_wc_qbo_desk');
-		    return $columns;
-		}
+		if(!function_exists('custom_shop_order_column')){
+			function custom_shop_order_column($columns){
+				$columns['mw_qbo_desktop_inv_status'] = __( 'QBD Status','mw_wc_qbo_desk');
+				return $columns;
+			}
+		}		
 		
 		add_action( 'manage_shop_order_posts_custom_column' , 'custom_orders_list_column_content_qbd', 10, 2 );
-		function custom_orders_list_column_content_qbd( $column ){
-			global $MWQDC_LB;			
-		    global $post, $woocommerce, $the_order, $wpdb;
-			
-			/*
-			$woo_version = $MWQDC_LB->get_woo_version_number();
-			if ( $woo_version >= 3.0 ) {
-				$order_id = (int) $the_order->get_id();
-			}else{
-				$order_id = (int) $the_order->id;
-			}
-			*/
-			
-			$order_id = 0;
-			if(is_object($post) && !empty($post)){
-				if(isset($post->ID) && isset($post->post_type) && $post->post_type == 'shop_order'){
-					$order_id = (int) $post->ID;
+		if(!function_exists('custom_orders_list_column_content_qbd')){
+			function custom_orders_list_column_content_qbd( $column ){
+				global $MWQDC_LB;			
+				global $post, $woocommerce, $the_order, $wpdb;
+				
+				/*
+				$woo_version = $MWQDC_LB->get_woo_version_number();
+				if ( $woo_version >= 3.0 ) {
+					$order_id = (int) $the_order->get_id();
+				}else{
+					$order_id = (int) $the_order->id;
 				}
-			}
-			
-			$sync_status_html = '<i class="fa fa-times-circle mwqd_wo_ic">Not Synced</i>';
-			$dp_tbl = $wpdb->prefix.'mw_wc_qbo_desk_qbd_data_pairs';
-			
-			switch ( $column ){
-		        case 'mw_qbo_desktop_inv_status' :
-					if($order_id){
-						$dp_data = $MWQDC_LB->get_row("SELECT `qbd_id` FROM {$dp_tbl} WHERE `wc_id` = {$order_id} AND `d_type` = 'Order' AND `qbd_id` !='' ");
-						if(is_array($dp_data) && count($dp_data)){
-							$sync_status_html = '<i title="QBD Txn ID #'.$dp_data['qbd_id'].'" class="fa fa-check-circle mwqd_wo_ic">Synced</i>';
-						}else{
-							/**/
-							$chk_qbq = $MWQDC_LB->get_row("SELECT `quickbooks_queue_id` FROM `quickbooks_queue` WHERE ident = {$order_id} AND `qb_status` = 'q' AND `qb_action` IN('InvoiceAdd','EstimateAdd','SalesReceiptAdd','SalesOrderAdd') ");
-							if(is_array($chk_qbq) && count($chk_qbq)){
-								$sync_status_html = '<i title="Queue ID #'.$chk_qbq['quickbooks_queue_id'].'" class="fa fa-check-circle mwqd_wo_ic mwop_sqc_l" style="background-color:#f8940a;">Queued</i>';
-								$sync_status_html.= '
-									<style>
-										.mwop_sqc_l:before{background-color:#f8940a !important;}
-									</style>
-								';
-								
+				*/
+				
+				$order_id = 0;
+				if(is_object($post) && !empty($post)){
+					if(isset($post->ID) && isset($post->post_type) && $post->post_type == 'shop_order'){
+						$order_id = (int) $post->ID;
+					}
+				}
+				
+				$sync_status_html = '<i class="fa fa-times-circle mwqd_wo_ic">Not Synced</i>';
+				$dp_tbl = $wpdb->prefix.'mw_wc_qbo_desk_qbd_data_pairs';
+				
+				switch ( $column ){
+					case 'mw_qbo_desktop_inv_status' :
+						if($order_id){
+							$dp_data = $MWQDC_LB->get_row("SELECT `qbd_id` FROM {$dp_tbl} WHERE `wc_id` = {$order_id} AND `d_type` = 'Order' AND `qbd_id` !='' ");
+							if(is_array($dp_data) && count($dp_data)){
+								$sync_status_html = '<i title="QBD Txn ID #'.$dp_data['qbd_id'].'" class="fa fa-check-circle mwqd_wo_ic">Synced</i>';
 							}else{
-								$swu = true;
-								if($MWQDC_LB->is_pl_res_tml() && !empty($post->post_date) && strtotime($post->post_date) < strtotime('-30 days')){
-									$swu = false;
+								/**/
+								$chk_qbq = $MWQDC_LB->get_row("SELECT `quickbooks_queue_id` FROM `quickbooks_queue` WHERE ident = {$order_id} AND `qb_status` = 'q' AND `qb_action` IN('InvoiceAdd','EstimateAdd','SalesReceiptAdd','SalesOrderAdd') ");
+								if(is_array($chk_qbq) && count($chk_qbq)){
+									$sync_status_html = '<i title="Queue ID #'.$chk_qbq['quickbooks_queue_id'].'" class="fa fa-check-circle mwqd_wo_ic mwop_sqc_l" style="background-color:#f8940a;">Queued</i>';
+									$sync_status_html.= '
+										<style>
+											.mwop_sqc_l:before{background-color:#f8940a !important;}
+										</style>
+									';
+									
+								}else{
+									$swu = true;
+									if($MWQDC_LB->is_pl_res_tml() && !empty($post->post_date)){
+										$ocd_d = 30;
+										if($MWQDC_LB->option_checked('mw_wc_qbo_desk_trial_license')){
+											$ocd_d = 7;
+										}
+										
+										if(strtotime($post->post_date) < strtotime('-'.$ocd_d.' days')){
+											$swu = false;
+										}										
+									}
+									
+									if($swu){
+										$sync_window_url = $MWQDC_LB->get_sync_window_url().'&sync_type=push&item_ids='.$order_id.'&item_type=invoice&fwop=1';
+										$sync_status_html.= '&nbsp;<a class="mwqd_wo_aqb" href="javascript:void(0)" onclick="javascript:popUpWindowDesk(\''.$sync_window_url.'\',\'mw_qs_invoice_push_desk\',0,0,650,350)">Add to queue</a>';
+									}								
 								}
-								
-								if($swu){
-									$sync_window_url = $MWQDC_LB->get_sync_window_url().'&sync_type=push&item_ids='.$order_id.'&item_type=invoice&fwop=1';
-									$sync_status_html.= '&nbsp;<a class="mwqd_wo_aqb" href="javascript:void(0)" onclick="javascript:popUpWindowDesk(\''.$sync_window_url.'\',\'mw_qs_invoice_push_desk\',0,0,650,350)">Add to queue</a>';
-								}								
 							}
 						}
-					}
-					echo $sync_status_html;
-		            break;
-		    }
+						echo $sync_status_html;
+						break;
+				}
+			}
 		}
+		
 	}
 	
 	public function mw_qbo_desktop_version_control(){
@@ -847,10 +940,11 @@ class MW_QBO_Desktop_Admin {
 			}*/
 		}
 		
-		function mwqbd_db_pass_admin_notice() {
-
-			echo '<div title="MyWorks QuickBooks Desktop Setup Error" class="notice notice-error mwqs-setup-notice">'.__('<b>WooCommerce Sync for QuickBooks Desktop -</b> There is an unsupported character in your wp-config.php file - in either the database host, name, user or password. Simply check for and remove these characters + / # % \ ? from these fields. Your web developer/web host can also assist with this.', 'mw_wc_qbo_desk').'</div>';
-		}
+		if(!function_exists('mwqbd_db_pass_admin_notice')){
+			function mwqbd_db_pass_admin_notice() {
+				echo '<div title="MyWorks QuickBooks Desktop Setup Error" class="notice notice-error mwqs-setup-notice">'.__('<b>MyWorks QuickBooks Desktop Sync - </b>There is a special character in your wp-config.php file database credentials that the QuickBooks Library we use does not support. This simply needs to be removed/changed in order to activate our sync. This character is in either the database host, name, user or password value. Simply check for and remove these characters from these fields. + / # % \ ? Showing this message to your web developer/web host would enable them to assist with resolving this as well.', 'mw_wc_qbo_desk').'</div>';
+			}
+		}		
 		
 		/*
 		if($MWQDC_LB->get_session_val('unsupported_db_chars',false,true)){
@@ -945,6 +1039,14 @@ class MW_QBO_Desktop_Admin {
 	public function hook_product_add($product_info){
 		if(!class_exists('WooCommerce')) return;
 		global $MWQDC_LB;
+		global $wpdb;
+		
+		/**/
+		$source = '';
+		if(!is_array($post_id) && empty($source)){
+			$mwqb_sync_uiiqb = isset($_POST['mwqb_sync_uiiqb']) ?1:0;
+			update_post_meta($post_id, 'mwqb_sync_uiiqb', $mwqb_sync_uiiqb);
+		}
 		
 		if(!$MWQDC_LB->is_qwc_connected()) {
 			return false;
@@ -974,6 +1076,13 @@ class MW_QBO_Desktop_Admin {
 			}
 			
 			if(!$manual && $_product->post->post_status=='draft'){
+				return false;
+			}
+			
+			//Skip Parent Variation Product
+			$cvp_q = $wpdb->prepare("SELECT post_parent FROM {$wpdb->posts} WHERE post_type = 'product_variation' AND post_parent=%d",$product_id);
+			$chk_v_parent = $MWQDC_LB->get_row($cvp_q);
+			if(is_array($chk_v_parent) && count($chk_v_parent)){
 				return false;
 			}
 			
@@ -1011,7 +1120,7 @@ class MW_QBO_Desktop_Admin {
 		}
 	}	
 	
-	public function hook_user_register($user_info,$from_order=false){
+	public function hook_user_register($user_info,$from_order=false,$customer_data=array()){
 		if(!class_exists('WooCommerce')) return;
 		global $MWQDC_LB;
 		
@@ -1040,6 +1149,7 @@ class MW_QBO_Desktop_Admin {
 		}
 		
 		if($user_id){
+			$is_scjm = false;
 			$user_data = get_userdata($user_id);			
 			
 			if($MWQDC_LB->option_checked('mw_wc_qbo_desk_all_order_to_customer')){
@@ -1076,7 +1186,18 @@ class MW_QBO_Desktop_Admin {
 							}
 						}
 					}
-				}				
+				}
+				
+				/**/				
+				if(!$io_cs){
+					$aotc_scjm_data = get_option('mw_wc_qbo_desk_aotc_scjm_data');
+					if(is_array($aotc_scjm_data) && !empty($aotc_scjm_data)){
+						if(isset($aotc_scjm_data[$wc_user_role]) && !empty($aotc_scjm_data[$wc_user_role])){
+							$io_cs = true;
+							$is_scjm = true;
+						}
+					}
+				}
 				
 				if(!$io_cs){
 					return false;
@@ -1105,7 +1226,9 @@ class MW_QBO_Desktop_Admin {
 			}			
 			
 			if($is_sync_user_role){
-				$customer_data = $MWQDC_LB->get_wc_customer_info($user_id,$manual);
+				if(empty($customer_data)){
+					$customer_data = $MWQDC_LB->get_wc_customer_info($user_id,$manual);
+				}				
 				
 				if(!$qbd_customerid = $MWQDC_LB->if_qbo_customer_exists($customer_data)){
 					$already_in_queue = false;
@@ -1121,7 +1244,17 @@ class MW_QBO_Desktop_Admin {
 							}
 							
 							//$action, $ident = null, $priority = 0, $extra = null, $user = null, $qbxml = null, $replace = true
-							$Queue->enqueue(QUICKBOOKS_ADD_CUSTOMER, $user_id,2,null,$MWQDC_LB->get_qbun());
+							$cq_etd = null;
+							if(isset($customer_data['order_id'])){
+								$order_id = (int) $MWQDC_LB->get_array_isset($customer_data,'order_id',0);
+								$cq_etd = array('order_id'=>$order_id);
+							}
+							
+							if($is_scjm){
+								$cq_etd['ParentRef_ListID'] = $mw_wc_qbo_desk_aotc_rcm_data[$wc_user_role];
+							}
+							
+							$Queue->enqueue(QUICKBOOKS_ADD_CUSTOMER, $user_id,2,$cq_etd,$MWQDC_LB->get_qbun());
 							$MWQDC_LB->save_log(array('log_type'=>'Customer','log_title'=>'Export Customer #'.$customer_data['wc_customerid'],'details'=>'Customer added into queue','status'=>3));
 							return true;
 						}else{
@@ -1141,7 +1274,12 @@ class MW_QBO_Desktop_Admin {
 						$MWQDC_LB->save_log(array('log_type'=>'Customer','log_title'=>'Export Customer Error #'.$customer_data['wc_customerid'],'details'=>'Customer already exists','status'=>0));
 						*/
 						$Queue = new QuickBooks_WebConnector_Queue($MWQDC_LB->get_dsn());
-						$Queue->enqueue('CustomerMod_Query', $user_id,3,array('ListID'=>$qbd_customerid),$MWQDC_LB->get_qbun());
+						$cmq_extra = array('ListID'=>$qbd_customerid);
+						if($is_scjm){
+							$cmq_extra['ParentRef_ListID'] = $mw_wc_qbo_desk_aotc_rcm_data[$wc_user_role];
+						}
+						
+						$Queue->enqueue('CustomerMod_Query', $user_id,3,$cmq_extra,$MWQDC_LB->get_qbun());
 						
 						$MWQDC_LB->save_log(array('log_type'=>'Customer','log_title'=>'Update Customer #'.$customer_data['wc_customerid'],'details'=>'Customer added into queue','status'=>3));
 						
@@ -1251,10 +1389,20 @@ class MW_QBO_Desktop_Admin {
 			}
 			$refund_data['_refund_amount'] = $_refund_amount;			
 			
+			//QUICKBOOKS_ADD_CHECK
 			if(!$MWQDC_LB->check_quickbooks_refund($refund_id,$order_id)){
-				if(!$MWQDC_LB->if_queue_exists(QUICKBOOKS_ADD_CHECK,$refund_id)){
+				if(!$MWQDC_LB->if_queue_exists(QUICKBOOKS_ADD_CREDITMEMO,$refund_id)){
 					$Queue = new QuickBooks_WebConnector_Queue($MWQDC_LB->get_dsn());
-					$Queue->enqueue(QUICKBOOKS_ADD_CHECK, $refund_id,0,array('order_id'=>$order_id),$MWQDC_LB->get_qbun());
+					$Queue->enqueue(QUICKBOOKS_ADD_CREDITMEMO, $refund_id,0,array('order_id'=>$order_id),$MWQDC_LB->get_qbun());
+					//
+					if($MWQDC_LB->option_checked('mw_wc_qbo_desk_refund_check_with_credit_memo')){
+						/*
+						if(!$MWQDC_LB->if_queue_exists(QUICKBOOKS_ADD_CHECK,$refund_id)){
+							$Queue->enqueue(QUICKBOOKS_ADD_CHECK, $refund_id,0,array('order_id'=>$order_id,'check_r'=>1),$MWQDC_LB->get_qbun());
+						}
+						*/
+					}					
+					
 					$MWQDC_LB->save_log(array('log_type'=>'Refund','log_title'=>'Export Refund #'.$refund_id.' Order #'.$order_id,'details'=>'Refund added into queue','status'=>3));
 					return true;
 				}
@@ -1303,6 +1451,53 @@ class MW_QBO_Desktop_Admin {
 		}
 	}
 	
+	/**/
+	public function hook_order_update($post_ID, $post_after, $post_before){
+		$post_ID = (int) $post_ID;
+		global $MWQDC_LB;		
+		
+		if($post_ID>0 && is_object($post_after) && !empty($post_after)){
+			if(isset($post_after->post_type) && $post_after->post_type == 'shop_order'){
+				$order_id = $post_ID;
+				if(is_object($post_before) && !empty($post_before)){
+					//if($post_after->post_status == $post_before->post_status){}
+					if(isset($_POST['original_post_status']) && isset($_POST['order_status'])){
+						$original_post_status = trim($_POST['original_post_status']);
+						$order_status = trim($_POST['order_status']);
+						
+						$allow_spl_status = false;
+						/*New Pending Status Problem*/
+						$ext_status_save = false;						
+						
+						if($order_status == 'wc-pending'){
+							if(isset($_POST['post_status'])){
+								$post_status = trim($_POST['post_status']);
+								if($original_post_status == 'auto-draft' && $post_status == 'draft'){
+									$a_os_l = $MWQDC_LB->get_option('mw_wc_qbo_desk_specific_order_status');
+									if(!empty($a_os_l)){
+										$a_os_l = trim($a_os_l);
+										if($a_os_l!=''){$a_os_l = explode(',',$a_os_l);}
+										if(is_array($a_os_l) && count($a_os_l)){
+											if(in_array($order_status,$a_os_l)){
+												$ext_status_save = true;
+												//$allow_spl_status = true;
+											}
+										}
+									}
+								}
+							}
+						}						
+						
+						if($original_post_status == $order_status || $ext_status_save){
+							//$this->hook_order_add(array('order_id'=>$order_id,'admin_side'=>true,'allow_spl_status'=>$allow_spl_status));
+							$this->hook_order_add($order_id);
+						}
+					}					
+				}				
+			}
+		}
+	}
+	
 	public function hook_order_add($order_info){		
 		if(!class_exists('WooCommerce')) return;
 		global $MWQDC_LB;
@@ -1311,6 +1506,12 @@ class MW_QBO_Desktop_Admin {
 		if(!$MWQDC_LB->is_qwc_connected()) {
 			return false;
 		}
+		
+		if(!$MWQDC_LB->lp_chk_osl_allwd()){
+			$MWQDC_LB->save_log(array('log_type'=>'Invoice','log_title'=>'Export Order Error','details'=>'Order Sync Limit Reached.','status'=>0));
+			return false;
+		}
+		
 		if(is_array($order_info)){
 			$order_id = (int) $order_info['order_id'];
 			$manual = true;
@@ -1330,6 +1531,34 @@ class MW_QBO_Desktop_Admin {
 					$MWQDC_LB->save_log(array('log_type'=>'Invoice','log_title'=>'Export Order #'.$order_id,'details'=>'Order sync not allowed for ID less than #'.(int) $MWQDC_LB->get_option('mw_wc_qbo_desk_invoice_min_id'),'status'=>2));
 				}
 				return false;
+			}
+			
+			/**/
+			$qb_prevent_order_sync = (int) get_post_meta($order_id,'qb_prevent_order_sync',true);
+			if($qb_prevent_order_sync > 0){
+				return false;
+			}
+			
+			/**/
+			if($MWQDC_LB->check_sh_wosfsus_cuscompt_hash() && $MWQDC_LB->option_checked('mw_wc_qbo_desk_wosfsus_cuscompt_ed')){
+				$is_ord_sync_into_qb = false;
+				$wosfsus_eusstates = $MWQDC_LB->get_option('mw_wc_qbo_desk_wosfsus_cuscompt_eusstates');
+				if(!empty($wosfsus_eusstates)){
+					$wosfsus_eusstates = explode(',',$wosfsus_eusstates);
+					if(is_array($wosfsus_eusstates) && !empty($wosfsus_eusstates)){
+						$_shipping_country = get_post_meta($order_id,'_shipping_country',true);
+						if($_shipping_country == 'US'){
+							$_shipping_state = get_post_meta($order_id,'_shipping_state',true);
+							if(!empty($_shipping_state) && in_array($_shipping_state,$wosfsus_eusstates)){
+								$is_ord_sync_into_qb = true;
+							}
+						}
+					}
+				}
+				
+				if(!$is_ord_sync_into_qb){
+					return false;
+				}
 			}
 			
 			if(!$MWQDC_LB->ord_pmnt_is_mt_ls_check_by_ord_id($order_id)){
@@ -1365,7 +1594,8 @@ class MW_QBO_Desktop_Admin {
 			$ord_id_num = ($wc_inv_num!='')?$wc_inv_num:$order_id;
 			*/
 			
-			$is_os_p_sync = false;$is_os_err = false;
+			$is_os_p_sync = $MWQDC_LB->if_sync_os_payment($invoice_data);
+			$is_os_err = false;
 			
 			
 			$only_sync_status = $MWQDC_LB->get_option('mw_wc_qbo_desk_specific_order_status');
@@ -1380,11 +1610,11 @@ class MW_QBO_Desktop_Admin {
 				if($manual && !$is_os_err){					
 					$MWQDC_LB->save_log(array('log_type'=>'Invoice','log_title'=>'Export Order Error #'.$order_id,'details'=>'Woocommerce order details not found.','status'=>0));
 				}
-				/*
-				if($is_os_p_sync){			
+				/**/
+				if($is_os_p_sync){
 					$MWQDC_LB->save_log(array('log_type'=>'Payment','log_title'=>'Export Payment Error Order #'.$order_id,'details'=>'Woocommerce order details not found.','status'=>0));
 				}
-				*/
+				
 				return false;
 			}
 			
@@ -1495,12 +1725,19 @@ class MW_QBO_Desktop_Admin {
 				$existing_qbo_user_id = '';
 				
 				if(empty($qbo_cus_id)){
+					$is_scjm = false;
 					if(!$MWQDC_LB->option_checked('mw_wc_qbo_desk_all_order_to_customer')){						
 						if($wc_cus_id>0){
-							$customer_data = $MWQDC_LB->get_wc_customer_info($wc_cus_id);
+							if($MWQDC_LB->is_dmcb_fval_ext_ccfv()){
+								$customer_data = $MWQDC_LB->get_wc_customer_info_from_order($order_id);
+								$customer_data['order_id'] = $order_id;
+							}else{
+								$customer_data = $MWQDC_LB->get_wc_customer_info($wc_cus_id);
+							}
+							
 							$qbo_cus_id = $MWQDC_LB->if_qbo_customer_exists($customer_data);
 							if(empty($qbo_cus_id)){
-								$this->hook_user_register($wc_cus_id,true);
+								$this->hook_user_register($wc_cus_id,true,$customer_data);
 							}					
 						}else{
 							$customer_data = $MWQDC_LB->get_wc_customer_info_from_order($order_id);
@@ -1573,12 +1810,32 @@ class MW_QBO_Desktop_Admin {
 								}
 							}
 							
+							/**/							
+							if(!$io_cs){
+								$aotc_scjm_data = get_option('mw_wc_qbo_desk_aotc_scjm_data');
+								if(is_array($aotc_scjm_data) && !empty($aotc_scjm_data)){
+									if(isset($aotc_scjm_data[$wc_user_role]) && !empty($aotc_scjm_data[$wc_user_role])){
+										$io_cs = true;
+										$is_scjm = true;
+									}
+								}
+							}
+							
 							if($io_cs){
 								if($wc_cus_id>0){
-									$customer_data = $MWQDC_LB->get_wc_customer_info($wc_cus_id);
+									if($MWQDC_LB->is_dmcb_fval_ext_ccfv()){
+										$customer_data = $MWQDC_LB->get_wc_customer_info_from_order($order_id);
+										$customer_data['order_id'] = $order_id;
+									}else{
+										$customer_data = $MWQDC_LB->get_wc_customer_info($wc_cus_id);
+									}
+									
 									$qbo_cus_id = $MWQDC_LB->if_qbo_customer_exists($customer_data);
 									if(empty($qbo_cus_id)){
-										$this->hook_user_register($wc_cus_id,true);
+										if($is_scjm){
+											//$customer_data['qbo_cus_id'] = $mw_wc_qbo_desk_aotc_rcm_data[$wc_user_role];
+										}
+										$this->hook_user_register($wc_cus_id,true,$customer_data);
 									}
 								}else{
 									$customer_data = $MWQDC_LB->get_wc_customer_info_from_order($order_id);
@@ -1594,7 +1851,12 @@ class MW_QBO_Desktop_Admin {
 												}
 											}
 											
-											$Queue->enqueue(QUICKBOOKS_ADD_GUEST, $order_id,2,null,$MWQDC_LB->get_qbun());
+											$gaq_extra = null;
+											if($is_scjm){
+												$gaq_extra['ParentRef_ListID'] = $mw_wc_qbo_desk_aotc_rcm_data[$wc_user_role];
+											}
+											
+											$Queue->enqueue(QUICKBOOKS_ADD_GUEST, $order_id,2,$gaq_extra,$MWQDC_LB->get_qbun());
 											$MWQDC_LB->save_log(array('log_type'=>'Customer','log_title'=>'Export Guest/Customer','details'=>'Customer added into queue','status'=>3));
 										}								
 									}
@@ -1678,6 +1940,7 @@ class MW_QBO_Desktop_Admin {
 						}
 					}
 					
+					$is_so_s = false;
 					if($MWQDC_LB->option_checked('mw_wc_qbo_desk_order_as_sales_receipt') || $pr_pg_ost == 'SalesReceipt'){
 						if(!$MWQDC_LB->if_queue_exists(QUICKBOOKS_ADD_SALESRECEIPT,$order_id)){							
 							$Queue->enqueue(QUICKBOOKS_ADD_SALESRECEIPT, $order_id,1,$oq_add_extra,$MWQDC_LB->get_qbun());
@@ -1690,6 +1953,7 @@ class MW_QBO_Desktop_Admin {
 							$Queue->enqueue(QUICKBOOKS_ADD_SALESORDER, $order_id,1,$oq_add_extra,$MWQDC_LB->get_qbun());
 							$or_queue_added = true;
 						}
+						$is_so_s = true;
 						
 					}elseif($MWQDC_LB->option_checked('mw_wc_qbo_desk_order_as_estimate') || $pr_pg_ost == 'Estimate'){
 						if(!$MWQDC_LB->if_queue_exists(QUICKBOOKS_ADD_ESTIMATE,$order_id)){
@@ -1708,6 +1972,31 @@ class MW_QBO_Desktop_Admin {
 					}					
 					
 					if($or_queue_added){
+						/**/
+						if(!$is_so_s && $MWQDC_LB->option_checked('mw_wc_qbo_desk_extra_sales_ord_sync')){
+							if(!is_array($oq_add_extra)){
+								$oq_add_extra = array();
+							}
+							
+							$oq_add_extra['extra_sales_ord'] = true;
+							
+							if(!$MWQDC_LB->if_queue_exists(QUICKBOOKS_ADD_SALESORDER,$order_id)){
+								$Queue->enqueue(QUICKBOOKS_ADD_SALESORDER, $order_id,1,$oq_add_extra,$MWQDC_LB->get_qbun());
+							}
+						}
+						
+						/**/						
+						if($existing_qbo_user_id && $MWQDC_LB->check_sh_cpfmpocjh_cuscompt_hash() && $MWQDC_LB->option_checked('mw_wc_qbo_desk_cpfmpocjh_cuscompt_ed')){							
+							$qbd_job_id = $MWQDC_LB->get_wc_data_pair_val('Job',$order_id);
+							if(empty($qbd_job_id)){
+								if(!$MWQDC_LB->if_queue_exists('CustomerJobAdd',$order_id)){									
+									$oq_add_extra['customer_id'] = $wc_cus_id;
+									$Queue->enqueue('CustomerJobAdd', $order_id,2,$oq_add_extra,$MWQDC_LB->get_qbun());
+									$MWQDC_LB->save_log(array('log_type'=>'Job','log_title'=>'Export Customer Job #'.$order_id,'details'=>'Job added into queue','status'=>3));
+								}
+							}
+						}
+						
 						$MWQDC_LB->save_log(array('log_type'=>'Order','log_title'=>'Export Order #'.$order_id,'details'=>'Order added into queue','status'=>3));
 					}					
 					
@@ -1718,7 +2007,14 @@ class MW_QBO_Desktop_Admin {
 						$oea_ocnd = true;
 					}
 					
-					if($is_ord_pmnt_q_add && $oea_ocnd && $or_queue_added){
+					/**/
+					if($is_ord_pmnt_q_add && $is_os_p_sync && $pr_pg_ost != 'SalesReceipt' && $pr_pg_ost != 'Estimate' && !$MWQDC_LB->check_quickbooks_os_payment($order_id)){
+						if(!$MWQDC_LB->if_queue_exists('OrderPaymentAdd',$order_id)){
+							$Queue->enqueue('OrderPaymentAdd', $order_id,1,$oq_add_extra,$MWQDC_LB->get_qbun());
+						}
+					}
+					
+					if($is_ord_pmnt_q_add && $oea_ocnd && $or_queue_added && !$is_os_p_sync){
 						$pm_r = $MWQDC_LB->get_row("SELECT `meta_id` FROM `{$wpdb->postmeta}` WHERE `post_id` = '{$order_id}' AND `meta_key` = '_transaction_id' ");
 						if(is_array($pm_r) && !empty($pm_r)){
 							$payment_id = (int) $pm_r['meta_id'];
@@ -1736,7 +2032,20 @@ class MW_QBO_Desktop_Admin {
 				}					
 			}
 			
-			//PO			
+			//PO
+			if($or_queue_added && $MWQDC_LB->check_sh_cpfmpocjh_cuscompt_hash() && $MWQDC_LB->option_checked('mw_wc_qbo_desk_cpfmpocjh_cuscompt_ed')){
+				if(!$MWQDC_LB->get_wc_data_pair_val('PurchaseOrder',$order_id)){
+					if(!$MWQDC_LB->if_queue_exists(QUICKBOOKS_ADD_PURCHASEORDER,$order_id)){
+						$Queue = new QuickBooks_WebConnector_Queue($MWQDC_LB->get_dsn());
+						$Queue->enqueue(QUICKBOOKS_ADD_PURCHASEORDER, $order_id,0,null,$MWQDC_LB->get_qbun());
+						$MWQDC_LB->save_log(array('log_type'=>'PurchaseOrder','log_title'=>'Export PurchaseOrder #'.$order_id,'details'=>'PurchaseOrder added into queue','status'=>3));
+						//return true;
+						$po_queue_added = true;
+					}
+				}
+			}
+			
+			//
 			if($MWQDC_LB->is_plugin_active('split-order-custom-po-for-myworks-quickbooks-desktop-sync') && $MWQDC_LB->option_checked('mw_wc_qbo_desk_compt_p_ad_socpo_ed')){
 				if(!empty($MWQDC_LB->get_option('mw_wc_qbo_desk_compt_socpo_qbd_vendor'))){
 					if(!$MWQDC_LB->get_wc_data_pair_val('PurchaseOrder',$order_id)){						
@@ -2029,6 +2338,108 @@ class MW_QBO_Desktop_Admin {
 		return false;
 	}
 	
+	/**/
+	public function delete_variation_mapping($variation_id){
+		$variation_id = (int) $variation_id;
+		if($variation_id > 0){
+			global $wpdb;
+			$wpdb->query($wpdb->prepare("DELETE FROM `{$wpdb->prefix}mw_wc_qbo_desk_qbd_variation_pairs` WHERE `wc_variation_id` = %d",$variation_id));
+		}
+	}
+	
+	public function delete_product_mapping($product_id){
+		if(!class_exists('WooCommerce')) return;
+		global $post_type;
+		if ( $post_type != 'product' ) return false;
+		
+		$product_id = (int) $product_id;
+		if($product_id > 0){
+			global $wpdb;
+			$wpdb->query($wpdb->prepare("DELETE FROM `{$wpdb->prefix}mw_wc_qbo_desk_qbd_product_pairs` WHERE `wc_product_id` = %d",$product_id));
+		}
+	}
+	
+	//
+	public function myworks_wc_qbo_desk_pu_product_stock_update($post_ID, $post_after, $post_before){
+		$post_ID = (int) $post_ID;
+		global $MWQDC_LB;
+		global $wpdb;
+		if($post_ID>0 && is_object($post_after) && !empty($post_after)){
+			if(isset($post_after->post_type) && $post_after->post_type == 'product'){
+				$product_id = $post_ID;
+				
+				//$mwqb_sync_uiiqb = (int) get_post_meta($product_id, 'mwqb_sync_uiiqb', true);				
+				$mwqb_sync_uiiqb = isset($_POST['mwqb_sync_uiiqb']) ?1:0;
+				update_post_meta($product_id, 'mwqb_sync_uiiqb', $mwqb_sync_uiiqb);
+				
+				if(is_object($post_before) && !empty($post_before) && $mwqb_sync_uiiqb == 1 && !$MWQDC_LB->is_plg_lc_p_l()){
+					if(isset($_POST['_original_stock']) && isset($_POST['_stock']) && isset($_POST['_manage_stock'])){
+						if($_POST['_manage_stock'] == 'yes' && $_POST['_stock'] != $_POST['_original_stock']){
+							
+							$map_data = $MWQDC_LB->get_row($wpdb->prepare("SELECT `quickbook_product_id` FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_product_pairs` WHERE `wc_product_id` = %d AND `quickbook_product_id` != '' ",$product_id));
+							$quickbook_product_id = '';
+							if(is_array($map_data) && count($map_data)){
+								$quickbook_product_id = $map_data['quickbook_product_id'];
+							}
+							
+							if(!empty($quickbook_product_id)){
+								$this->hook_product_stock_update($product_id);
+							}							
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public function myworks_wc_qbo_desk_pu_variation_stock_update($post_ID, $post_after, $post_before){
+		$post_ID = (int) $post_ID;
+		global $MWQDC_LB;
+		global $wpdb;
+		//$MWQDC_LB->_p($post_ID);$MWQDC_LB->_p($post_after);$MWQDC_LB->_p($post_before);$MWQDC_LB->_p($_POST);
+		if($post_ID>0 && is_object($post_after) && !empty($post_after) && isset($_POST['post_ID']) && (int) $_POST['post_ID'] > 0){
+			if(isset($post_after->post_type) && $post_after->post_type == 'product' && isset($_POST['product-type']) && $_POST['product-type'] == 'variable'){
+				$product_id = (int) $_POST['post_ID'];
+				
+				$mwqb_sync_uiiqb = isset($_POST['mwqb_sync_uiiqb']) ?1:0;
+				update_post_meta($product_id, 'mwqb_sync_uiiqb', $mwqb_sync_uiiqb);
+				//$mwqb_sync_uiiqb = (int) get_post_meta($product_id,'mwqb_sync_uiiqb',true);
+				
+				if(is_object($post_before) && !empty($post_before) && $mwqb_sync_uiiqb == 1 && !$MWQDC_LB->is_plg_lc_p_l()){
+					if(isset($_POST['variable_original_stock']) && isset($_POST['variable_stock']) && isset($_POST['variable_manage_stock'])){
+						if(is_array($_POST['variable_manage_stock']) && in_array('on',$_POST['variable_manage_stock'])){
+							if(is_array($_POST['variable_stock']) && is_array($_POST['variable_original_stock'])){								
+								$vs_diff = array_diff($_POST['variable_stock'],$_POST['variable_original_stock']);
+								if(is_array($vs_diff) && count($vs_diff)){
+									if(is_array($_POST['variable_post_id'])){
+										$vp_ids = $_POST['variable_post_id'];
+										foreach($vs_diff as $k=>$v){
+											if(isset($vp_ids[$k])){
+												$variation_id = (int) $vp_ids[$k];
+												if($variation_id>0){
+													$map_data = $MWQDC_LB->get_row($wpdb->prepare("SELECT `quickbook_product_id` FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_variation_pairs` WHERE `wc_variation_id` = %d AND `quickbook_product_id` != '' ",$variation_id));
+													$quickbook_product_id = '';
+													if(is_array($map_data) && count($map_data)){
+														$quickbook_product_id = $map_data['quickbook_product_id'];
+													}
+													
+													if(!empty($quickbook_product_id)){
+														$this->hook_variation_stock_update($variation_id);
+													}													
+													
+												}
+											}											
+										}
+									}									
+								}
+							}							
+						}						
+					}
+				}
+			}
+		}
+	}
+	
 	public function hook_product_stock_update($ivnt_sync_info){
 		if(!class_exists('WooCommerce')) return;
 		global $MWQDC_LB;
@@ -2042,6 +2453,8 @@ class MW_QBO_Desktop_Admin {
 		}else{
 			if(is_object($ivnt_sync_info) && !empty($ivnt_sync_info)){
 				$product_id = (int) $ivnt_sync_info->get_id();
+			}else{
+				$product_id = (int) $ivnt_sync_info;
 			}
 			$manual = false;
 		}
@@ -2106,6 +2519,8 @@ class MW_QBO_Desktop_Admin {
 		}else{
 			if(is_object($ivnt_sync_info) && !empty($ivnt_sync_info)){
 				$variation_id = (int) $ivnt_sync_info->get_id();
+			}else{
+				$variation_id = (int) $ivnt_sync_info;
 			}
 			$manual = false;
 		}		
@@ -2151,6 +2566,49 @@ class MW_QBO_Desktop_Admin {
 		return false;
 		
 	}
+
+	public function redirect_mw_deactivation_popup_func() {
+
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], '_mw_deactivate_feedback_nonce' ) ) {
+			wp_send_json_error();
+		}
+
+		$feedback_url = 'https://forms.hubspot.com/uploads/form/v2/4333867/14e17026-f443-4d9e-a912-9558746c6634';
+
+		$deactivation_reason = '';
+		$deactivation_domain = '';
+		$deactivation_license_key = '';
+
+		if ( ! empty( $_POST['deactivation_reason'] ) ) {
+			$deactivation_reason = $_POST['deactivation_reason'];
+		}	
+
+		if ( ! empty( $_POST['deactivation_domain'] ) ) {
+			$deactivation_domain = $_POST['deactivation_domain'];
+		}
+
+		if ( ! empty( $_POST['deactivation_license_key'] ) ) {
+			$deactivation_license_key = $_POST['deactivation_license_key'];
+		}
+
+		if ( ! empty( $_POST['email'] ) ) {
+			$email = $_POST['email'];
+		}	
+
+		wp_remote_post($feedback_url, [
+			'timeout' => 30,
+			'body' => [
+				'deactivation_reason' => $deactivation_reason,
+				'deactivation_domain' => $deactivation_domain,
+				'deactivation_license_key' => $deactivation_license_key,
+				'email' => $email
+			],
+		] );
+
+		wp_send_json_success();
+
+		wp_die();
+	}	
 	
 	public static function return_qbd_plugin_version(){
 		$plugin_data = get_plugin_data( WP_PLUGIN_DIR . '/myworks-quickbooks-desktop-sync/myworks-quickbooks-desktop-sync.php', false, false );

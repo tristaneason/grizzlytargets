@@ -60,11 +60,11 @@ class Wt_Import_Export_For_Woo_Basic_Export
 			), 
 			'mapping'=>array(
 				'title'=>__('Map and reorder export columns'),
-				'description'=>__('The default export column names can be seen in the screen below. You can edit these if required.  If you have chosen a pre-saved template you can see the preferred names and choices that were last saved. You may also drag the columns accordingly to reorder them within the output file.'),
+				'description'=>__('The default export column names can be edited from the screen below, if required. If you have chosen a pre-saved template you can see the preferred names and choices that were last saved. You may also drag the columns accordingly to reorder them within the output file.'),
 			),
 			'advanced'=>array(
 				'title'=>__('Advanced options/Batch export'),
-				'description'=>__('Use advanced options from below to decide on the batch export count. You can also save the template file for future exports.'),
+				'description'=>__('You can save the template file for future exports or proceed with the export.'),
 			),
 		);
 
@@ -80,9 +80,9 @@ class Wt_Import_Export_For_Woo_Basic_Export
 
 
 		$this->export_methods=array(
-			'quick'=>array('title'=>__('Quick export'), 'description'=> __('Quick export only exports the basic/standard fields of the respective post type.')),
-			'template'=>array('title'=>__('Pre-saved template'), 'description'=> __('This option exports data as per the specifications(filters,selective column,mapping etc) from the previously saved file.')),
-			'new'=>array('title'=>__('Advanced export'), 'description'=> __('This option will take you through a detailed process of data filtering/column selection/advanced options that may be required for your export. You can also save this file for future use.')),
+			'quick'=>array('title'=>__('Quick export'), 'description'=> __('Exports all the basic fields.')),
+			'template'=>array('title'=>__('Pre-saved template'), 'description'=> __('Exports data as per the specifications(filters,selective column,mapping etc) from the previously saved file.')),
+			'new'=>array('title'=>__('Advanced export'), 'description'=> __('Exports data after a detailed process of data filtering/column selection/advanced options that may be required for your export. You can also save this file for future use.')),
 		);
 
 		/* advanced plugin settings */
@@ -118,8 +118,9 @@ class Wt_Import_Export_For_Woo_Basic_Export
 			'label'=>__("Default Export method"),
 			'type'=>'select',
 			'sele_vals'=>$export_methods,
-                        'value' =>'new',
+            'value' =>'quick',
 			'field_name'=>'default_export_method',
+			'field_group'=>'advanced_field',
 			'help_text'=>__('Select the default method of export.'),
 		);
 		$fields['default_export_batch']=array(

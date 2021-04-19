@@ -4,7 +4,7 @@ namespace Leadin;
 
 use Leadin\LeadinFilters;
 use Leadin\admin\AdminConstants;
-use Leadin\admin\Connection;
+use Leadin\options\AccountOptions;
 
 /**
  * Class responsible of managing all the plugin assets.
@@ -66,7 +66,7 @@ class AssetsManager {
 	 */
 	public static function enqueue_script_loader( $leadin_wordpress_info ) {
 		$embed_domain = LeadinFilters::get_leadin_script_loader_domain();
-		$portal_id    = Connection::get_portal_id();
+		$portal_id    = AccountOptions::get_portal_id();
 		$embed_url    = "https://$embed_domain/$portal_id.js?integration=WordPress";
 		wp_register_script( self::TRACKING_CODE, $embed_url, array( 'jquery' ), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_localize_script( self::TRACKING_CODE, 'leadin_wordpress', $leadin_wordpress_info );

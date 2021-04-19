@@ -5,7 +5,7 @@ Tags: order export, order import, woocommerce export orders, woocommerce import 
 Requires at least: 3.0.1
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 1.7.4
+Stable tag: 1.7.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -24,7 +24,7 @@ The following are functionalities offered by the basic version of the plugin.
  &#128312; Import Coupons from CSV file.
  &#128312; Export Subscription Orders to CSV file(Premium Feature).
  &#128312; Import Subscription Orders from CSV file(Premium Feature).
- &#128312; Tested OK with WooCommerce 5.1.0
+ &#128312; Tested OK with WooCommerce 5.2.2
  &#128312; Tested OK with WP 5.7
  &#128312; Tested OK with PHP 7.3.5
 
@@ -197,6 +197,10 @@ Yes.
 
 == Changelog ==
 
+= 1.7.6 =
+* Tested OK with WC 5.2.2
+= 1.7.5 =
+* Tested OK with WC 5.2.0
 = 1.7.4 =
 * Tested OK with WC 5.1 and WP 5.7
 = 1.7.3 =
@@ -394,5 +398,5 @@ Yes.
 
 == Upgrade Notice ==
 
-= 1.7.4 =
-* Tested OK with WC 5.1 and WP 5.7
+= 1.7.6 =
+* Tested OK with WC 5.2.2

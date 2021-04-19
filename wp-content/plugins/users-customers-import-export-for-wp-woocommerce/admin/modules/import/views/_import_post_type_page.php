@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 				<select name="wt_iew_import_post_type">
 					<option value="">-- <?php _e('Select post type'); ?> --</option>
 					<?php
-					$item_type = isset($item_type) ? $item_type : '';
+					$item_type = isset($item_type) ? $item_type : 'user';
 					foreach($post_types as $key=>$value)
 					{
 						?>

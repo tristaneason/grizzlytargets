@@ -116,6 +116,7 @@ class Wt_Import_Export_For_Woo_Basic_Import
 			),
             'value' =>1,
 			'field_name'=>'enable_import_log',
+			'field_group'=>'advanced_field',
 			'help_text'=>__('Save import log as text file and make it available in the history section for debugging purposes.'),
 			'validation_rule'=>array('type'=>'absint'),
 		);
@@ -124,8 +125,9 @@ class Wt_Import_Export_For_Woo_Basic_Import
 			'label'=>__("Default Import method"),
 			'type'=>'select',
 			'sele_vals'=>$import_methods,
-                        'value' =>'new',
+            'value' =>'quick',
 			'field_name'=>'default_import_method',
+			'field_group'=>'advanced_field',
 			'help_text'=>__('Select the default method of import.'),
 		);
 		$fields['default_import_batch']=array(

@@ -15,11 +15,11 @@
  * Plugin Name:         HubSpot for WooCommerce
  * Plugin URI:          https://wordpress.org/plugins/makewebbetter-hubspot-for-woocommerce
  * Description:         Integrate WooCommerce with HubSpot’s free CRM, abandoned cart tracking, email marketing, marketing automation, analytics & more.
- * Version:             1.0.6
- * Requires at least:   4.4.0
- * Tested up to:        5.4.2
- * WC requires at least:    3.0.0
- * WC tested up to:         4.3.1
+ * Version: 1.0.7
+ * Requires at least: 4.4.0
+ * Tested up to: 5.7.0
+ * WC requires at least: 3.0.0
+ * WC tested up to: 5.1.0
  * Author:            MakeWebBetter
  * Author URI:        https://makewebbetter.com/
  * License: GPLv2 or later

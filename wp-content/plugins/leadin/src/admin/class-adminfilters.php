@@ -1,7 +1,7 @@
 <?php
 namespace Leadin\admin;
 
-use Leadin\LeadinOptions;
+use Leadin\options\HubspotOptions;
 
 const LEADIN_AFFILIATE_CODE = 'leadin_affiliate_code';
 
@@ -22,7 +22,7 @@ class AdminFilters {
 	 * @param String $affiliate Affiliate code returned by previous filter.
 	 */
 	public function get_affiliate_code( $affiliate ) {
-		return empty( $affiliate ) ? LeadinOptions::get_affiliate_code() : $affiliate;
+		return empty( $affiliate ) ? HubspotOptions::get_affiliate_code() : $affiliate;
 	}
 
 	/**

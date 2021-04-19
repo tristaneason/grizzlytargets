@@ -32,6 +32,9 @@ class MW_QBO_Desktop_Deactivator {
 	 */
 	public static function deactivate() {
 
+		delete_user_meta(get_current_user_id(), 'dismissed_mw_pointers');
+		delete_option( 'mw_wc_qbo_desk_admin_pointers' );
+
 		$url = get_bloginfo('url');
 		$company = get_bloginfo('name');
 		$email = get_bloginfo('admin_email');

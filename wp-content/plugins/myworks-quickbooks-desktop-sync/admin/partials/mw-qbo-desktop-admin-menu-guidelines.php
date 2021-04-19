@@ -560,39 +560,37 @@ function __mwqbd_map_page_help(){
     <li>
       <div class="acco-link">Getting Started</div>
       <ul class="guide-submenu">
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/getting-started/mapping">About Mapping</a></li>
-        <li><a href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/getting-started/mapping#before-you-map">Before you map</a></li>
-        <li><a href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/common-questions/what-is-the-auto-mapping-feature-and-how-can-i-use-it#customers">Auto-Mapping Customers</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/general-usage/how-to-configure-mapping">About Mapping</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/general-usage/how-to-configure-mapping#before-you-map">Before you map</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/general-usage/how-to-configure-mapping#customer-mapping">Auto-Mapping Customers</a></li>
         <li><a href="https://www.youtube.com/watch?v=KHECaScWVx4">Video Walkthrough</a></li>
       </ul>
     </li>
     <li>
       <div class="acco-link">Common Questions</div>
       <ul class="guide-submenu">
-        <li><a href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/common-questions/what-does-mapping-mean-and-why-do-i-have-to-map-my-customers-and-products">What does “Mapping” mean, and why do I have to Map my customers and products?</a></li>
-        <li><a href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/customers/what-is-the-auto-mapping-feature-and-how-can-i-use-it">What is the “Auto Mapping” feature, and how can I use it?</a></li>
-        <li><a href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/common-questions/how-are-mappings-handled-on-an-ongoing-basis">How are mappings handled on an ongoing basis?</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/common-questions/how-syncing-works">How Syncing Works</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-online/common-questions/what-is-the-difference-between-mapping-and-pushing-data">What is the difference between mapping and pushing data?</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/common-questions/default-fields-sync-direction-summary">Default Fields & Sync Direction Summary</a></li>
       </ul>
     </li>
     '.__mwqbd_need_help_common().'
   </ul>';
-  }elseif($tab=='payment-method'){
+  }elseif($tab=='paymentmethod'){
     $HTML = '<ul id="guide-accordion" class="guide-accordion">
     <li>
       <div class="acco-link">Getting Started</div>
       <ul class="guide-submenu">
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/getting-started/mapping#payment-gateway-mapping">Mapping payment gateways</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/general-usage/how-to-configure-mapping#payment-gateway-mapping">Mapping payment gateways</a></li>
         <li><a target="_blank" href="https://www.youtube.com/watch?v=a4oSksFnOVs">Video Walkthrough</a></li>
       </ul>
     </li>
     <li>
       <div class="acco-link">Common Questions</div>
       <ul class="guide-submenu">
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/common-questions/how-are-mappings-handled-on-an-ongoing-basis">How are mappings handled on an ongoing basis?</a></li>
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/payments/transaction-fee-syncing">How can I handle transaction fees?</a></li>
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/payments/handling-transaction-fees-with-paypal">How can I sync transaction fees with PayPal?</a></li>
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/payments/batch-deposit-support-with-stripe">Do you have batch support?</a></li>
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/payments/batch-support-for-pre-existing-orders">How can I handle batch support for existing orders?</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-online/troubleshooting/running-sync-testing-best-practices">Running sync testing - Best practices</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/payments/handling-non-immediate-payment-gateways-cod-wire-transfer">Handling non-immediate payment gateways (COD, Wire Transfer)</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-online/payments/using-a-holding-account-in-quickbooks-to-manage-credit-card-deposits-fees">Using a holding account in QuickBooks to manage credit card deposit fees</a></li>
       </ul>
     </li>
     '.__mwqbd_need_help_common().'
@@ -602,20 +600,20 @@ function __mwqbd_map_page_help(){
     <li>
       <div class="acco-link">Getting Started</div>
       <ul class="guide-submenu">
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/getting-started/mapping#product-mapping">Product Mapping</a></li>
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/common-questions/what-is-the-auto-mapping-feature-and-how-can-i-use-it#products">Auto-Mapping Products</a></li>
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/products/variation-support">Variation Support</a></li>
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/products/bundled-product-support">Bundled Product Support</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/general-usage/how-to-configure-mapping#product-mapping">Product Mapping</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/general-usage/how-to-configure-mapping#product-mapping">Auto-Mapping Products</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/products/quickbooks-desktop-variation-support-compatibility">Variation Support</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/products/quickbooks-desktop-variation-support-compatibility">Bundled Product Support</a></li>
         <li><a target="_blank" href="https://www.youtube.com/watch?v=md4x4EX5ZVU">Video Walkthrough</a></li>
       </ul>
     </li>
     <li>
       <div class="acco-link">Common Questions</div>
       <ul class="guide-submenu">
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/customers/what-is-the-auto-mapping-feature-and-how-can-i-use-it#products">How can I use the auto-mapping feature?</a></li>
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/common-questions/how-are-mappings-handled-on-an-ongoing-basis">How are mappings handled on an ongoing basis?</a></li>
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/products/variation-support#mapping">How can I map my variations?</a></li>
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/products/bundled-product-support#mapping">How can I map bundled products?</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-online/troubleshooting/running-sync-testing-best-practices">Running sync testing - best practices</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/products/controlling-if-products-are-synced-to-quickbooks-as-inventory-or-non-inventory">Controlling if products are synced to QuickBooks as Inventory or Non-Inventory</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/products/quickbooks-desktop-variation-support-compatibility">How can I map my variations?</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/products/quickbooks-desktop-variation-support-compatibility">How can I map bundled products?</a></li>
       </ul>
     </li>
     '.__mwqbd_need_help_common().'
@@ -642,14 +640,13 @@ function __mwqbd_map_page_help(){
     <li>
       <div class="acco-link">Getting Started</div>
       <ul class="guide-submenu">
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/getting-started/mapping#shipping-method-mapping">Configuring shipping method mapping</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/general-usage/how-to-configure-mapping#shipping-method-mapping">Configuring shipping method mapping</a></li>
       </ul>
     </li>
     <li>
       <div class="acco-link">Common Questions</div>
       <ul class="guide-submenu">
-         <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/common-questions/how-are-mappings-handled-on-an-ongoing-basis">How are mappings handled on an ongoing basis?</a></li>
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/shipping/shipping-as-a-line-item-or-a-subtotal-field">Shipping: As a line item or a subtotal field?</a></li>
+         <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-online/troubleshooting/running-sync-testing-best-practices">Running sync testing - best practices</a></li>
       </ul>
     </li>
     '.__mwqbd_need_help_common().'
@@ -659,9 +656,7 @@ function __mwqbd_map_page_help(){
     <li>
       <div class="acco-link">Need help on this?</div>
       <ul class="guide-submenu">
-        <li><a href="#">Please contact our support anytime!</a></li>
-        <li><a href="mailto:support@myworks.design">support@myworks.design</a></li>
-        <li><a href="#">Expect reply within 24 business hours!</a></li>
+        <li><a target="_blank" href="http://myworks.software/account/submitticket.php">Open a ticket with our support team!</a></li>
       </ul>
     </li>
   </ul>';
@@ -676,9 +671,9 @@ function __mwqbd_push_page_help(){
     <li>
       <div class="acco-link">Getting Started</div>
       <ul class="guide-submenu">
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/getting-started/push-pages">Intro to pushing</a></li>
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/getting-started/push-pages#customers">Pushing customers</a></li>
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/getting-started/mapping#customer-mapping">Mapping customers</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/general-usage/pushing-data-from-woocommerce-to-quickbooks-desktop">Intro to pushing</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/general-usage/pushing-data-from-woocommerce-to-quickbooks-desktop#customer-push">Pushing customers</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/general-usage/how-to-configure-mapping#customer-mapping">Mapping customers</a></li>
       </ul>
     </li>
     <li>
@@ -694,7 +689,7 @@ function __mwqbd_push_page_help(){
     <li>
       <div class="acco-link">Getting Started</div>
       <ul class="guide-submenu">
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/getting-started/push-pages#order-push">How to push orders</a></li>
+        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop/general-usage/pushing-data-from-woocommerce-to-quickbooks-desktop#order-push">How to push orders</a></li>
       </ul>
     </li>
     <li>
@@ -1011,9 +1006,8 @@ function __mwqbd_need_help_common(){
       <div class="acco-link">Still need help?</div>
       <ul class="guide-submenu">
       <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop">View our documentation</a></li>
-      <li><a target="_blank" href="https://myworks.design/account/submitticket.php?step=2&deptid=2">Open a support ticket</a></li>
+      <li><a target="_blank" href="http://myworks.software/account/submitticket.php">Open a support ticket</a></li>
          <li><a target="_blank" href="http://slack.myworks.design">Join our Slack channel</a></li>
-        <li><a target="_blank" href="https://docs.myworks.software/woocommerce-sync-for-quickbooks-desktop">Live chat with us</a></li>
       </ul>
     </li>';
     return $HTML;

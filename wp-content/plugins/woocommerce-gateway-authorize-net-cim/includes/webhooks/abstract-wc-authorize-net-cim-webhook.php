@@ -133,10 +133,8 @@ abstract class WC_Authorize_Net_CIM_Webhook {
 	}
 
 
-
 	/**
-	 * Gets the gateways configured with unique API credentials
-	 * except gateways that inherit settings and emulation gateways.
+	 * Gets the gateways configured with unique API credentials.
 	 *
 	 * @since 3.0.6
 	 *
@@ -145,15 +143,7 @@ abstract class WC_Authorize_Net_CIM_Webhook {
 	protected function get_gateways() {
 
 		if ( empty( $this->gateways ) ) {
-
 			$this->gateways = $this->get_plugin()->get_gateways();
-
-			foreach ( $this->gateways as $key => $gateway ) {
-
-				if ( \WC_Authorize_Net_CIM::EMULATION_GATEWAY_ID === $gateway->get_id() ) {
-					unset( $this->gateways[ $key ] );
-				}
-			}
 		}
 
 		return $this->gateways;

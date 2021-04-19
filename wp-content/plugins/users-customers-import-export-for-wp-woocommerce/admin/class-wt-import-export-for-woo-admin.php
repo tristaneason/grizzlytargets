@@ -49,7 +49,6 @@ class Wt_Import_Export_For_Woo_Admin_Basic {
 		'history',
 		'export',
 		'import',
-//                'user',
 	);
 
 	public static $existing_modules=array();
@@ -85,7 +84,7 @@ class Wt_Import_Export_For_Woo_Admin_Basic {
 	 */
 	public function enqueue_styles() {
             if(Wt_Import_Export_For_Woo_Basic_Common_Helper::wt_is_screen_allowed()){
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wt-import-export-for-woo-admin.css', array(), $this->version, 'all' );
+				wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wt-import-export-for-woo-admin.css', array(), $this->version, 'all' );
             }
 	}
 
@@ -227,7 +226,8 @@ class Wt_Import_Export_For_Woo_Admin_Basic {
     		$new_advanced_settings=array();
     		foreach($advanced_fields as $key => $value) 
 	        {
-	            $field_name=(substr($value['field_name'],0,8)!=='wt_iew_' ? 'wt_iew_' : '').$value['field_name'];
+	            $form_field_name = isset($value['field_name']) ? $value['field_name'] : '';
+				$field_name=(substr($form_field_name,0,8)!=='wt_iew_' ? 'wt_iew_' : '').$form_field_name;
 	            $validation_key=str_replace('wt_iew_', '', $field_name);
 	            if(isset($_POST[$field_name]))
 	            {      	
@@ -315,7 +315,7 @@ class Wt_Import_Export_For_Woo_Admin_Basic {
                             $module_file=WP_CONTENT_DIR."/plugins/{$module_path}/admin/modules/$module_key/$module_key.php";
                             if(file_exists($module_file))
                             {
-                            self::$existing_modules[]=$module;
+                            self::$existing_modules[]=$module_key;
                             require_once $module_file;
                             }
                         }		

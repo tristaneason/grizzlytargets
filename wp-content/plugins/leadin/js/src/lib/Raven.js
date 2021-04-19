@@ -1,6 +1,6 @@
 import Raven from 'raven-js';
 import {
-  env,
+  hubspotBaseUrl,
   phpVersion,
   wpVersion,
   leadinPluginVersion,
@@ -9,7 +9,7 @@ import {
 } from '../constants/leadinConfig';
 
 export function configureRaven() {
-  if (env !== 'prod') {
+  if (hubspotBaseUrl.indexOf('app.hubspot.com') === -1) {
     return;
   }
 

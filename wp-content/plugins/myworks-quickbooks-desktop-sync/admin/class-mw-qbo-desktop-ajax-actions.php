@@ -495,8 +495,8 @@ function mw_wc_qbo_sync_clear_all_queue_desk(){
 function mw_wc_qbo_sync_clear_all_queue_pending_desk(){
 	if ( ! empty( $_POST ) && check_admin_referer( 'myworks_wc_qbo_sync_clear_all_queue_pending_desk', 'mwqs_clear_all_queue_pending_desk' ) ) {
 		global $wpdb;
-		$whr = " qb_status = 'q' AND dequeue_datetime IS NULL";
-		$wpdb->query("DELETE FROM `quickbooks_queue` WHERE {$whr} ");
+		$wpdb->query("DELETE FROM `quickbooks_queue` WHERE `quickbooks_queue_id` > 0 ");
+		$wpdb->query("TRUNCATE TABLE `quickbooks_queue` ");
 		echo 'Success';
 	}	
 	wp_die();

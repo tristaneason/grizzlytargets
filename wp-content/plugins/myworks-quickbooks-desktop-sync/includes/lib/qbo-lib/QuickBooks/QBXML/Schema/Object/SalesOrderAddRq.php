@@ -99,6 +99,10 @@ class QuickBooks_QBXML_Schema_Object_SalesOrderAddRq extends QuickBooks_QBXML_Sc
   'SalesOrderLineAdd Amount' => 'AMTTYPE',
   'SalesOrderLineAdd InventorySiteRef ListID' => 'IDTYPE',
   'SalesOrderLineAdd InventorySiteRef FullName' => 'STRTYPE',
+  //
+  'SalesOrderLineAdd InventorySiteLocationRef ListID' => 'IDTYPE',
+  'SalesOrderLineAdd InventorySiteLocationRef FullName' => 'STRTYPE',
+  
   'SalesOrderLineAdd SalesTaxCodeRef ListID' => 'IDTYPE',
   'SalesOrderLineAdd SalesTaxCodeRef FullName' => 'STRTYPE',
   'SalesOrderLineAdd IsManuallyClosed' => 'BOOLTYPE',
@@ -189,6 +193,10 @@ class QuickBooks_QBXML_Schema_Object_SalesOrderAddRq extends QuickBooks_QBXML_Sc
   'SalesOrderLineAdd Amount' => 0,
   'SalesOrderLineAdd InventorySiteRef ListID' => 0,
   'SalesOrderLineAdd InventorySiteRef FullName' => 209,
+  //
+  'SalesOrderLineAdd InventorySiteLocationRef ListID' => 0,
+  'SalesOrderLineAdd InventorySiteLocationRef FullName' => 209,
+  
   'SalesOrderLineAdd SalesTaxCodeRef ListID' => 0,
   'SalesOrderLineAdd SalesTaxCodeRef FullName' => 209,
   'SalesOrderLineAdd IsManuallyClosed' => 0,
@@ -279,6 +287,10 @@ class QuickBooks_QBXML_Schema_Object_SalesOrderAddRq extends QuickBooks_QBXML_Sc
   'SalesOrderLineAdd Amount' => true,
   'SalesOrderLineAdd InventorySiteRef ListID' => true,
   'SalesOrderLineAdd InventorySiteRef FullName' => true,
+  //
+   'SalesOrderLineAdd InventorySiteLocationRef ListID' => true,
+  'SalesOrderLineAdd InventorySiteLocationRef FullName' => true,
+  
   'SalesOrderLineAdd SalesTaxCodeRef ListID' => true,
   'SalesOrderLineAdd SalesTaxCodeRef FullName' => true,
   'SalesOrderLineAdd IsManuallyClosed' => true,
@@ -367,6 +379,10 @@ class QuickBooks_QBXML_Schema_Object_SalesOrderAddRq extends QuickBooks_QBXML_Sc
   'SalesOrderLineAdd Amount' => 999.99,
   'SalesOrderLineAdd InventorySiteRef ListID' => 999.99,
   'SalesOrderLineAdd InventorySiteRef FullName' => 999.99,
+  //
+  'SalesOrderLineAdd InventorySiteLocationRef ListID' => 999.99,
+  'SalesOrderLineAdd InventorySiteLocationRef FullName' => 999.99,
+  
   'SalesOrderLineAdd SalesTaxCodeRef ListID' => 999.99,
   'SalesOrderLineAdd SalesTaxCodeRef FullName' => 999.99,
   'SalesOrderLineAdd IsManuallyClosed' => 999.99,
@@ -457,6 +473,10 @@ class QuickBooks_QBXML_Schema_Object_SalesOrderAddRq extends QuickBooks_QBXML_Sc
   'SalesOrderLineAdd Amount' => false,
   'SalesOrderLineAdd InventorySiteRef ListID' => false,
   'SalesOrderLineAdd InventorySiteRef FullName' => false,
+  //
+  'SalesOrderLineAdd InventorySiteLocationRef ListID' => false,
+  'SalesOrderLineAdd InventorySiteLocationRef FullName' => false,
+  
   'SalesOrderLineAdd SalesTaxCodeRef ListID' => false,
   'SalesOrderLineAdd SalesTaxCodeRef FullName' => false,
   'SalesOrderLineAdd IsManuallyClosed' => false,
@@ -561,6 +581,10 @@ class QuickBooks_QBXML_Schema_Object_SalesOrderAddRq extends QuickBooks_QBXML_Sc
   63 => 'SalesOrderLineAdd Amount',
   'SalesOrderLineAdd InventorySiteRef ListID',
   'SalesOrderLineAdd InventorySiteRef FullName',
+  //
+  'SalesOrderLineAdd InventorySiteLocationRef ListID',
+  'SalesOrderLineAdd InventorySiteLocationRef FullName',
+  
   'SalesOrderLineAdd LotNumber',
   'SalesOrderLineAdd SalesTaxCodeRef ListID',
   'SalesOrderLineAdd SalesTaxCodeRef FullName',
@@ -571,6 +595,8 @@ class QuickBooks_QBXML_Schema_Object_SalesOrderAddRq extends QuickBooks_QBXML_Sc
   'SalesOrderLineAdd DataExt OwnerID',
   'SalesOrderLineAdd DataExt DataExtName',
   'SalesOrderLineAdd DataExt DataExtValue',
+  //
+  'SalesOrderLineGroupAdd',
   'SalesOrderLineGroupAdd ItemGroupRef ListID',
   'SalesOrderLineGroupAdd ItemGroupRef FullName',
   'SalesOrderLineGroupAdd Desc',

@@ -32,6 +32,10 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+if ( ! defined('WC_MW_QB_TEXT_DOMAIN') ) {
+	define('WC_MW_QB_TEXT_DOMAIN', 'mw_wc_qbo_desk' );
+}
+
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-mw-qbo-desktop-activator.php
@@ -83,6 +87,8 @@ add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'add_mw_qbo_desk
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-mw-qbo-desktop.php';
+require_once trailingslashit(dirname(__FILE__)).'includes/class-mw-qbo-desktop-pointers.php';
+require_once trailingslashit(dirname(__FILE__)).'includes/class-mw-qbo-desktop-deactivation-popup.php';
 
 /**
  * Begins execution of the plugin.

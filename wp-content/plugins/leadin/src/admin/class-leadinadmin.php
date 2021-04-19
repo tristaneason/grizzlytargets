@@ -97,14 +97,12 @@ class LeadinAdmin {
 	 * Connect/disconnect the plugin
 	 */
 	public function authorize() {
-		if ( OAuth::is_enabled() ) {
-			if ( Connection::is_connection_requested() ) {
-				Connection::oauth_connect();
-				OAuthRouting::root_redirect( array( 'leadin_just_connected' => 1 ) );
-			} elseif ( Connection::is_disconnection_requested() ) {
-				Connection::oauth_disconnect();
-				OAuthRouting::root_redirect();
-			}
+		if ( Connection::is_connection_requested() ) {
+			Connection::oauth_connect();
+			Routing::redirect( MenuConstants::USER_GUIDE, array( 'leadin_just_connected' => 1 ) );
+		} elseif ( Connection::is_disconnection_requested() ) {
+			Connection::disconnect();
+			Routing::redirect( MenuConstants::ROOT );
 		}
 	}
 
@@ -125,10 +123,6 @@ class LeadinAdmin {
 	 */
 	public function build_menu() {
 		if ( Connection::is_connected() ) {
-			if ( OAuth::is_enabled() ) {
-				add_menu_page( __( 'HubSpot', 'leadin' ), __( 'HubSpot', 'leadin' ), AdminFilters::apply_view_plugin_menu_capability(), MenuConstants::ROOT, array( $this, 'build_app' ), 'dashicons-sprocket', '25.100713' );
-				add_submenu_page( MenuConstants::ROOT, __( 'Settings', 'leadin' ), __( 'Settings', 'leadin' ), AdminFilters::apply_view_plugin_menu_capability(), MenuConstants::SETTINGS, array( $this, 'build_app' ) );
-			} else {
 				add_menu_page( __( 'HubSpot', 'leadin' ), __( 'HubSpot', 'leadin' ), AdminFilters::apply_view_plugin_menu_capability(), MenuConstants::ROOT, array( $this, 'build_app' ), 'dashicons-sprocket', '25.100713' );
 				add_submenu_page( MenuConstants::ROOT, __( 'User Guide', 'leadin' ), __( 'User Guide', 'leadin' ), AdminFilters::apply_view_plugin_menu_capability(), MenuConstants::USER_GUIDE, array( $this, 'build_app' ) );
 				add_submenu_page( MenuConstants::ROOT, __( 'Reporting', 'leadin' ), __( 'Reporting', 'leadin' ), AdminFilters::apply_view_plugin_menu_capability(), MenuConstants::REPORTING, array( $this, 'build_app' ) );
@@ -140,7 +134,6 @@ class LeadinAdmin {
 				add_submenu_page( MenuConstants::ROOT, __( 'Settings', 'leadin' ), __( 'Settings', 'leadin' ), AdminFilters::apply_view_plugin_menu_capability(), MenuConstants::SETTINGS, array( $this, 'build_app' ) );
 				add_submenu_page( MenuConstants::ROOT, __( 'Upgrade', 'leadin' ), __( 'Upgrade', 'leadin' ), AdminFilters::apply_view_plugin_menu_capability(), MenuConstants::PRICING, array( $this, 'build_app' ) );
 				remove_submenu_page( MenuConstants::ROOT, MenuConstants::ROOT );
-			}
 		} else {
 			$notification_icon = ' <span class="update-plugins count-1"><span class="plugin-count">!</span></span>';
 			add_menu_page( __( 'HubSpot', 'leadin' ), __( 'HubSpot', 'leadin' ) . $notification_icon, AdminFilters::apply_connect_plugin_capability(), MenuConstants::ROOT, array( $this, 'build_app' ), 'dashicons-sprocket', '25.100713' );

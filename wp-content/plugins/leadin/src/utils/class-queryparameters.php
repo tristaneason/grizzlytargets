@@ -6,6 +6,7 @@ namespace Leadin\utils;
  * Class containing utility functions for the sanitizing and getting query parameters.
  */
 class QueryParameters {
+
 	/**
 	 * Return a text sanitized, unslashed query parameter by its key, validated with a nonce.
 	 *
@@ -14,8 +15,12 @@ class QueryParameters {
 	 * @param String $nonce_arg Query parmeter the nonce is in.
 	 */
 	public static function get_param( $key, $nonce_action, $nonce_arg = '_wpnonce' ) {
-		if ( isset( $_GET[ $key ] ) && check_admin_referer( $nonce_action, $nonce_arg ) ) {
-			return sanitize_text_field( wp_unslash( $_GET[ $key ] ) );
+		if (
+			isset( $_GET[ $key ] ) &&
+			isset( $_GET[ $nonce_arg ] ) &&
+			wp_verify_nonce( sanitize_text_field( wp_unslash( ( $_GET[ $nonce_arg ] ) ) ), $nonce_action )
+		) {
+			return sanitize_text_field( wp_unslash( ( $_GET[ $key ] ) ) );
 		}
 
 		return null;

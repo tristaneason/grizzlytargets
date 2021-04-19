@@ -6,8 +6,8 @@
   Description: Export and Import User/Customers details From and To your WordPress/WooCommerce.
   Author: WebToffee
   Author URI: https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/
-  Version: 2.0.9
-  WC tested up to: 5.1.0
+  Version: 2.1.2
+  WC tested up to: 5.2.2
   Text Domain: users-customers-import-export-for-wp-woocommerce
   License: GPLv3
   License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -43,7 +43,7 @@ if ( ! defined( 'WT_IEW_DEBUG_BASIC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'WT_U_IEW_VERSION', '2.0.9' );
+define( 'WT_U_IEW_VERSION', '2.1.2' );
 
 /**
  * The code that runs during plugin activation.
@@ -112,22 +112,21 @@ if(get_option('wt_u_iew_is_active'))
 }
 
 /* Plugin page links */
-add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'wt_uiew_plugin_action_links_basic_user');
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'wt_uiew_plugin_action_links_basic_user' );
 
-function wt_uiew_plugin_action_links_basic_user($links)
-{
-	if(defined('WT_IEW_PLUGIN_ID_BASIC')) /* main plugin is available */
-	{
-		$links[] = '<a href="'.admin_url('admin.php?page='.WT_IEW_PLUGIN_ID_BASIC).'">'.__('Settings').'</a>';
+function wt_uiew_plugin_action_links_basic_user( $links ) {
+
+	$plugin_links = array(
+		'<a href="' . admin_url( 'admin.php?page=wt_import_export_for_woo_basic' ) . '">' . __( 'Settings' ) . '</a>',
+		'<a href="https://www.webtoffee.com/user-import-export-plugin-wordpress-user-guide/" target="_blank">' . __( 'Documentation' ) . '</a>',
+		'<a target="_blank" href="https://wordpress.org/support/plugin/users-customers-import-export-for-wp-woocommerce/">' . __( 'Support' ) . '</a>',
+		'<a target="_blank" href="https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/?utm_source=free_plugin_listing&utm_medium=user_imp_exp_basic&utm_campaign=User_Import_Export&utm_content=' . WT_U_IEW_VERSION . '" style="color:#3db634;">' . __( 'Premium Upgrade' ) . '</a>'
+	);
+
+	if ( array_key_exists( 'deactivate', $links ) ) {
+		$links[ 'deactivate' ] = str_replace( '<a', '<a class="userimport-deactivate-link"', $links[ 'deactivate' ] );
 	}
-
-	$links[] = '<a href="https://www.webtoffee.com/user-import-export-plugin-wordpress-user-guide/" target="_blank">'.__('Documentation').'</a>';
-        $links[] = '<a target="_blank" href="https://wordpress.org/support/plugin/users-customers-import-export-for-wp-woocommerce/">' . __('Support') . '</a>';
-        $links[] = '<a target="_blank" href="https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/?utm_source=free_plugin_listing&utm_medium=user_imp_exp_basic&utm_campaign=User_Import_Export&utm_content='.WT_U_IEW_VERSION.'" style="color:#3db634;">' . __('Premium Upgrade') . '</a>';        
-        if (array_key_exists('deactivate', $links)) {
-            $links['deactivate'] = str_replace('<a', '<a class="userimport-deactivate-link"', $links['deactivate']);
-        }
-	return $links;
+	return array_merge( $plugin_links, $links );
 }
 
 /*
@@ -182,3 +181,27 @@ $user_egecy_menu->old_menu_params = array(array('parent_slug'=>'users.php', 'men
                             );
 
 include_once 'user_import_export_review_request.php';
+
+
+// Add dismissible server info for file restrictions
+include_once plugin_dir_path( __FILE__ ) . 'includes/class-wt-non-apache-info.php';
+$inform_server_secure = new wt_inform_server_secure('user');
+$inform_server_secure->plugin_title = "User Import Export";
+$inform_server_secure->banner_message = sprintf(__("The <b>%s</b> plugin uploads the imported file into <b>wp-content/webtoffee_import</b> folder. Please ensure that public access restrictions are set in your server for this folder."), $inform_server_secure->plugin_title);
+
+add_action( 'wt_user_addon_basic_help_content', 'wt_user_import_basic_help_content' );
+
+function wt_user_import_basic_help_content() {
+	if ( defined( 'WT_IEW_PLUGIN_ID_BASIC' ) ) {
+?>
+					<li>
+						<img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/sample-csv.png">
+						<h3><?php _e( 'Sample User CSV' ); ?></h3>
+						<p><?php _e( 'Familiarize yourself with the sample CSV.' ); ?></p>
+						<a target="_blank" href="https://www.webtoffee.com/wp-content/uploads/2020/10/Sample_Users.csv" class="button button-primary">
+		<?php _e( 'Get User CSV' ); ?>        
+						</a>
+					</li>
+		<?php
+	}
+}

@@ -7,6 +7,8 @@ use Leadin\AssetsManager;
 use Leadin\wp\User;
 use Leadin\auth\OAuth;
 use Leadin\admin\Connection;
+use Leadin\options\AccountOptions;
+
 /**
  * Class responsible of adding the script loader to the website, as well as rendering forms, live chat, etc.
  */
@@ -71,7 +73,7 @@ class PageHooks {
 	 * Adds the script containing the information needed by the script loader.
 	 */
 	public function add_page_analytics() {
-		$portal_id = Connection::get_portal_id();
+		$portal_id = AccountOptions::get_portal_id();
 		if ( empty( $portal_id ) ) {
 			echo '<!-- HubSpot WordPress Plugin v' . esc_html( LEADIN_PLUGIN_VERSION ) . ': embed JS disabled as a portalId has not yet been configured -->';
 		} else {

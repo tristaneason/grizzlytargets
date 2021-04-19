@@ -47,6 +47,8 @@ class MW_QBO_Desktop_Sync_Lib {
 	protected $qb_username;
 	
 	protected $server_timezone;
+	
+	private $license_data_for_conn_page_view;
 
 	public function __construct(){
 		/*
@@ -69,6 +71,8 @@ class MW_QBO_Desktop_Sync_Lib {
 		if(!$this->mw_wc_qbo_sync_plugin_options_desk || empty($this->mw_wc_qbo_sync_plugin_options_desk)){
 			$this->set_plugin_options();
 		}
+		
+		$this->p_option_check_default_in_update();
 		
 		global $wpdb;		
 
@@ -102,6 +106,15 @@ class MW_QBO_Desktop_Sync_Lib {
 			$this->is_valid_license($this->get_option('mw_wc_qbo_desk_license'),$this->get_option('mw_wc_qbo_desk_localkey'));
 		}
 	}
+	
+	/**/
+	private function p_option_check_default_in_update(){
+		$arncp_o = $this->get_option('mw_wc_qbo_desk_auto_refresh_new_cust_prod');
+		if(empty($arncp_o)){
+			update_option('mw_wc_qbo_desk_auto_refresh_new_cust_prod','true');
+		}
+	}
+	
 	public function get_dsn(){
 		return $this->dsn;
 	}
@@ -109,10 +122,19 @@ class MW_QBO_Desktop_Sync_Lib {
 	public function get_qbun(){
 		return $this->qb_username;
 	}
-
-	public function is_qwc_connected(){
-		if($this->dsn && $this->qwc_user_created && $this->is_valid_license && $this->plugin_license_status=='Active'){
-			return true;
+	
+	public function is_qwc_connected($webconnector=false){
+		/**/		
+		if($this->dsn && $this->qwc_user_created){			
+			if($webconnector && !isset($_GET['debug'])){
+				if(!$this->is_license_active()){
+					$this->is_valid_license($this->get_option('mw_wc_qbo_desk_license'),$this->get_option('mw_wc_qbo_desk_localkey'),true);
+				}
+			}
+			
+			if($this->is_valid_license && $this->plugin_license_status=='Active'){
+				return true;
+			}			
 		}
 		return false;
 	}
@@ -147,6 +169,7 @@ class MW_QBO_Desktop_Sync_Lib {
 			//$this->_p($this->get_qbd_cus_cf_map_fl());
 			//echo $log_last_date = date('Y-m-d',strtotime("-90 days",strtotime($this->get_cdt())));
 			//$this->_p($this->get_custom_shipping_map_data_from_name('QuickBooks Shipping'));
+			//$this->_p($this->get_local_key_results());			
 		}
 	}
 
@@ -203,6 +226,22 @@ class MW_QBO_Desktop_Sync_Lib {
 			}
 		}
 		
+		/**/
+		if($key == 'mw_wc_qbo_desk_wc_cust_role'){
+			$wra = array();
+			if(!function_exists('get_editable_roles')){
+				require_once(ABSPATH.'wp-admin/includes/user.php');
+			}
+			
+			$wu_roles = get_editable_roles();
+			if(is_array($wu_roles) && count($wu_roles)){
+				foreach ($wu_roles as $role_name => $role_info){
+					$wra[] = $role_name;
+				}
+			}
+			return implode(',',$wra);
+		}
+		
 		return $option;
 	}
 
@@ -222,6 +261,18 @@ class MW_QBO_Desktop_Sync_Lib {
 		return $option_arr;
 	}
 	
+	/**/
+	public function get_woo_v_name_trimmed($v_name){
+		$v_name = trim($v_name);
+		//50 24 25
+		if(!empty($v_name) && strlen($v_name) > 100){
+			$fs = substr($v_name, 0, 49);
+			$ls = substr($v_name, -50);
+			$v_name = $fs.' '.$ls;
+		}
+		return $v_name;
+	}
+	
 	public function get_wc_variation_info($variation_id=0,$manual=false){
 		$variation_id = (int) $variation_id;
 		if($variation_id>0){
@@ -235,7 +286,9 @@ class MW_QBO_Desktop_Sync_Lib {
 			$variation_data['wc_product_id'] = $variation->ID;
 			$variation_data['wc_variation_id'] = $variation->ID;
 			
-			$variation_data['name'] = $variation->post_title;
+			//$variation_data['name'] = $variation->post_title;
+			$variation_data['name'] = $this->get_variation_name_from_id($variation->post_title,'',$variation_id);
+			$variation_data['name_t'] = $this->get_woo_v_name_trimmed($variation_data['name']);
 			
 			$variation_data['description'] = $variation->post_content;
 			$variation_data['short_description'] = $variation->post_excerpt;
@@ -303,7 +356,7 @@ class MW_QBO_Desktop_Sync_Lib {
 			if(empty($user_info)){
 				return;
 			}
-
+			//$this->_p($user_info);
 			$user_id = $user_info->ID;
 			$user_meta = get_user_meta($user_id);
 			//$this->_p($user_meta);
@@ -317,6 +370,9 @@ class MW_QBO_Desktop_Sync_Lib {
 			$customer_data['email'] = ($user_info->user_email)?$user_info->user_email:'';
 			$customer_data['display_name'] = ($user_info->display_name)?$user_info->display_name:'';
 			$customer_data['company'] = (isset($user_meta['billing_company'][0]))?$user_meta['billing_company'][0]:'';
+			
+			//
+			$customer_data['username'] = ($user_info->user_login)?$user_info->user_login:'';
 			
 			$s_all_meta = true;
 			if(is_array($user_meta) && count($user_meta)){
@@ -341,7 +397,7 @@ class MW_QBO_Desktop_Sync_Lib {
 			$customer_data['currency'] = (string) $this->get_wc_customer_currency($user_id);
 			$customer_data['note'] = '';
 
-			$mw_wc_display_name = $this->wc_get_display_name($customer_data,true);
+			$mw_wc_display_name = $this->wc_get_display_name($customer_data);
 			$customer_data['display_name'] = $mw_wc_display_name;
 			
 			//
@@ -425,7 +481,7 @@ class MW_QBO_Desktop_Sync_Lib {
 
 		}
 	}
-
+	
 	public function wc_get_display_name($customer_data,$guest=false){
 		$display_name = '';
 		$wc_cus_id = 0;
@@ -449,22 +505,22 @@ class MW_QBO_Desktop_Sync_Lib {
 		//$shipping_company = $this->get_array_isset($customer_data,'shipping_company','',true);
 		$billing_company = $this->get_array_isset($customer_data,'billing_company','',true);
 		
-		if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
-			if($billing_company!=''){
-				$display_name = $billing_company;
-			}else{
-				$billing_first_name = $this->get_array_isset($customer_data,'billing_first_name','',true,100,false,$name_replace_chars);
-				$billing_last_name = $this->get_array_isset($customer_data,'billing_last_name','',true,100,false,$name_replace_chars);
-				$bfl = $billing_first_name.' '.$billing_last_name;
-				$display_name = $bfl;
-			}
+		$billing_phone = $this->get_array_isset($customer_data,'billing_phone','',true);
+		
+		if($this->is_dmcb_fval_ext_ccfv()){
+			$display_name = $this->get_dmcb_fval_ext_ccfv_val($customer_data);
 		}else{
-			$display_name = $this->wc_get_formated_qbo_display_name($firstname,$lastname,$company,$email,$wc_cus_id,$d_name);
+			$display_name = $this->wc_get_formated_qbo_display_name($firstname,$lastname,$company,$email,$wc_cus_id,$d_name,$billing_phone);
 		}		
 
 		if(trim($display_name)==''){
 			$display_name = $this->get_array_isset($customer_data,'display_name','',true);
 		}
+		/**/
+		if(trim($display_name)==''){
+			$display_name = $firstname." ".$lastname;
+		}
+		
 		if(trim($display_name)==''){
 			$display_name = $email;
 		}
@@ -472,13 +528,14 @@ class MW_QBO_Desktop_Sync_Lib {
 
 	}
 	
-	public function wc_get_formated_qbo_display_name($firstname,$lastname,$company,$email,$wc_customerid=0,$d_name=''){
+	public function wc_get_formated_qbo_display_name($firstname,$lastname,$company,$email,$wc_customerid=0,$d_name='',$billing_phone=''){
 		$format = $this->get_option('mw_wc_qbo_desk_display_name_pattern');
 		if(empty($format)){
 			$format = '{firstname} {lastname}';
 		}
 		
 		if($format!=''){
+			$format = str_replace('{phone_number}','{billing_phone}',$format);
 			$s_arr = array('{firstname}','{lastname}','{companyname}','{email}');
 			$r_arr = array($firstname,$lastname,$company,$email);
 			$wc_customerid = (int) $wc_customerid;
@@ -491,6 +548,12 @@ class MW_QBO_Desktop_Sync_Lib {
 			if(!empty($d_name)){
 				$s_arr[] = '{display_name}';
 				$r_arr[] = $d_name;
+			}
+			
+			//
+			if(!empty($billing_phone)){
+				$s_arr[] = '{billing_phone}';
+				$r_arr[] = $billing_phone;
 			}
 			
 			$display_name = str_replace($s_arr,$r_arr,$format);
@@ -525,7 +588,7 @@ class MW_QBO_Desktop_Sync_Lib {
 			$table = $wpdb->prefix.'mw_wc_qbo_desk_qbd_log';
 
 			$max_log_save_day = intval($this->get_option('mw_wc_qbo_desk_save_log_for'));
-			$max_log_save_day = ($max_log_save_day<10)?10:$max_log_save_day;
+			$max_log_save_day = ($max_log_save_day<10)?30:$max_log_save_day;
 
 			$log_last_date = date('Y-m-d',strtotime("-$max_log_save_day days",strtotime($this->get_cdt())));
 			$log_last_date = $log_last_date.' 23:59:59';
@@ -903,8 +966,41 @@ class MW_QBO_Desktop_Sync_Lib {
 			$this->only_option($selected,$op_data,$key_field,$val_field,$return);
 		}
 	}
-
+	
+	/**/
+	public function get_key_value_options_from_table($blank_option=false,$t_name='',$key_field='',$val_field='',$whr='',$orderby='',$limit=''){
+		$kv_arr = array();
+		if($t_name!='' && $key_field!='' && $val_field!=''){
+			$op_fields = "$key_field,$val_field";
+			$op_data = $this->get_tbl($t_name,$op_fields,$whr,$orderby,$limit);
+			
+			if($this->start_with($val_field,'CONCAT(') || $this->start_with($val_field,'CONCAT_WS(')){
+				$vfa = preg_split('/\s+/', $val_field);
+				$val_field = end($vfa);
+			}
+			
+			if(is_array($op_data) && count($op_data)>0){
+				if($blank_option){
+					$kv_arr[''] = '';
+				}
+				foreach ($op_data as $key => $value) {
+					$kv_arr[$value[$key_field]] = $value[$val_field];
+				}
+			}
+		}
+		return $kv_arr;
+	}
+	
 	public function option_checked($option=''){
+		/**/
+		if($option == 'mw_wc_qbo_desk_invoice_memo'){
+			if($this->get_option('mw_wc_qbo_desk_sync_ord_notes_to_qbq_as') == 's_memo'){
+				return true;
+			}
+			return false;
+		}
+		
+		if($option == 'mw_wc_qbo_desk_cpfmpocjh_cuscompt_ed'){return true;}
 		//05-12-2017
 		if($option=='mw_wc_qbo_desk_order_as_sales_receipt'){
 			if($this->get_option('mw_wc_qbo_desk_order_qbd_sync_as')=='SalesReceipt'){
@@ -943,6 +1039,11 @@ class MW_QBO_Desktop_Sync_Lib {
 		
 		//
 		if($option == 'mw_wc_qbo_desk_rt_all_invnt_pull'){
+			return true;
+		}
+		
+		/**/
+		if($option == 'mw_wc_qbo_desk_compt_wpbs'){
 			return true;
 		}
 		
@@ -1014,7 +1115,7 @@ class MW_QBO_Desktop_Sync_Lib {
 		// Set charachters to use
 		$lower = 'abcdefghijklmnopqrstuvwxyz';
 		$upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$chars = '123456789@#$%&';
+		$chars = '123456789';//@#$%&
 
 		// Calculate string length
 		$lower_length = strlen($lower);
@@ -1032,15 +1133,15 @@ class MW_QBO_Desktop_Sync_Lib {
 		{
 			if ($alt == 0)
 			{
-				$password .= (isset($lower[mt_rand(0, $lower_length)]))?$lower[mt_rand(0, $lower_length)]:''; $alt = 1;
+				$password .= (isset($lower[mt_rand(0, $lower_length-1)]))?$lower[mt_rand(0, $lower_length-1)]:''; $alt = 1;
 			}
 			if ($alt == 1)
 			{
-				$password .= (isset($upper[mt_rand(0, $upper_length)]))?$upper[mt_rand(0, $upper_length)]:''; $alt = 2;
+				$password .= (isset($upper[mt_rand(0, $upper_length-1)]))?$upper[mt_rand(0, $upper_length-1)]:''; $alt = 2;
 			}
 			else
 			{
-				$password .= (isset($chars[mt_rand(0, $chars_length)]))?$chars[mt_rand(0, $chars_length)]:''; $alt = 0;
+				$password .= (isset($chars[mt_rand(0, $chars_length-1)]))?$chars[mt_rand(0, $chars_length-1)]:''; $alt = 0;
 			}
 		}
 		return $password;
@@ -1069,7 +1170,7 @@ class MW_QBO_Desktop_Sync_Lib {
 
 		for ( $i = 0; $i < $length; $i++ )
 		{
-			$username .= (isset($chars[mt_rand(0, $chars_length)]))?$chars[mt_rand(0, $chars_length)]:'';
+			$username .= (isset($chars[mt_rand(0, $chars_length-1)]))?$chars[mt_rand(0, $chars_length-1)]:'';
 		}
 
 		return $username;
@@ -1288,6 +1389,10 @@ class MW_QBO_Desktop_Sync_Lib {
 			$qbo_avl_cf_list['PONumber'] = 'PONumber';
 			$qbo_avl_cf_list['FOB'] = 'FOB';
 			$qbo_avl_cf_list['Other'] = 'Other';
+			
+			if($this->is_plugin_active('woocommerce-order-delivery')){
+				$qbo_avl_cf_list['TxnDate'] = 'TxnDate';
+			}
 		}
 		
 		if(!$not_actual_field && is_array($qbo_cf_arr) && count($qbo_cf_arr)){
@@ -1517,6 +1622,10 @@ class MW_QBO_Desktop_Sync_Lib {
 		
 		$tfa_fl['wc_order_shipping_method_name'] = 'Order Shipping Method Name';
 		$tfa_fl['wc_order_phone_number'] = 'Order Phone Number';
+		if($this->is_plugin_active('woocommerce-order-delivery')){
+			$tfa_fl['_delivery_date'] = 'Order Delivery Date';
+		}
+		
 		if(!$is_bdofa && !$is_bdofa_wcfe){
 			//$tfa_fl['_billing_phone'] = 'billing_phone';
 		}
@@ -1527,8 +1636,9 @@ class MW_QBO_Desktop_Sync_Lib {
 		}
 		
 		if(!$this->wc_check_group_cus_field_already_exists($wc_avl_cf_list,'_order_number') && !$this->wc_check_group_cus_field_already_exists($wc_avl_cf_list,'_order_number_formatted')){
-			// && $this->option_checked('mw_wc_qbo_desk_compt_p_wsnop')		
-			if($this->is_plugin_active('woocommerce-sequential-order-numbers-pro','woocommerce-sequential-order-numbers')){
+			// && $this->option_checked('mw_wc_qbo_desk_compt_p_wsnop')
+			//woocommerce-sequential-order-numbers
+			if($this->is_plugin_active('woocommerce-sequential-order-numbers-pro','')){
 				if($this->is_plugin_active('woocommerce-sequential-order-numbers')){
 					$tfa_fl['_order_number'] = 'Order Number';
 				}else{
@@ -1675,6 +1785,10 @@ class MW_QBO_Desktop_Sync_Lib {
 		
 		$wc_avl_cf_list['wc_order_shipping_method_name'] = 'Order Shipping Method Name';		
 		$wc_avl_cf_list['wc_order_phone_number'] = 'Order Phone Number';
+		if($this->is_plugin_active('woocommerce-order-delivery')){
+			$wc_avl_cf_list['_delivery_date'] = 'Order Delivery Date';
+		}
+		
 		if(!$is_bdofa && !$is_bdofa_wcfe){
 			//$wc_avl_cf_list['_billing_phone'] = 'billing_phone';
 		}
@@ -1685,8 +1799,9 @@ class MW_QBO_Desktop_Sync_Lib {
 		}
 		
 		if(!isset($wc_avl_cf_list['_order_number']) && !isset($wc_avl_cf_list['_order_number_formatted'])){
-			// && $this->option_checked('mw_wc_qbo_desk_compt_p_wsnop')		
-			if($this->is_plugin_active('woocommerce-sequential-order-numbers-pro','woocommerce-sequential-order-numbers')){
+			// && $this->option_checked('mw_wc_qbo_desk_compt_p_wsnop')
+			//woocommerce-sequential-order-numbers
+			if($this->is_plugin_active('woocommerce-sequential-order-numbers-pro','')){
 				if($this->is_plugin_active('woocommerce-sequential-order-numbers')){
 					$wc_avl_cf_list['_order_number'] = 'Order Number';
 				}else{
@@ -1752,6 +1867,15 @@ class MW_QBO_Desktop_Sync_Lib {
 		return false;
 	}
 	
+	public function check_sh_csrm_seasonalliving_hash(){
+		$sh_cfm_h = $this->get_option('mw_wc_qbo_desk_sh_csrm_seasonalliving_hash');
+		$ch_hash = sha1('=TmsVE' . 'rR-%u_KWNJvX?@Kq');
+		if($sh_cfm_h==$ch_hash){
+			return true;
+		}
+		return false;
+	}
+	
 	public function check_sh_liqtycustcolumn_hash(){
 		$sh_cfm_h = $this->get_option('mw_wc_qbo_desk_sh_liqtycustcolumn_hash');
 		$ch_hash = sha1('7+*Nq9' . 'jX4nQyPG593Q@Hmu');
@@ -1779,6 +1903,124 @@ class MW_QBO_Desktop_Sync_Lib {
 		return false;
 	}
 	
+	public function check_sh_northamericangamebird_cuscompt_hash(){
+		$sh_cfm_h = $this->get_option('mw_wc_qbo_desk_sh_northamericangamebird_cuscompt_hash');
+		$ch_hash = sha1('!+H3wY' . 'ZZy-GUPq6jB+Rzxd');
+		if($sh_cfm_h==$ch_hash){
+			return true;
+		}
+		return false;
+	}
+	
+	public function check_sh_cpfmpocjh_cuscompt_hash(){
+		$sh_cfm_h = $this->get_option('mw_wc_qbo_desk_sh_cpfmpocjh_cuscompt_hash');
+		$ch_hash = sha1('4$MkMn' . 'wqrr$njut2e#8=D+');
+		if($sh_cfm_h==$ch_hash && $this->is_plugin_active('myworks-quickbooks-desktop-compt-cpfm-po-cjh')){
+			return true;
+		}
+		return false;
+	}
+	
+	public function check_sh_cuscalusnonusjob_cuscompt_hash(){
+		$sh_cfm_h = $this->get_option('mw_wc_qbo_desk_sh_cuscalusnonusjob_cuscompt_hash');
+		$ch_hash = sha1('k7^xHP' . 'wHK+6RqR6kKX_xp=');
+		if($sh_cfm_h==$ch_hash && $this->is_plugin_active('myworks-quickbooks-desktop-compt-cus-cal-us-nonus-job')){
+			return true;
+		}
+		return false;
+	}
+	
+	public function check_sh_wosfsus_cuscompt_hash(){
+		$sh_cfm_h = $this->get_option('mw_wc_qbo_desk_sh_wosfsus_cuscompt_hash');
+		$ch_hash = sha1('#zY2c$' . '6pM#Rb7P@mdV+H!V');
+		if($sh_cfm_h==$ch_hash && $this->is_plugin_active('myworks-quickbooks-desktop-compt-order-sync-for-specific-us-state')){
+			return true;
+		}
+		return false;
+	}
+	
+	public function check_sh_woorbp_qbpricelevel_hash(){
+		$sh_cfm_h = $this->get_option('mw_wc_qbo_desk_sh_woorbp_qbpricelevel_hash');
+		$ch_hash = sha1('8_KUb=' . 'Ptv3$bKYrrcB4_QB');
+		if($sh_cfm_h==$ch_hash && $this->is_plugin_active('myworks-quickbooks-desktop-role-based-price-qb-price-level-compt')){
+			return true;
+		}
+		return false;
+	}
+	
+	public function check_sh_cmfpicw_hash(){
+		$sh_cfm_h = $this->get_option('mw_wc_qbo_desk_sh_cmfpicw_hash');
+		$ch_hash = sha1('6e?M2#' . 'qA6bMCg2WwEt#tq%');
+		if($sh_cfm_h==$ch_hash && $this->is_plugin_active('myworks-quickbooks-desktop-custom-multiplication-fpicw')){
+			return true;
+		}
+		return false;
+	}
+	
+	/**/
+	protected function get_northamericangamebird_custom_map_order_values($invoice_data){
+		$ord_c_data = array(
+			'membership_expires' => '',
+			'membership_type' => '',
+			'activity' => '',
+			'bird_types' => '',
+		);
+		if(is_array($invoice_data) && count($invoice_data)){
+			global $wpdb;
+			$wc_cus_id = (int) $this->get_array_isset($invoice_data,'wc_cus_id',0);
+			$wc_inv_id = (int) $this->get_array_isset($invoice_data,'wc_inv_id',0);
+			
+			$bird_types_s = $this->get_array_isset($invoice_data,'business_type','');
+			if(!empty($bird_types_s)){
+				$bird_types_s = @unserialize($bird_types_s);
+				if(is_array($bird_types_s) && count($bird_types_s)){
+					$ord_c_data['bird_types'] = implode(',',$bird_types_s);
+				}
+			}			
+			
+			if($wc_cus_id > 0 && $wc_inv_id > 0){
+				$_wcs_subscription_ids_cache = get_user_meta($wc_cus_id,'_wcs_subscription_ids_cache',true);
+				if(is_array($_wcs_subscription_ids_cache) && !empty($_wcs_subscription_ids_cache)){
+					$shop_subscription_id = (int) $_wcs_subscription_ids_cache[0];
+					if($shop_subscription_id > 0){
+						/*
+						$shop_order_id = (int) $this->get_field_by_val($wpdb->posts,'post_parent','ID',$shop_subscription_id);
+						if($shop_order_id > 0){							
+							$sql = $wpdb->prepare("SELECT `post_id` FROM {$wpdb->postmeta} WHERE `meta_key` = '_order_id' AND `meta_value` = %s LIMIT 0,1",$shop_order_id);							
+						}
+						*/
+						
+						$sql = $wpdb->prepare("SELECT `post_id` FROM {$wpdb->postmeta} WHERE `meta_key` = '_subscription_id' AND `meta_value` = %s LIMIT 0,1",$shop_subscription_id);						
+						$wc_user_membership_id_meta = $this->get_row($sql);
+						if(is_array($wc_user_membership_id_meta) && count($wc_user_membership_id_meta)){
+							$wc_user_membership_id = (int) $wc_user_membership_id_meta['post_id'];
+							if($wc_user_membership_id > 0){
+								//$membership_started = get_post_meta($wc_user_membership_id,'_start_date',true);
+								$membership_expires = get_post_meta($wc_user_membership_id,'_end_date',true);
+								if(!empty($membership_expires)){
+									$membership_expires = date('Y-m-d',strtotime($membership_expires));
+								}
+								$ord_c_data['membership_expires'] = $membership_expires;
+								$wc_membership_plan_id = (int) $this->get_field_by_val($wpdb->posts,'post_parent','ID',$wc_user_membership_id);
+								if($wc_membership_plan_id > 0){
+									$membership_type = $this->get_field_by_val($wpdb->posts,'post_title','ID',$wc_membership_plan_id);
+									$ord_c_data['membership_type'] = $membership_type;
+								}
+								
+								$sql = $wpdb->prepare("SELECT `comment_content` FROM {$wpdb->comments} WHERE `comment_post_ID` = %d AND `comment_type` = 'user_membership_note' AND comment_content != ''  LIMIT 0,1",$wc_user_membership_id);
+								$comment_data =  $this->get_row($sql);
+								if(is_array($comment_data) && count($comment_data)){
+									$ord_c_data['activity'] = $membership_type.' (#'.$wc_membership_plan_id.'):'.$comment_data['comment_content'];
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return $ord_c_data;
+	}
+	
 	public function check_sh_so_cpo_is_ofs_hash(){
 		$sh_cfm_h = $this->get_option('mw_wc_qbo_desk_sh_so_cpo_is_ofs_hash');
 		$ch_hash = sha1('5).Vc9' . 'X\kp2Cg5:%yAp);5');
@@ -1800,6 +2042,15 @@ class MW_QBO_Desktop_Sync_Lib {
 	public function check_sh_paamc_hash(){
 		$sh_cfm_h = $this->get_option('mw_wc_qbo_desk_sh_paamc_hash');
 		$ch_hash = sha1('_c}4Xt' . 'DRpB!K7$JD7vV#Pj');
+		if($sh_cfm_h==$ch_hash){
+			return true;
+		}
+		return false;
+	}
+	
+	public function check_sh_qbispplm_hash(){
+		$sh_cfm_h = $this->get_option('mw_wc_qbo_desk_sh_qbispplm_hash');
+		$ch_hash = sha1('X+4ybU' . '44X5&p5-AjdMF$_k');
 		if($sh_cfm_h==$ch_hash){
 			return true;
 		}
@@ -2004,7 +2255,42 @@ class MW_QBO_Desktop_Sync_Lib {
 		$pagination_links = $this->get_paginate_links($total_records,$items_per_page);
 		return array('post_array'=>$post_array, 'pagination_links'=>$pagination_links);
 	}
-
+	
+	/**/
+	public function get_woo_ord_number_from_order($order_id,$invoice_data=array()){
+		$o_num = '';
+		$order_id = (int) $order_id;
+		
+		$onk_f = '';
+		if($order_id > 0){
+			if($this->is_plugin_active('woocommerce-sequential-order-numbers-pro','') && $this->option_checked('mw_wc_qbo_desk_compt_p_wsnop')){
+				if($this->is_plugin_active('woocommerce-sequential-order-numbers')){
+					$onk_f = '_order_number';
+				}else{
+					$onk_f = '_order_number_formatted';
+				}
+			}
+			
+			if(!empty($onk_f)){
+				if(is_array($invoice_data) && !empty($invoice_data) && isset($invoice_data[$onk_f])){
+					$o_num = $invoice_data[$onk_f];
+				}else{
+					$o_num = get_post_meta($order_id,$onk_f,true);
+				}
+				
+				if($o_num!=''){
+					$o_num = trim($o_num);
+				}					
+			}
+			
+			if(empty($o_num) && $this->option_checked('mw_wc_qbo_desk_compt_woo_cust_onum_ph')){
+				$o_num = apply_filters( 'woocommerce_order_number', $order_id, wc_get_order($order_id) );
+			}
+		}
+		
+		return $o_num;
+	}
+	
 	public function get_wc_order_details_from_order($order_id,$order){
 		global $wpdb;
 		$order_id = (int) $order_id;
@@ -2014,26 +2300,8 @@ class MW_QBO_Desktop_Sync_Lib {
 			//$this->_p($order_meta);
 			$invoice_data = array();
 			$invoice_data['wc_inv_id'] = $order_id;
-			$invoice_data['wc_inv_num'] = '';
-			
-			if($this->is_plugin_active('woocommerce-sequential-order-numbers-pro','woocommerce-sequential-order-numbers') && $this->option_checked('mw_wc_qbo_desk_compt_p_wsnop')){
-				if($this->is_plugin_active('woocommerce-sequential-order-numbers')){
-					$_order_number_formatted = isset($order_meta['_order_number'][0])?$order_meta['_order_number'][0]:'';
-				}else{
-					$_order_number_formatted = isset($order_meta['_order_number_formatted'][0])?$order_meta['_order_number_formatted'][0]:'';
-				}
-				
-				if($_order_number_formatted!=''){
-					$_order_number_formatted = trim($_order_number_formatted);
-				}
-				$invoice_data['wc_inv_num'] = $_order_number_formatted;
-			}
-			
-			/**/
-			if(empty($invoice_data['wc_inv_num']) && $this->option_checked('mw_wc_qbo_desk_compt_woo_cust_onum_ph')){
-				//$invoice_data['wc_inv_num'] = apply_filters( 'woocommerce_order_number', $order_id, $order );
-				$invoice_data['wc_inv_num'] = apply_filters( 'woocommerce_order_number', $order_id, wc_get_order($order_id) );			
-			}
+			//
+			$invoice_data['wc_inv_num'] = $this->get_woo_ord_number_from_order($order_id);
 			
 			$invoice_data['order_type'] = '';
 			
@@ -2089,11 +2357,27 @@ class MW_QBO_Desktop_Sync_Lib {
 					$invoice_data[$key] = ($value[0])?$value[0]:'';
 				}
 			}
-
+			
+			/*PM Due Date*/
+			$_order_currency = $this->get_array_isset($invoice_data,'_order_currency','',true);
+			$_payment_method = $this->get_array_isset($invoice_data,'_payment_method','',true);
+			
+			if($this->wacs_base_cur_enabled()){
+				$base_currency = get_woocommerce_currency();
+				$payment_method_map_data  = $this->get_mapped_payment_method_data($_payment_method,$base_currency);
+			}else{
+				$payment_method_map_data  = $this->get_mapped_payment_method_data($_payment_method,$_order_currency);
+			}
+			
+			$inv_due_date_days = (int) $this->get_array_isset($payment_method_map_data,'inv_due_date_days',0);			
+			if(!empty($invoice_data['wc_inv_date']) && $inv_due_date_days > 0){
+				$invoice_data['wc_inv_due_date'] = date('Y-m-d H:i:s',strtotime($invoice_data['wc_inv_date'] . "+{$inv_due_date_days} days"));
+			}
+			
 			$wc_oi_table = $wpdb->prefix.'woocommerce_order_items';
 			$wc_oi_meta_table = $wpdb->prefix.'woocommerce_order_itemmeta';
 
-			$order_items = $this->get_data("SELECT * FROM {$wc_oi_table} WHERE `order_id` = {$order_id} ");
+			$order_items = $this->get_data("SELECT * FROM {$wc_oi_table} WHERE `order_id` = {$order_id} ORDER BY order_item_id ASC ");
 			//$this->_p($order_items);
 			$line_items = $used_coupons = $tax_details = $shipping_details = array();
 			$dc_gt_fees = array();
@@ -2154,7 +2438,23 @@ class MW_QBO_Desktop_Sync_Lib {
 						}
 					}
 				}
-			}			
+			}
+
+			/**/
+			if(!$this->option_checked('mw_wc_qbo_desk_no_ad_discount_li') && empty($used_coupons) && isset($invoice_data['_cart_discount']) && $invoice_data['_cart_discount'] > 0){
+				$t_uc = array(
+					'name' => '',
+					'discount_amount' => $invoice_data['_cart_discount'],
+					'discount_amount_tax' => $invoice_data['_cart_discount_tax'],
+				);
+				
+				if($this->wacs_base_cur_enabled() && isset($invoice_data['_cart_discount_base_currency'])){
+					$t_uc['discount_amount_base_currency'] = $invoice_data['_cart_discount_base_currency'];
+					$t_uc['discount_amount_tax_base_currency'] = $invoice_data['_cart_discount_tax_base_currency'];
+				}
+				
+				$used_coupons[] = $t_uc;
+			}
 			
 			$qbo_inv_items = array();
 			//$this->_p($line_items);
@@ -2187,7 +2487,7 @@ class MW_QBO_Desktop_Sync_Lib {
 								if($product_data['line_total_base_currency']<$product_data['line_subtotal_base_currency']){
 									$l_up_bc = ($product_data['line_total_base_currency']/$product_data['_qty']);
 								}
-							}							
+							}						
 							
 							$l_up_bc = $this->qbd_limit_decimal_points($l_up_bc);
 							$product_data['unit_price_base_currency'] = $l_up_bc;
@@ -2214,17 +2514,22 @@ class MW_QBO_Desktop_Sync_Lib {
 			$invoice_data['pw_gift_card'] = $pw_gift_card;
 			
 			//$this->_p($invoice_data);
+			if($this->check_sh_cmfpicw_hash()){
+				$invoice_data = $this->custom_order_and_p_details_amounts_multiplication($invoice_data);
+			}
+			//
+			$invoice_data = $this->order_and_p_details_amounts_round($invoice_data);
 			return $invoice_data;
 		}
 	}
 	
-	public function qbd_limit_decimal_points($amount,$dp=5){
+	public function qbd_limit_decimal_points($amount,$dp=5,$sep='.',$t_sep=''){
 		$amount = trim($amount);
 		$dp = (int) $dp;
 		if ($amount!='' && $d_pos = strpos($amount, '.') !== false && $dp>0) {
 			$a_dp = substr($amount, $d_pos+1);
 			if(strlen($a_dp) > $dp){
-				$amount = number_format((float)$amount, 5, '.', '');
+				$amount = number_format((float)$amount, 5, $sep, $t_sep);
 			}
 		}
 		return $amount;
@@ -2274,7 +2579,7 @@ class MW_QBO_Desktop_Sync_Lib {
 			}
 			$wc_product_id = (isset($wc_items['product_id']))?(int) $wc_items['product_id']:0;
 			if(empty($map_data)){
-				$map_data = $this->get_row("SELECT `quickbook_product_id` AS itemid , `class_id` , `a_line_item_desc` , `qb_ar_acc_id` FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_product_pairs` WHERE `wc_product_id` = $wc_product_id AND `quickbook_product_id` !='' ");
+				$map_data = $this->get_row("SELECT `quickbook_product_id` AS itemid , `class_id` , `a_line_item_desc` , `qb_ar_acc_id` , `qb_ivnt_site` FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_product_pairs` WHERE `wc_product_id` = $wc_product_id AND `quickbook_product_id` !='' ");
 			}
 			
 			if(!empty($map_data)){
@@ -2408,6 +2713,53 @@ class MW_QBO_Desktop_Sync_Lib {
 				}
 			}
 			
+			/**/
+			if($this->option_checked('mw_wc_qbo_desk_wolim_iqilid_desc')){
+				$solm_arr = array(
+					'name', '_qty', 'qty',
+					'unit_price', 'product_id', 'variation_id',
+					'tax_class', 'line_subtotal', 'line_subtotal_tax',
+					'line_total', 'line_tax', 'line_tax_data',
+					'wc_avatax_rate', 'wc_avatax_code', 'wc_cog_item_cost',
+					'wc_cog_item_total_cost', 'reduced_stock', 'type','order_item_id',
+					'tmcartepo_data', 'vpc-cart-data', '_order_item_wh',
+					
+					'line_subtotal_base_currency', 'line_total_base_currency', 'line_tax_base_currency',
+				);
+				
+				$ext_olim_d = '';
+				foreach($wc_items as $wk => $wv){
+					if(empty($wv)){continue;}
+					
+					$is_olim_lid_add = true;
+					if(in_array($wk,$solm_arr)){
+						$is_olim_lid_add = false;
+					}
+					
+					if($wc_variation_id && $this->start_with($wk,'pa_')){
+						$is_olim_lid_add = false;
+					}
+					
+					if($is_olim_lid_add){
+						$olim_csd = @unserialize($wv);
+						if ($wv === 'b:0;' || $olim_csd !== false) {
+							$is_olim_lid_add = false;
+						}
+					}
+					
+					if($is_olim_lid_add){
+						$eolm_k = ucfirst(str_replace('_',' ',$wk));
+						$eolm_v = trim($wv);
+						$ext_olim_d.=$eolm_k.': '.$eolm_v.PHP_EOL;
+						
+					}
+				}
+				
+				if($ext_olim_d!=''){
+					$Description.=PHP_EOL.$ext_olim_d;
+				}
+			}
+			
 			$Description = $this->get_array_isset(array('Description'=>$Description),'Description','');
 			
 			if(is_array($map_data) && count($map_data)){
@@ -2434,13 +2786,14 @@ class MW_QBO_Desktop_Sync_Lib {
 
 				$qbo_items_tmp['qbo_product_type'] = $map_data['product_type'];
 
-				$qbo_items_tmp['Taxed'] = ($wc_items['line_tax']>0)?1:0;
+				//$qbo_items_tmp['Taxed'] = ($wc_items['line_tax']>0)?1:0;
+				$qbo_items_tmp['Taxed'] = ($wc_items['line_tax']>0 || $wc_items['line_subtotal_tax']>0)?1:0;
 				
-				if(empty($this->get_option('mw_wc_qbo_desk_inv_sr_txn_qb_class'))){
-					$qbo_items_tmp['ClassRef'] = (isset($map_data['class_id']))?$map_data['class_id']:'';
-				}else{
-					$qbo_items_tmp['ClassRef'] = '';
-				}
+				/**/
+				$qbo_items_tmp['ClassRef'] = (isset($map_data['class_id']))?$map_data['class_id']:'';
+				if(empty($qbo_items_tmp['ClassRef'])){
+					$qbo_items_tmp['ClassRef'] = $this->get_option('mw_wc_qbo_desk_inv_sr_txn_qb_class');
+				}				
 				
 				//
 				if(isset($map_data['a_line_item_desc']) && $map_data['a_line_item_desc'] ==1){
@@ -2450,6 +2803,7 @@ class MW_QBO_Desktop_Sync_Lib {
 				}
 
 				$qbo_items_tmp['QbArAccId'] = (isset($map_data['qb_ar_acc_id']))?$map_data['qb_ar_acc_id']:'';
+				$qbo_items_tmp['QbIvntSiteref'] = (isset($map_data['qb_ivnt_site']))?$map_data['qb_ivnt_site']:'';
 				
 				//
 				if($this->is_plugin_active('split-order-custom-po-for-myworks-quickbooks-desktop-sync') && $this->option_checked('mw_wc_qbo_desk_compt_p_ad_socpo_ed')){					
@@ -2782,11 +3136,13 @@ class MW_QBO_Desktop_Sync_Lib {
 			$map_data = $this->get_row($wpdb->prepare("SELECT `qbo_product_id` , `class_id` , `qb_shipmethod_id` FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_map_shipping_product` WHERE `wc_shippingmethod` = %s AND  `qbo_product_id` !='' ",$wc_shippingmethod));
 			if(is_array($map_data) && count($map_data)){
 				$qbo_shipping_product['ItemRef'] = $map_data['qbo_product_id'];
-				if(empty($this->get_option('mw_wc_qbo_desk_inv_sr_txn_qb_class'))){
-					$qbo_shipping_product['ClassRef'] = $map_data['class_id'];
-				}else{
-					$qbo_shipping_product['ClassRef'] = '';
+				
+				/**/
+				$qbo_shipping_product['ClassRef'] = (isset($map_data['class_id']))?$map_data['class_id']:'';
+				if(empty($qbo_shipping_product['ClassRef'])){
+					$qbo_shipping_product['ClassRef'] = $this->get_option('mw_wc_qbo_desk_inv_sr_txn_qb_class');
 				}
+				
 				$qbo_shipping_product['qb_shipmethod_id'] = $map_data['qb_shipmethod_id'];
 			}
 		}
@@ -2812,11 +3168,12 @@ class MW_QBO_Desktop_Sync_Lib {
 			$map_data = $this->get_row($wpdb->prepare("SELECT `qbo_product_id` , `class_id` FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_map_promo_code` WHERE `promo_id` = %s AND  `qbo_product_id` !='' ",$promo_id));
 			if(is_array($map_data) && count($map_data)){
 				$qbo_coupon_product['ItemRef'] = $map_data['qbo_product_id'];
-				if(empty($this->get_option('mw_wc_qbo_desk_inv_sr_txn_qb_class'))){
-					$qbo_coupon_product['ClassRef'] = $map_data['class_id'];
-				}else{
-					$qbo_coupon_product['ClassRef'] = '';
-				}				
+				
+				/**/
+				$qbo_coupon_product['ClassRef'] = (isset($map_data['class_id']))?$map_data['class_id']:'';
+				if(empty($qbo_coupon_product['ClassRef'])){
+					$qbo_coupon_product['ClassRef'] = $this->get_option('mw_wc_qbo_desk_inv_sr_txn_qb_class');
+				}
 			}
 		}
 		$qbo_coupon_product['Description'] = 'Coupon: '.$wc_couponcode;
@@ -2842,11 +3199,13 @@ class MW_QBO_Desktop_Sync_Lib {
 	
 	public function get_class_dropdown_list($s_val='',$txl_lavel=false){
 		$options = '';
+		/*
 		if(!$txl_lavel){
 			if(!empty($this->get_option('mw_wc_qbo_desk_inv_sr_txn_qb_class'))){
 				return $options;
 			}
 		}
+		*/
 		global $wpdb;
 		$options = $this->option_html($s_val, $wpdb->prefix.'mw_wc_qbo_desk_qbd_list_class','qbd_id','name','','name ASC','',true);
 		return $options;
@@ -2857,13 +3216,13 @@ class MW_QBO_Desktop_Sync_Lib {
 		if(is_array($wc_tax_rates) && count($wc_tax_rates)){
 			foreach($wc_tax_rates as $rates){
 				if($skip_rate_id!=$rates['tax_rate_id'] && $skip_rate_class!=$rates['tax_rate_class']){
-					$options.='<option  data-tax_rate_country="'.$rates['tax_rate_country'].'"  data-tax_rate_state="'.$rates['tax_rate_state'].'"  data-tax_rate="'.$rates['tax_rate'].'"  data-tax_rate_name="'.$rates['tax_rate_name'].'"  data-tax_rate_priority="'.$rates['tax_rate_priority'].'"  data-tax_rate_compound="'.$rates['tax_rate_compound'].'"  data-tax_rate_shipping="'.$rates['tax_rate_shipping'].'" data-tax_rate_order="'.$rates['tax_rate_order'].'" data-tax_rate_class="'.$rates['tax_rate_class'].'" value="'.$rates['tax_rate_id'].'">'.$rates['tax_rate_name'].'</option>';
+					$options.='<option  data-tax_rate_country="'.$rates['tax_rate_country'].'"  data-tax_rate_state="'.$rates['tax_rate_state'].'"  data-tax_rate="'.$rates['tax_rate'].'"  data-tax_rate_name="'.$rates['tax_rate_name'].'"  data-tax_rate_priority="'.$rates['tax_rate_priority'].'"  data-tax_rate_compound="'.$rates['tax_rate_compound'].'"  data-tax_rate_shipping="'.$rates['tax_rate_shipping'].'" data-tax_rate_order="'.$rates['tax_rate_order'].'" data-tax_rate_class="'.$rates['tax_rate_class'].'" data-tax_rate_city="'.$rates['location_code'].'" value="'.$rates['tax_rate_id'].'">'.$rates['tax_rate_name'].'</option>';
 				}
 			}
 		}
 		return $options;
 	}
-
+	
 	public function get_wc_tax_rate_id_array($wc_tax_rates){
 		$tx_rate_arr = array();
 		if(is_array($wc_tax_rates) && count($wc_tax_rates)){
@@ -2966,8 +3325,63 @@ class MW_QBO_Desktop_Sync_Lib {
 		
 		return $cmk;
 	}
-
+	
 	/*List Functions*/
+	public function get_users_id_name_list_by_roles($roles){
+		global $wpdb;
+		$u_id_name_arr = array();
+		$roles = trim($roles);
+		if(!empty($roles)){
+			$roles = $roles;
+			if(!is_array( $roles )){
+				$roles = array_map('trim',explode( ",", $roles ));
+			}
+			
+			$ext_join = '';
+			$ext_whr = '';
+			
+			$ext_whr .= ' AND     (';
+			$i = 1;
+			foreach ( $roles as $role ) {
+				$ext_whr .= ' ' . $wpdb->usermeta . '.meta_value    LIKE    \'%"' . $role . '"%\' ';
+				if ( $i < count( $roles ) ) $ext_whr .= ' OR ';
+				$i++;
+			}
+			$ext_whr .= ' ) ';
+			
+			$sql = '
+				SELECT  DISTINCT(' . $wpdb->users . '.ID) , ' . $wpdb->users . '.display_name, ' . $wpdb->users . '.user_email
+				FROM        ' . $wpdb->users . ' INNER JOIN ' . $wpdb->usermeta . '
+				ON          ' . $wpdb->users . '.ID = ' . $wpdb->usermeta . '.user_id
+				'.$ext_join.'
+				WHERE       ' . $wpdb->usermeta . '.meta_key        =       \'' . $wpdb->prefix . 'capabilities\'				
+			';
+			
+			$sql .= $ext_whr;
+			
+			$orderby = $wpdb->users.'.display_name ASC';
+			$sql .= ' ORDER BY  '.$orderby;
+			
+			//echo $sql;
+			$q_data =  $this->get_data($sql);
+			//$this->_p($q_data);
+			
+			if(is_array($q_data) && count($q_data)){
+				foreach($q_data as $rd){
+					$c_meta = get_user_meta($rd['ID']);
+					$fn = (is_array($c_meta) && isset($c_meta['first_name'][0]))?$c_meta['first_name'][0]:'';
+					$ln = (is_array($c_meta) && isset($c_meta['last_name'][0]))?$c_meta['last_name'][0]:'';
+					$fn_ln = trim($fn.' '.$ln);
+					if(empty($fn_ln)){
+						$fn_ln = $rd['display_name'];
+					}
+					
+					$u_id_name_arr[$rd['ID']] = $fn_ln;
+				}
+			}
+		}
+		return $u_id_name_arr;
+	}
 	
 	public function count_customers($search_txt='',$list_page=false,$cl_role_search='',$cl_um_srch='') {
 		global $wpdb;
@@ -3005,7 +3419,13 @@ class MW_QBO_Desktop_Sync_Lib {
 			$ext_join .= ' LEFT JOIN ' . $wpdb->usermeta . ' um3 ON ( um3.user_id = ' . $wpdb->users . '.ID
 			AND um3.meta_key =  \'billing_company\' ) ';
 			
-			$ext_whr .= $wpdb->prepare(" AND (".$wpdb->users.".display_name LIKE '%%%s%%' OR ".$wpdb->users.".user_email LIKE '%%%s%%' OR um3.meta_value LIKE '%%%s%%' ) ", $search_txt,$search_txt,$search_txt);
+			$ext_join .= ' LEFT JOIN ' . $wpdb->usermeta . ' um1 ON ( um1.user_id = ' . $wpdb->users . '.ID
+			AND um1.meta_key =  \'first_name\' ) ';
+			
+			$ext_join .= ' LEFT JOIN ' . $wpdb->usermeta . ' um2 ON ( um2.user_id = ' . $wpdb->users . '.ID
+			AND um2.meta_key =  \'last_name\' ) ';
+			
+			$ext_whr .= $wpdb->prepare(" AND (".$wpdb->users.".display_name LIKE '%%%s%%' OR ".$wpdb->users.".user_email LIKE '%%%s%%' OR um3.meta_value LIKE '%%%s%%' OR ".$wpdb->users.".ID = %s OR um1.meta_value LIKE '%%%s%%' OR um2.meta_value LIKE '%%%s%%' OR CONCAT(um1.meta_value,' ', um2.meta_value) LIKE '%%%s%%' ) ", $search_txt,$search_txt,$search_txt,$search_txt,$search_txt,$search_txt,$search_txt);
 		}
 		
 		$cl_um_srch = $this->sanitize($cl_um_srch);
@@ -3142,7 +3562,13 @@ class MW_QBO_Desktop_Sync_Lib {
 			$ext_join .= ' LEFT JOIN ' . $wpdb->usermeta . ' um3 ON ( um3.user_id = ' . $wpdb->users . '.ID
 			AND um3.meta_key =  \'billing_company\' ) ';
 			
-			$ext_whr .= $wpdb->prepare(" AND (".$wpdb->users.".display_name LIKE '%%%s%%' OR ".$wpdb->users.".user_email LIKE '%%%s%%' OR um3.meta_value LIKE '%%%s%%' ) ", $search_txt,$search_txt,$search_txt);
+			$ext_join .= ' LEFT JOIN ' . $wpdb->usermeta . ' um1 ON ( um1.user_id = ' . $wpdb->users . '.ID
+			AND um1.meta_key =  \'first_name\' ) ';
+			
+			$ext_join .= ' LEFT JOIN ' . $wpdb->usermeta . ' um2 ON ( um2.user_id = ' . $wpdb->users . '.ID
+			AND um2.meta_key =  \'last_name\' ) ';
+			
+			$ext_whr .= $wpdb->prepare(" AND (".$wpdb->users.".display_name LIKE '%%%s%%' OR ".$wpdb->users.".user_email LIKE '%%%s%%' OR um3.meta_value LIKE '%%%s%%' OR ".$wpdb->users.".ID = %s OR um1.meta_value LIKE '%%%s%%' OR um2.meta_value LIKE '%%%s%%' OR CONCAT(um1.meta_value,' ', um2.meta_value) LIKE '%%%s%%' ) ", $search_txt,$search_txt,$search_txt,$search_txt,$search_txt,$search_txt,$search_txt);
 		}
 		
 		$cl_um_srch = $this->sanitize($cl_um_srch);
@@ -3769,7 +4195,7 @@ class MW_QBO_Desktop_Sync_Lib {
 				$pd_tmp_arr['wc_product_type'] = $this->get_product_type_by_id($rd['ID']);
 
 				$ext_cq = "
-				SELECT pmap.quickbook_product_id, pmap.class_id, pmap.a_line_item_desc, pmap.qb_ar_acc_id, qp.name as qp_name, qp.sku as qp_sku, qp.product_type as qp_product_type, qp.info_arr as info_arr
+				SELECT pmap.quickbook_product_id, pmap.class_id, pmap.a_line_item_desc, pmap.qb_ar_acc_id, pmap.qb_ivnt_site, qp.name as qp_name, qp.sku as qp_sku, qp.product_type as qp_product_type, qp.info_arr as info_arr
 				FROM ".$wpdb->posts." p
 				LEFT JOIN " . $wpdb->prefix . "mw_wc_qbo_desk_qbd_product_pairs pmap ON p.ID = pmap.wc_product_id
 				LEFT JOIN " . $wpdb->prefix . "mw_wc_qbo_desk_qbd_items qp ON pmap.quickbook_product_id = qp.qbd_id
@@ -3782,7 +4208,8 @@ class MW_QBO_Desktop_Sync_Lib {
 				$pd_tmp_arr['a_line_item_desc'] = (count($ext_data) && isset($ext_data['a_line_item_desc']))?$ext_data['a_line_item_desc']:0;
 				
 				$pd_tmp_arr['qb_ar_acc_id'] = (count($ext_data) && isset($ext_data['qb_ar_acc_id']))?$ext_data['qb_ar_acc_id']:'';
-
+				$pd_tmp_arr['qb_ivnt_site'] = (count($ext_data) && isset($ext_data['qb_ivnt_site']))?$ext_data['qb_ivnt_site']:'';
+				
 				$pd_tmp_arr['qp_name'] = (count($ext_data) && isset($ext_data['qp_name']))?$ext_data['qp_name']:'';
 				$pd_tmp_arr['qp_sku'] = (count($ext_data) && isset($ext_data['qp_sku']))?$ext_data['qp_sku']:'';
 				$pd_tmp_arr['qp_product_type'] = (count($ext_data) && isset($ext_data['qp_product_type']))?$ext_data['qp_product_type']:'';
@@ -3837,7 +4264,7 @@ class MW_QBO_Desktop_Sync_Lib {
 		{$wpdb->prefix}posts as p
 		
 		LEFT JOIN ".$wpdb->prefix."mw_wc_qbo_desk_qbd_data_pairs dp
-		ON ( dp.wc_id = p.ID AND dp.d_type =  'Refund' )
+		ON ( dp.wc_id = p.ID AND dp.d_type =  'Refund' AND dp.ext_data =  'CreditMemo' )
 		
 		WHERE
 		p.post_type = 'shop_order_refund'
@@ -3892,7 +4319,7 @@ class MW_QBO_Desktop_Sync_Lib {
 		{$wpdb->prefix}posts as p
 		
 		LEFT JOIN ".$wpdb->prefix."mw_wc_qbo_desk_qbd_data_pairs dp
-		ON ( dp.wc_id = p.ID AND dp.d_type =  'Refund' )
+		ON ( dp.wc_id = p.ID AND dp.d_type =  'Refund' AND dp.ext_data =  'CreditMemo' )
 		
 		WHERE
 		p.post_type = 'shop_order_refund'
@@ -4100,14 +4527,22 @@ class MW_QBO_Desktop_Sync_Lib {
 
 		$date_from = $this->sanitize($date_from);
 		if($date_from!=''){
-			$sql .=" AND p.post_date>='".$date_from." 00:00:00'";
+			if($this->get_option('mw_wc_qbo_desk_order_sync_qbd_dt_fld') == '_paid_date'){
+				$sql .=" AND pm11.meta_value>='".$date_from." 00:00:00'";
+			}else{
+				$sql .=" AND p.post_date>='".$date_from." 00:00:00'";
+			}			
 		}
 
 		$date_to = $this->sanitize($date_to);
 		if($date_to!=''){
-			$sql .=" AND p.post_date<='".$date_to." 23:59:59'";
+			if($this->get_option('mw_wc_qbo_desk_order_sync_qbd_dt_fld') == '_paid_date'){
+				$sql .=" AND pm11.meta_value<='".$date_to." 23:59:59'";
+			}else{
+				$sql .=" AND p.post_date<='".$date_to." 23:59:59'";
+			}			
 		}
-
+		
 		$sql .='GROUP BY p.ID';
 
 		$orderby = 'p.post_date DESC';
@@ -4164,7 +4599,7 @@ class MW_QBO_Desktop_Sync_Lib {
 		ON ( pm7.post_id = p.ID AND pm7.meta_key =  '_billing_company' )
 		INNER JOIN ".$wpdb->postmeta." pm8
 		ON ( pm8.post_id = p.ID AND pm8.meta_key =  '_transaction_id' )
-		INNER JOIN ".$wpdb->postmeta." pm9
+		LEFT JOIN ".$wpdb->postmeta." pm9
 		ON ( pm9.post_id = p.ID AND pm9.meta_key =  '_paid_date' )
 		INNER JOIN ".$wpdb->postmeta." pm10
 		ON ( pm10.post_id = p.ID AND pm10.meta_key =  '_payment_method' )
@@ -4195,15 +4630,23 @@ class MW_QBO_Desktop_Sync_Lib {
 		}
 
 		$date_from = $this->sanitize($date_from);
-		if($date_from!=''){
-			$sql .=" AND pm9.meta_value>='".$date_from." 00:00:00'";
+		if($date_from!=''){			
+			if($this->get_option('mw_wc_qbo_desk_order_sync_qbd_dt_fld') == '_paid_date'){
+				$sql .=" AND pm9.meta_value>='".$date_from." 00:00:00'";
+			}else{
+				$sql .=" AND p.post_date>='".$date_from." 00:00:00'";
+			}
 		}
-
+		
 		$date_to = $this->sanitize($date_to);
-		if($date_to!=''){
-			$sql .=" AND pm9.meta_value<='".$date_to." 23:59:59'";
+		if($date_to!=''){			
+			if($this->get_option('mw_wc_qbo_desk_order_sync_qbd_dt_fld') == '_paid_date'){
+				$sql .=" AND pm9.meta_value<='".$date_to." 23:59:59'";
+			}else{
+				$sql .=" AND p.post_date<='".$date_to." 23:59:59'";
+			}
 		}
-
+		
 		//$sql .='GROUP BY pm8.meta_id';
 
 		if($search_txt!=''){
@@ -4254,7 +4697,7 @@ class MW_QBO_Desktop_Sync_Lib {
 		ON ( pm7.post_id = p.ID AND pm7.meta_key =  '_billing_company' )
 		INNER JOIN ".$wpdb->postmeta." pm8
 		ON ( pm8.post_id = p.ID AND pm8.meta_key =  '_transaction_id' )
-		INNER JOIN ".$wpdb->postmeta." pm9
+		LEFT JOIN ".$wpdb->postmeta." pm9
 		ON ( pm9.post_id = p.ID AND pm9.meta_key =  '_paid_date' )
 		INNER JOIN ".$wpdb->postmeta." pm10
 		ON ( pm10.post_id = p.ID AND pm10.meta_key =  '_payment_method' )
@@ -4285,15 +4728,23 @@ class MW_QBO_Desktop_Sync_Lib {
 		}
 
 		$date_from = $this->sanitize($date_from);
-		if($date_from!=''){
-			$sql .=" AND pm9.meta_value>='".$date_from." 00:00:00'";
+		if($date_from!=''){			
+			if($this->get_option('mw_wc_qbo_desk_order_sync_qbd_dt_fld') == '_paid_date'){
+				$sql .=" AND pm9.meta_value>='".$date_from." 00:00:00'";
+			}else{
+				$sql .=" AND p.post_date>='".$date_from." 00:00:00'";
+			}
 		}
 
 		$date_to = $this->sanitize($date_to);
-		if($date_to!=''){
-			$sql .=" AND pm9.meta_value<='".$date_to." 23:59:59'";
+		if($date_to!=''){			
+			if($this->get_option('mw_wc_qbo_desk_order_sync_qbd_dt_fld') == '_paid_date'){
+				$sql .=" AND pm9.meta_value<='".$date_to." 23:59:59'";
+			}else{
+				$sql .=" AND p.post_date<='".$date_to." 23:59:59'";
+			}
 		}
-
+		
 		$sql .='GROUP BY pm8.meta_id';
 
 		$orderby = '(pm9.meta_value IS NULL) DESC, p.ID DESC';
@@ -4346,7 +4797,7 @@ class MW_QBO_Desktop_Sync_Lib {
 		ON ( pm7.post_id = p.ID AND pm7.meta_key =  '_billing_company' )
 		INNER JOIN ".$wpdb->postmeta." pm8
 		ON ( pm8.post_id = p.ID AND pm8.meta_key =  '_transaction_id' )
-		INNER JOIN ".$wpdb->postmeta." pm9
+		LEFT JOIN ".$wpdb->postmeta." pm9
 		ON ( pm9.post_id = p.ID AND pm9.meta_key =  '_paid_date' )
 		INNER JOIN ".$wpdb->postmeta." pm10
 		ON ( pm10.post_id = p.ID AND pm10.meta_key =  '_payment_method' )
@@ -4368,6 +4819,10 @@ class MW_QBO_Desktop_Sync_Lib {
 		//AND pm8.meta_value!=''
 
 		$payment_row = $this->get_row($sql);
+		/**/
+		if($this->check_sh_cmfpicw_hash()){
+			$payment_row = $this->custom_order_and_p_details_amounts_multiplication($payment_row);
+		}
 		return $payment_row;
 	}
 	
@@ -4387,7 +4842,7 @@ class MW_QBO_Desktop_Sync_Lib {
 				
 				if(empty($pd)){return false;}
 				$pd = strtotime($pd);				
-				if ($pd < strtotime('-30 days')){
+				if ($pd < strtotime('-'.$this->get_hd_ldys_lmt().' days')){
 					return false;
 				}else{
 					return true;
@@ -4421,6 +4876,11 @@ class MW_QBO_Desktop_Sync_Lib {
 				return $qbd_id;
 			}
 			
+			/**/
+			if($is_variation){
+				$name = $this->get_variation_name_from_id($name,'',$wc_product_id);
+				$name = $this->get_woo_v_name_trimmed($name);
+			}
 			if($qbd_id=='' && $name!=''){
 				$qbd_id = $this->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_items','id','name',$name);
 			}
@@ -4450,6 +4910,48 @@ class MW_QBO_Desktop_Sync_Lib {
 		return false;
 	}
 	
+	public function get_dmcb_fval_ext_ccfv_val($customer_data){
+		$ext_dn = '';
+		if(is_array($customer_data) && count($customer_data)){						
+			if($this->is_dmcb_fval_ext_ccfv()){
+				$name_replace_chars = array(':','\t','\n');
+				$dmcb_fval = $this->get_option('mw_wc_qbo_desk_dmcb_fval');
+				
+				if($dmcb_fval == 'o_bc_name'){
+					$billing_company = $this->get_array_isset($customer_data,'billing_company','',true,100,false,$name_replace_chars);
+					$ext_dn = $billing_company;
+				}
+				
+				if($dmcb_fval == 'o_bfl_name'){
+					$billing_first_name = $this->get_array_isset($customer_data,'billing_first_name','',true,100,false,$name_replace_chars);
+					$billing_last_name = $this->get_array_isset($customer_data,'billing_last_name','',true,100,false,$name_replace_chars);
+					$ext_dn = $billing_first_name.' '.$billing_last_name;
+				}				
+				
+				if($dmcb_fval == 'o_sc_name'){
+					$shipping_company = $this->get_array_isset($customer_data,'shipping_company','',true,100,false,$name_replace_chars);
+					$ext_dn = $shipping_company;
+				}
+				
+				if($dmcb_fval == 'o_sfl_name'){
+					$shipping_first_name = $this->get_array_isset($customer_data,'shipping_first_name','',true,100,false,$name_replace_chars);
+					$shipping_last_name = $this->get_array_isset($customer_data,'shipping_last_name','',true,100,false,$name_replace_chars);
+					$ext_dn = $shipping_first_name.' '.$shipping_last_name;
+				}
+			}
+			
+		}
+		return $ext_dn;
+	}
+	
+	public function is_dmcb_fval_ext_ccfv(){
+		$dmcb_fval = $this->get_option('mw_wc_qbo_desk_dmcb_fval');
+		if($dmcb_fval == 'o_bfl_name' || $dmcb_fval == 'o_bc_name' || $dmcb_fval == 'o_sfl_name' || $dmcb_fval == 'o_sc_name'){
+			return true;
+		}
+		return false;
+	}
+	
 	public function if_qbo_customer_exists($customer_data){
 		if(is_array($customer_data) && count($customer_data)){
 			$name_replace_chars = array(':','\t','\n');
@@ -4459,10 +4961,37 @@ class MW_QBO_Desktop_Sync_Lib {
 			$email = $this->get_array_isset($customer_data,'email','',true);
 			
 			$billing_company = $this->get_array_isset($customer_data,'billing_company','',true,100,false,$name_replace_chars);
+			$shipping_company = $this->get_array_isset($customer_data,'shipping_company','',true,100,false,$name_replace_chars);
+			
+			$dmcb_fval = $this->get_option('mw_wc_qbo_desk_dmcb_fval');
+			$ext_ccfv = '';
+			
+			if($this->is_dmcb_fval_ext_ccfv()){
+				if($dmcb_fval == 'o_bc_name'){
+					$ext_ccfv = $billing_company;
+				}
+				
+				if($dmcb_fval == 'o_bfl_name'){
+					$billing_first_name = $this->get_array_isset($customer_data,'billing_first_name','',true,100,false,$name_replace_chars);
+					$billing_last_name = $this->get_array_isset($customer_data,'billing_last_name','',true,100,false,$name_replace_chars);
+					$ext_ccfv = $billing_first_name.' '.$billing_last_name;
+				}				
+				
+				if($dmcb_fval == 'o_sc_name'){
+					$ext_ccfv = $shipping_company;
+				}
+				
+				if($dmcb_fval == 'o_sfl_name'){
+					$shipping_first_name = $this->get_array_isset($customer_data,'shipping_first_name','',true,100,false,$name_replace_chars);
+					$shipping_last_name = $this->get_array_isset($customer_data,'shipping_last_name','',true,100,false,$name_replace_chars);
+					$ext_ccfv = $shipping_first_name.' '.$shipping_last_name;
+				}
+			}
+			
 			//$this->_p($customer_data);
-			if($billing_company!='' && $this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+			if(!empty($ext_ccfv)){
 				$table = $wpdb->prefix.'mw_wc_qbo_desk_qbd_customers';
-				$query = $wpdb->prepare("SELECT `qbd_customerid` FROM `$table` WHERE `d_name` = %s AND `d_name` !='' ",$billing_company);
+				$query = $wpdb->prepare("SELECT `qbd_customerid` FROM `$table` WHERE `d_name` = %s AND `d_name` !='' ",$ext_ccfv);
 			}else{
 				$table = $wpdb->prefix.'mw_wc_qbo_desk_qbd_customers_pairs';
 				$query = $wpdb->prepare("SELECT `qbd_customerid` FROM `$table` WHERE `wc_customerid` = %d AND `qbd_customerid` !='' AND `wc_customerid` > 0 ",$wc_customerid);
@@ -4470,13 +4999,29 @@ class MW_QBO_Desktop_Sync_Lib {
 				//Qbo customer table
 				$table = $wpdb->prefix.'mw_wc_qbo_desk_qbd_customers';
 				if(empty($this->get_data($query))){
-					if(!empty($email)){
-						$query = $wpdb->prepare("SELECT `qbd_customerid` FROM `$table` WHERE `email` = %s AND `email` !='' ",$email);
-					}else{
-						if(!empty($display_name) && $this->option_checked('mw_wc_qbo_desk_customer_match_by_name')){
-							$query = $wpdb->prepare("SELECT `qbd_customerid` , `info_arr` FROM `$table` WHERE `d_name` = %s AND `d_name` !='' ",$display_name);
+					$is_dn_chk = false;
+					$chk_by_email = true;
+					
+					if($dmcb_fval == 'm_uid_accn'){
+						$table = $wpdb->prefix.'mw_wc_qbo_desk_qbd_customers';
+						$query = $wpdb->prepare("SELECT `qbd_customerid` FROM `$table` WHERE `acc_num` = %s AND `acc_num` !='' ",$wc_customerid);
+						$chk_by_email = false;
+					}
+					
+					if($chk_by_email){
+						if(!empty($email)){
+							$query = $wpdb->prepare("SELECT `qbd_customerid` FROM `$table` WHERE `email` = %s AND `email` !='' ",$email);
+							if(empty($this->get_data($query))){
+								$is_dn_chk = true;
+							}
+						}else{
+							$is_dn_chk = true;
 						}
-					}				
+					}					
+					
+					if($is_dn_chk && !empty($display_name) && $dmcb_fval == 'm_email_dn'){
+						$query = $wpdb->prepare("SELECT `qbd_customerid` , `info_arr` FROM `$table` WHERE `d_name` = %s AND `d_name` !='' ",$display_name);
+					}
 				}
 			}
 			
@@ -4487,7 +5032,7 @@ class MW_QBO_Desktop_Sync_Lib {
 			
 			if(!empty($query_customer)){
 				/**/
-				if(isset($query_customer['info_arr']) && $this->option_checked('mw_wc_qbo_desk_customer_match_by_name') && $this->option_checked('mw_wc_qbo_desk_customer_match_by_zipcode')){
+				if(isset($query_customer['info_arr']) && $dmcb_fval == 'm_email_dn_zc'){
 					$is_zip_matched = false;
 					$c_info_arr = $query_customer['info_arr'];
 					if(!empty($c_info_arr)){
@@ -4524,23 +5069,53 @@ class MW_QBO_Desktop_Sync_Lib {
 			$table = $wpdb->prefix.'mw_wc_qbo_desk_qbd_customers';
 			
 			$billing_company = $this->get_array_isset($customer_data,'billing_company','',true,100,false,$name_replace_chars);
-			//$this->_p($customer_data);
-			if($billing_company!='' && $this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
-				$query = $wpdb->prepare("SELECT `qbd_customerid` FROM `$table` WHERE `d_name` = %s AND `d_name` !='' ",$billing_company);
-			}else{
-				/*
-				if($email!=''){
-					$query = $wpdb->prepare("SELECT `qbd_customerid` FROM `$table` WHERE `email` = %s AND `email` !='' ",$email);
-				}else{
-					$query = $wpdb->prepare("SELECT `qbd_customerid` FROM `$table` WHERE `d_name` = %s AND `d_name` !='' ",$display_name);
+			$shipping_company = $this->get_array_isset($customer_data,'shipping_company','',true,100,false,$name_replace_chars);
+			
+			$dmcb_fval = $this->get_option('mw_wc_qbo_desk_dmcb_fval');
+			$ext_ccfv = '';
+			
+			if($this->is_dmcb_fval_ext_ccfv()){
+				if($dmcb_fval == 'o_bc_name'){
+					$ext_ccfv = $billing_company;
 				}
-				*/
+				
+				if($dmcb_fval == 'o_bfl_name'){
+					$billing_first_name = $this->get_array_isset($customer_data,'billing_first_name','',true,100,false,$name_replace_chars);
+					$billing_last_name = $this->get_array_isset($customer_data,'billing_last_name','',true,100,false,$name_replace_chars);
+					if(!empty($billing_first_name) || !empty($billing_last_name)){
+						$ext_ccfv = $billing_first_name.' '.$billing_last_name;
+					}					
+				}				
+				
+				if($dmcb_fval == 'o_sc_name'){
+					$ext_ccfv = $shipping_company;
+				}
+				
+				if($dmcb_fval == 'o_sfl_name'){
+					$shipping_first_name = $this->get_array_isset($customer_data,'shipping_first_name','',true,100,false,$name_replace_chars);
+					$shipping_last_name = $this->get_array_isset($customer_data,'shipping_last_name','',true,100,false,$name_replace_chars);
+					if(!empty($shipping_first_name) || !empty($shipping_last_name)){
+						$ext_ccfv = $shipping_first_name.' '.$shipping_last_name;
+					}					
+				}
+			}
+			
+			//$this->_p($customer_data);			
+			if(!empty($ext_ccfv)){
+				$query = $wpdb->prepare("SELECT `qbd_customerid` FROM `$table` WHERE `d_name` = %s AND `d_name` !='' ",$ext_ccfv);
+			}else{
+				$is_dn_chk = false;
 				if(!empty($email)){
 					$query = $wpdb->prepare("SELECT `qbd_customerid` FROM `$table` WHERE `email` = %s AND `email` !='' ",$email);
-				}else{
-					if(!empty($display_name) && $this->option_checked('mw_wc_qbo_desk_customer_match_by_name')){
-						$query = $wpdb->prepare("SELECT `qbd_customerid` , `info_arr` FROM `$table` WHERE `d_name` = %s AND `d_name` !='' ",$display_name);
+					if(empty($this->get_data($query))){
+						$is_dn_chk = true;
 					}
+				}else{
+					$is_dn_chk = true;
+				}
+				
+				if($is_dn_chk && !empty($display_name) && $dmcb_fval == 'm_email_dn'){
+					$query = $wpdb->prepare("SELECT `qbd_customerid` , `info_arr` FROM `$table` WHERE `d_name` = %s AND `d_name` !='' ",$display_name);
 				}
 			}
 			
@@ -4551,7 +5126,7 @@ class MW_QBO_Desktop_Sync_Lib {
 			
 			if(!empty($query_customer)){
 				/**/
-				if(isset($query_customer['info_arr']) && $this->option_checked('mw_wc_qbo_desk_customer_match_by_name') && $this->option_checked('mw_wc_qbo_desk_customer_match_by_zipcode')){
+				if(isset($query_customer['info_arr']) && $dmcb_fval == 'm_email_dn_zc'){
 					$is_zip_matched = false;
 					$c_info_arr = $query_customer['info_arr'];
 					if(!empty($c_info_arr)){
@@ -4585,9 +5160,42 @@ class MW_QBO_Desktop_Sync_Lib {
 		
 		$pm_mk = '';$pm_mv = '';
 		
-		if($billing_company!='' && $this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
-			$pm_mk = '_billing_company';
-			$pm_mv = $billing_company;
+		$ext_join = '';
+		$ext_whr = '';
+		$pm_mk_c = '';$pm_mv_c = '';
+		if($this->is_dmcb_fval_ext_ccfv()){
+			$dmcb_fval = $this->get_option('mw_wc_qbo_desk_dmcb_fval');
+			if($dmcb_fval == 'o_bc_name'){
+				$pm_mk = '_billing_company';
+				$pm_mv = $billing_company;
+			}
+			
+			if($dmcb_fval == 'o_bfl_name'){
+				$pm_mk = '_billing_first_name';
+				$pm_mk_c = '_billing_last_name';
+				
+				$pm_mv = $this->get_array_isset($customer_data,'billing_first_name','',true,100,false,$name_replace_chars);
+				$pm_mv_c = $this->get_array_isset($customer_data,'billing_last_name','',true,100,false,$name_replace_chars);
+				$ext_join = "INNER JOIN {$wpdb->postmeta} pm2 ON (pm.post_id = pm2.post_id AND pm.meta_key = '{$pm_mk_c}')";				
+				$ext_whr = "AND pm2.meta_value = %s";
+			}
+			
+			if($dmcb_fval == 'o_sc_name'){
+				$shipping_company = $this->get_array_isset($customer_data,'shipping_company','',true,100,false,$name_replace_chars);
+				$pm_mk = '_shipping_company';
+				$pm_mv = $shipping_company;
+			}
+			
+			if($dmcb_fval == 'o_sfl_name'){
+				$pm_mk = '_shipping_first_name';
+				$pm_mk_c = '_shipping_last_name';
+				
+				$pm_mv = $this->get_array_isset($customer_data,'shipping_first_name','',true,100,false,$name_replace_chars);
+				$pm_mv_c = $this->get_array_isset($customer_data,'shipping_last_name','',true,100,false,$name_replace_chars);
+				$ext_join = "INNER JOIN {$wpdb->postmeta} pm2 ON (pm.post_id = pm2.post_id AND pm.meta_key = '{$pm_mk_c}')";				
+				$ext_whr = "AND pm2.meta_value = %s";
+			}
+			
 		}else{
 			if($email!=''){
 				$pm_mk = '_billing_email';
@@ -4601,13 +5209,19 @@ class MW_QBO_Desktop_Sync_Lib {
 			SELECT GROUP_CONCAT(pm.post_id) AS order_ids 
 			FROM {$wpdb->postmeta} pm 
 			INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
-			INNER JOIN {$wpdb->postmeta} pm1 ON pm.post_id = pm1.post_id
-			WHERE p.post_type = 'shop_order'
-			AND pm.meta_key = '{$pm_mk}'
+			INNER JOIN {$wpdb->postmeta} pm1 ON (pm.post_id = pm1.post_id AND pm.meta_key = '{$pm_mk}')
+			{$ext_join}
+			WHERE p.post_type = 'shop_order'			
 			AND pm.meta_value = %s
+			{$ext_whr}
 			AND pm1.meta_key = '_customer_user' AND pm1.meta_value = '0'
 			";
-			$gcq = $wpdb->prepare($gcq,$pm_mv);
+			if($pm_mk_c!=''){
+				$gcq = $wpdb->prepare($gcq,$pm_mv,$pm_mv_c);
+			}else{
+				$gcq = $wpdb->prepare($gcq,$pm_mv);
+			}
+			
 			$gq_data = $this->get_row($gcq);
 			if(is_array($gq_data) && count($gq_data)){
 				$order_ids = $gq_data['order_ids'];
@@ -4645,11 +5259,20 @@ class MW_QBO_Desktop_Sync_Lib {
 	
 	public function check_quickbooks_refund($refund_id,$wc_inv_id=0,$wc_inv_num=''){
 		if($this->is_qwc_connected()){
-			$qbd_id = $this->get_wc_data_pair_val('Refund',$refund_id);
+			$qbd_id = $this->get_wc_data_pair_val('Refund',$refund_id,'CreditMemo');
 			return $qbd_id;
 		}
 		return false;
-	}	
+	}
+	
+	//
+	public function check_quickbooks_refund_c($refund_id,$wc_inv_id=0,$wc_inv_num=''){
+		if($this->is_qwc_connected()){
+			$qbd_id = $this->get_wc_data_pair_val('Refund',$refund_id,'Check');
+			return $qbd_id;
+		}
+		return false;
+	}
 	
 	public function check_quickbooks_payment($payment_id){
 		if($this->is_qwc_connected()){
@@ -4661,7 +5284,8 @@ class MW_QBO_Desktop_Sync_Lib {
 	
 	public function check_quickbooks_os_payment($order_id){
 		if($this->is_qwc_connected()){
-			$qbd_id = $this->get_wc_data_pair_val('Payment',$order_id,'Order');
+			//$qbd_id = $this->get_wc_data_pair_val('Payment',$order_id,'Order');
+			$qbd_id = $this->get_wc_data_pair_val('Order_Payment',$order_id);
 			return $qbd_id;
 		}
 		return false;
@@ -4928,7 +5552,7 @@ class MW_QBO_Desktop_Sync_Lib {
 			}
 			
 			/**/
-			if(($pam_qf == 'mpn' || $pam_qf == 'barcode') && $this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
+			if(($pam_qf == 'mpn' || $pam_qf == 'barcode' || $pam_qf == 'Woo-Product-ID' || $pam_qf == 'SalesDesc') && ($pam_qf == 'SalesDesc' || $this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync') || $this->is_plugin_active('myworks-quickbooks-desktop-custom-product-automap'))){
 				$qf_v = '';
 				if(isset($q_pro['info_arr'])){
 					$info_arr = $q_pro['info_arr'];
@@ -4943,13 +5567,21 @@ class MW_QBO_Desktop_Sync_Lib {
 								$qf_v = $this->get_array_isset($info_arr,'BarCodeValue','',true);
 							}
 							
+							if($pam_qf == 'Woo-Product-ID' && isset($info_arr['Woo-Product-ID'])){
+								$qf_v = $this->get_array_isset($info_arr,'Woo-Product-ID','',true);
+							}
+							
+							if($pam_qf == 'SalesDesc' && isset($info_arr['Desc'])){
+								$qf_v = $this->get_array_isset($info_arr,'Desc','',true);
+							}
+							
 							if($wf_v!='' && strtoupper($wf_v) == strtoupper($qf_v)){
 								$is_match_map_product = true;
 							}
 						}
 					}
 				}
-			}
+			}			
 			
 			if($is_match_map_product){
 				$save_data = array();
@@ -5039,7 +5671,7 @@ class MW_QBO_Desktop_Sync_Lib {
 		
 		$all_wc_products = $this->get_data($sql);
 		$q_ef = '';
-		if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
+		if($pam_qf == 'SalesDesc' || $this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync') || $this->is_plugin_active('myworks-quickbooks-desktop-custom-product-automap')){
 			$q_ef = ', `info_arr` ';
 		}
 		/**/
@@ -5139,7 +5771,7 @@ class MW_QBO_Desktop_Sync_Lib {
 			}
 			
 			/**/
-			if(($vam_qf == 'mpn' || $vam_qf == 'barcode') && $this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
+			if(($vam_qf == 'mpn' || $vam_qf == 'barcode' || $vam_qf == 'Woo-Product-ID' || $vam_qf == 'SalesDesc') && ($vam_qf == 'SalesDesc' || $this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync') || $this->is_plugin_active('myworks-quickbooks-desktop-custom-product-automap'))){
 				$qf_v = '';
 				if(isset($q_pro['info_arr'])){
 					$info_arr = $q_pro['info_arr'];
@@ -5152,6 +5784,14 @@ class MW_QBO_Desktop_Sync_Lib {
 							
 							if($vam_qf == 'barcode' && isset($info_arr['BarCodeValue'])){
 								$qf_v = $this->get_array_isset($info_arr,'BarCodeValue','',true);
+							}
+							
+							if($vam_qf == 'Woo-Product-ID' && isset($info_arr['Woo-Product-ID'])){
+								$qf_v = $this->get_array_isset($info_arr,'Woo-Product-ID','',true);
+							}
+							
+							if($vam_qf == 'SalesDesc' && isset($info_arr['Desc'])){
+								$qf_v = $this->get_array_isset($info_arr,'Desc','',true);
 							}
 							
 							if($wf_v!='' && strtoupper($wf_v) == strtoupper($qf_v)){
@@ -5239,7 +5879,7 @@ class MW_QBO_Desktop_Sync_Lib {
 		}
 		
 		$sql = "
-			SELECT DISTINCT(p.ID), p.post_title AS name, pm1.meta_value AS sku
+			SELECT DISTINCT(p.ID), p.post_title AS name, pm1.meta_value AS sku, p.post_parent AS Parent_Product_ID
 			FROM ".$wpdb->posts." p
 			LEFT JOIN ".$wpdb->postmeta." pm1 ON ( pm1.post_id = p.ID
 			AND pm1.meta_key =  '_sku' )
@@ -5249,7 +5889,7 @@ class MW_QBO_Desktop_Sync_Lib {
 		";
 		$all_wc_variations = $this->get_data($sql);
 		$q_ef = '';
-		if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
+		if($vam_qf == 'SalesDesc' || $this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync') || $this->is_plugin_active('myworks-quickbooks-desktop-custom-product-automap')){
 			$q_ef = ', `info_arr` ';
 		}
 		$all_qbo_products = $this->get_data("SELECT `qbd_id`, `sku` , `name` {$q_ef} FROM ".$wpdb->prefix."mw_wc_qbo_desk_qbd_items");
@@ -5433,12 +6073,13 @@ class MW_QBO_Desktop_Sync_Lib {
 		}
 
 	}
-	public function get_item_per_page($unique='',$default=20){
+	
+	public function get_item_per_page($unique='',$default=50){
 		$default = (!(int) $default)?(int) $this->default_show_per_page:$default;
 		$itemPerPage = (isset($_SESSION[$this->session_prefix.'item_per_page'.$unique]))?$_SESSION[$this->session_prefix.'item_per_page'.$unique]:$default;
 		return $itemPerPage;
 	}
-
+	
 	public function get_page_var(){
 		//$page = (get_query_var('paged')) ? (int) get_query_var('paged') : 1;
 		$page = isset($_GET['paged']) ? (int) $_GET['paged'] : 1;
@@ -5555,9 +6196,9 @@ class MW_QBO_Desktop_Sync_Lib {
 	);
 
 	var $log_save_days = array(
-		'10'=>'10',
-		'15'=>'15',
 		'30'=>'30',
+		'10'=>'10',
+		'15'=>'15',		
 		'60'=>'60',
 		'90'=>'90',		
 	);
@@ -5783,7 +6424,9 @@ EOF;
 		if(!$this->is_valid_license){
 			$license_data = $this->myworks_wc_qbo_sync_check_license($licensekey,$localkey,$realtime);
 			/**/
-			$this->mw_license_lk_blank_check_run($licensekey,$localkey,$realtime);
+			if(!$realtime){
+				$this->mw_license_lk_blank_check_run($licensekey,$localkey,$realtime);
+			}			
 			
 			$this->plugin_license_status = (isset($license_data['status']))?$license_data['status']:'';
 			if(isset($license_data['status']) && $license_data['status']=='Active' && !isset($license_data['trial_expired'])){
@@ -6009,8 +6652,30 @@ EOF;
 			$results['remotecheck'] = true;
 		}
 		//$this->_p($results);
-	
-
+		
+		/**/		
+		if(!empty($results)){
+			$ldfcpv = array();
+			$ldfcpv['status'] = $results['status'];
+			$ldfcpv['nextduedate'] = (isset($results['nextduedate']))?$results['nextduedate']:'';
+			$ldfcpv['billingcycle'] = (isset($results['billingcycle']))?$results['billingcycle']:'';
+			$l_pln = '';
+			if((isset($results['productname'])) && !empty($results['productname']) && strpos($results['productname'],' | ')!==false){
+				$pn_arr = explode(' | ',$results['productname']);
+				if(is_array($pn_arr) && count($pn_arr) == 2){
+					$l_pln = $pn_arr[1];
+				}
+			}
+			$ldfcpv['plan'] = $l_pln;
+			$ldfcpv['productname'] = (isset($results['productname']))?$results['productname']:'';
+			$this->license_data_for_conn_page_view = $ldfcpv;
+			
+			$pd_ff_ext_ld = array();
+			$pd_ff_ext_ld['email'] = (isset($results['email']))?$results['email']:'';
+			$pd_ff_ext_ld['validdomain'] = (isset($results['validdomain']))?$results['validdomain']:'';
+			update_option('mw_wc_qbo_desk_pd_ff_ext_ld',$pd_ff_ext_ld);
+		}
+		
 		//
 		if($licensekey!=''){
 			update_option('mw_wc_qbo_desk_license',$licensekey);
@@ -6053,6 +6718,10 @@ EOF;
 		return $results;
 	}
 	
+	public function get_ldfcpv(){
+		return (array) $this->license_data_for_conn_page_view;
+	}
+	
 	public function is_pl_res_tml(){
 		//return true;
 		if($this->option_checked('mw_wc_qbo_desk_trial_license')){
@@ -6065,6 +6734,16 @@ EOF;
 		
 		return false;
 	}
+	
+	public function get_slmt_hstry_msg(){
+		$mag = __( '<h2>Need to sync more than '.$this->get_hd_ldys_lmt().' days of history? <a href="https://myworks.software/account/clientarea.php?action=services">Upgrade</a> to an annual plan!</h2>', 'mw_wc_qbo_sync' );
+		if($this->is_plg_lc_p_l()){
+			$mag = __( '<h2>Need to sync more than '.$this->get_hd_ldys_lmt().' days of history? <a href="https://myworks.software/account/clientarea.php?action=services">Upgrade</a> to a paid plan!</h2>', 'mw_wc_qbo_sync' );
+		}
+		
+		return $mag;
+	}
+	
 	/*Dashboard Chart*/
 	public function get_log_chart_data(){
 		global $wpdb;
@@ -6073,20 +6752,20 @@ EOF;
         $year = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m") - 12, 1, date("Y")));
 
 		$invoiceData = array();
-		$result_inv_today = $this->get_data("SELECT date_format(added_date, '%k') AS date, COUNT(id) AS count FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_log` WHERE added_date>'$today' AND `log_type`='Invoice' AND `status`=1 AND `details` NOT LIKE '%Draft Invoice not allowed%' GROUP BY date_format(added_date, '%k')");
+		$result_inv_today = $this->get_data("SELECT date_format(added_date, '%k') AS date, COUNT(id) AS count FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_log` WHERE added_date>'$today' AND `log_type`='Order' AND `status`=1 AND `details` NOT LIKE '%Draft Invoice not allowed%' GROUP BY date_format(added_date, '%k')");
 		if(count($result_inv_today)){
 			foreach($result_inv_today as $data){
 				$invoiceData['today'][$data['date']] = $data['count'];
 			}
 		}
-		$result_inv_month = $this->get_data("SELECT date_format(added_date, '%e %M') AS date, COUNT(id) AS count FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_log` WHERE added_date>'$month' AND `log_type`='Invoice' AND `status`=1 AND `details` NOT LIKE '%Draft Invoice not allowed%' GROUP BY date_format(added_date, '%e')");
+		$result_inv_month = $this->get_data("SELECT date_format(added_date, '%e %M') AS date, COUNT(id) AS count FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_log` WHERE added_date>'$month' AND `log_type`='Order' AND `status`=1 AND `details` NOT LIKE '%Draft Invoice not allowed%' GROUP BY date_format(added_date, '%e')");
 		if(count($result_inv_month)){
 			foreach($result_inv_month as $data){
 				$invoiceData['month'][$data['date']] = $data['count'];
 			}
 		}
 
-		$result_inv_year = $this->get_data("SELECT date_format(added_date, '%M %Y') AS date, COUNT(id) AS count FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_log` WHERE added_date>'$year' AND `log_type`='Invoice' AND `status`=1 AND `details` NOT LIKE '%Draft Invoice not allowed%' GROUP BY date_format(added_date, '%M')");
+		$result_inv_year = $this->get_data("SELECT date_format(added_date, '%M %Y') AS date, COUNT(id) AS count FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_log` WHERE added_date>'$year' AND `log_type`='Order' AND `status`=1 AND `details` NOT LIKE '%Draft Invoice not allowed%' GROUP BY date_format(added_date, '%M')");
 		if(count($result_inv_year)){
 			foreach($result_inv_year as $data){
 				$invoiceData['year'][$data['date']] = $data['count'];
@@ -6424,7 +7103,7 @@ jQuery(document).ready(function($) {
                 data: [{$graphDataCus}]
             },
             {
-                label: "Invoice",
+                label: "Order",
                 backgroundColor: "rgba(93,197,96,0.5)",
                 borderColor: "rgba(93,197,96,1)",
                 pointBackgroundColor: "rgba(93,197,96,1)",
@@ -6996,9 +7675,11 @@ EOF;
 		}
 		return array_combine(array_keys($cur_arr),array_keys($cur_arr));
 	}
-
+	
 	public function check_if_real_time_push_enable_for_item($item=''){
 		if($item!=''){
+			//
+			if($item == 'inventory'){return true;}
 			$mw_wc_qbo_desk_rt_push_enable = $this->option_checked('mw_wc_qbo_desk_rt_push_enable');
 			if(!$mw_wc_qbo_desk_rt_push_enable){
 				return false;
@@ -7205,7 +7886,7 @@ EOF;
 		return false;
 	}
 	
-	public function Add_Pull_Inventory_Queue($qbd_id){		
+	public function Add_Pull_Inventory_Queue($qbd_id,$auto=false){		
 		if(!$this->is_qwc_connected()){
 			return false;
 		}
@@ -7225,6 +7906,14 @@ EOF;
 				$extra = null;
 				$qp_type = $this->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_items','product_type','qbd_id',$qbd_id);
 				if($qp_type=='InventoryAssembly'){
+					if($this->option_checked('mw_wc_qbo_desk_use_max_as_qoh_iasmbly_invnt_pull')){
+						if(!$this->if_queue_exists('UPDATE_INVENTORY_A_MAX',$qbd_id)){
+							$Queue = new QuickBooks_WebConnector_Queue($this->get_dsn());
+							$Queue->enqueue('UPDATE_INVENTORY_A_MAX', $qbd_id, 0,array('manual'=>true),$this->get_qbun());							
+						}
+						return true;
+					}
+					
 					$extra = array();
 					$extra['InventoryAssembly'] = true;
 				}
@@ -7235,7 +7924,10 @@ EOF;
 				$this->save_log(array('log_type'=>'Inventory','log_title'=>'Pull QBD Inventory #'.$qbd_id,'details'=>'Inventory added into queue','status'=>3));
 				return true;
 			}else{
-				$this->save_log(array('log_type'=>'Inventory','log_title'=>'Pull QBD Inventory #'.$qbd_id,'details'=>'Inventory not mapped','status'=>3));
+				if(!$auto){
+					$this->save_log(array('log_type'=>'Inventory','log_title'=>'Pull QBD Inventory #'.$qbd_id,'details'=>'Inventory not mapped','status'=>3));
+				}
+				
 			}			
 		}
 		
@@ -7262,6 +7954,11 @@ EOF;
 				$priority = 0;
 				$Queue = new QuickBooks_WebConnector_Queue($this->get_dsn());
 				$Queue->enqueue('WC_UPDATE_PRODUCT_PRICE', $qbd_id,$priority,null,$this->get_qbun());
+				/**/
+				if($this->check_sh_woorbp_qbpricelevel_hash() && $this->option_checked('mw_wc_qbo_desk_woorbp_qbpricelevel_compt_ed')){
+					$Queue->enqueue('PriceLevel_Inventory', $qbd_id,$priority,null,$this->get_qbun());
+				}
+				
 				$this->save_log(array('log_type'=>'Price','log_title'=>'Pull QBD Product Price #'.$qbd_id,'details'=>'Product Price added into queue','status'=>3));
 				return true;
 			}else{
@@ -7286,10 +7983,42 @@ EOF;
 		$QtyOnHand = $this->get_array_isset($inventory_data,'QuantityOnHand',0);
 		$Name = $this->get_array_isset($inventory_data,'Name','');
 		
+		$Max = $this->get_array_isset($inventory_data,'Max',0);
+		
 		$ext_log_txt = '';
 		
 		if($qbo_inventory_id!=''){
-			if($this->is_valid_qbd_product($qbo_inventory_id,'Inventory') || $this->is_valid_qbd_product($qbo_inventory_id,'InventoryAssembly')){
+			//Changes needed here for optimization
+			$is_Inventory = $this->is_valid_qbd_product($qbo_inventory_id,'Inventory');
+			
+			$is_InventoryAssembly = false;
+			if(!$is_Inventory){
+				if(isset($inventory_data['is_InventoryAssembly'])){
+					$is_InventoryAssembly = $this->get_array_isset($inventory_data,'is_InventoryAssembly',false);
+				}else{
+					$is_InventoryAssembly = $this->is_valid_qbd_product($qbo_inventory_id,'InventoryAssembly');
+				}				
+			}
+			
+			if($is_Inventory || $is_InventoryAssembly){
+				/**/
+				if($Max == 1 && $is_InventoryAssembly){
+					$qb_item_assembly = $this->get_row_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_items','qbd_id',$qbo_inventory_id);
+					if(is_array($qb_item_assembly) && !empty($qb_item_assembly)){
+						$info_arr = $qb_item_assembly['info_arr'];
+						if(!empty($info_arr)){
+							$info_arr = @unserialize($info_arr);
+							if(is_array($info_arr) && !empty($info_arr)){
+								$info_arr['MAX_Q'] = $QtyOnHand;
+								$save_data = array();
+								$save_data['info_arr'] = serialize($info_arr);
+								$wpdb->update($wpdb->prefix.'mw_wc_qbo_desk_qbd_items',$save_data,array('id'=>$qb_item_assembly['id']),'',array('%d'));
+							}
+						}
+					}
+					
+				}
+				
 				//$ext_log = "\n".'Name: '.$Name;
 				
 				//get_row
@@ -7344,6 +8073,10 @@ EOF;
 						
 						$P_Name = $this->get_field_by_val($wpdb->posts,'post_title','ID',(int) $wc_product_id);
 						$ext_log = "\n".'Name: '.$P_Name;
+						
+						/**/
+						$P_Sku = get_post_meta($wc_product_id,'_sku',true);
+						$ext_log .= "\n".'SKU: '.$P_Sku;
 						
 						$_manage_stock = (isset($product_meta['_manage_stock'][0]))?$product_meta['_manage_stock'][0]:'no';
 						$_backorders = (isset($product_meta['_backorders'][0]))?$product_meta['_backorders'][0]:'no';
@@ -7508,6 +8241,130 @@ EOF;
 		}
 	}
 	
+	/**/
+	public function UpdateWooCommercePriceLevelPrice($product_data,$qbpricelevel_wrpl_mv=array()){
+		if(!$this->is_qwc_connected()){
+			return false;
+		}
+		
+		if(is_array($qbpricelevel_wrpl_mv) && !empty($qbpricelevel_wrpl_mv)){
+			global $wpdb;
+			$qbo_product_id = $this->get_array_isset($product_data,'qbo_product_id','');
+			$manual = $this->get_array_isset($product_data,'manual',false);
+
+			$Price = $this->get_array_isset($product_data,'Price',0);
+			$Name = $this->get_array_isset($product_data,'Name','');
+			
+			$PriceLevelListID = $this->get_array_isset($product_data,'PriceLevelListID','');
+			$PriceLevelName = $this->get_array_isset($product_data,'PriceLevelName','');
+			
+			if(empty($Price)){
+				return false;
+			}
+			
+			$ext_log_txt = '';
+			
+			if($qbo_product_id!=''){
+				if($this->is_valid_qbd_product($qbo_product_id)){
+					//$ext_log = "\n".'Name: '.$Name;
+					
+					//get_row
+					$map_data = $this->get_data("SELECT `wc_product_id` FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_product_pairs` WHERE `quickbook_product_id` = '{$qbo_product_id}' AND `wc_product_id` > 0 ");
+					
+					$is_variation = false;
+					if(empty($map_data)){
+						//get_row
+						$map_data = $this->get_data("SELECT `wc_variation_id` FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_variation_pairs` WHERE `quickbook_product_id` = '{$qbo_product_id}' AND `wc_variation_id` > 0 ");
+						$is_variation = true;
+					}
+					
+					if(empty($map_data)){
+						if($manual){
+							//Log Entry
+						}
+						return false;
+					}
+					
+					//Multiple Support
+					if(is_array($map_data)){
+						foreach($map_data as $map_data_c){
+							$wc_product_id = 0;
+					
+							if($is_variation){
+								$wc_variation_id = $map_data_c['wc_variation_id'];
+								$wc_product_id = $wc_variation_id;
+							}else{
+								$wc_product_id = $map_data_c['wc_product_id'];
+							}				
+							
+							$product_meta = get_post_meta($wc_product_id);
+							if(!$product_meta){
+								if($manual){
+									//Log Entry
+								}
+								return false;
+							}
+							
+							$P_Name = $this->get_field_by_val($wpdb->posts,'post_title','ID',(int) $wc_product_id);
+							$P_Sku = get_post_meta($wc_product_id,'_sku',true);
+							$ext_log = "\n".'Name: '.$P_Name;
+							$ext_log .= "\n".'SKU: '.$P_Sku;
+							
+							$_enable_role_based_price = (isset($product_meta['_enable_role_based_price'][0]))?$product_meta['_enable_role_based_price'][0]:0;
+							if(!$_enable_role_based_price){
+								return false;
+							}
+							
+							$_role_based_price = (isset($product_meta['_role_based_price'][0]))?$product_meta['_role_based_price'][0]:'';
+							if(!empty($_role_based_price)){
+								$_role_based_price_a = @unserialize($_role_based_price);
+								if(is_array($qbpricelevel_wrpl_mv) && !empty($qbpricelevel_wrpl_mv)){
+									$_role_based_price_a = (is_array($_role_based_price_a))?$_role_based_price_a:array();
+									foreach($qbpricelevel_wrpl_mv as $wrole => $qpl){
+										if($qpl == $PriceLevelListID){
+											$is_pl_p_added = false;
+											/**/
+											$rbp_pf = 'regular_price';
+											if($this->get_option('mw_wc_qbo_desk_woorbp_qbpricelevel_psf') == 'selling_price'){
+												$rbp_pf = 'selling_price';
+											}
+											
+											if(!empty($_role_based_price_a) && isset($_role_based_price_a[$wrole][$rbp_pf])){
+												$_price = $_role_based_price_a[$wrole][$rbp_pf];
+												if($Price!=$_price){
+													$_role_based_price_a[$wrole][$rbp_pf] = $Price;
+													$is_pl_p_added = true;
+												}												
+											}else{
+												$_role_based_price_a[$wrole] = array($rbp_pf => $Price);
+												$is_pl_p_added = true;
+											}
+											//$this->_p($_role_based_price_a);return;
+											$log_title = $ext_log_txt.'Import PriceLevel Product Price #'.$qbo_product_id;
+											$wrole_f = ucfirst(str_replace('_',' ',$wrole));
+											if($is_pl_p_added){
+												update_post_meta($wc_product_id,'_role_based_price',$_role_based_price_a);
+												$log_details = "WooCommerce Product #{$wc_product_id} {$wrole_f} role price updated from {$_price} to {$Price} ".$ext_log;
+												$this->save_log(array('log_type'=>'Product Price','log_title'=>$log_title,'details'=>$log_details,'status'=>1),true);
+											}else{
+												if($manual){
+													$log_details = "Prices ({$wrole_f}) on both ends are same (".$Price.").".$ext_log;
+													$this->save_log(array('log_type'=>'Product Price','log_title'=>$log_title,'details'=>$log_details,'status'=>2),true);
+												}												
+											}
+										}
+									}
+								}
+							}					
+							
+						}
+					}				
+					
+				}
+			}
+		}
+	}
+	
 	public function UpdateWooCommerceProductPrice($product_data){
 		if(!$this->is_qwc_connected()){
 			return false;
@@ -7567,7 +8424,9 @@ EOF;
 						}
 						
 						$P_Name = $this->get_field_by_val($wpdb->posts,'post_title','ID',(int) $wc_product_id);
+						$P_Sku = get_post_meta($wc_product_id,'_sku',true);
 						$ext_log = "\n".'Name: '.$P_Name;
+						$ext_log .= "\n".'SKU: '.$P_Sku;
 						
 						/**/				
 						if(isset($product_data['Wholesale_Price']) && $this->is_plugin_active('woocommerce-wholesale-prices','woocommerce-wholesale-prices.bootstrap')){
@@ -7594,11 +8453,23 @@ EOF;
 							}
 						}
 						
-						$_price = (isset($product_meta['_price'][0]))?$product_meta['_price'][0]:0;
+						//
+						$update_price_f = true;
+						$_sale_price = (isset($product_meta['_sale_price'][0]))?$product_meta['_sale_price'][0]:0;
+						$_sale_price = floatval($_sale_price);
+						if($_sale_price > 0){
+							$_price = (isset($product_meta['_regular_price'][0]))?$product_meta['_regular_price'][0]:0;
+							$update_price_f = false;
+						}else{
+							$_price = (isset($product_meta['_price'][0]))?$product_meta['_price'][0]:0;							
+						}
 						
 						if($Price!=$_price){
 							$_price = number_format(floatval($_price),2);
-							update_post_meta($wc_product_id, '_price', $Price);
+							if($update_price_f){
+								update_post_meta($wc_product_id, '_price', $Price);
+							}
+							
 							//
 							update_post_meta($wc_product_id, '_regular_price', $Price);
 							
@@ -7669,9 +8540,15 @@ EOF;
 	}
 	
 	public function is_import_vendor(){
+		return true; //
 		if($this->is_plugin_active('split-order-custom-po-for-myworks-quickbooks-desktop-sync')){
 			return true;
 		}
+		
+		if($this->is_plugin_active('myworks-quickbooks-desktop-compt-cpfm-po-cjh') && $this->check_sh_cpfmpocjh_cuscompt_hash()){
+			return true;
+		}
+		
 		return false;
 	}
 	
@@ -7823,43 +8700,85 @@ EOF;
 	}
 	
 	public function get_n_pam_wf_list(){
-		return array(
+		$f_arr = array(
 			'name' => 'Name',
 			'sku' => 'SKU',
 		);
+		
+		if($this->is_plugin_active('myworks-quickbooks-desktop-custom-product-automap')){
+			$f_arr['ID'] = 'ID';
+		}
+		
+		return $f_arr;
 	}
 	
 	public function get_n_pam_qf_list(){
 		$f_arr = array(
 			'name' => 'Full Name',
 			'sku' => 'Item Name / Number',
+			'SalesDesc' => 'Item Description',
 		);
 		
 		if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
 			$f_arr['mpn'] = 'Manufacturers Part Number';
 			$f_arr['barcode'] = 'Barcode Number';
 		}
+		
+		if($this->is_plugin_active('myworks-quickbooks-desktop-custom-product-automap')){
+			$f_arr['Woo-Product-ID'] = 'Woo-Product-ID (Custom Field)';
+		}
+		
 		return $f_arr;
 	}
 	
 	public function get_n_vam_wf_list(){
-		return array(
+		$f_arr = array(
 			'name' => 'Name',
 			'sku' => 'SKU',
 		);
+		
+		if($this->is_plugin_active('myworks-quickbooks-desktop-custom-product-automap')){
+			$f_arr['ID'] = 'ID';
+			$f_arr['Parent_Product_ID'] = 'Parent Product ID';
+		}
+		
+		return $f_arr;
 	}
 	
 	public function get_n_vam_qf_list(){
 		$f_arr = array(
 			'name' => 'Full Name',
 			'sku' => 'Item Name / Number',
+			'SalesDesc' => 'Item Description',
 		);
 		
 		if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
 			$f_arr['mpn'] = 'Manufacturers Part Number';
 			$f_arr['barcode'] = 'Barcode Number';
 		}
+		
+		if($this->is_plugin_active('myworks-quickbooks-desktop-custom-product-automap')){
+			$f_arr['Woo-Product-ID'] = 'Woo-Product-ID (Custom Field)';
+		}
+		
 		return $f_arr;
+	}
+	
+	public function get_string_between($string, $start, $end){
+		$string = ' ' . $string;
+		$ini = strpos($string, $start);
+		if ($ini == 0) return '';
+		$ini += strlen($start);
+		$len = strpos($string, $end, $ini) - $ini;
+		return substr($string, $ini, $len);
+	}
+	
+	public function get_string_after($string, $start){
+		$arr = explode($start, $string);
+		if(is_array($arr) && isset($arr[1])){
+			return $arr[1];
+		}
+		return '';
 	}
 	
 	public function if_sync_os_payment($invoice_data){
@@ -7903,9 +8822,19 @@ EOF;
 				$qc_whr = " AND `ident` = '{$id}' ";
 			}
 			
+			/*
+			if(is_admin()){
+				$qs_whr = " AND `qb_status` = '{$status}' ";
+			}else{
+				$qs_whr = " AND (`qb_status` = '{$status}' OR (`qb_status` = 'i' AND `dequeue_datetime` IS NOT NULL)) ";
+			}
+			*/
+			
+			$qs_whr = " AND `qb_status` = '{$status}' ";
+			
 			global $wpdb;
-			$qq = "SELECT * FROM `quickbooks_queue` WHERE `qb_action` = '{$action}' {$qc_whr} AND (`qb_status` = '{$status}' OR (`qb_status` = 'i' AND `dequeue_datetime` IS NULL)) ORDER BY `quickbooks_queue_id` DESC LIMIT 0,1 ";
-			$qd = $this->get_row($qq);
+			$qq = "SELECT * FROM `quickbooks_queue` WHERE `qb_action` = '{$action}' {$qc_whr} {$qs_whr} ORDER BY `quickbooks_queue_id` DESC LIMIT 0,1 ";
+			$qd = $this->get_row($qq);			
 			if(is_array($qd) && !empty($qd)){
 				if($return_arr){
 					return $qd;
@@ -7963,7 +8892,7 @@ EOF;
 			foreach($q_list as $ql){
 				$ident = (int) $ql['ident'];
 				if($ident >0){
-					$is_guest_q = (isset($extra['qb_action']) && $extra['qb_action'] == 'GuestAdd')?true:false;
+					$is_guest_q = (isset($ql['qb_action']) && $ql['qb_action'] == 'GuestAdd')?true:false;
 					if($is_guest_q){
 						$customer_data = $this->get_wc_customer_info_from_order($ident);
 						if($this->if_qbo_guest_exists($customer_data)){
@@ -8300,12 +9229,12 @@ EOF;
 	protected function get_mwr_oiw_mw_idls($qbo_item, $invoice_data){
 		$mw_warehouse = 0;
 		if(is_array($qbo_item) && !empty($qbo_item) && is_array($invoice_data) && !empty($invoice_data)){
-			if(isset($qbo_item["_order_item_wh"]) && !empty($qbo_item["_order_item_wh"])){
-				$oiw_a = @unserialize($qbo_item["_order_item_wh"]);
-				if ($qbo_item["_order_item_wh"] === 'b:0;' || $oiw_a !== false) {
+			if(isset($qbo_item["_order_item_wh"]) && !empty($qbo_item["_order_item_wh"])){				
+				if (!is_numeric($qbo_item["_order_item_wh"])) {
+					$oiw_a = @unserialize($qbo_item["_order_item_wh"]);
 					if(is_array($oiw_a) && !empty($oiw_a)){
 						foreach($oiw_a as $oiw_a_k => $oiw_a_v){
-							$mw_warehouse = (int) $oiw_a_v;
+							$mw_warehouse = (int) $oiw_a_k;
 							break;
 						}
 					}
@@ -8320,16 +9249,185 @@ EOF;
 		return $mw_warehouse;
 	}
 	
-	public function get_hd_ldys_lmt(){
+	/**/
+	public function get_osl_sm_val($prm=array()){
+		$stk = base64_decode('T3JkZXJBZGQ=');
+		$sl_okv = base64_decode('bXdfd2NfcWJvX2Rlc2tfaW1wX29zbGNkX2RjYQ==');
+		$oslcd = get_option($sl_okv);
+		
+		$cy = $this->now('Y');
+		$cm = $this->now('F');
+		
+		if(is_array($oslcd) && !empty($oslcd)){
+			if(isset($oslcd[$cy]) && is_array($oslcd)){
+				if(isset($oslcd[$cy][$cm]) && is_array($oslcd[$cy][$cm])){
+					if(isset($oslcd[$cy][$cm][$stk]) && (int) $oslcd[$cy][$cm][$stk] > 0){
+						$e_scv = (int) $oslcd[$cy][$cm][$stk];
+						return $e_scv;
+					}
+				}
+			}
+		}
+		return 0;
+	}
+	
+	public function get_osl_lp_count($prm=array()){
+		$osl_pm_v = 20;
+		if($this->is_plg_lc_p_g()){
+			$osl_pm_v = 1000;
+		}
+		return $osl_pm_v;
+	}
+	
+	public function lp_chk_osl_allwd($prm=array()){
+		if($this->is_plg_lc_p_l() || $this->is_plg_lc_p_g()){
+			$e_scv = (int) $this->get_osl_sm_val();
+			$osl_pm_v = $this->get_osl_lp_count();							
+			if($e_scv >= $osl_pm_v){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	protected function set_imp_sync_data($prm=array()){
 		/*
+		if(is_array($prm) && isset($prm['stk']) && !empty($prm['stk'])){
+			$stk = base64_decode($prm['stk']);
+		}else{
+			$stk = base64_decode('T3JkZXJBZGQ=');
+		}
+		*/
+		
+		$E_ID = 0;
+		if(is_array($prm) && isset($prm['ID']) && (int) $prm['ID'] > 0){
+			$E_ID = (int) $prm['ID'];
+		}
+		
+		$stk = base64_decode('T3JkZXJBZGQ=');
+		
+		$sl_okv = base64_decode('bXdfd2NfcWJvX2Rlc2tfaW1wX29zbGNkX2RjYQ==');
+		$oslcd = get_option($sl_okv);
+		
+		$cy = $this->now('Y');
+		$cm = $this->now('F');		
+		//
+		
+		if(is_array($oslcd) && !empty($oslcd)){
+			$e_scv_inc = false;
+			if(isset($oslcd[$cy]) && is_array($oslcd)){
+				if(isset($oslcd[$cy][$cm]) && is_array($oslcd[$cy][$cm])){
+					if(isset($oslcd[$cy][$cm][$stk]) && (int) $oslcd[$cy][$cm][$stk] > 0){
+						$ii_cv = true;						
+						if($E_ID > 0 && isset($oslcd[$cy][$cm][$stk.'_IDs'])){
+							$stk_id_arr = $oslcd[$cy][$cm][$stk.'_IDs'];
+							if(is_array($stk_id_arr) && in_array($E_ID,$stk_id_arr)){
+								$ii_cv = false;
+							}else{
+								$stk_id_arr[] = $E_ID;
+								$oslcd[$cy][$cm][$stk.'_IDs'] = $stk_id_arr;
+							}
+						}
+						
+						if($ii_cv){
+							$e_scv = (int) $oslcd[$cy][$cm][$stk];
+							$e_scv++;
+							$oslcd[$cy][$cm][$stk] = $e_scv;
+						}
+						
+						$e_scv_inc = true;
+					}
+				}
+			}
+			
+			if(!$e_scv_inc){
+				$oslcd[$cy][$cm][$stk] = 1;				
+			}
+			
+			if($E_ID > 0 && !isset($oslcd[$cy][$cm][$stk.'_IDs'])){
+				$oslcd[$cy][$cm][$stk.'_IDs'] = array($E_ID);
+			}
+		}else{
+			$oslcd = array();
+			$oslcd[$cy] = array(
+				$cm => array(
+					$stk => 1,
+				),
+			);
+			
+			if($E_ID > 0 ){
+				$oslcd[$cy][$cm][$stk.'_IDs'] = array($E_ID);
+			}			
+		}
+		
+		update_option($sl_okv,$oslcd);
+	}
+	
+	/**/
+	private function get_local_key_results(){
+		$localkeyresults = array();
+		$localkey = $this->get_option('mw_wc_qbo_desk_localkey');
+		if(!empty($localkey)){
+			$localkey = str_replace("\n", '', $localkey);
+			$localdata = substr($localkey, 0, strlen($localkey) - 32);
+			$localdata = strrev($localdata);
+			$localdata = substr($localdata, 32);
+			$localdata = @base64_decode($localdata);
+			$localkeyresults = @unserialize($localdata);
+		}
+		return $localkeyresults;
+	}
+	
+	private function get_plg_lc_plan(){
+		$pln = '';
+		$lkr = $this->get_local_key_results();
+		if(is_array($lkr) && count($lkr) && isset($lkr[base64_decode('cHJvZHVjdG5hbWU=')]) && !empty($lkr[base64_decode('cHJvZHVjdG5hbWU=')])){
+			if(strpos($lkr[base64_decode('cHJvZHVjdG5hbWU=')],base64_decode('TGF1bmNo'))!==false){
+				$pln = base64_decode('TGF1bmNo');
+			}
+			
+			if(strpos($lkr[base64_decode('cHJvZHVjdG5hbWU=')],base64_decode('R3Jvdw=='))!==false){
+				$pln = base64_decode('R3Jvdw==');
+			}
+			
+			if(strpos($lkr[base64_decode('cHJvZHVjdG5hbWU=')],base64_decode('U2NhbGU='))!==false){
+				$pln = base64_decode('U2NhbGU=');
+			}
+		}
+		return $pln;
+	}
+	
+	public function is_plg_lc_p_l(){
+		//return false;
+		if($this->get_plg_lc_plan() == base64_decode('TGF1bmNo')){
+			return true;
+		}
+		return false;
+	}
+	
+	public function is_plg_lc_p_g(){
+		if($this->get_plg_lc_plan() == base64_decode('R3Jvdw==')){
+			return true;
+		}
+		return false;
+	}
+	
+	public function is_plg_lc_p_s(){
+		if($this->get_plg_lc_plan() == base64_decode('U2NhbGU=')){
+			return true;
+		}
+		return false;
+	}
+	
+	public function get_hd_ldys_lmt(){
+		/**/
 		if($this->is_plg_lc_p_l()){
 			return 7;
-		}
+		}		
 		
 		if($this->option_checked('mw_wc_qbo_desk_trial_license')){
 			return 7;
-		}
-		*/
+		}		
 		
 		return 30;
 	}
@@ -8385,5 +9483,253 @@ EOF;
 		return array();
 	}
 	
+	/**/
+	protected function get_liqtycustcolumn_c_qty($Qty,$qbo_item){
+		//return $Qty;
+		$C_Qty = $Qty;
+		if($Qty>0 && is_array($qbo_item) && !empty($qbo_item)){
+			$product_id = (int) $qbo_item['product_id'];
+			$variation_id = (isset($qbo_item['variation_id']))?(int) $qbo_item['variation_id']:0;
+			$case_count = 0;
+			if($product_id > 0){
+				$case_count = (int) get_post_meta($product_id,'case_count',true);
+			}
+			
+			if($case_count > 0){
+				$C_Qty = $Qty / $case_count;
+			}
+		}
+		return $C_Qty;
+	}
+	
+	public function get_qbd_item_sales_tax_dd_options(){
+		global $wpdb;
+		$opt_s = '';
+		$dd_q = "SELECT `qbd_id` , `name` , `info_arr` FROM {$wpdb->prefix}mw_wc_qbo_desk_qbd_items WHERE `qbd_id` != '' AND (product_type='SalesTax' OR product_type='SalesTaxGroup') ORDER BY `name` ASC";
+		$dd_data = $this->get_data($dd_q);
+		if(is_array($dd_data) && !empty($dd_data)){
+			foreach($dd_data as $v){
+				$ot = $v['name'];
+				if(!empty($v['info_arr'])){
+					$info_arr = @unserialize($v['info_arr']);
+					if(is_array($info_arr) && !empty($info_arr) && isset($info_arr['TaxRate']) && !empty($info_arr['TaxRate'])){
+						$ot .= '('.$info_arr['TaxRate'].'%)';
+					}
+				}
+				$opt_s .= '<option value="'.$v['qbd_id'].'">'.$ot.'</option>';
+			}
+		}
+		return $opt_s;
+	}
+	
+	public function get_woo_latest_order_id_by_customer_id($customer_id){
+		/**/
+	}
+	
+	public function get_woo_latest_order_id_by_customer_id_from_queue($customer_id){
+		if($customer_id > 0){
+			global $wpdb;
+			$qq = "SELECT * FROM `quickbooks_queue` WHERE `qb_status` = 'q' AND `qb_action` IN('".QUICKBOOKS_ADD_INVOICE."','".QUICKBOOKS_ADD_SALESRECEIPT."','".QUICKBOOKS_ADD_SALESORDER."','".QUICKBOOKS_ADD_ESTIMATE."')  ORDER BY `quickbooks_queue_id` DESC LIMIT 0,1 ";
+			$qd = $this->get_row($qq);
+			if(is_array($qd) && !empty($qd)){
+				$order_id = (int) $qd['ident'];
+				$ord_customer_id = get_post_meta($order_id,'_customer_user',true);
+				if($customer_id == $ord_customer_id){
+					return $order_id;
+				}
+			}
+		}
+	}
+	
+	public function get_vendor_id_cpfmpocjh_cuscompt($invoice_data){
+		return '80000006-1516216199';
+		$wc_inv_id = (int) $this->get_array_isset($invoice_data,'wc_inv_id',0);
+		if($wc_inv_id > 0){
+			//
+		}
+	}
+	
+	public function order_and_p_details_amounts_round($invoice_p_data){
+		$c_invoice_p_data = array();
+		if(is_array($invoice_p_data) && !empty($invoice_p_data)){
+			$order_amount_fields_keys = array(
+				'_cart_discount',
+				'_cart_discount_tax',
+				'_order_shipping',
+				'_order_shipping_tax',
+				'_order_tax',
+				'_order_total',
+				//'_stripe_fee',
+				//'_stripe_net',
+				'discount_amount',
+				'discount_amount_tax',
+				'cost',
+				'total_tax',
+				'tax_amount',
+				'shipping_tax_amount',
+				'order_shipping_total',
+				'UnitPrice',
+				'line_subtotal',
+				'line_subtotal_tax',
+				'line_total',
+				'line_tax',
+				'amount',
+				'order_total',
+			);
+			
+			$oafk_arr_keys = array(
+				'used_coupons',
+				'shipping_details',
+				'tax_details',
+				'qbo_inv_items',
+				'dc_gt_fees',
+				'pw_gift_card',
+			);			
+			
+			foreach($invoice_p_data as $k => $v){
+				if(!is_array($v) && in_array($k,$order_amount_fields_keys) && (float) $v > 0 ){
+					$v = floatval($v);						
+					//qbd_limit_decimal_points
+					//$v = round($v,2);
+				}
+				
+				if(is_array($v) && in_array($k,$oafk_arr_keys) && !empty($v)){
+					foreach($v as $k_c => $v_c){
+						if(is_array($v_c) && !empty($v_c)){
+							foreach($v_c as $k_c_c => $v_c_v){
+								if(in_array($k_c_c,$order_amount_fields_keys)){
+									//
+									if($k_c_c != 'UnitPrice' && $k_c_c != 'line_total'){
+										continue;
+									}
+									$v[$k_c][$k_c_c] = round($v[$k_c][$k_c_c],2);									
+								}
+							}
+						}
+					}
+				}
+				
+				$c_invoice_p_data[$k] = $v;
+			}
+		}
+		
+		if(empty($c_invoice_p_data)){
+			return $invoice_p_data;
+		}
+		return $c_invoice_p_data;
+	}
+	
+	public function custom_order_and_p_details_amounts_multiplication($invoice_p_data){
+		$c_invoice_p_data = array();
+		if(is_array($invoice_p_data) && !empty($invoice_p_data)){
+			$order_amount_fields_keys = array(
+				'_cart_discount',
+				'_cart_discount_tax',
+				'_order_shipping',
+				'_order_shipping_tax',
+				'_order_tax',
+				'_order_total',
+				//'_stripe_fee',
+				//'_stripe_net',
+				'discount_amount',
+				'discount_amount_tax',
+				'cost',
+				'total_tax',
+				'tax_amount',
+				'shipping_tax_amount',
+				'order_shipping_total',
+				'UnitPrice',
+				'line_subtotal',
+				'line_subtotal_tax',
+				'line_total',
+				'line_tax',
+				'amount',
+				'order_total',
+			);
+			
+			$oafk_arr_keys = array(
+				'used_coupons',
+				'shipping_details',
+				'tax_details',
+				'qbo_inv_items',
+				'dc_gt_fees',
+				'pw_gift_card',
+			);
+			
+			/*
+			if(isset($invoice_p_data['order_currency'])){
+				$_order_currency = $this->get_array_isset($invoice_p_data,'order_currency','',true);
+			}else{
+				$_order_currency = $this->get_array_isset($invoice_p_data,'_order_currency','',true);
+			}
+			*/
+			
+			if(isset($invoice_p_data['payment_method'])){
+				$_payment_method = $this->get_array_isset($invoice_p_data,'payment_method','',true);
+			}else{
+				$_payment_method = $this->get_array_isset($invoice_p_data,'_payment_method','',true);
+			}
+			
+			//$_payment_method = 'cod';
+			if($_payment_method == 'cod' || $_payment_method == 'cxpay_redirect'|| $_payment_method == 'cheque'){
+				$d_by = 100;
+				$m_by = 1.82;
+				foreach($invoice_p_data as $k => $v){
+					if(!is_array($v) && in_array($k,$order_amount_fields_keys) && (float) $v > 0 ){
+						$v = floatval($v);						
+						if($_payment_method == 'cod' || $_payment_method == 'cheque'){
+							$v = $this->coapdam_nf($v/$d_by);//qbd_limit_decimal_points							
+						}else{
+							$v = $this->coapdam_nf($v*$m_by);
+						}						
+					}
+					
+					if(is_array($v) && in_array($k,$oafk_arr_keys) && !empty($v)){
+						foreach($v as $k_c => $v_c){
+							if(is_array($v_c) && !empty($v_c)){
+								foreach($v_c as $k_c_c => $v_c_v){
+									if(in_array($k_c_c,$order_amount_fields_keys)){
+										if($_payment_method == 'cod' || $_payment_method == 'cheque'){											
+											$v[$k_c][$k_c_c] = $this->coapdam_nf($v[$k_c][$k_c_c]/$d_by);
+										}else{
+											$v[$k_c][$k_c_c] = $this->coapdam_nf($v[$k_c][$k_c_c]*$m_by);
+										}
+									}
+								}
+							}
+						}
+					}
+					
+					$c_invoice_p_data[$k] = $v;
+				}
+			}
+		}
+		
+		if(empty($c_invoice_p_data)){
+			return $invoice_p_data;
+		}
+		return $c_invoice_p_data;
+	}
+	
+	public function coapdam_nf($amount){
+		return number_format((float)$amount, 5, ',', '.');
+	}
+	
+	public function get_qbo_company_setting($setting=''){
+		$p_arr = get_option('mw_wc_qbo_desk_qbd_preferences_arr');		
+		if(!empty($setting) && is_array($p_arr) && !empty($p_arr) && isset($p_arr[$setting])){
+			$rt = $p_arr[$setting];
+			if($rt == 'false'){$rt = false;}			
+			return $rt;
+		}
+		return '';
+	}
+	
+	public function due_days_list_arr(){
+		return array_combine(range(1,100), range(1,100));
+	}
+	
 	/*End of Class*/
 }
+
+require_once plugin_dir_path( __FILE__ ) . 'class-mw-qbo-desktop-lib-ext.php';

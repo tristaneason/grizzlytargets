@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 ?>
 <div class="wt_iew_export_main">
-	<p><?php echo $step_info['description']; ?></p>
+	<p><?php //echo $step_info['description']; ?></p>
 	
     <div class="wt_iew_warn wt_iew_method_export_wrn" style="display:none;">
 		<?php _e('Please select an export method');?>

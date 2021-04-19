@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'f81ea52ed5fb8f6f4c54cd6d755e71fbd966b538',
+    'reference' => '0170b9a974bb3ad19398e3b8e9d352084a9d9087',
     'name' => 'woocommerce/woocommerce-blocks',
   ),
   'versions' => 
@@ -74,7 +74,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'f81ea52ed5fb8f6f4c54cd6d755e71fbd966b538',
+      'reference' => '0170b9a974bb3ad19398e3b8e9d352084a9d9087',
     ),
   ),
 );
@@ -299,7 +299,6 @@ self::$canGetVendors = method_exists('Composer\Autoload\ClassLoader', 'getRegist
 $installed = array();
 
 if (self::$canGetVendors) {
-
 foreach (ClassLoader::getRegisteredLoaders() as $vendorDir => $loader) {
 if (isset(self::$installedByVendor[$vendorDir])) {
 $installed[] = self::$installedByVendor[$vendorDir];

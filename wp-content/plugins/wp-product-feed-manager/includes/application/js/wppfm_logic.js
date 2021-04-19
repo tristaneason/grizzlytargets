@@ -250,6 +250,14 @@ function wppfm_regenerateFeed( feedId ) {
 
 		wppfm_hideFeedSpinner();
 
+		if ( xmlResult.includes('channel_not_installed') ) {
+			var channelName = xmlResult.split(':')[1];
+			alert( wppfm_feed_list_form_vars.missing_channel.replaceAll( '%channelname%', channelName ) );
+			wppfm_updateFeedRowStatus( feedId, 7);
+			wppfmRemoveFromQueueString( feedId );
+			return;
+		}
+
 		console.log(xmlResult);
 
 		// activate the feed list status checker to update the feed list when a status changes

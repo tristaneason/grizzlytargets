@@ -174,7 +174,7 @@ if ( ! defined( 'WPINC' ) ) {
 						if(file_exists($log_file_path))
 						{
 						?>
-							| <a class="wt_iew_view_log_btn" data-history-id="<?php echo $history_item['id'];?>"><?php _e("Details");?></a>
+							| <a class="wt_iew_view_log_btn" data-history-id="<?php echo $history_item['id'];?>"><?php _e("View log");?></a>
 						<?php
 						}
 					}

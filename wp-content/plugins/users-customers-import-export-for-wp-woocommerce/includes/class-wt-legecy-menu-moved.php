@@ -61,7 +61,7 @@ if (!class_exists('wt_legecy_menu_moved')) {
                 </p>
                 <p>
 
-                    <a class="button button-primary" data-type="remove_legecy_menu_banner">Remove legacy menu</a>
+                    <a class="button button-primary" data-type="remove_legecy_menu_banner"><?php _e('Remove user legacy menu');?></a>
                 </p>
             </div>
             <?php

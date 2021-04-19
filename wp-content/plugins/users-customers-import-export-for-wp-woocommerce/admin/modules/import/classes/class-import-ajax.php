@@ -139,6 +139,7 @@ class Wt_Import_Export_For_Woo_Basic_Import_Ajax
 				{
 					$file_name='local_file_'.time().'_'.sanitize_file_name($_FILES['wt_iew_import_file']['name']); //sanitize the file name, add a timestamp prefix to avoid conflict
 					$file_path=$this->import_obj->get_file_path($file_name);
+					// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 					if(@move_uploaded_file($_FILES['wt_iew_import_file']['tmp_name'], $file_path))
 					{
 						$out['msg']='';
@@ -441,7 +442,8 @@ class Wt_Import_Export_For_Woo_Basic_Import_Ajax
 		/* take template name from post data, if not then create from time stamp */
 		$template_name=(isset($_POST['template_name']) ? sanitize_text_field($_POST['template_name']) : date('d-M-Y h:i:s A'));
 		
-		$out['name']=$template_name;
+		$template_name = stripslashes($template_name);
+		$out['name']= $template_name;
 		$out['id']=0;
 		$out['status']=1;
 
@@ -515,6 +517,7 @@ class Wt_Import_Export_For_Woo_Basic_Import_Ajax
 				{
 					$out['id']=$this->selected_template;
 					$out['name']=$template_name;
+					$out['msg']=__('Template updated successfully');
 					return $out;
 				}
 			}else
@@ -531,6 +534,7 @@ class Wt_Import_Export_For_Woo_Basic_Import_Ajax
 				if($wpdb->insert($tb, $insert_data, $insert_data_type)) //success
 				{
 					$out['id']=$wpdb->insert_id;
+					$out['msg']=__('Template saved successfully');
 					return $out;
 				}
 			}
@@ -540,6 +544,14 @@ class Wt_Import_Export_For_Woo_Basic_Import_Ajax
 	}
 
 
+	/*
+	 * Get step information
+	 * @param string $step
+	 */
+
+	public function get_step_info( $step ) {
+		return isset( $this->steps[ $step ] ) ? $this->steps[ $step ] : array( 'title' => ' ', 'description' => ' ' );
+	}
 	/**
 	*  Step 1 (Ajax sub function)
 	*  Built in steps, post type choosing page
@@ -839,14 +851,15 @@ class Wt_Import_Export_For_Woo_Basic_Import_Ajax
 
 	protected function prepare_step_summary()
 	{
-		$this->step_title=$this->steps[$this->step]['title'];
+		$step_info= $this->get_step_info($this->step);
+		$this->step_title=$step_info['title'];
 		$this->step_keys=array_keys($this->steps);
 		$this->current_step_index=array_search($this->step, $this->step_keys);
 		$this->current_step_number=$this->current_step_index+1;
 		$this->last_page=(!isset($this->step_keys[$this->current_step_index+1]) ? true : false);
 		$this->total_steps=count($this->step_keys);
 		$this->step_summary=__(sprintf("Step %d of %d", $this->current_step_number, $this->total_steps));
-		$this->step_description=$this->steps[$this->step]['description'];
+		$this->step_description=$step_info['description'];
 	}
 
 	protected function prepare_step_header_html()

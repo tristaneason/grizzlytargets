@@ -723,4 +723,5 @@ jQuery(document).ready(function(){
 	wt_drp_menu.Set();
 	wt_iew_file_attacher.Set();
 	wt_iew_form_toggler.Set();
+	wt_field_group.Set();
 });

@@ -482,7 +482,7 @@ class Wt_Import_Export_For_Woo_basic_User {
         
 
         $out['found_action_merge'] = array(
-            'label' => __("If the user exists in the store"),
+            'label' => __("Existing user"),
             'type' => 'radio',
             'radio_fields' => array(
                 'skip' => __('Skip'),                                

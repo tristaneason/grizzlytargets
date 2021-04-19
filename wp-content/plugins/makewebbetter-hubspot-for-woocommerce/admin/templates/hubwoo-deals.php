@@ -29,7 +29,7 @@ $display_data = Hubwoo::get_deals_presenter();
 					?>
 			</p>
 		</div>
-		<div class="hubwoo-form-wizard-content hubwoo-deal-wrap-con" data-tab-content="ecommerce-pipleine-setup" style="display: <?php echo esc_attr( $display_data['view_mapping'] ); ?>">
+		<div class="hubwoo-form-wizard-content hubwoo-deal-wrap-con" data-tab-content="ecommerce-pipeline-setup" style="display: <?php echo esc_attr( $display_data['view_mapping'] ); ?>">
 			<div class="hubwoo-deal-wrap-con-flex">
 				<div class="hubwoo-deal-wrap-con__h-con">
 					<div class="hubwoo-fields-header hubwoo-common-header">
@@ -37,7 +37,7 @@ $display_data = Hubwoo::get_deals_presenter();
 						<input type="hidden" class="hubwoo-info" data-products="<?php echo esc_attr( $display_data['total_products'] ); ?>">
 					</div>
 					<div class="hubwoo-deal-wrap-con__intro" style="display: <?php echo esc_attr( $display_data['h_sync'] ); ?>">
-						<?php esc_html_e( 'Connect with HubSpot eCommerce pipleine to create deals for your WooCommerce orders. ', 'makewebbetter-hubspot-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Connect with HubSpot eCommerce pipeline to create deals for your WooCommerce orders. ', 'makewebbetter-hubspot-for-woocommerce' ); ?>
 					</div>
 				</div>
 				<div class="hubwoo-deal-wrap-con__h-btn">
@@ -46,7 +46,7 @@ $display_data = Hubwoo::get_deals_presenter();
 					</a>
 				</div>					
 			</div>	
-			<div class="hubwoo-general-settings hubwoo-group-wrap__map_deal_stage ecommerce-pipleine-setup hubwoo-deal-wrap-con__store" style="display: <?php echo esc_attr( $display_data['view_mapping'] ); ?>">
+			<div class="hubwoo-general-settings hubwoo-group-wrap__map_deal_stage ecommerce-pipeline-setup hubwoo-deal-wrap-con__store" style="display: <?php echo esc_attr( $display_data['view_mapping'] ); ?>">
 				<button class="hubwoo__btn manage_product_sync" data-action='run-ecomm-setup' style="display: <?php echo esc_attr( $display_data['view_btn_mapping'] ); ?>"> <?php esc_html_e( 'Run Setup', 'makewebbetter-hubspot-for-woocommerce' ); ?></button>		
 				<div class="hubwoo-progress-wrap progress-cover " style="display: <?php echo esc_attr( $display_data['p_run_sync'] ); ?>">
 					<span class="psync_desc sync-desc" data-sync-type = "product" data-sync-eta = "<?php echo esc_attr( $display_data['eta_product_sync'] ); ?>">					
@@ -193,10 +193,12 @@ $display_data = Hubwoo::get_deals_presenter();
 					<div class="hubwoo-group-wrap__deal_notice deals-par" data-type='pBar' style="display: <?php echo esc_attr( $display_data['message'] ); ?>">
 						<p class="hubwoo_deals_message sync-desc" data-sync-type = "order" data-sync-eta = "<?php echo esc_attr( $sync_data['eta_deals_sync'] ); ?>">
 							<?php
+							if( ! empty($sync_data['eta_deals_sync']) ) {
 								echo esc_textarea(
 									'Your orders are syncing as deals in the background so you can safely leave this page. It should take ' . $sync_data['eta_deals_sync'] . ' to complete.',
 									'makewebbetter-hubspot-for-woocommerce'
 								);
+							}	
 								?>
 
 						</p>

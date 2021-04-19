@@ -47,7 +47,7 @@ class Wt_Import_Export_For_Woo_Basic_History
 		add_filter('wt_iew_admin_menu_basic', array($this, 'add_admin_pages'), 10, 1);
 
 		/* advanced plugin settings */
-		add_filter('wt_iew_advanced_setting_fields_basic', array($this, 'advanced_setting_fields'));
+		add_filter('wt_iew_advanced_setting_fields_basic', array($this, 'advanced_setting_fields'), 11);
 
 		/* main ajax hook. The callback function will decide which action is to execute. */
 		add_action('wp_ajax_iew_history_ajax_basic', array($this, 'ajax_main'), 11);
@@ -197,8 +197,14 @@ class Wt_Import_Export_For_Woo_Basic_History
 	*/ 
 	public function advanced_setting_fields($fields)
 	{
+		$fields['advanced_field_head'] =array(
+				'type'=>'field_group_head', //field type
+				'head'=>__('Advanced options'),
+				'group_id'=>'advanced_field', //field group id
+				'show_on_default'=>0,
+			);
 		$fields['enable_history_auto_delete']=array(
-			'label'=>__("Enable history auto delete"),
+			'label'=>__("Auto delete history"),
 			'type'=>'radio',
 			'radio_fields'=>array(
 				1=>__('Yes'),
@@ -206,6 +212,7 @@ class Wt_Import_Export_For_Woo_Basic_History
 			),
             'value' =>1,
 			'field_name'=>'enable_history_auto_delete',
+			'field_group'=>'advanced_field',
 			'help_text'=>__('Enable auto delete for records within the history section.'),
 			'validation_rule'=>array('type'=>'absint'),
 			'form_toggler'=>array(
@@ -222,7 +229,8 @@ class Wt_Import_Export_For_Woo_Basic_History
             	'style'=>'width:30%;',
             ),
 			'field_name'=>'auto_delete_history_count',
-			'help_text'=>__('Indicates the maximum records to retain in history. Limit the number of records with status ‘Finished’. E.g if you input a count of 50 the system will retain only the most recent 50 number of records with status ‘Finished’. All other records of any other status e.g In Progress(that maybe active as a part of the cron operation) will not be impacted by this count.'),
+			'field_group'=>'advanced_field',
+			'help_text'=>__('Indicates the maximum records to retain in history. Limit the number of records with status ‘Finished’. E.g On giving an input of 50, the system will retain(not delete) the latest 50 records with status ‘Finished’. Any other record with a different status will not be retained.'),
 			'validation_rule'=>array('type'=>'absint'),
 			'form_toggler'=>array(
 				'type'=>'child',

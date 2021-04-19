@@ -28,6 +28,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 		'200' =>200,
 		'500' =>500,
 		'1000' =>1000,
+		'3000' =>3000,
+		'5000' =>5000,
 	);
 	
 	$error = array();
@@ -114,6 +116,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 	$mw_wc_qbo_sync_license = $MWQDC_LB->get_option('mw_wc_qbo_desk_license','');
 	$mw_wc_qbo_sync_localkey = $MWQDC_LB->get_option('mw_wc_qbo_desk_localkey','');
+	
+	$ldfcpv = $MWQDC_LB->get_ldfcpv();
 
 ?>
 
@@ -156,6 +160,61 @@ echo '<form style="position:absolute; top:-100px;">
 					</p>
 				</td>
 			</tr>
+			
+			<!---->
+			<tr>
+				<td>Plan Details</td>
+				<td>
+					<div class="licence-list">
+						  <ul>
+							 <li class="current">
+								<div class="left-status">
+								   Status
+								</div>
+								<div class="right-status">
+								   <?php echo (isset($ldfcpv['status']))?$ldfcpv['status']:''?>
+								</div>
+							 </li>
+							 <li>
+								<div class="left-status">
+								   Plan
+								</div>
+								<div class="right-status">
+								   <?php echo (isset($ldfcpv['plan']))?$ldfcpv['plan']:''?>
+								</div>
+							 </li>
+							 <li>
+								<div class="left-status">
+								   Next Due Date
+								</div>
+								<div class="right-status">
+								  <?php echo (isset($ldfcpv['nextduedate']) && !empty($ldfcpv['nextduedate']) && $ldfcpv['nextduedate'] != '0000-00-00')?date('M j, Y',strtotime($ldfcpv['nextduedate'])):''?>
+								</div>
+							 </li>
+							 <li>
+								<div class="left-status">
+								   Billing Cycle
+								</div>
+								<div class="right-status">
+								  <?php echo (isset($ldfcpv['billingcycle']))?$ldfcpv['billingcycle']:''?>
+								</div>
+							 </li>
+							 <?php if($MWQDC_LB->is_plg_lc_p_l() || $MWQDC_LB->is_plg_lc_p_g()):?>
+							 <li>
+								<div class="left-status">
+								   Monthly Orders
+								</div>
+								<div class="right-status">
+								  <?php echo (int) $MWQDC_LB->get_osl_sm_val();?> of <?php echo (int) $MWQDC_LB->get_osl_lp_count();?>
+								</div>
+							 </li>
+							 <?php endif;?>
+						  </ul>						  
+					   </div>
+				</td>
+				<td>&nbsp;</td>
+			</tr>
+			
 		</table>
 	</div>
 </div>
@@ -164,7 +223,7 @@ echo '<form style="position:absolute; top:-100px;">
 	<?php if(count($error)):?>
 	<div style="color:red;"><?php echo implode('<br/>',$error);?></div>
 	<?php endif;?>
-	<form method="POST" action="<?php echo $page_url;?>">
+	<form method="POST" action="<?php echo $page_url;?>" autocomplete="off">
 		<div class="myworks-wc-qbd-sync-table-responsive">
 			<table width="100%" class="qwc-tbl">
 				<tr>
@@ -179,8 +238,7 @@ echo '<form style="position:absolute; top:-100px;">
 					<td>Web Connector Password (Min 8 chars): </td>
 					<td>&nbsp;</td>
 					<td>
-						<input type="password" name="mw_qbo_dts_qwc_password" id="mw_qbo_dts_qwc_password" value="<?php echo $MWQDC_LB->decrypt($mw_qbo_dts_qwc_password);?>"> &nbsp;
-						<a href="javascript:void(0);" id="mw_qbo_dts_qwc_show_hide_pass">Show</a>
+						<input type="text" name="mw_qbo_dts_qwc_password" id="mw_qbo_dts_qwc_password" value="<?php echo $MWQDC_LB->decrypt($mw_qbo_dts_qwc_password);?>">
 					</td>
 				</tr>
 				
@@ -295,14 +353,15 @@ jQuery(document).ready(function($){
 <?php endif;?>
 
 <?php elseif($MWQDC_LB->get_license_status()=='Invalid'):?>
-<div class="qbd_input_license"><p><?php echo __('You have entered an invalid license key. Please enter a valid license key in order to use the plugin.','mw_wc_qbo_desk');?></p>
+<div class="qbd_input_license"><p><?php echo __('This license key is not valid for this domain. Moving sites? Click Change Site in your account with us to open the license key, then save again here.','mw_wc_qbo_desk');?></p>
 <?php elseif($MWQDC_LB->get_license_status()=='Expired'):?>
-<div class="qbd_input_license"><p><?php echo __('Your license key is expired. Please renew your license with us or enter a valid license key in order to continue to use the plugin.','mw_wc_qbo_desk');?></p>
+<div class="qbd_input_license"><p><?php echo __('Your license key is expired. Please check your account with us to renew your plan or enter a valid license key.','mw_wc_qbo_desk');?></p>
 <?php elseif($MWQDC_LB->get_license_status()=='Suspended'):?>
-<div class="qbd_input_license"><p><?php echo __('Your license key is suspended. Please contact us to unsuspend your license or enter a valid license key in order to continue to use the plugin.','mw_wc_qbo_desk');?></p>
+<div class="qbd_input_license"><p><?php echo __('Your license key is suspended. Please check your account with us to renew your plan or enter a valid license key.','mw_wc_qbo_desk');?></p>
 <?php else:?>
-<div class="qbd_input_license"><p><?php echo __('Please enter a valid license key in order to use the plugin.','mw_wc_qbo_desk');?></p>
+<div class="qbd_input_license"><p><?php echo __('Please enter a valid license key to proceed.','mw_wc_qbo_desk');?></p>
 <?php endif;?>
+
 
 <?php if($MWQDC_LB->get_license_status()!='Active'):?>
 
@@ -321,17 +380,3 @@ jQuery(document).ready(function($){
 
 <?php endif;?>
 </div>
-<script>
-	jQuery(document).ready(function($){
-		$('#mw_qbo_dts_qwc_show_hide_pass').click(function(){
-			$i_type = $('#mw_qbo_dts_qwc_password').attr('type');
-			if($i_type=='password'){
-				$('#mw_qbo_dts_qwc_password').attr('type','text');
-				$(this).text('Hide');
-			}else{
-				$('#mw_qbo_dts_qwc_password').attr('type','password');
-				$(this).text('Show');
-			}
-		});
-	});
-</script>

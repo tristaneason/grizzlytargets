@@ -51,22 +51,25 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 	
 	public function debug(){
 		global $wpdb;
-		$order_id = 465;
+		$order_id = 1153;
 		$order_id_ext = 0;
-		//echo $this->GetProductQbxml(75,'Inventory');
+		//echo $this->GetProductQbxml(765,'Inventory');
 		//echo $this->GetProductQbxml(42,'NonInventory');
 		//echo $this->GetSalesReceiptQbxml($order_id);
 		//echo $this->GetSalesReceiptQbxml_GPI($order_id_ext);
+		//$soa_ext = array('extra_sales_ord' => true);
+		//$soa_ext =  = null;
 		//echo $this->GetSalesOrderQbxml($order_id);
 		//echo $this->GetEstimateQbxml($order_id);
 		//$this->_p($this->get_order_base_currency_total_from_order_id(0));		
 		//$this->_p($this->get_wc_order_details_from_order($order_id,get_post($order_id)));
-		//$this->_p($this->get_wc_order_details_from_order(397,get_post(397)));
-		//$this->_p($this->get_wc_order_details_from_order(403,get_post(403)));
+		//$this->_p($this->custom_order_and_p_details_amounts_multiplication($this->get_wc_order_details_from_order($order_id,get_post($order_id))));
+		//$this->_p($this->get_wc_order_details_from_order(734,get_post(734)));
+		//$this->_p($this->get_wc_order_details_from_order(775,get_post(775)));
 		//$this->_p($this->get_wc_country_list());
 		//echo $this->GetInvoiceQbxml($order_id);
 		//echo $this->GetPurchaseOrderQbxml($order_id);
-		//echo $this->GetCustomerQbxml(3);
+		//echo $this->GetCustomerQbxml(30);
 		//echo $this->GetCustomerQbxml($order_id,true);
 		
 		/*
@@ -79,7 +82,8 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		//$this->_p($this->get_wc_customer_info(11));
 		//$this->_p($this->get_wc_customer_info_from_order(305));
 		
-		//echo $this->GetPaymentQbxml(10969);
+		//echo $this->GetPaymentQbxml(21889);
+		//echo $this->GetOrderPaymentQbxml(465);
 		//echo $this->GetInventoryAdjustmentAddQbxml(76);
 		//$this->_p($this->get_wc_variation_info(86));
 		//echo $this->GetProductQbxml(86,'NonInventory',1);
@@ -88,6 +92,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		//$user_data = get_userdata(17);
 		//$this->_p($user_data);		
 		//echo $this->GetRefundQbxml_Check(284,283);
+		//echo $this->GetRefundQbxml_CreditMemo(1159,1158);
 		//die;
 		
 		/*
@@ -102,16 +107,20 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		}
 		*/
 		//echo $this->GetOrderDataExtAddQbxml(317,array('Qos_Type'=>'Invoice','TxnID'=>'000-000000000000'));
-		//$this->oth_debug_function();
+		$this->oth_debug_function();
 		
 		//$this->Adjust_wmior_product_total_stock_after_locations_stock_update(74,'8000001C-1538436286','');
 		//$this->_p($this->wc_get_sm_data_from_method_id_str('wf_shipping_ups','id',array('name'=>'3 Day Select (UPS)')));
 		//$this->_p($this->get_custom_shipping_map_data_from_name('QuickBooks Shipping'));
-		
+		//echo $this->qbd_limit_decimal_points(10.59/100);
+		//$this->Add_Pull_Inventory_Queue('80000026-1550522026');
 	}
 	
 	private function oth_debug_function(){
-		//		
+		//
+		$err = '';
+		$xml = '';
+		//$this->Max_Inventory_Assembly_Response('', '', 'UPDATE_INVENTORY_A_MAX', '', array('manual'=>true), $err, '', '', $xml, null);
 	}
 	
 	public function is_debug_queue(){
@@ -130,7 +139,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		<QBXML>
 			<QBXMLMsgsRq onError="'.$this->getonError().'">
 				<CustomerQueryRq  requestID="' . $requestID . '">
-				<ListID >80000005-1515687113</ListID>
+				<ListID>80000005-1515687113</ListID>
 				<OwnerID >0</OwnerID>
 				</CustomerQueryRq >
 			</QBXMLMsgsRq>
@@ -151,7 +160,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 			</QBXMLMsgsRq>
 		</QBXML>';
 		
-		$this->add_test_log($xml);
+		//$this->add_test_log($xml);
 		return $xml;
 	}
 	
@@ -217,8 +226,13 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				$wc_inv_num = $this->get_array_isset($invoice_data,'wc_inv_num','');
 				
 				$_order_currency = $this->get_array_isset($invoice_data,'_order_currency','',true);
+				/**/
+				if($this->check_sh_cpfmpocjh_cuscompt_hash() && $this->option_checked('mw_wc_qbo_desk_cpfmpocjh_cuscompt_ed')){
+					$qbo_vendor_id = $this->get_vendor_id_cpfmpocjh_cuscompt($invoice_data);
+				}else{
+					$qbo_vendor_id = $this->get_option('mw_wc_qbo_desk_compt_socpo_qbd_vendor');
+				}				
 				
-				$qbo_vendor_id = $this->get_option('mw_wc_qbo_desk_compt_socpo_qbd_vendor');
 				if(empty($qbo_vendor_id)){
 					$this->save_log(array('log_type'=>'PurchaseOrder','log_title'=>'Export PurchaseOrder Error #'.$order_id,'details'=>'QuickBooks Vendor Not Found','status'=>0));
 					return false;
@@ -255,12 +269,18 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				
 				$_payment_method = $this->get_array_isset($invoice_data,'_payment_method','',true);
 				
+				/**/
+				$po_all_line_items = false;
+				if($this->check_sh_cpfmpocjh_cuscompt_hash() && $this->option_checked('mw_wc_qbo_desk_cpfmpocjh_cuscompt_ed')){
+					$po_all_line_items = true;
+				}
+				
 				//
 				$qbo_inv_items = (isset($invoice_data['qbo_inv_items']))?$invoice_data['qbo_inv_items']:array();
 				if(is_array($qbo_inv_items) && count($qbo_inv_items)){
 					foreach($qbo_inv_items as $qbo_item){
-						if(isset($qbo_item['socpo_manage_stock']) && $qbo_item['socpo_manage_stock'] == 'yes'){
-							if(isset($qbo_item['socpo_stock']) && floatval($qbo_item['socpo_stock']) < 0){ //<=
+						if((isset($qbo_item['socpo_manage_stock']) && $qbo_item['socpo_manage_stock'] == 'yes') || $po_all_line_items){
+							if((isset($qbo_item['socpo_stock']) && floatval($qbo_item['socpo_stock']) < 0) || $po_all_line_items){ //<=
 								$PurchaseOrderLine = new QuickBooks_QBXML_Object_PurchaseOrder_PurchaseOrderLine();
 								$PurchaseOrderLine->set('ItemRef ListID',$qbo_item["ItemRef"]);
 								
@@ -357,7 +377,9 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					$_shipping_state = $this->get_array_isset($invoice_data,'_shipping_state','',true);
 					$_shipping_postcode = $this->get_array_isset($invoice_data,'_shipping_postcode','',true);
 					
-					$rfs_arr = array($_shipping_first_name,$_shipping_last_name,$_shipping_company,$_shipping_address_1,$_shipping_address_2,$_shipping_city,$_shipping_state,$_shipping_postcode,$country);
+					$_billing_phone = $this->get_array_isset($invoice_data,'_billing_phone','',true);
+					
+					$rfs_arr = array($_shipping_first_name,$_shipping_last_name,$_shipping_company,$_shipping_address_1,$_shipping_address_2,$_shipping_city,$_shipping_state,$_shipping_postcode,$_billing_phone,$country);
 					
 					$r_fa = $this->get_ord_saf_addrs($rfs_arr,$invoice_data);
 					$PurchaseOrder->set('ShipAddress Addr1',$this->get_array_isset($r_fa,0,'',true));
@@ -378,8 +400,17 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		}
 	}
 	
-	protected function qbxml_search_replace($qbxml){
+	protected function qbxml_search_replace($qbxml,$i_type=''){
 		$qbxml = str_replace('<Rate></Rate>','<Rate>0.00</Rate>',$qbxml);
+		
+		if($i_type == 'CreditMemo'){
+			$qbxml = str_replace(
+				array('ItemLineAdd','ItemGroupLineAdd','CheckAdd','<Address>','</Address>','PayeeEntityRef','AccountRef'),
+				array('CreditMemoLineAdd','CreditMemoLineGroupAdd','CreditMemoAdd','<BillAddress>','</BillAddress>','CustomerRef','ARAccountRef'),
+				$qbxml
+			);
+		}
+		
 		return $qbxml;
 	}
 	
@@ -403,86 +434,107 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				$wc_inv_num = $this->get_array_isset($invoice_data,'wc_inv_num','');
 				
 				$_order_currency = $this->get_array_isset($invoice_data,'_order_currency','',true);
-
+				$_payment_method = $this->get_array_isset($invoice_data,'_payment_method','',true);
+				
+				if($this->wacs_base_cur_enabled()){				
+					$base_currency = get_woocommerce_currency();
+					$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$base_currency);
+				}else{
+					$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$_order_currency);
+				}
+				
 				/**/
-				if($this->is_plugin_active('myworks-quickbooks-desktop-fitbodywrap-custom-compt') && $this->check_sh_fitbodywrap_cuscompt_hash()){
-					if($this->option_checked('mw_wc_qbo_desk_compt_np_fitbodywrap_cust_inv_oc')){
-						$c_account_number = (int) $this->get_array_isset($invoice_data,'account_number','');
-						if($c_account_number > 0){
-							$qbo_cus_id = $this->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_customers','qbd_customerid','acc_num',$c_account_number);
-						}
+				if($this->check_sh_cpfmpocjh_cuscompt_hash() && $this->option_checked('mw_wc_qbo_desk_cpfmpocjh_cuscompt_ed')){
+					$qbd_job_id = $this->get_wc_data_pair_val('Job',$order_id);
+					if(!empty($qbd_job_id)){
+						$qbo_cus_id = $qbd_job_id;
+					}else{
+						$this->save_log(array('log_type'=>'Order','log_title'=>'Export Order Error #'.$order_id,'details'=>'QuickBooks Customer Job Not Found','status'=>0));
+						return false;
 					}
 				}
 				
-				/**/
-				if($this->is_plugin_active('woocommerce-aelia-currencyswitcher') && $this->option_checked('mw_wc_qbo_desk_wacs_satoc_cb')){				
-					if($_order_currency!=''){
-						$aelia_cur_cus_map = get_option('mw_wc_qbo_desk_wacs_satoc_map_cur_cus');
-						if(is_array($aelia_cur_cus_map) && count($aelia_cur_cus_map)){
-							if(isset($aelia_cur_cus_map[$_order_currency]) && trim($aelia_cur_cus_map[$_order_currency])!=''){
-								$qbo_cus_id = trim($aelia_cur_cus_map[$_order_currency]);
+				if(empty($qbo_cus_id)){
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-fitbodywrap-custom-compt') && $this->check_sh_fitbodywrap_cuscompt_hash()){
+						if($this->option_checked('mw_wc_qbo_desk_compt_np_fitbodywrap_cust_inv_oc')){
+							$c_account_number = (int) $this->get_array_isset($invoice_data,'account_number','');
+							if($c_account_number > 0){
+								$qbo_cus_id = $this->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_customers','qbd_customerid','acc_num',$c_account_number);
 							}
 						}
-					}					
-				}
-				
-				/**/
-				if($this->is_plugin_active('myworks-quickbooks-desktop-custom-customer-compt-gunnar') && $this->option_checked('mw_wc_qbo_desk_compt_cccgunnar_ocs_qb_cus_map_ed')){
-					$cccgunnar_qb_cus_map = get_option('mw_wc_qbo_desk_cccgunnar_qb_cus_map');
-					if(is_array($cccgunnar_qb_cus_map) && count($cccgunnar_qb_cus_map)){
-						$occ_mp_key = '';
-						if($order->post_status == 'rx-processing'){
-							$occ_mp_key = 'rx_order_status';
-						}else{
-							$ord_country = $this->get_array_isset($invoice_data,'_shipping_country','',true);
-							if(empty($ord_country)){
-								$ord_country = $this->get_array_isset($invoice_data,'_billing_country','',true);
-							}
-							
-							if(!empty($ord_country)){
-								if($ord_country == 'US'){
-									$occ_mp_key = 'us_order';
-								}else{
-									$occ_mp_key = 'intl_order';
-								}
-							}
-						}
-						
-						if(!empty($occ_mp_key)){
-							if(isset($cccgunnar_qb_cus_map[$occ_mp_key]) && trim($cccgunnar_qb_cus_map[$occ_mp_key])!=''){
-								$qbo_cus_id = trim($cccgunnar_qb_cus_map[$occ_mp_key]);
-							}
-						}
-					}
-				}
-				
-				/**/
-				if($this->is_plugin_active('myworks-quickbooks-desktop-sync-compatibility') && $this->is_plugin_active('myworks-quickbooks-desktop-shipping-us-state-quickbooks-customer-map-compt') && $this->option_checked('mw_wc_qbo_desk_compt_sus_qb_cus_map_ed')){					
-					if($wc_cus_id>0){						
-						$shipping_country = get_user_meta($wc_cus_id,'shipping_country',true);						
-					}else{						
-						//$shipping_country = get_post_meta($wc_inv_id,'_shipping_country',true);
-						$shipping_country = $this->get_array_isset($invoice_data,'_shipping_country','');
 					}
 					
-					if($shipping_country == 'US'){
-						if($wc_cus_id>0){
-							$shipping_state = get_user_meta($wc_cus_id,'shipping_state',true);
-						}else{
-							//$shipping_state = get_post_meta($wc_inv_id,'_shipping_state',true);
-							$shipping_state = $this->get_array_isset($invoice_data,'_shipping_state','');
-						}
-						
-						if($shipping_state!=''){
-							$sus_qb_cus_map = get_option('mw_wc_qbo_desk_ship_us_st_qb_cus_map');
-							if(is_array($sus_qb_cus_map) && count($sus_qb_cus_map)){
-								if(isset($sus_qb_cus_map[$shipping_state]) && trim($sus_qb_cus_map[$shipping_state])!=''){
-									$qbo_cus_id = trim($sus_qb_cus_map[$shipping_state]);
+					/**/
+					if($this->is_plugin_active('woocommerce-aelia-currencyswitcher') && $this->option_checked('mw_wc_qbo_desk_wacs_satoc_cb')){				
+						if($_order_currency!=''){
+							$aelia_cur_cus_map = get_option('mw_wc_qbo_desk_wacs_satoc_map_cur_cus');
+							if(is_array($aelia_cur_cus_map) && count($aelia_cur_cus_map)){
+								if(isset($aelia_cur_cus_map[$_order_currency]) && trim($aelia_cur_cus_map[$_order_currency])!=''){
+									$qbo_cus_id = trim($aelia_cur_cus_map[$_order_currency]);
+								}
+							}
+						}					
+					}
+					
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-custom-customer-compt-gunnar') && $this->option_checked('mw_wc_qbo_desk_compt_cccgunnar_ocs_qb_cus_map_ed')){
+						$cccgunnar_qb_cus_map = get_option('mw_wc_qbo_desk_cccgunnar_qb_cus_map');
+						if(is_array($cccgunnar_qb_cus_map) && count($cccgunnar_qb_cus_map)){
+							$occ_mp_key = '';
+							if($order->post_status == 'rx-processing'){
+								$occ_mp_key = 'rx_order_status';
+							}else{
+								$ord_country = $this->get_array_isset($invoice_data,'_shipping_country','',true);
+								if(empty($ord_country)){
+									$ord_country = $this->get_array_isset($invoice_data,'_billing_country','',true);
+								}
+								
+								if(!empty($ord_country)){
+									if($ord_country == 'US'){
+										$occ_mp_key = 'us_order';
+									}else{
+										$occ_mp_key = 'intl_order';
+									}
+								}
+							}
+							
+							if(!empty($occ_mp_key)){
+								if(isset($cccgunnar_qb_cus_map[$occ_mp_key]) && trim($cccgunnar_qb_cus_map[$occ_mp_key])!=''){
+									$qbo_cus_id = trim($cccgunnar_qb_cus_map[$occ_mp_key]);
 								}
 							}
 						}
-					}else{
-						$qbo_cus_id = $this->get_option('mw_wc_qbo_desk_sus_fb_qb_cus_foc');
+					}
+					
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-sync-compatibility') && $this->is_plugin_active('myworks-quickbooks-desktop-shipping-us-state-quickbooks-customer-map-compt') && $this->option_checked('mw_wc_qbo_desk_compt_sus_qb_cus_map_ed')){					
+						if($wc_cus_id>0){						
+							$shipping_country = get_user_meta($wc_cus_id,'shipping_country',true);						
+						}else{						
+							//$shipping_country = get_post_meta($wc_inv_id,'_shipping_country',true);
+							$shipping_country = $this->get_array_isset($invoice_data,'_shipping_country','');
+						}
+						
+						if($shipping_country == 'US'){
+							if($wc_cus_id>0){
+								$shipping_state = get_user_meta($wc_cus_id,'shipping_state',true);
+							}else{
+								//$shipping_state = get_post_meta($wc_inv_id,'_shipping_state',true);
+								$shipping_state = $this->get_array_isset($invoice_data,'_shipping_state','');
+							}
+							
+							if($shipping_state!=''){
+								$sus_qb_cus_map = get_option('mw_wc_qbo_desk_ship_us_st_qb_cus_map');
+								if(is_array($sus_qb_cus_map) && count($sus_qb_cus_map)){
+									if(isset($sus_qb_cus_map[$shipping_state]) && trim($sus_qb_cus_map[$shipping_state])!=''){
+										$qbo_cus_id = trim($sus_qb_cus_map[$shipping_state]);
+									}
+								}
+							}
+						}else{
+							$qbo_cus_id = $this->get_option('mw_wc_qbo_desk_sus_fb_qb_cus_foc');
+						}
 					}
 				}
 				
@@ -490,7 +542,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					if(!$this->option_checked('mw_wc_qbo_desk_all_order_to_customer')){
 						if($wc_cus_id>0){
 							//$qbo_cus_id = $this->get_wc_data_pair_val('Customer',$wc_cus_id);
-							if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+							if($this->is_dmcb_fval_ext_ccfv()){
 								$customer_data = $this->get_wc_customer_info_from_order($order_id);
 							}else{
 								$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -522,7 +574,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							}
 							
 							if($io_cs){
-								if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+								if($this->is_dmcb_fval_ext_ccfv()){
 									$customer_data = $this->get_wc_customer_info_from_order($order_id);
 								}else{
 									$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -559,9 +611,19 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 								}
 							}
 							
+							/**/				
+							if(!$io_cs){
+								$aotc_scjm_data = get_option('mw_wc_qbo_desk_aotc_scjm_data');
+								if(is_array($aotc_scjm_data) && !empty($aotc_scjm_data)){
+									if(isset($aotc_scjm_data[$wc_user_role]) && !empty($aotc_scjm_data[$wc_user_role])){
+										$io_cs = true;										
+									}
+								}
+							}
+							
 							if($io_cs){
 								if($wc_cus_id>0){
-									if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+									if($this->is_dmcb_fval_ext_ccfv()){
 										$customer_data = $this->get_wc_customer_info_from_order($order_id);
 									}else{
 										$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -612,6 +674,16 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					}
 					
 					/**/
+					if($this->option_checked('mw_wc_qbo_desk_qbo_push_invoice_is_email_true')){
+						$Invoice->set('IsToBeEmailed',1);
+					}
+					
+					/**/
+					if($this->option_checked('mw_wc_qbo_desk_qbo_push_invoice_as_pending')){
+						$Invoice->set('IsPending',1);
+					}
+					
+					/**/
 					$customer_note = $this->get_array_isset($invoice_data,'customer_note','');
 					//$Invoice->set('PONumber',$customer_note);
 					
@@ -652,10 +724,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					$wc_inv_due_date = $this->format_date($wc_inv_due_date);
 					if($wc_inv_due_date!=''){
 						$Invoice->setDueDate($wc_inv_due_date);
-					}
-					
-					
-					$_payment_method = $this->get_array_isset($invoice_data,'_payment_method','',true);
+					}					
 					
 					/*Count Total Amounts*/
 					$_cart_discount = $this->get_array_isset($invoice_data,'_cart_discount',0);
@@ -848,10 +917,35 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					$is_bundle_order = false;
 					$map_bundle_support = false;
 					
-					if(!$is_bundle_order){
+					/**/
+					if($this->is_plugin_active('woocommerce-product-bundles') && $this->option_checked('mw_wc_qbo_desk_compt_wpbs')){
 						if(is_array($qbo_inv_items) && count($qbo_inv_items)){
 							foreach($qbo_inv_items as $qbo_item){
-								if($qbo_item['qbo_product_type'] == 'Group'){
+								if(isset($qbo_item['bundled_items']) && ($qbo_item['qbo_product_type'] == 'Group' || $qbo_item['qbo_product_type'] == 'InventoryAssembly')){
+									$is_bundle_order = true;
+									if($qbo_item['qbo_product_type'] == 'InventoryAssembly'){continue;}
+									
+									$InvoiceLineGroup = new QuickBooks_QBXML_Object_Invoice_InvoiceLineGroup();
+									$InvoiceLineGroup->setItemListID($qbo_item["ItemRef"]);
+									$Description = $qbo_item['Description'];
+									$Qty = $qbo_item["Qty"];									
+									$InvoiceLineGroup->setQuantity($Qty);
+									
+									if(!$this->option_checked('mw_wc_qbo_desk_skip_os_lid')){
+										//$InvoiceLineGroup->setDesc($Description);
+									}
+									//TotalAmount
+									$Invoice->addInvoiceLineGroup($InvoiceLineGroup);
+								}
+							}
+						}
+					}					
+					
+					$allow_bundle_and_map_bundle = true;
+					if(!$is_bundle_order || $allow_bundle_and_map_bundle){
+						if(is_array($qbo_inv_items) && count($qbo_inv_items)){
+							foreach($qbo_inv_items as $qbo_item){
+								if(!isset($qbo_item['bundled_items']) && $qbo_item['qbo_product_type'] == 'Group'){
 									$map_bundle_support = true;
 									$InvoiceLineGroup = new QuickBooks_QBXML_Object_Invoice_InvoiceLineGroup();
 									$InvoiceLineGroup->setItemListID($qbo_item["ItemRef"]);
@@ -871,6 +965,15 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					
 					if(is_array($qbo_inv_items) && count($qbo_inv_items)){
 						foreach($qbo_inv_items as $qbo_item){
+							
+							//Bundle Support
+							if($is_bundle_order){
+								if(isset($qbo_item['bundled_items']) || isset($qbo_item['bundled_item_id']) || isset($qbo_item['bundle_cart_key'])){
+									if($qbo_item['qbo_product_type'] != 'InventoryAssembly' || isset($qbo_item['bundled_item_id'])){
+										continue;
+									}
+								}
+							}
 							
 							if($map_bundle_support && $qbo_item['qbo_product_type'] == 'Group'){
 								continue;
@@ -911,7 +1014,8 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							$Amount = $Qty*$UnitPrice;
 							$InvoiceLine->setRate($UnitPrice);
 							$InvoiceLine->setQuantity($Qty);
-							$InvoiceLine->setAmount($Amount);
+							//$InvoiceLine->setAmount($Amount);
+							//$InvoiceLine->set('Amount',$Amount);
 							
 							if($this->option_checked('mw_wc_qbo_desk_compt_wqclns_ed')){
 								$LotNumber  = $this->get_array_isset($qbo_item,'lot','');
@@ -993,7 +1097,37 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							}							
 							
 							if(!$wmior_active && $this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync') && ($qbo_item["qbo_product_type"]=='Inventory' || $qbo_item["qbo_product_type"]=='InventoryAssembly')){
-								$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+								/**/
+								$b_country = $this->get_array_isset($invoice_data,'_billing_country','',true);
+								$s_country = $this->get_array_isset($invoice_data,'_shipping_country','',true);
+								$o_country = (!empty($s_country))?$s_country:$b_country;
+								
+								if($o_country == 'US'){
+									$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+								}else{
+									$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref_nus');
+								}
+								
+								if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+									if($this->is_inv_site_bin_allowed()){
+										if (strpos($mw_wc_qbo_desk_compt_qbd_invt_site_ref, ':') !== false) {
+											$site_bin_arr = explode(':',$mw_wc_qbo_desk_compt_qbd_invt_site_ref);											
+											if(is_array($site_bin_arr) && !empty($site_bin_arr)){
+												$InvoiceLine->set('InventorySiteRef ListID' , $site_bin_arr[0]);
+												if(isset($site_bin_arr[1])){
+													$InvoiceLine->set('InventorySiteLocationRef ListID' , $site_bin_arr[1]);
+												}
+											}
+										}
+									}else{
+										$InvoiceLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+									}									
+								}
+							}
+							
+							/**/
+							if($this->check_sh_qbispplm_hash()){
+								$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $qbo_item["QbIvntSiteref"];
 								if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
 									if($this->is_inv_site_bin_allowed()){
 										if (strpos($mw_wc_qbo_desk_compt_qbd_invt_site_ref, ':') !== false) {
@@ -1017,7 +1151,8 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 								if(empty($cqtyf)){
 									$cqtyf = 'Other1';
 								}
-								$InvoiceLine->set($cqtyf , $Qty);
+								$C_Qty = $this->get_liqtycustcolumn_c_qty($Qty,$qbo_item);
+								$InvoiceLine->set($cqtyf , $C_Qty);
 							}
 							
 							$Invoice->addInvoiceLine($InvoiceLine);
@@ -1040,7 +1175,8 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 								
 								$InvoiceLine->setRate($UnitPrice);
 								$InvoiceLine->setQuantity($Qty);
-								$InvoiceLine->setAmount($Amount);
+								//$InvoiceLine->setAmount($Amount);
+								//$InvoiceLine->set('Amount',$Amount);
 								
 								$InvoiceLine->setDesc($df['name']);
 								
@@ -1092,7 +1228,8 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 								$InvoiceLine->setItemListID($this->get_option('mw_wc_qbo_desk_compt_pwwgc_gpc_qbo_item'));
 								$InvoiceLine->setRate($pgc_amount);
 								$InvoiceLine->setQuantity($Qty);
-								$InvoiceLine->setAmount($pgc_amount);
+								//$InvoiceLine->setAmount($pgc_amount);
+								//$InvoiceLine->set('Amount',$pgc_amount);
 								
 								$InvoiceLine->setDesc($Description);
 								
@@ -1139,12 +1276,14 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 								$Description.= " ({$_order_currency} {$coupon_discount_amount})";
 								$DiscountLine->setRate($coupon_discount_amount_base_currency);
 								if($coupon_product_arr['qbo_product_type'] != 'Discount'){
-									$DiscountLine->setAmount($coupon_discount_amount_base_currency);
+									//$DiscountLine->setAmount($coupon_discount_amount_base_currency);
+									//$DiscountLine->set('Amount',$coupon_discount_amount_base_currency);
 								}																
 							}else{
 								$DiscountLine->setRate($coupon_discount_amount);
 								if($coupon_product_arr['qbo_product_type'] != 'Discount'){
-									$DiscountLine->setAmount($coupon_discount_amount);
+									//$DiscountLine->setAmount($coupon_discount_amount);
+									//$DiscountLine->set('Amount',$coupon_discount_amount);
 								}								
 							}
 							
@@ -1190,7 +1329,16 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					$shipping_details  = (isset($invoice_data['shipping_details']))?$invoice_data['shipping_details']:array();
 					
 					$sp_arr_first = array();
-					if(is_array($shipping_details) && !empty($shipping_details)){
+					/**/
+					$is_sync_shipping_line = true;
+					if($this->option_checked('mw_wc_qbo_desk_qb_ns_shipping_li_if_z')){						
+						$_order_shipping = (float) $this->get_array_isset($invoice_data,'_order_shipping',0);
+						if($_order_shipping <= 0){
+							$is_sync_shipping_line = false;
+						}
+					}
+					
+					if(is_array($shipping_details) && !empty($shipping_details) && $is_sync_shipping_line){
 						foreach($shipping_details as $sd_k => $sd_v){
 							
 							$shipping_method = '';
@@ -1244,14 +1392,17 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 										if($this->wacs_base_cur_enabled()){
 											$shipping_description.= " ({$_order_currency} {$order_shipping_total})";
 											$ShippingLine->setRate($order_shipping_total_base_currency);
-											$ShippingLine->setAmount($order_shipping_total_base_currency);
+											//$ShippingLine->setAmount($order_shipping_total_base_currency);
+											//$ShippingLine->set('Amount',$order_shipping_total_base_currency);
 										}else{
 											$ShippingLine->setRate($order_shipping_total);								
-											$ShippingLine->setAmount($order_shipping_total);
+											//$ShippingLine->setAmount($order_shipping_total);
+											//$ShippingLine->set('Amount',$order_shipping_total);
 										}
 									}else{
 										$ShippingLine->setRate($sd_v['cost']);						
-										$ShippingLine->setAmount($sd_v['cost']);
+										//$ShippingLine->setAmount($sd_v['cost']);
+										//$ShippingLine->set('Amount',$sd_v['cost']);
 									}									
 									
 									//$ShippingLine->setQuantity(1);
@@ -1335,9 +1486,11 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							$Description.= " ({$_order_currency} {$_order_total_tax})";
 							//$ExtLine->setRate($_order_tax_base_currency);
 							$ExtLine->setAmount($_order_total_tax_base_currency);
+							//$ExtLine->set('Amount',$_order_total_tax_base_currency);
 						}else{
 							//$ExtLine->setRate($_order_tax);
 							$ExtLine->setAmount($_order_total_tax);
+							//$ExtLine->set('Amount',$_order_total_tax);
 						}
 						
 						//$ExtLine->setQuantity(1);
@@ -1373,9 +1526,11 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							$Description.= " ({$_order_currency} {$_order_total_tax})";
 							//$ExtLine->setRate($_order_tax_base_currency);
 							$ExtLine->setAmount($_order_total_tax_base_currency);
+							//$ExtLine->set('Amount',$_order_total_tax_base_currency);
 						}else{
 							//$ExtLine->setRate($_order_tax);
 							$ExtLine->setAmount($_order_total_tax);
+							//$ExtLine->set('Amount',$_order_total_tax);
 						}
 						
 						//$ExtLine->setQuantity(1);
@@ -1428,9 +1583,11 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							$Description.= " ({$_order_currency} {$_order_total_tax})";
 							//$ExtLine->setRate($_order_tax_base_currency);
 							$ExtLine->setAmount($_order_total_tax_base_currency);
+							//$ExtLine->set('Amount',$_order_total_tax_base_currency);
 						}else{
 							//$ExtLine->setRate($_order_tax);
 							$ExtLine->setAmount($_order_total_tax);
+							//$ExtLine->set('Amount',$_order_total_tax);
 						}
 						
 						//$ExtLine->setQuantity(1);
@@ -1452,6 +1609,83 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 						$Invoice->addInvoiceLine($ExtLine);
 					}
 					
+					//Order Note Line
+					$sontqb_as = $this->get_option('mw_wc_qbo_desk_sync_ord_notes_to_qbq_as');
+					$sontqb_li_qbp = $this->get_option('mw_wc_qbo_desk_woo_ord_note_li_qbo_item');
+					if(!empty($customer_note) && $sontqb_as == 'l_item' && !empty($sontqb_li_qbp)){
+						$ExtLine = new QuickBooks_QBXML_Object_SalesReceipt_SalesReceiptLine();						
+						
+						$ExtLine->setItemListID($sontqb_li_qbp);
+						$ExtLine->setDesc($customer_note);
+						//$ExtLine->setRate(0);
+						//$ExtLine->setQuantity(1);
+						$ExtLine->setAmount(0);
+						
+						if(!$qbo_is_sales_tax){
+							$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+							//$ExtLine->setSalesTaxCodeListID($zero_rated_tax_code);
+						}
+						
+						if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
+							$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+							if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+								//$ExtLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+							}
+						}
+						
+						$Invoice->addInvoiceLine($ExtLine);
+					}
+					
+					/*Txn Fee*/
+					$enable_tfnli = (int) $this->get_array_isset($pm_map_data,'enable_tfnli',0);
+					if($enable_tfnli){
+						if($_payment_method == 'stripe' || $_payment_method == 'paypal' || $_payment_method == 'paypal_express'){
+							if($_payment_method == 'stripe'){
+								if(isset($invoice_data['Stripe Fee'])){
+									$txn_fee_amount = (float) $this->get_array_isset($invoice_data,'Stripe Fee',0);
+								}else{
+									$txn_fee_amount = (float) $this->get_array_isset($invoice_data,'_stripe_fee',0);
+								}			
+								
+								$txn_fee_desc = 'Stripe Fee';
+							}else{
+								//$txn_fee_amount = (float) $this->get_array_isset($invoice_data,'PayPal Transaction Fee',0);
+								$txn_fee_amount = (float) $this->get_array_isset($invoice_data,'_paypal_transaction_fee',0);
+								$txn_fee_desc = 'PayPal Transaction Fee';
+							}
+							
+							if($txn_fee_amount > 0){
+								$txn_fee_amount = -1 * abs($txn_fee_amount);
+								$ExtLine = new QuickBooks_QBXML_Object_SalesReceipt_SalesReceiptLine();
+								
+								$txn_fee_item_ref = $pm_map_data['tfnli_item_ref'];
+								if(empty($txn_fee_item_ref)){
+									$txn_fee_item_ref = $this->get_option('mw_wc_qbo_desk_default_qbo_item');
+								}
+								
+								$ExtLine->setItemListID($txn_fee_item_ref);
+								$ExtLine->setDesc($txn_fee_desc);
+								$ExtLine->setRate($txn_fee_amount);
+								$ExtLine->setQuantity(1);
+								$ExtLine->setAmount($txn_fee_amount);
+								
+								if(!$qbo_is_sales_tax){
+									$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+									//$ExtLine->setSalesTaxCodeListID($zero_rated_tax_code);
+								}
+								
+								if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
+									$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+									if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+										//$ExtLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+									}
+								}
+								
+								$Invoice->addInvoiceLine($ExtLine);
+							}
+						}
+					}
+					
 					/**/
 					$qbd_subtotal_product = $this->get_option('mw_wc_qbo_desk_default_subtotal_product');
 					if(!empty($qbd_subtotal_product)){
@@ -1461,8 +1695,11 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					}
 					
 					//
-					if($is_tax_applied){
+					if($is_tax_applied || $is_so_tax_as_li){
 						$TaxCodeRef =$qbo_tax_code;
+						if($is_so_tax_as_li){
+							$TaxCodeRef = $this->get_option('mw_wc_qbo_desk_otli_qbd_salestax');
+						}
 						if($TaxCodeRef!=''){
 							if($this->get_option('mw_wc_qbo_desk_sl_tax_map_entity')!= 'Sales_Tax_Codes'){
 								$Invoice->setSalesTaxItemListID($TaxCodeRef);
@@ -1549,7 +1786,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 								);
 							}
 						}else{
-							$rfs_arr = array($this->get_array_isset($invoice_data,'_shipping_first_name','',true),$this->get_array_isset($invoice_data,'_shipping_last_name','',true),$_shipping_company,$_shipping_address_1,$_shipping_address_2,$_shipping_city,$_shipping_state,$_shipping_postcode,$country);
+							$rfs_arr = array($this->get_array_isset($invoice_data,'_shipping_first_name','',true),$this->get_array_isset($invoice_data,'_shipping_last_name','',true),$_shipping_company,$_shipping_address_1,$_shipping_address_2,$_shipping_city,$_shipping_state,$_shipping_postcode,$_billing_phone,$country);
 							$r_fa = $this->get_ord_saf_addrs($rfs_arr,$invoice_data);
 							$Invoice->setShipAddress(
 								$this->get_array_isset($r_fa,0,'',true),
@@ -1619,6 +1856,10 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 						$wwlc_cf_rep_map = get_option('mw_wc_qbo_desk_wwlc_cf_rep_map');
 						if(is_array($wwlc_cf_rep_map) && count($wwlc_cf_rep_map)){
 							$wwlc_cf_rep = get_user_meta($wc_cus_id,'wwlc_cf_rep',true);
+							if(empty($wwlc_cf_rep)){
+								$wwlc_cf_rep = get_user_meta($wc_cus_id,'wwlc_cf_salesrep',true);
+							}
+							
 							if(!empty($wwlc_cf_rep)){
 								if(isset($wwlc_cf_rep_map[$wwlc_cf_rep]) && !empty($wwlc_cf_rep_map[$wwlc_cf_rep])){
 									$qbd_salesrep_id = $wwlc_cf_rep_map[$wwlc_cf_rep];
@@ -1642,6 +1883,20 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 						}
 					}
 					
+					//Seasonal Living Custom SalesRep Map
+					if($wc_cus_id > 0 && $this->is_plugin_active('myworks-quickbooks-desktop-custom-sales-rep-map-seasonalliving') && $this->check_sh_csrm_seasonalliving_hash() && $this->option_checked('mw_wc_qbo_desk_compt_seasonalliving_srm_ed')){
+						$sales_rep = (int) get_user_meta($wc_cus_id,'sales_rep',true);
+						if($sales_rep > 0){
+							$seasonalliving_cf_rep_map = get_option('mw_wc_qbo_desk_seasonalliving_cf_rep_map');
+							if(is_array($seasonalliving_cf_rep_map) && count($seasonalliving_cf_rep_map)){
+								if(isset($seasonalliving_cf_rep_map[$sales_rep]) && !empty($seasonalliving_cf_rep_map[$sales_rep])){
+									$qbd_salesrep_id = $seasonalliving_cf_rep_map[$sales_rep];
+									$Invoice->setSalesRepListID($qbd_salesrep_id);
+								}
+							}
+						}						
+					}
+					
 					if($this->is_plugin_active('woocommerce-gateway-purchase-order') && $this->option_checked('mw_wc_qbo_desk_wpopg_po_support')){
 						//if($_payment_method == 'woocommerce_gateway_purchase_order'){}
 						$_po_number = $this->get_array_isset($invoice_data,'_po_number','',true);
@@ -1657,14 +1912,6 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 						$Invoice->setOther($mw_wc_qbo_desk_ord_push_entered_by);
 					}
 					
-					
-					if($this->wacs_base_cur_enabled()){					
-						$base_currency = get_woocommerce_currency();
-						$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$base_currency);
-					}else{
-						$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$_order_currency);
-					}
-
 					$term_id_str = $this->get_array_isset($pm_map_data,'term_id_str','',true);
 					if($term_id_str!=''){
 						$Invoice->set('TermsRef ListID',$term_id_str);
@@ -1711,23 +1958,34 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							$wcfm_k = trim($wcfm_k);
 							$wcfm_v = trim($wcfm_v);
 							
+							//
+							$is_static_val = false;
+							if(strpos($wcfm_k, '{') !== false && strpos($wcfm_k, '}') !== false){
+								$is_static_val = true;
+							}
+							
 							if(!empty($wcfm_v)){
 								$wcf_val = '';
-								switch ($wcfm_k) {									
-									case "wc_order_shipping_method_name":
-										$wcf_val = $shipping_method_name;
-										break;
-									case "wc_order_phone_number":
-										$wcf_val = $this->get_array_isset($invoice_data,'_billing_phone','',true);
-										break;
-									default:
-										if(isset($invoice_data[$wcfm_k])){
-											//is_string
-											if(!is_array($invoice_data[$wcfm_k]) && !is_object($invoice_data[$wcfm_k])){
-												$wcf_val = $this->get_array_isset($invoice_data,$wcfm_k,'',true);
-											}										
-										}
-								}
+								if($is_static_val){
+									$wcf_val = $this->get_string_between($wcfm_k,'{','}');
+									$wcf_val = trim($wcf_val);
+								}else{
+									switch ($wcfm_k) {						
+										case "wc_order_shipping_method_name":
+											$wcf_val = $shipping_method_name;
+											break;
+										case "wc_order_phone_number":
+											$wcf_val = $this->get_array_isset($invoice_data,'_billing_phone','',true);
+											break;
+										default:
+											if(isset($invoice_data[$wcfm_k])){
+												//is_string
+												if(!is_array($invoice_data[$wcfm_k]) && !is_object($invoice_data[$wcfm_k])){
+													$wcf_val = $this->get_array_isset($invoice_data,$wcfm_k,'',true);
+												}										
+											}
+									}
+								}								
 								
 								if(!empty($wcf_val) && isset($qacfm[$wcfm_v])){
 									$qbo_cf_arr = array();
@@ -1766,6 +2024,28 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 										}
 									}
 								}
+							}
+						}
+					}
+					
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-northamericangamebird-custom-compt') && $this->check_sh_northamericangamebird_cuscompt_hash()){
+						$ord_c_data = $this->get_northamericangamebird_custom_map_order_values($invoice_data);
+						if(is_array($ord_c_data) && !empty($ord_c_data)){
+							if(!empty($ord_c_data['membership_expires'])){
+								$Invoice->set("Membership expires",$ord_c_data['membership_expires']);
+							}
+							
+							if(!empty($ord_c_data['membership_type'])){
+								$Invoice->set("Membership type",$ord_c_data['membership_type']);
+							}
+							
+							if(!empty($ord_c_data['activity'])){
+								$Invoice->set("Activity",$ord_c_data['activity']);
+							}
+							
+							if(!empty($ord_c_data['bird_types'])){
+								$Invoice->set("Bird types",$ord_c_data['bird_types']);
 							}
 						}
 					}
@@ -1892,32 +2172,43 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 										$wcfm_k = trim($wcfm_k);
 										$wcfm_v = trim($wcfm_v);
 										
+										//
+										$is_static_val = false;
+										if(strpos($wcfm_k, '{') !== false && strpos($wcfm_k, '}') !== false){
+											$is_static_val = true;
+										}
+										
 										if(!empty($wcfm_v) && !isset($qacfm[$wcfm_v])){
 											$wcf_val = '';
-											switch ($wcfm_k) {									
-												case "wc_order_shipping_method_name":
-													/**/									
-													$shipping_method_name = '';									
-													$shipping_details  = (isset($invoice_data['shipping_details']))?$invoice_data['shipping_details']:array();
-													if(isset($shipping_details[0])){
-														if($this->get_array_isset($shipping_details[0],'type','')=='shipping'){
-															$shipping_method_name =  $this->get_array_isset($shipping_details[0],'name','',true,30);
+											if($is_static_val){
+												$wcf_val = $this->get_string_between($wcfm_k,'{','}');
+												$wcf_val = trim($wcf_val);
+											}else{
+												switch ($wcfm_k) {								
+													case "wc_order_shipping_method_name":
+														/**/									
+														$shipping_method_name = '';									
+														$shipping_details  = (isset($invoice_data['shipping_details']))?$invoice_data['shipping_details']:array();
+														if(isset($shipping_details[0])){
+															if($this->get_array_isset($shipping_details[0],'type','')=='shipping'){
+																$shipping_method_name =  $this->get_array_isset($shipping_details[0],'name','',true,30);
+															}
 														}
-													}
-													
-													$wcf_val = $shipping_method_name;
-													break;
-												case "wc_order_phone_number":
-													$wcf_val = $this->get_array_isset($invoice_data,'_billing_phone','',true);
-													break;
-												default:
-													if(isset($invoice_data[$wcfm_k])){
-														//is_string
-														if(!is_array($invoice_data[$wcfm_k]) && !is_object($invoice_data[$wcfm_k])){
-															$wcf_val = $this->get_array_isset($invoice_data,$wcfm_k,'',true);
-														}										
-													}
-											}
+														
+														$wcf_val = $shipping_method_name;
+														break;
+													case "wc_order_phone_number":
+														$wcf_val = $this->get_array_isset($invoice_data,'_billing_phone','',true);
+														break;
+													default:
+														if(isset($invoice_data[$wcfm_k])){
+															//is_string
+															if(!is_array($invoice_data[$wcfm_k]) && !is_object($invoice_data[$wcfm_k])){
+																$wcf_val = $this->get_array_isset($invoice_data,$wcfm_k,'',true);
+															}										
+														}
+												}
+											}											
 											
 											if(!empty($wcf_val)){
 												$DataExt = new QuickBooks_QBXML_Object_DataExt();
@@ -2223,94 +2514,115 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				$wc_inv_num = $this->get_array_isset($invoice_data,'wc_inv_num','');
 				
 				$_order_currency = $this->get_array_isset($invoice_data,'_order_currency','',true);
+				$_payment_method = $this->get_array_isset($invoice_data,'_payment_method','',true);
 				
-				/**/
-				if($this->is_plugin_active('myworks-quickbooks-desktop-fitbodywrap-custom-compt') && $this->check_sh_fitbodywrap_cuscompt_hash()){
-					if($this->option_checked('mw_wc_qbo_desk_compt_np_fitbodywrap_cust_inv_oc')){
-						$c_account_number = (int) $this->get_array_isset($invoice_data,'account_number','');
-						if($c_account_number > 0){
-							$qbo_cus_id = $this->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_customers','qbd_customerid','acc_num',$c_account_number);
-						}
-					}
+				if($this->wacs_base_cur_enabled()){				
+					$base_currency = get_woocommerce_currency();
+					$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$base_currency);
+				}else{
+					$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$_order_currency);
 				}
 				
 				/**/
-				if($this->is_plugin_active('woocommerce-aelia-currencyswitcher') && $this->option_checked('mw_wc_qbo_desk_wacs_satoc_cb')){				
-					if($_order_currency!=''){
-						$aelia_cur_cus_map = get_option('mw_wc_qbo_desk_wacs_satoc_map_cur_cus');
-						if(is_array($aelia_cur_cus_map) && count($aelia_cur_cus_map)){
-							if(isset($aelia_cur_cus_map[$_order_currency]) && trim($aelia_cur_cus_map[$_order_currency])!=''){
-								$qbo_cus_id = trim($aelia_cur_cus_map[$_order_currency]);
-							}
-						}
-					}					
-				}
-				
-				/**/
-				if($this->is_plugin_active('myworks-quickbooks-desktop-custom-customer-compt-gunnar') && $this->option_checked('mw_wc_qbo_desk_compt_cccgunnar_ocs_qb_cus_map_ed')){
-					$cccgunnar_qb_cus_map = get_option('mw_wc_qbo_desk_cccgunnar_qb_cus_map');
-					if(is_array($cccgunnar_qb_cus_map) && count($cccgunnar_qb_cus_map)){
-						$occ_mp_key = '';
-						if($order->post_status == 'rx-processing'){
-							$occ_mp_key = 'rx_order_status';
-						}else{
-							$ord_country = $this->get_array_isset($invoice_data,'_shipping_country','',true);
-							if(empty($ord_country)){
-								$ord_country = $this->get_array_isset($invoice_data,'_billing_country','',true);
-							}
-							
-							if(!empty($ord_country)){
-								if($ord_country == 'US'){
-									$occ_mp_key = 'us_order';
-								}else{
-									$occ_mp_key = 'intl_order';
-								}
-							}
-						}
-						
-						if(!empty($occ_mp_key)){
-							if(isset($cccgunnar_qb_cus_map[$occ_mp_key]) && trim($cccgunnar_qb_cus_map[$occ_mp_key])!=''){
-								$qbo_cus_id = trim($cccgunnar_qb_cus_map[$occ_mp_key]);
-							}
-						}
-					}
-				}
-				
-				/**/
-				if($this->is_plugin_active('myworks-quickbooks-desktop-sync-compatibility') && $this->is_plugin_active('myworks-quickbooks-desktop-shipping-us-state-quickbooks-customer-map-compt') && $this->option_checked('mw_wc_qbo_desk_compt_sus_qb_cus_map_ed')){					
-					if($wc_cus_id>0){						
-						$shipping_country = get_user_meta($wc_cus_id,'shipping_country',true);						
+				if($this->check_sh_cpfmpocjh_cuscompt_hash() && $this->option_checked('mw_wc_qbo_desk_cpfmpocjh_cuscompt_ed')){
+					$qbd_job_id = $this->get_wc_data_pair_val('Job',$order_id);
+					if(!empty($qbd_job_id)){
+						$qbo_cus_id = $qbd_job_id;
 					}else{						
-						//$shipping_country = get_post_meta($wc_inv_id,'_shipping_country',true);
-						$shipping_country = $this->get_array_isset($invoice_data,'_shipping_country','');
+						$this->save_log(array('log_type'=>'Order','log_title'=>'Export Order Error #'.$order_id,'details'=>'QuickBooks Customer Job Not Found','status'=>0));
+						return false;
+					}
+				}
+				
+				if(empty($qbo_cus_id)){
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-fitbodywrap-custom-compt') && $this->check_sh_fitbodywrap_cuscompt_hash()){
+						if($this->option_checked('mw_wc_qbo_desk_compt_np_fitbodywrap_cust_inv_oc')){
+							$c_account_number = (int) $this->get_array_isset($invoice_data,'account_number','');
+							if($c_account_number > 0){
+								$qbo_cus_id = $this->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_customers','qbd_customerid','acc_num',$c_account_number);
+							}
+						}
 					}
 					
-					if($shipping_country == 'US'){
-						if($wc_cus_id>0){
-							$shipping_state = get_user_meta($wc_cus_id,'shipping_state',true);
-						}else{
-							//$shipping_state = get_post_meta($wc_inv_id,'_shipping_state',true);
-							$shipping_state = $this->get_array_isset($invoice_data,'_shipping_state','');
-						}
-						
-						if($shipping_state!=''){
-							$sus_qb_cus_map = get_option('mw_wc_qbo_desk_ship_us_st_qb_cus_map');
-							if(is_array($sus_qb_cus_map) && count($sus_qb_cus_map)){
-								if(isset($sus_qb_cus_map[$shipping_state]) && trim($sus_qb_cus_map[$shipping_state])!=''){
-									$qbo_cus_id = trim($sus_qb_cus_map[$shipping_state]);
+					/**/
+					if($this->is_plugin_active('woocommerce-aelia-currencyswitcher') && $this->option_checked('mw_wc_qbo_desk_wacs_satoc_cb')){				
+						if($_order_currency!=''){
+							$aelia_cur_cus_map = get_option('mw_wc_qbo_desk_wacs_satoc_map_cur_cus');
+							if(is_array($aelia_cur_cus_map) && count($aelia_cur_cus_map)){
+								if(isset($aelia_cur_cus_map[$_order_currency]) && trim($aelia_cur_cus_map[$_order_currency])!=''){
+									$qbo_cus_id = trim($aelia_cur_cus_map[$_order_currency]);
+								}
+							}
+						}					
+					}
+					
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-custom-customer-compt-gunnar') && $this->option_checked('mw_wc_qbo_desk_compt_cccgunnar_ocs_qb_cus_map_ed')){
+						$cccgunnar_qb_cus_map = get_option('mw_wc_qbo_desk_cccgunnar_qb_cus_map');
+						if(is_array($cccgunnar_qb_cus_map) && count($cccgunnar_qb_cus_map)){
+							$occ_mp_key = '';
+							if($order->post_status == 'rx-processing'){
+								$occ_mp_key = 'rx_order_status';
+							}else{
+								$ord_country = $this->get_array_isset($invoice_data,'_shipping_country','',true);
+								if(empty($ord_country)){
+									$ord_country = $this->get_array_isset($invoice_data,'_billing_country','',true);
+								}
+								
+								if(!empty($ord_country)){
+									if($ord_country == 'US'){
+										$occ_mp_key = 'us_order';
+									}else{
+										$occ_mp_key = 'intl_order';
+									}
+								}
+							}
+							
+							if(!empty($occ_mp_key)){
+								if(isset($cccgunnar_qb_cus_map[$occ_mp_key]) && trim($cccgunnar_qb_cus_map[$occ_mp_key])!=''){
+									$qbo_cus_id = trim($cccgunnar_qb_cus_map[$occ_mp_key]);
 								}
 							}
 						}
-					}else{
-						$qbo_cus_id = $this->get_option('mw_wc_qbo_desk_sus_fb_qb_cus_foc');
 					}
-				}
+					
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-sync-compatibility') && $this->is_plugin_active('myworks-quickbooks-desktop-shipping-us-state-quickbooks-customer-map-compt') && $this->option_checked('mw_wc_qbo_desk_compt_sus_qb_cus_map_ed')){					
+						if($wc_cus_id>0){						
+							$shipping_country = get_user_meta($wc_cus_id,'shipping_country',true);						
+						}else{						
+							//$shipping_country = get_post_meta($wc_inv_id,'_shipping_country',true);
+							$shipping_country = $this->get_array_isset($invoice_data,'_shipping_country','');
+						}
+						
+						if($shipping_country == 'US'){
+							if($wc_cus_id>0){
+								$shipping_state = get_user_meta($wc_cus_id,'shipping_state',true);
+							}else{
+								//$shipping_state = get_post_meta($wc_inv_id,'_shipping_state',true);
+								$shipping_state = $this->get_array_isset($invoice_data,'_shipping_state','');
+							}
+							
+							if($shipping_state!=''){
+								$sus_qb_cus_map = get_option('mw_wc_qbo_desk_ship_us_st_qb_cus_map');
+								if(is_array($sus_qb_cus_map) && count($sus_qb_cus_map)){
+									if(isset($sus_qb_cus_map[$shipping_state]) && trim($sus_qb_cus_map[$shipping_state])!=''){
+										$qbo_cus_id = trim($sus_qb_cus_map[$shipping_state]);
+									}
+								}
+							}
+						}else{
+							$qbo_cus_id = $this->get_option('mw_wc_qbo_desk_sus_fb_qb_cus_foc');
+						}
+					}
+				}				
 				
 				if(empty($qbo_cus_id)){
 					if(!$this->option_checked('mw_wc_qbo_desk_all_order_to_customer')){
 						if($wc_cus_id>0){
 							//$qbo_cus_id = $this->get_wc_data_pair_val('Customer',$wc_cus_id);
-							if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+							if($this->is_dmcb_fval_ext_ccfv()){
 								$customer_data = $this->get_wc_customer_info_from_order($order_id);
 							}else{
 								$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -2342,7 +2654,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							}
 							
 							if($io_cs){
-								if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+								if($this->is_dmcb_fval_ext_ccfv()){
 									$customer_data = $this->get_wc_customer_info_from_order($order_id);
 								}else{
 									$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -2379,9 +2691,19 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 								}
 							}
 							
+							/**/				
+							if(!$io_cs){
+								$aotc_scjm_data = get_option('mw_wc_qbo_desk_aotc_scjm_data');
+								if(is_array($aotc_scjm_data) && !empty($aotc_scjm_data)){
+									if(isset($aotc_scjm_data[$wc_user_role]) && !empty($aotc_scjm_data[$wc_user_role])){
+										$io_cs = true;										
+									}
+								}
+							}
+							
 							if($io_cs){
 								if($wc_cus_id>0){
-									if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+									if($this->is_dmcb_fval_ext_ccfv()){
 										$customer_data = $this->get_wc_customer_info_from_order($order_id);
 									}else{
 										$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -2398,7 +2720,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 						//
 					}
 				}				
-
+				
 				if(empty($qbo_cus_id)){
 					$this->save_log(array('log_type'=>'Order','log_title'=>'Export Order Error #'.$order_id,'details'=>'QuickBooks Customer Not Found','status'=>0));
 					return false;
@@ -2429,6 +2751,11 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					/**/
 					if($this->option_checked('mw_wc_qbo_desk_qbo_push_invoice_is_print_true')){
 						$SalesReceipt->set('IsToBePrinted',1);
+					}
+					
+					/**/
+					if($this->option_checked('mw_wc_qbo_desk_qbo_push_invoice_is_email_true')){
+						$SalesReceipt->set('IsToBeEmailed',1);
 					}
 					
 					/**/
@@ -2472,9 +2799,6 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					if($wc_inv_due_date!=''){
 						$SalesReceipt->setDueDate($wc_inv_due_date);
 					}
-					
-					
-					$_payment_method = $this->get_array_isset($invoice_data,'_payment_method','',true);
 					
 					/*Count Total Amounts*/
 					$_cart_discount = $this->get_array_isset($invoice_data,'_cart_discount',0);
@@ -2625,10 +2949,35 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					$is_bundle_order = false;
 					$map_bundle_support = false;
 					
-					if(!$is_bundle_order){
+					/**/
+					if($this->is_plugin_active('woocommerce-product-bundles') && $this->option_checked('mw_wc_qbo_desk_compt_wpbs')){
 						if(is_array($qbo_inv_items) && count($qbo_inv_items)){
 							foreach($qbo_inv_items as $qbo_item){
-								if($qbo_item['qbo_product_type'] == 'Group'){
+								if(isset($qbo_item['bundled_items']) && ($qbo_item['qbo_product_type'] == 'Group' || $qbo_item['qbo_product_type'] == 'InventoryAssembly')){
+									$is_bundle_order = true;
+									if($qbo_item['qbo_product_type'] == 'InventoryAssembly'){continue;}
+									
+									$SalesReceiptLineGroup = new QuickBooks_QBXML_Object_SalesReceipt_SalesReceiptLineGroup();
+									$SalesReceiptLineGroup->setItemListID($qbo_item["ItemRef"]);
+									$Description = $qbo_item['Description'];
+									$Qty = $qbo_item["Qty"];									
+									$SalesReceiptLineGroup->setQuantity($Qty);
+									
+									if(!$this->option_checked('mw_wc_qbo_desk_skip_os_lid')){
+										//$SalesReceiptLineGroup->setDesc($Description);
+									}
+									//TotalAmount
+									$SalesReceipt->addSalesReceiptLineGroup($SalesReceiptLineGroup);
+								}
+							}
+						}
+					}					
+					
+					$allow_bundle_and_map_bundle = true;
+					if(!$is_bundle_order || $allow_bundle_and_map_bundle){
+						if(is_array($qbo_inv_items) && count($qbo_inv_items)){
+							foreach($qbo_inv_items as $qbo_item){
+								if(!isset($qbo_item['bundled_items']) && $qbo_item['qbo_product_type'] == 'Group'){
 									$map_bundle_support = true;
 									$SalesReceiptLineGroup = new QuickBooks_QBXML_Object_SalesReceipt_SalesReceiptLineGroup();
 									$SalesReceiptLineGroup->setItemListID($qbo_item["ItemRef"]);
@@ -2649,6 +2998,15 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					if(is_array($qbo_inv_items) && count($qbo_inv_items)){
 						foreach($qbo_inv_items as $qbo_item){
 							
+							//Bundle Support
+							if($is_bundle_order){
+								if(isset($qbo_item['bundled_items']) || isset($qbo_item['bundled_item_id']) || isset($qbo_item['bundle_cart_key'])){
+									if($qbo_item['qbo_product_type'] != 'InventoryAssembly' || isset($qbo_item['bundled_item_id'])){
+										continue;
+									}
+								}
+							}
+							
 							if($map_bundle_support && $qbo_item['qbo_product_type'] == 'Group'){
 								continue;
 							}
@@ -2657,7 +3015,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							//$SalesReceiptLine->setItemName($qbo_item['Description']);
 							$SalesReceiptLine->setItemListID($qbo_item["ItemRef"]);
 							if(isset($qbo_item["ClassRef"]) && $qbo_item["ClassRef"]!=''){
-								//$SalesReceiptLine->setClassListID($qbo_item["ClassRef"]);
+								$SalesReceiptLine->set('ClassRef ListID',$qbo_item["ClassRef"]);
 							}
 							
 							$Description = $qbo_item['Description'];
@@ -2765,7 +3123,17 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							}
 							
 							if(!$wmior_active && $this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync') && ($qbo_item["qbo_product_type"]=='Inventory' || $qbo_item["qbo_product_type"]=='InventoryAssembly')){
-								$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+								/**/
+								$b_country = $this->get_array_isset($invoice_data,'_billing_country','',true);
+								$s_country = $this->get_array_isset($invoice_data,'_shipping_country','',true);
+								$o_country = (!empty($s_country))?$s_country:$b_country;
+								
+								if($o_country == 'US'){
+									$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+								}else{
+									$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref_nus');
+								}
+								
 								if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){									
 									if($this->is_inv_site_bin_allowed()){
 										if (strpos($mw_wc_qbo_desk_compt_qbd_invt_site_ref, ':') !== false) {
@@ -2784,12 +3152,33 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							}
 							
 							/**/
+							if($this->check_sh_qbispplm_hash()){
+								$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $qbo_item["QbIvntSiteref"];
+								if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+									if($this->is_inv_site_bin_allowed()){
+										if (strpos($mw_wc_qbo_desk_compt_qbd_invt_site_ref, ':') !== false) {
+											$site_bin_arr = explode(':',$mw_wc_qbo_desk_compt_qbd_invt_site_ref);											
+											if(is_array($site_bin_arr) && !empty($site_bin_arr)){
+												$SalesReceiptLine->set('InventorySiteRef ListID' , $site_bin_arr[0]);
+												if(isset($site_bin_arr[1])){
+													$SalesReceiptLine->set('InventorySiteLocationRef ListID' , $site_bin_arr[1]);
+												}
+											}
+										}
+									}else{
+										$SalesReceiptLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+									}									
+								}
+							}
+							
+							/**/
 							if($this->option_checked('mw_wc_qbo_desk_compt_np_liqtycustcolumn_ed') && $this->check_sh_liqtycustcolumn_hash()){
 								$cqtyf = $this->get_option('mw_wc_qbo_desk_compt_np_liqtycustcolumn_cqtyf');
 								if(empty($cqtyf)){
 									$cqtyf = 'Other1';
 								}
-								$SalesReceiptLine->set($cqtyf , $Qty);
+								$C_Qty = $this->get_liqtycustcolumn_c_qty($Qty,$qbo_item);
+								$SalesReceiptLine->set($cqtyf , $C_Qty);
 							}
 							
 							$SalesReceipt->addSalesReceiptLine($SalesReceiptLine);
@@ -2896,7 +3285,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							$DiscountLine = new QuickBooks_QBXML_Object_SalesReceipt_SalesReceiptLine();
 							$DiscountLine->setItemListID($coupon_product_arr["ItemRef"]);
 							if(isset($coupon_product_arr["ClassRef"]) && $coupon_product_arr["ClassRef"]!=''){
-								//$DiscountLine->setClassListID($coupon_product_arr["ClassRef"]);
+								$DiscountLine->setClassListID($coupon_product_arr["ClassRef"]);
 							}
 							$DiscountLine->setDesc($coupon_product_arr['Description']);
 							$DiscountLine->setRate($coupon_discount_amount);
@@ -2942,8 +3331,17 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					/*Add SalesReceipt Shipping*/
 					$shipping_details  = (isset($invoice_data['shipping_details']))?$invoice_data['shipping_details']:array();
 					
-					$sp_arr_first = array();					
-					if(is_array($shipping_details) && !empty($shipping_details)){
+					$sp_arr_first = array();
+					/**/
+					$is_sync_shipping_line = true;
+					if($this->option_checked('mw_wc_qbo_desk_qb_ns_shipping_li_if_z')){						
+						$_order_shipping = (float) $this->get_array_isset($invoice_data,'_order_shipping',0);
+						if($_order_shipping <= 0){
+							$is_sync_shipping_line = false;
+						}
+					}
+					
+					if(is_array($shipping_details) && !empty($shipping_details) && $is_sync_shipping_line){
 						foreach($shipping_details as $sd_k => $sd_v){
 							$shipping_method = '';
 							$shipping_method_name = '';
@@ -2988,7 +3386,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 									$ShippingLine = new QuickBooks_QBXML_Object_SalesReceipt_SalesReceiptLine();
 									$ShippingLine->setItemListID($shipping_product_arr["ItemRef"]);
 									if(isset($shipping_product_arr["ClassRef"]) && $shipping_product_arr["ClassRef"]!=''){
-										//$ShippingLine->setClassListID($shipping_product_arr["ClassRef"]);
+										$ShippingLine->setClassListID($shipping_product_arr["ClassRef"]);
 									}
 									$shipping_description = ($shipping_method_name!='')?'Shipping ('.$shipping_method_name.')':'Shipping';
 									
@@ -3175,6 +3573,83 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 						$SalesReceipt->addSalesReceiptLine($ExtLine);
 					}
 					
+					//Order Note Line
+					$sontqb_as = $this->get_option('mw_wc_qbo_desk_sync_ord_notes_to_qbq_as');
+					$sontqb_li_qbp = $this->get_option('mw_wc_qbo_desk_woo_ord_note_li_qbo_item');
+					if(!empty($customer_note) && $sontqb_as == 'l_item' && !empty($sontqb_li_qbp)){
+						$ExtLine = new QuickBooks_QBXML_Object_SalesReceipt_SalesReceiptLine();						
+						
+						$ExtLine->setItemListID($sontqb_li_qbp);
+						$ExtLine->setDesc($customer_note);
+						//$ExtLine->setRate(0);
+						//$ExtLine->setQuantity(1);
+						$ExtLine->setAmount(0);
+						
+						if(!$qbo_is_sales_tax){
+							$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+							//$ExtLine->setSalesTaxCodeListID($zero_rated_tax_code);
+						}
+						
+						if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
+							$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+							if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+								//$ExtLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+							}
+						}
+						
+						$SalesReceipt->addSalesReceiptLine($ExtLine);
+					}
+					
+					/*Txn Fee*/
+					$enable_tfnli = (int) $this->get_array_isset($pm_map_data,'enable_tfnli',0);
+					if($enable_tfnli){
+						if($_payment_method == 'stripe' || $_payment_method == 'paypal' || $_payment_method == 'paypal_express'){
+							if($_payment_method == 'stripe'){
+								if(isset($invoice_data['Stripe Fee'])){
+									$txn_fee_amount = (float) $this->get_array_isset($invoice_data,'Stripe Fee',0);
+								}else{
+									$txn_fee_amount = (float) $this->get_array_isset($invoice_data,'_stripe_fee',0);
+								}			
+								
+								$txn_fee_desc = 'Stripe Fee';
+							}else{
+								//$txn_fee_amount = (float) $this->get_array_isset($invoice_data,'PayPal Transaction Fee',0);
+								$txn_fee_amount = (float) $this->get_array_isset($invoice_data,'_paypal_transaction_fee',0);
+								$txn_fee_desc = 'PayPal Transaction Fee';
+							}
+							
+							if($txn_fee_amount > 0){
+								$txn_fee_amount = -1 * abs($txn_fee_amount);
+								$ExtLine = new QuickBooks_QBXML_Object_SalesReceipt_SalesReceiptLine();
+								
+								$txn_fee_item_ref = $pm_map_data['tfnli_item_ref'];
+								if(empty($txn_fee_item_ref)){
+									$txn_fee_item_ref = $this->get_option('mw_wc_qbo_desk_default_qbo_item');
+								}
+								
+								$ExtLine->setItemListID($txn_fee_item_ref);
+								$ExtLine->setDesc($txn_fee_desc);
+								$ExtLine->setRate($txn_fee_amount);
+								$ExtLine->setQuantity(1);
+								$ExtLine->setAmount($txn_fee_amount);
+								
+								if(!$qbo_is_sales_tax){
+									$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+									//$ExtLine->setSalesTaxCodeListID($zero_rated_tax_code);
+								}
+								
+								if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
+									$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+									if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+										//$ExtLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+									}
+								}
+								
+								$SalesReceipt->addSalesReceiptLine($ExtLine);
+							}
+						}
+					}
+					
 					/**/
 					$qbd_subtotal_product = $this->get_option('mw_wc_qbo_desk_default_subtotal_product');
 					if(!empty($qbd_subtotal_product)){
@@ -3184,8 +3659,11 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					}
 					
 					//
-					if($is_tax_applied){
+					if($is_tax_applied || $is_so_tax_as_li){
 						$TaxCodeRef =$qbo_tax_code;
+						if($is_so_tax_as_li){
+							$TaxCodeRef = $this->get_option('mw_wc_qbo_desk_otli_qbd_salestax');
+						}
 						if($TaxCodeRef!=''){
 							if($this->get_option('mw_wc_qbo_desk_sl_tax_map_entity')!= 'Sales_Tax_Codes'){
 								//$SalesReceipt->setSalesTaxItemListID($TaxCodeRef);
@@ -3277,7 +3755,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 								);
 							}
 						}else{
-							$rfs_arr = array($this->get_array_isset($invoice_data,'_shipping_first_name','',true),$this->get_array_isset($invoice_data,'_shipping_last_name','',true),$_shipping_company,$_shipping_address_1,$_shipping_address_2,$_shipping_city,$_shipping_state,$_shipping_postcode,$country);
+							$rfs_arr = array($this->get_array_isset($invoice_data,'_shipping_first_name','',true),$this->get_array_isset($invoice_data,'_shipping_last_name','',true),$_shipping_company,$_shipping_address_1,$_shipping_address_2,$_shipping_city,$_shipping_state,$_shipping_postcode,$_billing_phone,$country);
 							$r_fa = $this->get_ord_saf_addrs($rfs_arr,$invoice_data);
 							$SalesReceipt->setShipAddress(
 								$this->get_array_isset($r_fa,0,'',true),
@@ -3344,6 +3822,10 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 						$wwlc_cf_rep_map = get_option('mw_wc_qbo_desk_wwlc_cf_rep_map');
 						if(is_array($wwlc_cf_rep_map) && count($wwlc_cf_rep_map)){
 							$wwlc_cf_rep = get_user_meta($wc_cus_id,'wwlc_cf_rep',true);
+							if(empty($wwlc_cf_rep)){
+								$wwlc_cf_rep = get_user_meta($wc_cus_id,'wwlc_cf_salesrep',true);
+							}
+							
 							if(!empty($wwlc_cf_rep)){
 								if(isset($wwlc_cf_rep_map[$wwlc_cf_rep]) && !empty($wwlc_cf_rep_map[$wwlc_cf_rep])){
 									$qbd_salesrep_id = $wwlc_cf_rep_map[$wwlc_cf_rep];
@@ -3368,6 +3850,20 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 						}
 					}
 					
+					//Seasonal Living Custom SalesRep Map
+					if($wc_cus_id > 0 && $this->is_plugin_active('myworks-quickbooks-desktop-custom-sales-rep-map-seasonalliving') && $this->check_sh_csrm_seasonalliving_hash() && $this->option_checked('mw_wc_qbo_desk_compt_seasonalliving_srm_ed')){
+						$sales_rep = (int) get_user_meta($wc_cus_id,'sales_rep',true);
+						if($sales_rep > 0){
+							$seasonalliving_cf_rep_map = get_option('mw_wc_qbo_desk_seasonalliving_cf_rep_map');
+							if(is_array($seasonalliving_cf_rep_map) && count($seasonalliving_cf_rep_map)){
+								if(isset($seasonalliving_cf_rep_map[$sales_rep]) && !empty($seasonalliving_cf_rep_map[$sales_rep])){
+									$qbd_salesrep_id = $seasonalliving_cf_rep_map[$sales_rep];
+									$SalesReceipt->setSalesRepListID($qbd_salesrep_id);
+								}
+							}
+						}						
+					}
+					
 					if($this->is_plugin_active('woocommerce-gateway-purchase-order') && $this->option_checked('mw_wc_qbo_desk_wpopg_po_support')){
 						//if($_payment_method == 'woocommerce_gateway_purchase_order'){}
 						$_po_number = $this->get_array_isset($invoice_data,'_po_number','',true);
@@ -3376,13 +3872,6 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 						}else{
 							$SalesReceipt->setPONumber('Web');
 						}
-					}
-					
-					if($this->wacs_base_cur_enabled()){					
-						$base_currency = get_woocommerce_currency();
-						$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$base_currency);
-					}else{
-						$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$_order_currency);
 					}
 					
 					$qbo_account_id = $this->get_array_isset($pm_map_data,'qbo_account_id','');					
@@ -3430,23 +3919,34 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							$wcfm_k = trim($wcfm_k);
 							$wcfm_v = trim($wcfm_v);
 							
+							//
+							$is_static_val = false;
+							if(strpos($wcfm_k, '{') !== false && strpos($wcfm_k, '}') !== false){
+								$is_static_val = true;
+							}
+							
 							if(!empty($wcfm_v)){
 								$wcf_val = '';
-								switch ($wcfm_k) {									
-									case "wc_order_shipping_method_name":
-										$wcf_val = $shipping_method_name;
-										break;
-									case "wc_order_phone_number":
-										$wcf_val = $this->get_array_isset($invoice_data,'_billing_phone','',true);
-										break;
-									default:
-										if(isset($invoice_data[$wcfm_k])){
-											//is_string
-											if(!is_array($invoice_data[$wcfm_k]) && !is_object($invoice_data[$wcfm_k])){
-												$wcf_val = $this->get_array_isset($invoice_data,$wcfm_k,'',true);
-											}										
-										}
-								}
+								if($is_static_val){
+									$wcf_val = $this->get_string_between($wcfm_k,'{','}');
+									$wcf_val = trim($wcf_val);
+								}else{
+									switch ($wcfm_k) {								
+										case "wc_order_shipping_method_name":
+											$wcf_val = $shipping_method_name;
+											break;
+										case "wc_order_phone_number":
+											$wcf_val = $this->get_array_isset($invoice_data,'_billing_phone','',true);
+											break;
+										default:
+											if(isset($invoice_data[$wcfm_k])){
+												//is_string
+												if(!is_array($invoice_data[$wcfm_k]) && !is_object($invoice_data[$wcfm_k])){
+													$wcf_val = $this->get_array_isset($invoice_data,$wcfm_k,'',true);
+												}										
+											}
+									}
+								}								
 								
 								if(!empty($wcf_val) && isset($qacfm[$wcfm_v])){
 									$qbo_cf_arr = array();
@@ -3485,6 +3985,28 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 										}
 									}
 								}
+							}
+						}
+					}
+					
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-northamericangamebird-custom-compt') && $this->check_sh_northamericangamebird_cuscompt_hash()){
+						$ord_c_data = $this->get_northamericangamebird_custom_map_order_values($invoice_data);
+						if(is_array($ord_c_data) && !empty($ord_c_data)){
+							if(!empty($ord_c_data['membership_expires'])){
+								$SalesReceipt->set("Membership expires",$ord_c_data['membership_expires']);
+							}
+							
+							if(!empty($ord_c_data['membership_type'])){
+								$SalesReceipt->set("Membership type",$ord_c_data['membership_type']);
+							}
+							
+							if(!empty($ord_c_data['activity'])){
+								$SalesReceipt->set("Activity",$ord_c_data['activity']);
+							}
+							
+							if(!empty($ord_c_data['bird_types'])){
+								$SalesReceipt->set("Bird types",$ord_c_data['bird_types']);
 							}
 						}
 					}
@@ -3571,94 +4093,115 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				$wc_inv_num = $this->get_array_isset($invoice_data,'wc_inv_num','');
 				
 				$_order_currency = $this->get_array_isset($invoice_data,'_order_currency','',true);
-
+				$_payment_method = $this->get_array_isset($invoice_data,'_payment_method','',true);
+				
+				if($this->wacs_base_cur_enabled()){				
+					$base_currency = get_woocommerce_currency();
+					$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$base_currency);
+				}else{
+					$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$_order_currency);
+				}
+				
 				/**/
-				if($this->is_plugin_active('myworks-quickbooks-desktop-fitbodywrap-custom-compt') && $this->check_sh_fitbodywrap_cuscompt_hash()){
-					if($this->option_checked('mw_wc_qbo_desk_compt_np_fitbodywrap_cust_inv_oc')){
-						$c_account_number = (int) $this->get_array_isset($invoice_data,'account_number','');
-						if($c_account_number > 0){
-							$qbo_cus_id = $this->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_customers','qbd_customerid','acc_num',$c_account_number);
-						}
+				if($this->check_sh_cpfmpocjh_cuscompt_hash() && $this->option_checked('mw_wc_qbo_desk_cpfmpocjh_cuscompt_ed')){
+					$qbd_job_id = $this->get_wc_data_pair_val('Job',$order_id);
+					if(!empty($qbd_job_id)){
+						$qbo_cus_id = $qbd_job_id;
+					}else{
+						$this->save_log(array('log_type'=>'Order','log_title'=>'Export Order Error #'.$order_id,'details'=>'QuickBooks Customer Job Not Found','status'=>0));
+						return false;
 					}
 				}
 				
-				/**/
-				if($this->is_plugin_active('woocommerce-aelia-currencyswitcher') && $this->option_checked('mw_wc_qbo_desk_wacs_satoc_cb')){				
-					if($_order_currency!=''){
-						$aelia_cur_cus_map = get_option('mw_wc_qbo_desk_wacs_satoc_map_cur_cus');
-						if(is_array($aelia_cur_cus_map) && count($aelia_cur_cus_map)){
-							if(isset($aelia_cur_cus_map[$_order_currency]) && trim($aelia_cur_cus_map[$_order_currency])!=''){
-								$qbo_cus_id = trim($aelia_cur_cus_map[$_order_currency]);
+				if(empty($qbo_cus_id)){
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-fitbodywrap-custom-compt') && $this->check_sh_fitbodywrap_cuscompt_hash()){
+						if($this->option_checked('mw_wc_qbo_desk_compt_np_fitbodywrap_cust_inv_oc')){
+							$c_account_number = (int) $this->get_array_isset($invoice_data,'account_number','');
+							if($c_account_number > 0){
+								$qbo_cus_id = $this->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_customers','qbd_customerid','acc_num',$c_account_number);
 							}
 						}
-					}					
-				}
-				
-				/**/
-				if($this->is_plugin_active('myworks-quickbooks-desktop-custom-customer-compt-gunnar') && $this->option_checked('mw_wc_qbo_desk_compt_cccgunnar_ocs_qb_cus_map_ed')){
-					$cccgunnar_qb_cus_map = get_option('mw_wc_qbo_desk_cccgunnar_qb_cus_map');
-					if(is_array($cccgunnar_qb_cus_map) && count($cccgunnar_qb_cus_map)){
-						$occ_mp_key = '';
-						if($order->post_status == 'rx-processing'){
-							$occ_mp_key = 'rx_order_status';
-						}else{
-							$ord_country = $this->get_array_isset($invoice_data,'_shipping_country','',true);
-							if(empty($ord_country)){
-								$ord_country = $this->get_array_isset($invoice_data,'_billing_country','',true);
-							}
-							
-							if(!empty($ord_country)){
-								if($ord_country == 'US'){
-									$occ_mp_key = 'us_order';
-								}else{
-									$occ_mp_key = 'intl_order';
-								}
-							}
-						}
-						
-						if(!empty($occ_mp_key)){
-							if(isset($cccgunnar_qb_cus_map[$occ_mp_key]) && trim($cccgunnar_qb_cus_map[$occ_mp_key])!=''){
-								$qbo_cus_id = trim($cccgunnar_qb_cus_map[$occ_mp_key]);
-							}
-						}
-					}
-				}
-				
-				/**/
-				if($this->is_plugin_active('myworks-quickbooks-desktop-sync-compatibility') && $this->is_plugin_active('myworks-quickbooks-desktop-shipping-us-state-quickbooks-customer-map-compt') && $this->option_checked('mw_wc_qbo_desk_compt_sus_qb_cus_map_ed')){					
-					if($wc_cus_id>0){						
-						$shipping_country = get_user_meta($wc_cus_id,'shipping_country',true);						
-					}else{						
-						//$shipping_country = get_post_meta($wc_inv_id,'_shipping_country',true);
-						$shipping_country = $this->get_array_isset($invoice_data,'_shipping_country','');
 					}
 					
-					if($shipping_country == 'US'){
-						if($wc_cus_id>0){
-							$shipping_state = get_user_meta($wc_cus_id,'shipping_state',true);
-						}else{
-							//$shipping_state = get_post_meta($wc_inv_id,'_shipping_state',true);
-							$shipping_state = $this->get_array_isset($invoice_data,'_shipping_state','');
-						}
-						
-						if($shipping_state!=''){
-							$sus_qb_cus_map = get_option('mw_wc_qbo_desk_ship_us_st_qb_cus_map');
-							if(is_array($sus_qb_cus_map) && count($sus_qb_cus_map)){
-								if(isset($sus_qb_cus_map[$shipping_state]) && trim($sus_qb_cus_map[$shipping_state])!=''){
-									$qbo_cus_id = trim($sus_qb_cus_map[$shipping_state]);
+					/**/
+					if($this->is_plugin_active('woocommerce-aelia-currencyswitcher') && $this->option_checked('mw_wc_qbo_desk_wacs_satoc_cb')){				
+						if($_order_currency!=''){
+							$aelia_cur_cus_map = get_option('mw_wc_qbo_desk_wacs_satoc_map_cur_cus');
+							if(is_array($aelia_cur_cus_map) && count($aelia_cur_cus_map)){
+								if(isset($aelia_cur_cus_map[$_order_currency]) && trim($aelia_cur_cus_map[$_order_currency])!=''){
+									$qbo_cus_id = trim($aelia_cur_cus_map[$_order_currency]);
+								}
+							}
+						}					
+					}
+					
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-custom-customer-compt-gunnar') && $this->option_checked('mw_wc_qbo_desk_compt_cccgunnar_ocs_qb_cus_map_ed')){
+						$cccgunnar_qb_cus_map = get_option('mw_wc_qbo_desk_cccgunnar_qb_cus_map');
+						if(is_array($cccgunnar_qb_cus_map) && count($cccgunnar_qb_cus_map)){
+							$occ_mp_key = '';
+							if($order->post_status == 'rx-processing'){
+								$occ_mp_key = 'rx_order_status';
+							}else{
+								$ord_country = $this->get_array_isset($invoice_data,'_shipping_country','',true);
+								if(empty($ord_country)){
+									$ord_country = $this->get_array_isset($invoice_data,'_billing_country','',true);
+								}
+								
+								if(!empty($ord_country)){
+									if($ord_country == 'US'){
+										$occ_mp_key = 'us_order';
+									}else{
+										$occ_mp_key = 'intl_order';
+									}
+								}
+							}
+							
+							if(!empty($occ_mp_key)){
+								if(isset($cccgunnar_qb_cus_map[$occ_mp_key]) && trim($cccgunnar_qb_cus_map[$occ_mp_key])!=''){
+									$qbo_cus_id = trim($cccgunnar_qb_cus_map[$occ_mp_key]);
 								}
 							}
 						}
-					}else{
-						$qbo_cus_id = $this->get_option('mw_wc_qbo_desk_sus_fb_qb_cus_foc');
 					}
-				}
+					
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-sync-compatibility') && $this->is_plugin_active('myworks-quickbooks-desktop-shipping-us-state-quickbooks-customer-map-compt') && $this->option_checked('mw_wc_qbo_desk_compt_sus_qb_cus_map_ed')){					
+						if($wc_cus_id>0){						
+							$shipping_country = get_user_meta($wc_cus_id,'shipping_country',true);						
+						}else{						
+							//$shipping_country = get_post_meta($wc_inv_id,'_shipping_country',true);
+							$shipping_country = $this->get_array_isset($invoice_data,'_shipping_country','');
+						}
+						
+						if($shipping_country == 'US'){
+							if($wc_cus_id>0){
+								$shipping_state = get_user_meta($wc_cus_id,'shipping_state',true);
+							}else{
+								//$shipping_state = get_post_meta($wc_inv_id,'_shipping_state',true);
+								$shipping_state = $this->get_array_isset($invoice_data,'_shipping_state','');
+							}
+							
+							if($shipping_state!=''){
+								$sus_qb_cus_map = get_option('mw_wc_qbo_desk_ship_us_st_qb_cus_map');
+								if(is_array($sus_qb_cus_map) && count($sus_qb_cus_map)){
+									if(isset($sus_qb_cus_map[$shipping_state]) && trim($sus_qb_cus_map[$shipping_state])!=''){
+										$qbo_cus_id = trim($sus_qb_cus_map[$shipping_state]);
+									}
+								}
+							}
+						}else{
+							$qbo_cus_id = $this->get_option('mw_wc_qbo_desk_sus_fb_qb_cus_foc');
+						}
+					}
+				}				
 				
 				if(empty($qbo_cus_id)){
 					if(!$this->option_checked('mw_wc_qbo_desk_all_order_to_customer')){
 						if($wc_cus_id>0){
 							//$qbo_cus_id = $this->get_wc_data_pair_val('Customer',$wc_cus_id);
-							if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+							if($this->is_dmcb_fval_ext_ccfv()){
 								$customer_data = $this->get_wc_customer_info_from_order($order_id);
 							}else{
 								$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -3690,7 +4233,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							}
 							
 							if($io_cs){
-								if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+								if($this->is_dmcb_fval_ext_ccfv()){
 									$customer_data = $this->get_wc_customer_info_from_order($order_id);
 								}else{
 									$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -3727,9 +4270,19 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 								}
 							}
 							
+							/**/				
+							if(!$io_cs){
+								$aotc_scjm_data = get_option('mw_wc_qbo_desk_aotc_scjm_data');
+								if(is_array($aotc_scjm_data) && !empty($aotc_scjm_data)){
+									if(isset($aotc_scjm_data[$wc_user_role]) && !empty($aotc_scjm_data[$wc_user_role])){
+										$io_cs = true;										
+									}
+								}
+							}
+							
 							if($io_cs){
 								if($wc_cus_id>0){
-									if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+									if($this->is_dmcb_fval_ext_ccfv()){
 										$customer_data = $this->get_wc_customer_info_from_order($order_id);
 									}else{
 										$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -3780,6 +4333,17 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					}
 					
 					/**/
+					$extra_sales_ord = (is_array($extra) && isset($extra['extra_sales_ord']))?$extra['extra_sales_ord']:false;
+					if($extra_sales_ord){
+						$SalesOrder->set('IsManuallyClosed',1);
+					}
+					
+					/**/
+					if($this->option_checked('mw_wc_qbo_desk_qbo_push_invoice_is_email_true')){
+						$SalesOrder->set('IsToBeEmailed',1);
+					}
+					
+					/**/
 					$customer_note = $this->get_array_isset($invoice_data,'customer_note','');
 					//$SalesOrder->set('PONumber',$customer_note);
 					
@@ -3820,9 +4384,6 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					if($wc_inv_due_date!=''){
 						$SalesOrder->setDueDate($wc_inv_due_date);
 					}
-					
-					
-					$_payment_method = $this->get_array_isset($invoice_data,'_payment_method','',true);
 					
 					/*Count Total Amounts*/
 					$_cart_discount = $this->get_array_isset($invoice_data,'_cart_discount',0);
@@ -3969,8 +4530,69 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					
 					$qbo_inv_items = (isset($invoice_data['qbo_inv_items']))?$invoice_data['qbo_inv_items']:array();
 					
+					$is_bundle_order = false;
+					$map_bundle_support = false;
+					
+					if($this->is_plugin_active('woocommerce-product-bundles') && $this->option_checked('mw_wc_qbo_desk_compt_wpbs')){
+						if(is_array($qbo_inv_items) && count($qbo_inv_items)){
+							foreach($qbo_inv_items as $qbo_item){
+								if(isset($qbo_item['bundled_items']) && ($qbo_item['qbo_product_type'] == 'Group' || $qbo_item['qbo_product_type'] == 'InventoryAssembly')){
+									$is_bundle_order = true;
+									if($qbo_item['qbo_product_type'] == 'InventoryAssembly'){continue;}
+									
+									$SalesOrderLineGroup = new QuickBooks_QBXML_Object_SalesOrder_SalesOrderLineGroup();
+									$SalesOrderLineGroup->setItemListID($qbo_item["ItemRef"]);
+									$Description = $qbo_item['Description'];
+									$Qty = $qbo_item["Qty"];									
+									$SalesOrderLineGroup->setQuantity($Qty);
+									
+									if(!$this->option_checked('mw_wc_qbo_desk_skip_os_lid')){
+										//$SalesOrderLineGroup->setDesc($Description);
+									}
+									//TotalAmount
+									$SalesOrder->addSalesOrderLineGroup($SalesOrderLineGroup);
+								}
+							}
+						}
+					}
+					
+					$allow_bundle_and_map_bundle = true;
+					if(!$is_bundle_order || $allow_bundle_and_map_bundle){
+						if(is_array($qbo_inv_items) && count($qbo_inv_items)){
+							foreach($qbo_inv_items as $qbo_item){
+								if(!isset($qbo_item['bundled_items']) && $qbo_item['qbo_product_type'] == 'Group'){
+									$map_bundle_support = true;
+									$SalesOrderLineGroup = new QuickBooks_QBXML_Object_SalesOrder_SalesOrderLineGroup();
+									$SalesOrderLineGroup->setItemListID($qbo_item["ItemRef"]);
+									$Description = $qbo_item['Description'];
+									$Qty = $qbo_item["Qty"];									
+									$SalesOrderLineGroup->setQuantity($Qty);
+									
+									if(!$this->option_checked('mw_wc_qbo_desk_skip_os_lid')){
+										//$SalesOrderLineGroup->setDesc($Description);
+									}
+									//TotalAmount
+									$SalesOrder->addSalesOrderLineGroup($SalesOrderLineGroup);
+								}
+							}
+						}
+					}
+					
 					if(is_array($qbo_inv_items) && count($qbo_inv_items)){
 						foreach($qbo_inv_items as $qbo_item){
+							//Bundle Support
+							if($is_bundle_order){
+								if(isset($qbo_item['bundled_items']) || isset($qbo_item['bundled_item_id']) || isset($qbo_item['bundle_cart_key'])){
+									if($qbo_item['qbo_product_type'] != 'InventoryAssembly' || isset($qbo_item['bundled_item_id'])){
+										continue;
+									}
+								}
+							}
+							
+							if($map_bundle_support && $qbo_item['qbo_product_type'] == 'Group'){
+								continue;
+							}
+							
 							$SalesOrderLine = new QuickBooks_QBXML_Object_SalesOrder_SalesOrderLine();
 							//$SalesOrderLine->setItemName($qbo_item['Description']);
 							$SalesOrderLine->setItemListID($qbo_item["ItemRef"]);
@@ -4081,7 +4703,17 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							}
 							
 							if(!$wmior_active && $this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync') && ($qbo_item["qbo_product_type"]=='Inventory' || $qbo_item["qbo_product_type"]=='InventoryAssembly')){
-								$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+								/**/
+								$b_country = $this->get_array_isset($invoice_data,'_billing_country','',true);
+								$s_country = $this->get_array_isset($invoice_data,'_shipping_country','',true);
+								$o_country = (!empty($s_country))?$s_country:$b_country;
+								
+								if($o_country == 'US'){
+									$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+								}else{
+									$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref_nus');
+								}
+								
 								if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){									
 									if($this->is_inv_site_bin_allowed()){
 										if (strpos($mw_wc_qbo_desk_compt_qbd_invt_site_ref, ':') !== false) {
@@ -4100,12 +4732,33 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							}
 							
 							/**/
+							if($this->check_sh_qbispplm_hash()){
+								$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $qbo_item["QbIvntSiteref"];
+								if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+									if($this->is_inv_site_bin_allowed()){
+										if (strpos($mw_wc_qbo_desk_compt_qbd_invt_site_ref, ':') !== false) {
+											$site_bin_arr = explode(':',$mw_wc_qbo_desk_compt_qbd_invt_site_ref);											
+											if(is_array($site_bin_arr) && !empty($site_bin_arr)){
+												$SalesOrderLine->set('InventorySiteRef ListID' , $site_bin_arr[0]);
+												if(isset($site_bin_arr[1])){
+													$SalesOrderLine->set('InventorySiteLocationRef ListID' , $site_bin_arr[1]);
+												}
+											}
+										}
+									}else{
+										$SalesOrderLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+									}									
+								}
+							}
+							
+							/**/
 							if($this->option_checked('mw_wc_qbo_desk_compt_np_liqtycustcolumn_ed') && $this->check_sh_liqtycustcolumn_hash()){
 								$cqtyf = $this->get_option('mw_wc_qbo_desk_compt_np_liqtycustcolumn_cqtyf');
 								if(empty($cqtyf)){
 									$cqtyf = 'Other1';
 								}
-								$SalesOrderLine->set($cqtyf , $Qty);
+								$C_Qty = $this->get_liqtycustcolumn_c_qty($Qty,$qbo_item);
+								$SalesOrderLine->set($cqtyf , $C_Qty);
 							}
 							
 							$SalesOrder->addSalesOrderLine($SalesOrderLine);
@@ -4258,8 +4911,17 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					/*Add SalesOrder Shipping*/
 					$shipping_details  = (isset($invoice_data['shipping_details']))?$invoice_data['shipping_details']:array();
 					
-					$sp_arr_first = array();					
-					if(is_array($shipping_details) && !empty($shipping_details)){
+					$sp_arr_first = array();
+					/**/
+					$is_sync_shipping_line = true;
+					if($this->option_checked('mw_wc_qbo_desk_qb_ns_shipping_li_if_z')){						
+						$_order_shipping = (float) $this->get_array_isset($invoice_data,'_order_shipping',0);
+						if($_order_shipping <= 0){
+							$is_sync_shipping_line = false;
+						}
+					}
+					
+					if(is_array($shipping_details) && !empty($shipping_details) && $is_sync_shipping_line){
 						foreach($shipping_details as $sd_k => $sd_v){
 							
 							$shipping_method = '';
@@ -4493,6 +5155,83 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 						$SalesOrder->addSalesOrderLine($ExtLine);
 					}
 					
+					//Order Note Line
+					$sontqb_as = $this->get_option('mw_wc_qbo_desk_sync_ord_notes_to_qbq_as');
+					$sontqb_li_qbp = $this->get_option('mw_wc_qbo_desk_woo_ord_note_li_qbo_item');
+					if(!empty($customer_note) && $sontqb_as == 'l_item' && !empty($sontqb_li_qbp)){
+						$ExtLine = new QuickBooks_QBXML_Object_SalesReceipt_SalesReceiptLine();						
+						
+						$ExtLine->setItemListID($sontqb_li_qbp);
+						$ExtLine->setDesc($customer_note);
+						//$ExtLine->setRate(0);
+						//$ExtLine->setQuantity(1);
+						$ExtLine->setAmount(0);
+						
+						if(!$qbo_is_sales_tax){
+							$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+							//$ExtLine->setSalesTaxCodeListID($zero_rated_tax_code);
+						}
+						
+						if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
+							$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+							if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+								//$ExtLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+							}
+						}
+						
+						$SalesOrder->addSalesOrderLine($ExtLine);
+					}
+					
+					/*Txn Fee*/
+					$enable_tfnli = (int) $this->get_array_isset($pm_map_data,'enable_tfnli',0);
+					if($enable_tfnli){
+						if($_payment_method == 'stripe' || $_payment_method == 'paypal' || $_payment_method == 'paypal_express'){
+							if($_payment_method == 'stripe'){
+								if(isset($invoice_data['Stripe Fee'])){
+									$txn_fee_amount = (float) $this->get_array_isset($invoice_data,'Stripe Fee',0);
+								}else{
+									$txn_fee_amount = (float) $this->get_array_isset($invoice_data,'_stripe_fee',0);
+								}			
+								
+								$txn_fee_desc = 'Stripe Fee';
+							}else{
+								//$txn_fee_amount = (float) $this->get_array_isset($invoice_data,'PayPal Transaction Fee',0);
+								$txn_fee_amount = (float) $this->get_array_isset($invoice_data,'_paypal_transaction_fee',0);
+								$txn_fee_desc = 'PayPal Transaction Fee';
+							}
+							
+							if($txn_fee_amount > 0){
+								$txn_fee_amount = -1 * abs($txn_fee_amount);
+								$ExtLine = new QuickBooks_QBXML_Object_SalesReceipt_SalesReceiptLine();
+								
+								$txn_fee_item_ref = $pm_map_data['tfnli_item_ref'];
+								if(empty($txn_fee_item_ref)){
+									$txn_fee_item_ref = $this->get_option('mw_wc_qbo_desk_default_qbo_item');
+								}
+								
+								$ExtLine->setItemListID($txn_fee_item_ref);
+								$ExtLine->setDesc($txn_fee_desc);
+								$ExtLine->setRate($txn_fee_amount);
+								$ExtLine->setQuantity(1);
+								$ExtLine->setAmount($txn_fee_amount);
+								
+								if(!$qbo_is_sales_tax){
+									$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+									//$ExtLine->setSalesTaxCodeListID($zero_rated_tax_code);
+								}
+								
+								if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
+									$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+									if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+										//$ExtLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+									}
+								}
+								
+								$SalesOrder->addSalesOrderLine($ExtLine);
+							}
+						}
+					}
+					
 					/**/
 					$qbd_subtotal_product = $this->get_option('mw_wc_qbo_desk_default_subtotal_product');
 					if(!empty($qbd_subtotal_product)){
@@ -4502,8 +5241,11 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					}
 					
 					//
-					if($is_tax_applied){
+					if($is_tax_applied || $is_so_tax_as_li){
 						$TaxCodeRef =$qbo_tax_code;
+						if($is_so_tax_as_li){
+							$TaxCodeRef = $this->get_option('mw_wc_qbo_desk_otli_qbd_salestax');
+						}
 						if($TaxCodeRef!=''){
 							if($this->get_option('mw_wc_qbo_desk_sl_tax_map_entity')!= 'Sales_Tax_Codes'){
 								//$SalesOrder->setSalesTaxItemListID($TaxCodeRef);
@@ -4589,7 +5331,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 								);
 							}
 						}else{
-							$rfs_arr = array($this->get_array_isset($invoice_data,'_shipping_first_name','',true),$this->get_array_isset($invoice_data,'_shipping_last_name','',true),$_shipping_company,$_shipping_address_1,$_shipping_address_2,$_shipping_city,$_shipping_state,$_shipping_postcode,$country);
+							$rfs_arr = array($this->get_array_isset($invoice_data,'_shipping_first_name','',true),$this->get_array_isset($invoice_data,'_shipping_last_name','',true),$_shipping_company,$_shipping_address_1,$_shipping_address_2,$_shipping_city,$_shipping_state,$_shipping_postcode,$_billing_phone,$country);
 							$r_fa = $this->get_ord_saf_addrs($rfs_arr,$invoice_data);
 							$SalesOrder->setShipAddress(
 								$this->get_array_isset($r_fa,0,'',true),
@@ -4630,7 +5372,8 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					//New - Extra Fields
 					$mw_wc_qbo_desk_ord_push_rep_othername = $this->get_option('mw_wc_qbo_desk_ord_push_rep_othername');
 					if($mw_wc_qbo_desk_ord_push_rep_othername!=''){
-						$SalesOrder->setSalesRepListID($mw_wc_qbo_desk_ord_push_rep_othername);
+						//$SalesOrder->setSalesRepListID($mw_wc_qbo_desk_ord_push_rep_othername);
+						$SalesOrder->set('SalesRepRef ListID',$mw_wc_qbo_desk_ord_push_rep_othername);
 					}
 					
 					//WWLC CF SalesRep QBD SalesRep Map
@@ -4638,6 +5381,10 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 						$wwlc_cf_rep_map = get_option('mw_wc_qbo_desk_wwlc_cf_rep_map');
 						if(is_array($wwlc_cf_rep_map) && count($wwlc_cf_rep_map)){
 							$wwlc_cf_rep = get_user_meta($wc_cus_id,'wwlc_cf_rep',true);
+							if(empty($wwlc_cf_rep)){
+								$wwlc_cf_rep = get_user_meta($wc_cus_id,'wwlc_cf_salesrep',true);
+							}
+							
 							if(!empty($wwlc_cf_rep)){
 								if(isset($wwlc_cf_rep_map[$wwlc_cf_rep]) && !empty($wwlc_cf_rep_map[$wwlc_cf_rep])){
 									$qbd_salesrep_id = $wwlc_cf_rep_map[$wwlc_cf_rep];									
@@ -4660,6 +5407,21 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 								}
 							}
 						}
+					}
+					
+					//Seasonal Living Custom SalesRep Map
+					if($wc_cus_id > 0 && $this->is_plugin_active('myworks-quickbooks-desktop-custom-sales-rep-map-seasonalliving') && $this->check_sh_csrm_seasonalliving_hash() && $this->option_checked('mw_wc_qbo_desk_compt_seasonalliving_srm_ed')){
+						$sales_rep = (int) get_user_meta($wc_cus_id,'sales_rep',true);
+						if($sales_rep > 0){
+							$seasonalliving_cf_rep_map = get_option('mw_wc_qbo_desk_seasonalliving_cf_rep_map');
+							if(is_array($seasonalliving_cf_rep_map) && count($seasonalliving_cf_rep_map)){
+								if(isset($seasonalliving_cf_rep_map[$sales_rep]) && !empty($seasonalliving_cf_rep_map[$sales_rep])){
+									$qbd_salesrep_id = $seasonalliving_cf_rep_map[$sales_rep];
+									//$SalesOrder->setSalesRepListID($qbd_salesrep_id);
+									$SalesOrder->set('SalesRepRef ListID',$qbd_salesrep_id);
+								}
+							}
+						}						
 					}
 					
 					/**/
@@ -4690,14 +5452,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					$mw_wc_qbo_desk_ord_push_entered_by = $this->get_option('mw_wc_qbo_desk_ord_push_entered_by');
 					if($mw_wc_qbo_desk_ord_push_entered_by!=''){
 						$SalesOrder->setOther($mw_wc_qbo_desk_ord_push_entered_by);
-					}
-					
-					if($this->wacs_base_cur_enabled()){					
-						$base_currency = get_woocommerce_currency();
-						$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$base_currency);
-					}else{
-						$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$_order_currency);
-					}
+					}					
 					
 					$term_id_str = $this->get_array_isset($pm_map_data,'term_id_str','',true);
 					if($term_id_str!=''){
@@ -4739,23 +5494,34 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							$wcfm_k = trim($wcfm_k);
 							$wcfm_v = trim($wcfm_v);
 							
+							//
+							$is_static_val = false;
+							if(strpos($wcfm_k, '{') !== false && strpos($wcfm_k, '}') !== false){
+								$is_static_val = true;
+							}
+							
 							if(!empty($wcfm_v)){
 								$wcf_val = '';
-								switch ($wcfm_k) {									
-									case "wc_order_shipping_method_name":
-										$wcf_val = $shipping_method_name;
-										break;
-									case "wc_order_phone_number":
-										$wcf_val = $this->get_array_isset($invoice_data,'_billing_phone','',true);
-										break;
-									default:
-										if(isset($invoice_data[$wcfm_k])){
-											//is_string
-											if(!is_array($invoice_data[$wcfm_k]) && !is_object($invoice_data[$wcfm_k])){
-												$wcf_val = $this->get_array_isset($invoice_data,$wcfm_k,'',true);
-											}										
-										}
-								}
+								if($is_static_val){
+									$wcf_val = $this->get_string_between($wcfm_k,'{','}');
+									$wcf_val = trim($wcf_val);
+								}else{
+									switch ($wcfm_k) {								
+										case "wc_order_shipping_method_name":
+											$wcf_val = $shipping_method_name;
+											break;
+										case "wc_order_phone_number":
+											$wcf_val = $this->get_array_isset($invoice_data,'_billing_phone','',true);
+											break;
+										default:
+											if(isset($invoice_data[$wcfm_k])){
+												//is_string
+												if(!is_array($invoice_data[$wcfm_k]) && !is_object($invoice_data[$wcfm_k])){
+													$wcf_val = $this->get_array_isset($invoice_data,$wcfm_k,'',true);
+												}										
+											}
+									}
+								}								
 								
 								if(!empty($wcf_val) && isset($qacfm[$wcfm_v])){
 									$qbo_cf_arr = array();
@@ -4794,6 +5560,28 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 										}
 									}
 								}
+							}
+						}
+					}
+					
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-northamericangamebird-custom-compt') && $this->check_sh_northamericangamebird_cuscompt_hash()){
+						$ord_c_data = $this->get_northamericangamebird_custom_map_order_values($invoice_data);
+						if(is_array($ord_c_data) && !empty($ord_c_data)){
+							if(!empty($ord_c_data['membership_expires'])){
+								$SalesOrder->set("Membership expires",$ord_c_data['membership_expires']);
+							}
+							
+							if(!empty($ord_c_data['membership_type'])){
+								$SalesOrder->set("Membership type",$ord_c_data['membership_type']);
+							}
+							
+							if(!empty($ord_c_data['activity'])){
+								$SalesOrder->set("Activity",$ord_c_data['activity']);
+							}
+							
+							if(!empty($ord_c_data['bird_types'])){
+								$SalesOrder->set("Bird types",$ord_c_data['bird_types']);
 							}
 						}
 					}
@@ -4876,94 +5664,115 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				$wc_inv_num = $this->get_array_isset($invoice_data,'wc_inv_num','');
 				
 				$_order_currency = $this->get_array_isset($invoice_data,'_order_currency','',true);
-
-				/**/
-				if($this->is_plugin_active('myworks-quickbooks-desktop-fitbodywrap-custom-compt') && $this->check_sh_fitbodywrap_cuscompt_hash()){
-					if($this->option_checked('mw_wc_qbo_desk_compt_np_fitbodywrap_cust_inv_oc')){
-						$c_account_number = (int) $this->get_array_isset($invoice_data,'account_number','');
-						if($c_account_number > 0){
-							$qbo_cus_id = $this->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_customers','qbd_customerid','acc_num',$c_account_number);
-						}
-					}
+				$_payment_method = $this->get_array_isset($invoice_data,'_payment_method','',true);
+				
+				if($this->wacs_base_cur_enabled()){				
+					$base_currency = get_woocommerce_currency();
+					$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$base_currency);
+				}else{
+					$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$_order_currency);
 				}
 				
 				/**/
-				if($this->is_plugin_active('woocommerce-aelia-currencyswitcher') && $this->option_checked('mw_wc_qbo_desk_wacs_satoc_cb')){				
-					if($_order_currency!=''){
-						$aelia_cur_cus_map = get_option('mw_wc_qbo_desk_wacs_satoc_map_cur_cus');
-						if(is_array($aelia_cur_cus_map) && count($aelia_cur_cus_map)){
-							if(isset($aelia_cur_cus_map[$_order_currency]) && trim($aelia_cur_cus_map[$_order_currency])!=''){
-								$qbo_cus_id = trim($aelia_cur_cus_map[$_order_currency]);
-							}
-						}
-					}					
-				}
-				
-				/**/
-				if($this->is_plugin_active('myworks-quickbooks-desktop-custom-customer-compt-gunnar') && $this->option_checked('mw_wc_qbo_desk_compt_cccgunnar_ocs_qb_cus_map_ed')){
-					$cccgunnar_qb_cus_map = get_option('mw_wc_qbo_desk_cccgunnar_qb_cus_map');
-					if(is_array($cccgunnar_qb_cus_map) && count($cccgunnar_qb_cus_map)){
-						$occ_mp_key = '';
-						if($order->post_status == 'rx-processing'){
-							$occ_mp_key = 'rx_order_status';
-						}else{
-							$ord_country = $this->get_array_isset($invoice_data,'_shipping_country','',true);
-							if(empty($ord_country)){
-								$ord_country = $this->get_array_isset($invoice_data,'_billing_country','',true);
-							}
-							
-							if(!empty($ord_country)){
-								if($ord_country == 'US'){
-									$occ_mp_key = 'us_order';
-								}else{
-									$occ_mp_key = 'intl_order';
-								}
-							}
-						}
-						
-						if(!empty($occ_mp_key)){
-							if(isset($cccgunnar_qb_cus_map[$occ_mp_key]) && trim($cccgunnar_qb_cus_map[$occ_mp_key])!=''){
-								$qbo_cus_id = trim($cccgunnar_qb_cus_map[$occ_mp_key]);
-							}
-						}
-					}
-				}
-				
-				/**/
-				if($this->is_plugin_active('myworks-quickbooks-desktop-sync-compatibility') && $this->is_plugin_active('myworks-quickbooks-desktop-shipping-us-state-quickbooks-customer-map-compt') && $this->option_checked('mw_wc_qbo_desk_compt_sus_qb_cus_map_ed')){					
-					if($wc_cus_id>0){						
-						$shipping_country = get_user_meta($wc_cus_id,'shipping_country',true);						
+				if($this->check_sh_cpfmpocjh_cuscompt_hash() && $this->option_checked('mw_wc_qbo_desk_cpfmpocjh_cuscompt_ed')){
+					$qbd_job_id = $this->get_wc_data_pair_val('Job',$order_id);
+					if(!empty($qbd_job_id)){
+						$qbo_cus_id = $qbd_job_id;
 					}else{						
-						//$shipping_country = get_post_meta($wc_inv_id,'_shipping_country',true);
-						$shipping_country = $this->get_array_isset($invoice_data,'_shipping_country','');
+						$this->save_log(array('log_type'=>'Order','log_title'=>'Export Order Error #'.$order_id,'details'=>'QuickBooks Customer Job Not Found','status'=>0));
+						return false;
+					}
+				}
+				
+				if(empty($qbo_cus_id)){
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-fitbodywrap-custom-compt') && $this->check_sh_fitbodywrap_cuscompt_hash()){
+						if($this->option_checked('mw_wc_qbo_desk_compt_np_fitbodywrap_cust_inv_oc')){
+							$c_account_number = (int) $this->get_array_isset($invoice_data,'account_number','');
+							if($c_account_number > 0){
+								$qbo_cus_id = $this->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_customers','qbd_customerid','acc_num',$c_account_number);
+							}
+						}
 					}
 					
-					if($shipping_country == 'US'){
-						if($wc_cus_id>0){
-							$shipping_state = get_user_meta($wc_cus_id,'shipping_state',true);
-						}else{
-							//$shipping_state = get_post_meta($wc_inv_id,'_shipping_state',true);
-							$shipping_state = $this->get_array_isset($invoice_data,'_shipping_state','');
-						}
-						
-						if($shipping_state!=''){
-							$sus_qb_cus_map = get_option('mw_wc_qbo_desk_ship_us_st_qb_cus_map');
-							if(is_array($sus_qb_cus_map) && count($sus_qb_cus_map)){
-								if(isset($sus_qb_cus_map[$shipping_state]) && trim($sus_qb_cus_map[$shipping_state])!=''){
-									$qbo_cus_id = trim($sus_qb_cus_map[$shipping_state]);
+					/**/
+					if($this->is_plugin_active('woocommerce-aelia-currencyswitcher') && $this->option_checked('mw_wc_qbo_desk_wacs_satoc_cb')){				
+						if($_order_currency!=''){
+							$aelia_cur_cus_map = get_option('mw_wc_qbo_desk_wacs_satoc_map_cur_cus');
+							if(is_array($aelia_cur_cus_map) && count($aelia_cur_cus_map)){
+								if(isset($aelia_cur_cus_map[$_order_currency]) && trim($aelia_cur_cus_map[$_order_currency])!=''){
+									$qbo_cus_id = trim($aelia_cur_cus_map[$_order_currency]);
+								}
+							}
+						}					
+					}
+					
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-custom-customer-compt-gunnar') && $this->option_checked('mw_wc_qbo_desk_compt_cccgunnar_ocs_qb_cus_map_ed')){
+						$cccgunnar_qb_cus_map = get_option('mw_wc_qbo_desk_cccgunnar_qb_cus_map');
+						if(is_array($cccgunnar_qb_cus_map) && count($cccgunnar_qb_cus_map)){
+							$occ_mp_key = '';
+							if($order->post_status == 'rx-processing'){
+								$occ_mp_key = 'rx_order_status';
+							}else{
+								$ord_country = $this->get_array_isset($invoice_data,'_shipping_country','',true);
+								if(empty($ord_country)){
+									$ord_country = $this->get_array_isset($invoice_data,'_billing_country','',true);
+								}
+								
+								if(!empty($ord_country)){
+									if($ord_country == 'US'){
+										$occ_mp_key = 'us_order';
+									}else{
+										$occ_mp_key = 'intl_order';
+									}
+								}
+							}
+							
+							if(!empty($occ_mp_key)){
+								if(isset($cccgunnar_qb_cus_map[$occ_mp_key]) && trim($cccgunnar_qb_cus_map[$occ_mp_key])!=''){
+									$qbo_cus_id = trim($cccgunnar_qb_cus_map[$occ_mp_key]);
 								}
 							}
 						}
-					}else{
-						$qbo_cus_id = $this->get_option('mw_wc_qbo_desk_sus_fb_qb_cus_foc');
 					}
-				}
+					
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-sync-compatibility') && $this->is_plugin_active('myworks-quickbooks-desktop-shipping-us-state-quickbooks-customer-map-compt') && $this->option_checked('mw_wc_qbo_desk_compt_sus_qb_cus_map_ed')){					
+						if($wc_cus_id>0){						
+							$shipping_country = get_user_meta($wc_cus_id,'shipping_country',true);						
+						}else{						
+							//$shipping_country = get_post_meta($wc_inv_id,'_shipping_country',true);
+							$shipping_country = $this->get_array_isset($invoice_data,'_shipping_country','');
+						}
+						
+						if($shipping_country == 'US'){
+							if($wc_cus_id>0){
+								$shipping_state = get_user_meta($wc_cus_id,'shipping_state',true);
+							}else{
+								//$shipping_state = get_post_meta($wc_inv_id,'_shipping_state',true);
+								$shipping_state = $this->get_array_isset($invoice_data,'_shipping_state','');
+							}
+							
+							if($shipping_state!=''){
+								$sus_qb_cus_map = get_option('mw_wc_qbo_desk_ship_us_st_qb_cus_map');
+								if(is_array($sus_qb_cus_map) && count($sus_qb_cus_map)){
+									if(isset($sus_qb_cus_map[$shipping_state]) && trim($sus_qb_cus_map[$shipping_state])!=''){
+										$qbo_cus_id = trim($sus_qb_cus_map[$shipping_state]);
+									}
+								}
+							}
+						}else{
+							$qbo_cus_id = $this->get_option('mw_wc_qbo_desk_sus_fb_qb_cus_foc');
+						}
+					}
+				}				
 				
 				if(empty($qbo_cus_id)){
 					if(!$this->option_checked('mw_wc_qbo_desk_all_order_to_customer')){
 						if($wc_cus_id>0){
 							//$qbo_cus_id = $this->get_wc_data_pair_val('Customer',$wc_cus_id);
-							if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+							if($this->is_dmcb_fval_ext_ccfv()){
 								$customer_data = $this->get_wc_customer_info_from_order($order_id);
 							}else{
 								$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -4995,7 +5804,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							}
 							
 							if($io_cs){
-								if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+								if($this->is_dmcb_fval_ext_ccfv()){
 									$customer_data = $this->get_wc_customer_info_from_order($order_id);
 								}else{
 									$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -5032,9 +5841,19 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 								}
 							}
 							
+							/**/				
+							if(!$io_cs){
+								$aotc_scjm_data = get_option('mw_wc_qbo_desk_aotc_scjm_data');
+								if(is_array($aotc_scjm_data) && !empty($aotc_scjm_data)){
+									if(isset($aotc_scjm_data[$wc_user_role]) && !empty($aotc_scjm_data[$wc_user_role])){
+										$io_cs = true;										
+									}
+								}
+							}
+							
 							if($io_cs){
 								if($wc_cus_id>0){
-									if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+									if($this->is_dmcb_fval_ext_ccfv()){
 										$customer_data = $this->get_wc_customer_info_from_order($order_id);
 									}else{
 										$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -5083,6 +5902,11 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 						$Estimate->set('IsToBePrinted',1);
 					}
 					
+					/**/
+					if($this->option_checked('mw_wc_qbo_desk_qbo_push_invoice_is_email_true')){
+						$Estimate->set('IsToBeEmailed',1);
+					}
+					
 					/*
 					if($this->is_plugin_active('split-order-custom-po-for-myworks-quickbooks-desktop-sync') && $this->option_checked('mw_wc_qbo_desk_compt_p_ad_socpo_ed')){
 						if(!empty($this->get_option('mw_wc_qbo_desk_compt_socpo_qbd_vendor'))){
@@ -5120,9 +5944,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					$wc_inv_due_date = $this->format_date($wc_inv_due_date);
 					if($wc_inv_due_date!=''){
 						$Estimate->setDueDate($wc_inv_due_date);
-					}
-					
-					$_payment_method = $this->get_array_isset($invoice_data,'_payment_method','',true);
+					}					
 					
 					/*Count Total Amounts*/
 					$_cart_discount = $this->get_array_isset($invoice_data,'_cart_discount',0);
@@ -5268,8 +6090,71 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					}
 					
 					$qbo_inv_items = (isset($invoice_data['qbo_inv_items']))?$invoice_data['qbo_inv_items']:array();
+					
+					$is_bundle_order = false;
+					$map_bundle_support = false;
+					
+					/**/
+					if($this->is_plugin_active('woocommerce-product-bundles') && $this->option_checked('mw_wc_qbo_desk_compt_wpbs')){
+						if(is_array($qbo_inv_items) && count($qbo_inv_items)){
+							foreach($qbo_inv_items as $qbo_item){
+								if(isset($qbo_item['bundled_items']) && ($qbo_item['qbo_product_type'] == 'Group' || $qbo_item['qbo_product_type'] == 'InventoryAssembly')){
+									$is_bundle_order = true;
+									if($qbo_item['qbo_product_type'] == 'InventoryAssembly'){continue;}
+									
+									$EstimateLineGroup = new QuickBooks_QBXML_Object_Estimate_EstimateLineGroup();
+									$EstimateLineGroup->setItemListID($qbo_item["ItemRef"]);
+									$Description = $qbo_item['Description'];
+									$Qty = $qbo_item["Qty"];									
+									$EstimateLineGroup->setQuantity($Qty);
+									
+									if(!$this->option_checked('mw_wc_qbo_desk_skip_os_lid')){
+										//$EstimateLineGroup->setDesc($Description);
+									}
+									//TotalAmount
+									$Estimate->addEstimateLineGroup($EstimateLineGroup);
+								}
+							}
+						}
+					}					
+					
+					$allow_bundle_and_map_bundle = true;
+					if(!$is_bundle_order || $allow_bundle_and_map_bundle){
+						if(is_array($qbo_inv_items) && count($qbo_inv_items)){
+							foreach($qbo_inv_items as $qbo_item){
+								if(!isset($qbo_item['bundled_items']) && $qbo_item['qbo_product_type'] == 'Group'){
+									$map_bundle_support = true;
+									$EstimateLineGroup = new QuickBooks_QBXML_Object_Estimate_EstimateLineGroup();
+									$EstimateLineGroup->setItemListID($qbo_item["ItemRef"]);
+									$Description = $qbo_item['Description'];
+									$Qty = $qbo_item["Qty"];									
+									$EstimateLineGroup->setQuantity($Qty);
+									
+									if(!$this->option_checked('mw_wc_qbo_desk_skip_os_lid')){
+										//$EstimateLineGroup->setDesc($Description);
+									}
+									//TotalAmount
+									$Estimate->addEstimateLineGroup($EstimateLineGroup);
+								}
+							}
+						}
+					}
+					
 					if(is_array($qbo_inv_items) && count($qbo_inv_items)){
 						foreach($qbo_inv_items as $qbo_item){
+							//Bundle Support
+							if($is_bundle_order){
+								if(isset($qbo_item['bundled_items']) || isset($qbo_item['bundled_item_id']) || isset($qbo_item['bundle_cart_key'])){
+									if($qbo_item['qbo_product_type'] != 'InventoryAssembly' || isset($qbo_item['bundled_item_id'])){
+										continue;
+									}
+								}
+							}
+							
+							if($map_bundle_support && $qbo_item['qbo_product_type'] == 'Group'){
+								continue;
+							}
+							
 							$EstimateLine = new QuickBooks_QBXML_Object_Estimate_EstimateLine();
 							
 							$EstimateLine->setItemListID($qbo_item["ItemRef"]);
@@ -5380,7 +6265,17 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							}
 							
 							if(!$wmior_active && $this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync') && ($qbo_item["qbo_product_type"]=='Inventory' || $qbo_item["qbo_product_type"]=='InventoryAssembly')){
-								$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+								/**/
+								$b_country = $this->get_array_isset($invoice_data,'_billing_country','',true);
+								$s_country = $this->get_array_isset($invoice_data,'_shipping_country','',true);
+								$o_country = (!empty($s_country))?$s_country:$b_country;
+								
+								if($o_country == 'US'){
+									$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+								}else{
+									$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref_nus');
+								}
+								
 								if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){									
 									if($this->is_inv_site_bin_allowed()){
 										if (strpos($mw_wc_qbo_desk_compt_qbd_invt_site_ref, ':') !== false) {
@@ -5399,12 +6294,33 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							}
 							
 							/**/
+							if($this->check_sh_qbispplm_hash()){
+								$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $qbo_item["QbIvntSiteref"];
+								if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+									if($this->is_inv_site_bin_allowed()){
+										if (strpos($mw_wc_qbo_desk_compt_qbd_invt_site_ref, ':') !== false) {
+											$site_bin_arr = explode(':',$mw_wc_qbo_desk_compt_qbd_invt_site_ref);											
+											if(is_array($site_bin_arr) && !empty($site_bin_arr)){
+												$EstimateLine->set('InventorySiteRef ListID' , $site_bin_arr[0]);
+												if(isset($site_bin_arr[1])){
+													$EstimateLine->set('InventorySiteLocationRef ListID' , $site_bin_arr[1]);
+												}
+											}
+										}
+									}else{
+										$EstimateLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+									}									
+								}
+							}
+							
+							/**/
 							if($this->option_checked('mw_wc_qbo_desk_compt_np_liqtycustcolumn_ed') && $this->check_sh_liqtycustcolumn_hash()){
 								$cqtyf = $this->get_option('mw_wc_qbo_desk_compt_np_liqtycustcolumn_cqtyf');
 								if(empty($cqtyf)){
 									$cqtyf = 'Other1';
 								}
-								$EstimateLine->set($cqtyf , $Qty);
+								$C_Qty = $this->get_liqtycustcolumn_c_qty($Qty,$qbo_item);
+								$EstimateLine->set($cqtyf , $C_Qty);
 							}
 							
 							$Estimate->addEstimateLine($EstimateLine);
@@ -5557,8 +6473,17 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					/*Add Estimate Shipping*/
 					$shipping_details  = (isset($invoice_data['shipping_details']))?$invoice_data['shipping_details']:array();
 					
-					$sp_arr_first = array();					
-					if(is_array($shipping_details) && !empty($shipping_details)){
+					$sp_arr_first = array();
+					/**/
+					$is_sync_shipping_line = true;
+					if($this->option_checked('mw_wc_qbo_desk_qb_ns_shipping_li_if_z')){						
+						$_order_shipping = (float) $this->get_array_isset($invoice_data,'_order_shipping',0);
+						if($_order_shipping <= 0){
+							$is_sync_shipping_line = false;
+						}
+					}
+					
+					if(is_array($shipping_details) && !empty($shipping_details) && $is_sync_shipping_line){
 						foreach($shipping_details as $sd_k => $sd_v){
 							
 							$shipping_method = '';
@@ -5792,6 +6717,87 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 						$Estimate->addEstimateLine($ExtLine);
 					}
 					
+					//Order Note Line
+					$sontqb_as = $this->get_option('mw_wc_qbo_desk_sync_ord_notes_to_qbq_as');
+					$sontqb_li_qbp = $this->get_option('mw_wc_qbo_desk_woo_ord_note_li_qbo_item');
+					if(!empty($customer_note) && $sontqb_as == 'l_item' && !empty($sontqb_li_qbp)){
+						$ExtLine = new QuickBooks_QBXML_Object_SalesReceipt_SalesReceiptLine();						
+						
+						$ExtLine->setItemListID($sontqb_li_qbp);
+						$ExtLine->setDesc($customer_note);
+						//$ExtLine->setRate(0);
+						//$ExtLine->setQuantity(1);
+						$ExtLine->setAmount(0);
+						
+						if(!$qbo_is_sales_tax){
+							$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+							//$ExtLine->setSalesTaxCodeListID($zero_rated_tax_code);
+						}
+						
+						if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
+							$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+							if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+								//$ExtLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+							}
+						}
+						
+						$Estimate->addEstimateLine($ExtLine);
+					}
+					
+					/*Txn Fee*/
+					$enable_tfnli = (int) $this->get_array_isset($pm_map_data,'enable_tfnli',0);
+					if($enable_tfnli){
+						if($_payment_method == 'stripe' || $_payment_method == 'paypal' || $_payment_method == 'paypal_express'){
+							if($_payment_method == 'stripe'){
+								if(isset($invoice_data['Stripe Fee'])){
+									$txn_fee_amount = (float) $this->get_array_isset($invoice_data,'Stripe Fee',0);
+								}else{
+									$txn_fee_amount = (float) $this->get_array_isset($invoice_data,'_stripe_fee',0);
+								}			
+								
+								$txn_fee_desc = 'Stripe Fee';
+							}else{
+								if(isset($invoice_data['PayPal Transaction Fee'])){
+									$txn_fee_amount = (float) $this->get_array_isset($invoice_data,'PayPal Transaction Fee',0);
+								}else{
+									$txn_fee_amount = (float) $this->get_array_isset($invoice_data,'_paypal_transaction_fee',0);
+								}
+								
+								$txn_fee_desc = 'PayPal Transaction Fee';
+							}
+							
+							if($txn_fee_amount > 0){
+								$txn_fee_amount = -1 * abs($txn_fee_amount);
+								$ExtLine = new QuickBooks_QBXML_Object_SalesReceipt_SalesReceiptLine();
+								
+								$txn_fee_item_ref = $pm_map_data['tfnli_item_ref'];
+								if(empty($txn_fee_item_ref)){
+									$txn_fee_item_ref = $this->get_option('mw_wc_qbo_desk_default_qbo_item');
+								}
+								
+								$ExtLine->setItemListID($txn_fee_item_ref);
+								$ExtLine->setDesc($txn_fee_desc);
+								$ExtLine->setRate($txn_fee_amount);
+								$ExtLine->setQuantity(1);
+								$ExtLine->setAmount($txn_fee_amount);
+								
+								if(!$qbo_is_sales_tax){
+									$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+									//$ExtLine->setSalesTaxCodeListID($zero_rated_tax_code);
+								}
+								
+								if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
+									$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+									if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+										//$ExtLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+									}
+								}
+								
+								$Estimate->addEstimateLine($ExtLine);
+							}
+						}
+					}
+					
 					/**/
 					$qbd_subtotal_product = $this->get_option('mw_wc_qbo_desk_default_subtotal_product');
 					if(!empty($qbd_subtotal_product)){
@@ -5801,8 +6807,11 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					}
 					
 					//
-					if($is_tax_applied){
+					if($is_tax_applied || $is_so_tax_as_li){
 						$TaxCodeRef =$qbo_tax_code;
+						if($is_so_tax_as_li){
+							$TaxCodeRef = $this->get_option('mw_wc_qbo_desk_otli_qbd_salestax');
+						}
 						if($TaxCodeRef!=''){
 							if($this->get_option('mw_wc_qbo_desk_sl_tax_map_entity')!= 'Sales_Tax_Codes'){
 								//$Estimate->setSalesTaxItemListID($TaxCodeRef);
@@ -5888,7 +6897,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 								);
 							}
 						}else{
-							$rfs_arr = array($this->get_array_isset($invoice_data,'_shipping_first_name','',true),$this->get_array_isset($invoice_data,'_shipping_last_name','',true),$_shipping_company,$_shipping_address_1,$_shipping_address_2,$_shipping_city,$_shipping_state,$_shipping_postcode,$country);
+							$rfs_arr = array($this->get_array_isset($invoice_data,'_shipping_first_name','',true),$this->get_array_isset($invoice_data,'_shipping_last_name','',true),$_shipping_company,$_shipping_address_1,$_shipping_address_2,$_shipping_city,$_shipping_state,$_shipping_postcode,$_billing_phone,$country);
 							$r_fa = $this->get_ord_saf_addrs($rfs_arr,$invoice_data);
 							$Estimate->setShipAddress(
 								$this->get_array_isset($r_fa,0,'',true),
@@ -5937,6 +6946,10 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 						$wwlc_cf_rep_map = get_option('mw_wc_qbo_desk_wwlc_cf_rep_map');
 						if(is_array($wwlc_cf_rep_map) && count($wwlc_cf_rep_map)){
 							$wwlc_cf_rep = get_user_meta($wc_cus_id,'wwlc_cf_rep',true);
+							if(empty($wwlc_cf_rep)){
+								$wwlc_cf_rep = get_user_meta($wc_cus_id,'wwlc_cf_salesrep',true);
+							}
+							
 							if(!empty($wwlc_cf_rep)){
 								if(isset($wwlc_cf_rep_map[$wwlc_cf_rep]) && !empty($wwlc_cf_rep_map[$wwlc_cf_rep])){
 									$qbd_salesrep_id = $wwlc_cf_rep_map[$wwlc_cf_rep];									
@@ -5961,6 +6974,20 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 						}
 					}
 					
+					//Seasonal Living Custom SalesRep Map
+					if($wc_cus_id > 0 && $this->is_plugin_active('myworks-quickbooks-desktop-custom-sales-rep-map-seasonalliving') && $this->check_sh_csrm_seasonalliving_hash() && $this->option_checked('mw_wc_qbo_desk_compt_seasonalliving_srm_ed')){
+						$sales_rep = (int) get_user_meta($wc_cus_id,'sales_rep',true);
+						if($sales_rep > 0){
+							$seasonalliving_cf_rep_map = get_option('mw_wc_qbo_desk_seasonalliving_cf_rep_map');
+							if(is_array($seasonalliving_cf_rep_map) && count($seasonalliving_cf_rep_map)){
+								if(isset($seasonalliving_cf_rep_map[$sales_rep]) && !empty($seasonalliving_cf_rep_map[$sales_rep])){
+									$qbd_salesrep_id = $seasonalliving_cf_rep_map[$sales_rep];
+									$Estimate->setSalesRepListID($qbd_salesrep_id);
+								}
+							}
+						}						
+					}
+					
 					if($this->is_plugin_active('woocommerce-gateway-purchase-order') && $this->option_checked('mw_wc_qbo_desk_wpopg_po_support')){
 						//if($_payment_method == 'woocommerce_gateway_purchase_order'){}
 						$_po_number = $this->get_array_isset($invoice_data,'_po_number','',true);
@@ -5974,13 +7001,6 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					$mw_wc_qbo_desk_ord_push_entered_by = $this->get_option('mw_wc_qbo_desk_ord_push_entered_by');
 					if($mw_wc_qbo_desk_ord_push_entered_by!=''){
 						$Estimate->setOther($mw_wc_qbo_desk_ord_push_entered_by);
-					}
-					
-					if($this->wacs_base_cur_enabled()){					
-						$base_currency = get_woocommerce_currency();
-						$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$base_currency);
-					}else{
-						$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$_order_currency);
 					}
 					
 					$term_id_str = $this->get_array_isset($pm_map_data,'term_id_str','',true);
@@ -6015,23 +7035,34 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							$wcfm_k = trim($wcfm_k);
 							$wcfm_v = trim($wcfm_v);
 							
+							//
+							$is_static_val = false;
+							if(strpos($wcfm_k, '{') !== false && strpos($wcfm_k, '}') !== false){
+								$is_static_val = true;
+							}
+							
 							if(!empty($wcfm_v)){
 								$wcf_val = '';
-								switch ($wcfm_k) {									
-									case "wc_order_shipping_method_name":
-										$wcf_val = $shipping_method_name;
-										break;
-									case "wc_order_phone_number":
-										$wcf_val = $this->get_array_isset($invoice_data,'_billing_phone','',true);
-										break;
-									default:
-										if(isset($invoice_data[$wcfm_k])){
-											//is_string
-											if(!is_array($invoice_data[$wcfm_k]) && !is_object($invoice_data[$wcfm_k])){
-												$wcf_val = $this->get_array_isset($invoice_data,$wcfm_k,'',true);
-											}										
-										}
-								}
+								if($is_static_val){
+									$wcf_val = $this->get_string_between($wcfm_k,'{','}');
+									$wcf_val = trim($wcf_val);
+								}else{
+									switch ($wcfm_k) {								
+										case "wc_order_shipping_method_name":
+											$wcf_val = $shipping_method_name;
+											break;
+										case "wc_order_phone_number":
+											$wcf_val = $this->get_array_isset($invoice_data,'_billing_phone','',true);
+											break;
+										default:
+											if(isset($invoice_data[$wcfm_k])){
+												//is_string
+												if(!is_array($invoice_data[$wcfm_k]) && !is_object($invoice_data[$wcfm_k])){
+													$wcf_val = $this->get_array_isset($invoice_data,$wcfm_k,'',true);
+												}										
+											}
+									}
+								}								
 								
 								if(!empty($wcf_val) && isset($qacfm[$wcfm_v])){
 									$qbo_cf_arr = array();
@@ -6070,6 +7101,28 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 										}
 									}
 								}
+							}
+						}
+					}
+					
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-northamericangamebird-custom-compt') && $this->check_sh_northamericangamebird_cuscompt_hash()){
+						$ord_c_data = $this->get_northamericangamebird_custom_map_order_values($invoice_data);
+						if(is_array($ord_c_data) && !empty($ord_c_data)){
+							if(!empty($ord_c_data['membership_expires'])){
+								$Estimate->set("Membership expires",$ord_c_data['membership_expires']);
+							}
+							
+							if(!empty($ord_c_data['membership_type'])){
+								$Estimate->set("Membership type",$ord_c_data['membership_type']);
+							}
+							
+							if(!empty($ord_c_data['activity'])){
+								$Estimate->set("Activity",$ord_c_data['activity']);
+							}
+							
+							if(!empty($ord_c_data['bird_types'])){
+								$Estimate->set("Bird types",$ord_c_data['bird_types']);
 							}
 						}
 					}
@@ -6196,7 +7249,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				$mw_wc_qbo_desk_ord_ship_addr_map = $this->get_default_ord_sa();
 			}
 			
-			$fs_srch_arr = array('{_shipping_first_name}','{_shipping_last_name}','{_shipping_company}','{_shipping_address_1}','{_shipping_address_2}','{_shipping_city}','{_shipping_state}','{_shipping_postcode}','{_shipping_country}');
+			$fs_srch_arr = array('{_shipping_first_name}','{_shipping_last_name}','{_shipping_company}','{_shipping_address_1}','{_shipping_address_2}','{_shipping_city}','{_shipping_state}','{_shipping_postcode}','{_billing_phone}','{_shipping_country}');
 			$fsa_arr = explode(PHP_EOL,$mw_wc_qbo_desk_ord_ship_addr_map);
 			
 			/**/
@@ -6248,7 +7301,113 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		return 'STR255TYPE';
 	}
 	
-	public function GetCustomerQbxml($id,$is_guest=false,$edit_sequence='',$qb_list_id=''){
+	/**/
+	public function GetCustomerJobQbxml($order_id,$qbo_cus_id,$customer_id=0,$edit_sequence='',$qb_list_id=''){
+		$order_id = (int) $order_id;
+		$customer_id = (int) $customer_id;
+		
+		if($this->is_qwc_connected() && !empty($qbo_cus_id) && $order_id >0){
+			if($customer_id < 1){
+				$edit_sequence = '';
+			}
+			
+			if(!empty($edit_sequence) && empty($qb_list_id)){
+				return false;
+			}
+			
+			if($customer_id){
+				$customer_data = $this->get_wc_customer_info($customer_id);
+			}else{
+				$customer_data = $this->get_wc_customer_info_from_order($order_id);
+			}
+			
+			if(is_array($customer_data) && count($customer_data)){
+				$Customer_Job = new QuickBooks_QBXML_Object_Customer();
+				$Customer_Job->setName($order_id);
+				$Customer_Job->set('ParentRef ListID',$qbo_cus_id);
+				
+				$Customer_Job->setCompanyName($customer_data['company']);
+				$Customer_Job->setEmail($customer_data['email']);
+				
+				$address = $this->get_array_isset($customer_data,'billing_address_1','',true);
+				if($address!=''){					
+					$country = $this->get_array_isset($customer_data,'billing_country','',true);
+					$country = $this->get_country_name_from_code($country);
+					
+					$rfs_arr = array(
+						$this->get_array_isset($customer_data,'firstname','',true),
+						$this->get_array_isset($customer_data,'lastname','',true),
+						$this->get_array_isset($customer_data,'company','',true),
+						$this->get_array_isset($customer_data,'billing_address_1','',true),
+						$this->get_array_isset($customer_data,'billing_address_2','',true),
+						$this->get_array_isset($customer_data,'billing_city','',true),
+						$this->get_array_isset($customer_data,'billing_state','',true),
+						$this->get_array_isset($customer_data,'billing_postcode','',true),
+						$this->get_array_isset($customer_data,'billing_phone','',true),
+						$country
+					);
+					
+					$r_fa = $this->get_ord_baf_addrs($rfs_arr,$customer_data,true);
+					$Customer_Job->setBillAddress(
+						$this->get_array_isset($r_fa,0,'',true),
+						$this->get_array_isset($r_fa,1,'',true),
+						$this->get_array_isset($r_fa,2,'',true),
+						$this->get_array_isset($r_fa,3,'',true),
+						$this->get_array_isset($r_fa,4,'',true)
+						
+					);
+				}
+				
+				$shipping_address = $this->get_array_isset($customer_data,'shipping_address_1','',true);
+				if($shipping_address!=''){
+					$country = $this->get_array_isset($customer_data,'shipping_country','',true);
+					$country = $this->get_country_name_from_code($country);
+					
+					$rfs_arr = array(
+						$this->get_array_isset($customer_data,'firstname','',true),
+						$this->get_array_isset($customer_data,'lastname','',true),
+						$this->get_array_isset($customer_data,'company','',true),
+						$this->get_array_isset($customer_data,'shipping_address_1','',true),
+						$this->get_array_isset($customer_data,'shipping_address_2','',true),
+						$this->get_array_isset($customer_data,'shipping_city','',true),
+						$this->get_array_isset($customer_data,'shipping_state','',true),
+						$this->get_array_isset($customer_data,'shipping_postcode','',true),
+						$this->get_array_isset($customer_data,'billing_phone','',true),
+						$country
+					);
+					
+					$r_fa = $this->get_ord_saf_addrs($rfs_arr,$customer_data,true);
+					$Customer_Job->setShipAddress(
+						$this->get_array_isset($r_fa,0,'',true),
+						$this->get_array_isset($r_fa,1,'',true),
+						$this->get_array_isset($r_fa,2,'',true),
+						$this->get_array_isset($r_fa,3,'',true),
+						$this->get_array_isset($r_fa,4,'',true)
+						
+					);
+				}
+				
+				/**/
+				$Qbxml_Type = QUICKBOOKS_ADD_CUSTOMER;
+				if(!empty($edit_sequence)){
+					$Customer_Job->set('ListID',$qb_list_id);
+					$Customer_Job->set('EditSequence',$edit_sequence);
+					$Qbxml_Type = QUICKBOOKS_MOD_CUSTOMER;
+				}
+				
+				//$this->_p($customer_data);
+				//$this->_p($Customer_Job);
+				
+				$qbxml = $Customer_Job->asQBXML($Qbxml_Type,null,$this->get_qbxml_locale());
+				$qbxml.= $ext_qbxml;
+				
+				$qbxml = $this->get_qbxml_prefix().$qbxml. $this->get_qbxml_suffix();
+				return $qbxml;
+			}
+		}
+	}
+	
+	public function GetCustomerQbxml($id,$is_guest=false,$edit_sequence='',$qb_list_id='',$extra=null){
 		if($is_guest){
 			$edit_sequence = '';
 		}
@@ -6258,15 +7417,22 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		}
 		
 		if($this->is_qwc_connected()){
+			$customer_id = 0;
+			$order_id = 0;
+			
 			$ext_qbxml = '';
 			if($is_guest){
 				$order_id = (int) $id;
 				$customer_data = $this->get_wc_customer_info_from_order($order_id);
 			}else{
 				$customer_id = (int) $id;
-				$customer_data = $this->get_wc_customer_info($customer_id);
+				if(is_array($extra) && isset($extra['order_id']) && (int) $extra['order_id'] > 0){
+					$customer_data = $this->get_wc_customer_info_from_order($extra['order_id']);
+				}else{
+					$customer_data = $this->get_wc_customer_info($customer_id);
+				}				
 			}
-
+			
 			if(is_array($customer_data) && count($customer_data)){
 				$Customer = new QuickBooks_QBXML_Object_Customer();
 
@@ -6291,6 +7457,51 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				
 				$Customer->setName($display_name);
 				$Customer->setCompanyName($customer_data['company']);
+				
+				/**/
+				if(is_array($extra) && isset($extra['ParentRef_ListID']) && !empty($extra['ParentRef_ListID'])){
+					$Customer->set('ParentRef ListID',$extra['ParentRef_ListID']);
+				}
+				
+				/**/				
+				if($this->get_qbo_company_setting('IsMultiCurrencyOn')){
+					$woocommerce_currency = get_option('woocommerce_currency');
+					if(!empty($woocommerce_currency) && strlen($woocommerce_currency) < 4){
+						$qb_currency_list = get_option('mw_wc_qbo_desk_qbd_currency_list_arr');
+						if(is_array($$qb_currency_list) && isset($qb_currency_list[$woocommerce_currency]) && is_array($qb_currency_list[$woocommerce_currency]) && !empty($qb_currency_list[$woocommerce_currency])){
+							$qb_currency_id = $qb_currency_list[$woocommerce_currency]['ListID'];
+							$Customer->set('CurrencyRef ListID',$qb_currency_id);
+						}
+					}
+				}				
+				
+				/**/
+				$dmcb_fval = $this->get_option('mw_wc_qbo_desk_dmcb_fval');
+				if($dmcb_fval == 'm_uid_accn' && !$is_guest){
+					$Customer->set('AccountNumber',$customer_id);
+				}
+				
+				/**/
+				if($this->check_sh_cuscalusnonusjob_cuscompt_hash() && $this->option_checked('mw_wc_qbo_desk_cuscalusnonusjob_cuscompt_ed')){
+					$b_country = $this->get_array_isset($customer_data,'billing_country','',true);
+					$b_state = $this->get_array_isset($customer_data,'billing_state','',true);
+					$j_qbo_cust_id = '';
+					if(($b_country == 'United States (US)' || $b_country == 'US') && ($b_state == 'California' || $b_state == 'CA')){
+						$j_qbo_cust_id = $this->get_option('mw_wc_qbo_desk_cuscalusnonusjob_cal_order_cus');
+					}
+					
+					if(($b_country == 'United States (US)' || $b_country == 'US') && $b_state != 'California' && $b_state != 'CA'){
+						$j_qbo_cust_id = $this->get_option('mw_wc_qbo_desk_cuscalusnonusjob_noncal_order_cus');
+					}
+					
+					if($b_country != 'United States (US)' && $b_country != 'US'){
+						$j_qbo_cust_id = $this->get_option('mw_wc_qbo_desk_cuscalusnonusjob_nonus_order_cus');
+					}
+					
+					if(!empty($j_qbo_cust_id)){
+						$Customer->set('ParentRef ListID',$j_qbo_cust_id);
+					}
+				}
 				
 				/**/
 				if($this->is_plugin_active('myworks-quickbooks-desktop-fitbodywrap-custom-compt') && $this->check_sh_fitbodywrap_cuscompt_hash()){
@@ -6318,7 +7529,21 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				}
 				*/
 				
-				$Customer->setEmail($customer_data['email']);
+				$billing_email = $this->get_array_isset($customer_data,'billing_email','',true);
+				
+				$cust_email = $customer_data['email'];
+				if(!$is_guest && $this->is_plugin_active('myworks-quickbooks-desktop-custom-customer-field-compt-nurish-group')){
+					if(!empty($billing_email)){
+						$cust_email = $billing_email;
+					}
+				}
+				
+				$Customer->setEmail($cust_email);
+				
+				//				
+				if(!empty($billing_email)){
+					$Customer->set('Cc',$billing_email);
+				}				
 				
 				$f_l_name = $customer_data['firstname'].' '.$customer_data['lastname'];
 				
@@ -6326,6 +7551,24 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				$mw_wc_qbo_desk_cus_push_customertype = $this->get_option('mw_wc_qbo_desk_cus_push_customertype');
 				if($mw_wc_qbo_desk_cus_push_customertype!=''){
 					$Customer->setCustomerTypeListID($mw_wc_qbo_desk_cus_push_customertype);
+				}
+				
+				/**/
+				if(empty($qb_list_id)){
+					$cus_push_d_pterm = $this->get_option('mw_wc_qbo_desk_cus_push_d_pterm');
+					if(!empty($cus_push_d_pterm)){
+						$Customer->set('TermsRef ListID',$cus_push_d_pterm);
+					}
+					
+					$cus_push_d_pmethod = $this->get_option('mw_wc_qbo_desk_cus_push_d_pmethod');
+					if(!empty($cus_push_d_pmethod)){
+						$Customer->set('PreferredPaymentMethodRef ListID',$cus_push_d_pmethod);
+					}
+					
+					$cus_push_d_plevel = $this->get_option('mw_wc_qbo_desk_cus_push_d_plevel');
+					if(!empty($cus_push_d_plevel)){
+						$Customer->set('PriceLevelRef ListID',$cus_push_d_plevel);
+					}
 				}
 				
 				//Wc user Role - QBD Customer Type Map
@@ -6352,6 +7595,24 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				}
 				
 				$mw_wc_qbo_desk_cus_push_rep_othername = $this->get_option('mw_wc_qbo_desk_cus_push_rep_othername');
+				/**/				
+				if($customer_id>0 && $this->is_plugin_active('woocommerce-wholesale-lead-capture','woocommerce-wholesale-lead-capture.bootstrap') && $this->option_checked('mw_wc_qbo_desk_compt_wwlc_rf_srm_ed')){
+					$wwlc_cf_rep_map = get_option('mw_wc_qbo_desk_wwlc_cf_rep_map');
+					if(is_array($wwlc_cf_rep_map) && count($wwlc_cf_rep_map)){
+						$wwlc_cf_rep = get_user_meta($customer_id,'wwlc_cf_rep',true);
+						if(empty($wwlc_cf_rep)){
+							$wwlc_cf_rep = get_user_meta($wc_cus_id,'wwlc_cf_salesrep',true);
+						}
+						
+						if(!empty($wwlc_cf_rep)){
+							if(isset($wwlc_cf_rep_map[$wwlc_cf_rep]) && !empty($wwlc_cf_rep_map[$wwlc_cf_rep])){
+								$qbd_salesrep_id = $wwlc_cf_rep_map[$wwlc_cf_rep];
+								$mw_wc_qbo_desk_cus_push_rep_othername = $qbd_salesrep_id;
+							}
+						}
+					}
+				}
+				
 				if($mw_wc_qbo_desk_cus_push_rep_othername!=''){
 					$Customer->setSalesRepListID($mw_wc_qbo_desk_cus_push_rep_othername);
 				}
@@ -6412,7 +7673,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 										$DataExt->setListDataExtType('Customer');
 										//setListObjListID
 										$DataExt->setListObjName($display_name);
-										$ext_qbxml = $DataExt->asQBXML(QUICKBOOKS_MOD_DATAEXT,null,$this->get_qbxml_locale());
+										$ext_qbxml .= $DataExt->asQBXML(QUICKBOOKS_MOD_DATAEXT,null,$this->get_qbxml_locale());
 									}
 								}
 							}
@@ -6434,6 +7695,33 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 								}
 							}
 						}						
+					}
+				}
+				
+				/**/
+				if(!$is_guest && $this->is_plugin_active('myworks-quickbooks-desktop-custom-customer-field-compt-nurish-group')){
+					$ccfl_ng = array();
+					$ccfl_ng['username'] = '2-USERNAME FR WC';//Username fr WC
+					$ccfl_ng['email'] = '3-USER EMAIL FROM WC';//User email fr WC
+					$ccfl_ng['wwlc_cf_sales_rep'] = '1-REP FR WC U ID';//Sales Rep FR WC User ID
+					
+					if(is_array($ccfl_ng) && count($ccfl_ng)){
+						foreach($ccfl_ng as $k => $v){
+							if(isset($customer_data[$k])){
+								$ccfl_v = $this->get_array_isset($customer_data,$k,'',true);
+								if(!empty($ccfl_v)){
+									$DataExt = new QuickBooks_QBXML_Object_DataExt();
+									$DataExt->setOwnerID($this->get_owner_id());
+									$DataExt->setDataExtName($v);
+									$DataExt->set('DataExtType',$this->qbd_dext_type_str());
+									$DataExt->setDataExtValue($ccfl_v);
+									$DataExt->setListDataExtType('Customer');
+									//setListObjListID
+									$DataExt->setListObjName($display_name);
+									$ext_qbxml .= $DataExt->asQBXML(QUICKBOOKS_MOD_DATAEXT,null,$this->get_qbxml_locale());
+								}
+							}
+						}
 					}
 				}
 				
@@ -6514,14 +7802,15 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					*/
 					
 					$rfs_arr = array(
-						$this->get_array_isset($customer_data,'firstname','',true),
-						$this->get_array_isset($customer_data,'lastname','',true),
-						$this->get_array_isset($customer_data,'company','',true),
+						$this->get_array_isset($customer_data,'shipping_first_name','',true),
+						$this->get_array_isset($customer_data,'shipping_last_name','',true),
+						$this->get_array_isset($customer_data,'shipping_company','',true),
 						$this->get_array_isset($customer_data,'shipping_address_1','',true),
 						$this->get_array_isset($customer_data,'shipping_address_2','',true),
 						$this->get_array_isset($customer_data,'shipping_city','',true),
 						$this->get_array_isset($customer_data,'shipping_state','',true),
-						$this->get_array_isset($customer_data,'shipping_postcode','',true),						
+						$this->get_array_isset($customer_data,'shipping_postcode','',true),
+						$this->get_array_isset($customer_data,'billing_phone','',true),
 						$country
 					);
 					
@@ -6578,16 +7867,21 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				}
 				
 				$name_replace_chars = array(':');
-				$name = $this->get_array_isset($product_data,'name','',true,100,false,$name_replace_chars);
-				/**/
-				$name = $this->get_variation_name_from_id($name,'',$id);
+				$pn_trim_v = (!$is_variation)?100:0;
+				$name = $this->get_array_isset($product_data,'name','',true,$pn_trim_v,false,$name_replace_chars);
+				
+				//$name = $this->get_variation_name_from_id($name,'',$id);
 				
 				$sku = $this->get_array_isset($product_data,'_sku','',true);
 				
 				if($sku!=''){
 					$Product->setName($sku);
 				}else{
-					$Product->setName($name);
+					$p_name = $name;
+					if($is_variation){
+						$p_name = $this->get_woo_v_name_trimmed($p_name);
+					}
+					$Product->setName($p_name);
 				}				
 				
 				$desc = $this->get_array_isset($product_data,'short_description','',true,4000);
@@ -6600,10 +7894,18 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				$_price = floatval($_price);
 				
 				
-				
-				$qbo_product_account = $this->get_option('mw_wc_qbo_desk_default_qbo_product_account');				
+				$qbo_product_account = $this->get_array_isset($product_data,'qb_income_account','');
+				if(empty($qbo_product_account)){
+					$qbo_product_account = $this->get_option('mw_wc_qbo_desk_default_qbo_product_account');
+				}
 				
 				//setPrice#setDescription#setAccountListID#setPurchaseDescription#setExpenseAccountListID#setPreferredVendorListID#setFullName#setIsActive
+				
+				/**/
+				if($this->is_plugin_active('woocommerce-cost-of-goods') && $this->option_checked('mw_wc_qbo_desk_wcogs_cfvs_ed')){
+					$_wc_cog_cost = $this->get_array_isset($product_data,'_wc_cog_cost',0);
+					$Product->set('PurchaseCost',$_wc_cog_cost);
+				}
 				
 				if($type=='NonInventory'){
 					if($sku!=''){
@@ -6630,17 +7932,29 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					
 					$_stock = $this->get_array_isset($product_data,'_stock',0,true);
 					if($_stock==''){$_stock=0;}
+					
+					//
+					$_stock = $this->qbd_limit_decimal_points($_stock);
+					
 					$Product->setQuantityOnHand($_stock);
 					
 					$Product->setIncomeAccountListID($qbo_product_account);
 					
 					//
-					$qbo_product_account_asset = $this->get_option('mw_wc_qbo_desk_default_qbo_asset_account');
+					$qbo_product_account_asset = $this->get_array_isset($product_data,'qb_ia_account','');
+					if(empty($qbo_product_account_asset)){
+						$qbo_product_account_asset = $this->get_option('mw_wc_qbo_desk_default_qbo_asset_account');
+					}
+					
 					if($qbo_product_account_asset!=''){
 						$Product->setAssetAccountListID($qbo_product_account_asset);
 					}
 					
-					$qbo_product_account_cogs = $this->get_option('mw_wc_qbo_desk_default_qbo_cogs_account');
+					$qbo_product_account_cogs = $this->get_array_isset($product_data,'qb_cogs_account','');
+					if(empty($qbo_product_account_cogs)){
+						$qbo_product_account_cogs = $this->get_option('mw_wc_qbo_desk_default_qbo_cogs_account');
+					}
+					
 					if($qbo_product_account_cogs!=''){
 						$Product->setCOGSAccountListID($qbo_product_account_cogs);
 					}
@@ -6662,8 +7976,58 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					$qbxml = $Product->asQBXML(QUICKBOOKS_ADD_SERVICEITEM,null,$this->get_qbxml_locale());
 				}
 				
+				$PreferredVendor = $this->get_array_isset($product_data,'qb_p_vendor','');
+				if(!empty($PreferredVendor)){
+					if($type=='Inventory'){
+						//$Product->set('PrefVendorRef ListID',$PreferredVendor);
+					}else{
+						$Product->set('SalesAndPurchase PrefVendorRef ListID',$PreferredVendor);
+					}					
+				}
+				
+				$BarCode = $this->get_array_isset($product_data,'qb_barcode','');
+				if(!empty($BarCode)){
+					//$Product->set('BarCode BarCodeValue',$BarCode);
+				}
+				
+				if($type != 'Service'){
+					$MPN = $this->get_array_isset($product_data,'qb_mpn','');
+					if(!empty($MPN)){
+						//$Product->set('ManufacturerPartNumber',$MPN);
+					}
+				}				
+				
 				//$this->_p($Product);
 				$qbxml = $this->get_qbxml_prefix().$qbxml. $this->get_qbxml_suffix();
+				
+				/**/
+				$T = "\t";
+				$N = PHP_EOL;
+				$SR = 'str_repeat';
+				
+				if($type != 'Service'){
+					$MPN = $this->get_array_isset($product_data,'qb_mpn','');
+					$MPN_XML = $T.'<ManufacturerPartNumber>'.$MPN.'</ManufacturerPartNumber>';
+					//$qbxml = str_replace('</ItemInventoryAdd>',$MPN_XML.$N.'</ItemInventoryAdd>',$qbxml);
+					$qbxml = str_replace('</Name>','</Name>'.$N.$MPN_XML,$qbxml);
+				}
+				
+				if(!empty($BarCode)){
+					$BarCode_XML = $SR($T,2).'<BarCode>'.$N.$SR($T,3).'<BarCodeValue>'.$BarCode.'</BarCodeValue>'.$N.$SR($T,2).'</BarCode>';
+					//$qbxml = str_replace('</ItemInventoryAdd>',$BarCode_XML.$N.'</ItemInventoryAdd>',$qbxml);
+					$qbxml = str_replace('</Name>','</Name>'.$N.$BarCode_XML,$qbxml);
+				}
+				
+				if(!empty($PreferredVendor)){
+					if($type=='Inventory'){
+						$PV_XML = $SR($T,2).'<PrefVendorRef>'.$N.$SR($T,3).'<ListID>'.$PreferredVendor.'</ListID>'.$N.$SR($T,2).'</PrefVendorRef>';
+						$qbxml = str_replace('</COGSAccountRef>','</COGSAccountRef>'.$N.$PV_XML,$qbxml);
+					}else{
+						$PV_XML = $SR($T,2).'<SalesAndPurchase>'.$N.$SR($T,2).'<PrefVendorRef>'.$N.$SR($T,3).'<ListID>'.$PreferredVendor.'</ListID>'.$N.$SR($T,2).'</PrefVendorRef>'.$N.$SR($T,2).'</SalesAndPurchase>';
+						//$qbxml = str_replace('</ItemInventoryAdd>',$PV_XML.$N.'</ItemInventoryAdd>',$qbxml);
+					}					
+				}
+				
 				return $qbxml;
 				
 			}
@@ -6686,6 +8050,9 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					$_stock = $this->get_array_isset($product_data,'_stock',0,true);
 					if($_stock==''){$_stock=0;}
 					
+					//
+					$_stock = $this->qbd_limit_decimal_points($_stock);
+					
 					$qbo_product_account_asset = $this->get_option('mw_wc_qbo_desk_default_qbo_asset_account');
 					$InventoryAdjustment->setAccountListID($qbo_product_account_asset);
 					
@@ -6704,8 +8071,8 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		}
 	}
 	
-	//
-	public function GetRefundQbxml_Check($refund_id,$order_id){
+	/**/
+	public function GetRefundQbxml_CreditMemo($refund_id,$order_id){
 		if($this->is_qwc_connected()){
 			global $wpdb;
 			
@@ -6755,102 +8122,117 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					
 					$qbd_invoice_id = $this->check_quickbooks_invoice($wc_inv_id);
 					
+					/*
 					if(!$qbd_invoice_id){
 						$this->save_log(array('log_type'=>'Refund','log_title'=>'Export Refund Error #'.$refund_id,'details'=>'QuickBooks '.strtolower($qbd_sa).' not found','status'=>0));
 						return false;
 					}
+					*/
 					
 					$_order_currency = $this->get_array_isset($refund_data,'_order_currency','',true);
 					
 					$qbo_cus_id = '';
 					
 					/**/
-					if($this->is_plugin_active('myworks-quickbooks-desktop-fitbodywrap-custom-compt') && $this->check_sh_fitbodywrap_cuscompt_hash()){
-						if($this->option_checked('mw_wc_qbo_desk_compt_np_fitbodywrap_cust_inv_oc')){
-							$c_account_number = (int) get_post_meta($order_id,'account_number',true);
-							if($c_account_number > 0){
-								$qbo_cus_id = $this->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_customers','qbd_customerid','acc_num',$c_account_number);
-							}
+					if($this->check_sh_cpfmpocjh_cuscompt_hash() && $this->option_checked('mw_wc_qbo_desk_cpfmpocjh_cuscompt_ed')){
+						$qbd_job_id = $this->get_wc_data_pair_val('Job',$order_id);
+						if(!empty($qbd_job_id)){
+							$qbo_cus_id = $qbd_job_id;
+						}else{							
+							$this->save_log(array('log_type'=>'Customer','log_title'=>'Export Refund Error #'.$refund_id,'details'=>'QuickBooks Customer Job Not Found','status'=>0));
+							return false;
 						}
 					}
 					
-					/**/					
-					if($this->is_plugin_active('woocommerce-aelia-currencyswitcher') && $this->option_checked('mw_wc_qbo_desk_wacs_satoc_cb')){				
-						if($_order_currency!=''){
-							$aelia_cur_cus_map = get_option('mw_wc_qbo_desk_wacs_satoc_map_cur_cus');
-							if(is_array($aelia_cur_cus_map) && count($aelia_cur_cus_map)){
-								if(isset($aelia_cur_cus_map[$_order_currency]) && trim($aelia_cur_cus_map[$_order_currency])!=''){
-									$qbo_cus_id = trim($aelia_cur_cus_map[$_order_currency]);
+					if(empty($qbo_cus_id)){
+						/**/
+						if($this->is_plugin_active('myworks-quickbooks-desktop-fitbodywrap-custom-compt') && $this->check_sh_fitbodywrap_cuscompt_hash()){
+							if($this->option_checked('mw_wc_qbo_desk_compt_np_fitbodywrap_cust_inv_oc')){
+								$c_account_number = (int) get_post_meta($order_id,'account_number',true);
+								if($c_account_number > 0){
+									$qbo_cus_id = $this->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_customers','qbd_customerid','acc_num',$c_account_number);
 								}
 							}
-						}					
-					}
-					
-					/**/
-					if($this->is_plugin_active('myworks-quickbooks-desktop-custom-customer-compt-gunnar') && $this->option_checked('mw_wc_qbo_desk_compt_cccgunnar_ocs_qb_cus_map_ed')){
-						$cccgunnar_qb_cus_map = get_option('mw_wc_qbo_desk_cccgunnar_qb_cus_map');
-						if(is_array($cccgunnar_qb_cus_map) && count($cccgunnar_qb_cus_map)){
-							$occ_mp_key = '';
-							if($order->post_status == 'rx-processing'){
-								$occ_mp_key = 'rx_order_status';
-							}else{
-								$ord_country = $this->get_array_isset($refund_data,'_shipping_country','',true);
-								if(empty($ord_country)){
-									$ord_country = $this->get_array_isset($refund_data,'_billing_country','',true);
-								}
-								
-								if(!empty($ord_country)){
-									if($ord_country == 'US'){
-										$occ_mp_key = 'us_order';
-									}else{
-										$occ_mp_key = 'intl_order';
-									}
-								}
-							}
-							
-							if(!empty($occ_mp_key)){
-								if(isset($cccgunnar_qb_cus_map[$occ_mp_key]) && trim($cccgunnar_qb_cus_map[$occ_mp_key])!=''){
-									$qbo_cus_id = trim($cccgunnar_qb_cus_map[$occ_mp_key]);
-								}
-							}
-						}
-					}
-					
-					/**/
-					if($this->is_plugin_active('myworks-quickbooks-desktop-sync-compatibility') && $this->is_plugin_active('myworks-quickbooks-desktop-shipping-us-state-quickbooks-customer-map-compt') && $this->option_checked('mw_wc_qbo_desk_compt_sus_qb_cus_map_ed')){					
-						if($wc_cus_id>0){						
-							$shipping_country = get_user_meta($wc_cus_id,'shipping_country',true);						
-						}else{						
-							//$shipping_country = get_post_meta($wc_inv_id,'_shipping_country',true);
-							$shipping_country = $this->get_array_isset($refund_data,'_shipping_country','');
 						}
 						
-						if($shipping_country == 'US'){
-							if($wc_cus_id>0){
-								$shipping_state = get_user_meta($wc_cus_id,'shipping_state',true);
-							}else{
-								//$shipping_state = get_post_meta($wc_inv_id,'_shipping_state',true);
-								$shipping_state = $this->get_array_isset($refund_data,'_shipping_state','');
-							}
-							
-							if($shipping_state!=''){
-								$sus_qb_cus_map = get_option('mw_wc_qbo_desk_ship_us_st_qb_cus_map');
-								if(is_array($sus_qb_cus_map) && count($sus_qb_cus_map)){
-									if(isset($sus_qb_cus_map[$shipping_state]) && trim($sus_qb_cus_map[$shipping_state])!=''){
-										$qbo_cus_id = trim($sus_qb_cus_map[$shipping_state]);
+						/**/					
+						if($this->is_plugin_active('woocommerce-aelia-currencyswitcher') && $this->option_checked('mw_wc_qbo_desk_wacs_satoc_cb')){				
+							if($_order_currency!=''){
+								$aelia_cur_cus_map = get_option('mw_wc_qbo_desk_wacs_satoc_map_cur_cus');
+								if(is_array($aelia_cur_cus_map) && count($aelia_cur_cus_map)){
+									if(isset($aelia_cur_cus_map[$_order_currency]) && trim($aelia_cur_cus_map[$_order_currency])!=''){
+										$qbo_cus_id = trim($aelia_cur_cus_map[$_order_currency]);
+									}
+								}
+							}					
+						}
+						
+						/**/
+						if($this->is_plugin_active('myworks-quickbooks-desktop-custom-customer-compt-gunnar') && $this->option_checked('mw_wc_qbo_desk_compt_cccgunnar_ocs_qb_cus_map_ed')){
+							$cccgunnar_qb_cus_map = get_option('mw_wc_qbo_desk_cccgunnar_qb_cus_map');
+							if(is_array($cccgunnar_qb_cus_map) && count($cccgunnar_qb_cus_map)){
+								$occ_mp_key = '';
+								if($order->post_status == 'rx-processing'){
+									$occ_mp_key = 'rx_order_status';
+								}else{
+									$ord_country = $this->get_array_isset($refund_data,'_shipping_country','',true);
+									if(empty($ord_country)){
+										$ord_country = $this->get_array_isset($refund_data,'_billing_country','',true);
+									}
+									
+									if(!empty($ord_country)){
+										if($ord_country == 'US'){
+											$occ_mp_key = 'us_order';
+										}else{
+											$occ_mp_key = 'intl_order';
+										}
+									}
+								}
+								
+								if(!empty($occ_mp_key)){
+									if(isset($cccgunnar_qb_cus_map[$occ_mp_key]) && trim($cccgunnar_qb_cus_map[$occ_mp_key])!=''){
+										$qbo_cus_id = trim($cccgunnar_qb_cus_map[$occ_mp_key]);
 									}
 								}
 							}
-						}else{
-							$qbo_cus_id = $this->get_option('mw_wc_qbo_desk_sus_fb_qb_cus_foc');
 						}
-					}
+						
+						/**/
+						if($this->is_plugin_active('myworks-quickbooks-desktop-sync-compatibility') && $this->is_plugin_active('myworks-quickbooks-desktop-shipping-us-state-quickbooks-customer-map-compt') && $this->option_checked('mw_wc_qbo_desk_compt_sus_qb_cus_map_ed')){					
+							if($wc_cus_id>0){						
+								$shipping_country = get_user_meta($wc_cus_id,'shipping_country',true);						
+							}else{						
+								//$shipping_country = get_post_meta($wc_inv_id,'_shipping_country',true);
+								$shipping_country = $this->get_array_isset($refund_data,'_shipping_country','');
+							}
+							
+							if($shipping_country == 'US'){
+								if($wc_cus_id>0){
+									$shipping_state = get_user_meta($wc_cus_id,'shipping_state',true);
+								}else{
+									//$shipping_state = get_post_meta($wc_inv_id,'_shipping_state',true);
+									$shipping_state = $this->get_array_isset($refund_data,'_shipping_state','');
+								}
+								
+								if($shipping_state!=''){
+									$sus_qb_cus_map = get_option('mw_wc_qbo_desk_ship_us_st_qb_cus_map');
+									if(is_array($sus_qb_cus_map) && count($sus_qb_cus_map)){
+										if(isset($sus_qb_cus_map[$shipping_state]) && trim($sus_qb_cus_map[$shipping_state])!=''){
+											$qbo_cus_id = trim($sus_qb_cus_map[$shipping_state]);
+										}
+									}
+								}
+							}else{
+								$qbo_cus_id = $this->get_option('mw_wc_qbo_desk_sus_fb_qb_cus_foc');
+							}
+						}
+					}					
 					
 					if(empty($qbo_cus_id)){
 						if(!$this->option_checked('mw_wc_qbo_desk_all_order_to_customer')){
 							if($wc_cus_id>0){
 								//$qbo_cus_id = $this->get_wc_data_pair_val('Customer',$wc_cus_id);
-								if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+								if($this->is_dmcb_fval_ext_ccfv()){
 									$customer_data = $this->get_wc_customer_info_from_order($order_id);
 								}else{
 									$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -6882,7 +8264,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 								}
 								
 								if($io_cs){
-									if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+									if($this->is_dmcb_fval_ext_ccfv()){
 										$customer_data = $this->get_wc_customer_info_from_order($order_id);
 									}else{
 										$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -6919,9 +8301,1267 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 									}
 								}
 								
+								/**/				
+								if(!$io_cs){
+									$aotc_scjm_data = get_option('mw_wc_qbo_desk_aotc_scjm_data');
+									if(is_array($aotc_scjm_data) && !empty($aotc_scjm_data)){
+										if(isset($aotc_scjm_data[$wc_user_role]) && !empty($aotc_scjm_data[$wc_user_role])){
+											$io_cs = true;										
+										}
+									}
+								}
+								
 								if($io_cs){
 									if($wc_cus_id>0){
-										if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+										if($this->is_dmcb_fval_ext_ccfv()){
+											$customer_data = $this->get_wc_customer_info_from_order($order_id);
+										}else{
+											$customer_data = $this->get_wc_customer_info($wc_cus_id);
+										}							
+										$qbo_cus_id = $this->if_qbo_customer_exists($customer_data);
+									}else{
+										$customer_data = $this->get_wc_customer_info_from_order($order_id);
+										$qbo_cus_id = $this->if_qbo_guest_exists($customer_data);
+									}
+								}else{
+									$qbo_cus_id = $mw_wc_qbo_desk_aotc_rcm_data[$wc_user_role];
+								}
+							}
+							//
+						}
+					}				
+					
+					if(empty($qbo_cus_id)){
+						$this->save_log(array('log_type'=>'Customer','log_title'=>'Export Refund Error #'.$refund_id,'details'=>'QuickBooks Customer Not Found','status'=>0));
+						return false;
+					}
+					
+					/*Count Total Amounts*/
+					$_cart_discount = $this->get_array_isset($refund_data,'_cart_discount',0);
+					$_cart_discount_tax = $this->get_array_isset($refund_data,'_cart_discount_tax',0);
+
+					$_order_tax = (float) $this->get_array_isset($refund_data,'_order_tax',0);
+					$_order_shipping_tax = (float) $this->get_array_isset($refund_data,'_order_shipping_tax',0);
+					$_order_total_tax = ($_order_tax+$_order_shipping_tax);
+
+					$order_shipping_total = $this->get_array_isset($refund_data,'order_shipping_total',0);
+					
+					if($this->wacs_base_cur_enabled()){
+						$_cart_discount_base_currency = $this->get_array_isset($refund_data,'_cart_discount_base_currency',0);
+						$_cart_discount_tax_base_currency = $this->get_array_isset($refund_data,'_cart_discount_tax_base_currency',0);
+						
+						$_order_tax_base_currency = (float) $this->get_array_isset($refund_data,'_order_tax_base_currency',0);
+						$_order_shipping_tax_base_currency = (float) $this->get_array_isset($refund_data,'_order_shipping_tax_base_currency',0);
+						$_order_total_tax_base_currency = ($_order_tax_base_currency+$_order_shipping_tax_base_currency);
+						
+						$order_shipping_total_base_currency = $this->get_array_isset($refund_data,'_order_shipping_base_currency',0);
+					}
+					
+					$_order_total = $this->get_array_isset($refund_data,'_order_total',0);
+					$is_partial = false;
+					if($_order_total!=$_refund_amount){
+						$is_partial = true;
+					}
+					
+					/**/
+					$order_refund_details = (isset($refund_data['order_refund_details']))?$refund_data['order_refund_details']:array();
+					$r_order_tax = $this->get_array_isset($order_refund_details,'_order_tax',0);
+					$r_order_shipping_tax = $this->get_array_isset($order_refund_details,'_order_shipping_tax',0);
+					
+					$Check = new QuickBooks_QBXML_Object_Check();
+					
+					$_payment_method = $this->get_array_isset($refund_data,'_payment_method','',true);					
+					
+					if($this->wacs_base_cur_enabled()){					
+						$base_currency = get_woocommerce_currency();
+						$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$base_currency);
+					}else{
+						$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$_order_currency);
+					}
+					
+					$r_acc_id = $this->get_array_isset($pm_map_data,'qbo_account_id','');
+					//$qb_p_method_id = $this->get_array_isset($pm_map_data,'qb_p_method_id','');
+					$qb_cr_ba_id = $this->get_array_isset($pm_map_data,'qb_cr_ba_id','');
+					
+					if(!empty($qb_cr_ba_id)){
+						$Check->setAccountListID($qb_cr_ba_id);
+					}else{
+						$Check->setAccountListID($r_acc_id);
+					}					
+					
+					$wc_rfnd_date = $this->get_array_isset($refund_data,'refund_date','');
+					$wc_rfnd_date = $this->format_date($wc_rfnd_date);
+					
+					//$Check->setPayeeEntityListID($qbo_cus_id);
+					$cref_xml = '
+						<CustomerRef>
+							<ListID>'.$qbo_cus_id.'</ListID>
+						</CustomerRef>	
+					';
+					
+					$Check->setRefNumber($wc_inv_id.'-'.$refund_id);
+					
+					$Check->setTxnDate($wc_rfnd_date);
+					
+					//setMemo
+					
+					/*
+					$ApplyCheckToTxn = new QuickBooks_QBXML_Object_Check_ApplyCheckToTxn();
+					$ApplyCheckToTxn->setTxnID($qbd_invoice_id);
+					$ApplyCheckToTxn->setAmount($_refund_amount);
+					
+					//$Check->addAddCheckToTxn($ApplyCheckToTxn);
+					$Check->addListItem('ApplyCheckToTxn', $ApplyCheckToTxn);
+					*/
+					
+					if(!$is_partial){
+						//$Check->set('ApplyCheckToTxnAdd TxnID',$qbd_invoice_id);
+						//$Check->set('ApplyCheckToTxnAdd Amount',$_refund_amount);
+					}					
+					
+					/*Qbd settings*/
+					$qbo_is_sales_tax = false;
+					$qbo_company_country = 'US';
+					$qbo_is_shipping_allowed = false;
+
+					/*Tax rates*/
+					$qbo_tax_code = '';
+					$apply_tax = false;
+					$is_tax_applied = false;
+					$is_inclusive = false;
+
+					$qbo_tax_code_shipping = '';
+
+					$tax_rate_id = 0;
+					$tax_rate_id_2 = 0;
+
+					$tax_details = (isset($refund_data['tax_details']))?$refund_data['tax_details']:array();
+					
+					//Tax Totals From tax Lines
+					$calc_order_tax_totals_from_tax_lines = true;					
+					if($calc_order_tax_totals_from_tax_lines){
+						$_order_tax = 0;
+						$_order_shipping_tax = 0;
+						$_order_total_tax = 0;
+						
+						if($this->wacs_base_cur_enabled()){
+							$_order_tax_base_currency = 0;
+							$_order_shipping_tax_base_currency = 0;
+							$_order_total_tax_base_currency = 0;
+						}
+						
+						if(count($tax_details)){
+							foreach($tax_details as $td){
+								$_order_tax+=$td['tax_amount'];
+								$_order_shipping_tax+=$td['shipping_tax_amount'];
+								$_order_total_tax+=$td['tax_amount']+$td['shipping_tax_amount'];
+								
+								if($this->wacs_base_cur_enabled()){
+									$_order_tax_base_currency+=$td['tax_amount_base_currency'];
+									$_order_shipping_tax_base_currency+=$td['shipping_tax_amount_base_currency'];
+									$_order_total_tax_base_currency+=$td['tax_amount_base_currency']+$td['shipping_tax_amount_base_currency'];
+								}
+							}
+						}
+					}
+					$_order_total_tax = $this->qbd_limit_decimal_points($_order_total_tax);
+					if($this->wacs_base_cur_enabled()){
+						$_order_total_tax_base_currency = $this->qbd_limit_decimal_points($_order_total_tax_base_currency);
+					}
+					
+					//TaxJar Settings
+					$is_taxjar_active = false;
+					$woocommerce_taxjar_integration_settings = get_option('woocommerce_taxjar-integration_settings');
+					$wc_taxjar_enable_tax_calculation = 0;
+					if(is_array($woocommerce_taxjar_integration_settings) && count($woocommerce_taxjar_integration_settings)){
+						if(isset($woocommerce_taxjar_integration_settings['enabled']) && $woocommerce_taxjar_integration_settings['enabled']=='yes'){
+							$wc_taxjar_enable_tax_calculation = 1;
+						}
+					}
+					
+					if($this->is_plugin_active('taxjar-simplified-taxes-for-woocommerce','taxjar-woocommerce') && $this->option_checked('mw_wc_qbo_desk_wc_taxjar_support') && $wc_taxjar_enable_tax_calculation=='1'){
+						$is_taxjar_active = true;
+						$qbo_is_sales_tax = false;
+					}
+					
+					//Avatax Settings
+					$is_avatax_active = false;
+					$wc_avatax_enable_tax_calculation = get_option('wc_avatax_enable_tax_calculation');
+					if($this->is_plugin_active('woocommerce-avatax') && $this->option_checked('mw_wc_qbo_desk_wc_avatax_support') && $wc_avatax_enable_tax_calculation=='yes'){
+						$is_avatax_active = true;
+						$qbo_is_sales_tax = false;
+					}
+					
+					//
+					$is_so_tax_as_li = false;
+					if($this->option_checked('mw_wc_qbo_desk_odr_tax_as_li')){
+						$is_so_tax_as_li = true;
+						$qbo_is_sales_tax = false;
+					}
+					
+					if($qbo_is_sales_tax){
+						if(count($tax_details)){
+							$tax_rate_id = $tax_details[0]['rate_id'];
+						}
+
+						if(count($tax_details)>1){
+							if($tax_details[1]['tax_amount']>0){
+								$tax_rate_id_2 = $tax_details[1]['rate_id'];
+							}
+						}
+
+						/*
+						if(count($tax_details)>1 && $qbo_is_shipping_allowed){
+							foreach($tax_details as $td){
+								if($td['tax_amount']==0 && $td['shipping_tax_amount']>0){
+									$qbo_tax_code_shipping = $this->get_qbo_mapped_tax_code($td['rate_id'],0);
+									break;
+								}
+							}
+						}
+						*/
+						
+						$qbo_tax_code = $this->get_qbo_mapped_tax_code($tax_rate_id,$tax_rate_id_2);
+						if($qbo_tax_code!='' || $qbo_tax_code!='NON'){
+							$apply_tax = true;
+						}
+
+						//$Tax_Code_Details = $this->mod_qbo_get_tx_dtls($qbo_tax_code);
+						$is_qbo_dual_tax = false;
+
+						/*
+						if(count($Tax_Code_Details)){
+							if($Tax_Code_Details['TaxGroup'] && count($Tax_Code_Details['TaxRateDetail'])>1){
+								$is_qbo_dual_tax = true;
+							}
+						}
+
+						$Tax_Rate_Ref = (isset($Tax_Code_Details['TaxRateDetail'][0]['TaxRateRef']))?$Tax_Code_Details['TaxRateDetail'][0]['TaxRateRef']:'';
+						$TaxPercent = $this->get_qbo_tax_rate_value_by_key($Tax_Rate_Ref);
+						$Tax_Name = (isset($Tax_Code_Details['TaxRateDetail'][0]['TaxRateRef']))?$Tax_Code_Details['TaxRateDetail'][0]['TaxRateRef_name']:'';
+
+						$NetAmountTaxable = 0;
+
+						if($is_qbo_dual_tax){
+							$Tax_Rate_Ref_2 = (isset($Tax_Code_Details['TaxRateDetail'][1]['TaxRateRef']))?$Tax_Code_Details['TaxRateDetail'][1]['TaxRateRef']:'';
+							$TaxPercent_2 = $this->get_qbo_tax_rate_value_by_key($Tax_Rate_Ref_2);
+							$Tax_Name_2 = (isset($Tax_Code_Details['TaxRateDetail'][1]['TaxRateRef']))?$Tax_Code_Details['TaxRateDetail'][1]['TaxRateRef_name']:'';
+							$NetAmountTaxable_2 = 0;
+						}
+						*/
+
+						/*
+						if($qbo_tax_code_shipping!=''){
+							$Tax_Code_Details_Shipping = $this->mod_qbo_get_tx_dtls($qbo_tax_code_shipping);
+							$Tax_Rate_Ref_Shipping = (isset($Tax_Code_Details_Shipping['TaxRateDetail'][0]['TaxRateRef']))?$Tax_Code_Details_Shipping['TaxRateDetail'][0]['TaxRateRef']:'';
+							$TaxPercent_Shipping = $this->get_qbo_tax_rate_value_by_key($Tax_Rate_Ref_Shipping);
+							$Tax_Name_Shipping = (isset($Tax_Code_Details_Shipping['TaxRateDetail'][0]['TaxRateRef']))?$Tax_Code_Details_Shipping['TaxRateDetail'][0]['TaxRateRef_name']:'';
+							$NetAmountTaxable_Shipping = 0;
+						}
+						*/
+
+						$_prices_include_tax = $this->get_array_isset($refund_data,'_prices_include_tax','no',true);
+						if($qbo_is_sales_tax){
+							$tax_type = $this->get_tax_type($_prices_include_tax);
+							$is_inclusive = $this->is_tax_inclusive($tax_type);
+						}
+					}
+					
+					$qbo_inv_items = (isset($refund_data['qbo_inv_items']))?$refund_data['qbo_inv_items']:array();
+					
+					$is_bundle_order = false;
+					$map_bundle_support = false;
+					
+					/**/
+					if($this->is_plugin_active('woocommerce-product-bundles') && $this->option_checked('mw_wc_qbo_desk_compt_wpbs')){
+						if(is_array($qbo_inv_items) && count($qbo_inv_items)){
+							foreach($qbo_inv_items as $qbo_item){
+								if(isset($qbo_item['bundled_items']) && ($qbo_item['qbo_product_type'] == 'Group' || $qbo_item['qbo_product_type'] == 'InventoryAssembly')){
+									$is_bundle_order = true;
+									if($qbo_item['qbo_product_type'] == 'InventoryAssembly'){continue;}
+									
+									$CheckLineGroup = new QuickBooks_QBXML_Object_Check_ItemGroupLine();
+									$CheckLineGroup->setItemGroupListID($qbo_item["ItemRef"]);
+									$Description = $qbo_item['Description'];
+									$Qty = $qbo_item["Qty"];									
+									$CheckLineGroup->setQuantity($Qty);
+									
+									if(!$this->option_checked('mw_wc_qbo_desk_skip_os_lid')){
+										//$CheckLineGroup->setDesc($Description);
+									}
+									//TotalAmount
+									$Check->addItemGroupLine($CheckLineGroup);
+								}
+							}
+						}
+					}					
+					
+					$allow_bundle_and_map_bundle = true;
+					if(!$is_bundle_order || $allow_bundle_and_map_bundle){
+						if(is_array($qbo_inv_items) && count($qbo_inv_items)){
+							foreach($qbo_inv_items as $qbo_item){
+								if(!isset($qbo_item['bundled_items']) && $qbo_item['qbo_product_type'] == 'Group'){
+									$map_bundle_support = true;
+									$CheckLineGroup = new QuickBooks_QBXML_Object_Check_ItemGroupLine();
+									$CheckLineGroup->setItemGroupListID($qbo_item["ItemRef"]);
+									$Description = $qbo_item['Description'];
+									$Qty = $qbo_item["Qty"];									
+									$CheckLineGroup->setQuantity($Qty);
+									
+									if(!$this->option_checked('mw_wc_qbo_desk_skip_os_lid')){
+										//$CheckLineGroup->setDesc($Description);
+									}
+									//TotalAmount
+									$Check->addItemGroupLine($CheckLineGroup);
+								}
+							}
+						}
+					}
+					
+					if(is_array($qbo_inv_items) && count($qbo_inv_items)){
+						foreach($qbo_inv_items as $qbo_item){
+							
+							//Bundle Support
+							if($is_bundle_order){
+								if(isset($qbo_item['bundled_items']) || isset($qbo_item['bundled_item_id']) || isset($qbo_item['bundle_cart_key'])){
+									if($qbo_item['qbo_product_type'] != 'InventoryAssembly' || isset($qbo_item['bundled_item_id'])){
+										continue;
+									}									
+								}
+							}
+							
+							if($map_bundle_support && $qbo_item['qbo_product_type'] == 'Group'){
+								continue;
+							}
+							
+							$CheckLine = new QuickBooks_QBXML_Object_Check_ItemLine();							
+							$CheckLine->setItemListID($qbo_item["ItemRef"]);
+							if(isset($qbo_item["ClassRef"]) && $qbo_item["ClassRef"]!=''){
+								$CheckLine->setClassListID($qbo_item["ClassRef"]);
+							}
+							//$CheckLine->setCustomerListID($qbo_cus_id);
+							
+							$Description = $qbo_item['Description'];
+							if($this->option_checked('mw_wc_qbo_desk_add_sku_af_lid')){
+								$li_item_id = ($qbo_item["variation_id"]>0)?$qbo_item["variation_id"]:$qbo_item["product_id"];
+								$li_sku = get_post_meta( $li_item_id, '_sku', true );
+								if($li_sku!=''){
+									$Description.=' ('.$li_sku.')';
+								}
+							}
+							
+							$UnitPrice = $qbo_item["UnitPrice"];
+							if($this->wacs_base_cur_enabled()){
+								$UnitPrice = $qbo_item["UnitPrice_base_currency"];
+								$Description.= " ({$_order_currency} ".$qbo_item["UnitPrice"].")";
+							}
+							
+							//Extra Description
+							if(isset($qbo_item["Qbd_Ext_Description"])){
+								$Description.= $qbo_item["Qbd_Ext_Description"];
+							}
+							
+							if(!$this->option_checked('mw_wc_qbo_desk_skip_os_lid') || $qbo_item["AllowPvLid"]){
+								$CheckLine->setDesc($Description);
+							}
+							
+							$Qty = $qbo_item["Qty"];
+							$Amount = $Qty*$UnitPrice;
+							
+							$CheckLine->setQuantity($Qty);
+							$CheckLine->setAmount($Amount);
+							
+							if($this->option_checked('mw_wc_qbo_desk_compt_wqclns_ed')){
+								$LotNumber  = $this->get_array_isset($qbo_item,'lot','');
+								if(!empty($LotNumber)){
+									$CheckLine->set('LotNumber',$LotNumber);
+								}
+							}
+							
+							if($qbo_is_sales_tax){
+								if($apply_tax && $qbo_item["Taxed"]){
+									$is_tax_applied = true;
+									if($this->get_option('mw_wc_qbo_desk_sl_tax_map_entity')== 'Sales_Tax_Codes'){
+										$TaxCodeRef =$qbo_tax_code;
+									}else{
+										$TaxCodeRef = $this->get_option('mw_wc_qbo_desk_tax_rule_taxable');
+									}
+									if($TaxCodeRef!=''){
+										//$CheckLine->setSalesTaxCodeListID($TaxCodeRef);
+									}
+								}else{
+									$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+									//$CheckLine->setSalesTaxCodeListID($zero_rated_tax_code);
+								}
+							}
+							
+							if(!$qbo_is_sales_tax){
+								$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+								//$CheckLine->setSalesTaxCodeListID($zero_rated_tax_code);
+							}
+							
+							/**/
+							$wmior_active = $this->is_plugin_active('myworks-warehouse-routing','mw_warehouse_routing');
+							if($wmior_active && $this->option_checked('mw_wc_qbo_desk_w_miors_ed') && ($qbo_item["qbo_product_type"]=='Inventory' || $qbo_item["qbo_product_type"]=='InventoryAssembly')){
+								/*
+								$mw_warehouse = 0;
+								if(isset($qbo_item["_order_item_wh"])){
+									$mw_warehouse = (int) $qbo_item["_order_item_wh"];
+								}else{
+									$mw_warehouse = (int) $this->get_array_isset($refund_data,'mw_warehouse',0);
+								}
+								*/
+								
+								$mw_warehouse = $this->get_mwr_oiw_mw_idls($qbo_item, $refund_data);
+								
+								if($mw_warehouse > 0){
+									$mw_wc_qbo_desk_compt_wmior_lis_mv = get_option('mw_wc_qbo_desk_compt_wmior_lis_mv');
+									if(is_array($mw_wc_qbo_desk_compt_wmior_lis_mv) && isset($mw_wc_qbo_desk_compt_wmior_lis_mv[$mw_warehouse])){
+										$mw_wc_qbo_desk_compt_qbd_invt_site_ref = trim($mw_wc_qbo_desk_compt_wmior_lis_mv[$mw_warehouse]);
+										if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+											if($this->is_inv_site_bin_allowed()){
+												if (strpos($mw_wc_qbo_desk_compt_qbd_invt_site_ref, ':') !== false) {
+													$site_bin_arr = explode(':',$mw_wc_qbo_desk_compt_qbd_invt_site_ref);											
+													if(is_array($site_bin_arr) && !empty($site_bin_arr)){
+														$CheckLine->set('InventorySiteRef ListID' , $site_bin_arr[0]);
+														if(isset($site_bin_arr[1])){
+															$CheckLine->set('InventorySiteLocationRef ListID' , $site_bin_arr[1]);
+														}
+													}
+												}
+											}else{
+												$CheckLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+											}									
+										}
+									}
+								}
+							}
+							
+							if(!$wmior_active && $this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync') && ($qbo_item["qbo_product_type"]=='Inventory' || $qbo_item["qbo_product_type"]=='InventoryAssembly')){
+								/**/
+								$b_country = $this->get_array_isset($refund_data,'_billing_country','',true);
+								$s_country = $this->get_array_isset($refund_data,'_shipping_country','',true);
+								$o_country = (!empty($s_country))?$s_country:$b_country;
+								
+								if($o_country == 'US'){
+									$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+								}else{
+									$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref_nus');
+								}
+								
+								if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){									
+									if($this->is_inv_site_bin_allowed()){
+										if (strpos($mw_wc_qbo_desk_compt_qbd_invt_site_ref, ':') !== false) {
+											$site_bin_arr = explode(':',$mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+											if(is_array($site_bin_arr) && !empty($site_bin_arr)){
+												$CheckLine->set('InventorySiteRef ListID' , $site_bin_arr[0]);
+												if(isset($site_bin_arr[1])){
+													$CheckLine->set('InventorySiteLocationRef ListID' , $site_bin_arr[1]);
+												}
+											}
+										}
+									}else{
+										$CheckLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+									}
+								}
+							}
+							
+							/**/
+							if($this->check_sh_qbispplm_hash()){
+								$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $qbo_item["QbIvntSiteref"];
+								if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+									if($this->is_inv_site_bin_allowed()){
+										if (strpos($mw_wc_qbo_desk_compt_qbd_invt_site_ref, ':') !== false) {
+											$site_bin_arr = explode(':',$mw_wc_qbo_desk_compt_qbd_invt_site_ref);											
+											if(is_array($site_bin_arr) && !empty($site_bin_arr)){
+												$CheckLine->set('InventorySiteRef ListID' , $site_bin_arr[0]);
+												if(isset($site_bin_arr[1])){
+													$CheckLine->set('InventorySiteLocationRef ListID' , $site_bin_arr[1]);
+												}
+											}
+										}
+									}else{
+										$CheckLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+									}									
+								}
+							}
+							
+							$Check->addItemLine($CheckLine);
+						}
+					}
+					
+					//pgdf compatibility
+					if($this->get_wc_fee_plugin_check()){
+						$dc_gt_fees = (isset($refund_data['dc_gt_fees']))?$refund_data['dc_gt_fees']:array();
+						if(is_array($dc_gt_fees) && count($dc_gt_fees)){
+							foreach($dc_gt_fees as $df){
+								$CheckLine = new QuickBooks_QBXML_Object_Check_ItemLine();
+								
+								$UnitPrice = $df['_line_total'];
+								$Qty = 1;
+								$Amount = $Qty*$UnitPrice;
+								
+								$df_ItemRef = $this->get_wc_fee_qbo_product($df['name'],'',$refund_data);
+								$CheckLine->setItemListID($df_ItemRef);								
+								
+								$CheckLine->setQuantity($Qty);
+								$CheckLine->setAmount($Amount);
+								
+								$CheckLine->setDesc($df['name']);
+								
+								$_line_tax = $df['_line_tax'];
+								if($_line_tax && $qbo_is_sales_tax){
+									$is_tax_applied = true;
+									if($this->get_option('mw_wc_qbo_desk_sl_tax_map_entity')== 'Sales_Tax_Codes'){
+										$TaxCodeRef =$qbo_tax_code;
+									}else{
+										$TaxCodeRef = $this->get_option('mw_wc_qbo_desk_tax_rule_taxable');
+									}
+									
+									if($TaxCodeRef!=''){
+										//$CheckLine->setSalesTaxCodeListID($TaxCodeRef);
+									}
+								}else{
+									$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+									//$CheckLine->setSalesTaxCodeListID($zero_rated_tax_code);
+								}
+								
+								/*
+								if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync') && ($qbo_item["qbo_product_type"]=='Inventory' || $qbo_item["qbo_product_type"]=='InventoryAssembly')){
+									$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+									if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+										$CheckLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+									}
+								}
+								*/
+								
+								$Check->addItemLine($CheckLine);
+							}
+							
+						}						
+					}
+					
+					//pw_gift_card compatibility
+					if($this->is_plugin_active('pw-woocommerce-gift-cards','pw-gift-cards') && $this->option_checked('mw_wc_qbo_desk_compt_pwwgc_gpc_ed') && !empty($this->get_option('mw_wc_qbo_desk_compt_pwwgc_gpc_qbo_item'))){
+						$pw_gift_card = (isset($refund_data['pw_gift_card']))?$refund_data['pw_gift_card']:array();
+						if(is_array($pw_gift_card) && count($pw_gift_card)){
+							foreach($pw_gift_card as $pgc){
+								$pgc_amount = $pgc['amount'];
+								if($pgc_amount > 0){
+									$pgc_amount = -1 * abs($pgc_amount);
+								}
+								
+								$Qty = 1;
+								$Description = $pgc['card_number'];
+								$CheckLine = new QuickBooks_QBXML_Object_Check_ItemLine();
+								$CheckLine->setItemListID($this->get_option('mw_wc_qbo_desk_compt_pwwgc_gpc_qbo_item'));
+								$CheckLine->setRate($pgc_amount);
+								$CheckLine->setQuantity($Qty);
+								$CheckLine->setAmount($pgc_amount);
+								
+								$CheckLine->setDesc($Description);
+								
+								/*
+								$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+								$CheckLine->setSalesTaxCodeListID($zero_rated_tax_code);
+								*/
+								
+								$Check->addItemLine($CheckLine);
+							}
+						}
+					}
+					
+					/*Add Check Coupons*/
+					$used_coupons  = (isset($refund_data['used_coupons']))?$refund_data['used_coupons']:array();
+					$qbo_is_discount_allowed = true;
+					if($this->option_checked('mw_wc_qbo_desk_no_ad_discount_li')){
+						$qbo_is_discount_allowed = false;
+					}
+					
+					if($qbo_is_discount_allowed && count($used_coupons)){
+						foreach($used_coupons as $coupon){
+							$coupon_name = $coupon['name'];
+							$coupon_discount_amount = $coupon['discount_amount'];
+							$coupon_discount_amount = -1 * abs($coupon_discount_amount);
+							$coupon_discount_amount_tax = $coupon['discount_amount_tax'];
+							
+							if($this->wacs_base_cur_enabled()){
+								$coupon_discount_amount_base_currency = $this->get_array_isset($coupon,'discount_amount_base_currency',0);
+								$coupon_discount_amount_base_currency = -1 * abs($coupon_discount_amount_base_currency);
+								
+								$coupon_discount_amount_tax_base_currency = $coupon['discount_amount_tax_base_currency'];
+							}
+
+							$coupon_product_arr = $this->get_mapped_coupon_product($coupon_name);
+							$DiscountLine = new QuickBooks_QBXML_Object_Check_ItemLine();
+							$DiscountLine->setItemListID($coupon_product_arr["ItemRef"]);
+							if(isset($coupon_product_arr["ClassRef"]) && $coupon_product_arr["ClassRef"]!=''){
+								$DiscountLine->setClassListID($coupon_product_arr["ClassRef"]);
+							}
+							$Description = $coupon_product_arr['Description'];							
+							
+							if($this->wacs_base_cur_enabled()){
+								$Description.= " ({$_order_currency} {$coupon_discount_amount})";								
+								$DiscountLine->setAmount($coupon_discount_amount_base_currency);								
+							}else{								
+								$DiscountLine->setAmount($coupon_discount_amount);
+							}
+							
+							if($coupon_product_arr['qbo_product_type'] != 'Discount'){
+								$DiscountLine->setQuantity(1);
+							}							
+							$DiscountLine->setDesc($Description);
+							
+							if($qbo_is_sales_tax){
+								if($coupon_discount_amount_tax > 0 || $is_tax_applied){
+									if($this->get_option('mw_wc_qbo_desk_sl_tax_map_entity')== 'Sales_Tax_Codes'){
+										$TaxCodeRef =$qbo_tax_code;
+									}else{
+										$TaxCodeRef = $this->get_option('mw_wc_qbo_desk_tax_rule_taxable');
+									}									
+									
+									if($TaxCodeRef!=''){
+										//$DiscountLine->setSalesTaxCodeListID($TaxCodeRef);
+									}
+								}else{
+									$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+									//$DiscountLine->setSalesTaxCodeListID($zero_rated_tax_code);
+								}								
+							}
+							
+							if(!$qbo_is_sales_tax){
+								$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+								//$DiscountLine->setSalesTaxCodeListID($zero_rated_tax_code);
+							}
+							
+							if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
+								$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+								if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+									//$DiscountLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+								}
+							}
+							
+							$Check->addItemLine($DiscountLine);
+						}
+					}				
+					
+					/*Add Check Shipping*/
+					$shipping_details  = (isset($refund_data['shipping_details']))?$refund_data['shipping_details']:array();
+					
+					$sp_arr_first = array();
+					/**/
+					$is_sync_shipping_line = true;
+					if($this->option_checked('mw_wc_qbo_desk_qb_ns_shipping_li_if_z')){						
+						$_order_shipping = (float) $this->get_array_isset($refund_data,'_order_shipping',0);
+						if($_order_shipping <= 0){
+							$is_sync_shipping_line = false;
+						}
+					}
+					
+					if(is_array($shipping_details) && !empty($shipping_details) && $is_sync_shipping_line){
+						foreach($shipping_details as $sd_k => $sd_v){
+							$shipping_method = '';
+							$shipping_method_name = '';
+							$shipping_taxes = '';
+							$smt_id = 0;
+							if(isset($shipping_details[$sd_k])){
+								if($this->get_array_isset($shipping_details[$sd_k],'type','')=='shipping'){
+									$shipping_method_id = $this->get_array_isset($shipping_details[$sd_k],'method_id','');
+									if($shipping_method_id!=''){
+										if(isset($shipping_details[$sd_k]['instance_id']) && $shipping_details[$sd_k]['instance_id']>0){
+											$shipping_method = $this->get_array_isset($shipping_details[$sd_k],'method_id','');
+											$smt_id = (int) $this->get_array_isset($shipping_details[$sd_k],'instance_id',0);
+										}else{
+											$shipping_method = $this->wc_get_sm_data_from_method_id_str($shipping_method_id,'',$sd_v);
+											$smt_id = $this->wc_get_sm_data_from_method_id_str($shipping_method_id,'id',$sd_v);
+										}
+									}
+									
+									$shipping_method = ($shipping_method=='')?'no_method_found':$shipping_method;
+									$shipping_method_name =  $this->get_array_isset($shipping_details[$sd_k],'name','',true,30);
+									$shipping_taxes = $this->get_array_isset($shipping_details[$sd_k],'taxes','');
+								}
+							}										
+							
+							$shipping_product_arr = array();
+							
+							if($shipping_method!=''){
+								if(!$qbo_is_shipping_allowed){
+									if($smt_id>0){
+										$smt_id_str = $shipping_method.':'.$smt_id;
+										$shipping_product_arr = $this->get_mapped_shipping_product($smt_id_str,$sd_v,true);
+									}
+									
+									if(!count($shipping_product_arr) || empty($shipping_product_arr['ItemRef'])){
+										$shipping_product_arr = $this->get_mapped_shipping_product($shipping_method,$sd_v);
+									}
+									
+									if(empty($sp_arr_first)){
+										$sp_arr_first = $shipping_product_arr;
+									}
+									
+									$ShippingLine = new QuickBooks_QBXML_Object_Check_ItemLine();
+									$ShippingLine->setItemListID($shipping_product_arr["ItemRef"]);
+									if(isset($shipping_product_arr["ClassRef"]) && $shipping_product_arr["ClassRef"]!=''){
+										$ShippingLine->setClassListID($shipping_product_arr["ClassRef"]);
+									}
+									$shipping_description = ($shipping_method_name!='')?'Shipping ('.$shipping_method_name.')':'Shipping';							
+									
+									if(!$this->check_sh_wcmslscqb_hash()){
+										if($this->wacs_base_cur_enabled()){
+											$shipping_description.= " ({$_order_currency} {$order_shipping_total})";
+											//$ShippingLine->setRate($order_shipping_total_base_currency);
+											$ShippingLine->setAmount($order_shipping_total_base_currency);
+										}else{
+											//$ShippingLine->setRate($order_shipping_total);								
+											$ShippingLine->setAmount($order_shipping_total);
+										}
+									}else{
+										//$ShippingLine->setRate($sd_v['cost']);						
+										$ShippingLine->setAmount($sd_v['cost']);
+									}
+									
+									//$ShippingLine->setQuantity(1);
+									if(!$this->option_checked('mw_wc_qbo_desk_skip_os_lid')){
+										$ShippingLine->setDesc($shipping_description);
+									}
+									
+									if($qbo_is_sales_tax){
+										if(($this->check_sh_wcmslscqb_hash() && $sd_v['total_tax']>0) || (!$this->check_sh_wcmslscqb_hash() && $_order_shipping_tax>0)){
+											$TaxCodeRef = '';
+											if($this->get_option('mw_wc_qbo_desk_sl_tax_map_entity')== 'Sales_Tax_Codes'){
+												$TaxCodeRef =$qbo_tax_code;
+											}
+											
+											if($this->is_plugin_active('myworks-quickbooks-desktop-shipping-tax-compt') && $this->check_sh_stc_hash()){
+												$TaxCodeRef = $this->get_option('mw_wc_qbo_desk_shipping_tax_rule_taxable');
+											}
+											if(empty($TaxCodeRef)){
+												$TaxCodeRef = $this->get_option('mw_wc_qbo_desk_tax_rule_taxable');
+											}
+											
+											if($TaxCodeRef!=''){
+												//$ShippingLine->setSalesTaxCodeListID($TaxCodeRef);
+											}
+										}else{
+											if($this->is_plugin_active('myworks-quickbooks-desktop-shipping-tax-compt') && $this->check_sh_stc_hash()){
+												$zero_rated_tax_code = $this->get_option('mw_wc_qbo_desk_shipping_tax_rule_taxable');
+											}else{
+												$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+											}
+											//$ShippingLine->setSalesTaxCodeListID($zero_rated_tax_code);
+										}
+									}
+									
+									if(!$qbo_is_sales_tax){
+										if($this->is_plugin_active('myworks-quickbooks-desktop-shipping-tax-compt') && $this->check_sh_stc_hash()){
+											$zero_rated_tax_code = $this->get_option('mw_wc_qbo_desk_shipping_tax_rule_taxable');
+										}else{
+											$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+										}
+										//$ShippingLine->setSalesTaxCodeListID($zero_rated_tax_code);
+									}
+									
+									if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
+										$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+										if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+											//$ShippingLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+										}
+									}
+
+									$Check->addItemLine($ShippingLine);
+
+								}
+							}
+							
+							if(!$this->check_sh_wcmslscqb_hash()){
+								break;
+							}
+						}
+					}
+					
+					if(!$is_taxjar_active){
+						//$order_shipping_total+=$_order_shipping_tax;
+						if($this->wacs_base_cur_enabled()){
+							//$order_shipping_total_base_currency+=$_order_shipping_tax_base_currency;
+						}
+					}
+					
+					//TaxJar Line
+					if($is_taxjar_active && count($tax_details) && $_order_total_tax >0){
+						$ExtLine = new QuickBooks_QBXML_Object_Check_ItemLine();
+						$taxjar_item = $this->get_option('mw_wc_qbo_desk_wc_taxjar_map_qbo_product');
+						if(empty($taxjar_item)){
+							$taxjar_item = $this->get_option('mw_wc_qbo_desk_default_qbo_item');
+						}
+						
+						$ExtLine->setItemListID($taxjar_item);
+						$Description = 'TaxJar - QBD Line Item';
+						
+						if($this->wacs_base_cur_enabled()){
+							$Description.= " ({$_order_currency} {$_order_total_tax})";							
+							$ExtLine->setAmount($_order_total_tax_base_currency);
+						}else{							
+							$ExtLine->setAmount($_order_total_tax);
+						}
+						
+						//$ExtLine->setQuantity(1);
+						$ExtLine->setDesc($Description);
+						
+						if(!$qbo_is_sales_tax){
+							$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+							//$ExtLine->setSalesTaxCodeListID($zero_rated_tax_code);
+						}
+						
+						if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
+							$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+							if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+								//$ExtLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+							}
+						}
+
+						$Check->addItemLine($ExtLine);
+					}
+					
+					//Avatax Line
+					if($is_avatax_active && count($tax_details) && $_order_total_tax >0){
+						$ExtLine = new QuickBooks_QBXML_Object_Check_ItemLine();
+						$avatax_item = $this->get_option('mw_wc_qbo_desk_wc_avatax_map_qbo_product');
+						if(empty($avatax_item)){
+							$avatax_item = $this->get_option('mw_wc_qbo_desk_default_qbo_item');
+						}
+						
+						$ExtLine->setItemListID($avatax_item);
+						$Description = 'Avatax - QBD Line Item';				
+						
+						if($this->wacs_base_cur_enabled()){
+							$Description.= " ({$_order_currency} {$_order_total_tax})";							
+							$ExtLine->setAmount($_order_total_tax_base_currency);
+						}else{							
+							$ExtLine->setAmount($_order_total_tax);
+						}
+						
+						//$ExtLine->setQuantity(1);
+						
+						$ExtLine->setDesc($Description);
+						
+						if(!$qbo_is_sales_tax){
+							$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+							//$ExtLine->setSalesTaxCodeListID($zero_rated_tax_code);
+						}
+						
+						if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
+							$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+							if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+								//$ExtLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+							}
+						}
+
+						$Check->addItemLine($ExtLine);
+					}
+					
+					$force_stop = true;
+					//Order Tax as Line Item					
+					if(!$force_stop && $is_so_tax_as_li && count($tax_details) && $_order_total_tax >0){
+						$ExtLine = new QuickBooks_QBXML_Object_Check_ItemLine();
+						$otli_item = $this->get_option('mw_wc_qbo_desk_otli_qbd_product');
+						if(empty($otli_item)){
+							$otli_item = $this->get_option('mw_wc_qbo_desk_default_qbo_item');
+						}
+						
+						$ExtLine->setItemListID($otli_item);
+						
+						$Description = '';
+						if(is_array($tax_details) && count($tax_details)){
+							if(isset($tax_details[0]['label'])){
+								$Description = $tax_details[0]['label'];
+							}
+							
+							if(isset($tax_details[1]) && $tax_details[1]['label']){
+								if(!empty(tax_details[1]['label'])){
+									$Description = $Description.', '.$tax_details[1]['label'];
+								}
+							}
+						}
+						
+						if(empty($Description)){
+							$Description = 'Woocommerce Order Tax - QBD Line Item';
+						}
+						
+						if($this->wacs_base_cur_enabled()){
+							$Description.= " ({$_order_currency} {$_order_total_tax})";							
+							$ExtLine->setAmount($_order_total_tax_base_currency);
+						}else{							
+							$ExtLine->setAmount($_order_total_tax);
+						}
+						
+						//$ExtLine->setQuantity(1);
+						
+						$ExtLine->setDesc($Description);
+						
+						if(!$qbo_is_sales_tax){
+							$zero_rated_tax_code = $this->get_qbo_zero_rated_tax_code($qbo_company_country);
+							//$ExtLine->setSalesTaxCodeListID($zero_rated_tax_code);
+						}
+						
+						if($this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync')){
+							$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+							if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+								//$ExtLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+							}
+						}
+
+						$Check->addItemLine($ExtLine);
+					}
+					
+					//
+					if($is_tax_applied){
+						$TaxCodeRef =$qbo_tax_code;
+						if($TaxCodeRef!=''){							
+							//$this->get_option('mw_wc_qbo_desk_sl_tax_map_entity')
+							//Sales_Tax_Codes
+							//$Check->getSalesTaxCodeListID($TaxCodeRef);//ItemSalesTaxRef ListID
+						}
+					}
+					
+					$country = $this->get_array_isset($refund_data,'_billing_country','',true);
+					$country = $this->get_country_name_from_code($country);					
+					
+					$_billing_company = $this->get_array_isset($refund_data,'_billing_company','',true);
+					$_billing_address_1 = $this->get_array_isset($refund_data,'_billing_address_1','',true);
+					$_billing_address_2 = $this->get_array_isset($refund_data,'_billing_address_2','',true);
+					$_billing_city = $this->get_array_isset($refund_data,'_billing_city','',true);
+					$_billing_state = $this->get_array_isset($refund_data,'_billing_state','',true);
+					$_billing_postcode = $this->get_array_isset($refund_data,'_billing_postcode','',true);
+					
+					$_billing_phone = $this->get_array_isset($refund_data,'_billing_phone','',true);
+					
+					$rfs_arr = array($this->get_array_isset($refund_data,'_billing_first_name','',true),$this->get_array_isset($refund_data,'_billing_last_name','',true),$_billing_company,$_billing_address_1,$_billing_address_2,$_billing_city,$_billing_state,$_billing_postcode,$_billing_phone,$country);
+					$r_fa = $this->get_ord_baf_addrs($rfs_arr,$refund_data);
+					$Check->setAddress(
+						$this->get_array_isset($r_fa,0,'',true),
+						$this->get_array_isset($r_fa,1,'',true),
+						$this->get_array_isset($r_fa,2,'',true),
+						$this->get_array_isset($r_fa,3,'',true),
+						$this->get_array_isset($r_fa,4,'',true)
+						
+					);
+					
+					/**/
+					$cm_sa_xml = '';
+					if($this->get_array_isset($refund_data,'_shipping_first_name','',true)!='' || $this->get_array_isset($refund_data,'_shipping_company','',true)!=''){
+						$shipping_name = $this->get_array_isset($refund_data,'_shipping_first_name','',true).' '.$this->get_array_isset($refund_data,'_shipping_last_name','',true);
+
+						$country = $this->get_array_isset($refund_data,'_shipping_country','',true);
+						$country = $this->get_country_name_from_code($country);
+						
+						$_shipping_company = $this->get_array_isset($refund_data,'_shipping_company','',true);
+						$_shipping_address_1 = $this->get_array_isset($refund_data,'_shipping_address_1','',true);
+						$_shipping_address_2 = $this->get_array_isset($refund_data,'_shipping_address_2','',true);
+						$_shipping_city = $this->get_array_isset($refund_data,'_shipping_city','',true);
+						$_shipping_state = $this->get_array_isset($refund_data,'_shipping_state','',true);
+						$_shipping_postcode = $this->get_array_isset($refund_data,'_shipping_postcode','',true);
+						
+						$rfs_arr = array($this->get_array_isset($refund_data,'_shipping_first_name','',true),$this->get_array_isset($refund_data,'_shipping_last_name','',true),$_shipping_company,$_shipping_address_1,$_shipping_address_2,$_shipping_city,$_shipping_state,$_shipping_postcode,$_billing_phone,$country);
+						$r_fa = $this->get_ord_saf_addrs($rfs_arr,$refund_data);
+						
+						$post = '';
+						$addr1 = $this->get_array_isset($r_fa,0,'',true);
+						$addr2 = $this->get_array_isset($r_fa,1,'',true);
+						$addr3 = $this->get_array_isset($r_fa,2,'',true);
+						$addr4 = $this->get_array_isset($r_fa,3,'',true);
+						$addr5 = $this->get_array_isset($r_fa,4,'',true);
+						
+						$cm_sa_xml= '<ShipAddress>
+						';
+						for ($i = 1; $i <= 5; $i++)
+						{
+							//$Check->set('ShipAddress' . $post . ' Addr' . $i, ${'addr' . $i});
+							$cm_sa_xml .= '	
+							<Addr'.$i.'>'.${'addr' . $i}.'</Addr'.$i.'>';
+						}
+						$cm_sa_xml .= '
+						</ShipAddress>';
+					}
+					
+					//$this->_p($Check);
+					
+					$qbxml = $Check->asQBXML(QUICKBOOKS_ADD_CHECK,null,$this->get_qbxml_locale());
+					//
+					$qbxml = str_replace(array('<Ref>','</Ref>'),'',$qbxml);
+					//$qbxml = $this->format_xml($qbxml);
+					$qbxml = $this->qbxml_search_replace($qbxml,'CreditMemo');
+					
+					$qbxml = str_replace('<CreditMemoAdd>','<CreditMemoAdd>
+					'.$cref_xml,$qbxml);
+					
+					$qbxml = str_replace('</BillAddress>','</BillAddress>
+					'.$cm_sa_xml,$qbxml);
+					
+					$qbxml = $this->get_qbxml_prefix().$qbxml. $this->get_qbxml_suffix();					
+
+					return $qbxml;					
+				}
+			}
+		}
+	}
+	
+	//
+	public function GetRefundQbxml_Check($refund_id,$order_id){
+		if($this->is_qwc_connected()){
+			global $wpdb;
+			
+			if(!$this->ord_pmnt_is_mt_ls_check_by_ord_id($order_id)){
+				return false;
+			}
+			
+			
+		}
+	}
+	
+	//
+	public function GetRefundQbxml_Check_Old($refund_id,$order_id){
+		if($this->is_qwc_connected()){
+			global $wpdb;
+			
+			if(!$this->ord_pmnt_is_mt_ls_check_by_ord_id($order_id)){
+				return false;
+			}
+			
+			$qbd_sa = 'Invoice';
+			if($this->option_checked('mw_wc_qbo_desk_order_as_sales_receipt')){
+				$qbd_sa = 'SalesReceipt';
+				//return false;
+			}
+			
+			if($this->option_checked('mw_wc_qbo_desk_order_as_sales_order')){
+				$qbd_sa = 'SalesOrder';
+				//return false;
+			}
+			
+			if($refund_id>0 && $order_id>0){
+				$order = get_post($order_id);
+				$refund_data = $this->get_wc_order_details_from_order($order_id,$order);
+				//$this->_p($refund_data);
+				if(is_array($refund_data) && !empty($refund_data)){
+					$wc_inv_id = (int) $this->get_array_isset($refund_data,'wc_inv_id',0);
+					$wc_cus_id = (int) $this->get_array_isset($refund_data,'customer_user',0);
+					
+					$refund_post = get_post($refund_id);
+					if(empty($refund_post)){
+						if($manual){
+							$this->save_log('Export Refund Error #'.$refund_id.' Order #'.$ord_id_num,'Woocommerce refund not found!','Refund',0);
+						}
+						return false;
+					}
+					
+					$refund_meta = get_post_meta($refund_id);
+					$refund_data['refund_id'] = $refund_id;
+			
+					$refund_data['refund_date'] = $refund_post->post_date;
+					$refund_data['refund_post_parent'] = $refund_post->post_parent;
+					$refund_data['refund_note'] = $refund_post->post_excerpt;
+					
+					$_refund_amount = isset($refund_meta['_refund_amount'][0])?$refund_meta['_refund_amount'][0]:0;
+					if($_refund_amount<= 0){
+						return false;
+					}
+					$refund_data['_refund_amount'] = $_refund_amount;
+					
+					$qbd_invoice_id = $this->check_quickbooks_invoice($wc_inv_id);
+					
+					/*
+					if(!$qbd_invoice_id){
+						$this->save_log(array('log_type'=>'Refund','log_title'=>'Export Refund Error #'.$refund_id,'details'=>'QuickBooks '.strtolower($qbd_sa).' not found','status'=>0));
+						return false;
+					}
+					*/
+					
+					$_order_currency = $this->get_array_isset($refund_data,'_order_currency','',true);
+					
+					$qbo_cus_id = '';
+					
+					/**/
+					if($this->check_sh_cpfmpocjh_cuscompt_hash() && $this->option_checked('mw_wc_qbo_desk_cpfmpocjh_cuscompt_ed')){
+						$qbd_job_id = $this->get_wc_data_pair_val('Job',$order_id);
+						if(!empty($qbd_job_id)){
+							$qbo_cus_id = $qbd_job_id;
+						}else{							
+							$this->save_log(array('log_type'=>'Customer','log_title'=>'Export Refund Error #'.$refund_id,'details'=>'QuickBooks Customer Job Not Found','status'=>0));
+							return false;
+						}
+					}
+					
+					if(empty($qbo_cus_id)){
+						/**/
+						if($this->is_plugin_active('myworks-quickbooks-desktop-fitbodywrap-custom-compt') && $this->check_sh_fitbodywrap_cuscompt_hash()){
+							if($this->option_checked('mw_wc_qbo_desk_compt_np_fitbodywrap_cust_inv_oc')){
+								$c_account_number = (int) get_post_meta($order_id,'account_number',true);
+								if($c_account_number > 0){
+									$qbo_cus_id = $this->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_customers','qbd_customerid','acc_num',$c_account_number);
+								}
+							}
+						}
+						
+						/**/					
+						if($this->is_plugin_active('woocommerce-aelia-currencyswitcher') && $this->option_checked('mw_wc_qbo_desk_wacs_satoc_cb')){				
+							if($_order_currency!=''){
+								$aelia_cur_cus_map = get_option('mw_wc_qbo_desk_wacs_satoc_map_cur_cus');
+								if(is_array($aelia_cur_cus_map) && count($aelia_cur_cus_map)){
+									if(isset($aelia_cur_cus_map[$_order_currency]) && trim($aelia_cur_cus_map[$_order_currency])!=''){
+										$qbo_cus_id = trim($aelia_cur_cus_map[$_order_currency]);
+									}
+								}
+							}					
+						}
+						
+						/**/
+						if($this->is_plugin_active('myworks-quickbooks-desktop-custom-customer-compt-gunnar') && $this->option_checked('mw_wc_qbo_desk_compt_cccgunnar_ocs_qb_cus_map_ed')){
+							$cccgunnar_qb_cus_map = get_option('mw_wc_qbo_desk_cccgunnar_qb_cus_map');
+							if(is_array($cccgunnar_qb_cus_map) && count($cccgunnar_qb_cus_map)){
+								$occ_mp_key = '';
+								if($order->post_status == 'rx-processing'){
+									$occ_mp_key = 'rx_order_status';
+								}else{
+									$ord_country = $this->get_array_isset($refund_data,'_shipping_country','',true);
+									if(empty($ord_country)){
+										$ord_country = $this->get_array_isset($refund_data,'_billing_country','',true);
+									}
+									
+									if(!empty($ord_country)){
+										if($ord_country == 'US'){
+											$occ_mp_key = 'us_order';
+										}else{
+											$occ_mp_key = 'intl_order';
+										}
+									}
+								}
+								
+								if(!empty($occ_mp_key)){
+									if(isset($cccgunnar_qb_cus_map[$occ_mp_key]) && trim($cccgunnar_qb_cus_map[$occ_mp_key])!=''){
+										$qbo_cus_id = trim($cccgunnar_qb_cus_map[$occ_mp_key]);
+									}
+								}
+							}
+						}
+						
+						/**/
+						if($this->is_plugin_active('myworks-quickbooks-desktop-sync-compatibility') && $this->is_plugin_active('myworks-quickbooks-desktop-shipping-us-state-quickbooks-customer-map-compt') && $this->option_checked('mw_wc_qbo_desk_compt_sus_qb_cus_map_ed')){					
+							if($wc_cus_id>0){						
+								$shipping_country = get_user_meta($wc_cus_id,'shipping_country',true);						
+							}else{						
+								//$shipping_country = get_post_meta($wc_inv_id,'_shipping_country',true);
+								$shipping_country = $this->get_array_isset($refund_data,'_shipping_country','');
+							}
+							
+							if($shipping_country == 'US'){
+								if($wc_cus_id>0){
+									$shipping_state = get_user_meta($wc_cus_id,'shipping_state',true);
+								}else{
+									//$shipping_state = get_post_meta($wc_inv_id,'_shipping_state',true);
+									$shipping_state = $this->get_array_isset($refund_data,'_shipping_state','');
+								}
+								
+								if($shipping_state!=''){
+									$sus_qb_cus_map = get_option('mw_wc_qbo_desk_ship_us_st_qb_cus_map');
+									if(is_array($sus_qb_cus_map) && count($sus_qb_cus_map)){
+										if(isset($sus_qb_cus_map[$shipping_state]) && trim($sus_qb_cus_map[$shipping_state])!=''){
+											$qbo_cus_id = trim($sus_qb_cus_map[$shipping_state]);
+										}
+									}
+								}
+							}else{
+								$qbo_cus_id = $this->get_option('mw_wc_qbo_desk_sus_fb_qb_cus_foc');
+							}
+						}
+					}					
+					
+					if(empty($qbo_cus_id)){
+						if(!$this->option_checked('mw_wc_qbo_desk_all_order_to_customer')){
+							if($wc_cus_id>0){
+								//$qbo_cus_id = $this->get_wc_data_pair_val('Customer',$wc_cus_id);
+								if($this->is_dmcb_fval_ext_ccfv()){
+									$customer_data = $this->get_wc_customer_info_from_order($order_id);
+								}else{
+									$customer_data = $this->get_wc_customer_info($wc_cus_id);
+								}
+								
+								$qbo_cus_id = $this->if_qbo_customer_exists($customer_data);
+							}else{
+								$customer_data = $this->get_wc_customer_info_from_order($order_id);
+								$qbo_cus_id = $this->if_qbo_guest_exists($customer_data);
+							}
+						}else{
+							/*
+							if($wc_cus_id>0){
+								$user_info = get_userdata($wc_cus_id);
+								$io_cs = false;
+								if(isset($user_info->roles) && is_array($user_info->roles)){
+									$sc_roles_as_cus = $this->get_option('mw_wc_qbo_desk_wc_cust_role_sync_as_cus');
+									if(!empty($sc_roles_as_cus)){
+										$sc_roles_as_cus = explode(',',$sc_roles_as_cus);
+										if(is_array($sc_roles_as_cus) && count($sc_roles_as_cus)){
+											foreach($sc_roles_as_cus as $sr){
+												if(in_array($sr,$user_info->roles)){
+													$io_cs = true;
+													break;
+												}
+											}
+										}
+									}
+								}
+								
+								if($io_cs){
+									if($this->is_dmcb_fval_ext_ccfv()){
+										$customer_data = $this->get_wc_customer_info_from_order($order_id);
+									}else{
+										$customer_data = $this->get_wc_customer_info($wc_cus_id);
+									}							
+									$qbo_cus_id = $this->if_qbo_customer_exists($customer_data);
+								}else{
+									$qbo_cus_id = $this->get_option('mw_wc_qbo_desk_customer_to_sync_all_orders');
+								}
+								
+							}else{
+								$qbo_cus_id = $this->get_option('mw_wc_qbo_desk_customer_to_sync_all_orders');
+							}
+							*/
+							
+							/**/
+							$wc_user_role = '';
+							if($wc_cus_id>0){
+								$user_info = get_userdata($wc_cus_id);
+								if(isset($user_info->roles) && is_array($user_info->roles)){
+									$wc_user_role = $user_info->roles[0];
+								}
+							}else{
+								$wc_user_role = 'wc_guest_user';
+							}
+							
+							if(!empty($wc_user_role)){
+								$io_cs = true;
+								$mw_wc_qbo_desk_aotc_rcm_data = get_option('mw_wc_qbo_desk_aotc_rcm_data');
+								if(is_array($mw_wc_qbo_desk_aotc_rcm_data) && !empty($mw_wc_qbo_desk_aotc_rcm_data)){
+									if(isset($mw_wc_qbo_desk_aotc_rcm_data[$wc_user_role]) && !empty($mw_wc_qbo_desk_aotc_rcm_data[$wc_user_role])){
+										if($mw_wc_qbo_desk_aotc_rcm_data[$wc_user_role] != 'Individual'){
+											$io_cs = false;
+										}
+									}
+								}
+								
+								/**/				
+								if(!$io_cs){
+									$aotc_scjm_data = get_option('mw_wc_qbo_desk_aotc_scjm_data');
+									if(is_array($aotc_scjm_data) && !empty($aotc_scjm_data)){
+										if(isset($aotc_scjm_data[$wc_user_role]) && !empty($aotc_scjm_data[$wc_user_role])){
+											$io_cs = true;										
+										}
+									}
+								}
+								
+								if($io_cs){
+									if($wc_cus_id>0){
+										if($this->is_dmcb_fval_ext_ccfv()){
 											$customer_data = $this->get_wc_customer_info_from_order($order_id);
 										}else{
 											$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -7174,10 +9814,35 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					$is_bundle_order = false;
 					$map_bundle_support = false;
 					
-					if(!$is_bundle_order){
+					/**/
+					if($this->is_plugin_active('woocommerce-product-bundles') && $this->option_checked('mw_wc_qbo_desk_compt_wpbs')){
 						if(is_array($qbo_inv_items) && count($qbo_inv_items)){
 							foreach($qbo_inv_items as $qbo_item){
-								if($qbo_item['qbo_product_type'] == 'Group'){
+								if(isset($qbo_item['bundled_items']) && ($qbo_item['qbo_product_type'] == 'Group' || $qbo_item['qbo_product_type'] == 'InventoryAssembly')){
+									$is_bundle_order = true;
+									if($qbo_item['qbo_product_type'] == 'InventoryAssembly'){continue;}
+									
+									$CheckLineGroup = new QuickBooks_QBXML_Object_Check_ItemGroupLine();
+									$CheckLineGroup->setItemGroupListID($qbo_item["ItemRef"]);
+									$Description = $qbo_item['Description'];
+									$Qty = $qbo_item["Qty"];									
+									$CheckLineGroup->setQuantity($Qty);
+									
+									if(!$this->option_checked('mw_wc_qbo_desk_skip_os_lid')){
+										//$CheckLineGroup->setDesc($Description);
+									}
+									//TotalAmount
+									$Check->addItemGroupLine($CheckLineGroup);
+								}
+							}
+						}
+					}					
+					
+					$allow_bundle_and_map_bundle = true;
+					if(!$is_bundle_order || $allow_bundle_and_map_bundle){
+						if(is_array($qbo_inv_items) && count($qbo_inv_items)){
+							foreach($qbo_inv_items as $qbo_item){
+								if(!isset($qbo_item['bundled_items']) && $qbo_item['qbo_product_type'] == 'Group'){
 									$map_bundle_support = true;
 									$CheckLineGroup = new QuickBooks_QBXML_Object_Check_ItemGroupLine();
 									$CheckLineGroup->setItemGroupListID($qbo_item["ItemRef"]);
@@ -7197,6 +9862,16 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					
 					if(is_array($qbo_inv_items) && count($qbo_inv_items)){
 						foreach($qbo_inv_items as $qbo_item){
+							
+							//Bundle Support
+							if($is_bundle_order){
+								if(isset($qbo_item['bundled_items']) || isset($qbo_item['bundled_item_id']) || isset($qbo_item['bundle_cart_key'])){
+									if($qbo_item['qbo_product_type'] != 'InventoryAssembly' || isset($qbo_item['bundled_item_id'])){
+										continue;
+									}									
+								}
+							}
+							
 							if($map_bundle_support && $qbo_item['qbo_product_type'] == 'Group'){
 								continue;
 							}
@@ -7305,7 +9980,17 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							}
 							
 							if(!$wmior_active && $this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync') && ($qbo_item["qbo_product_type"]=='Inventory' || $qbo_item["qbo_product_type"]=='InventoryAssembly')){
-								$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+								/**/
+								$b_country = $this->get_array_isset($refund_data,'_billing_country','',true);
+								$s_country = $this->get_array_isset($refund_data,'_shipping_country','',true);
+								$o_country = (!empty($s_country))?$s_country:$b_country;
+								
+								if($o_country == 'US'){
+									$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref');
+								}else{
+									$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_site_ref_nus');
+								}
+								
 								if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){									
 									if($this->is_inv_site_bin_allowed()){
 										if (strpos($mw_wc_qbo_desk_compt_qbd_invt_site_ref, ':') !== false) {
@@ -7320,6 +10005,26 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 									}else{
 										$CheckLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
 									}
+								}
+							}
+							
+							/**/
+							if($this->check_sh_qbispplm_hash()){
+								$mw_wc_qbo_desk_compt_qbd_invt_site_ref = $qbo_item["QbIvntSiteref"];
+								if($mw_wc_qbo_desk_compt_qbd_invt_site_ref!=''){
+									if($this->is_inv_site_bin_allowed()){
+										if (strpos($mw_wc_qbo_desk_compt_qbd_invt_site_ref, ':') !== false) {
+											$site_bin_arr = explode(':',$mw_wc_qbo_desk_compt_qbd_invt_site_ref);											
+											if(is_array($site_bin_arr) && !empty($site_bin_arr)){
+												$CheckLine->set('InventorySiteRef ListID' , $site_bin_arr[0]);
+												if(isset($site_bin_arr[1])){
+													$CheckLine->set('InventorySiteLocationRef ListID' , $site_bin_arr[1]);
+												}
+											}
+										}
+									}else{
+										$CheckLine->set('InventorySiteRef ListID' , $mw_wc_qbo_desk_compt_qbd_invt_site_ref);
+									}									
 								}
 							}
 							
@@ -7485,8 +10190,17 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					/*Add Check Shipping*/
 					$shipping_details  = (isset($refund_data['shipping_details']))?$refund_data['shipping_details']:array();
 					
-					$sp_arr_first = array();					
-					if(is_array($shipping_details) && !empty($shipping_details)){
+					$sp_arr_first = array();
+					/**/
+					$is_sync_shipping_line = true;
+					if($this->option_checked('mw_wc_qbo_desk_qb_ns_shipping_li_if_z')){						
+						$_order_shipping = (float) $this->get_array_isset($refund_data,'_order_shipping',0);
+						if($_order_shipping <= 0){
+							$is_sync_shipping_line = false;
+						}
+					}
+					
+					if(is_array($shipping_details) && !empty($shipping_details) && $is_sync_shipping_line){
 						foreach($shipping_details as $sd_k => $sd_v){
 							$shipping_method = '';
 							$shipping_method_name = '';
@@ -7937,7 +10651,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 						if(!$this->option_checked('mw_wc_qbo_desk_all_order_to_customer')){
 							if($wc_cus_id>0){
 								//$qbo_cus_id = $this->get_wc_data_pair_val('Customer',$wc_cus_id);
-								if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+								if($this->is_dmcb_fval_ext_ccfv()){
 									$customer_data = $this->get_wc_customer_info_from_order($order_id);
 								}else{
 									$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -7969,7 +10683,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 								}
 								
 								if($io_cs){
-									if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+									if($this->is_dmcb_fval_ext_ccfv()){
 										$customer_data = $this->get_wc_customer_info_from_order($order_id);
 									}else{
 										$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -8006,9 +10720,19 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 									}
 								}
 								
+								/**/				
+								if(!$io_cs){
+									$aotc_scjm_data = get_option('mw_wc_qbo_desk_aotc_scjm_data');
+									if(is_array($aotc_scjm_data) && !empty($aotc_scjm_data)){
+										if(isset($aotc_scjm_data[$wc_user_role]) && !empty($aotc_scjm_data[$wc_user_role])){
+											$io_cs = true;										
+										}
+									}
+								}
+								
 								if($io_cs){
 									if($wc_cus_id>0){
-										if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+										if($this->is_dmcb_fval_ext_ccfv()){
 											$customer_data = $this->get_wc_customer_info_from_order($order_id);
 										}else{
 											$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -8104,6 +10828,358 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		}
 	}
 	
+	public function GetOrderPaymentQbxml($order_id){
+		$order_id = (int) $order_id;
+		if($this->is_qwc_connected() && $order_id >0){
+			if(!$this->ord_pmnt_is_mt_ls_check_by_ord_id($order_id)){
+				return false;
+			}
+			
+			$payment_data = $this->get_wc_order_details_from_order($order_id,get_post($order_id));
+			//$this->_p($payment_data);
+			if(is_array($payment_data) && count($payment_data)){
+				if($this->option_checked('mw_wc_qbo_desk_order_as_sales_receipt')){
+					return false;
+				}
+				
+				$qbd_sa = 'Invoice';
+				if($this->option_checked('mw_wc_qbo_desk_order_as_sales_order')){
+					$qbd_sa = 'SalesOrder';
+					//return false;
+				}
+				
+				$_payment_method = $this->get_array_isset($payment_data,'_payment_method','',true);
+				$_payment_method_title = $this->get_array_isset($payment_data,'_payment_method_title','',true);
+				
+				$_order_currency = $this->get_array_isset($payment_data,'_order_currency','',true);
+				
+				if($this->wacs_base_cur_enabled()){
+					//$p_order_details = $payment_data;
+					$base_currency = get_woocommerce_currency();
+					$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$base_currency);
+				}else{
+					$pm_map_data = $this->get_mapped_payment_method_data($_payment_method,$_order_currency);
+				}
+				
+				//$this->_p($pm_map_data);
+				$enable_payment = (int) $this->get_array_isset($pm_map_data,'enable_payment',0);				
+				if($this->wacs_base_cur_enabled()){
+					//$payment_amount = get_post_meta($order_id,'_order_total_base_currency',true);
+					$payment_amount = $this->get_order_base_currency_total_from_order_id($order_id);
+				}else{
+					$payment_amount = $this->get_array_isset($payment_data,'_order_total',0);
+				}
+				
+				$payment_amount = floatval($payment_amount);
+				
+				$is_valid_payment = false;
+				$ps_order_status = $this->get_array_isset($pm_map_data,'ps_order_status','');
+				
+				if($enable_payment && !empty($ps_order_status) && $payment_amount>0){
+					$is_valid_payment = true;
+				}
+				
+				if(!$is_valid_payment){return false;}
+				
+				$manual = $this->get_array_isset($payment_data,'manual',false);		
+				$wc_inv_id = $order_id;
+				$payment_id = $wc_inv_id;
+				$wc_cus_id = (int) $this->get_array_isset($payment_data,'_customer_user',0);
+				
+				$qbd_invoice_id = $this->check_quickbooks_invoice($wc_inv_id);
+				
+				if(!$qbd_invoice_id){
+					$this->save_log(array('log_type'=>'Payment','log_title'=>'Export Payment Error for Order #'.$payment_id,'details'=>'QuickBooks '.strtolower($qbd_sa).' not found','status'=>0));
+					return false;
+				}
+				
+				$qbo_cus_id = '';
+				
+				/**/
+				if($this->check_sh_cpfmpocjh_cuscompt_hash() && $this->option_checked('mw_wc_qbo_desk_cpfmpocjh_cuscompt_ed')){
+					$qbd_job_id = $this->get_wc_data_pair_val('Job',$order_id);
+					if(!empty($qbd_job_id)){
+						$qbo_cus_id = $qbd_job_id;
+					}else{						
+						$this->save_log(array('log_type'=>'Customer','log_title'=>'Export Payment Error for Order #'.$order_id,'details'=>'QuickBooks Customer Job Not Found','status'=>0));
+						return false;
+					}
+				}
+				
+				if(empty($qbo_cus_id)){
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-fitbodywrap-custom-compt') && $this->check_sh_fitbodywrap_cuscompt_hash()){
+						if($this->option_checked('mw_wc_qbo_desk_compt_np_fitbodywrap_cust_inv_oc')){
+							$c_account_number = (int) get_post_meta($order_id,'account_number',true);
+							if($c_account_number > 0){
+								$qbo_cus_id = $this->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_customers','qbd_customerid','acc_num',$c_account_number);
+							}
+						}
+					}
+					
+					/**/
+					if($this->is_plugin_active('woocommerce-aelia-currencyswitcher') && $this->option_checked('mw_wc_qbo_desk_wacs_satoc_cb')){				
+						if($_order_currency!=''){
+							$aelia_cur_cus_map = get_option('mw_wc_qbo_desk_wacs_satoc_map_cur_cus');
+							if(is_array($aelia_cur_cus_map) && count($aelia_cur_cus_map)){
+								if(isset($aelia_cur_cus_map[$_order_currency]) && trim($aelia_cur_cus_map[$_order_currency])!=''){
+									$qbo_cus_id = trim($aelia_cur_cus_map[$_order_currency]);
+								}
+							}
+						}					
+					}
+					
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-custom-customer-compt-gunnar') && $this->option_checked('mw_wc_qbo_desk_compt_cccgunnar_ocs_qb_cus_map_ed')){
+						$cccgunnar_qb_cus_map = get_option('mw_wc_qbo_desk_cccgunnar_qb_cus_map');
+						if(is_array($cccgunnar_qb_cus_map) && count($cccgunnar_qb_cus_map)){
+							$occ_mp_key = '';
+							if($order->post_status == 'rx-processing'){
+								$occ_mp_key = 'rx_order_status';
+							}else{
+								$ord_country = get_post_meta($wc_inv_id,'_shipping_country',true);
+								if(empty($ord_country)){
+									$ord_country = get_post_meta($wc_inv_id,'_billing_country',true);
+								}
+								
+								if(!empty($ord_country)){
+									if($ord_country == 'US'){
+										$occ_mp_key = 'us_order';
+									}else{
+										$occ_mp_key = 'intl_order';
+									}
+								}
+							}
+							
+							if(!empty($occ_mp_key)){
+								if(isset($cccgunnar_qb_cus_map[$occ_mp_key]) && trim($cccgunnar_qb_cus_map[$occ_mp_key])!=''){
+									$qbo_cus_id = trim($cccgunnar_qb_cus_map[$occ_mp_key]);
+								}
+							}
+						}
+					}
+					
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-sync-compatibility') && $this->is_plugin_active('myworks-quickbooks-desktop-shipping-us-state-quickbooks-customer-map-compt') && $this->option_checked('mw_wc_qbo_desk_compt_sus_qb_cus_map_ed')){					
+						if($wc_cus_id>0){						
+							$shipping_country = get_user_meta($wc_cus_id,'shipping_country',true);						
+						}else{						
+							$shipping_country = get_post_meta($order_id,'_shipping_country',true);
+						}
+						
+						if($shipping_country == 'US'){
+							if($wc_cus_id>0){
+								$shipping_state = get_user_meta($wc_cus_id,'shipping_state',true);
+							}else{
+								$shipping_state = get_post_meta($order_id,'_shipping_state',true);						
+							}
+							
+							if($shipping_state!=''){
+								$sus_qb_cus_map = get_option('mw_wc_qbo_desk_ship_us_st_qb_cus_map');
+								if(is_array($sus_qb_cus_map) && count($sus_qb_cus_map)){
+									if(isset($sus_qb_cus_map[$shipping_state]) && trim($sus_qb_cus_map[$shipping_state])!=''){
+										$qbo_cus_id = trim($sus_qb_cus_map[$shipping_state]);
+									}
+								}
+							}
+						}else{
+							$qbo_cus_id = $this->get_option('mw_wc_qbo_desk_sus_fb_qb_cus_foc');
+						}
+					}
+				}				
+				
+				if(empty($qbo_cus_id)){
+					if(!$this->option_checked('mw_wc_qbo_desk_all_order_to_customer')){
+						if($wc_cus_id>0){
+							//$qbo_cus_id = $this->get_wc_data_pair_val('Customer',$wc_cus_id);
+							if($this->is_dmcb_fval_ext_ccfv()){
+								$customer_data = $this->get_wc_customer_info_from_order($order_id);
+							}else{
+								$customer_data = $this->get_wc_customer_info($wc_cus_id);
+							}
+							
+							$qbo_cus_id = $this->if_qbo_customer_exists($customer_data);
+						}else{
+							$customer_data = $this->get_wc_customer_info_from_order($order_id);
+							$qbo_cus_id = $this->if_qbo_guest_exists($customer_data);
+						}
+					}else{						
+						
+						/**/
+						$wc_user_role = '';
+						if($wc_cus_id>0){
+							$user_info = get_userdata($wc_cus_id);
+							if(isset($user_info->roles) && is_array($user_info->roles)){
+								$wc_user_role = $user_info->roles[0];
+							}
+						}else{
+							$wc_user_role = 'wc_guest_user';
+						}
+						
+						if(!empty($wc_user_role)){
+							$io_cs = true;
+							$mw_wc_qbo_desk_aotc_rcm_data = get_option('mw_wc_qbo_desk_aotc_rcm_data');
+							if(is_array($mw_wc_qbo_desk_aotc_rcm_data) && !empty($mw_wc_qbo_desk_aotc_rcm_data)){
+								if(isset($mw_wc_qbo_desk_aotc_rcm_data[$wc_user_role]) && !empty($mw_wc_qbo_desk_aotc_rcm_data[$wc_user_role])){
+									if($mw_wc_qbo_desk_aotc_rcm_data[$wc_user_role] != 'Individual'){
+										$io_cs = false;
+									}
+								}
+							}
+							
+							/**/				
+							if(!$io_cs){
+								$aotc_scjm_data = get_option('mw_wc_qbo_desk_aotc_scjm_data');
+								if(is_array($aotc_scjm_data) && !empty($aotc_scjm_data)){
+									if(isset($aotc_scjm_data[$wc_user_role]) && !empty($aotc_scjm_data[$wc_user_role])){
+										$io_cs = true;										
+									}
+								}
+							}
+							
+							if($io_cs){
+								if($wc_cus_id>0){
+									if($this->is_dmcb_fval_ext_ccfv()){
+										$customer_data = $this->get_wc_customer_info_from_order($order_id);
+									}else{
+										$customer_data = $this->get_wc_customer_info($wc_cus_id);
+									}							
+									$qbo_cus_id = $this->if_qbo_customer_exists($customer_data);
+								}else{
+									$customer_data = $this->get_wc_customer_info_from_order($order_id);
+									$qbo_cus_id = $this->if_qbo_guest_exists($customer_data);
+								}
+							}else{
+								$qbo_cus_id = $mw_wc_qbo_desk_aotc_rcm_data[$wc_user_role];
+							}
+						}
+						//
+					}
+				}
+				
+				if(empty($qbo_cus_id)){
+					$this->save_log(array('log_type'=>'Customer','log_title'=>'Export Payment Error for Order #'.$order_id,'details'=>'QuickBooks Customer Not Found','status'=>0));
+					return false;
+				}
+				
+				/**/
+				$qost_arr = array(
+					'Invoice' => 'Invoice',
+					'SalesReceipt' => 'SalesReceipt',
+					'SalesOrder' => 'SalesOrder',
+					'Estimate' => 'Estimate'										
+				);
+				
+				if($this->get_option('mw_wc_qbo_desk_order_qbd_sync_as') == 'Per Role'){
+					$is_guest_user = ($wc_cus_id>0)?false:true;
+					if(empty($wc_user_role)){
+						if(!$is_guest_user){
+							if(empty($user_info)){
+								$user_info = get_userdata($wc_cus_id);
+							}
+							
+							if(isset($user_info->roles) && is_array($user_info->roles)){
+								$wc_user_role = $user_info->roles[0];
+							}
+						}else{
+							$wc_user_role = 'wc_guest_user';
+						}
+					}
+
+					if(!empty($wc_user_role)){
+						$mw_wc_qbo_desk_oqsa_pr_data = get_option('mw_wc_qbo_desk_oqsa_pr_data');
+						if(is_array($mw_wc_qbo_desk_oqsa_pr_data) && !empty($mw_wc_qbo_desk_oqsa_pr_data)){
+							if(isset($mw_wc_qbo_desk_oqsa_pr_data[$wc_user_role]) && !empty($mw_wc_qbo_desk_oqsa_pr_data[$wc_user_role])){
+								if(isset($qost_arr[$mw_wc_qbo_desk_oqsa_pr_data[$wc_user_role]])){
+									$qbd_sa = $mw_wc_qbo_desk_oqsa_pr_data[$wc_user_role];
+								}								
+							}
+						}
+					}
+				}
+				
+				if($this->get_option('mw_wc_qbo_desk_order_qbd_sync_as') == 'Per Gateway'){
+					$order_sync_as = $this->get_array_isset($pm_map_data,'order_sync_as','',true);
+					if(!empty($order_sync_as) && isset($qost_arr[$order_sync_as])){
+						$qbd_sa = $order_sync_as;
+					}
+				}
+				
+				$ReceivePayment = new QuickBooks_QBXML_Object_ReceivePayment();
+				$ReceivePayment->setCustomerListID($qbo_cus_id);
+				
+				$_paid_date = $this->get_array_isset($payment_data,'_paid_date','',true);
+				$_paid_date = $this->format_date($_paid_date);
+				
+				/**/
+				$qb_ip_ar_acc_id = $this->get_array_isset($pm_map_data,'qb_ip_ar_acc_id','');
+				if(!empty($qb_ip_ar_acc_id)){
+					$ReceivePayment->set('ARAccountRef ListID',$qb_ip_ar_acc_id);
+				}
+				
+				$ReceivePayment->setTxnDate($_paid_date);
+				$_transaction_id = $this->get_array_isset($payment_data,'_transaction_id','',true);
+				
+				$qb_p_method_id = $this->get_array_isset($pm_map_data,'qb_p_method_id','');
+				$qbo_account_id = $this->get_array_isset($pm_map_data,'qbo_account_id','');
+				
+				if($_transaction_id!=''){
+					$ReceivePayment->setRefNumber($_transaction_id);
+				}else{
+					$ReceivePayment->setRefNumber('Order-'.$order_id);
+				}
+				
+				//echo $qbd_sa;
+				if($qbd_sa == 'Invoice'){
+					$AppliedToTxn = new QuickBooks_QBXML_Object_ReceivePayment_AppliedToTxn();
+					$AppliedToTxn->setTxnID($qbd_invoice_id);
+					$AppliedToTxn->setPaymentAmount($payment_amount);
+					
+					$ReceivePayment->addAppliedToTxn($AppliedToTxn);
+				}
+				
+				if($qbd_sa == 'SalesOrder'){
+					$ReceivePayment->set('IsAutoApply',"");
+				}
+				
+				$ReceivePayment->setTotalAmount($payment_amount);
+				//setARAccountListID
+				$ReceivePayment->setPaymentMethodListID($qb_p_method_id);
+				$ReceivePayment->setDepositToAccountListID($qbo_account_id);
+				//setMemos
+				
+				/**/
+				if($this->check_sh_paamc_hash()){
+					$qbo_inv_items = (isset($invoice_data['qbo_inv_items']))?$invoice_data['qbo_inv_items']:array();
+					
+					$ARAccountRef = '';
+					if(is_array($qbo_inv_items) && count($qbo_inv_items)){
+						foreach($qbo_inv_items as $qbo_item){
+							if(isset($qbo_item['QbArAccId']) && !empty($qbo_item['QbArAccId'])){
+								$ARAccountRef = $qbo_item['QbArAccId'];
+							}
+						}
+					}
+					
+					if(!empty($ARAccountRef)){
+						$ReceivePayment->setARAccountListID($ARAccountRef);
+					}
+				}
+				
+				$qbxml = $ReceivePayment->asQBXML('ReceivePaymentAdd',null,$this->get_qbxml_locale());
+				$qbxml = $this->get_qbxml_prefix().$qbxml. $this->get_qbxml_suffix();
+				$qbxml = $this->qbxml_search_replace($qbxml);
+				
+				if($qbd_sa != 'Invoice'){
+					//$qbxml = $this->format_xml($qbxml);
+				}
+				
+				return $qbxml;
+				
+			}			
+		}
+	}
+	
 	public function GetPaymentQbxml($id){
 		if($this->is_qwc_connected()){			
 			global $wpdb;
@@ -8151,6 +11227,23 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				
 				$payment_amount = floatval($payment_amount);
 				
+				//
+				$enable_tfnli = (int) $this->get_array_isset($pm_map_data,'enable_tfnli',0);
+				if($enable_tfnli){
+					if($_payment_method == 'stripe' || $_payment_method == 'paypal' || $_payment_method == 'paypal_express'){
+						if($_payment_method == 'stripe'){
+							//$txn_fee_amount = (float) $this->get_array_isset($payment_data,'Stripe Fee',0);
+							//$txn_fee_amount = (float) get_post_meta($order_id,'Stripe Fee',true);
+							$txn_fee_amount = (float) get_post_meta($order_id,'_stripe_fee',true);
+						}else{
+							//$txn_fee_amount = (float) get_post_meta($order_id,'PayPal Transaction Fee',true);
+							$txn_fee_amount = (float) get_post_meta($order_id,'_paypal_transaction_fee',true);
+						}
+						
+						$payment_amount = $payment_amount-$txn_fee_amount;
+					}
+				}
+				
 				$is_valid_payment = false;
 				if($enable_payment && $payment_amount>0){
 					$is_valid_payment = true;
@@ -8168,17 +11261,9 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					return false;
 				}
 				
-				/*
-				$wc_inv_no = '';
-				if($this->is_plugin_active('woocommerce-sequential-order-numbers-pro','woocommerce-sequential-order-numbers') && $this->option_checked('mw_wc_qbo_desk_compt_p_wsnop')){
-					if($this->is_plugin_active('woocommerce-sequential-order-numbers')){
-						$wc_inv_no = get_post_meta( $wc_inv_id, '_order_number', true );
-					}else{
-						$wc_inv_no = get_post_meta( $wc_inv_id, '_order_number_formatted', true );
-					}
-					
-				}
-				*/
+				//
+				$wc_inv_no = $this->get_woo_ord_number_from_order($wc_inv_id,$payment_data);
+				$ord_id_num = (!empty($wc_inv_no))?$wc_inv_no:$wc_inv_id;
 				
 				$qbd_invoice_id = $this->check_quickbooks_invoice($wc_inv_id);
 				
@@ -8190,90 +11275,103 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				$qbo_cus_id = '';
 				
 				/**/
-				if($this->is_plugin_active('myworks-quickbooks-desktop-fitbodywrap-custom-compt') && $this->check_sh_fitbodywrap_cuscompt_hash()){
-					if($this->option_checked('mw_wc_qbo_desk_compt_np_fitbodywrap_cust_inv_oc')){
-						$c_account_number = (int) get_post_meta($order_id,'account_number',true);
-						if($c_account_number > 0){
-							$qbo_cus_id = $this->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_customers','qbd_customerid','acc_num',$c_account_number);
-						}
-					}
-				}
-				
-				/**/
-				if($this->is_plugin_active('woocommerce-aelia-currencyswitcher') && $this->option_checked('mw_wc_qbo_desk_wacs_satoc_cb')){				
-					if($_order_currency!=''){
-						$aelia_cur_cus_map = get_option('mw_wc_qbo_desk_wacs_satoc_map_cur_cus');
-						if(is_array($aelia_cur_cus_map) && count($aelia_cur_cus_map)){
-							if(isset($aelia_cur_cus_map[$_order_currency]) && trim($aelia_cur_cus_map[$_order_currency])!=''){
-								$qbo_cus_id = trim($aelia_cur_cus_map[$_order_currency]);
-							}
-						}
-					}					
-				}
-				
-				/**/
-				if($this->is_plugin_active('myworks-quickbooks-desktop-custom-customer-compt-gunnar') && $this->option_checked('mw_wc_qbo_desk_compt_cccgunnar_ocs_qb_cus_map_ed')){
-					$cccgunnar_qb_cus_map = get_option('mw_wc_qbo_desk_cccgunnar_qb_cus_map');
-					if(is_array($cccgunnar_qb_cus_map) && count($cccgunnar_qb_cus_map)){
-						$occ_mp_key = '';
-						if($order->post_status == 'rx-processing'){
-							$occ_mp_key = 'rx_order_status';
-						}else{
-							$ord_country = get_post_meta($wc_inv_id,'_shipping_country',true);
-							if(empty($ord_country)){
-								$ord_country = get_post_meta($wc_inv_id,'_billing_country',true);
-							}
-							
-							if(!empty($ord_country)){
-								if($ord_country == 'US'){
-									$occ_mp_key = 'us_order';
-								}else{
-									$occ_mp_key = 'intl_order';
-								}
-							}
-						}
-						
-						if(!empty($occ_mp_key)){
-							if(isset($cccgunnar_qb_cus_map[$occ_mp_key]) && trim($cccgunnar_qb_cus_map[$occ_mp_key])!=''){
-								$qbo_cus_id = trim($cccgunnar_qb_cus_map[$occ_mp_key]);
-							}
-						}
-					}
-				}
-				
-				/**/
-				if($this->is_plugin_active('myworks-quickbooks-desktop-sync-compatibility') && $this->is_plugin_active('myworks-quickbooks-desktop-shipping-us-state-quickbooks-customer-map-compt') && $this->option_checked('mw_wc_qbo_desk_compt_sus_qb_cus_map_ed')){					
-					if($wc_cus_id>0){						
-						$shipping_country = get_user_meta($wc_cus_id,'shipping_country',true);						
+				if($this->check_sh_cpfmpocjh_cuscompt_hash() && $this->option_checked('mw_wc_qbo_desk_cpfmpocjh_cuscompt_ed')){
+					$qbd_job_id = $this->get_wc_data_pair_val('Job',$order_id);
+					if(!empty($qbd_job_id)){
+						$qbo_cus_id = $qbd_job_id;
 					}else{						
-						$shipping_country = get_post_meta($order_id,'_shipping_country',true);
+						$this->save_log(array('log_type'=>'Customer','log_title'=>'Export Payment Error #'.$payment_id,'details'=>'QuickBooks Customer Job Not Found','status'=>0));
+						return false;
+					}
+				}
+				
+				if(empty($qbo_cus_id)){
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-fitbodywrap-custom-compt') && $this->check_sh_fitbodywrap_cuscompt_hash()){
+						if($this->option_checked('mw_wc_qbo_desk_compt_np_fitbodywrap_cust_inv_oc')){
+							$c_account_number = (int) get_post_meta($order_id,'account_number',true);
+							if($c_account_number > 0){
+								$qbo_cus_id = $this->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_customers','qbd_customerid','acc_num',$c_account_number);
+							}
+						}
 					}
 					
-					if($shipping_country == 'US'){
-						if($wc_cus_id>0){
-							$shipping_state = get_user_meta($wc_cus_id,'shipping_state',true);
-						}else{
-							$shipping_state = get_post_meta($order_id,'_shipping_state',true);						
-						}
-						
-						if($shipping_state!=''){
-							$sus_qb_cus_map = get_option('mw_wc_qbo_desk_ship_us_st_qb_cus_map');
-							if(is_array($sus_qb_cus_map) && count($sus_qb_cus_map)){
-								if(isset($sus_qb_cus_map[$shipping_state]) && trim($sus_qb_cus_map[$shipping_state])!=''){
-									$qbo_cus_id = trim($sus_qb_cus_map[$shipping_state]);
+					/**/
+					if($this->is_plugin_active('woocommerce-aelia-currencyswitcher') && $this->option_checked('mw_wc_qbo_desk_wacs_satoc_cb')){				
+						if($_order_currency!=''){
+							$aelia_cur_cus_map = get_option('mw_wc_qbo_desk_wacs_satoc_map_cur_cus');
+							if(is_array($aelia_cur_cus_map) && count($aelia_cur_cus_map)){
+								if(isset($aelia_cur_cus_map[$_order_currency]) && trim($aelia_cur_cus_map[$_order_currency])!=''){
+									$qbo_cus_id = trim($aelia_cur_cus_map[$_order_currency]);
+								}
+							}
+						}					
+					}
+					
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-custom-customer-compt-gunnar') && $this->option_checked('mw_wc_qbo_desk_compt_cccgunnar_ocs_qb_cus_map_ed')){
+						$cccgunnar_qb_cus_map = get_option('mw_wc_qbo_desk_cccgunnar_qb_cus_map');
+						if(is_array($cccgunnar_qb_cus_map) && count($cccgunnar_qb_cus_map)){
+							$occ_mp_key = '';
+							if($order->post_status == 'rx-processing'){
+								$occ_mp_key = 'rx_order_status';
+							}else{
+								$ord_country = get_post_meta($wc_inv_id,'_shipping_country',true);
+								if(empty($ord_country)){
+									$ord_country = get_post_meta($wc_inv_id,'_billing_country',true);
+								}
+								
+								if(!empty($ord_country)){
+									if($ord_country == 'US'){
+										$occ_mp_key = 'us_order';
+									}else{
+										$occ_mp_key = 'intl_order';
+									}
+								}
+							}
+							
+							if(!empty($occ_mp_key)){
+								if(isset($cccgunnar_qb_cus_map[$occ_mp_key]) && trim($cccgunnar_qb_cus_map[$occ_mp_key])!=''){
+									$qbo_cus_id = trim($cccgunnar_qb_cus_map[$occ_mp_key]);
 								}
 							}
 						}
-					}else{
-						$qbo_cus_id = $this->get_option('mw_wc_qbo_desk_sus_fb_qb_cus_foc');
 					}
-				}
+					
+					/**/
+					if($this->is_plugin_active('myworks-quickbooks-desktop-sync-compatibility') && $this->is_plugin_active('myworks-quickbooks-desktop-shipping-us-state-quickbooks-customer-map-compt') && $this->option_checked('mw_wc_qbo_desk_compt_sus_qb_cus_map_ed')){					
+						if($wc_cus_id>0){						
+							$shipping_country = get_user_meta($wc_cus_id,'shipping_country',true);						
+						}else{						
+							$shipping_country = get_post_meta($order_id,'_shipping_country',true);
+						}
+						
+						if($shipping_country == 'US'){
+							if($wc_cus_id>0){
+								$shipping_state = get_user_meta($wc_cus_id,'shipping_state',true);
+							}else{
+								$shipping_state = get_post_meta($order_id,'_shipping_state',true);						
+							}
+							
+							if($shipping_state!=''){
+								$sus_qb_cus_map = get_option('mw_wc_qbo_desk_ship_us_st_qb_cus_map');
+								if(is_array($sus_qb_cus_map) && count($sus_qb_cus_map)){
+									if(isset($sus_qb_cus_map[$shipping_state]) && trim($sus_qb_cus_map[$shipping_state])!=''){
+										$qbo_cus_id = trim($sus_qb_cus_map[$shipping_state]);
+									}
+								}
+							}
+						}else{
+							$qbo_cus_id = $this->get_option('mw_wc_qbo_desk_sus_fb_qb_cus_foc');
+						}
+					}
+				}				
 				
 				if(empty($qbo_cus_id)){
 					if(!$this->option_checked('mw_wc_qbo_desk_all_order_to_customer')){
 						if($wc_cus_id>0){
 							//$qbo_cus_id = $this->get_wc_data_pair_val('Customer',$wc_cus_id);
-							if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+							if($this->is_dmcb_fval_ext_ccfv()){
 								$customer_data = $this->get_wc_customer_info_from_order($order_id);
 							}else{
 								$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -8305,7 +11403,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							}
 							
 							if($io_cs){
-								if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+								if($this->is_dmcb_fval_ext_ccfv()){
 									$customer_data = $this->get_wc_customer_info_from_order($order_id);
 								}else{
 									$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -8342,9 +11440,19 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 								}
 							}
 							
+							/**/				
+							if(!$io_cs){
+								$aotc_scjm_data = get_option('mw_wc_qbo_desk_aotc_scjm_data');
+								if(is_array($aotc_scjm_data) && !empty($aotc_scjm_data)){
+									if(isset($aotc_scjm_data[$wc_user_role]) && !empty($aotc_scjm_data[$wc_user_role])){
+										$io_cs = true;										
+									}
+								}
+							}
+							
 							if($io_cs){
 								if($wc_cus_id>0){
-									if($this->option_checked('mw_wc_qbo_desk_customer_qbo_check_billing_company')){
+									if($this->is_dmcb_fval_ext_ccfv()){
 										$customer_data = $this->get_wc_customer_info_from_order($order_id);
 									}else{
 										$customer_data = $this->get_wc_customer_info($wc_cus_id);
@@ -8428,10 +11536,15 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				$qb_p_method_id = $this->get_array_isset($pm_map_data,'qb_p_method_id','');
 				$qbo_account_id = $this->get_array_isset($pm_map_data,'qbo_account_id','');
 				
+				/**/
+				if($this->get_option('mw_wc_qbo_desk_qb_pmnt_ref_num_vf') == 'O_ID_NUM'){
+					$_transaction_id = $ord_id_num;
+				}
+				
 				if($_transaction_id!=''){
 					$ReceivePayment->setRefNumber($_transaction_id);
 				}else{
-					$ReceivePayment->setRefNumber($payment_id);
+					//$ReceivePayment->setRefNumber($payment_id);
 				}
 				
 				//echo $qbd_sa;
@@ -8499,9 +11612,9 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		
 		if($this->option_checked('mw_wc_qbo_desk_add_xml_req_into_log')){
 			if($is_variation){
-				$dlog_txt = PHP_EOL .'Product Add Request #'.$ID.' - '.$this->get_cdt(). PHP_EOL;
-			}else{
 				$dlog_txt = PHP_EOL .'Variation Add Request #'.$ID.' - '.$this->get_cdt(). PHP_EOL;
+			}else{
+				$dlog_txt = PHP_EOL .'Product Add Request #'.$ID.' - '.$this->get_cdt(). PHP_EOL;
 			}
 			$dlog_txt.=$qbxml;
 			$this->add_test_log($dlog_txt);
@@ -8519,9 +11632,9 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		
 		if($this->option_checked('mw_wc_qbo_desk_add_xml_req_into_log')){
 			if($is_variation){
-				$dlog_txt = PHP_EOL .'Product Add Request #'.$ID.' - '.$this->get_cdt(). PHP_EOL;
-			}else{
 				$dlog_txt = PHP_EOL .'Variation Add Request #'.$ID.' - '.$this->get_cdt(). PHP_EOL;
+			}else{
+				$dlog_txt = PHP_EOL .'Product Add Request #'.$ID.' - '.$this->get_cdt(). PHP_EOL;
 			}			
 			$dlog_txt.=$qbxml;
 			$this->add_test_log($dlog_txt);
@@ -8538,9 +11651,9 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		
 		if($this->option_checked('mw_wc_qbo_desk_add_xml_req_into_log')){
 			if($is_variation){
-				$dlog_txt = PHP_EOL .'Product Add Request #'.$ID.' - '.$this->get_cdt(). PHP_EOL;
-			}else{
 				$dlog_txt = PHP_EOL .'Variation Add Request #'.$ID.' - '.$this->get_cdt(). PHP_EOL;
+			}else{
+				$dlog_txt = PHP_EOL .'Product Add Request #'.$ID.' - '.$this->get_cdt(). PHP_EOL;
 			}
 			$dlog_txt.=$qbxml;
 			$this->add_test_log($dlog_txt);
@@ -8659,7 +11772,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 			return false;
 		}
 		
-		$qbxml = $this->GetCustomerQbxml($ID,false,$EditSequence,$ListID);
+		$qbxml = $this->GetCustomerQbxml($ID,false,$EditSequence,$ListID,$extra);
 		
 		if($this->option_checked('mw_wc_qbo_desk_add_xml_req_into_log')){
 			$dlog_txt = PHP_EOL .'Customer Update Request #'.$ID.' - '.$this->get_cdt(). PHP_EOL;
@@ -8673,10 +11786,32 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		if(!$this->is_qwc_connected()){
 			return false;
 		}
-		$qbxml = $this->GetCustomerQbxml($ID);
+		$qbxml = $this->GetCustomerQbxml($ID,false,'','',$extra);
 		
 		if($this->option_checked('mw_wc_qbo_desk_add_xml_req_into_log')){
 			$dlog_txt = PHP_EOL .'Customer Add Request #'.$ID.' - '.$this->get_cdt(). PHP_EOL;
+			$dlog_txt.=$qbxml;
+			$this->add_test_log($dlog_txt);
+		}
+		return $qbxml;
+	}
+	
+	/**/
+	public function AddCustomerJobRequest($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $version, $locale){
+		if(!$this->is_qwc_connected()){
+			return false;
+		}
+		
+		if(!is_array($extra)){
+			$extra = array();
+		}
+		$qbo_cus_id = (isset($extra['existing_qbo_user_id']))?trim($extra['existing_qbo_user_id']):'';
+		$customer_id = (isset($extra['customer_id']))?(int) $extra['customer_id']:0;
+		
+		$qbxml = $this->GetCustomerJobQbxml($ID,$qbo_cus_id,$customer_id);
+		
+		if($this->option_checked('mw_wc_qbo_desk_add_xml_req_into_log')){
+			$dlog_txt = PHP_EOL .'Customer Job Add Request #'.$ID.' - '.$this->get_cdt(). PHP_EOL;
 			$dlog_txt.=$qbxml;
 			$this->add_test_log($dlog_txt);
 		}
@@ -8717,18 +11852,55 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 			$details = "Customer #{$ID} added into quickbooks successfully".PHP_EOL;
 			$details.="QuickBooks List ID #".$idents['ListID'];
 			$this->save_log(array('log_type'=>'Customer','log_title'=>'Export Customer #'.$ID,'details'=>$details,'status'=>1),true);
+			
+			/**/
+			if($this->check_sh_cpfmpocjh_cuscompt_hash() && $this->option_checked('mw_wc_qbo_desk_cpfmpocjh_cuscompt_ed')){
+				$order_id = (int) $this->get_woo_latest_order_id_by_customer_id_from_queue($ID);
+				if($order_id > 0){
+					$qbd_job_id = $this->get_wc_data_pair_val('Job',$order_id);
+					if(empty($qbd_job_id)){
+						if(!$this->if_queue_exists('CustomerJobAdd',$order_id)){
+							$Queue = new QuickBooks_WebConnector_Queue($this->get_dsn());
+							$oq_add_extra = array('existing_qbo_user_type'=>'Customer','existing_qbo_user_id'=>$idents['ListID']);
+							$Queue->enqueue('CustomerJobAdd', $order_id,2,$oq_add_extra,$this->get_qbun());
+						}
+					}
+				}				
+			}
+			
 		}else{
 			$details = "Error:$err";
 			$this->save_log(array('log_type'=>'Customer','log_title'=>'Export Customer Error #'.$ID,'details'=>$details,'status'=>0),true);
 		}
 		return true;
 	}
+	
+	/**/
+	public function AddCustomerJobResponse($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $xml, $idents){
+		if(!$this->is_qwc_connected()){
+			return false;
+		}
+		//$this->add_test_log($xml);
+		//$this->add_test_log(print_r($idents,true));
 
+		if(is_array($idents) && isset($idents['ListID']) && $idents['ListID']!=''){
+			$this->save_data_pair('Job',$ID,$idents['ListID']);
+			
+			$details = "Customer Job #{$ID} added into quickbooks successfully".PHP_EOL;
+			$details.="QuickBooks List ID #".$idents['ListID'];
+			$this->save_log(array('log_type'=>'Job','log_title'=>'Export Customer Job #'.$ID,'details'=>$details,'status'=>1),true);
+		}else{
+			$details = "Error:$err";
+			$this->save_log(array('log_type'=>'Job','log_title'=>'Export Customer Job Error #'.$ID,'details'=>$details,'status'=>0),true);
+		}
+		return true;
+	}
+	
 	public function AddGuestRequest($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $version, $locale){
 		if(!$this->is_qwc_connected()){
 			return false;
 		}
-		$qbxml = $this->GetCustomerQbxml($ID,true);
+		$qbxml = $this->GetCustomerQbxml($ID,true,'','',$extra);
 		if($this->option_checked('mw_wc_qbo_desk_add_xml_req_into_log')){
 			$dlog_txt = PHP_EOL .'Customer/Guest Add Request Order #'.$ID.' - '.$this->get_cdt(). PHP_EOL;
 			$dlog_txt.=$qbxml;
@@ -8752,6 +11924,19 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 			$details.="QuickBooks List ID #".$idents['ListID'].PHP_EOL;
 			$details.="Order ID #{$ID}";
 			$this->save_log(array('log_type'=>'Customer','log_title'=>'Export Guest/Customer','details'=>$details,'status'=>1),true);
+			
+			/**/
+			if($this->check_sh_cpfmpocjh_cuscompt_hash() && $this->option_checked('mw_wc_qbo_desk_cpfmpocjh_cuscompt_ed')){
+				$qbd_job_id = $this->get_wc_data_pair_val('Job',$ID);
+				if(empty($qbd_job_id)){
+					if(!$this->if_queue_exists('CustomerJobAdd',$ID)){
+						$Queue = new QuickBooks_WebConnector_Queue($this->get_dsn());
+						$oq_add_extra = array('existing_qbo_user_type'=>'Guest','existing_qbo_user_id'=>$idents['ListID']);
+						$Queue->enqueue('CustomerJobAdd', $ID,2,$oq_add_extra,$this->get_qbun());
+					}
+				}
+			}
+			
 		}else{
 			$details = "Error:$err".PHP_EOL;
 			$details.="Order ID #{$ID}";
@@ -8768,6 +11953,19 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		$qbxml = $this->GetPaymentQbxml($ID);
 		if($this->option_checked('mw_wc_qbo_desk_add_xml_req_into_log')){
 			$dlog_txt = PHP_EOL .'Payment Add Request #'.$ID.' - '.$this->get_cdt(). PHP_EOL;
+			$dlog_txt.=$qbxml;
+			$this->add_test_log($dlog_txt);
+		}
+		return $qbxml;
+	}
+	
+	public function AddOrderPaymentRequest($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $version, $locale){
+		if(!$this->is_qwc_connected()){
+			return false;
+		}
+		$qbxml = $this->GetOrderPaymentQbxml($ID);
+		if($this->option_checked('mw_wc_qbo_desk_add_xml_req_into_log')){
+			$dlog_txt = PHP_EOL .'Order Payment Add Request #'.$ID.' - '.$this->get_cdt(). PHP_EOL;
 			$dlog_txt.=$qbxml;
 			$this->add_test_log($dlog_txt);
 		}
@@ -8797,6 +11995,29 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		return true;
 	}
 	
+	public function AddOrderPaymentResponse($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $xml, $idents){
+		if(!$this->is_qwc_connected()){
+			return false;
+		}
+		//$this->add_test_log($xml);
+		//$this->add_test_log(print_r($idents,true));
+
+		if(is_array($idents) && isset($idents['TxnID']) && $idents['TxnID']!=''){
+			$pr_dp_ed = '';
+			if($this->option_checked('mw_wc_qbo_desk_order_as_sales_order')){
+				$pr_dp_ed = 'SalesOrder';
+			}
+			$this->save_data_pair('Order_Payment',$ID,$idents['TxnID'],$pr_dp_ed);
+			$details = "Order Payment #{$ID} added into quickbooks successfully".PHP_EOL;
+			$details.="QuickBooks TxnID #".$idents['TxnID'];
+			$this->save_log(array('log_type'=>'Payment','log_title'=>'Export Payment for Order #'.$ID,'details'=>$details,'status'=>1),true);
+		}else{
+			$details = "Error:$err";
+			$this->save_log(array('log_type'=>'Payment','log_title'=>'Export Payment Error for Order #'.$ID,'details'=>$details,'status'=>0),true);
+		}
+		return true;
+	}
+	
 	/*Refund Sync*/
 	public function AddRefundRequest($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $version, $locale){
 		if(!$this->is_qwc_connected()){
@@ -8804,15 +12025,26 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		}
 		
 		$order_id = 0;
+		$check_r = false;
 		if(is_array($extra) && isset($extra['order_id'])){
 			$order_id = $extra['order_id'];
+			
+			if(isset($extra['check_r']) && $extra['check_r'] == 1){
+				$check_r = true;
+			}
 		}
 		
 		//$rfnd_entity = 'ARRefundCreditCard';
 		//$qbxml = $this->GetRefundQbxml_ArRCc($ID,$order_id);
 		
-		$rfnd_entity = 'Check';
-		$qbxml = $this->GetRefundQbxml_Check($ID,$order_id);
+		if($check_r){
+			$rfnd_entity = 'Check';
+			$qbxml = $this->GetRefundQbxml_Check($ID,$order_id);
+		}else{
+			$rfnd_entity = 'CreditMemo';
+			$qbxml = $this->GetRefundQbxml_CreditMemo($ID,$order_id);
+		}
+		
 		if($this->option_checked('mw_wc_qbo_desk_add_xml_req_into_log')){
 			$dlog_txt = PHP_EOL .'Refund Add Request ('.$rfnd_entity.') #'.$ID.' - '.$this->get_cdt(). PHP_EOL;
 			$dlog_txt.=$qbxml;
@@ -8833,13 +12065,28 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 			if($this->option_checked('mw_wc_qbo_desk_order_as_sales_order')){
 				//$pr_dp_ed = 'SalesOrder';
 			}
+			
+			/**/
+			$check_r = false;
+			if(is_array($extra) && isset($extra['check_r']) && $extra['check_r'] == 1){
+				$check_r = true;
+			}
+			
+			$rl_txt = 'Refund';
+			if($check_r){
+				$pr_dp_ed = 'Check';
+				$rl_txt = 'Refund Check';
+			}else{
+				$pr_dp_ed = 'CreditMemo';
+			}
+			
 			$this->save_data_pair('Refund',$ID,$idents['TxnID'],$pr_dp_ed);
-			$details = "Refund #{$ID} added into quickbooks successfully".PHP_EOL;
+			$details = "{$rl_txt} #{$ID} added into quickbooks successfully".PHP_EOL;
 			$details.="QuickBooks TxnID #".$idents['TxnID'];
-			$this->save_log(array('log_type'=>'Refund','log_title'=>'Export Refund #'.$ID,'details'=>$details,'status'=>1),true);
+			$this->save_log(array('log_type'=>'Refund','log_title'=>'Export '.$rl_txt.' #'.$ID,'details'=>$details,'status'=>1),true);
 		}else{
 			$details = "Error:$err";
-			$this->save_log(array('log_type'=>'Refund','log_title'=>'Export Refund Error #'.$ID,'details'=>$details,'status'=>0),true);
+			$this->save_log(array('log_type'=>'Refund','log_title'=>'Export '.$rl_txt.' Error #'.$ID,'details'=>$details,'status'=>0),true);
 		}
 		return true;
 	}
@@ -8963,15 +12210,27 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		}
 		//$this->add_test_log($xml);
 		//$this->add_test_log(print_r($idents,true));
-
+		
+		//$extra_sales_ord = (is_array($extra) && isset($extra['extra_sales_ord']))?$extra['extra_sales_ord']:false;
+		$extra_sales_ord = false;
+		
 		if(is_array($idents) && isset($idents['TxnID']) && $idents['TxnID']!=''){
-			$this->save_data_pair('Order',$ID,$idents['TxnID']);
-			$details = "Order #{$ID} added into quickbooks successfully".PHP_EOL;
+			$lt = 'Order';
+			if($extra_sales_ord){
+				$lt = 'Sales Order';
+			}
+			
+			$this->save_data_pair($lt,$ID,$idents['TxnID']);
+			
+			$details = "{$lt} #{$ID} added into quickbooks successfully".PHP_EOL;
 			$details.="QuickBooks TxnID #".$idents['TxnID'];
-			$this->save_log(array('log_type'=>'Order','log_title'=>'Export Order #'.$ID,'details'=>$details,'status'=>1),true);
+			$this->save_log(array('log_type'=>$lt,'log_title'=>'Export '.$lt.' #'.$ID,'details'=>$details,'status'=>1),true);
 			
 			/*Wc Order Status Update*/
 			$this->Wc_Order_Status_Update_After_Sync($ID);
+			
+			/**/
+			$this->set_imp_sync_data(array('ID'=>$ID));
 			
 			/**/
 			if($this->check_cf_map_data_ext_field_value_exists($ID,'Invoice')){
@@ -8979,9 +12238,25 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				$Queue = new QuickBooks_WebConnector_Queue($this->get_dsn());
 				$Queue->enqueue('InvoiceDataExt', $ID,1,$idents,$this->get_qbun(),$xml);
 			}
+			
+			/*Order Note Add*/
+			if(!$extra_sales_ord){
+				$order = new WC_Order( $ID );
+				$o_note = __('Order synced to QuickBooks Desktop - MyWorks Sync','mw_wc_qbo_desk');
+				$order->add_order_note($o_note);
+			}			
+			
 		}else{
 			$details = "Error:$err";
-			$this->save_log(array('log_type'=>'Order','log_title'=>'Export Order Error #'.$ID,'details'=>$details,'status'=>0),true);
+			$this->save_log(array('log_type'=>$lt,'log_title'=>'Export '.$lt.' Error #'.$ID,'details'=>$details,'status'=>0),true);
+			
+			/*Order Note Add*/
+			if(!$extra_sales_ord){
+				$order = new WC_Order( $ID );
+				$o_note = __('Order attempted sync to QuickBooks but failed. Check MyWorks Sync > Log for more info.','mw_wc_qbo_desk');
+				$order->add_order_note($o_note);
+			}
+			
 		}
 		return true;
 	}
@@ -9022,6 +12297,9 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 			/*Wc Order Status Update*/
 			$this->Wc_Order_Status_Update_After_Sync($ID);
 			
+			/**/
+			$this->set_imp_sync_data(array('ID'=>$ID));
+			
 			//
 			if($this->option_checked('mw_wc_qbo_desk_order_as_sales_receipt')){
 				if($this->is_wc_ord_has_qbd_group_item($ID)){
@@ -9037,9 +12315,19 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				$Queue->enqueue('SalesReceiptDataExt', $ID,1,$idents,$this->get_qbun(),$xml);
 			}
 			
+			/*Order Note Add*/
+			$order = new WC_Order( $ID );
+			$o_note = __('Order synced to QuickBooks Desktop - MyWorks Sync','mw_wc_qbo_desk');
+			$order->add_order_note($o_note);
+			
 		}else{
 			$details = "Error:$err";
 			$this->save_log(array('log_type'=>'Order','log_title'=>'Export Order Error #'.$ID,'details'=>$details,'status'=>0),true);
+			
+			/*Order Note Add*/
+			$order = new WC_Order( $ID );
+			$o_note = __('Order attempted sync to QuickBooks but failed. Check MyWorks Sync > Log for more info.','mw_wc_qbo_desk');
+			$order->add_order_note($o_note);
 		}
 		return true;
 	}
@@ -9050,15 +12338,25 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		}
 		//$this->add_test_log($xml);
 		//$this->add_test_log(print_r($idents,true));
+		
+		$extra_sales_ord = (is_array($extra) && isset($extra['extra_sales_ord']))?$extra['extra_sales_ord']:false;
 
 		if(is_array($idents) && isset($idents['TxnID']) && $idents['TxnID']!=''){
-			$this->save_data_pair('Order',$ID,$idents['TxnID']);
-			$details = "Order #{$ID} added into quickbooks successfully".PHP_EOL;
+			$lt = 'Order';
+			if($extra_sales_ord){
+				$lt = 'Sales Order';
+			}
+			
+			$this->save_data_pair($lt,$ID,$idents['TxnID']);
+			$details = "{$lt} #{$ID} added into quickbooks successfully".PHP_EOL;
 			$details.="QuickBooks TxnID #".$idents['TxnID'];
-			$this->save_log(array('log_type'=>'Order','log_title'=>'Export Order #'.$ID,'details'=>$details,'status'=>1),true);
+			$this->save_log(array('log_type'=>$lt,'log_title'=>'Export '.$lt.' #'.$ID,'details'=>$details,'status'=>1),true);
 			
 			/*Wc Order Status Update*/
 			$this->Wc_Order_Status_Update_After_Sync($ID);
+			
+			/**/
+			$this->set_imp_sync_data(array('ID'=>$ID));
 			
 			/**/
 			if($this->check_cf_map_data_ext_field_value_exists($ID,'SalesOrder')){
@@ -9067,9 +12365,25 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				$Queue->enqueue('SalesOrderDataExt', $ID,1,$idents,$this->get_qbun(),$xml);
 			}
 			
+			/*Order Note Add*/
+			if(!$extra_sales_ord){
+				$order = new WC_Order( $ID );
+				$o_note = __('Order synced to QuickBooks Desktop - MyWorks Sync','mw_wc_qbo_desk');
+				$order->add_order_note($o_note);
+			}
+			
+			
 		}else{
 			$details = "Error:$err";
-			$this->save_log(array('log_type'=>'Order','log_title'=>'Export Order Error #'.$ID,'details'=>$details,'status'=>0),true);
+			$this->save_log(array('log_type'=>$lt,'log_title'=>'Export Order Error #'.$ID,'details'=>$details,'status'=>0),true);
+			
+			/*Order Note Add*/
+			if(!$extra_sales_ord){
+				$order = new WC_Order( $ID );
+				$o_note = __('Order attempted sync to QuickBooks but failed. Check MyWorks Sync > Log for more info.','mw_wc_qbo_desk');
+				$order->add_order_note($o_note);
+			}
+			
 		}
 		return true;
 	}
@@ -9092,15 +12406,28 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 			$this->Wc_Order_Status_Update_After_Sync($ID);
 			
 			/**/
+			$this->set_imp_sync_data(array('ID'=>$ID));
+			
+			/**/
 			if($this->check_cf_map_data_ext_field_value_exists($ID,'Estimate')){
 				$idents['Qos_Type'] = 'Estimate';
 				$Queue = new QuickBooks_WebConnector_Queue($this->get_dsn());
 				$Queue->enqueue('EstimateDataExt', $ID,1,$idents,$this->get_qbun(),$xml);
 			}
 			
+			/*Order Note Add*/
+			$order = new WC_Order( $ID );
+			$o_note = __('Order synced to QuickBooks Desktop - MyWorks Sync','mw_wc_qbo_desk');
+			$order->add_order_note($o_note);
+			
 		}else{
 			$details = "Error:$err";
 			$this->save_log(array('log_type'=>'Order','log_title'=>'Export Order Error #'.$ID,'details'=>$details,'status'=>0),true);
+			
+			/*Order Note Add*/
+			$order = new WC_Order( $ID );
+			$o_note = __('Order attempted sync to QuickBooks but failed. Check MyWorks Sync > Log for more info.','mw_wc_qbo_desk');
+			$order->add_order_note($o_note);
 		}
 		return true;
 	}
@@ -9134,8 +12461,49 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 			$is_log_error = false;
 		}
 		
+		if($this->start_with($errmsg,'A query request did not find')){
+			if($action == 'New_CustomerImport' || $action == 'New_ItemImport'){
+				$is_log_error = false;
+			}
+		}
+		
+		/**/
+		if(($action == QUICKBOOKS_ADD_GUEST || $action == QUICKBOOKS_ADD_CUSTOMER) && $errnum == '3180'){
+			if($this->start_with($errmsg,'There was an error when saving a Customers list')){
+				$Queue = QuickBooks_WebConnector_Queue_Singleton::getInstance();
+				global $wpdb;
+				if($action == QUICKBOOKS_ADD_GUEST){					
+					/*
+					$qa_whr = " AND qb_action IN('".QUICKBOOKS_ADD_INVOICE."', '".QUICKBOOKS_ADD_SALESRECEIPT."', '".QUICKBOOKS_ADD_SALESORDER."', '".QUICKBOOKS_ADD_ESTIMATE."') ";
+					$q_sql = "SELECT * FROM quickbooks_queue WHERE ident = '{$ID}' AND status = 'q' $e_whr ORDER BY quickbooks_queue_id DESC LIMIT 0,1 ";
+					$eqd = $this->get_row($q_sql);
+					if(is_array($eqd) && !empty($eqd)){
+						$qb_action = $eqd['qb_action'];
+					}
+					*/
+				}
+				
+				if($action == QUICKBOOKS_ADD_CUSTOMER){
+					//
+				}
+				
+				if(!$this->if_queue_exists($action,$ID)){			
+					$Queue->enqueue($action, $ID,2,$extra,$this->get_qbun());
+				}
+				
+			}
+		}
+		
 		if(!$is_log_error){
 			return true;
+		}
+		
+		/**/
+		if($action == 'InvoiceAdd' || $action == 'SalesReceiptAdd' || $action == 'SalesOrderAdd' || $action == 'EstimateAdd'){
+			/*Order Note Add*/
+			$order = new WC_Order( $ID );
+			$o_note = __('Order attempted sync to QuickBooks but failed. Check MyWorks Sync > Log for more info.','mw_wc_qbo_desk');
+			$order->add_order_note($o_note);
 		}
 		
 		switch ($action) {
@@ -9288,7 +12656,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		}
 		
 		//$qb_queue_instance_allow_always = true;
-		if($qbd_import || $extra_import || $this->option_checked('mw_wc_qbo_desk_rt_pull_enable') || $this->debug_queue || $this->option_checked('mw_wc_qbo_desk_compt_np_fitbodywrap_cust_inv_oc')){
+		if($qbd_import || $extra_import || $this->option_checked('mw_wc_qbo_desk_rt_pull_enable') || $this->debug_queue || $this->option_checked('mw_wc_qbo_desk_compt_np_fitbodywrap_cust_inv_oc') || $this->option_checked('mw_wc_qbo_desk_auto_refresh_new_cust_prod')){
 			$Queue = QuickBooks_WebConnector_Queue_Singleton::getInstance();
 			//$Queue = new QuickBooks_WebConnector_Queue($this->get_dsn());
 			$date = date('Y-m-d H:i:s');
@@ -9376,7 +12744,11 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				
 				if(!$this->if_queue_exists(QUICKBOOKS_IMPORT_COMPANY)){
 					$Queue->enqueue(QUICKBOOKS_IMPORT_COMPANY, null, $priority,null,$this->get_qbun());
-				}				
+				}
+
+				if(!$this->if_queue_exists(QUICKBOOKS_IMPORT_CURRENCY)){
+					$Queue->enqueue(QUICKBOOKS_IMPORT_CURRENCY, null, $priority,null,$this->get_qbun());
+				}
 			}
 			
 			/*InventorySite Import Queue*/
@@ -9433,7 +12805,16 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					$this->_quickbooks_set_last_run($user, QUICKBOOKS_IMPORT_VENDOR, $date);
 				}
 				$Queue->enqueue(QUICKBOOKS_IMPORT_VENDOR, null, $priority,null,$this->get_qbun());
-			}			
+			}
+			
+			/*PriceLevel Names Import Queue*/
+			$pl_import_at = true;
+			if($this->check_refresh_data_enabled_by_item('PriceLevel',true) && ($pl_import_at || $this->is_plugin_active('myworks-quickbooks-desktop-role-based-price-qb-price-level-compt')) && !$this->if_queue_exists(QUICKBOOKS_IMPORT_PRICELEVEL)){
+				if (!$this->_quickbooks_get_last_run($user, QUICKBOOKS_IMPORT_PRICELEVEL)){
+					$this->_quickbooks_set_last_run($user, QUICKBOOKS_IMPORT_PRICELEVEL, $date);
+				}
+				$Queue->enqueue(QUICKBOOKS_IMPORT_PRICELEVEL, null, $priority,null,$this->get_qbun());
+			}
 			
 		}
 		
@@ -9535,7 +12916,19 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 							}
 							$Queue->enqueue('ALL_WC_UPDATE_PRICING', null, 0,null,$this->get_qbun());
 						}
-												
+						
+						/**/
+						if($this->check_sh_woorbp_qbpricelevel_hash() && $this->option_checked('mw_wc_qbo_desk_woorbp_qbpricelevel_compt_ed')){
+							$qbpricelevel_wrpl_mv = get_option('mw_wc_qbo_desk_compt_woorbp_qbpricelevel_wrpl_mv');
+							if(is_array($qbpricelevel_wrpl_mv) && !empty($qbpricelevel_wrpl_mv)){
+								if($this->check_if_real_time_pull_enable_for_item('pricing') && !$this->if_queue_exists('All_PriceLevel_Inventory')){
+									if (!$this->_quickbooks_get_last_run($user, 'All_PriceLevel_Inventory')){
+										$this->_quickbooks_set_last_run($user, 'All_PriceLevel_Inventory', $date);
+									}
+									$Queue->enqueue('All_PriceLevel_Inventory', null, 0,null,$this->get_qbun());
+								}
+							}							
+						}
 					}
 				}else{
 					if($this->check_if_real_time_pull_enable_for_item('inventory') && !$this->if_queue_exists('AUTO_WC_UPDATE_INVENTORY')){
@@ -9548,6 +12941,35 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					}					
 				}
 			}
+		}
+		
+		/**/
+		if($this->option_checked('mw_wc_qbo_desk_auto_refresh_new_cust_prod')){
+			global $wpdb;
+			$time_zone = $this->get_qbd_timezone();
+			//2nd last
+			$dq = "SELECT `added_date` FROM {$wpdb->prefix}mw_wc_qbo_desk_qbd_log  WHERE `log_title` = 'Web Connector Login Success' AND `log_type` = 'Web Connector' ORDER BY `id` DESC LIMIT 1,1 ";
+			$datetime = $wpdb->get_var($dq);			
+			$datetime = $this->convert_dt_timezone($datetime,$time_zone);
+			$timestamp_from = date('Y-m-d', strtotime($datetime)) . 'T' . date('H:i:s', strtotime($datetime));
+			
+			if(!empty($timestamp_from)){
+				if(!$this->if_queue_exists('New_'.QUICKBOOKS_IMPORT_CUSTOMER)){
+					if (!$this->_quickbooks_get_last_run($user, 'New_'.QUICKBOOKS_IMPORT_CUSTOMER)){
+						$this->_quickbooks_set_last_run($user, 'New_'.QUICKBOOKS_IMPORT_CUSTOMER, $date);
+					}
+					
+					$Queue->enqueue('New_'.QUICKBOOKS_IMPORT_CUSTOMER, null, QB_PRIORITY_REFRESH_DATA_IMPORT,array('new'=>true, 'timestamp_from'=>$timestamp_from),$this->get_qbun());
+				}
+				
+				if(!$this->if_queue_exists('New_'.QUICKBOOKS_IMPORT_ITEM)){
+					if (!$this->_quickbooks_get_last_run($user, 'New_'.QUICKBOOKS_IMPORT_ITEM)){
+						$this->_quickbooks_set_last_run($user, 'New_'.QUICKBOOKS_IMPORT_ITEM, $date);
+					}
+					
+					$Queue->enqueue('New_'.QUICKBOOKS_IMPORT_ITEM, null, QB_PRIORITY_REFRESH_DATA_IMPORT,array('new'=>true, 'timestamp_from'=>$timestamp_from),$this->get_qbun());
+				}
+			}			
 		}
 		
 		/**/
@@ -9615,7 +13037,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 			<QBXML>
 				<QBXMLMsgsRq onError="'.$this->getonError().'">
 					<ItemQueryRq  requestID="' . $requestID . '">			
-						<ListID >'.$ID.'</ListID>
+						<ListID>'.$ID.'</ListID>
 						<OwnerID>0</OwnerID>
 					</ItemQueryRq>
 				</QBXMLMsgsRq>
@@ -9695,14 +13117,46 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		
 		$inv_site_filter = '';		
 		if($this->is_invnt_imp_q_mapped_list_id_filter()){
-			$miaa_qbd_ids = $this->get_mapped_qbd_invnt_and_assmbly_items();
+			//$miaa_qbd_ids = $this->get_mapped_qbd_invnt_and_assmbly_items();
+			$miaa_qbd_ids = array();
 			if(is_array($miaa_qbd_ids) && !empty($miaa_qbd_ids)){
 				$inv_site_filter .= '<ItemFilter>'.PHP_EOL;
 				foreach($miaa_qbd_ids as $mqi){
-					$inv_site_filter .= '	<ListID >'.$mqi['quickbook_product_id'].'</ListID>'.PHP_EOL;
+					$inv_site_filter .= '	<ListID>'.$mqi['quickbook_product_id'].'</ListID>'.PHP_EOL;
 				}
 				$inv_site_filter .= '</ItemFilter>';
-			}			
+			}
+
+			/**/
+			$adv_inv_site = array();
+			$wmior_active = $this->is_plugin_active('myworks-warehouse-routing','mw_warehouse_routing');
+			if($wmior_active){
+				$mw_wc_qbo_desk_compt_wmior_lis_mv = get_option('mw_wc_qbo_desk_compt_wmior_lis_mv');
+				if($this->option_checked('mw_wc_qbo_desk_w_miors_ed') && is_array($mw_wc_qbo_desk_compt_wmior_lis_mv)){
+					$adv_inv_site = $mw_wc_qbo_desk_compt_wmior_lis_mv;
+				}
+			}else{
+				$adv_inv_site = $this->get_option('mw_wc_qbo_desk_compt_qbd_invt_sites_for_invnt_pull');
+				if(!empty($adv_inv_site)){
+					$adv_inv_site = explode(',',$adv_inv_site);
+				}
+			}
+			
+			//
+			if(is_array($adv_inv_site) && !empty($adv_inv_site)){
+				$inv_site_filter .= '<SiteFilter>'.PHP_EOL;
+				foreach($adv_inv_site as $ais){
+					if (strpos($ais, ':') !== false) {
+						$sba = explode(':',$ais);
+						if(is_array($sba) && !empty($sba)){
+							$inv_site_filter .= '	<ListID>'.$sba[0].'</ListID>'.PHP_EOL;
+						}
+					}else{
+						$inv_site_filter .= '	<ListID>'.$ais.'</ListID>'.PHP_EOL;
+					}
+				}
+				$inv_site_filter .= '</SiteFilter>';
+			}
 			
 			/*
 			if(!$this->option_checked('mw_wc_qbo_desk_compt_qbd_adv_inc_non_inv_st')){
@@ -9938,7 +13392,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 			<QBXML>
 				<QBXMLMsgsRq onError="'.$this->getonError().'">
 					<'.$it_q_req.'  requestID="' . $requestID . '">			
-						<ListID >'.$ID.'</ListID>
+						<ListID>'.$ID.'</ListID>
 						<OwnerID>0</OwnerID>
 					</'.$it_q_req.'>
 				</QBXMLMsgsRq>
@@ -9951,6 +13405,41 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		}
 		
 		return $xml;
+	}
+	
+	/**/
+	public function Max_Inventory_Assembly_Request($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $version, $locale){
+		if(!$this->is_qwc_connected()){
+			return false;
+		}
+		
+		$it_q_req = 'ItemAssembliesCanBuildQueryRq';		
+		$dl_it = 'Max Inventory';
+		
+		$TxnDate  = $this->now('Y-m-d');
+		
+		// Build the request
+		$xml = '<?xml version="1.0" encoding="utf-8"?>
+			<?qbxml version="' . $version . '"?>
+			<QBXML>
+				<QBXMLMsgsRq onError="'.$this->getonError().'">
+					<'.$it_q_req.'  requestID="' . $requestID . '">
+						<ItemInventoryAssemblyRef>
+							<ListID>'.$ID.'</ListID>
+						</ItemInventoryAssemblyRef>
+						<TxnDate >'.$TxnDate .'</TxnDate >
+					</'.$it_q_req.'>
+				</QBXMLMsgsRq>
+			</QBXML>';		
+		
+		if($this->option_checked('mw_wc_qbo_desk_add_xml_req_into_log')){
+			$dlog_txt = PHP_EOL .''.$dl_it.' Import Request #'.$ID.' - '.$this->get_cdt(). PHP_EOL;
+			$dlog_txt.=$xml;
+			//$this->add_test_log($dlog_txt);
+		}
+		
+		return $xml;
+		
 	}
 	
 	/*Date Functions*/	
@@ -10257,6 +13746,12 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				
 				$this->UpdateWooCommerceProductPrice($uwi_data);
 				
+				//
+				$Desc = $Item->getChildDataAt($ret . ' SalesOrPurchase Desc');
+				if($type == 'Inventory'){
+					$Desc = $Item->getChildDataAt($ret . ' SalesDesc');
+				}
+				
 				//Update Local Table Data
 				$arr = array(
 				'ListID' => $Item->getChildDataAt($ret . ' ListID'),
@@ -10282,25 +13777,31 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				'Price' => $Price,
 				);
 
-				$look_for = array(
-				'SalesPrice' => array( 'SalesOrPurchase Price', 'SalesAndPurchase SalesPrice', 'SalesPrice' ),
-				'SalesDesc' => array( 'SalesOrPurchase Desc', 'SalesAndPurchase SalesDesc', 'SalesDesc' ),
-				'PurchaseCost' => array( 'SalesOrPurchase Price', 'SalesAndPurchase PurchaseCost', 'PurchaseCost' ),
-				'PurchaseDesc' => array( 'SalesOrPurchase Desc', 'SalesAndPurchase PurchaseDesc', 'PurchaseDesc' ),
-				'PrefVendor_ListID' => array( 'SalesAndPurchase PrefVendorRef ListID', 'PrefVendorRef ListID' ),
-				'PrefVendor_FullName' => array( 'SalesAndPurchase PrefVendorRef FullName', 'PrefVendorRef FullName' ),
-				);
-
-				foreach ($look_for as $field => $look_here){
-					if (!empty($arr[$field])){
-						break;
-					}
-
-					foreach ($look_here as $look){
-						$arr[$field] = $Item->getChildDataAt($ret . ' ' . $look);
+				$arr['Desc'] = $Desc;
+				
+				$arr['SalesDesc'] = $Item->getChildDataAt($ret . ' SalesAndPurchase SalesDesc');
+				$arr['SalesPrice'] = $Item->getChildDataAt($ret . ' SalesAndPurchase SalesPrice');
+				$arr['PurchaseDesc'] = $Item->getChildDataAt($ret . ' SalesAndPurchase PurchaseDesc');
+				$arr['PurchaseCost'] = $Item->getChildDataAt($ret . ' SalesAndPurchase PurchaseCost');
+				$arr['PrefVendor_ListID'] = $Item->getChildDataAt($ret . ' SalesAndPurchase PrefVendorRef ListID');
+				$arr['PrefVendor_FullName'] = $Item->getChildDataAt($ret . ' SalesAndPurchase PrefVendorRef FullName');
+				
+				/**/
+				if($this->is_plugin_active('myworks-quickbooks-desktop-custom-product-automap')){
+					foreach ($Item->children() as $Item_C){
+						if($Item_C->name() == 'DataExtRet'){
+							$ret_c = $Item_C->name();						
+							$DataExtName = $Item_C->getChildDataAt($ret_c . ' DataExtName');									
+							if($DataExtName == 'Woo-Product-ID'){										
+								$W_P_ID = $Item_C->getChildDataAt($ret_c . ' DataExtValue');
+								$arr['Woo-Product-ID'] = $W_P_ID;
+								break;
+							}
+						}
 					}
 				}
 				
+				//
 				$id = (int) $this->get_field_by_val($table,'id','qbd_id',$ListID);
 				
 				$save_data = array();
@@ -10329,7 +13830,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		if(!$this->is_qwc_connected()){
 			return false;
 		}
-		
+		//$this->add_test_log($xml);
 		global $wpdb;
 		
 		if (!empty($idents['iteratorRemainingCount'])){
@@ -10370,6 +13871,19 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				$ListID = $Item->getChildDataAt($ret . ' ListID');
 				$Name = $Item->getChildDataAt($ret . ' Name');
 				$QuantityOnHand = $Item->getChildDataAt($ret . ' QuantityOnHand');
+				/**/
+				if($qp_type=='InventoryAssembly' && $this->option_checked('mw_wc_qbo_desk_use_max_as_qoh_iasmbly_invnt_pull')){
+					//$QuantityOnHand = $Item->getChildDataAt($ret . ' Max');
+					/*
+					if(!$this->if_queue_exists('UPDATE_INVENTORY_A_MAX',$ListID)){
+						$Queue = QuickBooks_WebConnector_Queue_Singleton::getInstance();
+						$Queue->enqueue('UPDATE_INVENTORY_A_MAX', $ListID, 0,null,$this->get_qbun());
+					}
+					*/
+					//$this->add_test_log($ListID);
+					$this->Add_Pull_Inventory_Queue($ListID,true);
+					continue;
+				}
 				
 				$qb_pf = $this->get_option('mw_wc_qbo_desk_pull_prd_price_field');
 				if(empty($qb_pf)){$qb_pf = 'Price';}
@@ -10418,10 +13932,13 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				
 				//
 				$QuantityOnSalesOrder = $Item->getChildDataAt($ret . ' QuantityOnSalesOrder');
+				$QuantityOnOrder = $Item->getChildDataAt($ret . ' QuantityOnOrder');
 				
 				$qqpf = $this->get_option('mw_wc_qbo_desk_pull_invnt_qty_field');
 				if($qqpf == 'AvailableQuantity'){
 					$qqpf_val = ($QuantityOnHand-$QuantityOnSalesOrder);
+				}elseif($qqpf == 'Amount_on_Purchase_Order'){
+					$qqpf_val = ($QuantityOnHand-$QuantityOnSalesOrder)+$QuantityOnOrder;
 				}else{
 					$qqpf_val = $QuantityOnHand;
 				}
@@ -10433,6 +13950,12 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				}
 				
 				$this->UpdateWooCommerceInventory($uwi_data);
+				
+				//
+				$Desc = $Item->getChildDataAt($ret . ' SalesOrPurchase Desc');
+				if($type == 'Inventory'){
+					$Desc = $Item->getChildDataAt($ret . ' SalesDesc');
+				}
 				
 				//Update Local Table Data
 				$arr = array(
@@ -10458,26 +13981,32 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				'Price_ori' => $Item->getChildDataAt($ret . ' Price'),
 				'Price' => $Price,
 				);
-
-				$look_for = array(
-				'SalesPrice' => array( 'SalesOrPurchase Price', 'SalesAndPurchase SalesPrice', 'SalesPrice' ),
-				'SalesDesc' => array( 'SalesOrPurchase Desc', 'SalesAndPurchase SalesDesc', 'SalesDesc' ),
-				'PurchaseCost' => array( 'SalesOrPurchase Price', 'SalesAndPurchase PurchaseCost', 'PurchaseCost' ),
-				'PurchaseDesc' => array( 'SalesOrPurchase Desc', 'SalesAndPurchase PurchaseDesc', 'PurchaseDesc' ),
-				'PrefVendor_ListID' => array( 'SalesAndPurchase PrefVendorRef ListID', 'PrefVendorRef ListID' ),
-				'PrefVendor_FullName' => array( 'SalesAndPurchase PrefVendorRef FullName', 'PrefVendorRef FullName' ),
-				);
-
-				foreach ($look_for as $field => $look_here){
-					if (!empty($arr[$field])){
-						break;
-					}
-
-					foreach ($look_here as $look){
-						$arr[$field] = $Item->getChildDataAt($ret . ' ' . $look);
+				
+				$arr['Desc'] = $Desc;
+				
+				$arr['SalesDesc'] = $Item->getChildDataAt($ret . ' SalesAndPurchase SalesDesc');
+				$arr['SalesPrice'] = $Item->getChildDataAt($ret . ' SalesAndPurchase SalesPrice');
+				$arr['PurchaseDesc'] = $Item->getChildDataAt($ret . ' SalesAndPurchase PurchaseDesc');
+				$arr['PurchaseCost'] = $Item->getChildDataAt($ret . ' SalesAndPurchase PurchaseCost');
+				$arr['PrefVendor_ListID'] = $Item->getChildDataAt($ret . ' SalesAndPurchase PrefVendorRef ListID');
+				$arr['PrefVendor_FullName'] = $Item->getChildDataAt($ret . ' SalesAndPurchase PrefVendorRef FullName');
+				
+				/**/
+				if($this->is_plugin_active('myworks-quickbooks-desktop-custom-product-automap')){
+					foreach ($Item->children() as $Item_C){
+						if($Item_C->name() == 'DataExtRet'){
+							$ret_c = $Item_C->name();						
+							$DataExtName = $Item_C->getChildDataAt($ret_c . ' DataExtName');									
+							if($DataExtName == 'Woo-Product-ID'){										
+								$W_P_ID = $Item_C->getChildDataAt($ret_c . ' DataExtValue');
+								$arr['Woo-Product-ID'] = $W_P_ID;
+								break;
+							}
+						}
 					}
 				}
 				
+				//
 				$id = (int) $this->get_field_by_val($table,'id','qbd_id',$ListID);
 				
 				/*
@@ -10519,6 +14048,51 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		
 		$extra['manual'] = true;
 		$this->Auto_Pull_Update_Wc_Inventory_Response($requestID, $user, $action, $ID, $extra, $err, $last_action_time, $last_actionident_time, $xml, $idents);
+	}
+	
+	/**/
+	public function Max_Inventory_Assembly_Response($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $xml, $idents){
+		if(!$this->is_qwc_connected()){
+			return false;
+		}
+		//$this->add_test_log($xml);
+		
+		$errnum = 0;
+		$errmsg = '';
+		$Parser = new QuickBooks_XML_Parser($xml);
+		
+		if ($Doc = $Parser->parse($errnum, $errmsg)){
+			$Root = $Doc->getRoot();
+			$List = $Root->getChildAt('QBXML/QBXMLMsgsRs/ItemAssembliesCanBuildQueryRs');
+			
+			foreach ($List->children() as $Item){
+				$ret = $Item->name();
+				$ListID = $Item->getChildDataAt($ret . ' ItemInventoryAssemblyRef ListID');
+				$Name = $Item->getChildDataAt($ret . ' ItemInventoryAssemblyRef FullName');
+				
+				$TxnDate = $Item->getChildDataAt($ret . ' TxnDate');
+				$QuantityCanBuild  = $Item->getChildDataAt($ret . ' QuantityCanBuild');
+				
+				$uwi_data = array();
+				$uwi_data['qbo_inventory_id'] = $ListID;
+				$uwi_data['Name'] = $Name;
+				
+				$qqpf_val = $QuantityCanBuild;
+				$uwi_data['QuantityOnHand'] = $qqpf_val;
+				
+				if(is_array($extra) && count($extra) && isset($extra['manual']) && $extra['manual']){
+					$uwi_data['manual'] = true;
+				}
+				$uwi_data['Max'] = 1;
+				$uwi_data['is_InventoryAssembly'] = true;
+				//$this->_p($uwi_data);
+				$this->UpdateWooCommerceInventory($uwi_data);
+				
+				break;
+			}
+		}
+		
+		return true;
 	}
 	
 	public function All_Pull_ItemSitesQuery_Response($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $xml, $idents){
@@ -10725,6 +14299,8 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 										$qqpf = $this->get_option('mw_wc_qbo_desk_pull_invnt_qty_field');
 										if($qqpf == 'AvailableQuantity'){
 											$qqpf_val = ($Qty_Arr['QuantityOnHand']-$Qty_Arr['QuantityOnSalesOrders']);
+										}elseif($qqpf == 'Amount_on_Purchase_Order'){
+											$qqpf_val = ($Qty_Arr['QuantityOnHand']-$Qty_Arr['QuantityOnSalesOrders'])+$Qty_Arr['QuantityOnPurchaseOrders'];
 										}else{
 											$qqpf_val = $Qty_Arr['QuantityOnHand'];
 										}
@@ -10732,6 +14308,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 										/**/
 										$uwi_data['QuantityOnHand_Original'] = $Qty_Arr['QuantityOnHand'];
 										$uwi_data['QuantityOnSalesOrders'] = $Qty_Arr['QuantityOnSalesOrders'];
+										$uwi_data['QuantityOnPurchaseOrders'] = $Qty_Arr['QuantityOnPurchaseOrders'];
 										
 										$uwi_data['QuantityOnHand'] = $qqpf_val;
 										$uwi_data['InventoryAssembly'] = (isset($item_asmb_arr[$sqa_k]))?$item_asmb_arr[$sqa_k]:false;
@@ -10832,6 +14409,8 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					$qqpf = $this->get_option('mw_wc_qbo_desk_pull_invnt_qty_field');
 					if($qqpf == 'AvailableQuantity'){
 						$qqpf_val = ($qty_sum_v['QuantityOnHand']-$qty_sum_v['QuantityOnSalesOrders']);
+					}elseif($qqpf == 'Amount_on_Purchase_Order'){
+						$qqpf_val = ($qty_sum_v['QuantityOnHand']-$qty_sum_v['QuantityOnSalesOrders'])+$qty_sum_v['QuantityOnPurchaseOrders'];
 					}else{
 						$qqpf_val = $qty_sum_v['QuantityOnHand'];
 					}
@@ -11029,6 +14608,228 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 
 	/*Import Functions Start*/
 	
+	/*PriceLevel Names Import Request/Response*/
+	public function PriceLevel_Import_Request($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $version, $locale){
+		if(!$this->is_qwc_connected()){
+			return false;
+		}	
+		
+		// Build the request
+		$xml = '<?xml version="1.0" encoding="utf-8"?>
+			<?qbxml version="' . $version . '"?>
+			<QBXML>
+				<QBXMLMsgsRq onError="'.$this->getonError().'">
+					<PriceLevelQueryRq requestID="' . $requestID . '">
+						<MaxReturned>' . QB_QUICKBOOKS_MAX_RETURNED . '</MaxReturned>
+						<ActiveStatus >ActiveOnly</ActiveStatus>
+						<IncludeRetElement>ListID</IncludeRetElement>
+						<IncludeRetElement>Name</IncludeRetElement>
+						<IncludeRetElement>IsActive</IncludeRetElement>
+						<IncludeRetElement>PriceLevelType</IncludeRetElement>
+					</PriceLevelQueryRq>
+				</QBXMLMsgsRq>
+			</QBXML>';
+		
+		/**/
+		if($this->option_checked('mw_wc_qbo_desk_add_xml_req_into_log')){
+			$dlog_txt = PHP_EOL .'PriceLevel Names Import Request - '.$this->get_cdt(). PHP_EOL;
+			$dlog_txt.=$xml;
+			//$this->add_test_log($dlog_txt);
+		}
+		
+		
+		return $xml;
+	}
+	
+	public function PriceLevel_Import_Response($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $xml, $idents){
+		if(!$this->is_qwc_connected()){
+			return false;
+		}
+
+		//$this->add_test_log($xml);
+		//$this->add_test_log(print_r($idents,true));
+		global $wpdb;
+		
+		$errnum = 0;
+		$errmsg = '';
+		$Parser = new QuickBooks_XML_Parser($xml);
+
+		$tot_imported = 0;
+		if ($Doc = $Parser->parse($errnum, $errmsg)){
+			$Root = $Doc->getRoot();
+			$List = $Root->getChildAt('QBXML/QBXMLMsgsRs/PriceLevelQueryRs');
+			
+			/*Delete Old Data*/
+			delete_option('mw_wc_qbo_desk_qb_price_level_name_list');
+			
+			$pln_arr_n = array();			
+			foreach ($List->children() as $PriceLevel){
+				$tot_imported++;
+				
+				$ListID = $PriceLevel->getChildDataAt('PriceLevelRet ListID');
+				$pln_arr_n[$ListID] = array(
+				'ListID' => $ListID,
+				'Name' => $PriceLevel->getChildDataAt('PriceLevelRet Name'),
+				'IsActive' => $PriceLevel->getChildDataAt('PriceLevelRet IsActive'),
+				'PriceLevelType' => $PriceLevel->getChildDataAt('PriceLevelRet PriceLevelType'),
+				);
+			}
+			
+			update_option('mw_wc_qbo_desk_qb_price_level_name_list',$pln_arr_n);
+		}
+		
+		if($tot_imported>0){
+			$log_title = "Import PriceLevel Names Successfully";
+			$details = "Total PriceLevel Names Imported:{$tot_imported}";
+			$status = 1;
+		}else{
+			$log_title = "Import PriceLevel Names Error";
+			$errmsg = (!empty($errmsg))?$errmsg:"No PriceLevel Found";
+			$details = ($errnum)?"Error Number:{$errnum}\n"."Error:{$errmsg}":"Error:{$errmsg}";
+			$status = 0;
+		}
+		$this->save_log(array('log_type'=>'PriceLevel','log_title'=>$log_title,'details'=>$details,'status'=>$status),true);
+
+		return true;
+	}
+	
+	/**/
+	public function PriceLevel_Inventory_Request($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $version, $locale){
+		if(!$this->is_qwc_connected()){
+			return false;
+		}	
+		
+		// Build the request
+		$xml = '<?xml version="1.0" encoding="utf-8"?>
+			<?qbxml version="' . $version . '"?>
+			<QBXML>
+				<QBXMLMsgsRq onError="'.$this->getonError().'">
+					<PriceLevelQueryRq requestID="' . $requestID . '">
+						<MaxReturned>' . QB_QUICKBOOKS_MAX_RETURNED . '</MaxReturned>
+						<ActiveStatus >ActiveOnly</ActiveStatus>
+						<ItemRef>
+							<ListID>'.$ID.'</ListID>
+						</ItemRef>
+					</PriceLevelQueryRq>
+				</QBXMLMsgsRq>
+			</QBXML>';
+		
+		/**/
+		if($this->option_checked('mw_wc_qbo_desk_add_xml_req_into_log')){
+			$dlog_txt = PHP_EOL .'PriceLevel Inventory Import Request - '.$this->get_cdt(). PHP_EOL;
+			$dlog_txt.=$xml;
+			//$this->add_test_log($dlog_txt);
+		}
+		
+		
+		return $xml;
+	}
+	
+	public function All_PriceLevel_Inventory_Request($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $version, $locale){
+		if(!$this->is_qwc_connected()){
+			return false;
+		}	
+		
+		// Build the request
+		$xml = '<?xml version="1.0" encoding="utf-8"?>
+			<?qbxml version="' . $version . '"?>
+			<QBXML>
+				<QBXMLMsgsRq onError="'.$this->getonError().'">
+					<PriceLevelQueryRq requestID="' . $requestID . '">
+						<MaxReturned>' . QB_QUICKBOOKS_MAX_RETURNED . '</MaxReturned>
+						<ActiveStatus >ActiveOnly</ActiveStatus>						
+					</PriceLevelQueryRq>
+				</QBXMLMsgsRq>
+			</QBXML>';
+		
+		/**/
+		if($this->option_checked('mw_wc_qbo_desk_add_xml_req_into_log')){
+			$dlog_txt = PHP_EOL .'PriceLevel Inventory Import Request - '.$this->get_cdt(). PHP_EOL;
+			$dlog_txt.=$xml;
+			//$this->add_test_log($dlog_txt);
+		}
+		
+		
+		return $xml;
+	}
+	
+	public function PriceLevel_Inventory_Response($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $xml, $idents){
+		if(!$this->is_qwc_connected()){
+			return false;
+		}
+		if(!is_array($extra)){$extra = array();}
+		$extra['manual'] = true;
+		return $this->P_Lvl_Innt_Response_Func($requestID, $user, $action, $ID, $extra, $err, $last_action_time, $last_actionident_time, $xml, $idents);
+	}
+	
+	public function All_PriceLevel_Inventory_Response($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $xml, $idents){
+		if(!$this->is_qwc_connected()){
+			return false;
+		}
+
+		return $this->P_Lvl_Innt_Response_Func($requestID, $user, $action, $ID, $extra, $err, $last_action_time, $last_actionident_time, $xml, $idents);
+	}
+	
+	public function P_Lvl_Innt_Response_Func($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $xml, $idents){
+		if(!$this->is_qwc_connected()){
+			return false;
+		}
+		
+		//$this->add_test_log($xml);
+		//$this->add_test_log(print_r($idents,true));
+		global $wpdb;
+		
+		$qbpricelevel_wrpl_mv = get_option('mw_wc_qbo_desk_compt_woorbp_qbpricelevel_wrpl_mv');
+		if(!array($qbpricelevel_wrpl_mv) || empty($qbpricelevel_wrpl_mv)){
+			return false;
+		}
+		
+		$errnum = 0;
+		$errmsg = '';
+		$Parser = new QuickBooks_XML_Parser($xml);
+
+		$tot_imported = 0;
+		if ($Doc = $Parser->parse($errnum, $errmsg)){
+			$Root = $Doc->getRoot();
+			$List = $Root->getChildAt('QBXML/QBXMLMsgsRs/PriceLevelQueryRs');			
+					
+			foreach ($List->children() as $PriceLevel){
+				$ret = $PriceLevel->name();
+				$PriceLevelListID = $PriceLevel->getChildDataAt($ret.' ListID');
+				$PriceLevelType = $PriceLevel->getChildDataAt($ret.' PriceLevelType');
+				$PriceLevelName = $PriceLevel->getChildDataAt($ret.' Name');
+				if($PriceLevelType == 'PerItem' && in_array($PriceLevelListID,$qbpricelevel_wrpl_mv)){
+					foreach ($PriceLevel->children() as $PriceLevel_c){
+						$ret_c = $PriceLevel_c->name();
+						if($ret_c == 'PriceLevelPerItemRet'){
+							$Qbd_Item = $PriceLevel_c->getChildDataAt($ret_c . ' ItemRef ListID');
+							$Qbd_Item_FullName = $PriceLevel_c->getChildDataAt($ret_c . ' ItemRef FullName');
+							if(!empty($Qbd_Item)){
+								$CustomPrice = $PriceLevel_c->getChildDataAt($ret_c . ' CustomPrice');
+								$uwi_data = array();
+								$uwi_data['PriceLevelListID'] = $PriceLevelListID;
+								$uwi_data['PriceLevelName'] = $PriceLevelName;
+								
+								$uwi_data['qbo_product_id'] = $Qbd_Item;
+								$uwi_data['Price'] = $CustomPrice;
+								$uwi_data['Name'] = $Qbd_Item_FullName;
+								
+								if(is_array($extra) && count($extra) && isset($extra['manual']) && $extra['manual']){
+									$uwi_data['manual'] = true;
+								}
+								//$this->add_test_log(print_r($uwi_data,true));
+								
+								$this->UpdateWooCommercePriceLevelPrice($uwi_data,$qbpricelevel_wrpl_mv);
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return true;
+	}
+	
 	/*Vendor Import Request/Response*/
 	public function Vendor_Import_Request($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $version, $locale){
 		if(!$this->is_qwc_connected()){
@@ -11220,7 +15021,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		<QBXML>
 			<QBXMLMsgsRq onError="'.$this->getonError().'">
 				<CustomerQueryRq requestID="' . $requestID . '">								
-					<ListID >'.$ListID.'</ListID>
+					<ListID>'.$ListID.'</ListID>
 				</CustomerQueryRq>
 			</QBXMLMsgsRq>
 		</QBXML>';
@@ -11309,6 +15110,13 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 			$last = $this->_quickbooks_get_current_run($user, $action);
 		}
 		
+		$dr = '';
+		if(is_array($extra) && isset($extra['new']) && $extra['new'] && isset($extra['timestamp_from']) && !empty($extra['timestamp_from'])){
+			//$dr = '<FromModifiedDate>' . $last . '</FromModifiedDate>';
+			$timestamp_from = $extra['timestamp_from'];
+			$dr = '<FromModifiedDate>' . $timestamp_from . '</FromModifiedDate>';			
+		}
+		
 		/**/
 		$active_filter = 'ActiveOnly';
 		if($this->option_checked('mw_wc_qbo_desk_cus_imp_inc_inactive_sts')){
@@ -11321,9 +15129,9 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 			<QBXML>
 				<QBXMLMsgsRq onError="'.$this->getonError().'">
 					<CustomerQueryRq ' . $attr_iterator . ' ' . $attr_iteratorID . ' requestID="' . $requestID . '">
-						<MaxReturned>' . QB_QUICKBOOKS_MAX_RETURNED . '</MaxReturned>
-						<!--<FromModifiedDate>' . $last . '</FromModifiedDate>-->
+						<MaxReturned>' . QB_QUICKBOOKS_MAX_RETURNED . '</MaxReturned>						
 						<ActiveStatus>' . $active_filter . '</ActiveStatus>
+						'.$dr.'
 						<OwnerID>0</OwnerID>
 					</CustomerQueryRq>
 				</QBXMLMsgsRq>
@@ -11494,15 +15302,24 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		if(!$this->is_qwc_connected()){
 			return false;
 		}
-
+		
+		$is_only_new = false;
+		if(is_array($extra) && isset($extra['new']) && $extra['new']){
+			$is_only_new = true;
+		}
+		
 		//$this->add_test_log($xml);
 		//$this->add_test_log(print_r($idents,true));
 		global $wpdb;
 		if (!empty($idents['iteratorRemainingCount'])){
 			$Queue = QuickBooks_WebConnector_Queue_Singleton::getInstance();
-			$Queue->enqueue(QUICKBOOKS_IMPORT_CUSTOMER, null, QB_PRIORITY_REFRESH_DATA_IMPORT, array( 'iteratorID' => $idents['iteratorID'] ),$this->get_qbun());
+			if($is_only_new){
+				$Queue->enqueue('New_'.QUICKBOOKS_IMPORT_CUSTOMER, null, QB_PRIORITY_REFRESH_DATA_IMPORT, array( 'iteratorID' => $idents['iteratorID'], 'new'=>$extra['new'], 'timestamp_from'=>$extra['timestamp_from'] ),$this->get_qbun());
+			}else{
+				$Queue->enqueue(QUICKBOOKS_IMPORT_CUSTOMER, null, QB_PRIORITY_REFRESH_DATA_IMPORT, array( 'iteratorID' => $idents['iteratorID'] ),$this->get_qbun());
+			}			
 		}
-
+		
 		$iteratorID = (isset($idents['iteratorID']) && !empty($idents['iteratorID']))?$idents['iteratorID']:'';
 
 		$errnum = 0;
@@ -11517,16 +15334,15 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 			$table = $wpdb->prefix.'mw_wc_qbo_desk_qbd_customers';
 
 			/*Delete Old Data*/
-			if($this->get_session_val('import_customer_iteratorID','',true)!=$iteratorID){
+			if(!$is_only_new && $this->get_session_val('import_customer_iteratorID','',true)!=$iteratorID){
 				$wpdb->query("DELETE FROM {$table} WHERE `id` > 0");
 				$wpdb->query("TRUNCATE TABLE {$table}");
 			}
-
+			
 			//
 			$this->set_session_val('import_customer_iteratorID',$iteratorID);
 
-			foreach ($List->children() as $Customer){
-				$tot_imported++;
+			foreach ($List->children() as $Customer){				
 				$arr = array(
 				'ListID' => $Customer->getChildDataAt('CustomerRet ListID'),
 				'TimeCreated' => $Customer->getChildDataAt('CustomerRet TimeCreated'),
@@ -11582,20 +15398,25 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				//$save_data['info_qbxml_obj'] = $xml;
 				$save_data['info_qbxml_obj'] = '';
 				//$this->add_test_log(print_r($save_data,true));
-				$wpdb->insert($table, $save_data);
+				$id = (int) $this->get_field_by_val($table,'id','qbd_customerid',$arr['ListID']);
+				if(!$id){
+					$wpdb->insert($table, $save_data);
+					$tot_imported++;
+				}
+				
 				//$lastid = $wpdb->insert_id;
 				//$this->add_test_log($wpdb->last_error);
 
 			}
 		}
-
+		
 		if($tot_imported>0){
 			$log_title = "Recognized Customer Successfully";
 			$details = "Total Customer Recognized:{$tot_imported}";
 			$status = 1;
 			
 			//Clear Invalid Mappings
-			if (empty($idents['iteratorRemainingCount'])){
+			if (!$is_only_new && empty($idents['iteratorRemainingCount'])){
 				$this->clear_customer_invalid_mappings();
 			}			
 		}else{
@@ -11604,8 +15425,11 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 			$details = ($errnum)?"Error Number:{$errnum}\n"."Error:{$errmsg}":"Error:{$errmsg}";
 			$status = 0;
 		}
-		$this->save_log(array('log_type'=>'Customer','log_title'=>$log_title,'details'=>$details,'status'=>$status),true);
-
+		
+		if(!$is_only_new || ($is_only_new && $status)){
+			$this->save_log(array('log_type'=>'Customer','log_title'=>$log_title,'details'=>$details,'status'=>$status),true);
+		}		
+		
 		return true;
 	}
 	
@@ -11627,7 +15451,14 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 
 			$last = $this->_quickbooks_get_current_run($user, $action);
 		}
-
+		
+		$dr = '';
+		if(is_array($extra) && isset($extra['new']) && $extra['new'] && isset($extra['timestamp_from']) && !empty($extra['timestamp_from'])){
+			//$dr = '<FromModifiedDate>' . $last . '</FromModifiedDate>';
+			$timestamp_from = $extra['timestamp_from'];
+			$dr = '<FromModifiedDate>' . $timestamp_from . '</FromModifiedDate>';
+		}
+		
 		// Build the request
 		$xml = '<?xml version="1.0" encoding="utf-8"?>
 			<?qbxml version="' . $version . '"?>
@@ -11635,7 +15466,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				<QBXMLMsgsRq onError="'.$this->getonError().'">
 					<ItemQueryRq ' . $attr_iterator . ' ' . $attr_iteratorID . ' requestID="' . $requestID . '">
 						<MaxReturned>' . QB_QUICKBOOKS_MAX_RETURNED . '</MaxReturned>
-						<!--<FromModifiedDate>' . $last . '</FromModifiedDate>-->
+						'.$dr.'
 						<OwnerID>0</OwnerID>
 					</ItemQueryRq>
 				</QBXMLMsgsRq>
@@ -11644,10 +15475,15 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 		//$this->add_test_log($xml);
 		return $xml;
 	}
-
+	
 	public function Item_Import_Response($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $xml, $idents){
 		if(!$this->is_qwc_connected()){
 			return false;
+		}
+		
+		$is_only_new = false;
+		if(is_array($extra) && isset($extra['new']) && $extra['new']){
+			$is_only_new = true;
 		}
 
 		//$this->add_test_log($xml);
@@ -11655,9 +15491,13 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 
 		if (!empty($idents['iteratorRemainingCount'])){
 			$Queue = QuickBooks_WebConnector_Queue_Singleton::getInstance();
-			$Queue->enqueue(QUICKBOOKS_IMPORT_ITEM, null, QB_PRIORITY_REFRESH_DATA_IMPORT, array( 'iteratorID' => $idents['iteratorID'] ),$this->get_qbun());
+			if($is_only_new){
+				$Queue->enqueue('New_'.QUICKBOOKS_IMPORT_ITEM, null, QB_PRIORITY_REFRESH_DATA_IMPORT, array( 'iteratorID' => $idents['iteratorID'], 'new'=>$extra['new'], 'timestamp_from'=>$extra['timestamp_from']),$this->get_qbun());
+			}else{
+				$Queue->enqueue(QUICKBOOKS_IMPORT_ITEM, null, QB_PRIORITY_REFRESH_DATA_IMPORT, array( 'iteratorID' => $idents['iteratorID'] ),$this->get_qbun());
+			}			
 		}
-
+		
 		$iteratorID = (isset($idents['iteratorID']) && !empty($idents['iteratorID']))?$idents['iteratorID']:'';
 
 		$errnum = 0;
@@ -11672,16 +15512,15 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 			$table = $wpdb->prefix.'mw_wc_qbo_desk_qbd_items';
 
 			/*Delete Old Data*/
-			if($this->get_session_val('import_product_iteratorID','',true)!=$iteratorID){
+			if(!$is_only_new && $this->get_session_val('import_product_iteratorID','',true)!=$iteratorID){
 				$wpdb->query("DELETE FROM {$table} WHERE `id` > 0");
 				$wpdb->query("TRUNCATE TABLE {$table}");
 			}
-
+			
 			//
 			$this->set_session_val('import_product_iteratorID',$iteratorID);
 
-			foreach ($List->children() as $Item){
-				$tot_imported++;
+			foreach ($List->children() as $Item){				
 				$type = substr(substr($Item->name(), 0, -3), 4);
 				$ret = $Item->name();
 				
@@ -11726,6 +15565,12 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 					$Price = $Item->getChildDataAt($ret . ' SalesPrice');
 				}
 				
+				//
+				$Desc = $Item->getChildDataAt($ret . ' SalesOrPurchase Desc');
+				if($type == 'Inventory'){
+					$Desc = $Item->getChildDataAt($ret . ' SalesDesc');
+				}
+				
 				$arr = array(
 				'ListID' => $Item->getChildDataAt($ret . ' ListID'),
 				'TimeCreated' => $Item->getChildDataAt($ret . ' TimeCreated'),
@@ -11749,28 +15594,33 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				'Price_ori' => $Item->getChildDataAt($ret . ' Price'),
 				'Price' => $Price,
 				);
-
-				$look_for = array(
-				'SalesPrice' => array( 'SalesOrPurchase Price', 'SalesAndPurchase SalesPrice', 'SalesPrice' ),
-				'SalesDesc' => array( 'SalesOrPurchase Desc', 'SalesAndPurchase SalesDesc', 'SalesDesc' ),
-				'PurchaseCost' => array( 'SalesOrPurchase Price', 'SalesAndPurchase PurchaseCost', 'PurchaseCost' ),
-				'PurchaseDesc' => array( 'SalesOrPurchase Desc', 'SalesAndPurchase PurchaseDesc', 'PurchaseDesc' ),
-				'PrefVendor_ListID' => array( 'SalesAndPurchase PrefVendorRef ListID', 'PrefVendorRef ListID' ),
-				'PrefVendor_FullName' => array( 'SalesAndPurchase PrefVendorRef FullName', 'PrefVendorRef FullName' ),
-				);
-
-				foreach ($look_for as $field => $look_here){
-					if (!empty($arr[$field])){
-						break;
-					}
-
-					foreach ($look_here as $look){
-						$arr[$field] = $Item->getChildDataAt($ret . ' ' . $look);
+				
+				$arr['Desc'] = $Desc;
+				
+				$arr['SalesDesc'] = $Item->getChildDataAt($ret . ' SalesAndPurchase SalesDesc');
+				$arr['SalesPrice'] = $Item->getChildDataAt($ret . ' SalesAndPurchase SalesPrice');
+				$arr['PurchaseDesc'] = $Item->getChildDataAt($ret . ' SalesAndPurchase PurchaseDesc');
+				$arr['PurchaseCost'] = $Item->getChildDataAt($ret . ' SalesAndPurchase PurchaseCost');
+				$arr['PrefVendor_ListID'] = $Item->getChildDataAt($ret . ' SalesAndPurchase PrefVendorRef ListID');
+				$arr['PrefVendor_FullName'] = $Item->getChildDataAt($ret . ' SalesAndPurchase PrefVendorRef FullName');
+				
+				/**/
+				if($this->is_plugin_active('myworks-quickbooks-desktop-custom-product-automap')){
+					foreach ($Item->children() as $Item_C){
+						if($Item_C->name() == 'DataExtRet'){
+							$ret_c = $Item_C->name();						
+							$DataExtName = $Item_C->getChildDataAt($ret_c . ' DataExtName');									
+							if($DataExtName == 'Woo-Product-ID'){										
+								$W_P_ID = $Item_C->getChildDataAt($ret_c . ' DataExtValue');
+								$arr['Woo-Product-ID'] = $W_P_ID;
+								break;
+							}
+						}
 					}
 				}
-				//QuickBooks_Utilities::log($this->dsn, 'Importing ' . $type . ' Item ' . $arr['FullName'] . ': ' . print_r($arr, true));
+				
 				//$this->add_test_log(print_r($arr,true));
-
+				
 				$save_data = array();
 				$save_data['qbd_id'] = $arr['ListID'];
 				$ip_name  = (!empty($arr['FullName']))?$arr['FullName']:$arr['Name'];
@@ -11783,7 +15633,12 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				//$save_data['info_qbxml_obj'] = serialize($Item);
 				//$save_data['info_qbxml_obj'] = $xml;
 				$save_data['info_qbxml_obj'] = '';
-				$wpdb->insert($table, $save_data);
+				$id = (int) $this->get_field_by_val($table,'id','qbd_id',$arr['ListID']);
+				if(!$id){
+					$wpdb->insert($table, $save_data);
+					$tot_imported++;
+				}				
+				
 				//$lastid = $wpdb->insert_id;
 
 			}
@@ -11795,7 +15650,7 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 			$status = 1;
 			
 			//Clear Invalid Mappings
-			if (empty($idents['iteratorRemainingCount'])){
+			if (!$is_only_new && empty($idents['iteratorRemainingCount'])){
 				$this->clear_product_invalid_mappings();
 				$this->clear_variation_invalid_mappings();
 			}
@@ -11806,8 +15661,11 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 			$details = ($errnum)?"Error Number:{$errnum}\n"."Error:{$errmsg}":"Error:{$errmsg}";
 			$status = 0;
 		}
-		$this->save_log(array('log_type'=>'Product','log_title'=>$log_title,'details'=>$details,'status'=>$status),true);
-
+		
+		if(!$is_only_new || ($is_only_new && $status)){
+			$this->save_log(array('log_type'=>'Product','log_title'=>$log_title,'details'=>$details,'status'=>$status),true);
+		}		
+		
 		return true;
 	}
 
@@ -12890,13 +16748,23 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				$ret = $Preferences->name();
 				$arr = array();
 				$arr['IsMultiCurrencyOn'] = $Preferences->getChildDataAt($ret.' MultiCurrencyPreferences IsMultiCurrencyOn');
+				
+				$arr['HomeCurrencyRef_ListID'] = $Preferences->getChildDataAt($ret.' MultiCurrencyPreferences HomeCurrencyRef ListID');
+				$arr['HomeCurrencyRef_FullName'] = $Preferences->getChildDataAt($ret.' MultiCurrencyPreferences HomeCurrencyRef FullName');
+				
 				$arr['PaySalesTax'] = $Preferences->getChildDataAt($ret.' SalesTaxPreferences PaySalesTax');
+				$arr['IsBarcodeEnabled'] = $Preferences->getChildDataAt($ret.' ItemsAndInventoryPreferences IsBarcodeEnabled');
+				
+				//
+				$arr['IsUsingPriceLevels'] = $Preferences->getChildDataAt($ret.' SalesAndCustomersPreferences PriceLevels IsUsingPriceLevels');
+				$arr['IsRoundingSalesPriceUp'] = $Preferences->getChildDataAt($ret.' SalesAndCustomersPreferences PriceLevels IsRoundingSalesPriceUp');		
+				
 				$arr['added_date'] = $this->get_cdt();
 				//$this->add_test_log(print_r($arr,true));
-				update_option('mw_wc_qbo_desk_qbd_preferences_arr',$arr);
+				update_option('mw_wc_qbo_desk_qbd_preferences_arr',$arr,true);
 				update_option('mw_wc_qbo_desk_qbd_preferences_qbxml',$xml);
 				$this->save_log(array('log_type'=>'Preferences','log_title'=>'Recognized Preferences','details'=>'Preferences Recognized Successfully','status'=>1),true);
-
+				break;
 			}
 		}
 
@@ -12949,6 +16817,66 @@ class MW_QBO_Desktop_Sync_Qwc_Server_Lib extends MW_QBO_Desktop_Sync_Lib{
 				update_option('mw_wc_qbo_desk_qbd_company_info_qbxml',$xml);
 				$this->save_log(array('log_type'=>'Company','log_title'=>'Recognized Company','details'=>'Company info Recognized Successfully','status'=>1),true);
 			}
+		}
+
+	}
+	
+	/*Currency Import Request/Response*/
+	public function Currency_Import_Request($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $version, $locale){
+		if(!$this->is_qwc_connected()){
+			return false;
+		}
+
+		// Build the request
+		$xml = '<?xml version="1.0" encoding="utf-8"?>
+			<?qbxml version="' . $version . '"?>
+			<QBXML>
+				<QBXMLMsgsRq onError="'.$this->getonError().'">
+					<CurrencyQueryRq requestID="' . $requestID . '">
+					</CurrencyQueryRq>
+				</QBXMLMsgsRq>
+			</QBXML>';
+
+		//$this->add_test_log($xml);
+		return $xml;
+
+	}
+	
+	public function Currency_Import_Response($requestID, $user, $action, $ID, $extra, &$err, $last_action_time, $last_actionident_time, $xml, $idents){
+		if(!$this->is_qwc_connected()){
+			return false;
+		}
+		//$this->add_test_log($xml);
+
+
+		$errnum = 0;
+		$errmsg = '';
+		$Parser = new QuickBooks_XML_Parser($xml);
+
+		if ($Doc = $Parser->parse($errnum, $errmsg)){
+			$Root = $Doc->getRoot();
+			$List = $Root->getChildAt('QBXML/QBXMLMsgsRs/CurrencyQueryRs');
+			$cur_arr = array();
+			foreach ($List->children() as $Currency){
+				$ret = $Currency->name();
+				$arr = array();
+				$arr['ListID'] = $Currency->getChildDataAt($ret.' ListID');
+				$arr['Name'] = $Currency->getChildDataAt($ret.' Name');
+				$arr['IsActive'] = $Currency->getChildDataAt($ret.' IsActive');
+				$arr['CurrencyCode'] = $Currency->getChildDataAt($ret.' CurrencyCode');
+				$arr['IsUserDefinedCurrency'] = $Currency->getChildDataAt($ret.' IsUserDefinedCurrency');
+				$arr['ExchangeRate'] = $Currency->getChildDataAt($ret.' ExchangeRate');
+				$arr['AsOfDate'] = $Currency->getChildDataAt($ret.' AsOfDate');
+				$cur_arr[$arr['CurrencyCode']] = $arr;
+				
+			}
+			
+			if(!empty($cur_arr)){
+				//$this->add_test_log(print_r($cur_arr,true));
+				update_option('mw_wc_qbo_desk_qbd_currency_list_arr',$cur_arr);
+				update_option('mw_wc_qbo_desk_qbd_currency_list_qbxml',$xml);
+				$this->save_log(array('log_type'=>'Currency','log_title'=>'Recognized Currencies','details'=>'Currency list Recognized Successfully','status'=>1),true);
+			}			
 		}
 
 	}

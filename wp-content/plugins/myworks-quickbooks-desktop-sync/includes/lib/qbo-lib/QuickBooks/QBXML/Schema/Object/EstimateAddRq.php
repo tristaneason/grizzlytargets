@@ -94,7 +94,11 @@ class QuickBooks_QBXML_Schema_Object_EstimateAddRq extends QuickBooks_QBXML_Sche
   'EstimateLineAdd ClassRef FullName' => 'STRTYPE',
   'EstimateLineAdd Amount' => 'AMTTYPE',
   'EstimateLineAdd InventorySiteRef ListID' => 'IDTYPE', 
-  'EstimateLineAdd InventorySiteRef FullName' => 'STRTYPE', 
+  'EstimateLineAdd InventorySiteRef FullName' => 'STRTYPE',
+  //
+  'EstimateLineAdd InventorySiteLocationRef ListID' => 'IDTYPE', 
+  'EstimateLineAdd InventorySiteLocationRef FullName' => 'STRTYPE',
+  
   'EstimateLineAdd SalesTaxCodeRef ListID' => 'IDTYPE',
   'EstimateLineAdd SalesTaxCodeRef FullName' => 'STRTYPE',
   'EstimateLineAdd MarkupRate' => 'PRICETYPE',
@@ -186,6 +190,10 @@ class QuickBooks_QBXML_Schema_Object_EstimateAddRq extends QuickBooks_QBXML_Sche
   'EstimateLineAdd Amount' => 0,
   'EstimateLineAdd InventorySiteRef ListID' => 0,
   'EstimateLineAdd InventorySiteRef FullName' => 209,
+  //
+  'EstimateLineAdd InventorySiteLocationRef ListID' => 0,
+  'EstimateLineAdd InventorySiteLocationRef FullName' => 209,
+  
   'EstimateLineAdd SalesTaxCodeRef ListID' => 0,
   'EstimateLineAdd SalesTaxCodeRef FullName' => 209,
   'EstimateLineAdd MarkupRate' => 0,
@@ -277,6 +285,10 @@ class QuickBooks_QBXML_Schema_Object_EstimateAddRq extends QuickBooks_QBXML_Sche
   'EstimateLineAdd Amount' => true,
   'EstimateLineAdd InventorySiteRef ListID' => true,
   'EstimateLineAdd InventorySiteRef FullName' => true,
+  //
+  'EstimateLineAdd InventorySiteLocationRef ListID' => true,
+  'EstimateLineAdd InventorySiteLocationRef FullName' => true,
+  
   'EstimateLineAdd SalesTaxCodeRef ListID' => true,
   'EstimateLineAdd SalesTaxCodeRef FullName' => true,
   'EstimateLineAdd MarkupRate' => false,
@@ -366,6 +378,10 @@ class QuickBooks_QBXML_Schema_Object_EstimateAddRq extends QuickBooks_QBXML_Sche
   'EstimateLineAdd Amount' => 999.99,
   'EstimateLineAdd InventorySiteRef ListID' => 999.99,
   'EstimateLineAdd InventorySiteRef FullName' => 999.99,
+  //
+  'EstimateLineAdd InventorySiteLocationRef ListID' => 999.99,
+  'EstimateLineAdd InventorySiteLocationRef FullName' => 999.99,
+  
   'EstimateLineAdd SalesTaxCodeRef ListID' => 999.99,
   'EstimateLineAdd SalesTaxCodeRef FullName' => 999.99,
   'EstimateLineAdd MarkupRate' => 999.99,
@@ -457,6 +473,10 @@ class QuickBooks_QBXML_Schema_Object_EstimateAddRq extends QuickBooks_QBXML_Sche
   'EstimateLineAdd Amount' => false,
   'EstimateLineAdd InventorySiteRef ListID' => false,
   'EstimateLineAdd InventorySiteRef FullName' => false,
+  //
+  'EstimateLineAdd InventorySiteLocationRef ListID' => false,
+  'EstimateLineAdd InventorySiteLocationRef FullName' => false,
+  
   'EstimateLineAdd SalesTaxCodeRef ListID' => false,
   'EstimateLineAdd SalesTaxCodeRef FullName' => false,
   'EstimateLineAdd MarkupRate' => false,
@@ -562,6 +582,10 @@ class QuickBooks_QBXML_Schema_Object_EstimateAddRq extends QuickBooks_QBXML_Sche
 			'EstimateLineAdd Amount',
 			'EstimateLineAdd InventorySiteRef ListID',
 			'EstimateLineAdd InventorySiteRef FullName',
+			//
+			'EstimateLineAdd InventorySiteLocationRef ListID',
+			'EstimateLineAdd InventorySiteLocationRef FullName',
+			
 			'EstimateLineAdd LotNumber',
 			'EstimateLineAdd SalesTaxCodeRef ListID',
 			'EstimateLineAdd SalesTaxCodeRef FullName',

@@ -5,7 +5,7 @@ var wt_iew_basic_export=(function( $ ) {
 		ajax_data:{},
 		selected_template:0,
 		selected_template_name:'',
-		to_export:'',
+		to_export:'user',
 		to_export_title:'',
 		export_method:'',
 		current_step:'',
@@ -249,9 +249,9 @@ var wt_iew_basic_export=(function( $ ) {
 			this.set_ajax_page_loader();
 			$.ajax({
 				type: 'POST',
-            	url:wt_iew_basic_params.ajax_url,
-            	data:this.ajax_data,
-            	dataType:'json',
+				url:wt_iew_basic_params.ajax_url,
+				data:this.ajax_data,
+				dataType:'json',
 				success:function(data)
 				{
 					wt_iew_basic_export.remove_ajax_page_loader();
@@ -261,7 +261,8 @@ var wt_iew_basic_export=(function( $ ) {
 						{
 							wt_iew_basic_export.selected_template=data.id;
 							wt_iew_basic_export.selected_template_name=data.name;
-							wt_iew_notify_msg.success(wt_iew_basic_params.msgs.success);
+							wt_iew_notify_msg.success(data.msg);
+							//wt_iew_notify_msg.success(wt_iew_basic_params.msgs.success);
 							
 						}else if(action=='export' || action=='upload' || action=='export_image')
 						{

@@ -20,7 +20,7 @@
         "require-dev": {
             "yoast/phpunit-polyfills": "0.2.0"
         },
-        "time": "2021-02-05T19:07:06+00:00",
+        "time": "2021-03-30T15:15:59+00:00",
         "type": "composer-plugin",
         "extra": {
             "class": "Automattic\\Jetpack\\Autoloader\\CustomAutoloaderPlugin",
@@ -41,7 +41,7 @@
         ],
         "description": "Creates a custom autoloader for a plugin or theme.",
         "support": {
-            "source": "https://github.com/Automattic/jetpack-autoloader/tree/v2.9.1"
+            "source": "https://github.com/Automattic/jetpack-autoloader/tree/2.10.1"
         }
     },
     {
@@ -532,17 +532,17 @@
     },
     {
         "name": "woocommerce/woocommerce-admin",
-        "version": "2.0.2",
-        "version_normalized": "2.0.2.0",
+        "version": "2.1.5",
+        "version_normalized": "2.1.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/woocommerce/woocommerce-admin.git",
-            "reference": "c4ffd90ebc72652f9d1bc8943a56d7723acc5bf4"
+            "reference": "71c233d8463f551430edbe1877e51d19a4bb2df6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/woocommerce/woocommerce-admin/zipball/c4ffd90ebc72652f9d1bc8943a56d7723acc5bf4",
-            "reference": "c4ffd90ebc72652f9d1bc8943a56d7723acc5bf4",
+            "url": "https://api.github.com/repos/woocommerce/woocommerce-admin/zipball/71c233d8463f551430edbe1877e51d19a4bb2df6",
+            "reference": "71c233d8463f551430edbe1877e51d19a4bb2df6",
             "shasum": ""
         },
         "require": {
@@ -555,7 +555,7 @@
             "suin/phpcs-psr4-sniff": "^2.2",
             "woocommerce/woocommerce-sniffs": "0.1.0"
         },
-        "time": "2021-02-25T07:29:24+00:00",
+        "time": "2021-04-02T16:48:38+00:00",
         "type": "wordpress-plugin",
         "extra": {
             "scripts-description": {
@@ -578,22 +578,22 @@
         "homepage": "https://github.com/woocommerce/woocommerce-admin",
         "support": {
             "issues": "https://github.com/woocommerce/woocommerce-admin/issues",
-            "source": "https://github.com/woocommerce/woocommerce-admin/tree/v2.0.2"
+            "source": "https://github.com/woocommerce/woocommerce-admin/tree/v2.1.5"
         }
     },
     {
         "name": "woocommerce/woocommerce-blocks",
-        "version": "v4.4.3",
-        "version_normalized": "4.4.3.0",
+        "version": "v4.7.2",
+        "version_normalized": "4.7.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/woocommerce/woocommerce-gutenberg-products-block.git",
-            "reference": "1eade21846e81d5aaf9bf40cdd1be60778849244"
+            "reference": "942e58553b1a299ad04842e7f0d7465d9e029ac3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/woocommerce/woocommerce-gutenberg-products-block/zipball/1eade21846e81d5aaf9bf40cdd1be60778849244",
-            "reference": "1eade21846e81d5aaf9bf40cdd1be60778849244",
+            "url": "https://api.github.com/repos/woocommerce/woocommerce-gutenberg-products-block/zipball/942e58553b1a299ad04842e7f0d7465d9e029ac3",
+            "reference": "942e58553b1a299ad04842e7f0d7465d9e029ac3",
             "shasum": ""
         },
         "require": {
@@ -604,7 +604,7 @@
             "phpunit/phpunit": "6.5.14",
             "woocommerce/woocommerce-sniffs": "0.1.0"
         },
-        "time": "2021-02-11T18:07:48+00:00",
+        "time": "2021-04-13T16:06:16+00:00",
         "type": "wordpress-plugin",
         "extra": {
             "scripts-description": {
@@ -631,7 +631,7 @@
         ],
         "support": {
             "issues": "https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues",
-            "source": "https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/v4.4.3"
+            "source": "https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/v4.7.2"
         }
     }
 ]

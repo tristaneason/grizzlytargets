@@ -2,7 +2,7 @@
 
 namespace Leadin\admin;
 
-use Leadin\admin\Connection;
+use Leadin\options\AccountOptions;
 use \Leadin\includes\utils as utils;
 
 /**
@@ -80,7 +80,7 @@ class DeactivationForm {
 								<label for="leadinFeedbackOther"><?php echo esc_html( __( 'Other', 'leadin' ) ); ?></label>
 							</div>
 							<textarea name="details" class="leadin-feedback-text-area leadin-feedback-text-control" placeholder="<?php echo esc_html( __( 'Feedback...', 'leadin' ) ); ?>"></textarea>
-							<input type="hidden" name="portal_id" value="<?php echo esc_html( Connection::get_portal_id() ); ?>">
+							<input type="hidden" name="portal_id" value="<?php echo esc_html( AccountOptions::get_portal_id() ); ?>">
 
 							<div>
 								<strong>

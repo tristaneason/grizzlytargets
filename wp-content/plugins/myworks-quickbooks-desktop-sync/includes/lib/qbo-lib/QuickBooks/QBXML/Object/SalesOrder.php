@@ -24,6 +24,7 @@ QuickBooks_Loader::load('/QuickBooks/QBXML/Object/Generic.php');
  * 
  */
 QuickBooks_Loader::load('/QuickBooks/QBXML/Object/SalesOrder/SalesOrderLine.php');
+QuickBooks_Loader::load('/QuickBooks/QBXML/Object/SalesOrder/SalesOrderLineGroup.php');
 
 /**
  * 
@@ -682,7 +683,15 @@ class QuickBooks_QBXML_Object_SalesOrder extends QuickBooks_QBXML_Object
 	{
 		return $this->addListItem('SalesOrderLine', $obj);
 	}
-
+	
+	public function addSalesOrderLineGroup($obj)
+	{		
+		$lines = $this->get('SalesOrderLineGroup');
+		$lines[] = $obj;
+		
+		return $this->set('SalesOrderLineGroup', $lines);
+	}
+	
 	public function getSalesOrderLine($i)
 	{
 		return $this->getListItem('SalesOrderLine', $i);
@@ -720,12 +729,22 @@ class QuickBooks_QBXML_Object_SalesOrder extends QuickBooks_QBXML_Object
 					$this->_object['SalesOrderLineAdd'] = $this->_object['SalesOrderLine'];
 				}
 				
+				if (isset($this->_object['SalesOrderLineGroup']))
+				{
+					$this->_object['SalesOrderLineGroupAdd'] = $this->_object['SalesOrderLineGroup'];
+				}
+				
 				break;
 			case 'SalesOrderModRq':
 				
 				if (isset($this->_object['SalesOrderLine']))
 				{
 					$this->_object['SalesOrderLineMod'] = $this->_object['SalesOrderLine'];
+				}
+				
+				if (isset($this->_object['SalesOrderLineGroup']))
+				{
+					$this->_object['SalesOrderLineGroupMod'] = $this->_object['SalesOrderLineGroup'];	
 				}
 				
 				break;
@@ -750,6 +769,14 @@ class QuickBooks_QBXML_Object_SalesOrder extends QuickBooks_QBXML_Object
 					$obj->setOverride('SalesOrderLineAdd');
 				}
 				
+				if (!empty($object['SalesOrderLineGroupAdd'])){
+					
+					foreach ($object['SalesOrderLineGroupAdd'] as $key => $obj)
+					{
+						$obj->setOverride('SalesOrderLineGroupAdd');
+					}
+				}
+				
 				break;
 			
 			case QUICKBOOKS_MOD_SALESORDER:
@@ -757,6 +784,15 @@ class QuickBooks_QBXML_Object_SalesOrder extends QuickBooks_QBXML_Object
 				{
 					$object['SalesOrderLineMod'] = $object['SalesOrderLine'];
 				}
+				
+				if (!empty($object['SalesOrderLineGroupMod'])){
+					
+					foreach ($object['SalesOrderLineGroupMod'] as $key => $obj)
+					{
+						$obj->setOverride('SalesOrderLineGroupMod');
+					}
+				}
+				
 				break;
 		}
 		

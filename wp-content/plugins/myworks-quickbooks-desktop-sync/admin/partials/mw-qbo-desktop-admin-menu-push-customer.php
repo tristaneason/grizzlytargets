@@ -62,7 +62,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 						             <div class="mw_wc_filter">
 									  <span class="search_text">Search</span>
 									  &nbsp;
-									  <input type="text" id="cl_push_search" value="<?php echo $cl_push_search;?>">
+									  <input type="text" id="cl_push_search" placeholder="NAME / EMAIL / COMPANY / ID" value="<?php echo $cl_push_search;?>">
 									  &nbsp;
 									
 									  <span class="search_text">Show</span>

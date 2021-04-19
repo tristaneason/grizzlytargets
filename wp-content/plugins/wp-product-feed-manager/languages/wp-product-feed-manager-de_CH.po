@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Product Feed Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-07 15:45+0100\n"
-"PO-Revision-Date: 2020-11-07 15:46+0100\n"
+"POT-Creation-Date: 2021-04-13 11:37+0200\n"
+"PO-Revision-Date: 2021-04-13 11:40+0200\n"
 "Last-Translator: webgo-admin <nobody@localhost>\n"
 "Language-Team: Deutsch\n"
 "Language: de_DE\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.4.2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: wp-product-feed-manager.php\n"
@@ -47,13 +47,13 @@ msgstr ""
 "1430 - %s ist kein beschreibbarer Ordner. Stellen Sie sicher, dass Sie über "
 "Administratorrechte für diesen Ordner verfügen."
 
-#: includes/application/class-feed-master.php:565
+#: includes/application/class-feed-master.php:567
 #: includes/user-interface/class-wppfm-i18n-scripts.php:87
 msgid "Fill with a static value"
 msgstr "Mit einem statischen Wert füllen"
 
-#: includes/application/class-feed-master.php:566
-#: includes/application/class-feed-master.php:571
+#: includes/application/class-feed-master.php:568
+#: includes/application/class-feed-master.php:573
 msgid "Use the settings in the Merchant Center"
 msgstr "Einstellung im Merchant Center verwenden"
 
@@ -75,6 +75,7 @@ msgstr ""
 "den Hersteller- oder Lieferantennamen verwenden."
 
 #: includes/application/wppfm-support-fields.php:36
+#: includes/application/wppfm-support-fields.php:105
 msgid ""
 "GTIN refers to a products Global Trade Item Number. You can also use a UPC, "
 "EAN, JAN, ISBN or ITF-14 number here."
@@ -137,7 +138,7 @@ msgstr ""
 "Fehler beim Löschen des Feeds. Sie haben nicht die richtigen Befugnisse, um "
 "die Datei zu löschen."
 
-#: includes/data/class-wppfm-ajax-file.php:191
+#: includes/data/class-wppfm-ajax-file.php:200
 #: includes/user-interface/class-wppfm-i18n-scripts.php:37
 msgid ""
 "Error writing the feed. You do not have the correct authorities to write the "
@@ -146,12 +147,12 @@ msgstr ""
 "Fehler beim Schreiben des Feeds. Sie haben nicht die richtigen "
 "Berechtigungen, um die Datei zu schreiben."
 
-#: includes/data/class-wppfm-ajax-file.php:376
+#: includes/data/class-wppfm-ajax-file.php:385
 msgid "Feed processing data cleared"
 msgstr "Feed-Verarbeitungsdaten gelöscht"
 
 #. translators: clearing the feed data failed
-#: includes/data/class-wppfm-ajax-file.php:380
+#: includes/data/class-wppfm-ajax-file.php:389
 msgid "Clearing failed!"
 msgstr "Löschen fehlgeschlagen!"
 
@@ -187,7 +188,7 @@ msgstr ""
 "Thema."
 
 #. translators: %s: Name of a channel
-#: includes/data/class-wppfm-channel.php:246
+#: includes/data/class-wppfm-channel.php:276
 #, php-format
 msgid ""
 "Channel %s is not installed correctly. Please try to Deactivate and then "
@@ -196,7 +197,7 @@ msgstr ""
 "Kanal %s ist nicht korrekt installiert. Bitte versuchen Sie, das Feed "
 "Manager Plugin auf Ihrer Plugin-Seite zu deaktivieren und zu reaktivieren."
 
-#: includes/data/class-wppfm-channel.php:346
+#: includes/data/class-wppfm-channel.php:376
 #, php-format
 msgid ""
 "Channel %s is not supported by your current plugin version. Please update "
@@ -325,7 +326,7 @@ msgstr ""
 msgid "-- Select the language of the feed --"
 msgstr "-- Wählen Sie die Sprache des Feeds --"
 
-#: includes/packages/wpml/includes/wppfm-wpml-functions.php:135
+#: includes/packages/wpml/includes/wppfm-wpml-functions.php:136
 msgid ""
 "WPML support is now integrated in the Feed Manager plugin. To prevent "
 "conflicts please deactivate and remove the \"WooCommerce Product Feed "
@@ -822,7 +823,7 @@ msgid "Failed processing"
 msgstr "Fehlgeschlagene Verarbeitung"
 
 #: includes/user-interface/class-wppfm-i18n-scripts.php:129
-#: includes/user-interface/class-wppfm-i18n-scripts.php:234
+#: includes/user-interface/class-wppfm-i18n-scripts.php:236
 #: includes/user-interface/class-wppfm-list-table.php:145
 msgid "Ready (auto)"
 msgstr "Bereit (automatisch)"
@@ -852,24 +853,40 @@ msgstr ""
 "Dieser Feed existiert noch nicht, bitte (re)generieren Sie diesen Feed "
 "zuerst."
 
-#: includes/user-interface/class-wppfm-i18n-scripts.php:156
+#: includes/user-interface/class-wppfm-i18n-scripts.php:138
+msgid ""
+"This feed requires the \"%channelname%\" Channel to be installed. Please "
+"open the Manage Channels page and install the \"%channelname%\" before "
+"regenerating this feed."
+msgstr ""
+"Für diesen Feed muss der Kanal \"%channelname%\" installiert sein. Öffnen "
+"Sie die Seite \"Kanäle verwalten\" und installieren Sie \"%channelname%\", "
+"bevor Sie diesen Feed neu generieren."
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:139
+#, fuzzy
+#| msgid "Cloning is not allowed"
+msgid "Channel not installed"
+msgstr "Das Klonen ist nicht erlaubt"
+
+#: includes/user-interface/class-wppfm-i18n-scripts.php:158
 msgid "First enter a file name for the backup file."
 msgstr "Geben Sie zunächst einen Dateinamen für die Sicherungsdatei ein."
 
 #. translators: %backup_file_name%: name of the backup file
-#: includes/user-interface/class-wppfm-i18n-scripts.php:158
+#: includes/user-interface/class-wppfm-i18n-scripts.php:160
 msgid "Please confirm you want to delete backup %backup_file_name%."
 msgstr ""
 "Bitte bestätigen Sie, dass Sie das Backup %backup_file_name% löschen möchten."
 
 #. translators: %backup_file_name%: name of the backup file
-#: includes/user-interface/class-wppfm-i18n-scripts.php:160
+#: includes/user-interface/class-wppfm-i18n-scripts.php:162
 #, php-format
 msgid "%backup_file_name% deleted."
 msgstr "%backup_file_name% gelöscht."
 
 #. translators: %backup_file_name%: name of the backup file
-#: includes/user-interface/class-wppfm-i18n-scripts.php:162
+#: includes/user-interface/class-wppfm-i18n-scripts.php:164
 msgid ""
 "Are you sure you want to restore backup %backup_file_name%? This will "
 "overwrite your current settings and feed data!"
@@ -879,25 +896,25 @@ msgstr ""
 "überschrieben!"
 
 #. translators: %backup_file_name%: name of the backup file
-#: includes/user-interface/class-wppfm-i18n-scripts.php:164
+#: includes/user-interface/class-wppfm-i18n-scripts.php:166
 msgid "%backup_file_name% restored"
 msgstr "%backup_file_name% wiederhergestellt"
 
 #. translators: %backup_file_name%: name of the backup file
-#: includes/user-interface/class-wppfm-i18n-scripts.php:166
+#: includes/user-interface/class-wppfm-i18n-scripts.php:168
 #, php-format
 msgid "%backup_file_name% duplicated"
 msgstr "%backup_file_name% dupliziert"
 
-#: includes/user-interface/class-wppfm-i18n-scripts.php:183
+#: includes/user-interface/class-wppfm-i18n-scripts.php:185
 msgid "Restore"
 msgstr "Wiederherstellen"
 
-#: includes/user-interface/class-wppfm-i18n-scripts.php:184
+#: includes/user-interface/class-wppfm-i18n-scripts.php:186
 msgid "No backup found"
 msgstr "Kein Backup gefunden"
 
-#: includes/user-interface/class-wppfm-i18n-scripts.php:203
+#: includes/user-interface/class-wppfm-i18n-scripts.php:205
 msgid ""
 "Please confirm you want to remove this channel! Removing this channel will "
 "also remove all its feed files."
@@ -905,61 +922,61 @@ msgstr ""
 "Bitte bestätigen Sie, dass Sie diesen Kanäle entfernen möchten! Wenn Sie "
 "diesen Kanal entfernen, werden auch alle seine Feed-Dateien entfernt."
 
-#: includes/user-interface/class-wppfm-i18n-scripts.php:221
+#: includes/user-interface/class-wppfm-i18n-scripts.php:223
 msgid "edit"
 msgstr "Bearbeiten"
 
-#: includes/user-interface/class-wppfm-i18n-scripts.php:222
+#: includes/user-interface/class-wppfm-i18n-scripts.php:224
 msgid "select"
 msgstr "Auswählen"
 
-#: includes/user-interface/class-wppfm-i18n-scripts.php:223
+#: includes/user-interface/class-wppfm-i18n-scripts.php:225
 msgid "selected"
 msgstr "Ausgewählt"
 
-#: includes/user-interface/class-wppfm-i18n-scripts.php:224
+#: includes/user-interface/class-wppfm-i18n-scripts.php:226
 msgid "delete"
 msgstr "Löschen"
 
-#: includes/user-interface/class-wppfm-i18n-scripts.php:225
+#: includes/user-interface/class-wppfm-i18n-scripts.php:227
 msgid "remove"
 msgstr "Entfernen"
 
-#: includes/user-interface/class-wppfm-i18n-scripts.php:226
+#: includes/user-interface/class-wppfm-i18n-scripts.php:228
 msgid "add"
 msgstr "Hinzufügen"
 
-#: includes/user-interface/class-wppfm-i18n-scripts.php:227
+#: includes/user-interface/class-wppfm-i18n-scripts.php:229
 msgid "if"
 msgstr "Wenn"
 
-#: includes/user-interface/class-wppfm-i18n-scripts.php:228
+#: includes/user-interface/class-wppfm-i18n-scripts.php:230
 msgid "or"
 msgstr "oder"
 
-#: includes/user-interface/class-wppfm-i18n-scripts.php:229
+#: includes/user-interface/class-wppfm-i18n-scripts.php:231
 msgid "and"
 msgstr "Und"
 
-#: includes/user-interface/class-wppfm-i18n-scripts.php:230
+#: includes/user-interface/class-wppfm-i18n-scripts.php:232
 msgid ""
 "All products from the selected Shop Categories will be included in the feed"
 msgstr ""
 "Alle Produkte aus den ausgewählten Shop-Kategorien werden in den Feed "
 "aufgenommen"
 
-#: includes/user-interface/class-wppfm-i18n-scripts.php:231
+#: includes/user-interface/class-wppfm-i18n-scripts.php:233
 #: includes/user-interface/class-wppfm-list-table.php:191
 msgid "Duplicate"
 msgstr "Duplizieren"
 
-#: includes/user-interface/class-wppfm-i18n-scripts.php:232
+#: includes/user-interface/class-wppfm-i18n-scripts.php:234
 #: includes/user-interface/class-wppfm-list-table.php:192
 #: includes/user-interface/class-wppfm-list-table.php:220
 msgid "Regenerate"
 msgstr "Regenerieren"
 
-#: includes/user-interface/class-wppfm-i18n-scripts.php:233
+#: includes/user-interface/class-wppfm-i18n-scripts.php:235
 #: includes/user-interface/class-wppfm-list-table.php:189
 #: includes/user-interface/class-wppfm-list-table.php:219
 msgid "Delete"
@@ -1294,7 +1311,20 @@ msgstr ""
 "Hier können Sie Ihren neuen Feed einrichten. Geben Sie zunächst einen Namen "
 "für Ihren Feed ein und wählen Sie einen Kanal aus."
 
-#: includes/user-interface/class-wppfm-product-feed-page.php:65
+#: includes/user-interface/class-wppfm-product-feed-page.php:69
+#, fuzzy, php-format
+#| msgid ""
+#| "You first need to install a channel before you can add a feed. Open the "
+#| "Manage Channels page and install at least one channel."
+msgid ""
+"This feed requires the \"%s\" channel to be installed. Please open the "
+"Manage Channels page and install this channel before opening this feed."
+msgstr ""
+"Sie müssen zuerst einen Kanal installieren, bevor Sie einen Feed hinzufügen "
+"können. Öffnen Sie die Seite Kanäle verwalten und installieren Sie "
+"mindestens einen Kanal."
+
+#: includes/user-interface/class-wppfm-product-feed-page.php:74
 msgid "Edit Product Feed"
 msgstr "Produktfeed bearbeiten"
 
@@ -1438,7 +1468,7 @@ msgstr ""
 "alle Ihre Backups und erstellen Sie ein neues."
 
 #. translators: %s: link to the support page
-#: includes/user-interface/wppfm-admin-actions.php:175
+#: includes/user-interface/wppfm-admin-actions.php:186
 #, php-format
 msgid ""
 "2121 - Activating your license failed. Please open a support ticket at %s "
@@ -1447,7 +1477,7 @@ msgstr ""
 "2121 - Die Aktivierung Ihrer Lizenz ist fehlgeschlagen. Bitte öffnen Sie ein "
 "Support-Ticket unter %s für Support zu diesem Thema."
 
-#: includes/user-interface/wppfm-admin-actions.php:194
+#: includes/user-interface/wppfm-admin-actions.php:205
 #, php-format
 msgid ""
 "An error has occurred. It is possible that the wpmarketingrobot website is "
@@ -1462,7 +1492,7 @@ msgstr ""
 "nicht, oder wenn dieser Fehler vorliegt, wenden Sie sich bitte an \n"
 "\t\t\t\tauke@wpmarketingrobot.com. Fehlermeldung: %s"
 
-#: includes/user-interface/wppfm-admin-actions.php:244
+#: includes/user-interface/wppfm-admin-actions.php:255
 #, php-format
 msgid ""
 "You have an invalid or expired license key for your %1$s plugin.\n"
@@ -1479,7 +1509,7 @@ msgstr ""
 "\t\t\tKlicken Sie hier, um zur Seite Lizenzverlängerung zu gelangen</a>, "
 "damit das Plugin funktioniert und Ihre Produktfeeds gültig sind."
 
-#: includes/user-interface/wppfm-admin-actions.php:261
+#: includes/user-interface/wppfm-admin-actions.php:272
 #, php-format
 msgid ""
 "The license key for your %1$s plugin is expiring soon. If you wish you can "

@@ -28,17 +28,39 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 	$inventory_pull_search = $MWQDC_LB->sanitize($inventory_pull_search);
 	$whr = '';
 	
-	$whr.= " AND (`product_type` = 'Inventory' OR `product_type` = 'InventoryAssembly') ";
+	$whr.= " AND (qi.`product_type` = 'Inventory' OR qi.`product_type` = 'InventoryAssembly') ";
 	if($inventory_pull_search!=''){
-		$whr.= " AND `name` LIKE '%$inventory_pull_search%' ";
+		$whr.= " AND qi.`name` LIKE '%$inventory_pull_search%' ";
 	}
 	
-	$total_records = $wpdb->get_var("SELECT COUNT(*) FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_items` WHERE `id` >0 {$whr} ");
+	$c_sql = "
+	SELECT COUNT(DISTINCT(qi.id))
+	FROM 
+	`".$wpdb->prefix."mw_wc_qbo_desk_qbd_items` qi
+	LEFT JOIN `".$wpdb->prefix."mw_wc_qbo_desk_qbd_product_pairs` pp ON (qi.qbd_id = pp.quickbook_product_id)
+	LEFT JOIN `".$wpdb->prefix."mw_wc_qbo_desk_qbd_variation_pairs` vp ON (qi.qbd_id = vp.quickbook_product_id)	
+	WHERE qi.`id` >0 
+	AND (pp.wc_product_id >0 OR  vp.wc_variation_id > 0)
+	{$whr}
+	";
+	//echo $c_sql;
+	$total_records = $wpdb->get_var($c_sql);
 	$offset = $MWQDC_LB->get_offset($MWQDC_LB->get_page_var(),$items_per_page);
 
 	$pagination_links = $MWQDC_LB->get_paginate_links($total_records,$items_per_page);
-
-	$inventory_q = "SELECT * FROM `".$wpdb->prefix."mw_wc_qbo_desk_qbd_items` WHERE `id` >0 {$whr} ORDER BY `id` DESC LIMIT {$offset} , {$items_per_page} ";
+	
+	$inventory_q = "
+	SELECT DISTINCT qi.* , pp.wc_product_id, vp.wc_variation_id
+	FROM 
+	`".$wpdb->prefix."mw_wc_qbo_desk_qbd_items` qi
+	LEFT JOIN `".$wpdb->prefix."mw_wc_qbo_desk_qbd_product_pairs` pp ON (qi.qbd_id = pp.quickbook_product_id)
+	LEFT JOIN `".$wpdb->prefix."mw_wc_qbo_desk_qbd_variation_pairs` vp ON (qi.qbd_id = vp.quickbook_product_id) 
+	WHERE qi.`id` >0 
+	AND (pp.wc_product_id >0 OR  vp.wc_variation_id > 0)
+	{$whr} 
+	ORDER BY qi.`id` DESC 
+	LIMIT {$offset} , {$items_per_page} ";
+	//echo $inventory_q;
 	$qbd_inventory_list = $MWQDC_LB->get_data($inventory_q);
 	//$MWQDC_LB->_p($qbd_inventory_list);
 	
@@ -108,6 +130,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 									$sync_status_html = '<i class="fa fa-times-circle" style="color:red"></i>';
 									if(isset($p_val['wc_product_id']) && (int) $p_val['wc_product_id']){
 										$wc_product_id = (int) $p_val['wc_product_id'];
+									}elseif(isset($p_val['wc_variation_id']) && (int) $p_val['wc_variation_id']){
+										$wc_product_id = (int) $p_val['wc_variation_id'];
 									}else{
 										$wc_product_id = (int) $MWQDC_LB->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_product_pairs','wc_product_id','quickbook_product_id',$p_val['qbd_id']);
 										
@@ -115,6 +139,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 											$wc_product_id = (int) $MWQDC_LB->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_variation_pairs','wc_variation_id','quickbook_product_id',$p_val['qbd_id']);
 										}
 									}
+									
 									if($wc_product_id>0){
 										$sync_status_html = '<i title="Mapped to #'.$wc_product_id.'" class="fa fa-check-circle" style="color:green"></i>';
 										$wc_stock = get_post_meta($wc_product_id,'_stock',true);
@@ -138,19 +163,26 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 											if($qp_info_arr!=''){
 												$qp_info_arr = unserialize($qp_info_arr);
 												if(is_array($qp_info_arr) && count($qp_info_arr)){
-													if(isset($qp_info_arr['QuantityOnHand'])){
-														$qbd_qty_oh = $qp_info_arr['QuantityOnHand'];
-													}
-													
-													if(isset($qp_info_arr['QuantityOnSalesOrder'])){
-														$qbd_qty_oso = $qp_info_arr['QuantityOnSalesOrder'];
-													}
-													
-													if($qqpf == 'AvailableQuantity'){
-														$qbd_qty = ($qbd_qty_oh-$qbd_qty_oso);
+													/**/
+													if($p_val['product_type'] == 'InventoryAssembly' && $MWQDC_LB->option_checked('mw_wc_qbo_desk_use_max_as_qoh_iasmbly_invnt_pull')){
+														if(isset($qp_info_arr['MAX_Q'])){
+															$qbd_qty = $qp_info_arr['MAX_Q'];
+														}
 													}else{
-														$qbd_qty = $qbd_qty_oh;
-													}
+														if(isset($qp_info_arr['QuantityOnHand'])){
+															$qbd_qty_oh = $qp_info_arr['QuantityOnHand'];
+														}
+														
+														if(isset($qp_info_arr['QuantityOnSalesOrder'])){
+															$qbd_qty_oso = $qp_info_arr['QuantityOnSalesOrder'];
+														}
+														
+														if($qqpf == 'AvailableQuantity'){
+															$qbd_qty = ($qbd_qty_oh-$qbd_qty_oso);
+														}else{
+															$qbd_qty = $qbd_qty_oh;
+														}
+													}													
 												}
 											}
 											echo $qbd_qty;

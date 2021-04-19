@@ -1,4 +1,6 @@
  *** HubSpot for WooCommerce Changelog ***
+2021-04-06 - version 1.0.7
+* Fix - Authentication issue.
 
 2020-10-18 - version 1.0.6
 * Fix - Deal update issue.

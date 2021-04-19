@@ -2,11 +2,10 @@
 
 namespace Leadin\admin;
 
-use Leadin\LeadinOptions;
+use Leadin\options\AccountOptions;
 use Leadin\wp\User;
 use Leadin\utils\QueryParameters;
 use Leadin\auth\OAuth;
-use Leadin\admin\Connection;
 
 /**
  * Handles portal connection to the plugin.
@@ -14,11 +13,12 @@ use Leadin\admin\Connection;
 class Connection {
 
 	const CONNECT_KEYS = array(
-		'portal_id',
-		'portal_domain',
 		'access_token',
 		'refresh_token',
 		'expires_in',
+		'portal_id',
+		'portal_domain',
+		'portal_name',
 	);
 
 	const CONNECT_NONCE_ARG    = 'leadin_connect';
@@ -28,18 +28,7 @@ class Connection {
 	 * Returns true if a portal has been connected to the plugin
 	 */
 	public static function is_connected() {
-		return ! empty( self::get_portal_id() );
-	}
-
-	/**
-	 * Returns the connected portal id from the options table.
-	 */
-	public static function get_portal_id() {
-		if ( OAuth::is_enabled() ) {
-			return LeadinOptions::get( 'portal_id' );
-		}
-
-		return get_option( 'leadin_portalId' );
+		return ! empty( AccountOptions::get_portal_id() );
 	}
 
 	/**
@@ -47,7 +36,9 @@ class Connection {
 	 */
 	public static function is_connection_requested() {
 		$maybe_leadin_connect = QueryParameters::get_param( self::CONNECT_NONCE_ARG, 'hubspot-nonce', self::CONNECT_NONCE_ARG );
-		return isset( $maybe_leadin_connect );
+		$maybe_access_token   = QueryParameters::get_param( 'access_token', 'hubspot-nonce', self::CONNECT_NONCE_ARG );
+
+		return isset( $maybe_leadin_connect ) && isset( $maybe_access_token );
 	}
 
 	/**
@@ -92,9 +83,7 @@ class Connection {
 	public static function connect( $portal_id, $portal_name, $portal_domain, $hs_user_email ) {
 		self::disconnect();
 
-		add_option( 'leadin_portalId', $portal_id );
-		add_option( 'leadin_portal_domain', $portal_domain );
-		add_option( 'leadin_account_name', $portal_name );
+		self::store_portal_info( $portal_id, $portal_name, $portal_domain );
 
 		self::add_metadata( array( 'leadin_email' => $hs_user_email ) );
 	}
@@ -106,9 +95,8 @@ class Connection {
 		$connect_params = QueryParameters::get_parameters( self::CONNECT_KEYS, 'hubspot-nonce', self::CONNECT_NONCE_ARG );
 
 		self::disconnect();
-		self::oauth_disconnect();
 
-		self::store_portal_info( $connect_params['portal_id'], $connect_params['portal_domain'] );
+		self::store_portal_info( $connect_params['portal_id'], $connect_params['portal_domain'], $connect_params['portal_name'] );
 		OAuth::authorize( $connect_params['access_token'], $connect_params['refresh_token'], $connect_params['expires_in'] );
 	}
 
@@ -116,23 +104,14 @@ class Connection {
 	 * Removes portal id and domain from the WordPress options.
 	 */
 	public static function disconnect() {
-		delete_option( 'leadin_portalId' );
-		delete_option( 'leadin_account_name' );
-		delete_option( 'leadin_portal_domain' );
+		self::delete_portal_info();
+
 		$users = get_users( array( 'fields' => array( 'ID' ) ) );
 		foreach ( $users as $user ) {
 			delete_user_meta( $user->ID, 'leadin_email' );
 		}
 
-		add_option( 'leadin_did_disconnect', true );
-	}
-
-	/**
-	 * Cleanup database to disconnect portal from plugin
-	 */
-	public static function oauth_disconnect() {
 		OAuth::deauthorize();
-		self::delete_portal_info();
 	}
 
 	/**
@@ -140,17 +119,20 @@ class Connection {
 	 *
 	 * @param String $portal_id ID for connecting portal.
 	 * @param String $portal_domain Domain for the connecting portal.
+	 * @param String $portal_name Name of the connecting portal.
 	 */
-	private static function store_portal_info( $portal_id, $portal_domain ) {
-		LeadinOptions::add( 'portal_id', $portal_id );
-		LeadinOptions::add( 'portal_domain', $portal_domain );
+	private static function store_portal_info( $portal_id, $portal_domain, $portal_name ) {
+		AccountOptions::add_portal_id( $portal_id );
+		AccountOptions::add_portal_domain( $portal_domain );
+		AccountOptions::add_account_name( $account_name );
 	}
 
 	/**
 	 * Delete stored portal metadata for disconnecting the plugin from the options table
 	 */
 	private static function delete_portal_info() {
-		LeadinOptions::delete( 'portal_id' );
-		LeadinOptions::delete( 'portal_domain' );
+		AccountOptions::delete_portal_id();
+		AccountOptions::delete_portal_domain();
+		AccountOptions::delete_account_name();
 	}
 }

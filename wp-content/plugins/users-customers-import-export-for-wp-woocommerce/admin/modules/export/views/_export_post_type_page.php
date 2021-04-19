@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 					foreach($post_types as $key=>$value)
 					{
 						?>
-						<option value="<?php echo $key;?>" <?php echo ($item_type==$key ? 'selected' : '');?>><?php echo $value;?></option>
+					<option value="<?php echo $key;?>" <?php selected($key, $key) ?> <?php echo ($item_type==$key ? 'selected' : '');?>><?php echo $value;?></option>
 						<?php
 					}
 					?>

@@ -98,3 +98,7 @@ function popUpWindowDesk(URLStr,popUpWin, left, top, width, height){
  mwQsPopUpWin_obj_Desk = open(URLStr, popUpWin, 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=yes,width='+width+',height='+height+',left='+left+', top='+top+',screenX='+left+',screenY='+top+'');
  return mwQsPopUpWin_obj_Desk;
 }
+
+jQuery(document).ready(function($){
+	$('.tooltipped').removeClass('material-icons');
+});

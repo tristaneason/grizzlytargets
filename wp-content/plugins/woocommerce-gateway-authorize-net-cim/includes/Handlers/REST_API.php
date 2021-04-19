@@ -52,7 +52,7 @@ class REST_API extends Framework\Payment_Gateway\REST_API {
 
 		foreach ( $this->get_plugin()->get_gateways() as $gateway ) {
 
-			if ( \WC_Authorize_Net_CIM::EMULATION_GATEWAY_ID !== $gateway->get_id() && ! empty( $data['gateways'][ $gateway->get_id() ] ) ) {
+			if ( ! empty( $data['gateways'][ $gateway->get_id() ] ) ) {
 				$data['gateways'][ $gateway->get_id() ]['form_type']      = $gateway->get_form_type();
 				$data['gateways'][ $gateway->get_id() ]['has_client_key'] = (bool) $gateway->get_client_key();
 			}

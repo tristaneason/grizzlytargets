@@ -14,7 +14,14 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
  
 $is_valid_user = false;
+
+/*
 if(is_user_logged_in() && (current_user_can('editor') || current_user_can('administrator'))){	
+	$is_valid_user = true;
+}
+*/
+
+if(is_user_logged_in() && current_user_can('manage_woocommerce')){
 	$is_valid_user = true;
 }
 

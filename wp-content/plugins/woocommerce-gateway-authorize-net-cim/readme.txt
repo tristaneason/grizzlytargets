@@ -3,7 +3,7 @@ Author: skyverge
 Tags: woocommerce
 Requires PHP: 7.0
 Requires at least: 5.2
-Tested up to: 5.6.2
+Tested up to: 5.7
 
 Adds the Authorize.Net Payment Gateway to your WooCommerce site, offering support for Subscriptions and more!
 

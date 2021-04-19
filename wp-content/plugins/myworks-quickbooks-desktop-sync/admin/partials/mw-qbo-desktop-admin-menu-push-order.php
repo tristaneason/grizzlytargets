@@ -199,7 +199,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 									
 									<?php if($MWQDC_LB->is_pl_res_tml()):?>
 										<div class="pp_mt_lsk_msg" style="text-align:center; padding:10px 5px;">
-											<?php _e( '<h2>Need more than 30 days of history? Upgrade to a yearly license!</h2>', 'mw_wc_qbo_desk' );?>
+											<?php echo $MWQDC_LB->get_slmt_hstry_msg();?>
 										</div>
 									<?php endif;?>
 									

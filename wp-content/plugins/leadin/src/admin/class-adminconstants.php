@@ -3,12 +3,13 @@ namespace Leadin\admin;
 
 use Leadin\LeadinFilters;
 use Leadin\admin\Links;
+use Leadin\admin\Routing;
 use Leadin\auth\OAuth;
 use Leadin\admin\utils\DeviceId;
 use Leadin\utils\Versions;
 use Leadin\wp\User;
 use Leadin\wp\Website;
-use Leadin\admin\Connection;
+use Leadin\options\AccountOptions;
 
 /**
  * Class containing all the constants used for admin script localization.
@@ -19,25 +20,32 @@ class AdminConstants {
 	 * Return config constants for the iframe.
 	 */
 	public static function get_hubspot_config() {
+		$wp_user        = wp_get_current_user();
 		$hubspot_config = array(
 			'l'        => get_locale(),
 			'php'      => Versions::get_php_version(),
 			'v'        => LEADIN_PLUGIN_VERSION,
 			'wp'       => Versions::get_wp_version(),
-			'theme'    => get_option( 'stylesheet' ),
+			'theme'    => Website::get_theme(),
 			'admin'    => User::is_admin(),
 			'adminUrl' => admin_url(),
+			'company'  => get_bloginfo( 'name' ),
+			'domain'   => parse_url( get_site_url(), PHP_URL_HOST ),
+			'wp_user'  => $wp_user->first_name ? $wp_user->first_name : $wp_user->user_nicename,
+			'ajaxUrl'  => Website::get_ajax_url(),
 		);
+
+		if ( function_exists( 'get_avatar_url' ) ) {
+			$hubspot_config['wp_gravatar'] = get_avatar_url( $wp_user->ID );
+		}
 
 		if ( OAuth::is_enabled() ) {
 			$hubspot_config['oauth'] = true;
 			$hubspot_config['nonce'] = wp_create_nonce( 'hubspot-nonce' );
 
-			if ( OAuthRouting::has_just_connected() ) {
+			if ( Routing::has_just_connected_with_oauth() ) {
 				$config_params['justConnected'] = true;
 			}
-		} else {
-			$hubspot_config['ajaxUrl'] = Website::get_ajax_url();
 		}
 
 		return $hubspot_config;
@@ -56,7 +64,6 @@ class AdminConstants {
 			'backgroundIframeUrl'   => Links::get_background_iframe_src(),
 			'deviceId'              => DeviceId::get(),
 			'didDisconnect'         => true,
-			'env'                   => LeadinFilters::get_leadin_env(),
 			'formsScript'           => LeadinFilters::get_leadin_forms_script_url(),
 			'formsScriptPayload'    => LeadinFilters::get_leadin_forms_payload(),
 			'hubspotBaseUrl'        => LeadinFilters::get_leadin_base_url(),
@@ -64,11 +71,11 @@ class AdminConstants {
 			'locale'                => get_locale(),
 			'ajaxNonce'             => wp_create_nonce( 'hubspot-ajax' ),
 			'restNonce'             => wp_create_nonce( 'wp_rest' ),
-			'redirectNonce'         => wp_create_nonce( OAuthRouting::REDIRECT_NONCE ),
+			'redirectNonce'         => wp_create_nonce( Routing::REDIRECT_NONCE ),
 			'phpVersion'            => Versions::get_wp_version(),
 			'pluginPath'            => constant( 'LEADIN_PATH' ),
 			'plugins'               => get_plugins(),
-			'portalId'              => Connection::get_portal_id(),
+			'portalId'              => AccountOptions::get_portal_id(),
 			'accountName'           => get_option( 'leadin_account_name' ),
 			'portalDomain'          => get_option( 'leadin_portal_domain' ),
 			'portalEmail'           => get_user_meta( $wp_user_id, 'leadin_email', true ),

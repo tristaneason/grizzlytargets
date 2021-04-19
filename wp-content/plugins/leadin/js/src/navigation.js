@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 import { domElements } from './constants/selectors';
 import urlsMap from './constants/urlsMap';
-import { i18n, oauth } from './constants/leadinConfig';
+import { i18n } from './constants/leadinConfig';
 
 function setSelectedMenuItem(url) {
   $(domElements.subMenuButtons).removeClass('current');
@@ -13,47 +13,45 @@ function setSelectedMenuItem(url) {
 
 // Given a route like "/settings/forms", parse it into "?page=leadin_settings&leadin_route[0]=forms"
 export function syncRoute(path = '', searchQuery = '') {
-  if (!oauth) {
-    const baseUrls = Object.keys(urlsMap).sort((a, b) =>
-      a.length < b.length ? 1 : -1
-    );
-    let wpPage;
-    let route;
+  const baseUrls = Object.keys(urlsMap).sort((a, b) =>
+    a.length < b.length ? 1 : -1
+  );
+  let wpPage;
+  let route;
 
-    baseUrls.some(basePath => {
-      if (path.indexOf(basePath) === 0) {
-        wpPage = urlsMap[basePath][0];
-        const routePrefix = urlsMap[basePath][1] || '';
-        const cleanedPath = path.replace(basePath, '');
-        route = `${routePrefix}${cleanedPath}`.replace(/^\/+/, '');
-        return true;
-      }
-      return false;
-    });
-
-    if (!wpPage) {
-      return;
+  baseUrls.some(basePath => {
+    if (path.indexOf(basePath) === 0) {
+      wpPage = urlsMap[basePath][0];
+      const routePrefix = urlsMap[basePath][1] || '';
+      const cleanedPath = path.replace(basePath, '');
+      route = `${routePrefix}${cleanedPath}`.replace(/^\/+/, '');
+      return true;
     }
+    return false;
+  });
 
-    const leadinRouteParam = route
-      ? `&${route
-          .split('/')
-          .map(
-            (subRoute, index) =>
-              `${encodeURIComponent(`leadin_route[${index}]`)}=${subRoute}`
-          )
-          .join('&')}`
-      : '';
-
-    const leadinSearchParam = searchQuery.length
-      ? `&leadin_search=${encodeURIComponent(searchQuery)}`
-      : '';
-
-    const newUrl = `?page=${wpPage}${leadinRouteParam}${leadinSearchParam}`;
-
-    setSelectedMenuItem(newUrl);
-    window.history.replaceState(null, null, newUrl);
+  if (!wpPage) {
+    return;
   }
+
+  const leadinRouteParam = route
+    ? `&${route
+        .split('/')
+        .map(
+          (subRoute, index) =>
+            `${encodeURIComponent(`leadin_route[${index}]`)}=${subRoute}`
+        )
+        .join('&')}`
+    : '';
+
+  const leadinSearchParam = searchQuery.length
+    ? `&leadin_search=${encodeURIComponent(searchQuery)}`
+    : '';
+
+  const newUrl = `?page=${wpPage}${leadinRouteParam}${leadinSearchParam}`;
+
+  setSelectedMenuItem(newUrl);
+  window.history.replaceState(null, null, newUrl);
 }
 
 export function disableNavigation() {

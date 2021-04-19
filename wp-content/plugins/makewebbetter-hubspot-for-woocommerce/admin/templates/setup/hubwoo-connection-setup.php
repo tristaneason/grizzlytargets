@@ -52,7 +52,7 @@ if ( 'yes' == get_option( 'hubwoo_connection_complete', 'no' ) ) {
 
 			<div class="mwb-heb-wlcm__btn-wrap">
 				<a id="hubwoo-initiate-oauth" href="<?php echo esc_url( $hubspot_url ); ?>" class="hubwoo-btn--primary"><?php esc_html_e( 'Connect your Account', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
-				<a href="https://app.hubspot.com/signup-v2/crm/step/user-info?utm_medium=integration&utm_source=makewebbetter&utm_campaign=wordpress-woocommerce-integration" target="_blank" class="hubwoo-btn--primary hubwoo-btn--secondary"><?php esc_html_e( 'Create a free HubSpot Account', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+				<a href="https://app.hubspot.com/signup-hubspot/crm?utm_medium=integration&utm_source=makewebbetter&utm_campaign=wordpress-woocommerce-integration" target="_blank" class="hubwoo-btn--primary hubwoo-btn--secondary"><?php esc_html_e( 'Create a free HubSpot Account', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 			</div>
 		</div>
 	</div>

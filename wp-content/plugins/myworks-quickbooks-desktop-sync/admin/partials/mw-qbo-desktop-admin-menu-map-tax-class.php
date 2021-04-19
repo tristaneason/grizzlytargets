@@ -26,16 +26,14 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 			$value = trim($value);
 			if ($MWQDC_LB->start_with($key, "wtax_")){
 				$id = (int) str_replace("wtax_", "", $key);			
-				if($id && $value!=''){ 
-					$item_ids[$id] = $value;
-				}
+				//if($id && $value!=''){}
+				$item_ids[$id] = $value;
 			}
 			
 			if ($MWQDC_LB->start_with($key, "cobmbo_wtax_")){
 				$id = (int) str_replace("cobmbo_wtax_", "", $key);			
-				if($id && $value!=''){
-					$item_ids_combo[$id] = $value;
-				}
+				//if($id && $value!=''){}
+				$item_ids_combo[$id] = $value;
 			}	
 		}
 		//$MWQDC_LB->_p($item_ids);die;
@@ -50,16 +48,19 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 		if(count($item_ids)){
 			foreach ($item_ids as $key=>$value){
 				$save_data = array();
+				$save_data['wc_tax_id'] = $key;
 				$save_data['qbo_tax_code'] = $value;
+				$save_data['wc_tax_id_2'] = 0;				
 				
-				$eq = $wpdb->prepare("SELECT `id` FROM {$table} WHERE `wc_tax_id` = %d AND `wc_tax_id_2` = '0' AND qbo_tax_code != '' ",$key);
+				//Update
+				$eq = $wpdb->prepare("SELECT `id` FROM `{$table}` WHERE `wc_tax_id` = %d AND `wc_tax_id_2` = %d ",$save_data['wc_tax_id'],$save_data['wc_tax_id_2']);
 				$ed = $MWQDC_LB->get_row($eq);
 				
 				if(is_array($ed) && !empty($ed)){
+					unset($save_data['wc_tax_id']);
+					unset($save_data['wc_tax_id_2']);
 					$wpdb->update($table,$save_data,array('id'=>$ed['id']),'',array('%d'));
-				}else{
-					$save_data['wc_tax_id'] = $key;
-					$save_data['wc_tax_id_2'] = 0;
+				}else{					
 					$wpdb->insert($table, $save_data);
 				}				
 			}
@@ -69,21 +70,25 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 		if(count($item_ids_combo)){		
 			foreach ($item_ids_combo as $key=>$value){
 				$save_data = array();
-				$save_data['qbo_tax_code'] = $value;
-				
+				$save_data['wc_tax_id'] = $key;
+				$save_data['qbo_tax_code'] = $value;				
 				$save_data['wc_tax_id_2'] = (isset($_POST['sc_wtax_'.$key]))?(int) $_POST['sc_wtax_'.$key]:0;
 				
-				if($save_data['wc_tax_id_2'] > 0){
-					$eq = $wpdb->prepare("SELECT `id` FROM {$table} WHERE `wc_tax_id` = %d AND `wc_tax_id_2` = %s AND qbo_tax_code != '' ",$key,$save_data['wc_tax_id_2']);
-					$ed = $MWQDC_LB->get_row($eq);
-					
-					if(is_array($ed) && !empty($ed)){
-						unset($save_data['wc_tax_id_2']);
-						$wpdb->update($table,$save_data,array('id'=>$ed['id']),'',array('%d'));
-					}else{
-						$save_data['wc_tax_id'] = $key;
-						$wpdb->insert($table, $save_data);
-					}
+				if($save_data['wc_tax_id_2'] < 1){
+					$wpdb->query($wpdb->prepare("DELETE FROM `".$table."` WHERE `wc_tax_id` = %d AND `wc_tax_id_2` > 0 ",$key));
+					continue;
+				}				
+				
+				//Update
+				$eq = $wpdb->prepare("SELECT `id` FROM `{$table}` WHERE `wc_tax_id` = %d AND `wc_tax_id_2` = %d ",$save_data['wc_tax_id'],$save_data['wc_tax_id_2']);
+				
+				$ed = $MWQDC_LB->get_row($eq);				
+				if(is_array($ed) && !empty($ed)){
+					unset($save_data['wc_tax_id']);
+					unset($save_data['wc_tax_id_2']);
+					$wpdb->update($table,$save_data,array('id'=>$ed['id']),'',array('%d'));
+				}else{						
+					$wpdb->insert($table, $save_data);
 				}				
 			}
 			$is_tax_saved = true;
@@ -91,6 +96,11 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 		if($is_tax_saved){
 			$MWQDC_LB->set_session_val('map_page_update_message',__('Tax rates mapped successfully.','mw_wc_qbo_desk'));
 		}
+		
+		$itxdq = " OR wc_tax_id NOT IN(SELECT `tax_rate_id` FROM {$wpdb->prefix}woocommerce_tax_rates) ";
+		$itxdq .= " OR (wc_tax_id_2 > 0 AND wc_tax_id_2 NOT IN(SELECT `tax_rate_id` FROM {$wpdb->prefix}woocommerce_tax_rates)) ";
+		$wpdb->query("DELETE FROM `".$table."` WHERE `qbo_tax_code` = 0 OR `qbo_tax_code` = '' {$itxdq}");
+	
 		$MWQDC_LB->redirect($page_url);
 	}
 	
@@ -105,17 +115,23 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 	
 	$tax_map_search = $MWQDC_LB->sanitize($tax_map_search);
 	$whr = '';
+	
+	$wtr_t = $wpdb->prefix.'woocommerce_tax_rates';
+	$wtr_lt = $wpdb->prefix.'woocommerce_tax_rate_locations';
+	
+	$join = " LEFT JOIN `{$wtr_lt}` trl ON (tr.tax_rate_id = trl.tax_rate_id AND trl.location_type = 'city') ";
+	
 	if($tax_map_search!=''){
-		$whr.=" AND (`tax_rate_name` LIKE '%$tax_map_search%' OR `tax_rate_class` LIKE '%$tax_map_search%' ) ";
-		// OR `tax_rate_country` LIKE '%$tax_map_search%' OR `tax_rate_state` LIKE '%$tax_map_search%'
+		$whr.=" AND (tr.`tax_rate_name` LIKE '%$tax_map_search%' OR tr.`tax_rate_class` LIKE '%$tax_map_search%' OR trl.`location_code` LIKE '%$tax_map_search%' ) ";
+		// OR tr.`tax_rate_country` LIKE '%$tax_map_search%' OR tr.`tax_rate_state` LIKE '%$tax_map_search%'
 	}
-
-	$total_records = $wpdb->get_var("SELECT COUNT(*) FROM `".$wpdb->prefix."woocommerce_tax_rates` WHERE `tax_rate_id` >0 {$whr} ");
+	
+	$total_records = $wpdb->get_var("SELECT COUNT(*) FROM `".$wtr_t."` tr {$join} WHERE tr.`tax_rate_id` >0 {$whr} ");
 	$offset = $MWQDC_LB->get_offset($MWQDC_LB->get_page_var(),$items_per_page);
 
 	$pagination_links = $MWQDC_LB->get_paginate_links($total_records,$items_per_page);
 	
-	$tax_q = "SELECT * FROM `".$wpdb->prefix."woocommerce_tax_rates` WHERE `tax_rate_id` >0 {$whr} ORDER BY `tax_rate_class` ASC LIMIT {$offset} , {$items_per_page} ";
+	$tax_q = "SELECT tr.* , trl.location_code FROM `".$wtr_t."` tr {$join} WHERE tr.`tax_rate_id` >0 {$whr} ORDER BY tr.`tax_rate_class` ASC LIMIT {$offset} , {$items_per_page} ";
 	$wc_tax_rates = $MWQDC_LB->get_data($tax_q);
 
 	$qbo_tax_options = '<option value=""></option>';
@@ -126,8 +142,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 	
 	if($MWQDC_LB->get_option('mw_wc_qbo_desk_sl_tax_map_entity') != 'Sales_Tax_Codes'){
 		//$qbd_sales_tax_item_options = '<option value=""></option>';
-		$sti_whr = "(product_type='SalesTax' OR product_type='SalesTaxGroup')";
-		$qbo_tax_options.=$MWQDC_LB->option_html('', $wpdb->prefix.'mw_wc_qbo_desk_qbd_items','qbd_id','name',$sti_whr,'name ASC','',true);	
+		//$sti_whr = "(product_type='SalesTax' OR product_type='SalesTaxGroup')";
+		//$qbo_tax_options.=$MWQDC_LB->option_html('', $wpdb->prefix.'mw_wc_qbo_desk_qbd_items','qbd_id','name',$sti_whr,'name ASC','',true);	
+		$qbo_tax_options.=$MWQDC_LB->get_qbd_item_sales_tax_dd_options();
 	}	
 	
 	$selected_options_script = '';
@@ -138,6 +155,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 			if($tm_val['wc_tax_id_2']>0){
 				$tl_tax_rate_class = (isset($wc_all_tax_rates[$tm_val['wc_tax_id']]['tax_rate_class']))?$wc_all_tax_rates[$tm_val['wc_tax_id']]['tax_rate_class']:'';
 				$tl_tax_rate_class = ($tl_tax_rate_class=='')?'Standard rate':ucfirst(str_replace('-',' ',$tl_tax_rate_class));
+				$tl_city = (isset($wc_all_tax_rates[$tm_val['wc_tax_id']]['location_code']))?$wc_all_tax_rates[$tm_val['wc_tax_id']]['location_code']:'';
 				$tl_country = (isset($wc_all_tax_rates[$tm_val['wc_tax_id']]['tax_rate_country']))?$wc_all_tax_rates[$tm_val['wc_tax_id']]['tax_rate_country']:'';
 				$tl_state = (isset($wc_all_tax_rates[$tm_val['wc_tax_id']]['tax_rate_state']))?$wc_all_tax_rates[$tm_val['wc_tax_id']]['tax_rate_state']:'';
 				$tl_taxrate = (isset($wc_all_tax_rates[$tm_val['wc_tax_id']]['tax_rate']))?$wc_all_tax_rates[$tm_val['wc_tax_id']]['tax_rate']:'';
@@ -146,6 +164,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 				$selected_options_script.='jQuery(\'#cobmbo_wtax_'.$tm_val['wc_tax_id'].'\').val(\''.$tm_val['qbo_tax_code'].'\');';
 				
 				$selected_options_script.='jQuery(\'#tl_tax_rate_class_'.$tm_val['wc_tax_id'].'\').html(\''.$tl_tax_rate_class.'\');';
+				$selected_options_script.='jQuery(\'#tl_city_'.$tm_val['wc_tax_id'].'\').html(\''.$tl_city.'\');';
 				$selected_options_script.='jQuery(\'#tl_country_'.$tm_val['wc_tax_id'].'\').html(\''.$tl_country.'\');';
 				$selected_options_script.='jQuery(\'#tl_state_'.$tm_val['wc_tax_id'].'\').html(\''.$tl_state.'\');';
 				$selected_options_script.='jQuery(\'#tl_taxrate_'.$tm_val['wc_tax_id'].'\').html(\''.$tl_taxrate.'\');';
@@ -193,25 +212,28 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 								<table class="mw-qbo-sync-map-table menu-blue-bg" width="100%">
 	                            	<thead>
 	                                	<tr>
-	                                    	<th width="5%" class="title-description">
+	                                    	<th width="5%" class="title-description" id="th_id">
 												ID							    	
 											</th>
-	                                        <th width="25%" class="title-description">
+	                                        <th width="25%" class="title-description" id="th_tn">
 												Tax	Name							    	
 	                                        </th>
-	                                        <th width="20%" class="title-description">
+	                                        <th width="10%" class="title-description" id="th_tc">
 	                                            Tax	Class						    	
 	                                        </th>
-	                                        <th width="10%" class="title-description">
+											 <th width="10%" class="title-description" id="th_ct">
+	                                            City								    	
+	                                        </th>
+	                                        <th width="10%" class="title-description" id="th_cn">
 	                                            Country								    	
 	                                        </th>
-	                                        <th width="10%" class="title-description">
+	                                        <th width="10%" class="title-description" id="th_st">
 	                                            State								    	
 	                                        </th>
-	                                        <th width="10%" class="title-description">
+	                                        <th width="10%" class="title-description" id="th_rt">
 	                                            Rate								    	
 	                                        </th>
-	                                        <th width="20%" class="title-description">
+	                                        <th width="20%" class="title-description" id="th_qt">
 	                                            Quickbooks Tax
 	                                        </th>
 	                                    </tr>
@@ -225,25 +247,27 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 										<td><?php echo $rates['tax_rate_id'];?></td>
 										<td><?php echo $rates['tax_rate_name'];?></td>
 										<td><?php echo $tax_rate_class;?></td>
+										<td><?php echo $rates['location_code'];?></td>
 										<td><?php echo $rates['tax_rate_country'];?></td>
 										<td><?php echo $rates['tax_rate_state'];?></td>
 										<td><?php echo $rates['tax_rate'];?></td>
 										<td>
-										<select class="mw_wc_qbo_sync_select2_desk qbo_select sc_sel_tx" name="wtax_<?php echo $rates['tax_rate_id'];?>" id="wtax_<?php echo $rates['tax_rate_id'];?>">
+										<!-- sc_sel_tx-->
+										<select class="mw_wc_qbo_sync_select2_desk qbo_select" name="wtax_<?php echo $rates['tax_rate_id'];?>" id="wtax_<?php echo $rates['tax_rate_id'];?>">
 										<?php echo $qbo_tax_options;?>
 										</select>							
 										</td>
 									</tr>
 									<tr class="crs_tr" style="display:none;" id="sc_tx_row_<?php echo $rates['tax_rate_id'];?>">
-										<td>+&nbsp;</td>
-										<td>
-										<?php echo $rates['tax_rate_name'];?><br />
+										<td><?php echo $rates['tax_rate_name'];?>&nbsp;+&nbsp;</td>
+										<td>										
 										<select class="qbo_select mw_wc_qbo_sync_select2_desk sc_sel_tx" name="sc_wtax_<?php echo $rates['tax_rate_id'];?>" id="sc_wtax_<?php echo $rates['tax_rate_id'];?>">
 											<?php echo $MWQDC_LB->get_wc_tax_rate_dropdown($wc_tax_rates,'',$rates['tax_rate_id']);?>
 										</select>
 										</td>
 										
 										<td id="tl_tax_rate_class_<?php echo $rates['tax_rate_id'];?>"></td>
+										<td id="tl_city_<?php echo $rates['tax_rate_id'];?>"></td>
 										<td id="tl_country_<?php echo $rates['tax_rate_id'];?>"></td>
 										<td id="tl_state_<?php echo $rates['tax_rate_id'];?>"></td>
 										<td id="tl_taxrate_<?php echo $rates['tax_rate_id'];?>"></td>
@@ -297,16 +321,23 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 					
 			if(tx_val!=''){				
 				var tax_rate_class = $('option:selected', this).attr('data-tax_rate_class');
+				if(!tax_rate_class.trim()){
+					tax_rate_class = 'Standard rate';
+				}
+				
+				var tx_city = $('option:selected', this).attr('data-tax_rate_city');
 				var tx_country = $('option:selected', this).attr('data-tax_rate_country');
 				var tx_state = $('option:selected', this).attr('data-tax_rate_state');
 				var tx_taxrate = $('option:selected', this).attr('data-tax_rate');
 				
 				jQuery('#tl_tax_rate_class_'+p_tx).html(tax_rate_class);
+				jQuery('#tl_city_'+p_tx).html(tx_city);
 				jQuery('#tl_country_'+p_tx).html(tx_country);
 				jQuery('#tl_state_'+p_tx).html(tx_state);
 				jQuery('#tl_taxrate_'+p_tx).html(tx_taxrate);
 			}else{
 				jQuery('#tl_tax_rate_class_'+p_tx).html('');
+				jQuery('#tl_city_'+p_tx).html('');
 				jQuery('#tl_country_'+p_tx).html('');
 				jQuery('#tl_state_'+p_tx).html('');
 				jQuery('#tl_taxrate_'+p_tx).html('');
@@ -316,16 +347,24 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 			<?php echo $selected_options_script;?>		
 		<?php endif;?>
 		
-		jQuery('.sh_compound_tx').click(function($){
+		jQuery('.sh_compound_tx').click(function(){
 			var crs = jQuery(this).text();			
 			if(crs=='Show Compound Taxes'){
 				jQuery(this).addClass('hide_advanced_payment_sync').removeClass('show_advanced_payment_sync');
+				
+				$('#th_id').attr('width','20%');$('#th_tn').attr('width','19%');$('#th_tc').attr('width','10%');$('#th_ct').attr('width','10%');
+				$('#th_cn').attr('width','7%');$('#th_st').attr('width','7%');$('#th_rt').attr('width','7%');$('#th_qt').attr('width','20%');
+				
 				jQuery('.crs_tr').show();			
 				jQuery(this).text('Hide Compound Taxes');	
 			}
 			
 			if(crs=='Hide Compound Taxes'){
-				jQuery(this).addClass('show_advanced_payment_sync').removeClass('hide_advanced_payment_sync');		
+				jQuery(this).addClass('show_advanced_payment_sync').removeClass('hide_advanced_payment_sync');
+				
+				$('#th_id').attr('width','5%');$('#th_tn').attr('width','25%');$('#th_tc').attr('width','10%');$('#th_ct').attr('width','10%');
+				$('#th_cn').attr('width','10%');$('#th_st').attr('width','10%');$('#th_rt').attr('width','10%');$('#th_qt').attr('width','20%');
+				
 				jQuery('.crs_tr').hide();				
 				jQuery(this).text('Show Compound Taxes');
 			}

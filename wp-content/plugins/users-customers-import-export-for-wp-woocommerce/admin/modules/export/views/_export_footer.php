@@ -7,15 +7,22 @@ if (!defined('ABSPATH')) {
 	<div style="float:left; padding-top:10px;" class="wt_iew_export_template_name"> </div>
 	<div style="float:right;">
 		<div style="float:right;">
-	        <?php       
+	        <?php
+			$button_types = array_column(array_values($this->step_btns), 'type');
+			$last_button_key = array_search('button', array_reverse($button_types, true));
+			$count = 0;
+			$button_standard_class = 'media-button';
 	        foreach($this->step_btns as $btnk=>$btnv)
 	        { 	
 	        	$css_class=(isset($btnv['class']) ? $btnv['class'] : '');
 	        	$action_type=(isset($btnv['action_type']) ? $btnv['action_type'] : 'non-step');
+				if($count == $last_button_key){
+					$button_standard_class = 'button-primary';
+				}
 	        	if($btnv['type']=='button')
 	        	{
 	        		?>
-	        		<button class="button button-primary wt_iew_export_action_btn <?php echo $css_class; ?>" data-action-type="<?php echo $action_type; ?>" data-action="<?php echo $btnv['key'];?>" type="submit">
+	        		<button class="button <?php echo $button_standard_class; ?> wt_iew_export_action_btn <?php echo $css_class; ?>" data-action-type="<?php echo $action_type; ?>" data-action="<?php echo $btnv['key'];?>" type="submit">
 			        	<?php echo $btnv['text'];?>    		
 			        </button>
 	        		<?php
@@ -57,6 +64,7 @@ if (!defined('ABSPATH')) {
 	        		<span style="line-height:40px; font-weight:bold;" class="<?php echo $css_class; ?>"><?php echo $btnv['text'];?></span>
 	        	<?php
 	        	}
+				$count++;
 	        }
 	        ?>
 		</div>

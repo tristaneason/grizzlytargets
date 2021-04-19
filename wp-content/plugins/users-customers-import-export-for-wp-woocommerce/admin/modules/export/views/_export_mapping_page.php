@@ -6,8 +6,7 @@ if (!defined('ABSPATH')) {
 <div class="wt_iew_export_main">
 	<p><?php echo $step_info['description']; ?></p>
 	<div class="meta_mapping_box">
-		<div class="meta_mapping_box_hd wt_iew_noselect">
-			<span class="dashicons dashicons-arrow-down"></span>
+		<div class="meta_mapping_box_hd_nil wt_iew_noselect">
 			<?php _e('Default fields');?>
 			<span class="meta_mapping_box_selected_count_box"><span class="meta_mapping_box_selected_count_box_num">0</span> <?php _e(' columns(s) selected'); ?></span>
 		</div>

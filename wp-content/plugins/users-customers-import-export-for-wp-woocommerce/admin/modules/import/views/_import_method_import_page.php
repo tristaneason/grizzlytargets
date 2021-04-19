@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 ?>
 <div class="wt_iew_import_main">
-	<p><?php echo $this->step_description;?></p>
+	<p><?php //echo $this->step_description;?></p>
 	<div class="wt_iew_warn wt_iew_method_import_wrn" style="display:none;">
 		<?php _e('Please select an import template.');?>
 	</div>
@@ -27,7 +27,7 @@ if (!defined('ABSPATH')) {
                 </div>
 			</td>
 		</tr>
-
+		<tr><div id="user-required-field-message" class="updated" style="margin-left:0px;display: none;background: #dceff4;"><p><?php _e('For a successful import, the uploading file must contain data for <b>at least 1 column: user_email</b>.'); ?></p></div></tr>
 		<tr class="wt-iew-import-method-options wt-iew-import-method-options-template wt-iew-import-template-sele-tr" style="display:none;">
     		<th><label><?php _e('Import template');?></label></th>
     		<td>

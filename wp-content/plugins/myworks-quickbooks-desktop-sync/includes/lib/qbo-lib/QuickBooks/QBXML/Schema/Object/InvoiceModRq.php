@@ -106,6 +106,10 @@ class QuickBooks_QBXML_Schema_Object_InvoiceModRq extends QuickBooks_QBXML_Schem
   'InvoiceLineMod Amount' => 'AMTTYPE',
   'InvoiceLineMod InventorySiteRef ListID' => 'IDTYPE',
   'InvoiceLineMod InventorySiteRef FullName' => 'STRTYPE',
+  //
+  'InvoiceLineMod InventorySiteLocationRef ListID' => 'IDTYPE',
+  'InvoiceLineMod InventorySiteLocationRef FullName' => 'STRTYPE',
+  
   'InvoiceLineMod ServiceDate' => 'DATETYPE',
   'InvoiceLineMod SalesTaxCodeRef ListID' => 'IDTYPE',
   'InvoiceLineMod SalesTaxCodeRef FullName' => 'STRTYPE',
@@ -223,6 +227,10 @@ class QuickBooks_QBXML_Schema_Object_InvoiceModRq extends QuickBooks_QBXML_Schem
   'InvoiceLineMod Amount' => 0,
   'InvoiceLineMod InventorySiteRef ListID' => 0,
   'InvoiceLineMod InventorySiteRef FullName' => 209,
+  //
+  'InvoiceLineMod InventorySiteLocationRef ListID' => 0,
+  'InvoiceLineMod InventorySiteLocationRef FullName' => 209,
+  
   'InvoiceLineMod ServiceDate' => 0,
   'InvoiceLineMod SalesTaxCodeRef ListID' => 0,
   'InvoiceLineMod SalesTaxCodeRef FullName' => 209,
@@ -340,6 +348,10 @@ class QuickBooks_QBXML_Schema_Object_InvoiceModRq extends QuickBooks_QBXML_Schem
   'InvoiceLineMod Amount' => true,
   'InvoiceLineMod InventorySiteRef ListID' => true,
   'InvoiceLineMod InventorySiteRef FullName' => true,
+  //
+  'InvoiceLineMod InventorySiteLocationRef ListID' => true,
+  'InvoiceLineMod InventorySiteLocationRef FullName' => true,
+  
   'InvoiceLineMod ServiceDate' => true,
   'InvoiceLineMod SalesTaxCodeRef ListID' => true,
   'InvoiceLineMod SalesTaxCodeRef FullName' => true,
@@ -455,6 +467,10 @@ class QuickBooks_QBXML_Schema_Object_InvoiceModRq extends QuickBooks_QBXML_Schem
   'InvoiceLineMod Amount' => 999.99,
   'InvoiceLineMod InventorySiteRef ListID' => 999.99,
   'InvoiceLineMod InventorySiteRef FullName' => 999.99,
+  //
+  'InvoiceLineMod InventorySiteLocationRef ListID' => 999.99,
+  'InvoiceLineMod InventorySiteLocationRef FullName' => 999.99,
+  
   'InvoiceLineMod ServiceDate' => 999.99,
   'InvoiceLineMod SalesTaxCodeRef ListID' => 999.99,
   'InvoiceLineMod SalesTaxCodeRef FullName' => 999.99,
@@ -572,6 +588,10 @@ class QuickBooks_QBXML_Schema_Object_InvoiceModRq extends QuickBooks_QBXML_Schem
   'InvoiceLineMod Amount' => false,
   'InvoiceLineMod InventorySiteRef ListID' => false,
   'InvoiceLineMod InventorySiteRef FullName' => false,
+  //
+  'InvoiceLineMod InventorySiteLocationRef ListID' => false,
+  'InvoiceLineMod InventorySiteLocationRef FullName' => false,
+  
   'InvoiceLineMod ServiceDate' => false,
   'InvoiceLineMod SalesTaxCodeRef ListID' => false,
   'InvoiceLineMod SalesTaxCodeRef FullName' => false,
@@ -702,6 +722,10 @@ class QuickBooks_QBXML_Schema_Object_InvoiceModRq extends QuickBooks_QBXML_Schem
   'InvoiceLineMod Amount',
   'InvoiceLineMod InventorySiteRef ListID',
   'InvoiceLineMod InventorySiteRef FullName',
+  //
+  'InvoiceLineMod InventorySiteLocationRef ListID',
+  'InvoiceLineMod InventorySiteLocationRef FullName',
+  
   'InvoiceLineMod ServiceDate',
   'InvoiceLineMod LotNumber',
   'InvoiceLineMod SalesTaxCodeRef ListID',

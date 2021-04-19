@@ -1,3 +1,6 @@
+= 7.52.105 (2021-03-26) =
+* Updated the query parameters sent to the UI. These parameters will be used for OAuth2 authorisation flow.
+
 = 7.52.0 (2021-03-08) =
 * Updated getting started checklist to use OAuth2 API's
 
@@ -423,7 +426,4 @@
 
 = 6.1.10 (2018-08-27) =
 * Plugin readme update
-
-= 6.1.8 (2018-07-26) =
-* Plugin description updated to describe HubSpot Conversion Tools
 

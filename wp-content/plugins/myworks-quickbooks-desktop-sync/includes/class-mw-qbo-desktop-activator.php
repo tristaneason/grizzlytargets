@@ -36,6 +36,12 @@ class MW_QBO_Desktop_Activator {
 		die(__('This plugin requires <a target="_blank" href="http://php.net/manual/en/book.mcrypt.php">PHP Mcrypt Extension loaded into your server</a> to be active!', 'mw_wc_qbo_desk'));
 	    */
 		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
+	    // Set pointer notices
+	    $admin_pointer_content = '<h3>' . __( 'QuickBooks Desktop' ) . '</h3>';
+	    $admin_pointer_content .= '<p>' . __( 'Automatically sync your WooCommerce store to QuickBooks Desktop.' ) . '</p>';
+	    update_option('mw_wc_qbo_desk_admin_pointers', $admin_pointer_content);
+	    delete_option( 'mw_wc_qbo_desk_deactivation_popup' );
 		
 		/*DB Illegal character check*/
 		if(MW_QBO_Desktop_Activator::check_invalid_chars_in_db_conn_info()){
@@ -45,14 +51,34 @@ class MW_QBO_Desktop_Activator {
 		
 		if (MW_QBO_Desktop_Activator::check_if_woocommerce_active()) {
 			activate_plugins( plugin_dir_path( __FILE__ ) . 'myworks-quickbooks-desktop-sync.php', admin_url('?page=mw-qbo-desktop-qwc-file'), true, false);
+			$is_plugin_activate = true;
+			$is_pos_plugin_active = false;
+			if (class_exists( 'MyWorks_WC_QBO_Sync_QBO_Lib' ) && in_array('myworks-woo-sync-for-quickbooks-online/myworks-woo-sync-for-quickbooks-online.php',apply_filters( 'active_plugins', get_option( 'active_plugins' ) ))) {
+				$is_plugin_activate = false;
+			}
+			if (class_exists( 'MW_QBO_Desktop_Sync_Qwc_Server_Lib' ) && in_array('myworks-quickbooks-pos-sync/myworks-quickbooks-pos-sync.php',apply_filters( 'active_plugins', get_option( 'active_plugins' ) ))) {
+				$is_pos_plugin_active = true;
+				$is_plugin_activate = false;
+			}
+			if (!$is_plugin_activate) {
+				if ($is_pos_plugin_active) {
+					$error_message = __('Plugin conflict - QuickBooks Online plugin is already activated', 'mw_wc_qbo_desk');
+				} else {
+					$error_message = __('Plugin conflict - QuickBooks POS plugin is already activated', 'mw_wc_qbo_desk');
+				}
+				die($error_message);
+				
+			}
+
 			MW_QBO_Desktop_Activator::create_databases();
 			MW_QBO_Desktop_Activator::do_after_activate();
-			return true;
+			return $is_plugin_activate;
 		} else {
 
 			$error_message = __('This plugin requires <a target="_blank" href="http://wordpress.org/extend/plugins/woocommerce/">WooCommerce</a> plugin to be active!', 'mw_wc_qbo_desk');
 			die($error_message);
 		}
+
 	}
 	
 	protected static function check_if_woocommerce_active() { 
@@ -272,7 +298,9 @@ class MW_QBO_Desktop_Activator {
 		  ps_order_status varchar(255) NOT NULL,
 		  enable_refund int(1) NOT NULL,
 		  order_sync_as varchar(255) NOT NULL,
-		  qb_cr_ba_id varchar(255) NOT NULL,		  
+		  qb_cr_ba_id varchar(255) NOT NULL,
+		  qb_ip_ar_acc_id varchar(255) NOT NULL,
+		  `inv_due_date_days` int(3) NOT NULL,
 		  PRIMARY KEY (id)
 		) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;";
 
@@ -353,7 +381,7 @@ class MW_QBO_Desktop_Activator {
 
 		}		
 		
-		//update_option( 'mw_wc_qbo_desk_save_log_for', 30);
+		update_option( 'mw_wc_qbo_desk_save_log_for', 30);
 		//update_option( 'mw_wc_qbo_desk_tax_format', 'TaxExclusive');		
 		
 		update_option( 'mw_wc_qbo_desk_rt_push_enable', 'true');
@@ -374,6 +402,14 @@ class MW_QBO_Desktop_Activator {
 		update_option( 'mw_wc_qbo_desk_hide_vpp_fmp_pages', 'true');
 		
 		update_option( 'mw_wc_qbo_desk_customer_match_by_name', 'true');
+		
+		/**/
+		update_option( 'mw_wc_qbo_desk_wc_cus_view_name', 'first_name_last_name');
+		
+		update_option( 'mw_wc_qbo_desk_dmcb_fval', 'm_email_dn');
+		
+		//
+		update_option( 'mw_wc_qbo_desk_auto_refresh_new_cust_prod', 'true');
 	}
 	
 	protected static function do_after_activate(){

@@ -221,6 +221,36 @@ if ( ! class_exists( 'WPPFM_Channel' ) ) :
 			}
 		}
 
+		/**
+		 * Returns the name of the channel for a specific feed.
+		 *
+		 * @param string $feed_id The feed id.
+		 *
+		 * @since 2.20.0
+		 * @return string The name of the channel
+		 */
+		public function get_channel_name_from_feed_id( $feed_id ) {
+			$queries_class = new WPPFM_Queries();
+
+			$feed_data = $queries_class->get_feed_row( $feed_id );
+			return $this->get_channel_name( $feed_data->channel_id );
+		}
+
+		/**
+		 * Returns the short name of the channel for a specific feed.
+		 *
+		 * @param string $feed_id The feed id.
+		 *
+		 * @since 2.20.0
+		 * @return string The short name of the channel
+		 */
+		public function get_channel_short_name_from_feed_id( $feed_id ) {
+			$queries_class = new WPPFM_Queries();
+
+			$feed_data = $queries_class->get_feed_row( $feed_id );
+			return $this->get_channel_short_name( $feed_data->channel_id );
+		}
+
 		private function get_channel_file_version( $channel_name, $rerun_counter ) {
 			if ( $rerun_counter < 3 ) {
 				if ( class_exists( 'WPPFM_' . ucfirst( $channel_name ) . '_Feed_Class' ) ) {

@@ -225,8 +225,8 @@ class Wt_Import_Export_For_Woo_Basic_Export_Ajax
 
 		/* take template name from post data, if not then create from time stamp */
 		$template_name=(isset($_POST['template_name']) ? sanitize_text_field($_POST['template_name']) : date('d-M-Y h:i:s A'));
-		
-		$out['name']=$template_name;
+		$template_name = stripslashes($template_name);
+		$out['name']= $template_name;
 		$out['id']=0;
 		$out['status']=1;
 
@@ -300,6 +300,7 @@ class Wt_Import_Export_For_Woo_Basic_Export_Ajax
 				{
 					$out['id']=$this->selected_template;
 					$out['name']=$template_name;
+					$out['msg']=__('Template updated successfully');
 					return $out;
 				}
 			}else
@@ -316,6 +317,7 @@ class Wt_Import_Export_For_Woo_Basic_Export_Ajax
 				if($wpdb->insert($tb, $insert_data, $insert_data_type)) //success
 				{
 					$out['id']=$wpdb->insert_id;
+					$out['msg']=__('Template saved successfully');
 					return $out;
 				}
 			}

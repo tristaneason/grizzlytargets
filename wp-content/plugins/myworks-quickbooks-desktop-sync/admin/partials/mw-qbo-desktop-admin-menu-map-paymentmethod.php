@@ -58,7 +58,15 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 						
 						if(isset($_POST[$p_method.'__'.$p_cur.'_er'])){
 							$p_map_er = 1;
-						}						
+						}
+						
+						$p_map_tfnli = 0;
+						
+						if(isset($_POST[$p_method.'__'.$p_cur.'_etfngli'])){
+							$p_map_tfnli = 1;
+						}
+						
+						$tfnli_item_ref = (isset($_POST[$p_method.'__'.$p_cur.'_tfnliqp']))?$_POST[$p_method.'__'.$p_cur.'_tfnliqp']:'';
 						
 						$term_id = (isset($_POST[$p_method.'__'.$p_cur.'_term']))?$_POST[$p_method.'__'.$p_cur.'_term']:'';
 						//$qb_p_method_id = (isset($_POST[$p_method.'__'.$p_cur.'_qbpmethod']))?$_POST[$p_method.'__'.$p_cur.'_qbpmethod']:'';
@@ -71,6 +79,11 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 						
 						$qb_ip_ar_acc_id = (isset($_POST[$p_method.'__'.$p_cur.'_qipara']))?$_POST[$p_method.'__'.$p_cur.'_qipara']:'';
 						
+						$inv_due_date_days = 0;
+						if(isset($_POST[$p_method.'__'.$p_cur.'_iddd'])){
+							$inv_due_date_days = (int) $_POST[$p_method.'__'.$p_cur.'_iddd'];
+						}
+						
 						//save
 						$pm_map_save_data = array();
 						
@@ -81,10 +94,13 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 						$pm_map_save_data['enable_payment'] = $p_map_ep;
 						//
 						$pm_map_save_data['enable_refund'] = $p_map_er;
+						$pm_map_save_data['enable_tfnli'] = $p_map_tfnli;
 						
 						$pm_map_save_data['qb_p_method_id'] = $qb_p_method_id;
 						
 						$pm_map_save_data['term_id_str'] = (string) $term_id;
+						
+						$pm_map_save_data['tfnli_item_ref'] = (string) $tfnli_item_ref;
 						
 						
 						//
@@ -95,6 +111,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 						$pm_map_save_data['qb_cr_ba_id'] = $qb_cr_ba_id;
 						
 						$pm_map_save_data['qb_ip_ar_acc_id'] = $qb_ip_ar_acc_id;
+						
+						$pm_map_save_data['inv_due_date_days'] = $inv_due_date_days;
 						
 						$pm_map_save_data = array_map(array($MWQDC_LB, 'sanitize'), $pm_map_save_data);
 						//$MWQDC_LB->_p($pm_map_save_data);die;					
@@ -154,6 +172,16 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 		'SalesOrder' => 'SalesOrder',
 		'Estimate' => 'Estimate'										
 	);
+	
+	$wo_qsa = ($MWQDC_LB->get_option('mw_wc_qbo_desk_order_as_sales_receipt')=='true')?'SalesReceipt':'Invoice';
+	if($wo_qsa!='Invoice' && $wo_qsa!='SalesReceipt'){
+		$wo_qsa = 'Invoice';
+	}
+	
+	$qbo_product_options = '';
+	if(!$MWQDC_LB->option_checked('mw_wc_qbo_desk_select2_ajax')){
+		$qbo_product_options = $MWQDC_LB->option_html('', $wpdb->prefix.'mw_wc_qbo_desk_qbd_items','qbd_id','name','','name ASC','',true);
+	}
 ?>
 <?php require_once plugin_dir_path( __FILE__ ) . 'mw-qbo-desktop-admin-menu-map-nav.php';?>
 <style>
@@ -341,6 +369,67 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 									
 									<tr class="advanced_payment_sync">
 										<td height="40">
+											Enable Transaction Fee As Negative Line Item
+										</td>
+										<?php foreach($wc_currency_list as $c_val){?>			
+										<td>
+											<input class="pm_chk" type="checkbox" value="1" name="<?php echo $pm_key;?>__<?php echo $c_val;?>_etfngli" id="<?php echo $pm_key;?>__<?php echo $c_val;?>_etfngli">
+										</td>
+										<?php }?>
+										<td>
+										<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+											<span class="tooltiptext"><?php echo __('Enable this to sync transaction fee as negative line item in the order.','mw_wc_qbo_desk') ?></span>
+										</div>
+										</td>
+									</tr>
+									
+									<tr class="advanced_payment_sync">
+										<td height="40">
+											Transaction Fee Negative Line Item Product
+										</td>
+										
+										<?php foreach($wc_currency_list as $c_val){?>			
+										<td class="new-widt">
+											<?php
+												$dd_options = '<option value=""></option>';
+												$dd_ext_class = '';
+												if($MWQDC_LB->option_checked('mw_wc_qbo_desk_select2_ajax')){
+													$dd_ext_class = 'mwqs_dynamic_select_desk';
+													$itemid = '';
+													if(is_array($pm_map_data) && count($pm_map_data)){
+														 foreach($pm_map_data as $list){
+															if($list['wc_paymentmethod'] == $pm_key && $list['currency'] == $c_val){
+																$itemid = $list['tfnli_item_ref'];
+																break;
+															}
+														 }
+													}
+													
+													if(!empty($itemid)){
+														$qb_item_name = $MWQDC_LB->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_items','name','qbd_id',$itemid);
+														if($qb_item_name!=''){
+															$dd_options = '<option value="'.$itemid.'">'.$qb_item_name.'</option>';
+														}
+													}
+												}else{
+													$dd_options.=$qbo_product_options;
+												}
+											?>
+											
+											<select class="qbo_select" name="<?php echo $pm_key;?>__<?php echo $c_val;?>_tfnliqp" id="<?php echo $pm_key;?>__<?php echo $c_val;?>_tfnliqp">												
+												<?php echo $dd_options;?>
+											</select>
+										</td>
+										<?php }?>
+										<td>
+											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+											  <span class="tooltiptext"><?php echo __('Choose the QuickBooks product for txn fee negative line item.','mw_wc_qbo_desk') ?></span>
+											</div>
+										</td>										
+									</tr>
+									
+									<tr class="advanced_payment_sync">
+										<td height="40">
 											Sync artificial payment when order is marked as: 	</br>
 												<span style="font-size:10px;color:grey;">This setting is ONLY for gateways like COD or Check where the payment is actually not recorded in WooCommerce.</span> 											
 										</td>
@@ -359,6 +448,28 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 											</div>
 										</td>	
 									</tr>
+									
+									<?php if($wo_qsa =='Invoice'):?>
+									<tr class="advanced_payment_sync">
+										<td height="40">
+											<?php echo __('QuickBooks Invoice Due Date Delay','mw_wc_qbo_desk') ?>											
+										</td>
+										
+										<?php foreach($wc_currency_list as $c_val){?>			
+										<td class="new-widt">
+											<select class="qbo_select" name="<?php echo $pm_key;?>__<?php echo $c_val;?>_iddd" id="<?php echo $pm_key;?>__<?php echo $c_val;?>_iddd">
+												<option value="0">0</option>
+												<?php echo $MWQDC_LB->only_option('',$MWQDC_LB->due_days_list_arr());?>
+											</select>
+										</td>
+										<?php }?>
+										<td>
+											<div class="material-icons tooltipped right tooltip"><?php echo __('?','mw_wc_qbo_desk') ?>
+											  <span class="tooltiptext"><?php echo __('Select the amount of days from the order date to set the QuickBooks Invoice Due Date field. The default is 0 - the same date as the WooCommerce order.','mw_wc_qbo_desk') ?></span>
+											</div>
+										</td>	
+									</tr>
+									<?php endif;?>
 									
 								</table>
 								</div>
@@ -530,6 +641,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 							$p_map_ep = $list['enable_payment'];
 							//
 							$p_map_er = $list['enable_refund'];
+							$p_map_tfnli = $list['enable_tfnli'];							
+							
+							$tfnli_item_ref = $list['tfnli_item_ref'];
 							
 							$qb_p_method_id = $list['qb_p_method_id'];
 							$term_id = $list['term_id_str'];
@@ -538,6 +652,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 							$qb_cr_ba_id = $list['qb_cr_ba_id'];
 							
 							$qb_ip_ar_acc_id = $list['qb_ip_ar_acc_id'];
+							$inv_due_date_days = $list['inv_due_date_days'];
 							
 						?>
 						jQuery('#pm__<?php echo $w_p_method;?>__<?php echo $p_map_cur;?>').val('<?php echo $p_map_ac_id;?>');
@@ -548,6 +663,14 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 						
 						<?php if($p_map_er==1):?>
 						jQuery('#<?php echo $w_p_method;?>__<?php echo $p_map_cur;?>_er').prop('checked', true);
+						<?php endif;?>
+						
+						<?php if($p_map_tfnli==1):?>
+						jQuery('#<?php echo $w_p_method;?>__<?php echo $p_map_cur;?>_etfngli').prop('checked', true);
+						<?php endif;?>
+						
+						<?php if(!empty($tfnli_item_ref)):?>
+						jQuery('#<?php echo $w_p_method;?>__<?php echo $p_map_cur;?>_tfnliqp').val('<?php echo $tfnli_item_ref;?>');
 						<?php endif;?>
 						
 						jQuery('#<?php echo $w_p_method;?>__<?php echo $p_map_cur;?>_term').val('<?php echo $term_id;?>');
@@ -564,6 +687,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 						
 						<?php if(!empty($qb_ip_ar_acc_id)):?>
 						jQuery('#<?php echo $w_p_method;?>__<?php echo $p_map_cur;?>_qipara').val('<?php echo $qb_ip_ar_acc_id;?>');
+						<?php endif;?>
+						
+						<?php if($wo_qsa =='Invoice'):?>
+						jQuery('#<?php echo $w_p_method;?>__<?php echo $p_map_cur;?>_iddd').val('<?php echo $inv_due_date_days;?>');
 						<?php endif;?>
 						
 						<?php endforeach;?>
@@ -726,7 +853,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 						}						
 					}
 				</script>
-				<?php echo $MWQDC_LB->get_select2_js();?>
+				<?php echo $MWQDC_LB->get_select2_js('.qbo_select','qbo_product');?>
 			<?php endif;?>
 			</div>
 		</div>

@@ -40,6 +40,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 				$save_data['class_id'] = (isset($_POST['class_map_product_'.$key]))?$_POST['class_map_product_'.$key]:'';
 				
 				$save_data['qb_ar_acc_id'] = (isset($_POST['aracc_map_product_'.$key]))?$_POST['aracc_map_product_'.$key]:'';
+				$save_data['qb_ivnt_site'] = (isset($_POST['ivntst_map_product_'.$key]))?$_POST['ivntst_map_product_'.$key]:'';
 				
 				//
 				if(isset($_POST['allow_lid_product_'.$key])){
@@ -125,12 +126,30 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 	$qbo_class_options.= ''.$qbo_class_options_value;
 	
 	$check_sh_paamc_hash = $MWQDC_LB->check_sh_paamc_hash();
+	$check_sh_qbispplm_hash = $MWQDC_LB->check_sh_qbispplm_hash();	
 	
 	/**/
-	$dd_whr = "acc_type ='AccountsReceivable'";
-	$qbo_ar_acc_options_value = $MWQDC_LB->option_html('', $wpdb->prefix.'mw_wc_qbo_desk_qbd_list_account','qbd_id','name',$dd_whr,'name ASC','',true);
+	$qbo_ar_acc_options_value = '';
+	if($check_sh_paamc_hash){
+		$dd_whr = "acc_type ='AccountsReceivable'";
+		$qbo_ar_acc_options_value = $MWQDC_LB->option_html('', $wpdb->prefix.'mw_wc_qbo_desk_qbd_list_account','qbd_id','name',$dd_whr,'name ASC','',true);
+	}	
+	
 	$qbo_ar_acc_options = '<option value=""></option>';	
 	$qbo_ar_acc_options.= ''.$qbo_ar_acc_options_value;
+	
+	$qbo_ivnt_site_options_value = '';
+	if($check_sh_qbispplm_hash){
+		if($MWQDC_LB->is_inv_site_bin_allowed()){
+			$qbo_ivnt_site_options_value = $MWQDC_LB->get_inventory_site_bin_dd_options();//true
+			//$MWQDC_LB->_p($qbo_ivnt_site_options_value);
+		}else{
+			$qbo_ivnt_site_options_value = $MWQDC_LB->option_html('', $wpdb->prefix.'mw_wc_qbo_desk_qbd_list_inventorysite','qbd_id','name','','name ASC','',true);
+		}
+	}	
+	
+	$qbo_ivnt_site_options = '<option value=""></option>';	
+	$qbo_ivnt_site_options.= ''.$qbo_ivnt_site_options_value;
 	
 	$selected_options_script = '';
 	
@@ -139,6 +158,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 	$t_qp_w = '14%';
 	$t_qc_w = '13%';
 	$t_aa_w = '13%';
+	
+	$t_is_w = '13%';
 	
 	if(!$check_sh_paamc_hash){
 		$t_qp_w = '20%';
@@ -156,16 +177,19 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 ?>
 <?php require_once plugin_dir_path( __FILE__ ) . 'mw-qbo-desktop-admin-menu-map-nav.php';?>
 
-<?php if($check_sh_paamc_hash):?>
+<?php 
+if($check_sh_paamc_hash || $check_sh_qbispplm_hash):
+$s2_dd_w = ($check_sh_paamc_hash && $check_sh_qbispplm_hash)?150:200;
+?>
 <style>
 	.mw-qbo-sync-settings-table select{
 		float: none !important;
-		width: 200px !important;
+		width:<?php echo $s2_dd_w;?>px !important;
 	}
 	
 	.mw-qbo-sync-settings-table .select2-container{
 		float: none !important;
-		width: 200px !important;
+		width: <?php echo $s2_dd_w;?>px !important;
 	}
 </style>
 <?php endif;?>
@@ -257,6 +281,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 											</th>
 											<?php endif;?>
 											
+											<?php if($check_sh_qbispplm_hash):?>
+											<th width="<?php echo $t_is_w;?>">
+												QB Inventory Site
+											</th>
+											<?php endif;?>
+											
 											<?php if($mw_wc_qbo_desk_skip_os_lid):?>
 											<th width="3%">&nbsp;</th>
 											<?php endif;?>
@@ -317,6 +347,19 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 											<?php 
 											if($p_val['qb_ar_acc_id']!=''){
 												$selected_options_script.='jQuery(\'#aracc_map_product_'.$p_val['ID'].'\').val(\''.$p_val['qb_ar_acc_id'].'\');';
+											}
+											?>
+										</td>
+										<?php endif;?>
+										
+										<?php if($check_sh_qbispplm_hash):?>
+										<td>									
+											<select class="mw_wc_qbo_sync_select2_desk" name="ivntst_map_product_<?php echo $p_val['ID']?>" id="ivntst_map_product_<?php echo $p_val['ID']?>">
+												<?php echo $qbo_ivnt_site_options;?>
+											</select>
+											<?php 
+											if($p_val['qb_ivnt_site']!=''){
+												$selected_options_script.='jQuery(\'#ivntst_map_product_'.$p_val['ID'].'\').val(\''.$p_val['qb_ivnt_site'].'\');';
 											}
 											?>
 										</td>

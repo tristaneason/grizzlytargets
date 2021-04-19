@@ -24,6 +24,7 @@ QuickBooks_Loader::load('/QuickBooks/QBXML/Object/Generic.php');
  * 
  */
 QuickBooks_Loader::load('/QuickBooks/QBXML/Object/Estimate/EstimateLine.php');
+QuickBooks_Loader::load('/QuickBooks/QBXML/Object/Estimate/EstimateLineGroup.php');
 
 /**
  * 
@@ -528,6 +529,14 @@ class QuickBooks_QBXML_Object_Estimate extends QuickBooks_QBXML_Object
 		return $this->addListItem('EstimateLine', $obj);
 	}
 	
+	public function addEstimateLineGroup($obj)
+	{		
+		$lines = $this->get('EstimateLineGroup');
+		$lines[] = $obj;
+		
+		return $this->set('EstimateLineGroup', $lines);
+	}
+	
 	public function setEstimateLine($i, $obj)
 	{
 		
@@ -596,12 +605,22 @@ class QuickBooks_QBXML_Object_Estimate extends QuickBooks_QBXML_Object
 					$this->_object['EstimateLineAdd'] = $this->_object['EstimateLine'];
 				}
 				
+				if (isset($this->_object['EstimateLineGroup']))
+				{
+					$this->_object['EstimateLineGroupAdd'] = $this->_object['EstimateLineGroup'];
+				}
+				
 				break;
 			case 'EstimateModRq':
 				
 				if (isset($this->_object['EstimateLine']))
 				{
 					$this->_object['EstimateLineMod'] = $this->_object['EstimateLine'];	
+				}
+				
+				if (isset($this->_object['EstimateLineGroup']))
+				{
+					$this->_object['EstimateLineGroupMod'] = $this->_object['EstimateLineGroup'];	
 				}
 				
 				break;
@@ -626,12 +645,29 @@ class QuickBooks_QBXML_Object_Estimate extends QuickBooks_QBXML_Object
 					$obj->setOverride('EstimateLineAdd');
 				}
 				
+				if (!empty($object['EstimateLineGroupAdd'])){
+					
+					foreach ($object['EstimateLineGroupAdd'] as $key => $obj)
+					{
+						$obj->setOverride('EstimateLineGroupAdd');
+					}
+				}
+				
 				break;
 			case QUICKBOOKS_MOD_ESTIMATE:
 				if (isset($object['EstimateLine']))
 				{
 					$object['EstimateLineMod'] = $object['EstimateLine'];
 				}
+				
+				if (!empty($object['EstimateLineGroupMod'])){
+					
+					foreach ($object['EstimateLineGroupMod'] as $key => $obj)
+					{
+						$obj->setOverride('EstimateLineGroupMod');
+					}
+				}
+				
 				break;
 		}
 		

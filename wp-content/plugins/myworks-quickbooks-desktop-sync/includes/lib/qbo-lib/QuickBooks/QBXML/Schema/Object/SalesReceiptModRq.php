@@ -106,6 +106,10 @@ class QuickBooks_QBXML_Schema_Object_SalesReceiptModRq extends QuickBooks_QBXML_
   'SalesReceiptLineMod Amount' => 'AMTTYPE',
   'SalesReceiptLineMod InventorySiteRef ListID' => 'IDTYPE',
   'SalesReceiptLineMod InventorySiteRef FullName' => 'STRTYPE',
+  //
+  'SalesReceiptLineMod InventorySiteLocationRef ListID' => 'IDTYPE',
+  'SalesReceiptLineMod InventorySiteLocationRef FullName' => 'STRTYPE',
+  
   'SalesReceiptLineMod ServiceDate' => 'DATETYPE',
   'SalesReceiptLineMod SalesTaxCodeRef ListID' => 'IDTYPE',
   'SalesReceiptLineMod SalesTaxCodeRef FullName' => 'STRTYPE',
@@ -223,6 +227,10 @@ class QuickBooks_QBXML_Schema_Object_SalesReceiptModRq extends QuickBooks_QBXML_
   'SalesReceiptLineMod Amount' => 0,
   'SalesReceiptLineMod InventorySiteRef ListID' => 0,
   'SalesReceiptLineMod InventorySiteRef FullName' => 209,
+  //
+  'SalesReceiptLineMod InventorySiteLocationRef ListID' => 0,
+  'SalesReceiptLineMod InventorySiteLocationRef FullName' => 209,
+  
   'SalesReceiptLineMod ServiceDate' => 0,
   'SalesReceiptLineMod SalesTaxCodeRef ListID' => 0,
   'SalesReceiptLineMod SalesTaxCodeRef FullName' => 209,
@@ -340,6 +348,10 @@ class QuickBooks_QBXML_Schema_Object_SalesReceiptModRq extends QuickBooks_QBXML_
   'SalesReceiptLineMod Amount' => true,
   'SalesReceiptLineMod InventorySiteRef ListID' => true,
   'SalesReceiptLineMod InventorySiteRef FullName' => true,
+  //
+   'SalesReceiptLineMod InventorySiteLocationRef ListID' => true,
+  'SalesReceiptLineMod InventorySiteLocationRef FullName' => true,
+  
   'SalesReceiptLineMod ServiceDate' => true,
   'SalesReceiptLineMod SalesTaxCodeRef ListID' => true,
   'SalesReceiptLineMod SalesTaxCodeRef FullName' => true,
@@ -455,6 +467,10 @@ class QuickBooks_QBXML_Schema_Object_SalesReceiptModRq extends QuickBooks_QBXML_
   'SalesReceiptLineMod Amount' => 999.99,
   'SalesReceiptLineMod InventorySiteRef ListID' => 999.99,
   'SalesReceiptLineMod InventorySiteRef FullName' => 999.99,
+  //
+  'SalesReceiptLineMod InventorySiteLocationRef ListID' => 999.99,
+  'SalesReceiptLineMod InventorySiteLocationRef FullName' => 999.99,
+  
   'SalesReceiptLineMod ServiceDate' => 999.99,
   'SalesReceiptLineMod SalesTaxCodeRef ListID' => 999.99,
   'SalesReceiptLineMod SalesTaxCodeRef FullName' => 999.99,
@@ -572,6 +588,10 @@ class QuickBooks_QBXML_Schema_Object_SalesReceiptModRq extends QuickBooks_QBXML_
   'SalesReceiptLineMod Amount' => false,
   'SalesReceiptLineMod InventorySiteRef ListID' => false,
   'SalesReceiptLineMod InventorySiteRef FullName' => false,
+  //
+  'SalesReceiptLineMod InventorySiteLocationRef ListID' => false,
+  'SalesReceiptLineMod InventorySiteLocationRef FullName' => false,
+  
   'SalesReceiptLineMod ServiceDate' => false,
   'SalesReceiptLineMod SalesTaxCodeRef ListID' => false,
   'SalesReceiptLineMod SalesTaxCodeRef FullName' => false,
@@ -702,6 +722,10 @@ class QuickBooks_QBXML_Schema_Object_SalesReceiptModRq extends QuickBooks_QBXML_
   'SalesReceiptLineMod Amount',
   'SalesReceiptLineMod InventorySiteRef ListID',
   'SalesReceiptLineMod InventorySiteRef FullName',
+  //
+  'SalesReceiptLineMod InventorySiteLocationRef ListID',
+  'SalesReceiptLineMod InventorySiteLocationRef FullName',
+  
   'SalesReceiptLineMod ServiceDate',
   'SalesReceiptLineMod LotNumber',
   'SalesReceiptLineMod SalesTaxCodeRef ListID',

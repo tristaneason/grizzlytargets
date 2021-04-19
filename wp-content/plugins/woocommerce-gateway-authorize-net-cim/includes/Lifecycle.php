@@ -45,7 +45,6 @@ class Lifecycle extends Framework\Plugin\Lifecycle {
 		// known upgrade versions
 		$this->upgrade_versions = [
 			'2.0.0',
-			'3.5.0'
 		];
 
 		parent::__construct( $plugin );
@@ -276,20 +275,6 @@ class Lifecycle extends Framework\Plugin\Lifecycle {
 
 
 	/**
-	 * Upgrades to v3.5.0
-	 *
-	 * @since 3.5.0
-	 */
-	protected function upgrade_to_3_5_0() {
-
-		if ( $this->get_plugin()->is_emulation_enabled() ) {
-
-			update_option( 'wc_authorize_net_emulation_previously_enabled', 'yes' );
-		}
-	}
-
-
-	/**
 	 * Performs installation tasks.
 	 *
 	 * @since 3.0.0
@@ -368,8 +353,7 @@ class Lifecycle extends Framework\Plugin\Lifecycle {
 
 		$emulation_enabled = get_option( 'wc_authorize_net_aim_emulation_enabled', false );
 
-		// set the emulation toggle
-		// other data, such as order meta, stay the same
+		// TODO remove this by March 2022 or by version 4.0.0 {FN 2021-03-24}
 		update_option( 'wc_authorize_net_emulation_enabled', $emulation_enabled ? 'yes' : 'no' );
 
 		// flag a successful migration so we can display a notice

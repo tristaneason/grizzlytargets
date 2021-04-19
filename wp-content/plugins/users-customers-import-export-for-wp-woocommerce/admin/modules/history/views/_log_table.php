@@ -26,8 +26,12 @@ if(isset($log_list) && is_array($log_list) && count($log_list)>0)
 		<tbody class="log_view_tb_tbody">
 	<?php
 	}
+
 	foreach($log_list as $key =>$log_item)
 	{
+		
+		if(!isset($log_item['row']))
+			continue;
 		?>
 		<tr>
 			<td><?php echo absint($log_item['row']); ?></td>
@@ -37,7 +41,7 @@ if(isset($log_list) && is_array($log_list) && count($log_list)>0)
 			<?php 
 				if($show_item_details)
 				{
-					$item_data=$item_type_module_obj->get_item_by_id($log_item['post_id']);					
+					$item_data=$item_type_module_obj->get_item_by_id($log_item['post_id']);				
 					if($item_data && isset($item_data['title']))
 					{
 						if(isset($item_data['edit_url']))

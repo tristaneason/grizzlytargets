@@ -258,14 +258,21 @@ function wppfm_updateFeedRowStatus( feedId, status ) {
 		case 5: // Has errors
 			feedStatusSelector.html( '<strong>' + wppfm_feed_list_form_vars.has_errors + '</strong>' );
 			feedStatusSelector.css( 'color', '#FF0000' );
-			productsSelector.html( wppfm_feed_list_form_vars.unknown );
+			productsSelector.html( wppfm_feed_list_form_vars.unknown_text );
 			feedStatusSwitchSelector.html( wppfm_feed_list_form_vars.list_activate + ' ' );
 			break;
 
 		case 6: // Failed processing
 			feedStatusSelector.html( '<strong>' + wppfm_feed_list_form_vars.processing_failed + '</strong>' );
 			feedStatusSelector.css( 'color', '#FF3300' );
-			productsSelector.html( wppfm_feed_list_form_vars.unknown );
+			productsSelector.html( wppfm_feed_list_form_vars.unknown_text );
+			feedStatusSwitchSelector.html( '' );
+			break;
+
+		case 7: // Channel not installed
+			feedStatusSelector.html( '<strong>' + wppfm_feed_list_form_vars.no_channel + '</strong>' );
+			feedStatusSelector.css( 'color', '#FF3300' );
+			productsSelector.html( wppfm_feed_list_form_vars.unknown_text );
 			feedStatusSwitchSelector.html( '' );
 			break;
 	}

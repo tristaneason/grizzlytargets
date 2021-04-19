@@ -127,14 +127,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 				$csma_new = array();
 				for($i = 0; $i < count($wq_mcf_wcf); $i++){
 					if($wq_mcf_wcf[$i]!='' && isset($wq_mcf_qbp[$i]) && $wq_mcf_qbp[$i]!=''){
-						if(empty($MWQDC_LB->get_custom_shipping_map_data_from_name($wq_mcf_wcf[$i]))){
-							$csma_new[] = array(
-								'wc_shipping_name' => $wq_mcf_wcf[$i],
-								'qb_product' => $wq_mcf_qbp[$i],
-								'qb_class' => (isset($wq_mcf_qbc[$i]) && !empty($wq_mcf_qbc[$i]))?$wq_mcf_qbc[$i]:'',
-								'qb_sv' => (isset($wq_mcf_qbs[$i]) && !empty($wq_mcf_qbs[$i]))?$wq_mcf_qbs[$i]:'',
-							);
-						}
+						$csma_new[] = array(
+							'wc_shipping_name' => $wq_mcf_wcf[$i],
+							'qb_product' => $wq_mcf_qbp[$i],
+							'qb_class' => (isset($wq_mcf_qbc[$i]) && !empty($wq_mcf_qbc[$i]))?$wq_mcf_qbc[$i]:'',
+							'qb_sv' => (isset($wq_mcf_qbs[$i]) && !empty($wq_mcf_qbs[$i]))?$wq_mcf_qbs[$i]:'',
+						);
 					}
 				}
 				
@@ -151,9 +149,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 		$MWQDC_LB->redirect($page_url);
 	}
 	
+	$is_ajax_dd = 0;
 	$qbo_product_options = '';
 	if(!$MWQDC_LB->option_checked('mw_wc_qbo_desk_select2_ajax')){
 		$qbo_product_options = $MWQDC_LB->option_html('', $wpdb->prefix.'mw_wc_qbo_desk_qbd_items','qbd_id','name','','name ASC','',true);
+	}else{
+		$is_ajax_dd = 1;
 	}
 	
 	$qbo_class_options_value = $MWQDC_LB->get_class_dropdown_list();
@@ -350,8 +351,24 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 										<tr>
 											<td><input type="text" name="wq_mcf_wcf[]" value="<?php echo $cfm_data['wc_shipping_name'];?>"></td>
 											<td>
-												<select class="mw_wc_qbo_sync_select2_desk mcf_select mcfws_nf" name="wq_mcf_qbp[]" id="wq_mcf_qbp_<?php echo $cfm_key;?>">
-													<?php echo $qbo_product_options;?>
+												<?php
+													$dd_options = '<option value=""></option>';
+													$dd_ext_class = '';
+													if($MWQDC_LB->option_checked('mw_wc_qbo_desk_select2_ajax')){
+														$dd_ext_class = 'mwqs_dynamic_select_desk';
+														if(!empty($cfm_data['qb_product'])){
+															$itemid = $cfm_data['qb_product'];
+															$qb_item_name = $MWQDC_LB->get_field_by_val($wpdb->prefix.'mw_wc_qbo_desk_qbd_items','name','qbd_id',$itemid);
+															if($qb_item_name!=''){
+																$dd_options = '<option value="'.$itemid.'">'.$qb_item_name.'</option>';
+															}
+														}
+													}else{
+														$dd_options.=$qbo_product_options;
+													}
+												?>
+												<select class="mw_wc_qbo_sync_select2_desk mcf_select mcfws_nf <?php echo $dd_ext_class;?>" name="wq_mcf_qbp[]" id="wq_mcf_qbp_<?php echo $cfm_key;?>">
+													<?php echo $dd_options;?>
 												</select>
 												<?php $selected_options_script.='jQuery(\'#wq_mcf_qbp_'.$cfm_key.'\').val(\''.$cfm_data['qb_product'].'\');';?>
 											</td>
@@ -390,21 +407,30 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 												<input type="text" name="wq_mcf_wcf[]" value="">
 											</td>
 											<td>
-												<select class="mw_wc_qbo_sync_select2_desk mcf_select mcfws_nf" name="wq_mcf_qbp[]">
-													<?php echo $qbo_product_options;?>
+												<?php
+													$dd_options = '<option value=""></option>';
+													$dd_ext_class = '';
+													if($MWQDC_LB->option_checked('mw_wc_qbo_desk_select2_ajax')){
+														$dd_ext_class = 'mwqs_dynamic_select_desk';
+													}else{
+														$dd_options.=$qbo_product_options;
+													}
+												?>
+												<select class="mw_wc_qbo_sync_select2_desk mcf_select mcfws_nf csfm_s2n <?php echo $dd_ext_class;?>" name="wq_mcf_qbp[]">
+													<?php echo $dd_options;?>
 												</select>
 											</td>
 											
 											<?php if(!empty($qbo_class_options_value)):?>
 											<td>
-												<select class="mw_wc_qbo_sync_select2_desk mcf_select mcfws_nf" name="wq_mcf_qbc[]">
+												<select class="mw_wc_qbo_sync_select2_desk mcf_select mcfws_nf csfm_s2n" name="wq_mcf_qbc[]">
 													<?php echo $qbo_class_options;?>
 												</select>
 											</td>
 											<?php endif;?>
 											
 											<td>
-												<select class="mw_wc_qbo_sync_select2_desk mcf_select mcfws_nf" name="wq_mcf_qbs[]">
+												<select class="mw_wc_qbo_sync_select2_desk mcf_select mcfws_nf csfm_s2n" name="wq_mcf_qbs[]">
 													<?php echo $qbd_shipmethods_options;?>
 												</select>
 											</td>
@@ -423,7 +449,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 					<div class="row">
 						<?php wp_nonce_field( 'myworks_wc_qbo_sync_map_wc_qbo_shipping_method_desk', 'map_wc_qbo_shipping_method_desk' ); ?>
 						<div class="input-field col s12 m6 l4">
-							<button id="mw_smm_sbtn" class="waves-effect waves-light btn save-btn mw-qbo-sync-green" disabled>Save</button>
+							<button id="mw_smm_sbtn" class="waves-effect waves-light btn save-btn mw-qbo-sync-green">Save</button> <!-- disabled-->
 						</div>
 					</div>
 				</form>
@@ -437,7 +463,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 </div>
 <?php if($selected_options_script!=''):?>
 <script type="text/javascript">
-jQuery(document).ready(function(){
+jQuery(document).ready(function($){
 	<?php if($MWQDC_LB->option_checked('mw_wc_qbo_desk_ed_cust_ship_mpng_smmp')):?>
 	var max_fields = 1000;
 	var x = <?php echo (int) $custom_shipping_map_count;?>;
@@ -456,6 +482,35 @@ jQuery(document).ready(function(){
 			na_fields = na_fields.trim();
 			//alert(na_fields);
 			$("#wq_mcf_tb").append(na_fields);
+			
+			/**/
+			$('.csfm_s2n').hover(function(){
+				var is_ajax_dd = <?php echo $is_ajax_dd;?>;
+				if(jQuery(this).hasClass('mwqs_dynamic_select_desk') && is_ajax_dd==1){
+					<?php $json_data_url = site_url('index.php?mw_qbo_desktop_public_get_json_item_list=1&item=qbo_product');?>
+				   jQuery(this).select2({
+					   ajax: {
+						url: "<?php echo $json_data_url;?>",
+						dataType: 'json',
+						delay: 250,
+						data: function (params) {
+							return {
+								q: params.term // search term
+							};
+						},
+						processResults: function (data) {
+							return {
+								results: data
+							};
+						},
+						cache: true
+					},
+					minimumInputLength: 3
+				   });
+			  }else{
+				  jQuery(this).select2();
+			  }
+			});
 		}else{
 			alert('Max '+max_fields+' allowed.')
 		}
@@ -470,7 +525,7 @@ jQuery(document).ready(function(){
 	
 	<?php echo $selected_options_script;?>
 	
-	jQuery('#mw_smm_sbtn').removeAttr('disabled');
+	//jQuery('#mw_smm_sbtn').removeAttr('disabled');
 });
 </script>
 <?php endif;?>

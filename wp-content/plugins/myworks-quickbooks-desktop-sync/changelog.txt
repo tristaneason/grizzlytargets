@@ -1,13 +1,14 @@
 === WooCommerce Sync for QuickBooks Desktop Changelog ===
 
-v1.4.12 (2019.05.31)
+= 2019-05-31 - version 1.4.12 =
 * Added setting to sync orders with the date of either the order date or the date paid
 * Improved license check to resolve issues with sync becoming unlicensed
 * Resolved false positive error message encountered in Wordpress 5.2 in some rare cases
 * Added custom line item mapping functionality in Map > Shipping Methods
 * Improved Push > Orders/Payments pages to set filter to last 30 days when first loading, for performance
 
-v1.4.11 (2019.05.22)
+= 2019-05-22 - version 1.4.11 =
+
 * Added optimizations to Map > Variations to improve loading speed
 * Added compatibility with connecting over IPV6 addresses
 * Added option in MyWorks Sync > Connection page to control per-connection batch size
@@ -19,18 +20,23 @@ v1.4.11 (2019.05.22)
 * Improved syncing product variations by adding support to ensure variation names are unique when syncing to QuickBooks
 * Improved syncing new customers into Quickbooks - with the "Sales Tax Code" of the customer following whether the related order is taxable or not.
 
-v1.4.10 (2019.03.26)
+
+= 2019-03-26 - version 1.4.10 =
+
 * Resolved UI issue where Add to Queue button was no longer in place on WooCommerce > Orders page
 * Resolved UI issue where Map > Payment 
 
-v1.4.9 (2019.03.18)
+
+= 2019-03-18 - version 1.4.9 =
+
 * Improved support for v1.13.0 of Sequential Order Numbers Pro
 * Improved support when adding post-Processing orders and their payments to the queue
 * Added setting to add a subtotal line at the bottom of orders synced into QuickBooks
 * Improved minor UI elements
 
 
-v1.4.8 (2019.03.18)
+= 2019-03-18 - version 1.4.8 =
+
 * Added status of "Queued" for orders already in the queue
 * Resolved rare issue where orders with free shipping error out with Error:The "" field has an invalid value "".
 * Improved handling when adding both an order + payment to queue on status other than Processing
@@ -42,11 +48,13 @@ v1.4.8 (2019.03.18)
 * Improved support with WooCommerce MultiLocation
 
 
-v1.4.7 (2019.01.16)
+= 2019-01-16 - version 1.4.7 =
+
 * Resolved issues with adding orders to the queue from WooCommerce > Orders
 
 
-v1.4.6 (2019.01.07)
+= 2019-01-07 - version 1.4.6 =
+
 * Added a setting to hide variable parent products from Map/Push > Products by default
 * Added a setting to read inventory levels from sales orders not in an inventory site when syncing inventory from QuickBooks
 * Added a setting to control if an order should show as "To Be Printed" once synced into Quickbooks
@@ -54,7 +62,8 @@ v1.4.6 (2019.01.07)
 * Improved support for syncing new customers into QuickBooks - as non-taxable, if the accompanying order is also non-taxable
 
 
-v1.4.5 (2018.12.04)
+= 2018-12-04 - version 1.4.5 =
+
 * Confirmed compatibility with WooCommerce 3.5.0
 * Confirmed compatibility with Wordpress 5
 * Added support for Advanced Inventory Bins
@@ -69,7 +78,7 @@ v1.4.5 (2018.12.04)
 * Added the administrator and subscriber role to our Mapping Settings to be automatically recognized as customers by default
 
 
-V 1.4.3 (2018.12.04)
+= 2018-12-04 - version 1.4.3 =
 
 * Improved compatibility with syncing sales orders and associated payments separately
 * Added ability to sync multiple shipping line items to QuickBooks - coupled with standalone helper plugin
@@ -77,7 +86,8 @@ V 1.4.3 (2018.12.04)
 * Improved compatibility with non-mappable payment methods to sync a Sales Receipt into QuickBooks that's deposited into Undeposited Funds
 * Improved compatibility with Advanced Inventory for multiple Inventory Sites and Bin support
 
-V 1.4.1 (2018.10.04)
+
+= 2018-10-04 - version 1.4.1 =
 
 * Improved setting to Use QuickBooks Line Item Description to be set on a per-item level
 * Improved Shipping Method mapping to map Ship Via field in QuickBooks on a per-gateway level in WooCommerce
@@ -86,7 +96,8 @@ V 1.4.1 (2018.10.04)
 * Improved setting to minimize/eliminate the amount of logs being written to our database tables
 * Improved setting for using QuickBooks Sequence # - so the Woo order number is appended to any other contents of the memo field instead of overwriting
 
-V 1.4.0 (2018.09.20)
+
+= 2018-09-20 - version 1.4.0 =
 
 * Improved ability to add the complete order/payment to the Queue from the Woo > Orders page.
 * Added Barcode and MPN values to the Product Automap functionality if Advanced Inventory is enabled.
@@ -122,8 +133,7 @@ V 1.4.0 (2018.09.20)
 * Added functionality to support pushing existing mapped customers into QuickBooks to update their mapped customer record in QuickBooks
 
 
-
-V 1.3.4 (2018.06.29)
+= 2018-06-29 - version 1.3.4 =
 
 * Added setting in Settings > Mappings to adjust display name format for QuickBooks customers on mapping pages
 * Added setting to sync orders to QuickBooks as Estimates
@@ -138,7 +148,7 @@ V 1.3.4 (2018.06.29)
 * Improved compatibility for PHP 7.2
 
 
-V 1.3.3
+= 2018-xx-xx - version 1.3.3 =
 
 * Confirmed compatibility for WooCommerce 3.4.1 and PHP 7.2
 * Improved display of how Parent:Child customers show in Mapping pages
@@ -155,18 +165,18 @@ V 1.3.3
 * Added a setting to choose how to display WooCommerce names in mapping pages
 
 
-V 1.3.2
+= 2018-xx-xx - version 1.3.2 =
 
 * Improved logging of scenarios where no updated inventory needed to be synced from QuickBooks into WooCommerce
 * Improved customer/product automapping when characters are involved
 
 
-V 1.3.1
+= 2018-xx-xx - version 1.3.1 =
 
 * Resolved issue with new site activation errors
 
 
-V 1.3.0
+= 2018-xx-xx - version 1.3.0 =
 
 * When pushing multiple existing orders made by one guest, made sure that only one instance of the customer is in the queue at one time
 * Added ability to search Push > Payments by Order #
@@ -180,15 +190,14 @@ V 1.3.0
 * Ensured Sales Receipts follow Payment Method mappings when syncing into QuickBooks
 * Improved Variation automap by SKU to be compatible with multi-level products/parents in QuickBooks
 
-
-V 1.2.2
+= version 1.2.2 =
 
 * Improved tax setting to specially designate a shipping tax code
 * Improved Avalara compatibility when syncing orders to QB as Sales Receipts
 * Improved general Aelia compatibility to set multiple currency columns in Map > Payment Method
 
 
-V 1.2.1
+= version 1.2.1 =
 
 * Added functionality to unlink products/variations in Push pages
 * Added tax setting in MyWorks Sync > Settings to specially designate a shipping tax code
@@ -198,17 +207,17 @@ V 1.2.1
 * Added error message to notify if database password includes non-supported characters
 
 
-V 1.0.0
+= version 1.0.0 =
 
 * First Launch
 
 
-V 1.0.1
+= version 1.0.1 =
 
 * Minor bug fixes
 
 
-V 1.0.2
+= version 1.0.2 =
 
 * Added RealTime Sync settings
 * Added support for Guest order syncing
@@ -216,7 +225,7 @@ V 1.0.2
 * Minor bug fixes
 
 
-V 1.0.3 
+= version 1.0.3 =
 
 * Added automap functionality for customers and products
 * Added Company Info section in Connection tab
@@ -226,24 +235,24 @@ V 1.0.3
 * Added Shipping/Coupon map pages
 
 
-V 1.0.4
+= version 1.0.4 =
 
 * Minor Bug Fixes
 
 
-V 1.0.5
+= version 1.0.5 =
 
 * Upgrade Bug Fixes
 * fopen error resolution
 * Fixed Default tab not showing initially when visiting MyWorks Sync > Settings
 
 
-V 1.0.6
+= version 1.0.6 =
 
 * Resolved minor bugs
 
 
-V 1.0.7
+= version 1.0.7 =
 
 * Added filter by stock status in Product Map page
 * Resolved issue with payment methods not saving
@@ -251,14 +260,14 @@ V 1.0.7
 * Resolved issue with "Sync all orders to one QB customer" not functioning correctly
 
 
-V 1.0.8
+= version 1.0.8 =
 
 * Added option to sync order notes to invoice memo in QB Desktop
 * Added Sync Status in Order & Mapping pages
 * Added option to sync orders as sales receipt
 
 
-V 1.0.9
+= version 1.0.9 =
 
 * Added Push > Payment tab
 * Improved Sales Receipt syncing
@@ -266,14 +275,14 @@ V 1.0.9
 * Improved support for adding orders created directly in the admin to the queue in real time
 
 
-V 1.0.10
+= version 1.0.10 =
 
 * Added setting to store/display debug log for better troubleshooting
 * Added "Unlink" option to Push > Orders to facilitate pushing an order again if need be
 * Added metrics on Dashboard tab to show customers, products & accounts loaded into the plugin
 
 
-V 1.0.11
+= version 1.0.11 =
 
 * Resolved Sales Receipt syncing bugs
 * Added number next to Queue menu to show amount of data in queue
@@ -281,48 +290,48 @@ V 1.0.11
 * Added "Add to Queue" option in WooCommerce >Orders page
 
 
-V 1.0.12
+= version 1.0.12 =
 
 * Resolved issue with separate Billing/Shipping address not syncing properly
 * Resolved minor bug issues
 
 
-V 1.0.13
+= version 1.0.13 =
 
 * Added new Sync Status design
 * Improved Payment sync functionality
 
 
-V 1.0.14
+= version 1.0.14 =
 
 * Improved multi-line address syncing
 * Added option in Miscellaneous to switch between UTF and ISO encoding
 
 
-V 1.0.15
+= version 1.0.15 =
 
 * Improved Payment Push page, and real-time payment syncing
 * Added setting to adjust locales for improved Chinese character handling
 
 
-V 1.0.16
+= version 1.0.16 =
 
 * Improved pushing products into QB Desktop
 * Improved/added Inventory level push for products to QB desktop
 
 
-V 1.0.17
+= version 1.0.17 =
 
 * Minor Bug Fixes
 
 
-V 1.0.18
+= version 1.0.18 =
 
 * Added setting to allow control of billing/address line formatting
 * Minor Bug Fixes
 
 
-V 1.0.19
+= version 1.0.19 =
 
 * Updated QBXML version to 13.0
 * Added better support for guest order syncing * to check first by email, then by name, for existing QB customer
@@ -333,7 +342,7 @@ V 1.0.19
 * Improved Inventory Sync for 0 qty levels
 
 
-V 1.0.20
+= version 1.0.20 =
 
 * Added better database upgrade handling over automatic update
 * Added dedicated Database Status tab
@@ -343,24 +352,24 @@ V 1.0.20
 * Resolved rare issue where payment would error out syncing to QB when automatically added to Queue
 
 
-V 1.0.21
+= version 1.0.21 =
 
 * Resolved issue where Settings > Automatic Sync was prohibiting customers from being added to the queue when pushing orders manually
 * Added option to Use Company Billing Address for syncing/mapping customers 
 * Added setting to limit automatic sync of orders based on order status (Completed/Processing being default)
 
 
-V 1.0.22
+= version 1.0.22 =
 
 * Added better support for non-Customer roles in WooCommerce
 
 
-V 1.0.23
+= version 1.0.23 =
 
 * Added a splash page in Map/Push pages to protect against accidentally loading customer pages with excessive records.
 
 
-V 1.1.0
+= version 1.1.0 =
 
 * Added setting to sync orders as Sales Order
 * Added Pull section to manually pull inventory levels into WooCommerce
@@ -374,7 +383,7 @@ V 1.1.0
 * Added compatibility to set QuickBooks Rep, Customer Type and Other field on global level
 
 
-V 1.1.1
+= version 1.1.1 =
 
 * Resolved minor issue with QWC connection returning Not Authenticated in some instances
 * Added Variation switch in Settings > Automatic Sync to control syncing new variations to QB
@@ -391,6 +400,7 @@ V 1.1.1
 * Confirmed WooCommerce 3.3.0 Compatibility
 
 
-V 1.1.2
+= version 1.1.2 =
+
 * Resolved minor issue with the setting to use Billing Company to map/sync customers
 * Added functionality to pull Pricing Levels from QuickBooks to WooCommerce

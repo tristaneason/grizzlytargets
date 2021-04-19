@@ -121,7 +121,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 	<div class="mw_wc_filter mwqbd_fl">
 		 <span class="search_text">Search</span>
 		  &nbsp;
-		  <input type="text" id="cl_map_search" value="<?php echo $cl_map_search;?>">
+		  <input type="text" id="cl_map_search" placeholder="NAME / EMAIL / COMPANY / ID" value="<?php echo $cl_map_search;?>">
 		  &nbsp;
 		 <span class="search_text">Role</span>
 		 &nbsp;

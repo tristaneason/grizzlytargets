@@ -136,7 +136,8 @@ foreach($form_fields as $key=>$value)
 
 	if($tr_html=="")
 	{
-		$form_data_key=(substr($value['field_name'],0,8)!=='wt_iew_' ? 'wt_iew_' : '').$value['field_name'];
+		$form_field_name = isset($value['field_name']) ? $value['field_name'] : '';
+		$form_data_key=(substr($form_field_name,0,8)!=='wt_iew_' ? 'wt_iew_' : '').$form_field_name;
 
 		/* checking field value exist in form data array */
 		if(isset($form_data[$form_data_key]))

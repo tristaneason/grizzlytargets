@@ -27,6 +27,11 @@
     padding: 0;
 }
 
+.woosb_selected ul li.disabled, .woosb_results ul li.disabled {
+    pointer-events: none;
+    opacity: .5;
+}
+
 .woosb_results ul > span {
     display: block;
     padding: 5px 10px;

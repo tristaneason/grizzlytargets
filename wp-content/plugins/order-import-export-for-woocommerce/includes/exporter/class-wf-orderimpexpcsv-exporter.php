@@ -218,15 +218,26 @@ class WF_OrderImpExpCsv_Exporter {
         }
 
         // add coupons
-        foreach ($order->get_items('coupon') as $_ => $coupon_item) {
-            $discount_amount = !empty($coupon_item['discount_amount']) ? $coupon_item['discount_amount'] : 0;
-            $coupon_items[] = implode('|', array(
-                    'code:' . $coupon_item['name'],
-                    'amount:' . wc_format_decimal($discount_amount, 2),
-            ));
-        }
-        
-        foreach ($order->get_refunds() as $refunded_items){
+		if ( (WC()->version < '4.4.0' ) ) {
+			foreach ( $order->get_items('coupon') as $_ => $coupon_item ) {
+				$discount_amount = !empty( $coupon_item[ 'discount_amount' ] ) ? $coupon_item[ 'discount_amount' ] : 0;
+				$coupon_items[]	 = implode( '|', array(
+					'code:' . $coupon_item[ 'name' ],
+					'amount:' . wc_format_decimal( $discount_amount, 2 ),
+				) );
+			}
+		} else {
+			foreach ( $order->get_coupon_codes() as $_ => $coupon_code ) {
+				$coupon_obj = new WC_Coupon($coupon_code);
+				$discount_amount = !empty( $coupon_obj->get_amount() ) ? $coupon_obj->get_amount() : 0;
+				$coupon_items[]	 = implode( '|', array(
+					'code:' . $coupon_code,
+					'amount:' . wc_format_decimal( $discount_amount, 2 ),
+				) );
+			}
+		}
+
+		foreach ($order->get_refunds() as $refunded_items){
            
            if ((WC()->version < '2.7.0')) {
                $refund_items[] = implode('|', array(

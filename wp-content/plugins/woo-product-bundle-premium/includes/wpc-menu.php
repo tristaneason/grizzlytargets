@@ -14,7 +14,7 @@ if ( ! class_exists( 'WPCleverMenu' ) ) {
 				'manage_options',
 				'wpclever',
 				array( &$this, 'welcome_content' ),
-				WPC_URI . 'assets/images/wpc-icon.png',
+				WPC_URI . 'assets/images/wpc-icon.svg',
 				26
 			);
 			add_submenu_page( 'wpclever', 'About', 'About', 'manage_options', 'wpclever' );
@@ -23,7 +23,7 @@ if ( ! class_exists( 'WPCleverMenu' ) ) {
 		function welcome_content() {
 			?>
             <div class="wpclever_welcome_page wrap">
-                <h1>WPClever.net</h1>
+                <h1>WPClever | Make clever moves</h1>
                 <div class="card">
                     <h2 class="title">About</h2>
                     <p>
@@ -31,6 +31,8 @@ if ( ! class_exists( 'WPCleverMenu' ) ) {
                         smart utilities and functionalities to life for WordPress users, especially for those on
                         WooCommerce platform.
                     </p>
+                    <p>Website: <a href="https://wpclever.net?utm_source=visit&utm_medium=menu&utm_campaign=wporg"
+                                   target="_blank">https://wpclever.net</a></p>
                 </div>
                 <div class="card wpclever_plugins">
                     <h2 class="title">Plugins</h2>
@@ -87,17 +89,6 @@ if ( ! class_exists( 'WPCleverMenu' ) ) {
 						echo 'https://wpclever.net';
 					}
 					?>
-                </div>
-                <div class="card">
-                    <h2 class="title">Contact</h2>
-                    <p>
-                        Feel free to contact us via <a
-                                href="https://wpclever.net/contact?utm_source=contact&utm_medium=menu&utm_campaign=wporg"
-                                target="_blank">contact
-                            page</a> :)<br/>
-                        Website: <a href="https://wpclever.net?utm_source=visit&utm_medium=menu&utm_campaign=wporg"
-                                    target="_blank">https://wpclever.net</a>
-                    </p>
                 </div>
             </div>
 			<?php

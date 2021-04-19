@@ -496,7 +496,7 @@ msgstr ""
 
 #: admin/templates/hubwoo-deals.php:40
 msgid ""
-"Connect with HubSpot eCommerce pipleine to create deals for your WooCommerce "
+"Connect with HubSpot eCommerce pipeline to create deals for your WooCommerce "
 "orders. "
 msgstr ""
 

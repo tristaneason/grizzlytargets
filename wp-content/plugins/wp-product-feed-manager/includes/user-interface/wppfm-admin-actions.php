@@ -92,3 +92,14 @@ function initiate_background_process() {
 
 // register the background process
 add_action( 'wp_loaded', 'initiate_background_process' );
+
+/**
+ * Makes sure the automatic feed update cron schedule is still installed.
+ *
+ * @since 2.20.0
+ */
+function wppfm_verify_feed_update_schedule_registration() {
+	wppfm_check_feed_update_schedule();
+}
+
+add_action( 'admin_menu', 'wppfm_verify_feed_update_schedule_registration' );

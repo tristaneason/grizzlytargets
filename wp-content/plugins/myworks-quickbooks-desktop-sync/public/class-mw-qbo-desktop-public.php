@@ -102,6 +102,12 @@ class MW_QBO_Desktop_Public {
 	}
 	
 	public function mw_qbo_dts_public_api_rewrite(){
+		/*
+		if(!session_id()) {
+			session_start();
+		}
+		*/
+		
 		add_rewrite_rule( 'mw-qbo-desktop-public-qwc-server.php$', 'index.php?mw_qbo_desktop_qwc_server=1', 'top' );
 		add_rewrite_rule( 'mw-qbo-desktop-public-qwc-support.php$', 'index.php?mw_qbo_desktop_qwc_support=1', 'top' );
 		

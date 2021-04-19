@@ -154,12 +154,13 @@ class MW_QBO_Desktop {
 
 		$plugin_admin = new MW_QBO_Desktop_Admin( $this->get_plugin_name(), $this->get_version() );
 
+		$this->loader->add_action( 'wp_ajax_redirect_mw_deactivation_popup', $plugin_admin, 'redirect_mw_deactivation_popup_func' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'create_admin_menus' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'mw_qbo_desktop_admin_init' );
 		
-		$this->loader->add_action( 'user_register', $plugin_admin, 'hook_user_register' );
+		//$this->loader->add_action( 'user_register', $plugin_admin, 'hook_user_register' );
 		
 		$this->loader->add_action( 'woocommerce_thankyou', $plugin_admin, 'hook_order_add' );
 		//$this->loader->add_action( 'save_post_shop_order', $plugin_admin, 'hook_order_add' );
@@ -179,6 +180,11 @@ class MW_QBO_Desktop {
 					}
 				}
 			}
+			
+			$this->loader->add_action( 'post_updated', $plugin_admin, 'hook_order_update' , 10,3 );
+			
+			$this->loader->add_action( 'post_updated', $plugin_admin, 'myworks_wc_qbo_desk_pu_product_stock_update' , 10,3 );
+			$this->loader->add_action( 'post_updated', $plugin_admin, 'myworks_wc_qbo_desk_pu_variation_stock_update' , 10,3 );
 		}
 		
 		//
@@ -192,7 +198,9 @@ class MW_QBO_Desktop {
 		$this->loader->add_action( 'woocommerce_save_product_variation', $plugin_admin, 'hook_variation_add', 999, 1 );
 		
 		//create_product_cat
-		$this->loader->add_action( 'woocommerce_product_set_stock', $plugin_admin, 'hook_product_stock_update' );
+		
+		//
+		//$this->loader->add_action( 'woocommerce_product_set_stock', $plugin_admin, 'hook_product_stock_update' );
 		//$this->loader->add_action( 'woocommerce_variation_set_stock', $plugin_admin, 'hook_variation_stock_update' );
 		
 		/**/
@@ -200,7 +208,11 @@ class MW_QBO_Desktop {
 			$this->loader->add_action( 'woocommerce_subscription_renewal_payment_complete', $plugin_admin, 'myworks_wc_qbo_desk_comt_hook_wsrpc' , 10,2 );
 		}
 		
-
+		$this->loader->add_action( 'woocommerce_delete_product_variation', $plugin_admin, 'delete_variation_mapping' );
+		
+		$this->loader->add_action( 'delete_post', $plugin_admin, 'delete_product_mapping' );
+		$this->loader->add_action( 'wp_trash_post', $plugin_admin, 'delete_product_mapping' );
+		
 		//Ajax Actions
 		//add_action( 'wp_ajax_mw_qbo_dts_generate_qwc_file', 'mw_qbo_dts_generate_qwc_file' );
 		add_action( 'wp_ajax_myworks_wc_qbo_sync_check_license_desk', 'myworks_wc_qbo_sync_check_license_desk' );

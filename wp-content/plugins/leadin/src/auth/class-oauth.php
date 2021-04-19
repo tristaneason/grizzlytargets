@@ -3,7 +3,7 @@
 namespace Leadin\auth;
 
 use Leadin\wp\User;
-use Leadin\LeadinOptions;
+use Leadin\options\LeadinOptions;
 use Leadin\rest\HubSpotApiClient;
 
 /**
@@ -17,6 +17,9 @@ class OAuth {
 	 * @return bool True if the OAuth version of the plugin is enabled or not.
 	 */
 	public static function is_enabled() {
+		// TODO this is a development flag for now.
+		// This will become the flag to indicate the user has connected with OAuth flow.
+		// return ! empty ( LeadiOptions::get( 'access_token' ) );.
 		return ! empty( get_option( 'hsdev_oauth_enabled' ) );
 	}
 

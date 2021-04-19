@@ -171,11 +171,7 @@ function wppfm_list_sql_files( $path ) {
  *
  */
 function wppfm_reinitiate_plugin() {
-	if ( ! wp_get_schedule( 'wppfm_feed_update_schedule' ) ) {
-		// add the schedule cron
-		wp_schedule_event( time(), 'hourly', 'wppfm_feed_update_schedule' );
-		add_action( 'wppfm_feed_update_schedule', 'activate_feed_update_schedules' );
-	}
+	wppfm_check_feed_update_schedule();
 
 	// remakes the database
 	$db = new WPPFM_Database_Management();
@@ -198,6 +194,19 @@ function wppfm_reinitiate_plugin() {
 	do_action( 'wppfm_plugin_reinitialized' );
 
 	return true;
+}
+
+/**
+ * Checks if the feed update schedule is registered. If its missing it will reactivate it again.
+ *
+ * @since 2.20.0
+ */
+function wppfm_check_feed_update_schedule() {
+	if ( ! wp_get_schedule( 'wppfm_feed_update_schedule' ) ) {
+		// add the schedule cron
+		wp_schedule_event( time(), 'hourly', 'wppfm_feed_update_schedule' );
+		add_action( 'wppfm_feed_update_schedule', 'activate_feed_update_schedules' );
+	}
 }
 
 /**

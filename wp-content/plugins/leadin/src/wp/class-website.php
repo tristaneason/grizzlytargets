@@ -20,4 +20,11 @@ class Website {
 	public static function get_ajax_url() {
 		return admin_url( 'admin-ajax.php' );
 	}
+
+	/**
+	 * Return the "stylesheet" option
+	 */
+	public static function get_theme() {
+		return Options::get( 'stylesheet' );
+	}
 }

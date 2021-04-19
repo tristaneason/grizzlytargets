@@ -4,9 +4,9 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: CRM, Email Marketing, Live Chat, Forms, Analytics, Popups, Newsletter
 Requires at least: 4.0
-Tested up to: 5.6
+Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 7.52.0
+Stable tag: 7.52.143
 
 Capture, organize and engage web visitors with free forms, live chat, CRM (contact management), email marketing, and analytics. Easy to use, no coding.
 
@@ -228,12 +228,12 @@ Please visit the <a href="https://community.hubspot.com/?utm_source=wordpress-pl
 == Changelog ==
 
 <a href="http://plugins.svn.wordpress.org/leadin/trunk/changelog.txt" target="_blank">Full changelog here</a>
-- Current version: 7.52.0
-- Version release date: 2021-03-08
+- Current version: 7.52.143
+- Version release date: 2021-04-06
+
+= 7.52.105 (2021-03-26) =
+* Updated the query parameters sent to the UI. These parameters will be used for OAuth2 authorisation flow.
 
 = 7.52.0 (2021-03-08) =
 * Updated getting started checklist to use OAuth2 API's
-
-= 7.51.201 (2021-03-08) =
-* Added translations to the disconnect feedback form.
 

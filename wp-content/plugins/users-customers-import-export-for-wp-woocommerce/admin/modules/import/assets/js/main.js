@@ -5,7 +5,7 @@ var wt_iew_basic_import=(function( $ ) {
 		ajax_data:{},
 		selected_template:0,
 		selected_template_name:'',
-		to_import:'',
+		to_import:'user',
 		to_import_title:'',
 		import_method:'',
 		current_step:'',
@@ -265,9 +265,9 @@ var wt_iew_basic_import=(function( $ ) {
 			}
 			$.ajax({
 				type: 'POST',
-            	url:wt_iew_basic_params.ajax_url,
-            	data:this.ajax_data,
-            	dataType:'json',
+				url:wt_iew_basic_params.ajax_url,
+				data:this.ajax_data,
+				dataType:'json',
 				success:function(data)
 				{
 					wt_iew_basic_import.remove_ajax_page_loader();
@@ -279,7 +279,8 @@ var wt_iew_basic_import=(function( $ ) {
 							{
 								wt_iew_basic_import.selected_template=data.id;
 								wt_iew_basic_import.selected_template_name=data.name;
-								wt_iew_notify_msg.success(wt_iew_basic_params.msgs.success);
+								wt_iew_notify_msg.success(data.msg);
+								//wt_iew_notify_msg.success(wt_iew_basic_params.msgs.success);
 								
 							}else if(action=='import')
 							{
@@ -778,6 +779,8 @@ var wt_iew_basic_import=(function( $ ) {
 				this.to_import_title=$('[name="wt_iew_import_post_type"] option:selected').text();
 			}
 			$('.wt_iew_step_head_post_type_name').html(this.to_import_title);
+			if(this.to_import_title.includes('User'))
+			$('#user-required-field-message').show();
 		},
 		page_actions:function(step)
 		{

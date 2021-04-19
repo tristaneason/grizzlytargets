@@ -133,8 +133,10 @@ if ( ! class_exists( 'WPPFM_i18n_Scripts' ) ) :
 				'confirm_delete_feed' => esc_html__( 'Please confirm you want to delete feed %feedname%.', 'wp-product-feed-manager' ),
 				/* translators: %feedname%: name of the feed */
 				'feed_removed'        => esc_html__( 'Feed %feedname% removed from the server.', 'wp-product-feed-manager' ),
-				'list_language'       => esc_html__( 'Feed Language' ),
-				'feed_not_generated'  => esc_html__( 'This feed does not yet exists, please (re)generate this feed first.' ),
+				'list_language'       => esc_html__( 'Feed Language', 'wp-product-feed-manager' ),
+				'feed_not_generated'  => esc_html__( 'This feed does not yet exists, please (re)generate this feed first.', 'wp-product-feed-manager' ),
+				'missing_channel'     => esc_html__( 'This feed requires the "%channelname%" Channel to be installed. Please open the Manage Channels page and install the "%channelname%" before regenerating this feed.', 'wp-product-feed-manager' ),
+				'no_channel'          => esc_html__( 'Channel not installed', 'wp-product-feed-manager' ),
 			);
 
 			self::add_general_words( $pars );

@@ -1,5 +1,8 @@
 *** WooCommerce Authorize.Net Gateway Changelog ***
 
+2021.04.06 - version 3.6.0
+ * Tweak - Remove Authorize.Net Emulation gateway support
+
 2021.03.02 - version 3.5.0
  * Misc - Allow merchants to connect and process payments via the emulation gateway using the standalone plugin Authorize.Net Emulation for WooCommerce
  * Fix - Prevent a Fatal error while editing the Checkout page using Elementor

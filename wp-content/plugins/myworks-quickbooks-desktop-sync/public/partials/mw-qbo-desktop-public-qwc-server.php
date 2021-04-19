@@ -28,13 +28,15 @@ if($user!='' && $pass!=''){
 	$is_config_ok = true;
 }
 
-if($is_config_ok && $MWQDC_QWC->is_qwc_connected()){
+if($is_config_ok && $MWQDC_QWC->is_qwc_connected(true)){
 	try {
 		global $wpdb;
 		// Map QuickBooks actions to handler functions
 		$map = array(
 			QUICKBOOKS_ADD_CUSTOMER => array( array( $MWQDC_QWC, 'AddCustomerRequest' ), array( $MWQDC_QWC, 'AddCustomerResponse' ) ),
 			QUICKBOOKS_ADD_GUEST => array( array( $MWQDC_QWC, 'AddGuestRequest' ), array( $MWQDC_QWC, 'AddGuestResponse' ) ),
+			
+			'CustomerJobAdd' => array( array( $MWQDC_QWC, 'AddCustomerJobRequest' ), array( $MWQDC_QWC, 'AddCustomerJobResponse' ) ),
 			
 			QUICKBOOKS_ADD_INVOICE => array( array( $MWQDC_QWC, 'AddInvoiceRequest' ), array( $MWQDC_QWC, 'AddInvoiceResponse' ) ),
 			QUICKBOOKS_ADD_SALESRECEIPT => array( array( $MWQDC_QWC, 'AddSalesReceiptRequest' ), array( $MWQDC_QWC, 'AddSalesReceiptResponse' ) ),
@@ -58,12 +60,16 @@ if($is_config_ok && $MWQDC_QWC->is_qwc_connected()){
 			
 			'ReceivePaymentAdd' => array( array( $MWQDC_QWC, 'AddPaymentRequest' ), array( $MWQDC_QWC, 'AddPaymentResponse' ) ),
 			
+			'OrderPaymentAdd' => array( array( $MWQDC_QWC, 'AddOrderPaymentRequest' ), array( $MWQDC_QWC, 'AddOrderPaymentResponse' ) ),
+			
 			/*Update*/
 			'CustomerMod_Query' => array( array( $MWQDC_QWC, 'CustomerMod_Query_Request' ), array( $MWQDC_QWC, 'CustomerMod_Query_Response' ) ),
 			QUICKBOOKS_MOD_CUSTOMER => array( array( $MWQDC_QWC, 'UpdateCustomerRequest' ), array( $MWQDC_QWC, 'UpdateCustomerResponse' ) ),
 			
 			//
 			'CheckAdd' => array( array( $MWQDC_QWC, 'AddRefundRequest' ), array( $MWQDC_QWC, 'AddRefundResponse' ) ),
+			
+			'CreditMemoAdd' => array( array( $MWQDC_QWC, 'AddRefundRequest' ), array( $MWQDC_QWC, 'AddRefundResponse' ) ),
 			
 			QUICKBOOKS_ADD_INVENTORYITEM => array( array( $MWQDC_QWC, 'AddInventoryItemRequest' ), array( $MWQDC_QWC, 'AddInventoryItemResponse' ) ),
 			QUICKBOOKS_ADD_NONINVENTORYITEM => array( array( $MWQDC_QWC, 'AddNonInventoryRequest' ), array( $MWQDC_QWC, 'AddNonInventoryResponse' ) ),
@@ -86,8 +92,8 @@ if($is_config_ok && $MWQDC_QWC->is_qwc_connected()){
 		);
 		
 		/*Import*/
-		$qbd_import = false;$extra_import = false;
-		if($MWQDC_QWC->option_checked('mw_wc_qbo_desk_cp_refresh_data_enable')){
+		$qbd_import = false;$extra_import = false;$a_allow = true;
+		if($a_allow || $MWQDC_QWC->option_checked('mw_wc_qbo_desk_cp_refresh_data_enable')){
 			$qbd_import = true;
 			$extra_import = true;
 		}
@@ -165,6 +171,8 @@ if($is_config_ok && $MWQDC_QWC->is_qwc_connected()){
 				$map[QUICKBOOKS_IMPORT_PREFERENCES] = array( array( $MWQDC_QWC, 'Preferences_Import_Request'), array( $MWQDC_QWC, 'Preferences_Import_Response') );
 				
 				$map[QUICKBOOKS_IMPORT_COMPANY] = array( array( $MWQDC_QWC, 'Company_Import_Request'), array( $MWQDC_QWC, 'Company_Import_Response') );
+				
+				$map[QUICKBOOKS_IMPORT_CURRENCY] = array( array( $MWQDC_QWC, 'Currency_Import_Request'), array( $MWQDC_QWC, 'Currency_Import_Response') );
 			}
 			
 			//
@@ -198,18 +206,27 @@ if($is_config_ok && $MWQDC_QWC->is_qwc_connected()){
 				$map[QUICKBOOKS_IMPORT_VENDOR] = array( array( $MWQDC_QWC, 'Vendor_Import_Request'), array( $MWQDC_QWC, 'Vendor_Import_Response') );
 			}
 			
+			//
+			if($MWQDC_QWC->check_refresh_data_enabled_by_item('PriceLevel',true)){
+				// && $MWQDC_QWC->is_plugin_active('myworks-quickbooks-desktop-role-based-price-qb-price-level-compt')
+				$map[QUICKBOOKS_IMPORT_PRICELEVEL] = array( array( $MWQDC_QWC, 'PriceLevel_Import_Request'), array( $MWQDC_QWC, 'PriceLevel_Import_Response') );
+			}
+			
 		}
 		
 		/*Pull*/
 		
 		/*Realtime*/
 		if($MWQDC_QWC->option_checked('mw_wc_qbo_desk_rt_pull_enable')){
-			if($MWQDC_QWC->check_if_real_time_pull_enable_for_item('inventory')){				
+			if($MWQDC_QWC->check_if_real_time_pull_enable_for_item('inventory')){
 				//Auto_Pull_Update_Wc_Inventory_Request , Auto_Pull_Update_Wc_Inventory_Response
 				//Auto_Wc_Inventory_AdjustmentQuery_Request , Auto_Wc_Inventory_AdjustmentQuery_Response
 				
 				if($MWQDC_QWC->option_checked('mw_wc_qbo_desk_rt_all_invnt_pull')){
-					if($MWQDC_QWC->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync') && $MWQDC_QWC->get_option('mw_wc_qbo_desk_compt_qbd_invt_sites_for_invnt_pull')!=''){						
+					$wmior_active =$MWQDC_QWC->is_plugin_active('myworks-warehouse-routing','mw_warehouse_routing');
+					$mw_wc_qbo_desk_compt_wmior_lis_mv = get_option('mw_wc_qbo_desk_compt_wmior_lis_mv');					
+					
+					if(($wmior_active && $MWQDC_QWC->option_checked('mw_wc_qbo_desk_w_miors_ed') && is_array($mw_wc_qbo_desk_compt_wmior_lis_mv)) || (!$wmior_active && $MWQDC_QWC->option_checked('mw_wc_qbo_desk_compt_qbd_adv_invt_sync') && $MWQDC_QWC->get_option('mw_wc_qbo_desk_compt_qbd_invt_sites_for_invnt_pull')!='')){
 						$map['ALL_PULL_INVT_ISQ'] = array( array( $MWQDC_QWC, 'All_Pull_ItemSitesQuery_Request'), array( $MWQDC_QWC, 'All_Pull_ItemSitesQuery_Response') );
 					}else{
 						$map['ALL_WC_UPDATE_INVENTORY'] = array( array( $MWQDC_QWC, 'All_Pull_Update_Wc_Inventory_Request'), array( $MWQDC_QWC, 'All_Pull_Update_Wc_Inventory_Response') );
@@ -226,11 +243,23 @@ if($is_config_ok && $MWQDC_QWC->is_qwc_connected()){
 			if($MWQDC_QWC->check_if_real_time_pull_enable_for_item('pricing')){
 				$map['ALL_WC_UPDATE_PRICING'] = array( array( $MWQDC_QWC, 'All_Pull_Update_Wc_Pricing_Request'), array( $MWQDC_QWC, 'All_Pull_Update_Wc_Pricing_Response') );
 			}
+			
+			//
+			if($MWQDC_QWC->check_sh_woorbp_qbpricelevel_hash()){
+				$map['All_PriceLevel_Inventory'] = array( array( $MWQDC_QWC, 'All_PriceLevel_Inventory_Request'), array( $MWQDC_QWC, 'All_PriceLevel_Inventory_Response') );
+			}			
 		}
 		
 		/**/
 		if($MWQDC_QWC->option_checked('mw_wc_qbo_desk_compt_np_fitbodywrap_cust_inv_oc')){
 			$map['InvoiceQuery_FBW'] = array( array( $MWQDC_QWC, 'InvoiceQuery_FBW_Request'), array( $MWQDC_QWC, 'InvoiceQuery_FBW_Response') );
+		}
+		
+		/**/
+		if($MWQDC_QWC->option_checked('mw_wc_qbo_desk_auto_refresh_new_cust_prod')){
+			$map['New_'.QUICKBOOKS_IMPORT_CUSTOMER] = array( array( $MWQDC_QWC, 'Customer_Import_Request'), array( $MWQDC_QWC, 'Customer_Import_Response') );
+			
+			$map['New_'.QUICKBOOKS_IMPORT_ITEM] = array( array( $MWQDC_QWC, 'Item_Import_Request'), array( $MWQDC_QWC, 'Item_Import_Response') );
 		}
 		
 		/*Manual*/
@@ -239,6 +268,14 @@ if($is_config_ok && $MWQDC_QWC->is_qwc_connected()){
 			$map['WC_UPDATE_INVENTORY'] = array( array( $MWQDC_QWC, 'Pull_Update_Wc_Inventory_Request'), array( $MWQDC_QWC, 'Pull_Update_Wc_Inventory_Response') );
 			
 			$map['WC_UPDATE_PRODUCT_PRICE'] = array( array( $MWQDC_QWC, 'Pull_Update_Wc_Product_Price_Request'), array( $MWQDC_QWC, 'Pull_Update_Wc_Product_Price_Response') );
+			
+			//
+			if($MWQDC_QWC->check_sh_woorbp_qbpricelevel_hash()){
+				$map['PriceLevel_Inventory'] = array( array( $MWQDC_QWC, 'PriceLevel_Inventory_Request'), array( $MWQDC_QWC, 'PriceLevel_Inventory_Response') );
+			}
+			
+			//
+			$map['UPDATE_INVENTORY_A_MAX'] = array( array( $MWQDC_QWC, 'Max_Inventory_Assembly_Request'), array( $MWQDC_QWC, 'Max_Inventory_Assembly_Response') );
 		}
 		
 		//Debug

@@ -297,8 +297,8 @@ class WF_OrderImpExpCsv_Order_Import extends WP_Importer {
                 @ob_flush();
                 @flush();
                 $wpdb->hide_errors();
-                $this->processed_terms = isset($_POST['processed_terms']) ? wc_clean($_POST['processed_terms']) : array();
-                $this->processed_posts = isset($_POST['processed_posts']) ? array_map('intval', $_POST['processed_posts']) : array();
+                $this->processed_terms = !empty($_POST['processed_terms']) ? wc_clean($_POST['processed_terms']) : array();
+                $this->processed_posts = !empty($_POST['processed_posts']) ? array_map('intval', $_POST['processed_posts']) : array();
                 $file = isset($_POST['file']) ? stripslashes($_POST['file']) : '';                                 
 
                 _e('Step 1...', 'order-import-export-for-woocommerce') . ' ';

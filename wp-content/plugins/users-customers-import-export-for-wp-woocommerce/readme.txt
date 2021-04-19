@@ -5,7 +5,7 @@ Tags: user import, user export, csv, woocommerce, customers, import, export, exp
 Requires at least: 3.0.1
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 2.0.9
+Stable tag: 2.1.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -29,7 +29,7 @@ WordPress User Import Export plugin allows you to import and export WordPress us
  &#128312; Map and Transform fields while importing customers/users
  &#128312; Change values (bulk modify) while importing customers/users using Evaluation Fields
  &#128312; Tested OK with WordPress 5.7
- &#128312; Tested OK with WooCommerce 5.1.0
+ &#128312; Tested OK with WooCommerce 5.2.2
  &#128312; Tested OK with PHP 7.3.5
 
 Highlights: WordPress Users Export, WordPress Users CSV Import Suite, Export WordPress Users to CSV. Pro Version supports export and import of all additional user meta like WooCommerce details.
@@ -218,6 +218,13 @@ Yes, you can update the user data with the help of this plugin. The users will b
 12. WordPress user import export log
 
 == Changelog ==
+
+= 2.1.2 =
+* Tested OK with WC 5.2.2.
+= 2.1.1 =
+* Tested OK with WC 5.2.0.
+= 2.1.0 =
+* Improvements.
 = 2.0.9 =
 * Plugin name update.
 = 2.0.8 =
@@ -374,5 +381,5 @@ Yes, you can update the user data with the help of this plugin. The users will b
 
 == Upgrade Notice ==
 
-= 2.0.9 =
-* Plugin name update.
+= 2.1.2 =
+* Tested OK with WC 5.2.2.

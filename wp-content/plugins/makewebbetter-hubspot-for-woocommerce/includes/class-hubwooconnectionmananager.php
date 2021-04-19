@@ -92,7 +92,7 @@ class HubWooConnectionMananager {
 	 */
 	public function hubwoo_fetch_access_token_from_code( $hapikey, $hseckey ) {
 
-		if ( isset( $_GET['type'] ) && 'hs-auth' == $_GET['type'] && isset( $_GET['code'] ) ) {
+		if ( isset( $_GET['code'] ) ) {
 			$code     = sanitize_key( $_GET['code'] );
 			$endpoint = '/oauth/v1/token';
 			$data     = array(
@@ -100,7 +100,7 @@ class HubWooConnectionMananager {
 				'client_id'     => $hapikey,
 				'client_secret' => $hseckey,
 				'code'          => $code,
-				'redirect_uri'  => admin_url() . 'admin.php?type=hs-auth',
+				'redirect_uri'  => admin_url() . 'admin.php?type',
 			);
 			$body     = http_build_query( $data );
 			return $this->hubwoo_oauth_post_api( $endpoint, $body, 'access' );

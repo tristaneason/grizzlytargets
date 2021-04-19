@@ -31,31 +31,9 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
     public function __construct($parent_object) {
 
         $this->parent_module = $parent_object;
-        
-        $this->user_base_fields  = array(
-            'ID' => 'ID',
-            'customer_id' => 'customer_id',
-            'user_login' => 'user_login',
-            'user_pass' => 'user_pass',
-            'user_nicename' => 'user_nicename',
-            'user_email' => 'user_email',
-            'user_url' => 'user_url',
-            'user_registered' => 'user_registered',
-            'display_name' => 'display_name',
-            'first_name' => 'first_name',
-            'last_name' => 'last_name',
-            'user_status' => 'user_status',
-            'roles' => 'roles'
-        );
-
-        global $wpdb;
-        $meta_keys = $wpdb->get_col("SELECT distinct(meta_key) FROM $wpdb->usermeta");
-
-        foreach ($meta_keys as $meta_key) {
-
-            $this->user_meta_fields[$meta_key] = $meta_key;
-
-        }
+        $this->user_all_fields = include plugin_dir_path( __FILE__).'../data/data-user-columns.php';
+        $this->user_base_fields  = array_slice($this->user_all_fields, 0, 13);
+        $this->user_meta_fields = array_slice($this->user_all_fields, 13);  
         
         
     }
@@ -223,19 +201,6 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
                 //$user_details[$key] = isset( $item[$value] ) ? $item[$value] : "" ;
             }
 
-            // adding metas from csv to user meta fields
-            foreach ($item as $key => $value) {
-                if ( strstr( $key, 'meta:' ) ){
-                    $key_val =$key;
-                    $key = trim(str_replace('meta:', '', $key));
-
-//                        if($this->user_meta_fields[$key])
-//                            continue;
-
-                    $this->user_meta_fields[$key] = $key_val;
-                }
-
-            }
             foreach ($this->user_meta_fields as $key => $value){
                 $user_meta[] = array( 'key' => $key, 'value' => isset( $item[$value] ) ? $item[$value] : "" );
             }
@@ -271,7 +236,7 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
             if ($user_id && $this->merge) {
                 $current_user = get_current_user_id();
                 if ($current_user == $user_id) {
-                    $usr_msg = 'Current user is skipped.';
+                    $usr_msg = 'This user is currently logged in hence we cannot update.';
                     $this->hf_log_data_change('user-csv-import', sprintf(__('> &#8220;%s&#8221;' . $usr_msg), $user_id), true);
                     unset($post);
                 return new WP_Error( 'parse-error',sprintf(__('> &#8220;%s&#8221;' . $usr_msg), $user_id));
@@ -320,6 +285,7 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
         $username = (!empty($data['user_details']['user_login']) ) ? $data['user_details']['user_login'] : '';
         $customer_id = (!empty($data['user_details']['customer_id']) ) ? $data['user_details']['customer_id'] : '';
         $insertion_id = (!empty($data['user_details']['ID']) ) ? $data['user_details']['ID'] : '';
+        $merge_empty_cells = apply_filters('wt_user_import_empty_csv_column', FALSE); 
         
 		if('email' == $this->merge_with){
 			$insertion_id = '';
@@ -377,7 +343,7 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
                     require_once ABSPATH . 'wp-admin/includes/user.php';
                 }
                 $roles = get_editable_roles();
-                $new_roles_str = str_replace(' ', '', $data['user_details']['roles']);
+                $new_roles_str = str_replace(' ', '', strtolower(isset($data['user_details']['roles']) ? $data['user_details']['roles'] : ''));
 
                 if(empty($new_roles_str)){
                     $new_roles_str = get_option('default_role');
@@ -438,6 +404,9 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
                     $meta_value = (!empty($meta_array[$key]) ) ? maybe_unserialize($meta_array[$key]) : '';
                     if ($key == $wpdb->prefix.'user_level' && $meta_value == ''){                        $meta_value = 0;
                     }
+                    if (empty($meta_value) && !$merge_empty_cells) {
+                        continue;
+                    }
                     update_user_meta($found_customer, $key, $meta_value);
                 }
 
@@ -453,12 +422,13 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
         if ($found_customer) {
             $wp_user_object = new WP_User($found_customer);                                    
             $roles = get_editable_roles();
-			$new_rolse_input = isset($data['user_details']['roles']) ? $data['user_details']['roles'] : '';
+			$new_rolse_input = isset($data['user_details']['roles']) ? strtolower($data['user_details']['roles']) : '';
             $new_roles_str = str_replace(' ', '', $new_rolse_input);
             $new_roles = explode(',', $new_roles_str);
             $new_roles = array_intersect($new_roles, array_keys($roles));
             $roles_to_remove = array();
             $user_roles = array_intersect(array_values($wp_user_object->roles), array_keys($roles));
+            $merge_empty_cells = apply_filters('wt_user_import_empty_csv_column', FALSE); 
             if (!$new_roles) {
                 // If there are no roles, delete all of the user's roles
                 $roles_to_remove = $user_roles;
@@ -489,6 +459,9 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
                 $meta_value = (!empty($meta_array[$key]) ) ? maybe_unserialize($meta_array[$key]) : '';
                 if ($key == $wpdb->prefix.'user_level' && $meta_value == ''){
                     $meta_value = 0;
+                }
+                if (empty($meta_value) && !$merge_empty_cells) {
+                    continue;
                 }
                 update_user_meta($found_customer, $key, $meta_value);
             }
@@ -537,8 +510,12 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
 
             if ($this->use_same_password && isset($data['user_details']['user_pass']) && !empty($data['user_details']['user_pass'])) {
                 $password = $data['user_details']['user_pass'];
-                $user_data = array_merge($user_data, array('user_login' => $wp_user_object->user_login, 'user_email' => ( $email_updated ) ? $customer_email : $wp_user_object->user_email));                
+                $user_data = array_merge($user_data, array('user_login' => $wp_user_object->user_login, 'user_email' => ( $email_updated ) ? $customer_email : $wp_user_object->user_email, 'user_url' =>$wp_user_object->user_url));                
                 $user_data['user_pass'] = $password; 
+                $user_default_meta = array('nickname','first_name','last_name','display_name','description','rich_editing','syntax_highlighting','comment_shortcuts','admin_color','use_ssl','show_admin_bar_front','locale');
+                foreach ($user_default_meta as $meta_key => $meta) {
+                    $user_data[$meta] = $wp_user_object->$meta;
+                }
                 wp_insert_user($user_data);
             }
 

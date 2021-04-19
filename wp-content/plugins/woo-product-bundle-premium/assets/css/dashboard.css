@@ -1,3 +1,10 @@
+/* Menu */
+
+.toplevel_page_wpclever .wp-menu-image img {
+    width: 30px !important;
+    padding-top: 2px !important;
+}
+
 /* Dashboard Widget */
 
 #wpclever_dashboard_widget .inside {

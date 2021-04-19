@@ -221,11 +221,12 @@ if ( ! class_exists( 'WPPFM_Queries' ) ) :
 			// @since 2.11.0.
 			$product_query_limit = apply_filters( 'wppfm_product_query_limit', 1000 );
 
+			// @since 2.20.0 excluded password protected products from the feed.
 			$products_query = "SELECT DISTINCT {$this->_table_prefix}posts.ID
 				FROM {$this->_table_prefix}posts
 				LEFT JOIN {$this->_table_prefix}term_relationships ON ({$this->_table_prefix}posts.ID = {$this->_table_prefix}term_relationships.object_id)
 				LEFT JOIN {$this->_table_prefix}term_taxonomy ON ({$this->_table_prefix}term_relationships.term_taxonomy_id = {$this->_table_prefix}term_taxonomy.term_taxonomy_id)
-				WHERE {$this->_table_prefix}posts.post_type = 'product' AND {$this->_table_prefix}posts.post_status = 'publish'
+				WHERE {$this->_table_prefix}posts.post_type = 'product' AND {$this->_table_prefix}posts.post_status = 'publish' AND {$this->_table_prefix}posts.post_password = ''
 				AND {$this->_table_prefix}term_taxonomy.term_id IN ($category_string)
 				AND {$this->_table_prefix}posts.ID > $start_product_id
 				ORDER BY ID LIMIT $product_query_limit";

@@ -793,7 +793,7 @@ if ( ! class_exists( 'WPCleverWoosb' ) && class_exists( 'WC_Product' ) ) {
                                     <td>
                                         <input name="_woosb_search_limit" type="number" min="1"
                                                max="500"
-                                               value="<?php echo get_option( '_woosb_search_limit', '5' ); ?>"/>
+                                               value="<?php echo get_option( '_woosb_search_limit', 10 ); ?>"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1343,6 +1343,16 @@ if ( ! class_exists( 'WPCleverWoosb' ) && class_exists( 'WC_Product' ) ) {
 			foreach ( $cart_contents as $cart_item_key => $cart_item ) {
 				// bundled products
 				if ( ! empty( $cart_item['woosb_parent_id'] ) ) {
+					// remove orphaned bundled products
+					if ( isset( $cart_item['woosb_parent_key'] ) && ! empty( $cart_item['woosb_parent_key'] ) ) {
+						$parent_key = $cart_item['woosb_parent_key'];
+
+						if ( ! isset( $cart_contents[ $parent_key ] ) ) {
+							unset( $cart_contents[ $cart_item_key ] );
+							continue;
+						}
+					}
+
 					// set price
 					if ( isset( $cart_item['woosb_fixed_price'] ) && $cart_item['woosb_fixed_price'] ) {
 						$cart_item['data']->set_price( 0 );
@@ -1684,15 +1694,7 @@ if ( ! class_exists( 'WPCleverWoosb' ) && class_exists( 'WC_Product' ) ) {
 					'post_type'      => 'product',
 					'post_status'    => array( 'publish', 'private' ),
 					's'              => $keyword,
-					'posts_per_page' => get_option( '_woosb_search_limit', '5' ),
-					'tax_query'      => array(
-						array(
-							'taxonomy' => 'product_type',
-							'field'    => 'slug',
-							'terms'    => self::$_types,
-							'operator' => 'NOT IN',
-						)
-					)
+					'posts_per_page' => get_option( '_woosb_search_limit', 10 )
 				);
 
 				if ( get_option( '_woosb_search_same', 'no' ) !== 'yes' ) {
@@ -2037,7 +2039,12 @@ if ( ! class_exists( 'WPCleverWoosb' ) && class_exists( 'WC_Product' ) ) {
 		}
 
 		function woosb_product_data_li( $product, $qty = 1, $search = false ) {
-			$product_id = $product->get_id();
+			$product_id    = $product->get_id();
+			$product_class = ! $product->is_in_stock() ? 'out-of-stock' : '';
+
+			if ( in_array( $product->get_type(), self::$_types, true ) ) {
+				$product_class .= ' disabled';
+			}
 
 			if ( class_exists( 'WPCleverWoopq' ) && ( get_option( '_woopq_decimal', 'no' ) === 'yes' ) ) {
 				$step = '0.000001';
@@ -2068,7 +2075,7 @@ if ( ! class_exists( 'WPCleverWoosb' ) && class_exists( 'WC_Product' ) ) {
 
 			$product_name = apply_filters( 'woosb_li_name', $_product_name, $product );
 
-			echo '<li ' . ( ! $product->is_in_stock() ? 'class="out-of-stock"' : '' ) . ' data-id="' . esc_attr( $product_id ) . '" data-price="' . esc_attr( $price ) . '" data-price-max="' . esc_attr( $price_max ) . '"><span class="move"></span><span class="qty hint--right" aria-label="' . esc_html__( 'Default quantity', 'woo-product-bundle' ) . '">' . $qty_input . '</span> <span class="data"><span class="name">' . strip_tags( $product_name ) . '</span> <span class="info">' . $product->get_price_html() . '</span> ' . ( $product->is_sold_individually() ? '<span class="info">' . esc_html__( 'sold individually', 'woo-product-bundle' ) . '</span> ' : '' ) . '</span> <span class="type"><a href="' . get_edit_post_link( $product_id ) . '" target="_blank">' . $product->get_type() . '<br/>#' . $product_id . '</a></span> ' . $remove_btn . '</li>';
+			echo '<li class="' . esc_attr( trim( $product_class ) ) . '" data-id="' . esc_attr( $product_id ) . '" data-price="' . esc_attr( $price ) . '" data-price-max="' . esc_attr( $price_max ) . '"><span class="move"></span><span class="qty hint--right" aria-label="' . esc_html__( 'Default quantity', 'woo-product-bundle' ) . '">' . $qty_input . '</span> <span class="data"><span class="name">' . strip_tags( $product_name ) . '</span> <span class="info">' . $product->get_price_html() . '</span> ' . ( $product->is_sold_individually() ? '<span class="info">' . esc_html__( 'sold individually', 'woo-product-bundle' ) . '</span> ' : '' ) . '</span> <span class="type"><a href="' . get_edit_post_link( $product_id ) . '" target="_blank">' . $product->get_type() . '<br/>#' . $product_id . '</a></span> ' . $remove_btn . '</li>';
 		}
 
 		function woosb_delete_option_fields( $post_id ) {

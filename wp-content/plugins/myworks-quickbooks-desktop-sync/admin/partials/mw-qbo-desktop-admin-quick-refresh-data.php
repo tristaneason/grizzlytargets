@@ -171,7 +171,7 @@ if(isset($_POST['mw_wc_qbd_desk_settings']) && check_admin_referer( 'myworks_wc_
 										<div class="row">
 											<div class="input-field col s12 m12 l12">
 												<p>
-													<?php $qbo_rt_import_items = array('account' => 'Account', 'class' => 'Class', 'payment_method' => 'Payment Method', 'sales_tax_code' => 'SalesTax Code', 'term' => 'Term', 'preferences' => 'Preferences') ?>
+													<?php $qbo_rt_import_items = array('account' => 'Account', 'class' => 'Class', 'payment_method' => 'Payment Method', 'sales_tax_code' => 'SalesTax Code', 'term' => 'Term', 'preferences' => 'Preferences - Company Info - Currency List') ?>
 													
 													<?php
 														$qbo_rt_import_items['InventorySite'] = 'InventorySite';
@@ -186,6 +186,11 @@ if(isset($_POST['mw_wc_qbd_desk_settings']) && check_admin_referer( 'myworks_wc_
 														
 														if($MWQDC_LB->is_import_vendor()){
 															$qbo_rt_import_items['Vendor'] = 'Vendor';
+														}
+														
+														$pl_import_at = true;
+														if($pl_import_at || $MWQDC_LB->is_plugin_active('myworks-quickbooks-desktop-role-based-price-qb-price-level-compt')){
+															$qbo_rt_import_items['PriceLevel'] = 'PriceLevel Names';
 														}
 														
 													?>

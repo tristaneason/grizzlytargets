@@ -29,7 +29,6 @@ if ( ! class_exists( 'WPPFM_Variations' ) ) :
 		public static function fill_product_data_with_variation_data( &$product_data, $woocommerce_variation_data, $wpmr_variation_data, $feed_language ) {
 			$permalink   = array_key_exists( 'permalink', $product_data ) ? $product_data['permalink'] : ''; // some channels don't require permalinks
 			$conversions = self::variation_conversion_table( $woocommerce_variation_data, $permalink, $feed_language );
-			//$third_party_attribute_keywords = explode( ',', get_option( 'wppfm_third_party_attribute_keywords', '%wpmr%,%cpf%,%unit%,%bto%,%yoast%' ) );
 			$variation_attributes = $woocommerce_variation_data->get_variation_attributes();
 
 			foreach ( $product_data as $key => $field_value ) {
@@ -53,17 +52,8 @@ if ( ! class_exists( 'WPPFM_Variations' ) ) :
 				}
 
 				// process the wpmr variation data
-				if ( $wpmr_variation_data && array_key_exists( $key, $wpmr_variation_data ) ) {
+				if ( $wpmr_variation_data && array_key_exists( $key, $wpmr_variation_data ) && $wpmr_variation_data[ $key ] ) {
 					$product_data[ $key ] = $wpmr_variation_data[ $key ];
-					// Removed the following else loop because of ticket 1094. It was found that if the user uses a keyword that fitted with an existing attribute, it would
-					// clear that attribute from the feed. Eg the user of ticket 1094 used %group% as keyword which cleared the item_group_id data from the feed.
-					// I could not think of any reason why the code below would be required so I now commented it out, but I will leave it in for a while to
-					// make sure it does not cause any issues with other users.
-					//				} else {
-					//					foreach( $third_party_attribute_keywords as $keyword ) {
-					//						$search_str = str_replace( '%', '*', trim( $keyword ) ); // change sql wildcard % to normal wildcard *
-					//						if ( fnmatch( $search_str, $key ) ) $product_data[$key] = '';
-					//					}
 				}
 			}
 		}

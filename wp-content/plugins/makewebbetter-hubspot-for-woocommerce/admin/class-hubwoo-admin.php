@@ -209,7 +209,7 @@ class Hubwoo_Admin {
 	 */
 	public function hubwoo_redirect_from_hubspot() {
 
-		if ( isset( $_GET['type'] ) && 'hs-auth' == $_GET['type'] && isset( $_GET['code'] ) ) {
+		if ( isset( $_GET['code'] ) ) {
 
 			$hapikey = HUBWOO_CLIENT_ID;
 			$hseckey = HUBWOO_SECRET_ID;
