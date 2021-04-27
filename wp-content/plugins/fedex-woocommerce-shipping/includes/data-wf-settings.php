@@ -5,6 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $settings 			= apply_filters( 'xa_fedex_settings',get_option( 'woocommerce_'.WF_Fedex_ID.'_settings', null ) );
 $saturday_pickup 	= ( isset($settings['saturday_pickup']) && !empty($settings['saturday_pickup']) && $settings['saturday_pickup'] == 'yes' ) ? true : false;
+$default_invoice_commodity_value	= ( isset($settings['discounted_price']) && !empty($settings['discounted_price']) && $settings['discounted_price'] == 'yes' ) ? 'discount_price' : 'declared_price';
 
 if( $saturday_pickup ) {
 
@@ -126,6 +127,15 @@ return array(
 		'desc_tip'	=> true,
 		'description'	 => __( 'Enable debug mode to show debugging information on the cart/checkout.', 'wf-shipping-fedex' ),
 		'class'			=>'fedex_general_tab',
+	),
+	'silent_debug'	  => array(
+		'title'		   => __( 'Silent Debug Mode', 'wf-shipping-fedex' ),
+		'label'		   => __( 'Enable', 'wf-shipping-fedex' ),
+		'type'			=> 'checkbox',
+		'default'		 => 'no',
+		'desc_tip'	=> true,
+		'description'	 => __( 'Enable silent debug mode to create debug information without showing debugging information on the cart/checkout.', 'wf-shipping-fedex' ),
+		'class'			=>'fedex_general_tab ph_fedex_silent_debug',
 	),
 	'dimension_weight_unit' => array(
 			'title'		   => __( 'Dimension/Weight Unit', 'wwf-shipping-fedex' ),
@@ -656,7 +666,7 @@ return array(
 	'ship_time_adjustment'	  => array(
 		'title'		   => __( 'Shipping Time Adjustment', 'wf-shipping-fedex' ),
 		'label'		   => __( 'Enable', 'wf-shipping-fedex' ),
-		'type'			=> 'text',
+		'type'			=> 'decimal',
 		'default'		 => 1,
 		'desc_tip'	=> true,
 		'class'			=>'fedex_rates_tab ph_fedex_est_delivery_date',
@@ -664,8 +674,9 @@ return array(
 	),
 	'cut_off_time'	=>	array(
 		'title' 		=>	__( 'Cut-Off Time', 'wf-shipping-fedex' ),
-		'type'			=>	'text',
+		'type'			=>	'time',
 		'placeholder'	=>	'23:00',
+		'css'			=>	'width:400px',
 		'desc_tip'		=> __( 'Estimated delivery will be adjusted to the next day if any Rate Request is made after cut off time. Use 24 hour format (Hour:Minute). Example - 23:00.', 'wf-shipping-fedex' ),
 		'class'			=> 'fedex_rates_tab ph_fedex_est_delivery_date'
 	),
@@ -752,7 +763,7 @@ return array(
 
 	'fedex_conversion_rate'	 => array(
 		'title' 		  => __('Conversion Rate', 'wf-shipping-fedex'),
-		'type' 			  => 'text',
+		'type' 			  => 'decimal',
 		'default'		 => 1,
 		'class'			=>'fedex_rates_tab',
 		'description' 	  => __('Enter the conversion amount in case you have a different currency set up in store comparing to the currency of FedEx Account. This amount will be multiplied with all the cost of Store.','wf-shipping-fedex'),
@@ -761,7 +772,7 @@ return array(
 
 	'conversion_rate'	 => array(
 		'title' 		  => __('Adjustment', 'wf-shipping-fedex'),
-		'type' 			  => 'text',
+		'type' 			  => 'decimal',
 		'default'		 => '',
 		'class'			=>'fedex_rates_tab',
 		'description' 	  => __('Enter the conversion amount in case you have a different currency set up comparing to the currency of origin location. This amount will be multiplied with the shipping rates. Leave it empty if no conversion required.','wf-shipping-fedex'),
@@ -778,7 +789,7 @@ return array(
 	),
 	'min_amount'  => array(
 		'title'		   => __( 'Minimum Order Amount', 'wf-shipping-fedex' ),
-		'type'			=> 'text',
+		'type'			=> 'decimal',
 		'placeholder'	=> wc_format_localized_price( 0 ),
 		'default'		 => '0',
 		'class'			=>'fedex_rates_tab',
@@ -787,7 +798,7 @@ return array(
 	),
 	'min_shipping_cost'  => array(
 		'title'		   => __( 'Minimum Shipping Cost', 'wf-shipping-fedex' ),
-		'type'			=> 'text',
+		'type'			=> 'decimal',
 		'placeholder'	=> 0,
 		'class'			=>'fedex_rates_tab',
 		'description'	 => __( 'If rates returned by FedEx API will be less than Minimum Shipping Cost then Customer will be charged Minimum Shipping Cost.', 'wf-shipping-fedex' ),
@@ -803,7 +814,7 @@ return array(
 	),
 	'fedex_fallback' 				=> array(
 		'title' 		=> __( 'Fallback', 'wf-shipping-fedex' ),
-		'type'			=> 'text',
+		'type'			=> 'decimal',
 		'default' 		=> '',
 		'desc_tip' 		=> true,
 		'class'			=>'fedex_rates_tab',
@@ -913,10 +924,19 @@ return array(
 			'zplii' 							=> __( 'ZPLII', 'wf-shipping-fedex')
 		)				
 	),
+	'show_label_in_browser'  => array(
+		'title'			=> __( 'Display Labels in Browser for Individual Order', 'wf-shipping-fedex' ),
+		'label'			=> __( 'Enable' ),
+		'type'			=> 'checkbox',
+		'default'		=> 'no',
+		'description'	=> __( 'Enabling this will display the label in the browser instead of downloading it. Useful if your downloaded file is getting currupted because of PHP BOM (ByteOrderMark).', 'wf-shipping-fedex' ),
+		'desc_tip'		=> true,
+		'class'			=> 'fedex_label_tab',
+	),
 	'label_custom_scaling'  => array(
 		'title'			=> __( 'Custom Scaling (%)', 'wf-shipping-fedex' ),
 		'label'			=> __( 'Enable' ),
-		'type'			=> 'text',
+		'type'			=> 'decimal',
 		'default'		=> '100',
 		'description'	=> __( 'Provide a percentage value to scale the shipping label image based on your preference for bulk printing.', 'wf-shipping-fedex' ),
 		'desc_tip'		=> true,
@@ -1243,14 +1263,19 @@ return array(
 		'desc_tip'		=> true,
 		'description'	=> __( 'On enabling this option the shipment details will be sent electronically and ETD will be printed in the Shipping Label', 'wf-shipping-fedex' ),
 	),
-	'discounted_price' => array(
-		'title'			=> __( 'Discounted Price in Commercial Invoice', 'wf-shipping-fedex' ),
-		'label'			=> __( 'Enable', 'wf-shipping-fedex' ),
-		'type'			=> 'checkbox',
-		'class'			=> 'commercial_invoice_toggle fedex_commercial_invoice_tab',
-		'default'		=> 'no',
-		'desc_tip'		=> true,
-		'description'	=> 'Enabling this option will display discounted product price (if any) in Commercial Invoice.'
+	//PDS-149
+	'invoice_commodity_value'   => array(
+		'title'		   => __( 'Price Value', 'wf-shipping-fedex' ),
+		'type'			=> 'select',
+		'class'		   => 'wc-enhanced-select fedex_commercial_invoice_tab commercial_invoice_toggle',
+		'desc_tip'	=> true,
+		'description'	 => 'Select whether you want to display the discounted price, original product price or the declared value to be printed on the commercial invoice.',
+		'default'		 => $default_invoice_commodity_value,
+		'options'		 => array(
+			'discount_price' 			=> __( 'Discounted', 'wf-shipping-fedex'),
+			'product_declared' 			=> __( 'Product', 'wf-shipping-fedex'),
+			'declared_price' 			=> __( 'Declared', 'wf-shipping-fedex')
+		)				
 	),	
 	'commercial_invoice_shipping' => array(
 		'title'			=> __( 'Shipping Charges in Commercial Invoice', 'wf-shipping-fedex' ),
@@ -1583,7 +1608,7 @@ return array(
 	'billing_country'		   => array(
 		'title'		   => __( 'Billing Country Code', 'wf-shipping-fedex' ),
 		'type'			=> 'text',
-		'class'			=> 'fedex_freight_tab freight_group',
+		'class'			=> 'fedex_freight_tab ph_fedex_frieght_billing_country freight_group',
 		'default'		 => '',
 	),
 	

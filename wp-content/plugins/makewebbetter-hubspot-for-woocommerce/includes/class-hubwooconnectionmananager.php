@@ -100,7 +100,7 @@ class HubWooConnectionMananager {
 				'client_id'     => $hapikey,
 				'client_secret' => $hseckey,
 				'code'          => $code,
-				'redirect_uri'  => admin_url() . 'admin.php?type',
+				'redirect_uri'  => admin_url() . 'admin.php?type=hs-auth',
 			);
 			$body     = http_build_query( $data );
 			return $this->hubwoo_oauth_post_api( $endpoint, $body, 'access' );

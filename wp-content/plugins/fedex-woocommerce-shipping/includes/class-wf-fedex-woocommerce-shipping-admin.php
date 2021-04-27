@@ -88,6 +88,7 @@ class wf_fedex_woocommerce_shipping_admin{
 		$this->freight_enabled 		= ( $bool = isset( $this->settings[ 'freight_enabled'] ) ? $this->settings[ 'freight_enabled'] : 'no' ) && $bool == 'yes' ? true : false;
 		$this->custom_scaling 		= ( isset($this->settings['label_custom_scaling']) && !empty($this->settings['label_custom_scaling']) ) ? $this->settings['label_custom_scaling'] : '100';
 		$this->client_side_reset 	= ( isset($this->settings['client_side_reset']) && !empty($this->settings['client_side_reset']) && $this->settings['client_side_reset'] == 'yes' ) ? true : false;
+		$this->etd_label 			= (isset($this->settings['etd_label']) && ($this->settings['etd_label'] == 'yes')) ? true : false;
 
 		// Hold At Location
 		if( $this->hold_at_location ) {
@@ -593,25 +594,45 @@ class wf_fedex_woocommerce_shipping_admin{
 
 
 	public function wf_fedex_viewReturnlabel(){
-		$shipmentDetails = explode('|', base64_decode($_GET['wf_fedex_viewReturnlabel']));
+
+		$settings 				= get_option( 'woocommerce_'.WF_Fedex_ID.'_settings', null );
+		$show_label_in_browser  = isset( $settings['show_label_in_browser'] ) ? $settings['show_label_in_browser'] : 'no';
+		$shipmentDetails 		= explode('|', base64_decode($_GET['wf_fedex_viewReturnlabel']));
 
 		if (count($shipmentDetails) != 2) {
 			exit;
 		}
 		
-		$shipmentId			= $shipmentDetails[0]; 
-		$post_id			= $shipmentDetails[1]; 
-		$shipping_label			= get_post_meta($post_id, 'wf_woo_fedex_returnLabel_'.$shipmentId, true);
+		$shipmentId					= $shipmentDetails[0]; 
+		$post_id					= $shipmentDetails[1]; 
+		$shipping_label				= get_post_meta($post_id, 'wf_woo_fedex_returnLabel_'.$shipmentId, true);
 		$shipping_label_image_type	= get_post_meta($post_id, 'wf_woo_fedex_returnLabel_image_type_'.$shipmentId, true);
-		
-		
+
 		if( empty($shipping_label_image_type) ){
 			$shipping_label_image_type = $this->image_type;
 		}
-		header('Content-Type: application/'.$shipping_label_image_type);
-		$label_name = apply_filters( 'ph_fedex_label_name', 'ShipmentArtifact-'.$shipmentId, $shipmentId, $post_id, 'return_label' );
-		header('Content-disposition: attachment; filename="' . $label_name . '.'.$shipping_label_image_type.'"');
-		print(base64_decode($shipping_label)); 
+
+		if( $show_label_in_browser == "yes" && $shipping_label_image_type == "PNG" && $this->image_type == 'png' ) {
+
+			$final_image 		= base64_decode(chunk_split($shipping_label));;
+			$final_image 		= imagecreatefromstring($final_image);
+			$html_before_image 	= "<html><body style='margin: 0; display: flex; flex-direction: column; justify-content: center;'><div style='text-align: center;'>";
+			$html_after_image 	= "</div></body></html>";
+			$image_style 		= "style='max-width: 100%;'";
+
+			ob_start();
+			imagepng($final_image);
+			$contents =  ob_get_contents();
+			ob_end_clean();
+			echo $html_before_image."<img ".$image_style." src='data:image/gif;base64,".base64_encode($contents)."'/>".$html_after_image;
+
+		}else{
+
+			header('Content-Type: application/'.$shipping_label_image_type);
+			$label_name = apply_filters( 'ph_fedex_label_name', 'ShipmentArtifact-'.$shipmentId, $shipmentId, $post_id, 'return_label' );
+			header('Content-disposition: attachment; filename="' . $label_name . '.'.$shipping_label_image_type.'"');
+			print(base64_decode($shipping_label)); 
+		}
 		exit;
 	}
 
@@ -812,25 +833,44 @@ class wf_fedex_woocommerce_shipping_admin{
 	}
 	
 	public function wf_fedex_viewlabel(){
-		$shipmentDetails = explode('|', base64_decode($_GET['wf_fedex_viewlabel']));
+		$settings 					= get_option( 'woocommerce_'.WF_Fedex_ID.'_settings', null );
+		$show_label_in_browser      = isset( $settings['show_label_in_browser'] ) ? $settings['show_label_in_browser'] : 'no';
+		$shipmentDetails 			= explode('|', base64_decode($_GET['wf_fedex_viewlabel']));
 
 		if (count($shipmentDetails) != 2) {
 			exit;
 		}
 		
-		$shipmentId = $shipmentDetails[0]; 
-		$post_id = $shipmentDetails[1]; 
-		$shipping_label = get_post_meta($post_id, 'wf_woo_fedex_shippingLabel_'.$shipmentId, true);
-		$shipping_label_image_type = get_post_meta($post_id, 'wf_woo_fedex_shippingLabel_image_type_'.$shipmentId, true);
-		
+		$shipmentId 				= $shipmentDetails[0]; 
+		$post_id 					= $shipmentDetails[1]; 
+		$shipping_label 			= get_post_meta($post_id, 'wf_woo_fedex_shippingLabel_'.$shipmentId, true);
+		$shipping_label_image_type 	= get_post_meta($post_id, 'wf_woo_fedex_shippingLabel_image_type_'.$shipmentId, true);
 		
 		if( empty($shipping_label_image_type) ){
 			$shipping_label_image_type = $this->image_type;
 		}
-		header('Content-Type: application/'.$shipping_label_image_type);
-		$label_name = apply_filters( 'ph_fedex_label_name', 'ShipmentArtifact-'.$shipmentId, $shipmentId, $post_id, 'normal_label' );
-		header('Content-disposition: attachment; filename="' . $label_name . '.'.$shipping_label_image_type.'"');
-		print(base64_decode($shipping_label)); 
+
+		if( $show_label_in_browser == "yes" && $shipping_label_image_type == "PNG" && $this->image_type == 'png' ) {
+
+			$final_image 		= base64_decode(chunk_split($shipping_label));;
+			$final_image 		= imagecreatefromstring($final_image);
+			$html_before_image 	= "<html><body style='margin: 0; display: flex; flex-direction: column; justify-content: center;'><div style='text-align: center;'>";
+			$html_after_image 	= "</div></body></html>";
+			$image_style 		= "style='max-width: 100%;'";
+
+			ob_start();
+			imagepng($final_image);
+			$contents =  ob_get_contents();
+			ob_end_clean();
+			echo $html_before_image."<img ".$image_style." src='data:image/gif;base64,".base64_encode($contents)."'/>".$html_after_image;
+
+		}else{
+
+			header('Content-Type: application/'.$shipping_label_image_type);
+			$label_name = apply_filters( 'ph_fedex_label_name', 'ShipmentArtifact-'.$shipmentId, $shipmentId, $post_id, 'normal_label' );
+			header('Content-disposition: attachment; filename="' . $label_name . '.'.$shipping_label_image_type.'"');
+			print(base64_decode($shipping_label)); 
+		}
 		exit;
 	}
 	
@@ -1099,7 +1139,8 @@ class wf_fedex_woocommerce_shipping_admin{
 				if(!empty($selected_sevice))
 					echo "<li>Shipping Service: <strong>$selected_sevice</strong></li>";		
 				
-				echo '<li><strong>Shipment Tracking ID:</strong> '.$shipmentId.'</li>';
+				?><li><strong><?php _e( 'Shipment Tracking ID: ' ); ?></strong><a href="https://www.fedex.com/fedextrack/no-results-found?trknbr=<?php echo $shipmentId ?>" target="_blank"><?php echo $shipmentId ?></a><?php
+
 				$usps_trackingid = get_post_meta($order->id, 'wf_woo_fedex_usps_trackingid_'.$shipmentId, true);
 				if(!empty($usps_trackingid)){
 					echo "<br><strong>USPS Tracking #:</strong> ".$usps_trackingid;
@@ -1126,7 +1167,7 @@ class wf_fedex_woocommerce_shipping_admin{
 				$shipping_label = get_post_meta($post->ID, 'wf_woo_fedex_shippingLabel_'.$shipmentId, true);
 				if(!empty($shipping_label)){
 					$download_url = admin_url('/post.php?wf_fedex_viewlabel='.base64_encode($shipmentId.'|'.$post->ID));?>
-					<a class="button tips" href="<?php echo $download_url; ?>" data-tip="<?php _e('Print Label', 'wf-shipping-fedex'); ?>"><?php _e('Print Label', 'wf-shipping-fedex'); ?></a>
+					<a class="button tips" href="<?php echo $download_url; ?>" target="_blank" data-tip="<?php _e('Print Label', 'wf-shipping-fedex'); ?>"><?php _e('Print Label', 'wf-shipping-fedex'); ?></a>
 					<?php 
 				}
 				
@@ -1147,8 +1188,10 @@ class wf_fedex_woocommerce_shipping_admin{
 				echo '<hr>';
 				if(!empty($shipping_return_label)){
 					$download_url = admin_url('/post.php?wf_fedex_viewReturnlabel='.base64_encode($shipmentId.'|'.$post->ID) );
-					echo '<li><strong>Return Shipment Tracking ID:</strong> '.$return_shipment_id.'</li>';?>
-					<a class="button tips" href="<?php echo $download_url; ?>" data-tip="<?php _e('Print Return Label', 'wf-shipping-fedex'); ?>"><?php _e('Print Return Label', 'wf-shipping-fedex'); ?></a>
+					
+					?><li><strong><?php _e( 'Return Shipment Tracking ID: ' ); ?></strong><a href="https://www.fedex.com/fedextrack/no-results-found?trknbr=<?php echo $return_shipment_id ?>" target="_blank"><?php echo $return_shipment_id ?></a>
+
+					<li><a class="button tips" href="<?php echo $download_url; ?>" target="_blank" data-tip="<?php _e('Print Return Label', 'wf-shipping-fedex'); ?>"><?php _e('Print Return Label', 'wf-shipping-fedex'); ?></a></li>
 					<?php 
 				}else{
 					$selected_sevice = $this->wf_get_shipping_service($order);	
@@ -1363,18 +1406,25 @@ class wf_fedex_woocommerce_shipping_admin{
 				<a style="margin: 4px" class="button tips wf_fedex_generate_packages_rates button-secondary" href="<?php echo admin_url( '/post.php?wf_fedex_generate_packages_rates='.base64_encode($post->ID) ); ?>" data-tip="<?php _e( 'Calculate the Shipping Cost.', 'wf-shipping-fedex' ); ?>"><?php _e( 'Calculate Cost', 'wf-shipping-fedex' ); ?></a>
 				<?php
 
-				//If payment method is COD, check COD by default.
-				$order_payment_method = get_post_meta( $post->ID, '_payment_method', true );
-				$cod_checked = $order_payment_method == 'cod' ? 'checked': '';
+				// If payment method is COD, check COD by default.
+				$order_payment_method 	= get_post_meta( $post->ID, '_payment_method', true );
+				$cod_checked 			= $order_payment_method == 'cod' ? 'checked': '';
+				$order_data 			= new WC_Order($post->ID);
+				$items_cost 			= $order_data->get_subtotal();
+				$order_currency 		= $order_data->get_currency();
+				$b13_post_currency 		= "CAD";
+				$woocommerce_currency_conversion_rate = get_option('woocommerce_multicurrency_rates');
+				$shipping_country 		= $order_data->get_shipping_country();
 
 				echo '<li><label for="wf_fedex_cod"><input type="checkbox" style="" id="wf_fedex_cod" '.$cod_checked.' name="wf_fedex_cod" class="">' . __('Collect On Delivery', 'wf-shipping-fedex') . '</label></li>';
 				echo '<li><label for="wf_fedex_sat_delivery"><input type="checkbox" style="" id="wf_fedex_sat_delivery" name="wf_fedex_sat_delivery" class="">' . __('Saturday Delivery', 'wf-shipping-fedex') . '</label></li>';
 
-				$order_data = new WC_Order($post->ID);
-				$items_cost = $order_data->get_subtotal();
-				$order_currency = $order_data->get_currency();
-				$b13_post_currency = "CAD";
-				$woocommerce_currency_conversion_rate = get_option('woocommerce_multicurrency_rates');
+				if ( $this->origin_country != $shipping_country ) {
+
+					$etd_checked 	= $this->etd_label ? 'checked': '';
+
+					echo '<li><label for="ph_fedex_etd"><input type="checkbox" '.$etd_checked.' id="ph_fedex_etd" name="ph_fedex_etd">' . __('ETD - Electronic Trade Documents', 'wf-shipping-fedex') . '</label></li>';
+				}
 				
 				if($order_currency != $b13_post_currency && !empty($woocommerce_currency_conversion_rate)){
 
@@ -1384,8 +1434,6 @@ class wf_fedex_woocommerce_shipping_admin{
 					$conversion_rate = $b13_currency_rate / $order_currency_rate;
 					$items_cost *= $conversion_rate;
 				}
-
-				$shipping_country = $order_data->get_shipping_country();
 				
 				if( $this->origin_country === 'CA' && ( $items_cost >= 2000 &&	 ($shipping_country != 'US' && $shipping_country != 'CA' &&$shipping_country != 'PR' && $shipping_country != 'VI'))) {
 					$export_declaration_required = 1;
@@ -1504,6 +1552,7 @@ class wf_fedex_woocommerce_shipping_admin{
 				+ '&height=' + manual_height
 				+ '&cod=' + jQuery('#wf_fedex_cod').is(':checked')
 				+ '&sat_delivery=' + jQuery('#wf_fedex_sat_delivery').is(':checked')
+				+ '&etd=' + jQuery('#ph_fedex_etd').is(':checked')
 				+ '&insurance=' + manual_insurance
 				+ '&service=' + manual_service
 				+ '&package_key=' + package_key

@@ -161,6 +161,7 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 		$this->api_pass				= $this->get_option( 'api_pass' );
 		$this->production			= ( $bool = $this->get_option( 'production' ) ) && $bool == 'yes' ? true : false;
 		$this->debug				= ( $bool = $this->get_option( 'debug' ) ) && $bool == 'yes' ? true : false;
+		$this->silent_debug 		= ( isset($this->settings[ 'silent_debug' ]) && ( $bool = $this->settings[ 'silent_debug' ] ) && $bool == 'yes' ) ? true : false;
 		$this->delivery_time			= ( $bool = $this->get_option( 'delivery_time' ) ) && $bool == 'yes' ? true : false;
 		if( $this->delivery_time && empty(self::$wp_date_format) ) {
 			self::$wp_date_format = get_option('date_format');
@@ -484,7 +485,7 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 	}
 
 	public function debug( $message, $type = 'notice' ) {
-		if ( $this->debug && function_exists('wc_add_notice') ) {
+		if ( $this->debug && function_exists('wc_add_notice') && !$this->silent_debug ) {
 			wc_add_notice( $message, $type );
 		}
 	}
@@ -682,7 +683,7 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 			<tr style="padding-top: 0px;" class="fedex_general_tab">
 				<td></td>
 				<td style="vertical-align: top;padding-top: 0px;">
-					<input type="button" value=" Validate Credentials" id="xa_fedex_validate_credentials" class="button button-secondary" name="xa_fedex_validate_credentials" >
+					<input type="button" value=" Validate Credentials" id="xa_fedex_validate_credentials" class="button button-secondary" name="xa_fedex_validate_credentials" size="5" >
 					<p class="fedex-validation-result"></p>
 				</td>
 			</tr><?php
@@ -866,6 +867,34 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 					$class = get_woocommerce_term_meta( $shipping_class_id, 'fedex_freight_class', true );
 				}else{
 					$class = get_term_meta( $shipping_class_id, 'fedex_freight_class', true );
+				}
+				if ( !empty($class) && !is_numeric($class) ) {
+					$fClass = explode('_', $class);
+					$fArray = array(
+						'50'  ,
+						'55'  ,
+						'60'  ,
+						'65'  ,
+						'70'  ,
+						'77.5',
+						'85'  ,
+						'92.5',
+						'100' ,
+						'110' ,
+						'125' ,
+						'150' ,
+						'175' ,
+						'200' ,
+						'250' ,
+						'300' ,
+						'400' ,
+						'500' ,
+					);
+					if( isset($fClass[1]) && in_array( $fClass[1], $fArray )) {
+						$class = $fClass[1];
+					} else {
+						$class = '';
+					}
 				}
 			}
 		}

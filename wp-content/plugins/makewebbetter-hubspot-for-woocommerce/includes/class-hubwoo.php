@@ -2203,7 +2203,7 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 			if ( $left_items_timer > 90 ) {
 				$float_timer = number_format( ( $left_items_timer / 60 ), 2 );
 				$hours       = intval( $float_timer );
-				$minutes     = round( ( $float_timer - $hour ) * 0.6 );
+				$minutes     = round( ( $float_timer - $hours) * 0.6 );
 				$eta_string  = "{$hours} hours and {$minutes} minutes ";
 			} elseif ( 0 == $left_items_timer ) {
 				$eta_string = 'less than a minute';

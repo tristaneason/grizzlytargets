@@ -7,7 +7,8 @@
 				<th><?php _e( 'Service Code', 'wf-shipping-fedex' ); ?></th>
 				<th><?php _e( 'Name', 'wf-shipping-fedex' ); ?></th>
 				<th>
-					<label for="fedexSelectAll">
+					<label for="fedexSelectAll" style="width: 100px;
+    height: 30px;">
 						<input type="checkbox" id="fedexSelectAll" style="float: left; margin: 3px 10px 0 -2px;"/><?php _e( 'Enabled', 'wf-shipping-fedex' ); ?>
 					</label>
 				</th>
@@ -42,10 +43,10 @@
 						<tr>
 							<td class="sort"><input type="hidden" class="order" name="fedex_service[<?php echo $code; ?>][order]" value="<?php echo isset( $this->custom_services[ $code ]['order'] ) ? $this->custom_services[ $code ]['order'] : ''; ?>" /></td>
 							<td><strong><?php echo $code; ?></strong></td>
-							<td><input type="text" name="fedex_service[<?php echo $code; ?>][name]" placeholder="<?php echo $name; ?>" value="<?php echo isset( $this->custom_services[ $code ]['name'] ) ? $this->custom_services[ $code ]['name'] : ''; ?>" size="45" /></td>
-							<td><input type="checkbox" name="fedex_service[<?php echo $code; ?>][enabled]" class="checkBoxClass" <?php checked( ( ! isset( $this->custom_services[ $code ]['enabled'] ) || ! empty( $this->custom_services[ $code ]['enabled'] ) ), true ); ?> size="4" /></td>
-							<td><input type="text" name="fedex_service[<?php echo $code; ?>][adjustment]" placeholder="N/A" value="<?php echo isset( $this->custom_services[ $code ]['adjustment'] ) ? $this->custom_services[ $code ]['adjustment'] : ''; ?>" size="5" /></td>
-							<td><input type="text" name="fedex_service[<?php echo $code; ?>][adjustment_percent]" placeholder="N/A" value="<?php echo isset( $this->custom_services[ $code ]['adjustment_percent'] ) ? $this->custom_services[ $code ]['adjustment_percent'] : ''; ?>" size="5" /></td>
+							<td><input type="text" name="fedex_service[<?php echo $code; ?>][name]" placeholder="<?php echo $name; ?>" value="<?php echo isset( $this->custom_services[ $code ]['name'] ) ? $this->custom_services[ $code ]['name'] : ''; ?>" size="35" /></td>
+							<td><input type="checkbox" name="fedex_service[<?php echo $code; ?>][enabled]" class="checkBoxClass" <?php checked( ( ! isset( $this->custom_services[ $code ]['enabled'] ) || ! empty( $this->custom_services[ $code ]['enabled'] ) ), true ); ?> size="3" /></td>
+							<td><input type="number" step="any" style="padding-left: 6px;padding-right: 2px; width: 168px"  name="fedex_service[<?php echo $code; ?>][adjustment]" placeholder="0" value="<?php echo isset( $this->custom_services[ $code ]['adjustment'] ) ? $this->custom_services[ $code ]['adjustment'] : ''; ?>"/></td>
+							<td><input type="number" step="any" style="padding-left: 6px;padding-right: 2px; width: 168px; margin-right:5px; "  name="fedex_service[<?php echo $code; ?>][adjustment_percent]" placeholder="0"  value="<?php echo isset( $this->custom_services[ $code ]['adjustment_percent'] ) ? $this->custom_services[ $code ]['adjustment_percent'] : ''; ?>"/></td>
 						</tr>
 						<?php
 					}

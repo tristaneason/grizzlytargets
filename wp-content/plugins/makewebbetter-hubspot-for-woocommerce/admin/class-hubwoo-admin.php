@@ -213,7 +213,7 @@ class Hubwoo_Admin {
 
 			$hapikey = HUBWOO_CLIENT_ID;
 			$hseckey = HUBWOO_SECRET_ID;
-
+			
 			if ( $hapikey && $hseckey ) {
 				if ( ! Hubwoo::is_valid_client_ids_stored() ) {
 

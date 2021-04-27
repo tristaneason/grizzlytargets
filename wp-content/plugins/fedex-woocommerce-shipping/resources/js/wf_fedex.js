@@ -63,12 +63,14 @@ jQuery(function($){
 			wf_fedex_automatic_label_generation();
 			ph_fedex_toggle_doc_tab();
 			ph_fedex_toggle_csb_shipments();
+			ph_fedex_toggle_label_show_browser();
 		}
 		if( $tab == 'general' ){
 			xa_fedex_duties_payer_options();
 			xa_fedex_payment_type_options();
 			ph_fedex_toggle_alt_return_address();
 			ph_fedex_toggle_alt_return_address_as_billing();
+			ph_fedex_silent_debug_option();
 		}
 		if( $tab == 'pickup' ){
 			wf_fedex_load_pickup_options();
@@ -166,6 +168,10 @@ jQuery(function($){
 		wf_fedex_return_label_options();
 	});
 
+	// Toggle Label Format based on Image Type option and Display Label in Browser.
+	jQuery('#woocommerce_wf_fedex_woocommerce_shipping_image_type').change(function(){
+		ph_fedex_toggle_label_show_browser();
+	});
 
 	jQuery('#woocommerce_wf_fedex_woocommerce_shipping_customs_duties_payer').change(function(){
 		xa_fedex_duties_payer_options()
@@ -185,6 +191,10 @@ jQuery(function($){
 	});
 	jQuery('#woocommerce_wf_fedex_woocommerce_shipping_automate_package_generation').click(function(){
 		wf_fedex_automatic_label_generation();
+	});
+	//Silent Debug mode
+	jQuery('#woocommerce_wf_fedex_woocommerce_shipping_debug').click(function(){
+		ph_fedex_silent_debug_option();
 	});
 
 	// FedEx Shipping Details Toggle
@@ -245,6 +255,10 @@ jQuery(function($){
 	});
 
 	jQuery('.ph_return_label_desc').attr({'maxlength':25});
+	jQuery('#_ph_commodity_description').attr({'maxlength':450});
+	jQuery('#_wf_manufacture_country').attr({'maxlength':2});
+	jQuery('#_ph_commodity_description').attr({'minlength':3});
+	jQuery('.ph_fedex_frieght_billing_country').attr({'maxlength':2});
 
 	/********************************************* Help & Support Send Report Settings ************************************************/
 
@@ -459,6 +473,19 @@ function wf_fedex_return_label_options(){
 		jQuery('.ph_fedex_return_label').closest('tr').hide();
 	}
 }
+
+/**
+ * Toggle Label Format based on Image Type option and Display Label in Browser.
+ */
+function ph_fedex_toggle_label_show_browser(){
+	label_image_type = jQuery('#woocommerce_wf_fedex_woocommerce_shipping_image_type');
+	if( label_image_type.val() =='png' ){
+		jQuery('#woocommerce_wf_fedex_woocommerce_shipping_show_label_in_browser').closest('tr').show();
+	}else{
+		jQuery('#woocommerce_wf_fedex_woocommerce_shipping_show_label_in_browser').closest('tr').hide();
+	}
+}
+
 function wf_fedex_load_freight_options(){
 	var checked	=	jQuery('#woocommerce_wf_fedex_woocommerce_shipping_freight_enabled').is(":checked");
 	if(checked){
@@ -527,6 +554,15 @@ function wf_fedex_automatic_label_generation(){
 		jQuery('#woocommerce_wf_fedex_woocommerce_shipping_automate_label_generation').closest('tr').show();
 	}else{
 		jQuery('#woocommerce_wf_fedex_woocommerce_shipping_automate_label_generation').closest('tr').hide();
+	}
+}
+//silent debug
+function ph_fedex_silent_debug_option(){
+	var checked	=	jQuery('#woocommerce_wf_fedex_woocommerce_shipping_debug').is(":checked");
+	if(checked){
+		jQuery('.ph_fedex_silent_debug').closest('tr').show();
+	}else{
+		jQuery('.ph_fedex_silent_debug').closest('tr').hide();
 	}
 }
 

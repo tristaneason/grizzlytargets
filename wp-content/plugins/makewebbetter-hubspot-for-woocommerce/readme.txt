@@ -7,7 +7,7 @@ Tested up to: 5.7.0
 WC requires at least: 3.0.0
 WC tested up to: 5.1.0
 Requires PHP: 5.1
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
@@ -116,8 +116,8 @@ Please visit the MakeWebBetter knowledge base for more detailed documentation an
 
 == Changelog ==
  
-= 1.0.7 - Released on 06 April 2021 =
-* Fix - Authentication issue.
+= 1.0.8 - Released on 23 April 2021 =
+* Fix - Creating Groups issue.
  
 == Upgrade Notice ==
  
@@ -137,3 +137,5 @@ Please visit the MakeWebBetter knowledge base for more detailed documentation an
 * Fix - Deal update issue
 = 1.0.7 - Released on 06 April 2021 =
 * Fix - Authentication issue
+= 1.0.8 - Released on 23 April 2021 =
+* Fix - Creating Groups issue.

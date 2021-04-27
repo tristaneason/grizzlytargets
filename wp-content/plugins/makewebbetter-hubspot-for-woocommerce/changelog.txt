@@ -1,4 +1,7 @@
  *** HubSpot for WooCommerce Changelog ***
+2021-04-23 - version 1.0.8
+* Fix - Creating Groups issue.
+
 2021-04-06 - version 1.0.7
 * Fix - Authentication issue.
 

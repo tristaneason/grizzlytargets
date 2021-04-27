@@ -188,8 +188,10 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 		$this->remove_special_char =  ( isset( $this->settings['remove_special_char_product'] ) && !empty($this->settings['remove_special_char_product']) && $this->settings['remove_special_char_product'] == 'yes' ) ? true : false;
 
 		$this->duties_and_taxes_rate 	= ( isset($this->settings['fedex_duties_and_taxes_rate']) && !empty($this->settings['fedex_duties_and_taxes_rate']) && $this->settings['fedex_duties_and_taxes_rate'] == 'yes' ) ? true : false;
-
+   
 		$this->discounted_price 		= ( isset($this->settings['discounted_price']) && !empty($this->settings['discounted_price']) && $this->settings['discounted_price'] == 'yes' ) ? true : false;
+		$this->invoice_commodity_value 	= ( isset($this->settings['invoice_commodity_value']) && !empty($this->settings['invoice_commodity_value'])) ? $this->settings['invoice_commodity_value'] : '' ;
+
 		$this->commercial_invoice_shipping = ( isset($this->settings['commercial_invoice_shipping']) && !empty($this->settings['commercial_invoice_shipping']) && $this->settings['commercial_invoice_shipping'] == 'yes' ) ? true : false;
 		$this->commercial_invoice_order_currency = ( isset($this->settings['commercial_invoice_order_currency']) && !empty($this->settings['commercial_invoice_order_currency']) && $this->settings['commercial_invoice_order_currency'] == 'yes' ) ? true : false;
 
@@ -367,6 +369,34 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 					$class = get_woocommerce_term_meta( $shipping_class_id, 'fedex_freight_class', true );
 				}else{
 					$class = get_term_meta( $shipping_class_id, 'fedex_freight_class', true );
+				}
+				if ( !empty($class) && !is_numeric($class) ) {
+					$fClass = explode('_', $class);
+					$fArray = array(
+						'50'  ,
+						'55'  ,
+						'60'  ,
+						'65'  ,
+						'70'  ,
+						'77.5',
+						'85'  ,
+						'92.5',
+						'100' ,
+						'110' ,
+						'125' ,
+						'150' ,
+						'175' ,
+						'200' ,
+						'250' ,
+						'300' ,
+						'400' ,
+						'500' ,
+					);
+					if( isset($fClass[1]) && in_array( $fClass[1], $fArray )) {
+						$class = $fClass[1];
+					} else {
+						$class = '';
+					}
 				}
 				
 			}
@@ -1436,6 +1466,9 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 				$commodoties    = array();
 				$freight_class  = '';
 				$this->customtotal = 0;
+				$this->dry_ice_shipment=false;
+				$this->dry_ice_total_weight = 0; 
+
 
 				// Store parcels as line items
 				$request['RequestedShipment']['RequestedPackageLineItems'] = array();
@@ -1465,8 +1498,9 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 							}
 
 							$is_dry_ice_product = get_post_meta($product_id , '_wf_dry_ice', 1);
-
-							if( $this->discounted_price )
+                            
+                            //PDS-149
+							if ( (empty($this->invoice_commodity_value) && $this->discounted_price) || $this->invoice_commodity_value == 'discounted_price' )
 							{
 								$order_object = wc_get_order($this->order->id);
 
@@ -1556,7 +1590,8 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 
 							$custom_declared_value = get_post_meta( $product_id, '_wf_fedex_custom_declared_value', true );
 
-							if( !empty($custom_declared_value) ) {
+                            //PDS-149
+							if ( ( !empty($custom_declared_value) && empty($this->invoice_commodity_value) ) || $this->invoice_commodity_value == 'declared_price' ) {
 
 								if( $this->commercial_invoice_order_currency ) {
 
@@ -2015,8 +2050,15 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 					$line_items_special_services['SpecialServiceTypes'][] = 'NON_STANDARD_CONTAINER';
 				}
 
-				if ( !empty($line_items_special_services) ) {
+				//PDS-121
+				if( !empty($line_items_special_services) && !isset($parcel_request['manual_package']) ) {
+
 					$parcel_request['SpecialServicesRequested']	=	$line_items_special_services;
+				}
+
+				if(isset($parcel_request['manual_package'])){
+
+					unset($parcel_request['manual_package']);
 				}
 
 				$reff = array();				
@@ -2802,6 +2844,8 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 						unset($package_clone['package_id']);
 					}
 
+					$package_clone['manual_package']='true';
+
 					$new_manual_package[0][$i] = $package_clone;
 				}
 			}
@@ -2889,7 +2933,18 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 
 						$special_servicetypes = !empty($request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes']) ? $request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'] : array();
 
-						if( $this->etd_label ) {
+						$etd_label 	= false;
+
+						if ( isset($_GET['etd']) ) {
+
+							$etd_label = ($_GET['etd'] === 'true') ? true : false;
+
+						}else if( $this->etd_label ) {
+
+							$etd_label = true;
+						}
+
+						if( $etd_label ) {
 
 							array_unshift( $special_servicetypes, 'ELECTRONIC_TRADE_DOCUMENTS' );
 
@@ -3115,7 +3170,7 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 
 				add_post_meta($this->order_id, 'wf_woo_fedex_returnShipmetId', $shipmentId, true);
 				add_post_meta($this->order_id, 'wf_woo_fedex_returnLabel_'.$this->shipmentId, $return_label, true);
-				if( !empty($shippinglabel_type) ){
+				if( !empty($returnlabel_type) ){
 					 add_post_meta($this->order_id, 'wf_woo_fedex_returnLabel_image_type_'.$this->shipmentId, $returnlabel_type, true);
 				}
 				$shipping_label = get_post_meta($this->order_id, 'wf_woo_fedex_returnLabel_'.$this->shipmentId, true);
@@ -3607,8 +3662,9 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 					}
 
 					$is_dry_ice_product = get_post_meta($product_id , '_wf_dry_ice', 1);
-
-					if( $this->discounted_price ) {
+                    
+                    //PDS-149
+					if ( (empty($this->invoice_commodity_value) && $this->discounted_price) || $this->invoice_commodity_value == 'discount_price' ) {
 
 						$order_object = wc_get_order($this->order->id);
 
@@ -3697,7 +3753,8 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 
 					$custom_declared_value = get_post_meta( $product_id, '_wf_fedex_custom_declared_value', true );
 
-					if( !empty($custom_declared_value) ) {
+					//PDS-149
+					if ( ( !empty($custom_declared_value) && empty($this->invoice_commodity_value) ) || $this->invoice_commodity_value == 'declared_price' ) {
 
 						if( $this->commercial_invoice_order_currency ) {
 
@@ -3728,7 +3785,7 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 						}
 					}
 
-					if( $is_dry_ice_product=='yes' ){
+					if( $is_dry_ice_product=='yes' && ( $key=='0' || count($fedex_packages) == 1 ) ){
 						$this->dry_ice_shipment = true;
 						$meta_exists=metadata_exists('post', $product_id, '_wf_dry_ice_weight');
 						$dry_ice_weight=($meta_exists)?get_post_meta($product_id , '_wf_dry_ice_weight', 1):$product->get_weight();           // for backward compactibility ( added on 22/11/2018) 
