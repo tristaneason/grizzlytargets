@@ -8,17 +8,9 @@ use Leadin\wp\Options;
  * Class that wraps the functions to access generic options.
  */
 class HubspotOptions extends Options {
-	const ACQUISITION_ATTRIBUTION = 'hubspot_acquisition_attribution';
-	const AFFILIATE_CODE          = 'hubspot_affiliate_code';
-	const HUBLET                  = 'hubspot_hublet';
-	const WPE_TEMPLATE            = 'wpe_template';
-
-	/**
-	 * Return option containing attribution info.
-	 */
-	public static function get_acquisition_attribution() {
-		return self::get( self::ACQUISITION_ATTRIBUTION );
-	}
+	const AFFILIATE_CODE = 'hubspot_affiliate_code';
+	const HUBLET         = 'hubspot_hublet';
+	const WPE_TEMPLATE   = 'wpe_template';
 
 	/**
 	 * Return option containing affiliate codes.

@@ -5,6 +5,7 @@ import {
   leadinPageReload,
   leadinPageRedirect,
   setLeadinUnAuthedNavigation,
+  setLeadinCookiesDisabledNavigation,
 } from '../navigation';
 import * as leadinConfig from '../constants/leadinConfig';
 import {
@@ -18,7 +19,7 @@ import {
   leadinDisconnectPortal,
   skipSignup,
 } from '../api/wordpressAjaxClient';
-import { makeProxyRequest } from '../api/wordpressApiClient';
+import { makeInterframeProxyRequest } from '../api/wordpressApiClient';
 
 const methods = {
   leadinClearQueryParam,
@@ -30,7 +31,8 @@ const methods = {
   getLeadinConfig: () => leadinConfig,
   skipSignup,
   setLeadinUnAuthedNavigation,
-  makeProxyRequest,
+  setLeadinCookiesDisabledNavigation,
+  makeInterframeProxyRequest,
 };
 
 const UNAUTHORIZED = 'unauthorized';
@@ -83,7 +85,11 @@ export function initInterframe(iframe) {
   };
 
   const currentPage = getQueryParam('page');
-  if (currentPage !== 'leadin_settings' && currentPage !== 'leadin') {
+  if (
+    currentPage !== 'leadin_settings' &&
+    currentPage !== 'leadin' &&
+    currentPage !== 'leadin_user_guide'
+  ) {
     window.addEventListener('message', redirectToLogin);
   }
 

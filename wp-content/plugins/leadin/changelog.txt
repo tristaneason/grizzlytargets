@@ -1,3 +1,13 @@
+= 8.0.1 (2021-04-22) =
+* Fix undefined website name in the authorisation screen
+
+= 8.0.0 (2021-04-22) =
+* Created OAuth2 flows to authorize the plugin.
+* Enabled OAuth2 authorization flows for users with third party cookies disabled.
+
+= 7.52.168 (2021-04-12) =
+* Generates an array with the query parameters needed for the signup instead of a URL
+
 = 7.52.105 (2021-03-26) =
 * Updated the query parameters sent to the UI. These parameters will be used for OAuth2 authorisation flow.
 
@@ -417,13 +427,4 @@
 
 = 7.0.0 (2018-10-02) =
 * Add deeper integration with HubSpot. Starts a new release of a new forms integration within WordPress. Released progressively for some users.
-
-= 6.1.12 (2018-09-13) =
-* Internal update
-
-= 6.1.11 (2018-08-29) =
-* Plugin description update
-
-= 6.1.10 (2018-08-27) =
-* Plugin readme update
 

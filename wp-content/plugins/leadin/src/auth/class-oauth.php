@@ -5,6 +5,9 @@ namespace Leadin\auth;
 use Leadin\wp\User;
 use Leadin\options\LeadinOptions;
 use Leadin\rest\HubSpotApiClient;
+use Leadin\auth\OAuthCrypto;
+use Leadin\admin\Routing;
+use Leadin\admin\MenuConstants;
 
 /**
  * Class managing OAuth2 authorization
@@ -12,15 +15,12 @@ use Leadin\rest\HubSpotApiClient;
 class OAuth {
 
 	/**
-	 * Return the flag checking if OAuth flow is enabled.
+	 * Return the flag checking if we're connected with OAuth.
 	 *
 	 * @return bool True if the OAuth version of the plugin is enabled or not.
 	 */
 	public static function is_enabled() {
-		// TODO this is a development flag for now.
-		// This will become the flag to indicate the user has connected with OAuth flow.
-		// return ! empty ( LeadiOptions::get( 'access_token' ) );.
-		return ! empty( get_option( 'hsdev_oauth_enabled' ) );
+		return ! empty( LeadinOptions::get( 'access_token' ) );
 	}
 
 	/**
@@ -31,8 +31,9 @@ class OAuth {
 	 * @param string $expires_in Time left in seconds till access token expires.
 	 */
 	public static function authorize( $access_token, $refresh_token, $expires_in ) {
+		$encrypted_refresh_token = OAuthCrypto::encrypt( $refresh_token );
 		LeadinOptions::update( 'access_token', $access_token );
-		LeadinOptions::update( 'refresh_token', $refresh_token );
+		LeadinOptions::update( 'refresh_token', $encrypted_refresh_token );
 		LeadinOptions::update( 'expiry_time', time() + $expires_in );
 	}
 
@@ -67,7 +68,8 @@ class OAuth {
 	 * @return string The stored refresh token in the Options table.
 	 */
 	private static function get_refresh_token() {
-		return LeadinOptions::get( 'refresh_token' );
+		$encrypted_refresh_token = LeadinOptions::get( 'refresh_token' );
+		return OAuthCrypto::decrypt( $encrypted_refresh_token );
 	}
 
 	/**
@@ -88,7 +90,6 @@ class OAuth {
 	public static function is_access_token_expired() {
 		$current_time = time();
 		$expiry_time  = self::get_expiry_time();
-
 		return $expiry_time - $current_time < 600; // 10 minutes.
 	}
 
@@ -98,12 +99,15 @@ class OAuth {
 	 * @throws \Exception On any HTTP request errors when attempting to refresh the access token.
 	 */
 	public static function refresh_access_token() {
-		$refreshed_credentials = HubSpotApiClient::refresh_access_token( self::get_refresh_token() );
-
-		self::authorize(
-			$refreshed_credentials->access_token,
-			$refreshed_credentials->refresh_token,
-			$refreshed_credentials->expires_in
-		);
+		try {
+			$refreshed_credentials = HubSpotApiClient::refresh_access_token( self::get_refresh_token() );
+			self::authorize(
+				$refreshed_credentials->access_token,
+				$refreshed_credentials->refresh_token,
+				$refreshed_credentials->expires_in
+			);
+		} catch ( \Exception $e ) {
+			throw new \Exception( \json_encode( 'Failed to refresh OAuth token' ), 401 );
+		}
 	}
 }

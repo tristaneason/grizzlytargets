@@ -3,9 +3,7 @@
 namespace Leadin\admin;
 
 use Leadin\LeadinFilters;
-use Leadin\options\HubspotOptions;
 use Leadin\options\AccountOptions;
-use Leadin\admin\AdminFilters;
 use Leadin\admin\MenuConstants;
 use Leadin\admin\utils\Background;
 use Leadin\wp\User;
@@ -105,97 +103,12 @@ class Links {
 	}
 
 	/**
-	 * Return utm_campaign to add to the signup link.
-	 */
-	private static function get_utm_campaign() {
-		$wpe_template = HubspotOptions::get_wpe_template();
-		if ( 'hubspot' === $wpe_template ) {
-			return 'wp-engine-site-template';
-		}
-	}
-
-	/**
 	 * Return a string query parameters to add to the iframe src.
 	 */
 	public static function get_query_params() {
-		$config_array = AdminConstants::get_hubspot_config();
+		$config_array = AdminConstants::get_hubspot_query_params_array();
 
 		return self::http_build_query( $config_array );
-	}
-
-	/**
-	 * Return an array with the user's pre-fill info for signup
-	 */
-	public static function get_signup_prefill_params_array() {
-		$wp_user   = wp_get_current_user();
-		$user_info = array(
-			'firstName' => $wp_user->user_firstname,
-			'lastName'  => $wp_user->user_lastname,
-			'email'     => $wp_user->user_email,
-			'show_nav'  => 'true',
-		);
-
-		return $user_info;
-	}
-
-	/**
-	 * Return an array with the utm parameters for signup
-	 */
-	public static function get_utm_query_params_array() {
-		$utm_params = array(
-			'utm_source' => 'wordpress-plugin',
-			'utm_medium' => 'marketplaces',
-		);
-
-		$utm_campaign = self::get_utm_campaign();
-		if ( ! empty( $utm_campaign ) ) {
-			$utm_params['utm_campaign'] = $utm_campaign;
-		}
-		return $utm_params;
-	}
-
-	/**
-	 * Return an array of properties to be included in the signup search string
-	 */
-	public static function get_signup_query_param_array() {
-		// Get attribution string.
-		$acquisition_option = HubspotOptions::get_acquisition_attribution();
-		parse_str( $acquisition_option, $signup_params );
-		$signup_params['enableCollectedForms'] = 'true';
-
-		if ( ! OAuth::is_enabled() ) {
-			$redirect_page                    = AccountOptions::get_portal_id() ? 'leadin_settings' : 'leadin';
-			$signup_params['wp_redirect_url'] = admin_url( "admin.php?page=$redirect_page" );
-		} else {
-			$signup_params['oauthEnabled'] = true;
-		}
-
-		$user_prefill_params = self::get_signup_prefill_params_array();
-		$leadin_params       = AdminConstants::get_hubspot_config();
-		$signup_params       = array_merge( $signup_params, $leadin_params, $user_prefill_params );
-
-		return $signup_params;
-	}
-
-	/**
-	 * Return the signup url based on the site options.
-	 */
-	public static function get_signup_url() {
-		$affiliate_code = AdminFilters::apply_affiliate_code();
-		$signup_url     = LeadinFilters::get_leadin_signup_base_url() . '/signup/wordpress?';
-
-		$query_param_array = self::get_signup_query_param_array();
-
-		if ( $affiliate_code ) {
-			$signup_url     .= self::http_build_query( $query_param_array );
-			$destination_url = rawurlencode( $signup_url );
-			return "https://mbsy.co/$affiliate_code?url=$destination_url";
-		}
-
-		$utm_params    = self::get_utm_query_params_array();
-		$signup_params = array_merge( $query_param_array, $utm_params );
-
-		return $signup_url . self::http_build_query( $signup_params );
 	}
 
 	/**

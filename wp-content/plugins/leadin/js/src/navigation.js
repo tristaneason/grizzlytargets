@@ -61,7 +61,7 @@ export function disableNavigation() {
 function filterAuthedMenuItems(menuItems) {
   let authedMenuItems = menuItems
     .filter(':not(.current)')
-    .has(':not(a[href="admin.php?page=leadin_settings"])');
+    .has(':not(a[href*="leadin_settings"])');
 
   if (authedMenuItems.length !== menuItems.length - 3) {
     authedMenuItems = authedMenuItems.filter(':not(.wp-first-item)');
@@ -75,9 +75,14 @@ export function setLeadinUnAuthedNavigation() {
   itemsToRemove.remove();
 
   const buttonToChangeText = $(domElements.subMenuButtons)
-    .filter(':not(:contains(Settings))')
-    .children();
+    .children()
+    .filter(':not(a[href*="leadin_settings"])');
   buttonToChangeText.text(i18n.signIn);
+}
+
+export function setLeadinCookiesDisabledNavigation() {
+  const itemsToRemove = filterAuthedMenuItems($(domElements.subMenuButtons));
+  itemsToRemove.remove();
 }
 
 export const leadinPageReload = () => window.location.reload(true);

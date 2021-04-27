@@ -30,6 +30,17 @@ export function makeProxyRequest(method, hubspotApiPath, data = {}) {
   return makeRequest(method, proxyApiPath, data);
 }
 
+/**
+ * To surface errors to the interframe, we need to catch the error
+ * and return it to through penpal as a normal message, which the iframe
+ * can check for and re-throw.
+ */
+export function makeInterframeProxyRequest(...args) {
+  return makeProxyRequest(...args).catch(err => {
+    return { status: err.status, message: err.responseText };
+  });
+}
+
 export function healthcheckRestApi() {
   return makeRequest('get', '/healthcheck');
 }

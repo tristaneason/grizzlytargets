@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit81ff65f9442575d3060df4257c5cd316
+class ComposerStaticInit0ba92c2c005985687f7f4f5782ae812f
 {
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
@@ -30,6 +30,7 @@ class ComposerStaticInit81ff65f9442575d3060df4257c5cd316
         'Leadin\\admin\\api\\RegistrationApi' => __DIR__ . '/../..' . '/src/admin/api/class-registrationapi.php',
         'Leadin\\admin\\utils\\DeviceId' => __DIR__ . '/../..' . '/src/admin/utils/class-deviceid.php',
         'Leadin\\auth\\OAuth' => __DIR__ . '/../..' . '/src/auth/class-oauth.php',
+        'Leadin\\auth\\OAuthCrypto' => __DIR__ . '/../..' . '/src/auth/class-oauthcrypto.php',
         'Leadin\\options\\AccountOptions' => __DIR__ . '/../..' . '/src/options/class-accountoptions.php',
         'Leadin\\options\\HubspotOptions' => __DIR__ . '/../..' . '/src/options/class-hubspotoptions.php',
         'Leadin\\options\\LeadinOptions' => __DIR__ . '/../..' . '/src/options/class-leadinoptions.php',
@@ -48,7 +49,7 @@ class ComposerStaticInit81ff65f9442575d3060df4257c5cd316
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit81ff65f9442575d3060df4257c5cd316::$classMap;
+            $loader->classMap = ComposerStaticInit0ba92c2c005985687f7f4f5782ae812f::$classMap;
 
         }, null, ClassLoader::class);
     }

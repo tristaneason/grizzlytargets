@@ -11,6 +11,7 @@ class Routing {
 
 	const EXPIRED        = 'leadin_expired';
 	const JUST_CONNECTED = 'leadin_just_connected';
+	const IS_NEW_PORTAL  = 'is_new_portal';
 	const REDIRECT_NONCE = 'leadin_redirect';
 
 	/**
@@ -46,6 +47,22 @@ class Routing {
 	public static function has_just_connected_with_oauth() {
 		$just_connected_param = QueryParameters::get_param(
 			self::JUST_CONNECTED,
+			self::REDIRECT_NONCE,
+			self::REDIRECT_NONCE
+		);
+
+		return null !== $just_connected_param;
+	}
+
+	/**
+	 * Return a boolean if the plugin is being used with a new portal.
+	 * Signified by query parameter flag `is_new_portal`.
+	 *
+	 * @return bool True if the plugin has just connected using a new portal.
+	 */
+	public static function is_new_portal_with_oauth() {
+		$just_connected_param = QueryParameters::get_param(
+			self::IS_NEW_PORTAL,
 			self::REDIRECT_NONCE,
 			self::REDIRECT_NONCE
 		);

@@ -42,6 +42,15 @@ class Connection {
 	}
 
 	/**
+	 * Returns true if the current request is for the plugin to connect to a portal
+	 */
+	public static function is_new_portal() {
+		$maybe_is_new_portal = QueryParameters::get_param( 'is_new_portal', 'hubspot-nonce', self::CONNECT_NONCE_ARG );
+
+		return isset( $maybe_is_new_portal );
+	}
+
+	/**
 	 * Returns true if the current request is to disconnect the plugin from the portal
 	 */
 	public static function is_disconnection_requested() {
@@ -96,7 +105,7 @@ class Connection {
 
 		self::disconnect();
 
-		self::store_portal_info( $connect_params['portal_id'], $connect_params['portal_domain'], $connect_params['portal_name'] );
+		self::store_portal_info( $connect_params['portal_id'], $connect_params['portal_name'], $connect_params['portal_domain'] );
 		OAuth::authorize( $connect_params['access_token'], $connect_params['refresh_token'], $connect_params['expires_in'] );
 	}
 
@@ -118,13 +127,13 @@ class Connection {
 	 * Store the portal metadata for connecting the plugin in the options table
 	 *
 	 * @param String $portal_id ID for connecting portal.
-	 * @param String $portal_domain Domain for the connecting portal.
 	 * @param String $portal_name Name of the connecting portal.
+	 * @param String $portal_domain Domain for the connecting portal.
 	 */
-	private static function store_portal_info( $portal_id, $portal_domain, $portal_name ) {
+	private static function store_portal_info( $portal_id, $portal_name, $portal_domain ) {
 		AccountOptions::add_portal_id( $portal_id );
+		AccountOptions::add_account_name( $portal_name );
 		AccountOptions::add_portal_domain( $portal_domain );
-		AccountOptions::add_account_name( $account_name );
 	}
 
 	/**
@@ -132,7 +141,7 @@ class Connection {
 	 */
 	private static function delete_portal_info() {
 		AccountOptions::delete_portal_id();
-		AccountOptions::delete_portal_domain();
 		AccountOptions::delete_account_name();
+		AccountOptions::delete_portal_domain();
 	}
 }

@@ -29,6 +29,7 @@ return array(
     'Leadin\\admin\\api\\RegistrationApi' => $baseDir . '/src/admin/api/class-registrationapi.php',
     'Leadin\\admin\\utils\\DeviceId' => $baseDir . '/src/admin/utils/class-deviceid.php',
     'Leadin\\auth\\OAuth' => $baseDir . '/src/auth/class-oauth.php',
+    'Leadin\\auth\\OAuthCrypto' => $baseDir . '/src/auth/class-oauthcrypto.php',
     'Leadin\\options\\AccountOptions' => $baseDir . '/src/options/class-accountoptions.php',
     'Leadin\\options\\HubspotOptions' => $baseDir . '/src/options/class-hubspotoptions.php',
     'Leadin\\options\\LeadinOptions' => $baseDir . '/src/options/class-leadinoptions.php',
