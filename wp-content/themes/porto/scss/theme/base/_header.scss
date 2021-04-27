@@ -1311,7 +1311,11 @@
         height: 100%;
     }
     .cart-popup {
+        @if $rtl == 1 {
+            transform: translateX(-105%);
+        } @else {
         transform: translateX(105%);
+        }
         transition: transform .35s;
     }
     .minicart-opened & .cart-popup {

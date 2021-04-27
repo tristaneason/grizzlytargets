@@ -73,6 +73,7 @@ if ( 'full_width' === $porto_product_layout || 'centered_vertical_zoom' === $por
 
 		}
 	}
+	$html .= apply_filters( 'porto_single_product_after_thumbnails', '' );
 
 	$html .= '</div>';
 

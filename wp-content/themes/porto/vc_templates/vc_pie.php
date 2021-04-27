@@ -33,7 +33,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @var $this WPBakeryShortCode_Vc_Pie
  */
 $title = $output = '';
-if ( defined( 'WPB_VC_VERSION' ) ) {
+$is_wpb_rendering = defined( 'WPB_VC_VERSION' ) && $this instanceof WPBakeryShortCode_Vc_Pie;
+if ( $is_wpb_rendering ) {
 	$atts = $this->convertOldColorsToNew( $atts );
 	$atts = vc_map_get_attributes( $this->getShortcode(), $atts );
 }
@@ -128,7 +129,7 @@ if ( 'default' == $type ) {
 	if ( $view_size ) {
 		$css_class .= ' circular-bar-' . $view_size;
 	}
-	if ( defined( 'WPB_VC_VERSION' ) ) {
+	if ( $is_wpb_rendering ) {
 		$el_class = $this->getExtraClass( $el_class );
 		if ( $el_class ) {
 			$css_class .= ' ' . $el_class;

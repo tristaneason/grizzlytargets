@@ -889,7 +889,8 @@ if ( ! class_exists( 'ReduxFramework' ) ) {
 					} elseif ( $type == 'terms' || $type == 'term' ) {
 						$taxonomies = $args['taxonomies'];
 						unset( $args['taxonomies'] );
-						$terms = get_terms( $taxonomies, $args ); // this will get nothing
+						$args['taxonomy'] = $taxonomies;
+						$terms = get_terms( $args ); // this will get nothing
 						if ( ! empty( $terms ) && ! is_a( $terms, 'WP_Error' ) ) {
 							foreach ( $terms as $term ) {
 								$data[ $term->term_id ] = $term->name;

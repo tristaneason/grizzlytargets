@@ -112,7 +112,7 @@ p.wishlist-empty, table.wishlist_table tbody td.wishlist-empty {
 .woocommerce #content table.shop_table.wishlist_table.cart a.remove,
 .shop_table.cart-table a.remove.remove-product {
     top: -10px;
-    right: -10px;
+    #{$right}: -10px;
     &:hover {
         background: #fff;
     }

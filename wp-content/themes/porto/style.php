@@ -6073,7 +6073,8 @@ article.post .post-date .sticky,
 	.porto-ibanner-layer { width: auto }
 	.elementor-editor-active .elementor-element-empty.porto-ibanner-layer { width: 100% }
 	.porto-ibanner > .elementor-row > .elementor-column,
-	.porto-ibanner > .elementor-column { position: absolute; top: 0; left: 0; right: 0; height: 100%; width: 100% }
+	.porto-ibanner > .elementor-column,
+	.porto-ibanner.elementor-column > .container { position: absolute; top: 0; left: 0; right: 0; height: 100%; width: 100% }
 	.container > .porto-ibanner-layer { margin-left: <?php echo (int) $b['grid-gutter-width'] / 2; ?>px; margin-right: <?php echo (int) $b['grid-gutter-width'] / 2; ?>px }
 	.porto-ibanner .porto-ibanner-layer > .elementor-widget-wrap,
 	.porto-ibanner .porto-ibanner-layer.elementor-widget-wrap { display: block }

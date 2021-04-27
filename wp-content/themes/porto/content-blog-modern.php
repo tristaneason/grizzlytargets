@@ -3,11 +3,12 @@ global $porto_settings, $page_share;
 
 $post_layout  = 'modern';
 $show_format  = $porto_settings['post-format'] && get_post_format();
-
-$columns = $porto_settings['grid-columns'];
-
 $post_class   = array();
+$columns = $porto_settings['grid-columns'];
 $post_class[] = 'post post-' . $post_layout;
+if ( ! $show_format ) {
+	$post_class[] = 'hide-post-date';
+}
 
 if ( ! isset( $image_size ) ) {
 	$image_size = 'blog-large';
@@ -16,9 +17,7 @@ if ( ! isset( $image_size ) ) {
 if ( 'without-icon' == $porto_settings['post-title-style'] ) {
 	$post_class[] = 'post-title-simple';
 }
-if ( ! $show_format ) {
-	$post_class[] = 'hide-post-date';
-}
+
 if ( isset( $el_class ) ) {
 	$post_class[] = esc_attr( $el_class );
 }

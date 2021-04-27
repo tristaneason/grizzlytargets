@@ -2875,9 +2875,9 @@ window.theme = {};
 		});
 
 		$(window).on('resize', function() {
-			if (window.innerWidth > 991) {
+			if (window.innerWidth > 991 && $('html').hasClass('panel-opened')) {
 				$('#nav-panel').hide();
-				$('.panel-overlay').click();
+				$('.panel-overlay').trigger('click');
 			}
 		});
 	});
@@ -5473,9 +5473,9 @@ function porto_init($wrap) {
 			$(this).removeClass('active');
 		});
 
-		$(window).on('resize', function() {
-			if (window.innerWidth > 991) {
-				$('.sidebar-overlay').click();
+		$(window).on('resize', function(e) {
+			if (e.originalEvent && window.innerWidth > 991 && $('html').hasClass('sidebar-opened')) {
+				$('.sidebar-overlay').trigger('click');
 			}
 		});
 

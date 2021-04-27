@@ -2,7 +2,7 @@
 /**
  * Mini-cart
  *
- * @version     3.7.0
+ * @version     5.2.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -55,10 +55,10 @@ $has_items = ( ! WC()->cart->is_empty() );
 						</div></div>
 						<div class="product-details">
 						<?php if ( ! $_product->is_visible() ) { ?>
-							<?php echo porto_filter_output( $product_name ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							<?php echo wp_kses_post( $product_name ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<?php } else { ?>
 							<a href="<?php echo esc_url( $product_permalink ); ?>" class="text-v-dark">
-								<?php echo porto_filter_output( $product_name ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								<?php echo wp_kses_post( $product_name ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							</a>
 						<?php } ?>
 						<?php do_action( 'porto_woocommerce_minicart_after_product_name', $_product ); ?>
