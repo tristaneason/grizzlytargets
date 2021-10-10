@@ -11,11 +11,12 @@ function porto_load_concept_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => 'Porto ' . __( 'Concept', 'porto-functionality' ),
-			'base'     => 'porto_concept',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'fas fa-smog',
-			'params'   => array(
+			'name'        => 'Porto ' . __( 'Concept', 'porto-functionality' ),
+			'base'        => 'porto_concept',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'Show your concept image with cloud', 'porto-functionality' ),
+			'icon'        => 'fas fa-smog',
+			'params'      => array(
 				array(
 					'type'       => 'label',
 					'heading'    => __( 'Block 1', 'porto-functionality' ) . ': ' . __( 'Input Image URL or Select Image.', 'porto-functionality' ),

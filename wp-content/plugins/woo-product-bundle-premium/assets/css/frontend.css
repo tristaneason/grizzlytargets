@@ -20,6 +20,10 @@
     border-bottom: 1px dotted #e5e5e5;
 }
 
+.woosb-products .woosb-product.woosb-product-unpurchasable {
+    display: none;
+}
+
 .woosb-products .woosb-product > div {
     padding: 0 5px;
 }
@@ -55,6 +59,7 @@
 
 .woosb-products .woosb-product .woosb-qty input {
     width: 100%;
+    min-width: 40px;
 }
 
 .woosb-products .woosb-product .woosb-price {
@@ -227,6 +232,7 @@ body.woocommerce-no-js .woosb-wrap + form.cart {
 
 .woosb-disabled {
     opacity: .5 !important;
+    pointer-events: none !important;
     cursor: not-allowed !important;
 }
 
@@ -263,6 +269,7 @@ body.woocommerce-no-js .woosb-wrap + form.cart {
 
 .woosb-qty-input .qty {
     width: 100%;
+    min-width: 40px;
     height: 40px;
     line-height: 38px;
     margin: 0;

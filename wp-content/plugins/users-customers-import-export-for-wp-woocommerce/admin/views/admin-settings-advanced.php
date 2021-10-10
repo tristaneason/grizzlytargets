@@ -14,6 +14,9 @@ if ( ! defined( 'WPINC' ) ) {
 		Wt_Import_Export_For_Woo_Basic_Common_Helper::field_generator($fields, $advanced_settings);
 		?>
 	</table>
+        	<?php 
+    include "admin-settings-pre-saved-templates.php";
+    ?>    
 	<?php 
     include "admin-settings-save-button.php";
     ?>

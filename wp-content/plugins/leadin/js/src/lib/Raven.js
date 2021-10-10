@@ -20,6 +20,7 @@ export function configureRaven() {
         tryCatch: false,
       },
       collectWindowErrors: false,
+      release: leadinPluginVersion,
     }
   ).install();
 

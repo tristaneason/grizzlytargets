@@ -2,7 +2,7 @@
 /**
  * Booster for WooCommerce - Shortcodes - General
  *
- * @version 4.3.0
+ * @version 5.4.5
  * @author  Pluggabl LLC.
  */
 
@@ -25,6 +25,7 @@ class WCJ_General_Shortcodes extends WCJ_Shortcodes {
 			'wcj_country_select_drop_down_list',
 			'wcj_cross_sell_display',
 			'wcj_currency_exchange_rate',
+			'wcj_currency_exchange_rate_wholesale_module',
 			'wcj_currency_exchange_rates_table',
 			'wcj_currency_select_drop_down_list',
 			'wcj_currency_select_link_list',
@@ -433,7 +434,7 @@ class WCJ_General_Shortcodes extends WCJ_Shortcodes {
 	/**
 	 * wcj_selector.
 	 *
-	 * @version 3.2.4
+	 * @version 5.4.3
 	 * @since   3.1.0
 	 * @todo    add `default` attribute
 	 * @todo    (maybe) add more selector types (e.g.: currency)
@@ -442,16 +443,29 @@ class WCJ_General_Shortcodes extends WCJ_Shortcodes {
 	function wcj_selector( $atts ) {
 		$html           = '';
 		$options        = '';
+		$countries      = apply_filters( 'booster_option', 'all', wcj_get_option( 'wcj_product_by_country_country_list_shortcode', 'all' ) );
+
 		$selected_value = ( isset( $_REQUEST[ 'wcj_' . $atts['selector_type'] . '_selector' ] ) ?
 			$_REQUEST[ 'wcj_' . $atts['selector_type'] . '_selector' ] :
 			wcj_session_get( 'wcj_selected_' . $atts['selector_type'] )
 		);
+
+		switch ( $countries ) {
+			case 'wc':
+				$countries = WC()->countries->get_allowed_countries();
+				break;
+			default: // 'all'
+				$countries = wcj_get_countries();
+				asort( $options );
+				break;
+		}
+
 		switch ( $atts['selector_type'] ) {
 			case 'product_custom_visibility':
 				$options = wcj_get_select_options( wcj_get_option( 'wcj_product_custom_visibility_options_list', '' ) );
 				break;
 			default: // 'country'
-				$options = wcj_get_countries();
+				$options = $countries;
 				asort( $options );
 				break;
 		}
@@ -485,6 +499,22 @@ class WCJ_General_Shortcodes extends WCJ_Shortcodes {
 	function wcj_currency_exchange_rate( $atts ) {
 		return ( '' != $atts['from'] && '' != $atts['to'] ) ? wcj_get_option( 'wcj_currency_exchange_rates_' . sanitize_title( $atts['from'] . $atts['to'] ) ) : '';
 	}
+
+	/**
+	 * wcj_currency_exchange_rate_wholesale_module.
+	 *
+	 * @version 5.4.5
+	 * @since   5.4.5
+	 * @todo    (maybe) add similar function
+	 */
+	 
+	function wcj_currency_exchange_rate_wholesale_module( ) {
+		$store_base_currency= strtolower(get_option('woocommerce_currency'));
+		 $store_current_currency = strtolower(get_woocommerce_currency());
+		  return ( '' !=  $store_base_currency && '' != $store_current_currency) ? wcj_get_option( 'wcj_currency_exchange_rates_' . sanitize_title(  $store_base_currency .  $store_current_currency ) ) : '';
+	
+	  }
+
 
 	/**
 	 * wcj_currency_exchange_rates_table.

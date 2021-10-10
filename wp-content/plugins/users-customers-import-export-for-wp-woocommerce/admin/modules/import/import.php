@@ -56,7 +56,7 @@ class Wt_Import_Export_For_Woo_Basic_Import
 		/* default step list */
 		$this->steps=array(
 			'post_type'=>array(
-				'title'=>__('Select post type'),
+				'title'=>__('Select a post type'),
 				'description'=>__('Import the respective post type from a CSV. As a first step you need to choose the post type to start the import.'),
 			),
 			'method_import'=>array(
@@ -64,7 +64,7 @@ class Wt_Import_Export_For_Woo_Basic_Import
 				'description'=>__('Choose from the options below to continue with your import: quick import, based on a pre-saved template or a new import with advanced options.'),
 			), 
 			'mapping'=>array(
-				'title'=>__('Map and reorder import columns'),
+				'title'=>__('Map import columns'),
 				'description'=>__('Map the standard columns with your CSV column names.'),
 			),
 			'advanced'=>array(
@@ -107,17 +107,27 @@ class Wt_Import_Export_For_Woo_Basic_Import
 	*/
 	public function advanced_setting_fields($fields)
 	{
-		$fields['enable_import_log']=array(
-			'label'=>__("Save Import log"),
+		
+                $fields['maximum_execution_time'] = array(
+                        'label' => __("Maximum execution time"),
+                        'type' => 'number',
+                        'value' => ini_get('max_execution_time'), /* Default max_execution_time settings value */
+                        'field_name' => 'maximum_execution_time',
+                        'field_group' => 'advanced_field',
+                        'help_text' => __('The maximum execution time, in seconds(eg:- 300, 600, 1800, 3600). If set to zero, no time limit is imposed. Increasing this will reduce the chance of export/import timeouts.'),
+                        'validation_rule' => array('type' => 'int'),
+                );                        
+                $fields['enable_import_log']=array(
+			'label'=>__("Generate Import log"),
 			'type'=>'radio',
 			'radio_fields'=>array(
 				1=>__('Yes'),
 				0=>__('No')
 			),
-            'value' =>1,
+                        'value' =>1,
 			'field_name'=>'enable_import_log',
 			'field_group'=>'advanced_field',
-			'help_text'=>__('Save import log as text file and make it available in the history section for debugging purposes.'),
+			'help_text'=>__('Generate import log as text file and make it available in the history section for debugging purposes.'),
 			'validation_rule'=>array('type'=>'absint'),
 		);
 		$import_methods=array_map(function($vl){ return $vl['title']; }, $this->import_methods);
@@ -125,7 +135,7 @@ class Wt_Import_Export_For_Woo_Basic_Import
 			'label'=>__("Default Import method"),
 			'type'=>'select',
 			'sele_vals'=>$import_methods,
-            'value' =>'quick',
+                        'value' =>'new',
 			'field_name'=>'default_import_method',
 			'field_group'=>'advanced_field',
 			'help_text'=>__('Select the default method of import.'),
@@ -133,11 +143,12 @@ class Wt_Import_Export_For_Woo_Basic_Import
 		$fields['default_import_batch']=array(
 			'label'=>__("Default Import batch count"),
 			'type'=>'number',
-                        'value' =>100, /* If altering then please also change batch count field help text section */
+                        'value' =>10, /* If altering then please also change batch count field help text section */
 			'field_name'=>'default_import_batch',
 			'help_text'=>__('Provide the default number of records to be imported in a batch.'),
 			'validation_rule'=>array('type'=>'absint'),
 		);
+
 		return $fields;
 	}
 
@@ -258,7 +269,7 @@ class Wt_Import_Export_For_Woo_Basic_Import
 				WT_IEW_PLUGIN_ID_BASIC,
 				__('Import'),
 				__('Import'),
-				'manage_options',
+				apply_filters('wt_import_export_allowed_capability', 'import'),
 				$this->module_id,
 				array($this, 'admin_settings_page')
 			)
@@ -983,7 +994,7 @@ class Wt_Import_Export_For_Woo_Basic_Import
 		/**
 		*	Writing import log to file
 		*/
-		if(!empty($import_response) && is_array($import_response))
+		if(!empty($import_response) && is_array($import_response) && Wt_Import_Export_For_Woo_Basic_Common_Helper::get_advanced_settings('enable_import_log')==1)
 		{
 			$log_writer=new Wt_Import_Export_For_Woo_Basic_Logwriter();
 			$log_file_name=$this->get_log_file_name($import_id);
@@ -1171,6 +1182,7 @@ class Wt_Import_Export_For_Woo_Basic_Import
 	}
 	protected function evaluate_data($key, $value, $data_row, $mapping_fields, $input_date_format)
 	{
+                $maping_key = '';
                 if (preg_match('/{(.*?)}/', $value, $match) == 1) {
                        $maping_key = $match[1] ? $match[1]:'';
                 }
@@ -1287,7 +1299,7 @@ class Wt_Import_Export_For_Woo_Basic_Import
 						$date_obj=DateTime::createFromFormat($data_format, $output_val);
 						if($date_obj)
 						{
-							$output_val=$date->format('Y-m-d H:i:s');
+							$output_val=$date_obj->format('Y-m-d H:i:s');
 						}
 					}else
 					{

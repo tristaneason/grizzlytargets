@@ -547,27 +547,6 @@ function pewc_delete_transients() {
 	<?php return;
 	}
 
-	if( ! $cleared ) { ?>
-
-		<div class="notice notice-info">
-			<h3>WooCommerce Product Add-Ons Ultimate needs to update your database</h3>
-			<p>Add-Ons Ultimate is using a slightly different method to store add-on fields for the front-end. This is intended to improve the performance of your site.</p>
-			<p>Please click the button below to update the database.</p>
-			<?php
-			$settings_url = pewc_get_settings_url();
-			$settings_url = add_query_arg(
-				'pewc_delete_transients',
-				'true',
-				$settings_url
-			);
-			printf(
-				'<p><a class="button-primary" href="%s">Update</a></p>',
-				$settings_url
-			); ?>
-		</div>
-
-	<?php }
-
 }
 // add_action( 'admin_notices', 'pewc_delete_transients' );
 
@@ -591,4 +570,4 @@ function pewc_reset_all_transients() {
 	}
 
 }
-add_action( 'admin_init', 'pewc_delete_transients' );
+add_action( 'admin_init', 'pewc_reset_all_transients' );

@@ -334,6 +334,7 @@ class HubwooDataSync {
 
 		// basic data function for user ids.
 		$contacts = array();
+		$role__in = get_option( 'hubwoo-selected-user-roles', array() );
 
 		if ( ! empty( $hubwoo_unique_users ) && count( $hubwoo_unique_users ) ) {
 
@@ -341,20 +342,25 @@ class HubwooDataSync {
 
 				$hubwoo_customer = new HubWooCustomer( $id );
 
-				$email = $hubwoo_customer->get_email();
+				$email     = $hubwoo_customer->get_email();
+				$user_data = get_user_by( 'email', $email );
+				$role      = $user_data->roles[0];
 
-				if ( empty( $email ) ) {
-					delete_user_meta( $id, 'hubwoo_pro_user_data_change' );
-					continue;
+				if ( in_array( $role, $role__in ) ) {
+
+					if ( empty( $email ) ) {
+						delete_user_meta( $id, 'hubwoo_pro_user_data_change' );
+						continue;
+					}
+					$properties      = $hubwoo_customer->get_contact_properties();
+					$user_properties = $hubwoo_customer->get_user_data_properties( $properties );
+					$properties_data = array(
+						'email'      => $email,
+						'properties' => $user_properties,
+					);
+
+					$contacts[] = $properties_data;
 				}
-				$properties      = $hubwoo_customer->get_contact_properties();
-				$user_properties = $hubwoo_customer->get_user_data_properties( $properties );
-				$properties_data = array(
-					'email'      => $email,
-					'properties' => $user_properties,
-				);
-
-				$contacts[] = $properties_data;
 			}
 		}
 		return $contacts;

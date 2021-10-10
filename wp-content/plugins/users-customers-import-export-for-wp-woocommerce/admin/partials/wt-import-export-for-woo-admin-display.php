@@ -13,7 +13,8 @@ $wf_img_path=WT_U_IEW_PLUGIN_URL.'images/';
         <?php
         $tab_head_arr=array(
             'wt-advanced'=>__('General'),
-            'wt-help'=>__('Help Guide')
+            'wt-help'=>__('Help Guide'),
+            'wt-pro-upgrade'=>__('Pro Upgrade')
         );
         if(isset($_GET['debug']))
         {
@@ -22,7 +23,7 @@ $wf_img_path=WT_U_IEW_PLUGIN_URL.'images/';
         Wt_Import_Export_For_Woo_Basic::generate_settings_tabhead($tab_head_arr);
         ?>
     </div>
-    <div class="wt-iew-tab-container" style = "width:72%">
+    <div class="wt-iew-tab-container">
         <?php
         //inside the settings form
         $setting_views_a=array(
@@ -33,6 +34,7 @@ $wf_img_path=WT_U_IEW_PLUGIN_URL.'images/';
         $setting_views_b=array(          
             'wt-help'=>'admin-settings-help.php',           
         );
+        $setting_views_b['wt-pro-upgrade']='admin-settings-marketing.php';
         if(isset($_GET['debug']))
         {
             $setting_views_b['wt-debug']='admin-settings-debug.php';
@@ -70,5 +72,5 @@ $wf_img_path=WT_U_IEW_PLUGIN_URL.'images/';
         ?>
         <?php do_action('wt_iew_plugin_out_settings_form');?> 
     </div>
-    <?php include $wf_admin_view_path."market.php";  ?>
+    <?php //include $wf_admin_view_path."market.php";  ?>
 </div>

@@ -288,11 +288,6 @@ class HubwooEcommProperties {
 						'hubspotPropertyName'  => 'amount',
 					);
 					$object_properties[] = array(
-						'externalPropertyName' => 'order_abandoned_cart_url',
-						'dataType'             => 'STRING',
-						'hubspotPropertyName'  => 'ip__ecomm_bridge__abandoned_cart_url',
-					);
-					$object_properties[] = array(
 						'externalPropertyName' => 'order_discount_amount',
 						'dataType'             => 'NUMBER',
 						'hubspotPropertyName'  => 'ip__ecomm_bridge__discount_amount',

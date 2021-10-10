@@ -202,7 +202,7 @@ if (!function_exists('unishippers_uni_ltl_shipping_method_init')) {
                  */
                 public function calculate_shipping($package = [], $eniture_admin_order_action = false)
                 {
-                    if (is_admin() && !$eniture_admin_order_action) {
+                    if (is_admin() && !wp_doing_ajax() && !$eniture_admin_order_action) {
                         return [];
                     }
 
@@ -338,6 +338,8 @@ if (!function_exists('unishippers_uni_ltl_shipping_method_init')) {
                     $this->quote_settings = json_decode(json_encode($this->quote_settings), true);
                     $quotes = json_decode(json_encode($quotes), true);
                     $handling_fee = $this->quote_settings['handling_fee'];
+                    // When rating method as average rate.
+                    $rating_method = $this->quote_settings['rating_method'];
 
                     $Unishippers_Freight_Quotes = new Unishippers_Freight_Quotes();
                     if ((count($quotes) > 1 || $smpkgCost > 0) || $no_param_multi_ship == 1 || !empty($virtual_rate)) {
@@ -370,14 +372,20 @@ if (!function_exists('unishippers_uni_ltl_shipping_method_init')) {
                             $simple_quotes = (isset($quote['simple_quotes'])) ? $quote['simple_quotes'] : array();
                             $quote = $this->remove_array($quote, 'simple_quotes');
 
-                            $rates = $Unishippers_Freight_Quotes->calculate_quotes($quote, $this->quote_settings);
+                            $rates = $Unishippers_Freight_Quotes->calculate_quotes($quote, $this->quote_settings, 'UNISHIPPERS_LIFT');
                             $rates = reset($rates);
                             $this->minPrices['UNISHIPPERS_LIFT'][$key] = $rates;
 
+                            $_cost = (isset($rates['cost'])) ? $rates['cost'] : 0;
+
                             // FDO
                             $this->en_fdo_meta_data['UNISHIPPERS_LIFT'][$key] = (isset($rates['meta_data']['en_fdo_meta_data'])) ? $rates['meta_data']['en_fdo_meta_data'] : [];
+                            // When rating method as average rate.
+                            if ($rating_method == 'average_rate' && isset($this->en_fdo_meta_data['UNISHIPPERS_LIFT'][$key]['rate']['cost'], $this->en_fdo_meta_data['UNISHIPPERS_LIFT'][$key]['rate']['label'])) {
+                                $this->en_fdo_meta_data['UNISHIPPERS_LIFT'][$key]['rate']['cost'] = $_cost;
+                                $this->en_fdo_meta_data['UNISHIPPERS_LIFT'][$key]['rate']['label'] = 'Freight';
+                            }
 
-                            $_cost = (isset($rates['cost'])) ? $rates['cost'] : 0;
                             $_label = (isset($rates['label_sufex'])) ? $rates['label_sufex'] : "";
                             $append_label = (isset($rates['append_label'])) ? $rates['append_label'] : "";
                             $handling_fee = (isset($rates['markup']) && (strlen($rates['markup']) > 0)) ? $rates['markup'] : $handling_fee;
@@ -386,14 +394,19 @@ if (!function_exists('unishippers_uni_ltl_shipping_method_init')) {
                             if (isset($this->quote_settings['liftgate_delivery_option']) &&
                                 ($this->quote_settings['liftgate_delivery_option'] == "yes") &&
                                 (!empty($simple_quotes))) {
-                                $s_rates = $Unishippers_Freight_Quotes->calculate_quotes($simple_quotes, $this->quote_settings);
+                                $s_rates = $Unishippers_Freight_Quotes->calculate_quotes($simple_quotes, $this->quote_settings, 'UNISHIPPERS_NOTLIFT');
                                 $s_rates = reset($s_rates);
                                 $this->minPrices['UNISHIPPERS_NOTLIFT'][$key] = $s_rates;
+                                $s_cost = (isset($s_rates['cost'])) ? $s_rates['cost'] : 0;
 
                                 // FDO
                                 $this->en_fdo_meta_data['UNISHIPPERS_NOTLIFT'][$key] = (isset($s_rates['meta_data']['en_fdo_meta_data'])) ? $s_rates['meta_data']['en_fdo_meta_data'] : [];
+                                // When rating method as average rate.
+                                if ($rating_method == 'average_rate' && isset($this->en_fdo_meta_data['UNISHIPPERS_NOTLIFT'][$key]['rate']['cost'], $this->en_fdo_meta_data['UNISHIPPERS_NOTLIFT'][$key]['rate']['label'])) {
+                                    $this->en_fdo_meta_data['UNISHIPPERS_NOTLIFT'][$key]['rate']['cost'] = $s_cost;
+                                    $this->en_fdo_meta_data['UNISHIPPERS_NOTLIFT'][$key]['rate']['label'] = 'Freight';
+                                }
 
-                                $s_cost = (isset($s_rates['cost'])) ? $s_rates['cost'] : 0;
                                 $s_label = (isset($s_rates['label_sufex'])) ? $s_rates['label_sufex'] : "";
                                 $s_append_label = (isset($s_rates['append_label'])) ? $s_rates['append_label'] : "";
                                 $s_multi_cost += $this->add_handling_fee($s_cost, $handling_fee);
@@ -416,13 +429,13 @@ if (!function_exists('unishippers_uni_ltl_shipping_method_init')) {
                         $simple_quotes = (isset($quote['simple_quotes'])) ? $quote['simple_quotes'] : array();
                         $quote = $this->remove_array($quote, 'simple_quotes');
 
-                        $rates = $Unishippers_Freight_Quotes->calculate_quotes($quote, $this->quote_settings);
+                        $rates = $Unishippers_Freight_Quotes->calculate_quotes($quote, $this->quote_settings, 'UNISHIPPERS_LIFT');
 
 //                      Offer lift gate delivery as an option is enabled
                         if (isset($this->quote_settings['liftgate_delivery_option']) &&
                             ($this->quote_settings['liftgate_delivery_option'] == "yes") &&
                             (!empty($simple_quotes))) {
-                            $simple_rates = $Unishippers_Freight_Quotes->calculate_quotes($simple_quotes, $this->quote_settings);
+                            $simple_rates = $Unishippers_Freight_Quotes->calculate_quotes($simple_quotes, $this->quote_settings, 'UNISHIPPERS_NOTLIFT');
                             $rates = array_merge($rates, $simple_rates);
                         }
 
@@ -433,6 +446,13 @@ if (!function_exists('unishippers_uni_ltl_shipping_method_init')) {
                         foreach ($rates as $key => $quote) {
                             $handling_fee = (isset($rates['markup']) && (strlen($rates['markup']) > 0)) ? $rates['markup'] : $handling_fee;
                             $_cost = (isset($quote['cost'])) ? $quote['cost'] : 0;
+
+                            // When rating method as average rate.
+                            if ($rating_method == 'average_rate' && isset($quote['meta_data']['en_fdo_meta_data']['rate']['cost'], $quote['meta_data']['en_fdo_meta_data']['rate']['label'])) {
+                                $rates[$key]['meta_data']['en_fdo_meta_data']['rate']['cost'] = $_cost;
+                                $rates[$key]['meta_data']['en_fdo_meta_data']['rate']['label'] = 'Freight';
+                            }
+
                             $rates[$key]['cost'] = $this->add_handling_fee($_cost, $handling_fee);
                             $cost_sorted_key[$key] = (isset($quote['cost'])) ? $quote['cost'] : 0;
                             $rates[$key]['shipment'] = "single_shipment";
@@ -446,13 +466,13 @@ if (!function_exists('unishippers_uni_ltl_shipping_method_init')) {
 
                         $rates = $this->unishippers_freight_add_rate_arr($rates);
                     }
-
+                    // Origin terminal address
                     if ($this->shipment_type == 'single') {
                         /**
                          * call local-delivery and instore-pickup function to show the data on shipping page
                          */
-                        (isset($this->unishippers_ltl_res_inst->InstorPickupLocalDelivery->localDelivery) && ($this->unishippers_ltl_res_inst->InstorPickupLocalDelivery->localDelivery->status == 1)) ? $this->local_delivery($this->unishippers_ltl_res_inst->en_wd_origin_array['fee_local_delivery'], $this->unishippers_ltl_res_inst->en_wd_origin_array['checkout_desc_local_delivery']) : "";
-                        (isset($this->unishippers_ltl_res_inst->InstorPickupLocalDelivery->inStorePickup) && ($this->unishippers_ltl_res_inst->InstorPickupLocalDelivery->inStorePickup->status == 1)) ? $this->pickup_delivery($this->unishippers_ltl_res_inst->en_wd_origin_array['checkout_desc_store_pickup']) : "";
+                        (isset($this->unishippers_ltl_res_inst->InstorPickupLocalDelivery->localDelivery) && ($this->unishippers_ltl_res_inst->InstorPickupLocalDelivery->localDelivery->status == 1)) ? $this->local_delivery($this->unishippers_ltl_res_inst->en_wd_origin_array['fee_local_delivery'], $this->unishippers_ltl_res_inst->en_wd_origin_array['checkout_desc_local_delivery'], $this->unishippers_ltl_res_inst->en_wd_origin_array) : "";
+                        (isset($this->unishippers_ltl_res_inst->InstorPickupLocalDelivery->inStorePickup) && ($this->unishippers_ltl_res_inst->InstorPickupLocalDelivery->inStorePickup->status == 1)) ? $this->pickup_delivery($this->unishippers_ltl_res_inst->en_wd_origin_array['checkout_desc_store_pickup'], $this->unishippers_ltl_res_inst->en_wd_origin_array, $this->unishippers_ltl_res_inst->InstorPickupLocalDelivery->totalDistance) : "";
                     }
 
                     return $rates;
@@ -485,16 +505,24 @@ if (!function_exists('unishippers_uni_ltl_shipping_method_init')) {
                  * Pickup delivery quote
                  * @return array type
                  */
-                function pickup_delivery($label)
+                function pickup_delivery($label, $en_wd_origin_array, $total_distance)
                 {
                     $this->woocommerce_package_rates = 1;
                     $this->instore_pickup_and_local_delivery = TRUE;
 
                     $label = (isset($label) && (strlen($label) > 0)) ? $label : 'In-store pick up';
-
-//              check woocommerce version for displying instore pickup cost $0.00
-                    $woocommerce_version = get_option('woocommerce_version');
-                    $label = ($woocommerce_version < '3.5.4') ? $label : $label . ': $0.00';
+                    // Origin terminal address
+                    $address = (isset($en_wd_origin_array['address'])) ? $en_wd_origin_array['address'] : '';
+                    $city = (isset($en_wd_origin_array['city'])) ? $en_wd_origin_array['city'] : '';
+                    $state = (isset($en_wd_origin_array['state'])) ? $en_wd_origin_array['state'] : '';
+                    $zip = (isset($en_wd_origin_array['zip'])) ? $en_wd_origin_array['zip'] : '';
+                    $phone_instore = (isset($en_wd_origin_array['phone_instore'])) ? $en_wd_origin_array['phone_instore'] : '';
+                    strlen($total_distance) > 0 ? $label .= ': Free | ' . str_replace("mi", "miles", $total_distance) . ' away' : '';
+                    strlen($address) > 0 ? $label .= ' | ' . $address : '';
+                    strlen($city) > 0 ? $label .= ', ' . $city : '';
+                    strlen($state) > 0 ? $label .= ' ' . $state : '';
+                    strlen($zip) > 0 ? $label .= ' ' . $zip : '';
+                    strlen($phone_instore) > 0 ? $label .= ' | ' . $phone_instore : '';
 
                     $pickup_delivery = array(
                         'id' => 'in-store-pick-up',
@@ -511,18 +539,11 @@ if (!function_exists('unishippers_uni_ltl_shipping_method_init')) {
                  * @param string type $cost
                  * @return array type
                  */
-                function local_delivery($cost, $label)
+                function local_delivery($cost, $label, $en_wd_origin_array)
                 {
-
                     $this->woocommerce_package_rates = 1;
                     $this->instore_pickup_and_local_delivery = TRUE;
                     $label = (isset($label) && (strlen($label) > 0)) ? $label : 'Local Delivery';
-                    if ($cost == 0) {
-//                  check woocommerce version for displying instore pickup cost $0.00
-                        $woocommerce_version = get_option('woocommerce_version');
-                        $label = ($woocommerce_version < '3.5.4') ? $label : $label . ': $0.00';
-                    }
-
                     $local_delivery = array(
                         'id' => 'local-delivery',
                         'cost' => $cost,
@@ -657,10 +678,22 @@ if (!function_exists('unishippers_uni_ltl_shipping_method_init')) {
                         $this->unishipper_label_as() : $rate['label'];
 
                     $rate_label .= (isset($this->quote_settings['sandbox'])) ? ' (Sandbox) ' : '';
-                    $rate_label .= (isset($rate['transit_label'])) ? $rate['transit_label'] : "";
 
                     $rate_label .= isset($label_sufex) && (!empty($label_sufex)) ? $this->unishipper_label_sufex(array_unique($label_sufex)) : '';
-
+                    $delivery_estimate_unishippers = isset($this->quote_settings['delivery_estimates']) ? $this->quote_settings['delivery_estimates'] : '';
+                    // Cuttoff Time
+                    $unishippers_show_delivery_estimates_plan = apply_filters('unishippers_freight_quotes_plans_suscription_and_features', 'unishippers_show_delivery_estimates');
+                    $shipment_type = isset($this->quote_settings['shipment']) && !empty($this->quote_settings['shipment']) ? $this->quote_settings['shipment'] : '';
+                    if (isset($this->quote_settings['delivery_estimates']) && !empty($this->quote_settings['delivery_estimates'])
+                        && $this->quote_settings['delivery_estimates'] != 'dont_show_estimates' &&
+                        !is_array($unishippers_show_delivery_estimates_plan) && $shipment_type != 'multi_shipment') {
+                        if ($this->quote_settings['delivery_estimates'] == 'delivery_date') {
+                            isset($rate['delivery_time_stamp']) && is_string($rate['delivery_time_stamp']) && strlen($rate['delivery_time_stamp']) > 0 ? $rate_label .= ' ( Expected delivery by ' . date('Y-m-d', strtotime($rate['delivery_time_stamp'])) . ')' : '';
+                        } else if ($delivery_estimate_unishippers == 'delivery_days') {
+                            $correct_word = (isset($rate['delivery_estimates']) && $rate['delivery_estimates'] == 1) ? 'is' : 'are';
+                            isset($rate['delivery_estimates']) && is_string($rate['delivery_estimates']) && strlen($rate['delivery_estimates']) > 0 ? $rate_label .= ' ( Estimated number of days until delivery ' . $correct_word . ' ' . $rate['delivery_estimates'] . ' )' : '';
+                        }
+                    }
                     return $rate_label;
                 }
 
@@ -688,11 +721,16 @@ if (!function_exists('unishippers_uni_ltl_shipping_method_init')) {
                  */
                 public function unishippers_freight_add_rate_arr($add_rate_arr)
                 {
+
                     if (isset($add_rate_arr) && (!empty($add_rate_arr)) && (is_array($add_rate_arr))) {
+
+                        // Images for FDO
+                        $image_urls = apply_filters('en_fdo_image_urls_merge', []);
 
                         add_filter('woocommerce_package_rates', array($this, 'en_sort_woocommerce_available_shipping_methods'), 10, 2);
 
                         $instore_pickup_local_devlivery_action = apply_filters('unishippers_freight_quotes_plans_suscription_and_features', 'instore_pickup_local_devlivery');
+
                         foreach ($add_rate_arr as $key => $rate) {
 
                             if (isset($rate['cost']) && $rate['cost'] > 0) {
@@ -715,6 +753,9 @@ if (!function_exists('unishippers_uni_ltl_shipping_method_init')) {
                                     $en_set_fdo_meta_data['shipment'] = 'sinlge';
                                     $rate['meta_data']['en_fdo_meta_data'] = wp_json_encode($en_set_fdo_meta_data);
                                 }
+
+                                // Images for FDO
+                                $rate['meta_data']['en_fdo_image_urls'] = wp_json_encode($image_urls);
 
                                 if ($this->web_service_inst->en_wd_origin_array['suppress_local_delivery'] == "1" && (!is_array($instore_pickup_local_devlivery_action)) && ($this->shipment_type != 'multiple')) {
 
@@ -766,6 +807,11 @@ if (!function_exists('unishippers_uni_ltl_shipping_method_init')) {
                     $this->unishippers_ltl_res_inst->quote_settings['liftgate_delivery_option'] = get_option('unishippers_freight_liftgate_delivery_as_option');
                     $this->unishippers_ltl_res_inst->quote_settings['residential_delivery'] = get_option('wc_settings_unishipper_residential_delivery ');
                     $this->unishippers_ltl_res_inst->quote_settings['liftgate_resid_delivery'] = get_option('en_woo_addons_liftgate_with_auto_residential');
+                    // Cuttoff Time
+                    $this->unishippers_ltl_res_inst->quote_settings['delivery_estimates'] = get_option('unishippers_delivery_estimates');
+                    $this->unishippers_ltl_res_inst->quote_settings['orderCutoffTime'] = get_option('unishippers_freight_order_cut_off_time');
+                    $this->unishippers_ltl_res_inst->quote_settings['shipmentOffsetDays'] = get_option('unishippers_freight_shipment_offset_days');
+
                 }
 
                 /**
@@ -775,11 +821,11 @@ if (!function_exists('unishippers_uni_ltl_shipping_method_init')) {
                 {
                     $eniture_plugins = get_option('EN_Plugins');
                     if (!$eniture_plugins) {
-                        add_option('EN_Plugins', json_encode(array('unishippers')));
+                        add_option('EN_Plugins', json_encode(array('uni_ltl_shipping_method')));
                     } else {
                         $plugins_array = json_decode($eniture_plugins);
-                        if (!in_array('unishippers', $plugins_array)) {
-                            array_push($plugins_array, 'unishippers');
+                        if (!in_array('uni_ltl_shipping_method', $plugins_array)) {
+                            array_push($plugins_array, 'uni_ltl_shipping_method');
                             update_option('EN_Plugins', json_encode($plugins_array));
                         }
                     }

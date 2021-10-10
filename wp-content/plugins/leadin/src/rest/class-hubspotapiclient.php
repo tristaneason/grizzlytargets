@@ -97,7 +97,7 @@ class HubSpotApiClient {
 	 *
 	 * @return array The response from the OAuth refresh endpoint.
 	 *
-	 * @throws \Exception On failed HTTP requests.
+	 * @throws \Exception On failed HTTP refresh request.
 	 */
 	public static function refresh_access_token( $refresh_token ) {
 		$path = "/wordpress/v1/oauth/refresh?refresh_token=$refresh_token";

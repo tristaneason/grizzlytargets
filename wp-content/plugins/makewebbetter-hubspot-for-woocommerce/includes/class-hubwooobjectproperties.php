@@ -5,8 +5,8 @@
  * @link       https://makewebbetter.com/
  * @since      1.0.0
  *
- * @package    hubspot-ecomm-bridge-for-woocommerce
- * @subpackage hubspot-ecomm-bridge-for-woocommerce/includes
+ * @package    makewebbetter-hubspot-for-woocommerce
+ * @subpackage makewebbetter-hubspot-for-woocommerce/includes
  */
 
 /**
@@ -17,7 +17,7 @@
  * from/to hubspot.
  *
  * @package    makewebbetter-hubspot-for-woocommerce
- * @subpackage makewebbetter-hubspot-for-woocommerceincludes
+ * @subpackage makewebbetter-hubspot-for-woocommerce/includes
  */
 class HubwooObjectProperties {
 
@@ -165,7 +165,6 @@ class HubwooObjectProperties {
 	 * @return  array sync response from HubSpot.
 	 */
 	public static function hubwoo_ecomm_sync_deal( $order_id, $source, $customer_id ) {
-
 		$object_type       = 'DEAL';
 		$deal_updates      = array();
 		$hubwoo_ecomm_deal = new HubwooEcommObject( $order_id, $object_type );
@@ -183,6 +182,8 @@ class HubwooObjectProperties {
 		} else {
 			$contact = get_post_meta( $order_id, '_billing_email', true );
 		}
+
+		$contact_vid = HubWooConnectionMananager::get_instance()->get_customer_by_email( $contact );
 
 		$deal_updates[] = array(
 			'action'           => 'UPSERT',
@@ -213,6 +214,8 @@ class HubwooObjectProperties {
 
 				$attempts = 0;
 
+				sleep(1);
+
 				if ( 204 == $response['status_code'] ) {
 					do {
 						$response = HubWooConnectionMananager::get_instance()->ecomm_sync_status( $order_id, $object_type );
@@ -222,14 +225,19 @@ class HubwooObjectProperties {
 				if ( 200 == $response['status_code'] ) {
 					$response = json_decode( $response['body'], true );
 					update_post_meta( $order_id, 'hubwoo_ecomm_deal_id', $response['hubspotId'] );
+					if( ! empty( $contact_vid ) ) {
+						HubWooConnectionMananager::get_instance()->create_deal_associations( $response['hubspotId'], $contact_vid );
+					}
+
 					do_action( 'hubwoo_ecomm_deal_created', $order_id );
 					$response = self::hubwoo_ecomm_sync_line_items( $order_id );
 				}
-
+				
 				return $response;
 			}
 		}
 	}
+
 
 	/**
 	 * Create and Associate Line Items for an order.
@@ -301,7 +309,6 @@ class HubwooObjectProperties {
 			}
 
 			if ( count( $line_updates ) ) {
-
 				$flag = true;
 				if ( Hubwoo::is_access_token_expired() ) {
 					$hapikey = HUBWOO_CLIENT_ID;
@@ -312,12 +319,11 @@ class HubwooObjectProperties {
 					}
 				}
 				if ( $flag ) {
-
 					$response = HubWooConnectionMananager::get_instance()->ecomm_sync_messages( $line_updates, $object_type );
 				}
 			}
 
-			if ( 204 == $response['status_code'] || empty( $object_ids ) ) {
+			if ( 204 == $response['status_code'] || 206 == $response['status_code'] || empty( $object_ids ) ) {
 
 				update_post_meta( $order_id, 'hubwoo_ecomm_deal_created', 'yes' );
 
@@ -327,9 +333,11 @@ class HubwooObjectProperties {
 					update_option( 'hubwoo_deals_current_sync_count', ++$current_count );
 				}
 			}
+
 			return $response;
 		}
 	}
+
 
 	/**
 	 * Start syncing an ecommerce deal

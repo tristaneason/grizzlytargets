@@ -11,11 +11,12 @@ function porto_load_image_frame_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => 'Porto ' . __( 'Image Frame', 'porto-functionality' ),
-			'base'     => 'porto_image_frame',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'far fa-image',
-			'params'   => array(
+			'name'        => 'Porto ' . __( 'Image Frame', 'porto-functionality' ),
+			'base'        => 'porto_image_frame',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'A single image with caption', 'porto-functionality' ),
+			'icon'        => 'far fa-image',
+			'params'      => array(
 				array(
 					'type'       => 'dropdown',
 					'heading'    => __( 'Type', 'porto-functionality' ),

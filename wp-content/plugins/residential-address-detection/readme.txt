@@ -1,9 +1,9 @@
 === Residential Address Detection ===
 Contributors: Eniture Technology
 Tags: Residential Address, Auto Residential, Residential Detection
-Requires at least: 5.2
-Tested up to: 5.6
-Stable tag: 5.6
+Requires at least: 5.7
+Tested up to: 5.8
+Stable tag: 2.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,10 +19,20 @@ An add-on plugin developed by Eniture Technology. The plugin works with Eniture 
 
 **Requirements**
 
-* WooCommerce 4.0 or newer.
+* WooCommerce 5.0 or newer.
 * A license from Eniture Technology.
 
 == Changelog ==
+
+= 2.2.3 =
+* Compatibility with GlobalTranz.
+
+= 2.2.2 =
+* Update: Compatibility with PHP version 8.0
+* Update: Compatibility with WordPress version 5.8
+
+= 2.2.1 =
+* Update: Added compatibility with plugin DAY&ROSS.
 
 = 2.1.1 =
 * Compatibility with Freigtview v2 plugin

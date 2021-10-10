@@ -99,10 +99,11 @@ function wppfm_create_mpn_wc_variation_support_field( $loop, $variation_data, $v
 	// Add the GTIN text field to the variation cards.
 	woocommerce_wp_text_input(
 		array(
-			'id'          => 'wppfm_product_gtin',
+			'id'          => 'wppfm_product_gtin[' . $variation->ID . ']',
 			'label'       => 'Product GTIN',
 			'desc_tip'    => true,
 			'description' => __( 'GTIN refers to a products Global Trade Item Number. You can also use a UPC, EAN, JAN, ISBN or ITF-14 number here.', 'wp-product-feed-manager' ),
+			'value'       => get_post_meta( $variation->ID, 'wppfm_product_gtin', true ),
 		)
 	);
 
@@ -118,11 +119,13 @@ add_action( 'woocommerce_variation_options', 'wppfm_create_mpn_wc_variation_supp
  */
 function wppfm_save_variation_custom_fields( $post_id ) {
 
-	// Get the variations mpn.
-	$woocommerce_text_field = $_POST['wppfm_product_mpn'][ $post_id ];
+	// Get the variations mpn and gtin.
+	$woocommerce_mpn_field = $_POST['wppfm_product_mpn'][ $post_id ];
+	$woocommerce_gtin_field = $_POST['wppfm_product_gtin'][ $post_id ];
 
 	// Update.
-	update_post_meta( $post_id, 'wppfm_product_mpn', sanitize_text_field( $woocommerce_text_field ) );
+	update_post_meta( $post_id, 'wppfm_product_mpn', sanitize_text_field( $woocommerce_mpn_field ) );
+	update_post_meta( $post_id, 'wppfm_product_gtin', sanitize_text_field( $woocommerce_gtin_field ) );
 }
 
 add_action( 'woocommerce_save_product_variation', 'wppfm_save_variation_custom_fields', 10, 2 );

@@ -209,11 +209,11 @@ class Hubwoo_Admin {
 	 */
 	public function hubwoo_redirect_from_hubspot() {
 
-		if ( isset( $_GET['code'] ) ) {
+		if (  isset( $_GET['code'] ) ) {
 
 			$hapikey = HUBWOO_CLIENT_ID;
 			$hseckey = HUBWOO_SECRET_ID;
-			
+
 			if ( $hapikey && $hseckey ) {
 				if ( ! Hubwoo::is_valid_client_ids_stored() ) {
 
@@ -1142,7 +1142,7 @@ class Hubwoo_Admin {
 	 */
 	public static function hubwoo_abncart_product_html( $cart_products ) {
 
-		$products_html = '<div><hr></div><!--[if mso]><center><table width="100%" style="width:600px;"><![endif]--><table style="font-size: 14px; font-family: Arial, sans-serif; line-height: 20px; text-align: left; table-layout: fixed;" width="100%"><thead><tr><th style="text-align: center;word-wrap: unset;">' . __( 'Image', 'makewebbetter-hubspot-for-woocommerce' ) . '</th><th style="text-align: center;word-wrap: unset;">' . __( 'Item', 'makewebbetter-hubspot-for-woocommerce' ) . '</th><th style="text-align: center;word-wrap: unset;">' . __( 'Qty', 'makewebbetter-hubspot-for-woocommerce' ) . '</th><th style="text-align: center;word-wrap: unset;">' . __( 'Cost', 'huwboo' ) . '</th><th style="text-align: center;word-wrap: unset;">' . __( 'Total', 'makewebbetter-hubspot-for-woocommerce' ) . '</th></tr></thead><tbody>';
+		$products_html = '<div><hr></div><!--[if mso]><center><table width="100%" style="width:600px;"><![endif]--><table style="font-size: 14px; font-family: Arial, sans-serif; line-height: 20px; text-align: left; table-layout: fixed;" width="100%"><thead><tr><th style="text-align: center;word-wrap: unset;">' . __( 'Image', 'makewebbetter-hubspot-for-woocommerce' ) . '</th><th style="text-align: center;word-wrap: unset;">' . __( 'Item', 'makewebbetter-hubspot-for-woocommerce' ) . '</th><th style="text-align: center;word-wrap: unset;">' . __( 'Qty', 'makewebbetter-hubspot-for-woocommerce' ) . '</th><th style="text-align: center;word-wrap: unset;">' . __( 'Cost', 'makewebbetter-hubspot-for-woocommerce' ) . '</th><th style="text-align: center;word-wrap: unset;">' . __( 'Total', 'makewebbetter-hubspot-for-woocommerce' ) . '</th></tr></thead><tbody>';
 		foreach ( $cart_products as $single_product ) {
 			$products_html .= '<tr><td width="20" style="max-width: 100%; text-align: center;"><img height="50" width="50" src="' . $single_product['image'][0] . '"></td><td width="50" style="max-width: 100%; text-align: center; font-weight: normal;font-size: 10px;word-wrap: unset;"><a style="display: inline-block;" target="_blank" href="' . $single_product['url'] . '">' . $single_product['name'] . '</a></td><td width="10" style="max-width: 100%;text-align: center;">' . $single_product['qty'] . '</td><td width="10" style="max-width: 100%;text-align: center; font-size: 10px;">' . wc_price( $single_product['price'], array( 'currency' => get_option( 'woocommerce_currency' ) ) ) . '</td><td width="10" style="max-width: 100%;text-align: center; font-size: 10px;">' . wc_price( $single_product['total'], array( 'currency' => get_option( 'woocommerce_currency' ) ) ) . '</td></tr>';
 		}
@@ -1729,6 +1729,7 @@ class Hubwoo_Admin {
 						update_post_meta( $product_id, 'hubwoo_product_synced', true );
 					}
 				}
+				do_action( 'hubwoo_update_product_property', $product_id );
 			}
 
 			if ( ! as_next_scheduled_action( 'hubwoo_products_status_background' ) ) {
@@ -2383,4 +2384,5 @@ class Hubwoo_Admin {
 		);
 		return $context;
 	}
+
 }

@@ -1,3 +1,54 @@
+= 8.4.90 (2021-08-10) =
+* Add EU prefix to scripts domains for EU portals
+
+= 8.4.60 (2021-08-05) =
+* Added development backdoor for the new odyssey signup flow
+
+= 8.4.33 (2021-07-30) =
+* Check refresh token exists before attempting to make the refresh token API call.
+
+= 8.4.0 (2021-07-23) =
+* New portals created in the EU now have their data kept in EU datacentres.
+* Ungated the OAuth connection flow for all users.
+* Updated deprecated block_categories hook for WordPress 5.8
+
+= 8.3.67 (2021-07-12) =
+* Remove leadin_affiliate_code filter. This filter is not used and should not have any user-facing consequence
+
+= 8.3.20 (2021-06-23) =
+* Correctly render forms on non-NA1 regions
+
+= 8.3.16 (2021-06-22) =
+* Fix urls pointing to the wrong domain from region NA1
+
+= 8.3.15 (2021-06-22) =
+* Pass the connection nonce to leadinConfig variable. This change does not have impact on users
+
+= 8.3.0 (2021-06-18) =
+* Hide menu items that rely on third-party cookies when they are disabled
+
+= 8.2.0 (2021-06-17) =
+* Add endpoint that returns the OAuth2 token info
+
+= 8.1.0 (2021-06-17) =
+* Hide side menu items when the user is not authenticated
+
+= 8.0.287 (2021-06-15) =
+* Pass the deviceId param to the plugin in the query parameters
+
+= 8.0.266 (2021-06-09) =
+* Always stringify payload for POST ajax request
+
+= 8.0.227 (2021-05-28) =
+* Add support for new affiliate links
+
+= 8.0.166 (2021-05-20) =
+* Improved fingerprinting of API requests for error tracking/handling
+
+= 8.0.140 (2021-05-17) =
+* Set required "hublet" property when connecting the plugin
+* Add plugin's version to error monitoring
+
 = 8.0.1 (2021-04-22) =
 * Fix undefined website name in the authorisation screen
 
@@ -354,77 +405,4 @@
 * Improve performances
 * Remove dependencies from HubSpot's CDN
 * Update license
-
-= 7.3.2 (2019-04-23) =
-* Move assets to /assets folder
-* New settings page
-* Improve forms page loading time
-
-= 7.3.0 (2019-04-16) =
-* Drop support for PHP<5.6
-* Drop support for WP<4
-* Removed hubspot from admin top bar
-
-= 7.3.1 (2019-04-16) =
-* Fix missing assets
-
-= 7.2.2 (2019-04-08) =
-* Fix for whitespace bug
-
-= 7.2.1 (2019-04-07) =
-* Added link to Chatflows
-
-= 7.1.1 (2019-04-02) =
-* Remove OAuth step from signup
-* Fix assets in listing
-
-= 7.2.0 (2019-04-02) =
-* Add background iframe
-
-= 7.1.0 (2019-03-31) =
-* Remove slumber/oauth mode
-* Fix icon in top menu
-* Add help widget
-* Update message on connection error
-* April fool prank
-
-= 7.0.7 (2019-03-25) =
-* Add helpers for acceptance tests
-* Remove dialog on settings page
-* Load forms script from right environment
-* Test on PHP 5.6
-* Design fixes on the intro page
-
-= 7.0.6 (2019-03-08) =
-* Add debug helpers
-
-= 7.0.5 (2019-03-05) =
-* Update description to explain how plugin provides WordPress CRM
-* Fix connection to wrong portal id
-* Add pop-up on login page
-* Add intro screen for un-logged users
-* Update HubSpot forms script
-* Disable "Create form" when user has no permissions
-* Skip authorization token verification
-* Test with most popular plugins
-
-= 7.0.4 (2019-02-19) =
-* Show welcome dialog after connection
-* Remove extra navigation in connection flow
-* Add pre-fill to signup form
-* Add plugin version to HTML comment
-* Fix enqueue style error
-
-= 7.0.3 (2019-02-12) =
-* Update HubSpot logos
-
-= 7.0.2 (2019-01-22) =
-* Plugin readme update
-* Fix wrong settings link
-
-= 7.0.1 (2018-10-11) =
-* Send page analytics data into HubSpot
-
-= 7.0.0 (2018-10-02) =
-* Add deeper integration with HubSpot. Starts a new release of a new forms integration within WordPress. Released progressively for some users.
 

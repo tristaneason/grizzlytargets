@@ -14,6 +14,7 @@ function porto_load_links_block_shortcode() {
 			'name'            => 'Porto ' . __( 'Links Block', 'porto-functionality' ),
 			'base'            => 'porto_links_block',
 			'category'        => __( 'Porto', 'porto-functionality' ),
+			'description'     => __( 'Display the links', 'porto-functionality' ),
 			'icon'            => 'fas fa-external-link-square-alt',
 			'as_parent'       => array( 'except' => 'porto_links_block' ),
 			'content_element' => true,

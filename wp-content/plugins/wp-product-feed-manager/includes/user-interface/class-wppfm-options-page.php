@@ -125,6 +125,7 @@ if ( ! class_exists( 'WPPFM_Options_Page' ) ) :
 			$html_code .= '<input name="wppfm_third_party_attr_keys" id="wppfm_third_party_attr_keys" type="text" class="" value="' . $third_party_attribute_keywords . '"> ';
 			$html_code .= '<label for="wppfm_third_party_attr_keys">';
 			$html_code .= esc_html__( 'Enter comma separated keywords and wildcards to use third party attributes.', 'wp-product-feed-manager' ) . '</label></fieldset>';
+			$html_code .= '<p><i>' . esc_html__('Use specific wildcards. Do not use to broad wildcards like %_% because that will include default WooCommerce attributes and can sometimes result in incorrect feed outputs.', 'wp-product-feed-manager') . '</i></p></fieldset>';
 			$html_code .= '</td></tr>';
 
 			$html_code .= '<tr valign="top" class="">';

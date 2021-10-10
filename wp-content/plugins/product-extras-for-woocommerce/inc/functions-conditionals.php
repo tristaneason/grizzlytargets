@@ -241,7 +241,7 @@ function pewc_get_field_conditions( $item, $product_id ) {
 		*/
 		if( $rules['conditions'][$count]['field'] ) {
 			foreach( $rules['conditions'][$count]['field'] as $field ) {
-				$conditions[$count]['field'] = $field;
+				$conditions[$count]['field'] = apply_filters( 'pewc_field_condition_field', $field, $item, $product_id );
 				$count++;
 			}
 		}
@@ -249,7 +249,7 @@ function pewc_get_field_conditions( $item, $product_id ) {
 		$count = 0;
 		if( $rules['conditions'][$count]['rule'] ) {
 			foreach( $rules['conditions'][$count]['rule'] as $rule ) {
-				$conditions[$count]['rule'] = $rule;
+				$conditions[$count]['rule'] = apply_filters( 'pewc_field_condition_rule', $rule, $item, $product_id );
 				$count++;
 			}
 		}
@@ -257,7 +257,7 @@ function pewc_get_field_conditions( $item, $product_id ) {
 		$count = 0;
 		if( $rules['conditions'][$count]['value'] ) {
 			foreach( $rules['conditions'][$count]['value'] as $value ) {
-				$conditions[$count]['value'] = $value;
+				$conditions[$count]['value'] = apply_filters( 'pewc_field_condition_value', $value, $item, $product_id );
 				$count++;
 			}
 		}
@@ -265,7 +265,7 @@ function pewc_get_field_conditions( $item, $product_id ) {
 		$count = 0;
 		if( $rules['conditions'][$count]['key'] ) {
 			foreach( $rules['conditions'][$count]['key'] as $key ) {
-				$conditions[$count]['key'] = $key;
+				$conditions[$count]['key'] = apply_filters( 'pewc_field_condition_key', $key, $item, $product_id );
 				$count++;
 			}
 		}
@@ -986,7 +986,7 @@ function pewc_get_conditional_field_visibility( $id, $item, $items, $product_id,
 					} else {
 
 						// Probably calculation
-						if( $posted_field && $posted_field <= $value ) {
+						if( $posted_field && $posted_field >= $value ) {
 
 							$rules_obtain = true;
 
@@ -1451,6 +1451,9 @@ function pewc_is_field_visible( $field_value, $rule, $required_value ) {
 		}
 		return $field_value == $required_value;
 	} else if( $rule == 'is-not' ) {
+		if( is_array( $field_value ) ) { // Radio button values
+			return ! in_array( $required_value, $field_value );
+		}
 		return $field_value != $required_value;
 	} else if( $rule == 'contains' ) {
 		return in_array( $required_value, $field_value );
@@ -1461,7 +1464,7 @@ function pewc_is_field_visible( $field_value, $rule, $required_value ) {
 	} else if( $rule == 'less-than' || $rule == 'less-than-equals' ) {
 		return $field_value <= $required_value;
 	}
-	
+
 }
 
 /**

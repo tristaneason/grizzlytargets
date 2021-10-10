@@ -21,7 +21,7 @@ trait WPPFM_Processing_Support {
 	protected function get_mapped_category( $id, $main_category, $category_mapping ) {
 		$result                 = false;
 		$support_class          = new WPPFM_Feed_Support();
-		$yoast_primary_category = WPPFM_Taxonomies::get_yoast_primary_cat( $id );
+		$yoast_primary_category = WPPFM_Taxonomies::get_primary_cat( $id );
 		$yoast_cat_is_selected  = $yoast_primary_category ? $support_class->category_is_selected( $yoast_primary_category[0]->term_id, $category_mapping ) : false;
 
 		$product_categories = $yoast_primary_category && false !== $yoast_cat_is_selected ? $yoast_primary_category :
@@ -1387,35 +1387,35 @@ trait WPPFM_Processing_Support {
 
 		if ( $woocommerce_product_parent && ( $woocommerce_product_parent->is_type( 'variable' ) || $woocommerce_product_parent->is_type( 'variation' ) ) ) {
 			if ( in_array( '_min_variation_price', $active_field_names ) ) {
-				$product->_min_variation_price = $woocommerce_product_parent ? wppfm_prep_money_values( $woocommerce_product_parent->get_variation_price(), $selected_language ) : '';
+				$product->_min_variation_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_price(), $selected_language );
 			}
 
 			if ( in_array( '_max_variation_price', $active_field_names ) ) {
-				$product->_max_variation_price = $woocommerce_product_parent ? wppfm_prep_money_values( $woocommerce_product_parent->get_variation_price( 'max' ), $selected_language ) : '';
+				$product->_max_variation_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_price( 'max' ), $selected_language );
 			}
 
 			if ( in_array( '_min_variation_regular_price', $active_field_names ) ) {
-				$product->_min_variation_regular_price = $woocommerce_product_parent ? wppfm_prep_money_values( $woocommerce_product_parent->get_variation_regular_price(), $selected_language ) : '';
+				$product->_min_variation_regular_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_regular_price(), $selected_language );
 			}
 
 			if ( in_array( '_max_variation_regular_price', $active_field_names ) ) {
-				$product->_max_variation_regular_price = $woocommerce_product_parent ? wppfm_prep_money_values( $woocommerce_product_parent->get_variation_regular_price( 'max' ), $selected_language ) : '';
+				$product->_max_variation_regular_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_regular_price( 'max' ), $selected_language );
 			}
 
 			if ( in_array( '_min_variation_sale_price', $active_field_names ) ) {
-				$product->_min_variation_sale_price = $woocommerce_product_parent ? wppfm_prep_money_values( $woocommerce_product_parent->get_variation_sale_price(), $selected_language ) : '';
+				$product->_min_variation_sale_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_sale_price(), $selected_language );
 			}
 
 			if ( in_array( '_max_variation_sale_price', $active_field_names ) ) {
-				$product->_max_variation_sale_price = $woocommerce_product_parent ? wppfm_prep_money_values( $woocommerce_product_parent->get_variation_sale_price( 'max' ), $selected_language ) : '';
+				$product->_max_variation_sale_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_sale_price( 'max' ), $selected_language );
 			}
 
 			if ( in_array( 'item_group_id', $active_field_names ) ) {
-				$parent_sku = $woocommerce_product_parent ? $woocommerce_product_parent->get_sku() : '';
+				$parent_sku = $woocommerce_product_parent->get_sku();
 
 				if ( $parent_sku ) {
 					$product->item_group_id = $parent_sku; // best practise
-				} elseif ( $woocommerce_product_parent && $woocommerce_parent_id ) {
+				} elseif ( $woocommerce_parent_id ) {
 					$product->item_group_id = 'GID' . $woocommerce_parent_id;
 				} else {
 					$product->item_group_id = '';
@@ -1445,7 +1445,7 @@ trait WPPFM_Processing_Support {
 
 		// @since 2.2.0
 		if ( in_array( 'product_type', $active_field_names ) ) {
-			$product->type = $woocommerce_product ? $woocommerce_product->get_type() : 'unknown';
+			$product->type = $woocommerce_product->get_type();
 		}
 
 		// @since 2.2.0
@@ -1458,6 +1458,26 @@ trait WPPFM_Processing_Support {
 			}
 
 			$product->product_variation_title_without_attributes = $product_title;
+		}
+
+		// @since 2.21.0
+		if ( in_array( '_variation_parent_id', $active_field_names ) ) {
+			$product->_variation_parent_id = $woocommerce_parent_id;
+		}
+
+		// @since 2.21.0
+		if ( in_array( '_product_parent_id', $active_field_names ) ) {
+			$product->_product_parent_id = $woocommerce_parent_id ?: '0';
+		}
+
+		// @since 2.21.0
+		if ( in_array( '_max_group_price', $active_field_names ) && $woocommerce_product_parent->is_type( 'grouped' ) ) {
+			$product->_max_group_price = $this->get_group_price( $woocommerce_product_parent, 'max' );
+		}
+
+		// @since 2.21.0
+		if ( in_array( '_min_group_price', $active_field_names ) && $woocommerce_product_parent->is_type( 'grouped' ) ) {
+			$product->_min_group_price = $this->get_group_price( $woocommerce_product_parent );
 		}
 
 		$woocommerce_product = null;
@@ -1524,5 +1544,25 @@ trait WPPFM_Processing_Support {
 		}
 
 		return $product_tags_string ? substr( $product_tags_string, 0, - 2 ) : '';
+	}
+
+	/**
+	 * Returns the lowest or highest price of the products in a grouped product.
+	 *
+	 * @param WC_Product $woocommerce_product_parent
+	 * @param string     $min_max
+	 *
+	 * @return string The highest or lowest price as a string.
+	 */
+	protected function get_group_price( $woocommerce_product_parent, $min_max = 'min' ) {
+		$children       = $woocommerce_product_parent->get_children();
+		$product_prices = [];
+
+		foreach( $children as $key => $value ) {
+			$product = wc_get_product( $value );
+			array_push( $product_prices, $product->get_price() );
+		}
+
+		return 'min' === $min_max ? min( $product_prices ) : max( $product_prices );
 	}
 }

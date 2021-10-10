@@ -8,11 +8,12 @@ function porto_load_section_scroll_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => 'Porto ' . __( 'Section Scroll', 'porto-functionality' ),
-			'base'     => 'porto_section_scroll',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'fas fa-arrows-alt-v',
-			'params'   => array(
+			'name'        => 'Porto ' . __( 'Section Scroll', 'porto-functionality' ),
+			'base'        => 'porto_section_scroll',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'You can see next or prev section with only one scroll and dots', 'porto-functionality' ),
+			'icon'        => 'fas fa-arrows-alt-v',
+			'params'      => array(
 				array(
 					'type'       => 'checkbox',
 					'heading'    => __( 'Show Dots Navigation', 'porto-functionality' ),

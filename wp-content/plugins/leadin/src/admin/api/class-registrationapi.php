@@ -27,12 +27,13 @@ class RegistrationApi extends ApiGenerator {
 		$portal_domain = $data['domain'];
 		$portal_name   = $data['accountName'];
 		$hs_user_email = $data['userEmail'];
+		$hublet        = $data['hublet'];
 
 		if ( empty( $portal_id ) ) {
 			RequestUtils::send_error_message( 'Registration missing required fields' );
 		}
 
-		Connection::connect( $portal_id, $portal_name, $portal_domain, $hs_user_email );
+		Connection::connect( $portal_id, $portal_name, $portal_domain, $hs_user_email, $hublet );
 
 		RequestUtils::send_message( 'Success' );
 	}

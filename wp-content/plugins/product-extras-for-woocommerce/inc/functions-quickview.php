@@ -106,6 +106,12 @@ function pewc_display_quickview_template( $child_product, $child_product_id ) {
 
 	<?php
 	$GLOBALS['post'] = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+	add_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
+	add_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_meta', 40 );
+
+	add_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_product_data_tabs', 10 );
+	add_action( 'woocommerce_after_single_product_summary', 'woocommerce_upsell_display', 15 );
+ 	add_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20 );
 
 }
 add_action( 'pewc_after_child_product_item', 'pewc_display_quickview_template', 10, 2 );

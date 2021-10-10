@@ -12,20 +12,20 @@
  * @package           makewebbetter-hubspot-for-woocommerce
  *
  * @wordpress-plugin
- * Plugin Name:         HubSpot for WooCommerce
- * Plugin URI:          https://wordpress.org/plugins/makewebbetter-hubspot-for-woocommerce
- * Description:         Integrate WooCommerce with HubSpot’s free CRM, abandoned cart tracking, email marketing, marketing automation, analytics & more.
- * Version: 1.0.8
- * Requires at least: 4.4.0
- * Tested up to: 5.7.0
- * WC requires at least: 3.0.0
- * WC tested up to: 5.1.0
- * Author:            MakeWebBetter
- * Author URI:        https://makewebbetter.com/
- * License: GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       makewebbetter-hubspot-for-woocommerce
- * Domain Path:       /languages
+ * Plugin Name:          HubSpot for WooCommerce
+ * Plugin URI:           https://wordpress.org/plugins/makewebbetter-hubspot-for-woocommerce
+ * Description:          Integrate WooCommerce with HubSpot’s free CRM, abandoned cart tracking, email marketing, marketing automation, analytics & more.
+ * Version:              1.2.3
+ * Requires at least:    4.4.0
+ * Tested up to:         5.8.1
+ * WC requires at least: 3.5.0
+ * WC tested up to:      5.6.0
+ * Author:               MakeWebBetter
+ * Author URI:           http://www.makewebbetter.com/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend
+ * License: GPLv3 or later
+ * License URI:          http://www.gnu.org/licenses/gpl-3.0.txt
+ * Text Domain:          makewebbetter-hubspot-for-woocommerce
+ * Domain Path:  		 /languages
  */
 
 // If this file is called directly, abort.
@@ -109,11 +109,28 @@ if ( $hubwoo_pro_activated && $hubwoo_pro_flag ) {
 	function hubwoo_pro_define_constants() {
 		hubwoo_pro_define( 'HUBWOO_ABSPATH', dirname( __FILE__ ) . '/' );
 		hubwoo_pro_define( 'HUBWOO_URL', plugin_dir_url( __FILE__ ) );
-		hubwoo_pro_define( 'HUBWOO_VERSION', '1.0.5' );
+		hubwoo_pro_define( 'HUBWOO_VERSION', '1.2.3' );
 		hubwoo_pro_define( 'HUBWOO_PLUGINS_PATH', plugin_dir_path( __DIR__ ) );
 		hubwoo_pro_define( 'HUBWOO_CLIENT_ID', '769fa3e6-79b1-412d-b69c-6b8242b2c62a' );
 		hubwoo_pro_define( 'HUBWOO_SECRET_ID', '2893dd41-017e-4208-962b-12f7495d16b0' );
 	}
+
+	/**
+	 * Adding custom setting links at the plugin activation list.
+	 *
+	 * @param array  $links_array array containing the links to plugin.
+	 * @param string $plugin_file_name plugin file name.
+	 * @return array
+	 */
+	function hubwoo_custom_settings_at_plugin_tab( $links_array, $plugin_file_name ) {
+		if ( strpos( $plugin_file_name, basename( __FILE__ ) ) ) {
+			$links_array[] = '<a href="https://makewebbetter.com/hubspot-woocommerce-onboarding/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank"><img src="' . HUBWOO_URL . 'admin/images/Demo.svg" style="vertical-align: middle;display: inline-block;width: 15px;max-width: 100%;margin: 0 5px;"></i>' . esc_html__( 'On-Board with Us', 'makewebbetter-hubspot-for-woocommerce' ) . '</a>';
+			$links_array[] = '<a href="https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank"><img src="' . HUBWOO_URL . 'admin/images/Documentation.svg" style="vertical-align: middle;display: inline-block;width: 15px;max-width: 100%;margin: 0 5px;"></i>' . esc_html__( 'Documentation', 'makewebbetter-hubspot-for-woocommerce' ) . '</a>';
+			$links_array[] = '<a href="https://support.makewebbetter.com/hubspot-knowledge-base/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank"><img src="' . HUBWOO_URL . 'admin/images/Support.svg" style="vertical-align: middle;display: inline-block;width: 15px;max-width: 100%;margin: 0 5px;"></i>' . esc_html__( 'Support', 'makewebbetter-hubspot-for-woocommerce' ) . '</a>';
+		}
+		return $links_array;
+	}
+	add_filter( 'plugin_row_meta', 'hubwoo_custom_settings_at_plugin_tab', 10, 2 );
 
 	/**
 	 * Define constant if not already set.
@@ -220,7 +237,9 @@ if ( $hubwoo_pro_activated && $hubwoo_pro_flag ) {
 		<p><?php esc_html_e( 'WooCommerce is not activated. Please activate WooCommerce first to install HubSpot for WooCommerce', 'makewebbetter-hubspot-for-woocommerce' ); ?></p>
 		</div>
 		<style>
-		#message{display:none;}
+		#message{
+			display:none;
+		}
 		</style>
 		<?php
 	}

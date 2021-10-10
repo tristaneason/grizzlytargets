@@ -7,10 +7,8 @@ import { PaymentMethodIcons } from '@woocommerce/base-components/cart-checkout';
 import Button from '@woocommerce/base-components/button';
 import { CHECKOUT_URL } from '@woocommerce/block-settings';
 import { useCheckoutContext } from '@woocommerce/base-context';
-import {
-	usePaymentMethods,
-	usePositionRelativeToViewport,
-} from '@woocommerce/base-hooks';
+import { usePaymentMethods } from '@woocommerce/base-context/hooks';
+import { usePositionRelativeToViewport } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -42,14 +40,12 @@ const CheckoutButton = ( { link } ) => {
 	const { paymentMethods } = usePaymentMethods();
 
 	useEffect( () => {
-		// Add a listener for when the page is unloaded (specifically needed for Safari)
-		// to remove the spinner on the checkout button, so the saved page snapshot does not
-		// contain the spinner class. See https://archive.is/lOEW0 for why this is needed.
+		// Add a listener to remove the spinner on the checkout button, so the saved page snapshot does not
+		// contain the spinner class. See https://archive.is/lOEW0 for why this is needed for Safari.
 
 		if (
-			! window ||
-			typeof window.addEventListener !== 'function' ||
-			typeof window.removeEventListener !== 'function'
+			typeof global.addEventListener !== 'function' ||
+			typeof global.removeEventListener !== 'function'
 		) {
 			return;
 		}
@@ -58,10 +54,10 @@ const CheckoutButton = ( { link } ) => {
 			setShowSpinner( false );
 		};
 
-		window.addEventListener( 'beforeunload', hideSpinner );
+		global.addEventListener( 'pageshow', hideSpinner );
 
 		return () => {
-			window.removeEventListener( 'beforeunload', hideSpinner );
+			global.removeEventListener( 'pageshow', hideSpinner );
 		};
 	}, [] );
 

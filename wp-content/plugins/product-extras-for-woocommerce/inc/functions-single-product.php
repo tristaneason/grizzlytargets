@@ -120,7 +120,10 @@ function pewc_enqueue_scripts() {
 		'remove_spaces'					=> apply_filters( 'pewc_remove_spaces_in_text', 'no' ),
 		'math_round'						=> apply_filters( 'pewc_math_round', 'no' ),
 		'disable_button_calcs'	=> apply_filters( 'pewc_disable_button_calcs', 'no' ),
-		'null_signifier'				=> apply_filters( 'pewc_look_up_table_null_signifier', '*' )
+		'disable_button_uploads'	=> pewc_disable_add_to_cart_upload() ? 'yes' : 'no',
+		'null_signifier'				=> apply_filters( 'pewc_look_up_table_null_signifier', '*' ),
+		'disable_wcfad_label'		=> get_option( 'pewc_disable_wcfad_price_label', 'no' ),
+		'zero_missing_field'		=> get_option( 'pewc_zero_missing_field', 'no' )
 	);
 
 	if( is_product() ) {
@@ -130,6 +133,11 @@ function pewc_enqueue_scripts() {
 		$vars['price_suffix_setting'] = get_option( 'woocommerce_price_display_suffix' );
 		$vars['percent_exc_tax'] = wc_get_price_excluding_tax( $product, $args = array( 'price' => 100, 'qty' => 1 ) );
 		$vars['percent_inc_tax'] = wc_get_price_including_tax( $product, $args = array( 'price' => 100, 'qty' => 1 ) );
+		$vars['contentAsHTML'] = apply_filters( 'pewc_tooltipster_html', false );
+		$vars['autoClose'] = apply_filters( 'pewc_tooltipster_autoclose', true );
+		$vars['interactive'] = apply_filters( 'pewc_tooltipster_interactive', false );
+		$vars['hideOnClick'] = apply_filters( 'pewc_tooltipster_hide_on_click', false );
+		$vars['trigger'] = apply_filters( 'pewc_tooltipster_trigger', 'hover' );
 	}
 
 	if( pewc_is_pro() && function_exists( 'pewc_multiply_independent_quantities_by_parent_quantity' ) ) {
@@ -147,6 +155,8 @@ function pewc_enqueue_scripts() {
 		$vars['accordion_toggle'] = apply_filters( 'pewc_filter_initial_accordion_states', false, $post->ID );
 		$vars['close_accordion'] = apply_filters( 'pewc_close_accordion', 'no', $post->ID );
 		$vars['reset_fields'] = pewc_reset_hidden_fields( $post->ID );
+
+		$vars = apply_filters( 'pewc_localize_script_vars', $vars, $post->ID );
 	}
 
 	wp_localize_script(
@@ -221,6 +231,7 @@ function pewc_product_extra_fields() {
 		$child_fields = array();
 
 		$cart = WC()->cart->cart_contents;
+		$cart_item = false;
 
 		if( isset( $cart[$cart_key] ) && pewc_user_can_edit_products() ) {
 
@@ -283,6 +294,7 @@ function pewc_product_extra_fields() {
 
 		$number_teaser_fields = pewc_get_number_teaser_fields();
 		$count_fields = 0;
+		$group_index = 0;
 
 		// Iterate through each group
 		foreach( $product_extra_groups as $group_id=>$group ) {
@@ -292,6 +304,7 @@ function pewc_product_extra_fields() {
 				array(
 					'pewc-group-wrap',
 					'pewc-group-wrap-' . $group_id,
+					'pewc-group-index-' . $group_index,
 					$first_group_class
 				),
 				$group_id,
@@ -300,7 +313,7 @@ function pewc_product_extra_fields() {
 			);
 
 			$group_conditions = pewc_get_group_conditions( $group_id );
-			$group_attributes = pewc_get_group_attributes( $group_conditions, $group_id, $group );
+			$group_attributes = pewc_get_group_attributes( $group_conditions, $group_id, $group, $group_index );
 
 			$first_group_class = '';
 
@@ -328,7 +341,9 @@ function pewc_product_extra_fields() {
 					}
 
 				echo '</div><!-- .pewc-group-heading-wrapper -->';
-				echo '<div class="pewc-group-content-wrapper">';
+
+				$group_content_wrapper_class = apply_filters( 'pewc_group_content_wrapper_class', '', $group_id );
+				echo '<div class="pewc-group-content-wrapper '. $group_content_wrapper_class .'">';
 
 					$description = pewc_get_group_description( $group_id, $group, pewc_has_migrated() );
 
@@ -349,6 +364,8 @@ function pewc_product_extra_fields() {
 						$group_class .= ' ' . $group_layout;
 						$group_layout = 'ul';
 					}
+
+					$group_layout = apply_filters( 'pewc_group_layout', $group_layout, $group_id );
 
 					echo '<' . $group_layout . ' class="pewc-product-extra-groups ' . esc_attr( $group_class ) . '">';
 
@@ -404,15 +421,15 @@ function pewc_product_extra_fields() {
 
 								$classes = pewc_get_field_classes( $item, $id, $post_id, $product, $count_fields, $number_teaser_fields, $display, $all_group_conditions, $calculation_components );
 
-								$field_image = pewc_get_field_image( $item, $id );
-
 								$field_price = pewc_get_field_price( $item, $product );
 
 								if( pewc_is_pro() && pewc_display_summary_panel_enabled() ) {
 									$summary_panel[$group_id]['fields'][$item['field_id']] = array(
 										'label' => $label,
 										'value'	=> $value,
-										'price'	=> $field_price
+										'price'	=> $field_price,
+										'option_price_visibility'	=> isset( $item['option_price_visibility'] ) ? $item['option_price_visibility'] : false,
+										'price_visibility'	=> isset( $item['price_visibility'] ) ? $item['price_visibility'] : false
 									);
 								}
 
@@ -460,6 +477,12 @@ function pewc_product_extra_fields() {
 									$classes[] = 'pewc-field-triggers-condition';
 								}
 
+								if( pewc_reset_hidden_fields( $post_id ) == 'yes' ) {
+									$attributes['data-default-value'] = pewc_get_default_value( $id, $item, $_POST );
+								} else {
+									$attributes['data-default-value'] = '';
+								}
+
 								if( pewc_is_pro() ) {
 
 									if( ! empty( $item['field_percentage'] ) && ! empty( $item['field_price'] ) ) {
@@ -475,98 +498,15 @@ function pewc_product_extra_fields() {
 								}
 
 								$attributes = apply_filters( 'pewc_filter_item_attributes', $attributes, $item );
-								$attribute_string = '';
-								foreach( $attributes as $attribute=>$attribute_value ) {
-									$attribute_string .= " " . $attribute . "='" . $attribute_value . "'";
-								}
 
-								$group_inner_tag = 'li';
-								$cell_tag = 'div';
-								$open_td = '';
-								$close_td = '';
-								if( $group_layout == 'table' ) {
-									$group_inner_tag = 'tr';
-									$cell_tag = 'td';
-									$open_td = '<td>';
-									$close_td = '</td>';
-								}	?>
+								do_action( 'pewc_before_group_inner_tag_open', $item );
 
-								<<?php echo $group_inner_tag; ?> class="pewc-group pewc-item <?php echo join( ' ', $classes ); ?>" <?php echo $attribute_string; ?>>
+								// Print the field
+								pewc_field( $item['field_id'], $item, $product, $id, $post_id, $classes, $attributes, $group_layout, $field_price, $value, $cart_item );
 
-									<?php // Check for an image
-									if( $field_image ) {
+								$count_fields++;
 
-										$full_size_image_url = pewc_get_field_image_url( $item, 'full' );
-
-										// Don't display the image if we're using it to replace the main image
-										if( pewc_get_add_on_image_action() == 'replace_hide' ) {
-
-											printf(
-												'<span data-image-full-size="%s" class="pewc-item-field-image-wrapper" style="display: none;"></span>',
-												$full_size_image_url[0]
-											);
-
-										} else {
-
-											printf(
-												'<%s data-image-full-size="%s" class="pewc-item-field-image-wrapper">%s</%s>',
-												$cell_tag,
-												$full_size_image_url[0],
-												$field_image,
-												$cell_tag
-											);
-
-										}
-
-									} else if( ! $field_image && $group_layout == 'table' ) {
-
-										// Include an empty td to ensure table columns are equal
-										echo '<td></td>';
-
-									}
-
-									if( $group_layout == 'ul' ) {
-										echo '<' . $cell_tag . ' class="pewc-item-field-wrapper">';
-									}
-
-										// Include the field template
-										$file = str_replace( '_', '-', $item['field_type'] ) . '.php';
-
-										if( $file ) {
-
-											if( $file == 'radio-image.php') $file = 'image-swatch.php';
-
-											/**
-											 * @hooked pewc_before_frontend_template
-											 */
-											do_action( 'pewc_before_include_frontend_template', $item, $id, $group_layout, $file );
-
-											$path = pewc_include_frontend_template( $file );
-											if( $path ) {
-												include( $path );
-											}
-
-											/**
-											 * @hooked pewc_after_frontend_template	10
-											 */
-											do_action( 'pewc_after_include_frontend_template', $item, $id, $group_layout, $file );
-
-										}
-
-										/**
-										 * @hooked pewc_field_description_list_layout
-										 */
-										do_action( 'pewc_after_field_template', $item, $id, $group_layout );
-
-										$count_fields++;
-
-										if( $group_layout == 'ul' ) {
-											echo '</' . $cell_tag . '>';
-										} ?>
-
-								</<?php echo $group_inner_tag; ?>><!-- .pewc-item -->
-
-							<?php }
+							}
 
 						}
 
@@ -583,6 +523,8 @@ function pewc_product_extra_fields() {
 				echo '</div><!-- .pewc-group-content-wrapper -->';
 
 			echo '</div><!-- .pewc-product-extra-group-wrap -->';
+
+			$group_index++;
 
 		}
 
@@ -602,6 +544,127 @@ function pewc_product_extra_fields() {
 }
 add_action( 'woocommerce_before_add_to_cart_button', 'pewc_product_extra_fields' );
 // add_action( 'woocommerce_before_single_variation', 'pewc_product_extra_fields' );
+
+/**
+ * Prints the mark up for each field
+ * @param $field_id				String	The field ID (e.g. 5678)
+ * @param $item						Array		The field settings
+ * @param $product				Object	The product object
+ * @param $id							String	The field ID (including group ID e.g. pewc_group_1234_5678)
+ * @param $post_id				Int			The post ID
+ * @param $classes				Arrray	The field wrapper classes
+ * @param $attributes			Array		The field wrapper data attributes
+ * @param $group_layout		String	The group layout setting, e.g. 'table'
+ * @param $field_price		Int			The field price
+
+ * @since 3.9.2
+ */
+function pewc_field( $field_id=false, $item=array(), $product=false, $id=false, $post_id=false, $classes=array(), $attributes=array(), $group_layout='ul', $field_price=false, $value=false, $cart_item=false ) {
+
+	// Get our field settings using just the field ID
+	if( empty( $item ) && $field_id ) {
+		$item = pewc_create_item_object( $field_id );
+	}
+
+	// Get the field price if we don't already have it
+	if( ! $field_price ) {
+		$field_price = pewc_get_field_price( $item, $product );
+	}
+
+	$group_inner_tag = 'li';
+	$cell_tag = 'div';
+	$open_td = '';
+	$close_td = '';
+	if( $group_layout == 'table' ) {
+		$group_inner_tag = 'tr';
+		$cell_tag = 'td';
+		$open_td = '<td>';
+		$close_td = '</td>';
+	}
+
+	$attribute_string = '';
+	foreach( $attributes as $attribute=>$attribute_value ) {
+		$attribute_string .= " " . $attribute . "='" . esc_attr( $attribute_value ) . "'";
+	} ?>
+
+	<<?php echo $group_inner_tag; ?> class="pewc-item pewc-group <?php echo join( ' ', $classes ); ?>" <?php echo $attribute_string; ?>>
+
+		<?php // Check for an image
+		$field_image = pewc_get_field_image( $item, $id );
+		if( $field_image ) {
+
+			$full_size_image_url = pewc_get_field_image_url( $item, 'full' );
+
+			// Don't display the image if we're using it to replace the main image
+			if( pewc_get_add_on_image_action() == 'replace_hide' ) {
+
+				printf(
+					'<span data-image-full-size="%s" data-large_image_width="%s" data-large_image_height="%s" class="pewc-item-field-image-wrapper" style="display: none;"></span>',
+					$full_size_image_url[0],
+					$full_size_image_url[1],
+					$full_size_image_url[2]
+				);
+			} else {
+
+				printf(
+					'<%s data-image-full-size="%s" class="pewc-item-field-image-wrapper">%s</%s>',
+					$cell_tag,
+					$full_size_image_url[0],
+					$field_image,
+					$cell_tag
+				);
+
+			}
+
+		} else if( ! $field_image && $group_layout == 'table' ) {
+
+			// Include an empty td to ensure table columns are equal
+			echo '<td></td>';
+
+		}
+
+		if( $group_layout == 'ul' ) {
+			echo '<' . $cell_tag . ' class="pewc-item-field-wrapper">';
+		}
+
+			// Include the field template
+			$file = str_replace( '_', '-', $item['field_type'] ) . '.php';
+
+			if( $file ) {
+
+				if( $file == 'radio-image.php') $file = 'image-swatch.php';
+
+				/**
+				 * @hooked pewc_before_frontend_template
+				 */
+				do_action( 'pewc_before_include_frontend_template', $item, $id, $group_layout, $file );
+
+				$path = pewc_include_frontend_template( $file );
+				if( $path ) {
+					include( $path );
+				}
+
+				/**
+				 * @hooked pewc_after_frontend_template	10
+				 */
+				do_action( 'pewc_after_include_frontend_template', $item, $id, $group_layout, $file );
+
+			}
+
+			/**
+			 * @hooked pewc_field_description_list_layout
+			 */
+			do_action( 'pewc_after_field_template', $item, $id, $group_layout );
+
+			if( $group_layout == 'ul' ) {
+				echo '</' . $cell_tag . '>';
+			}
+
+			do_action( 'pewc_before_group_inner_tag_close', $item ); ?>
+
+	</<?php echo $group_inner_tag; ?>><!-- .pewc-item -->
+
+<?php }
 
 /**
  * Return the claasses for the groups wrapper
@@ -638,7 +701,7 @@ function pewc_get_groups_wrapper_classes( $product_extra_groups, $post_id, $disp
  * Return the attributes for the group wrapper
  * @since 3.8.0
  */
-function pewc_get_group_attributes( $conditions, $group_id, $group ) {
+function pewc_get_group_attributes( $conditions, $group_id, $group, $group_index ) {
 
 	$attribute_string = "";
 
@@ -652,6 +715,7 @@ function pewc_get_group_attributes( $conditions, $group_id, $group ) {
 
 	$attributes = array(
 		'data-group-id'						=> $group_id,
+		'data-group-index'				=> $group_index,
 		'data-condition-action'		=> $action,
 		'data-condition-match'		=> $match,
 		'data-conditions'					=> json_encode( $conditions )
@@ -675,6 +739,11 @@ function pewc_hidden_fields_product_page( $post_id, $product, $summary_panel ) {
 	if( $product->is_type( 'variable' ) ) {
 		$default_price = 0;
 	} else {
+		if( function_exists( 'wcfad_get_regular_price' ) ) {
+			// Ensure these filters are running for F+D
+			add_filter( 'woocommerce_product_get_price', 'wcfad_get_regular_price', 10, 2 );
+			add_filter( 'woocommerce_product_variation_get_price', 'wcfad_get_regular_price', 10, 2 );
+		}
 		$default_price = $product->get_price();
 	}
 
@@ -809,6 +878,10 @@ function pewc_get_field_classes( $item, $id, $post_id, $product, $count_fields, 
 		$classes[] = 'pewc-percentage';
 	}
 
+	if( ! pewc_display_option_prices_product_page( $item ) ) {
+		$classes[] = 'pewc-hide-option-price';
+	}
+
 	$hidden_calculation = ! empty( $item['hidden_calculation'] );
 	if( $hidden_calculation && $item['field_type'] == 'calculation' ) {
 		$classes[] = 'pewc-hidden-calculation';
@@ -910,16 +983,12 @@ function pewc_field_label( $item, $id, $group_layout='ul' ) {
 		$label .= '<span class="required"> &#42;</span>';
 
 		// Get the price
-		if( ! empty( $item['field_price'] ) && $item['field_type'] != 'name_price' && $item['field_type'] != 'products' ) {
+		if( ! empty( $item['field_price'] ) && $item['field_type'] != 'name_price' && $item['field_type'] != 'products' && ( ! isset( $item['price_visibility'] ) || $item['price_visibility'] == 'visible' ) ) {
 
 			$field_price = pewc_get_field_price( $item, $product );
 
 			// Check if it's a percentage
 			$price = apply_filters( 'pewc_filter_display_price_for_percentages', $field_price, $product, $item );
-
-			// Get display price according to inc tax / ex tax setting
-
-			// $price = pewc_maybe_include_tax( $product, $price );
 
 			// Format the price
 			$formatted_price = apply_filters(
@@ -1251,3 +1320,33 @@ function pewc_add_tax_suffix_options( $name, $item, $product, $price=false ) {
 }
 add_filter( 'pewc_option_name', 'pewc_add_tax_suffix_options', 10, 3 );
 add_filter( 'pewc_field_formatted_price', 'pewc_add_tax_suffix_options', 10, 4 );
+
+/**
+ * Check whether to display option prices on the product page
+ * @since 3.9.0
+ */
+function pewc_display_option_prices_product_page( $item ) {
+
+	$display = true;
+	if( isset( $item['option_price_visibility'] ) && $item['option_price_visibility'] != 'visible' ) {
+		$display = false;
+	}
+
+	return apply_filters( 'pewc_show_option_prices', $display, $item );
+
+}
+
+/**
+ * Check whether to display add-on field prices on the product page
+ * @since 3.9.0
+ */
+function pewc_display_field_prices_product_page( $item ) {
+
+	$display = true;
+	if( isset( $item['price_visibility'] ) && $item['price_visibility'] != 'visible' ) {
+		$display = false;
+	}
+
+	return apply_filters( 'pewc_show_field_prices', $display, $item );
+
+}

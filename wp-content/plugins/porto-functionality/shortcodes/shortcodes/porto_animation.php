@@ -14,6 +14,7 @@ function porto_load_animation_shortcode() {
 			'name'            => 'Porto ' . __( 'Animation', 'porto-functionality' ),
 			'base'            => 'porto_animation',
 			'category'        => __( 'Porto', 'porto-functionality' ),
+			'description'     => __( 'Give your any elements animations including fadeInUp, fadeInDown, fadeInLeft and so on', 'porto-functionality' ),
 			'icon'            => 'fas fa-asterisk',
 			'as_parent'       => array( 'except' => 'porto_animation' ),
 			'content_element' => true,

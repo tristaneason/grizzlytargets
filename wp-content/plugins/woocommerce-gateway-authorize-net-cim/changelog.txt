@@ -1,5 +1,12 @@
 *** WooCommerce Authorize.Net Gateway Changelog ***
 
+2021.07.15 - version 3.6.2
+ * Fix - Ensure stored payment methods are removed from customer account when a customer profile is removed from Authorize.Net CIM
+
+2021.06.23 - version 3.6.1
+ * Tweak - Add the zip code and full name optional fields to card payment requests
+ * Fix - Address potential payment form JavaScript errors when customer reaches checkout with a $0 order
+
 2021.04.06 - version 3.6.0
  * Tweak - Remove Authorize.Net Emulation gateway support
 

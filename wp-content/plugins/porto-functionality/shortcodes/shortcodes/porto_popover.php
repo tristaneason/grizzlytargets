@@ -11,11 +11,12 @@ function porto_load_popover_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => 'Porto ' . __( 'Popover', 'porto-functionality' ),
-			'base'     => 'porto_popover',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'porto-sc Simple-Line-Icons-share-alt',
-			'params'   => array(
+			'name'        => 'Porto ' . __( 'Popover', 'porto-functionality' ),
+			'base'        => 'porto_popover',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'Display the popover for particular purpose', 'porto-functionality' ),
+			'icon'        => 'porto-sc Simple-Line-Icons-share-alt',
+			'params'      => array(
 				array(
 					'type'       => 'textfield',
 					'heading'    => __( 'Prefix', 'porto-functionality' ),

@@ -23,8 +23,7 @@
 
 defined( 'ABSPATH' ) or exit;
 
-use SkyVerge\WooCommerce\PluginFramework\v5_10_4 as Framework;
-
+use SkyVerge\WooCommerce\PluginFramework\v5_10_8 as Framework;
 
 /**
  * WooCommerce Authorize.Net Gateway main plugin class.
@@ -37,7 +36,7 @@ class WC_Authorize_Net_CIM extends Framework\SV_WC_Payment_Gateway_Plugin {
 
 
 	/** string version number */
-	const VERSION = '3.6.0';
+	const VERSION = '3.6.2';
 
 
 	/** @var \WC_Authorize_Net_CIM_Webhooks the webhooks handler */
@@ -159,35 +158,35 @@ class WC_Authorize_Net_CIM extends Framework\SV_WC_Payment_Gateway_Plugin {
 	 */
 	public function includes() {
 
-		require_once( $this->get_plugin_path() . '/includes/Payment_Form.php' );
+		require_once( $this->get_plugin_path() . '/src/Payment_Form.php' );
 
-		require_once( $this->get_plugin_path() . '/includes/Handlers/Capture.php' );
-		require_once( $this->get_plugin_path() . '/includes/Handlers/Hosted_Payment_Handler.php' );
+		require_once( $this->get_plugin_path() . '/src/Handlers/Capture.php' );
+		require_once( $this->get_plugin_path() . '/src/Handlers/Hosted_Payment_Handler.php' );
 
-		require_once( $this->get_plugin_path() . '/includes/api/Hosted/Abstract_Payment_Response.php' );
-		require_once( $this->get_plugin_path() . '/includes/api/Hosted/eCheck_Payment_Response.php' );
+		require_once( $this->get_plugin_path() . '/src/api/Hosted/Abstract_Payment_Response.php' );
+		require_once( $this->get_plugin_path() . '/src/api/Hosted/eCheck_Payment_Response.php' );
 
 		// gateway classes
-		require_once( $this->get_plugin_path() . '/includes/class-wc-gateway-authorize-net-cim.php' );
-		require_once( $this->get_plugin_path() . '/includes/class-wc-gateway-authorize-net-cim-credit-card.php' );
-		require_once( $this->get_plugin_path() . '/includes/class-wc-gateway-authorize-net-cim-echeck.php' );
+		require_once( $this->get_plugin_path() . '/src/class-wc-gateway-authorize-net-cim.php' );
+		require_once( $this->get_plugin_path() . '/src/class-wc-gateway-authorize-net-cim-credit-card.php' );
+		require_once( $this->get_plugin_path() . '/src/class-wc-gateway-authorize-net-cim-echeck.php' );
 
 		// profile classes
-		require_once( $this->get_plugin_path() . '/includes/class-wc-authorize-net-cim-payment-profile.php' );
-		require_once( $this->get_plugin_path() . '/includes/class-wc-authorize-net-cim-payment-profile-handler.php' );
-		require_once( $this->get_plugin_path() . '/includes/class-wc-authorize-net-cim-shipping-address.php' );
+		require_once( $this->get_plugin_path() . '/src/class-wc-authorize-net-cim-payment-profile.php' );
+		require_once( $this->get_plugin_path() . '/src/class-wc-authorize-net-cim-payment-profile-handler.php' );
+		require_once( $this->get_plugin_path() . '/src/class-wc-authorize-net-cim-shipping-address.php' );
 
-		require_once( $this->get_plugin_path() . '/includes/webhooks/class-wc-authorize-net-cim-webhooks.php' );
-		require_once( $this->get_plugin_path() . '/includes/webhooks/abstract-wc-authorize-net-cim-webhook.php' );
-		require_once( $this->get_plugin_path() . '/includes/webhooks/abstract-wc-authorize-net-cim-customer-webhook.php' );
-		require_once( $this->get_plugin_path() . '/includes/webhooks/class-wc-authorize-net-cim-customer-profile-webhook.php' );
-		require_once( $this->get_plugin_path() . '/includes/webhooks/class-wc-authorize-net-cim-customer-payment-profile-webhook.php' );
+		require_once( $this->get_plugin_path() . '/src/webhooks/class-wc-authorize-net-cim-webhooks.php' );
+		require_once( $this->get_plugin_path() . '/src/webhooks/abstract-wc-authorize-net-cim-webhook.php' );
+		require_once( $this->get_plugin_path() . '/src/webhooks/abstract-wc-authorize-net-cim-customer-webhook.php' );
+		require_once( $this->get_plugin_path() . '/src/webhooks/class-wc-authorize-net-cim-customer-profile-webhook.php' );
+		require_once( $this->get_plugin_path() . '/src/webhooks/class-wc-authorize-net-cim-customer-payment-profile-webhook.php' );
 
 		$this->webhooks = new WC_Authorize_Net_CIM_Webhooks( $this );
 
 		if ( is_admin() ) {
 
-			require_once( $this->get_plugin_path() . '/includes/class-wc-authorize-net-cim-payment-profile-editor.php' );
+			require_once( $this->get_plugin_path() . '/src/class-wc-authorize-net-cim-payment-profile-editor.php' );
 
 		// require checkout billing fields for non-US stores, as all European card processors require the billing fields
 		// in order to successfully process transactions
@@ -670,7 +669,7 @@ class WC_Authorize_Net_CIM extends Framework\SV_WC_Payment_Gateway_Plugin {
 	 */
 	protected function get_my_payment_methods_instance() {
 
-		require_once( $this->get_plugin_path() . '/includes/My_Payment_Methods.php' );
+		require_once( $this->get_plugin_path() . '/src/My_Payment_Methods.php' );
 
 		return new \SkyVerge\WooCommerce\Authorize_Net\My_Payment_Methods( $this );
 	}
@@ -685,8 +684,8 @@ class WC_Authorize_Net_CIM extends Framework\SV_WC_Payment_Gateway_Plugin {
 	 */
 	protected function build_apple_pay_instance() {
 
-		require_once( $this->get_plugin_path() . '/includes/Apple_Pay.php' );
-		require_once( $this->get_plugin_path() . '/includes/Apple_Pay/Frontend.php' );
+		require_once( $this->get_plugin_path() . '/src/Apple_Pay.php' );
+		require_once( $this->get_plugin_path() . '/src/Apple_Pay/Frontend.php' );
 
 		return new \SkyVerge\WooCommerce\Authorize_Net\Apple_Pay( $this );
 	}
@@ -700,7 +699,7 @@ class WC_Authorize_Net_CIM extends Framework\SV_WC_Payment_Gateway_Plugin {
 	protected function init_rest_api_handler() {
 
 		require_once( $this->get_payment_gateway_framework_path() . '/rest-api/class-sv-wc-payment-gateway-plugin-rest-api.php' );
-		require_once( $this->get_plugin_path() . '/includes/Handlers/REST_API.php' );
+		require_once( $this->get_plugin_path() . '/src/Handlers/REST_API.php' );
 
 		$this->rest_api_handler = new SkyVerge\WooCommerce\Authorize_Net\Handlers\REST_API( $this );
 	}
@@ -802,7 +801,7 @@ class WC_Authorize_Net_CIM extends Framework\SV_WC_Payment_Gateway_Plugin {
 
 	protected function init_lifecycle_handler() {
 
-		require_once( $this->get_plugin_path() . '/includes/Lifecycle.php' );
+		require_once( $this->get_plugin_path() . '/src/Lifecycle.php' );
 
 		$this->lifecycle_handler = new \SkyVerge\WooCommerce\Authorize_Net\CIM\Lifecycle( $this );
 	}

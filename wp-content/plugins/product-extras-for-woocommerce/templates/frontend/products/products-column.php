@@ -77,8 +77,8 @@ if( ! empty( $item['products_quantities'] ) ) {
 
 				$variant_wrapper = sprintf(
 					'<select name="%s" id="%s" class="pewc-variable-child-select" data-product_variations="%s">',
-					'pewc_child_variants_' . $child_product_id,
-					'pewc_child_variants_' . $child_product_id,
+					'pewc_child_variants_' . esc_attr( $id ) . '_' . $child_product_id,
+					'pewc_child_variants_' . esc_attr( $id ) . '_' . $child_product_id,
 					htmlspecialchars( wp_json_encode( $available_variations ) )
 				);
 				foreach( $variants as $variant_id ) {
@@ -164,7 +164,7 @@ if( ! empty( $item['products_quantities'] ) ) {
 			'<h4 class="pewc-radio-image-desc"><a href="%s" target="%s">%s</a></h4>',
 			get_permalink( $child_product_id ),
 			apply_filters( 'pewc_child_product_title_target', '_blank' ),
-			get_the_title( $child_product_id )
+			apply_filters( 'pewc_child_product_title', get_the_title( $child_product_id ), $child_product)
 		);
 
 		$price = sprintf(
@@ -186,10 +186,12 @@ if( ! empty( $item['products_quantities'] ) ) {
 		$quantity_field_value = 0;
 
 		// Look for child quantity when we're editing a product
-		if( ! empty( $cart_item['product_extras']['products']['child_products'][$child_product_id]['quantity'] ) ) {
+		//if( ! empty( $cart_item['product_extras']['products']['child_products'][$child_product_id]['quantities'] ) ) {
 			// If we're editing a product, this sets the quantity
-			$quantity_field_value = $cart_item['product_extras']['products']['child_products'][$child_product_id]['quantity'];
-		}
+			//$quantity_field_value = $cart_item['product_extras']['products']['child_products'][$child_product_id]['quantities'];
+		//}
+		if ( ! empty($quantity_field_values[$child_product_id]) )
+			$quantity_field_value = $quantity_field_values[$child_product_id];
 		$quantity_field_value = apply_filters( 'pewc_child_product_independent_quantity', $quantity_field_value, $child_product_id, $item );
 
 		if( $products_quantities == 'independent' ) {
@@ -227,9 +229,9 @@ if( ! empty( $item['products_quantities'] ) ) {
 			esc_attr( $checked ),
 			esc_attr( $disabled ),
 	    $image,
-			$name,
+			apply_filters( 'pewc_child_product_name', $name, $item, $available_stock, $child_product ),
 			$price,
-			$excerpt,
+			apply_filters( 'pewc_child_product_excerpt', $excerpt, $item, $available_stock, $child_product ),
 			$variant_wrapper,
 			$description,
 			$add_button

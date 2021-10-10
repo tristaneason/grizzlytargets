@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
 	</div>
 	<table class="form-table wt-iew-form-table">
 		<tr>
-			<th><label><?php _e('What do you want to import'); ?></label></th>
+			<th><label><?php _e('Select a post type to import'); ?></label></th>
 			<td>
 				<select name="wt_iew_import_post_type">
 					<option value="">-- <?php _e('Select post type'); ?> --</option>

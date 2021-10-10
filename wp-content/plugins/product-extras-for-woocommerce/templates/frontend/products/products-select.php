@@ -37,18 +37,11 @@ if( ! empty( $item['products_quantities'] ) ) {
 			$child_price = pewc_maybe_include_tax( $child_product, $child_product->get_price() );
 
 			if( ! empty( $item['child_discount'] ) && ! empty( $item['discount_type'] ) ) {
-
-				$price = pewc_get_discounted_child_price( $child_price, $item['child_discount'], $item['discount_type'] );
-				// $price = wc_format_sale_price( $child_price, $discounted_price );
-				$option_cost = $price;
-
+				$discounted_price = pewc_get_discounted_child_price( $child_price, $item['child_discount'], $item['discount_type'] );
+				$option_cost = $discounted_price;
 			} else {
-
-				$price = $child_product->get_price();
-				$option_cost = $price;
-
+				$option_cost = $child_price;
 			}
-			// $price = wc_price( $price );
 
 			$disabled = '';
 			if( ! $child_product->is_purchasable() || ( ! $child_product->is_in_stock() && ! $child_product->backorders_allowed() ) ) {
@@ -62,13 +55,12 @@ if( ! empty( $item['products_quantities'] ) ) {
 			}
 
 			$selected = ( $value == $child_product_id || ( is_array( $value ) && in_array( $child_product_id, $value ) ) ) ? 'selected' : '';
-			// $price = pewc_get_semi_formatted_price( $child_product );
 
-			$name = get_the_title( $child_product_id );
+			$name = apply_filters( 'pewc_child_product_title', get_the_title( $child_product_id ), $child_product);
 
 			// Include prices in option labels
-			if( apply_filters( 'pewc_show_option_prices', true, $item ) ) {
-				$name .= apply_filters( 'pewc_option_price_separator', '+', $item ) . pewc_get_semi_formatted_raw_price( $child_price );
+			if( pewc_display_option_prices_product_page( $item ) ) {
+				$name .= apply_filters( 'pewc_option_price_separator', '+', $item ) . pewc_get_semi_formatted_raw_price( $option_cost );
 			}
 
 			// $option_cost = pewc_maybe_include_tax( $child_product, $child_product->get_price() );

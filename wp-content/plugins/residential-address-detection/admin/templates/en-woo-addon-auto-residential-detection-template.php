@@ -74,7 +74,7 @@ if (!class_exists("EnWooAddonAutoResidDetectionTemplate")) {
                 if ($en_always_rad_need_disabled) {
                     $this->settings[$this->reset_always_auto_residential]['desc'] = "<span class='en_need_suspended_rad_content'>Residential address settings are being managed under the RAD (Residential Address Detection) page, which you can access in this plugin's navigation above. To use this setting, you must first deactivate or suspend the Residential Address Detection plugin</span>";
                 } else if ($en_need_suspended_rad) {
-                    $this->settings[$this->reset_always_auto_residential]['desc'] = "";
+//                    $this->settings[$this->reset_always_auto_residential]['desc'] = "";
                     $this->settings[$this->reset_always_auto_residential]['class'] .= " en_woo_addons_always_include_residential_fee en_need_suspended_rad";
                 } else {
                     $this->settings[$this->reset_always_auto_residential]['class'] .= " en_woo_addons_always_include_residential_fee";

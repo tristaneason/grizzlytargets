@@ -22,7 +22,7 @@ if (!function_exists('unishippers_freight_dropship')) {
     function unishippers_freight_dropship($loop, $variation_data = array(), $variation = array())
     {
         global $wpdb;
-        $dropship_list = $wpdb->get_results("SELECT id, city, state, zip, country, location, nickname FROM " . $wpdb->prefix . "warehouse WHERE location = 'dropship'");
+        $dropship_list = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "warehouse WHERE location = 'dropship'");
         if (!empty($dropship_list)) {
 
             (isset($variation->ID) && $variation->ID > 0) ? $variationID = $variation->ID : $variationID = get_the_ID();

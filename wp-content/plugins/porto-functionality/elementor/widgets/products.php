@@ -20,15 +20,19 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Products', 'porto-functionality' );
+		return __( 'Porto Products', 'porto-functionality' );
 	}
 
 	public function get_categories() {
-		return array( 'theme-elements' );
+		return array( 'porto-elements' );
 	}
 
 	public function get_keywords() {
 		return array( 'products', 'shop', 'woocommerce' );
+	}
+
+	public function get_icon() {
+		return 'eicon-products';
 	}
 
 	public function get_script_depends() {
@@ -80,9 +84,10 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 				'type'    => Controls_Manager::SELECT,
 				'default' => '',
 				'options' => array(
-					''         => __( 'All', 'porto-functionality' ),
-					'featured' => __( 'Featured', 'porto-functionality' ),
-					'on_sale'  => __( 'On Sale', 'porto-functionality' ),
+					''          => __( 'All', 'porto-functionality' ),
+					'featured'  => __( 'Featured', 'porto-functionality' ),
+					'on_sale'   => __( 'On Sale', 'porto-functionality' ),
+					'pre_order' => __( 'Pre-Order', 'porto-functionality' ),
 				),
 			)
 		);
@@ -90,18 +95,24 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'category',
 			array(
-				'type'        => Controls_Manager::TEXT,
+				'type'        => 'porto_ajaxselect2',
 				'label'       => __( 'Category IDs or slugs', 'porto-functionality' ),
 				'description' => __( 'comma separated list of category ids or slugs', 'porto-functionality' ),
+				'multiple'    => 'true',
+				'options'     => 'product_cat',
+				'label_block' => true,
 			)
 		);
 
 		$this->add_control(
 			'ids',
 			array(
-				'type'        => Controls_Manager::TEXT,
+				'type'        => 'porto_ajaxselect2',
 				'label'       => __( 'Product IDs', 'porto-functionality' ),
 				'description' => __( 'comma separated list of product ids', 'porto-functionality' ),
+				'multiple'    => 'true',
+				'options'     => 'product',
+				'label_block' => true,
 			)
 		);
 
@@ -155,7 +166,12 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 			if ( empty( $a_name ) ) {
 				continue;
 			}
-			$terms = get_terms( wc_attribute_taxonomy_name( $a_name ), array( 'hide_empty' => false ) );
+			$terms = get_terms(
+				array(
+					'taxonomy'   => wc_attribute_taxonomy_name( $a_name ),
+					'hide_empty' => false,
+				)
+			);
 			$attrs = array();
 			if ( ! empty( $terms ) ) {
 				foreach ( $terms as $term ) {
@@ -312,16 +328,17 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'show_sort',
 			array(
-				'type'     => Controls_Manager::SELECT2,
-				'label'    => __( 'Show Sort by', 'porto-functionality' ),
-				'options'  => array(
+				'type'        => Controls_Manager::SELECT2,
+				'label'       => __( 'Show Sort by', 'porto-functionality' ),
+				'options'     => array(
 					'all'     => __( 'All', 'porto-functionality' ),
 					'popular' => __( 'Popular', 'porto-functionality' ),
 					'date'    => __( 'Date', 'porto-functionality' ),
 					'rating'  => __( 'Rating', 'porto-functionality' ),
 					'onsale'  => __( 'On Sale', 'porto-functionality' ),
 				),
-				'multiple' => true,
+				'multiple'    => true,
+				'label_block' => true,
 			)
 		);
 
@@ -329,7 +346,7 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 			'show_sales_title',
 			array(
 				'type'      => Controls_Manager::TEXT,
-				'label'     => __( 'Title for "Sort by Popular"', 'woocommerce' ),
+				'label'     => __( 'Title for "Sort by Popular"', 'porto-functionality' ),
 				'condition' => array(
 					'show_sort' => 'popular',
 				),
@@ -340,7 +357,7 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 			'show_new_title',
 			array(
 				'type'      => Controls_Manager::TEXT,
-				'label'     => __( 'Title for "Sort by Date"', 'woocommerce' ),
+				'label'     => __( 'Title for "Sort by Date"', 'porto-functionality' ),
 				'condition' => array(
 					'show_sort' => 'date',
 				),
@@ -351,7 +368,7 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 			'show_rating_title',
 			array(
 				'type'      => Controls_Manager::TEXT,
-				'label'     => __( 'Title for "Sort by Rating"', 'woocommerce' ),
+				'label'     => __( 'Title for "Sort by Rating"', 'porto-functionality' ),
 				'condition' => array(
 					'show_sort' => 'rating',
 				),
@@ -362,7 +379,7 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 			'show_onsale_title',
 			array(
 				'type'      => Controls_Manager::TEXT,
-				'label'     => __( 'Title for "On Sale"', 'woocommerce' ),
+				'label'     => __( 'Title for "On Sale"', 'porto-functionality' ),
 				'condition' => array(
 					'show_sort' => 'onsale',
 				),
@@ -381,7 +398,7 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 			'filter_style',
 			array(
 				'type'        => Controls_Manager::SELECT,
-				'label'       => __( 'Filter Style', 'js_composer' ),
+				'label'       => __( 'Filter Style', 'porto-functionality' ),
 				'options'     => array(
 					''           => __( 'Vertical', 'porto-functionality' ),
 					'horizontal' => __( 'Horizontal', 'porto-functionality' ),
@@ -469,6 +486,12 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 		if ( $template = porto_shortcode_woo_template( 'porto_products' ) ) {
 			if ( empty( $atts['spacing'] ) ) {
 				$atts['spacing'] = '';
+			}
+			if ( ! empty( $atts['category'] ) && is_array( $atts['category'] ) ) {
+				$atts['category'] = implode( ',', $atts['category'] );
+			}
+			if ( ! empty( $atts['ids'] ) && is_array( $atts['ids'] ) ) {
+				$atts['ids'] = implode( ',', $atts['ids'] );
 			}
 			include $template;
 		}

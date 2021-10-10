@@ -609,6 +609,54 @@ if (!class_exists("EnWooAddonPluginDetail")) {
         }
 
         /**
+         * dayross_quotes_dependencies for eniture woo addons
+         * @return array
+         */
+        public function dayross_quotes_dependencies()
+        {
+
+            $dayross_quotes = array(
+                "dayross_quotes" => array(
+                    'addons' => array(
+                        'auto_residential_detection_addon' => array(
+                            'active' => true,
+                            'section' => 'section-1',
+                            'after_index_fields' => array(
+                                'dayross_show_delivery_estimate'
+                            ),
+                            'unset_fields' => array(),
+                            'reset_always_auto_residential' => array(
+                                'accessorial_residential_delivery_dayross',
+                            ),
+                        ),
+                        'lift_gate_delivery_addon' => array(
+                            'active' => true,
+                            'section' => 'section-1',
+                            'after_index_fields' => array(
+                                'en_default_unconfirmed_address_types_to'
+                            ),
+                            'unset_fields' => array(),
+                            'reset_always_lift_gate' => array(
+                                'accessorial_liftgate_delivery_dayross'
+                            ),
+                        ),
+                        'box_sizing_addon' => array(
+                            'active' => false,
+                            'section' => 'section-box',
+                            'after_index_fields' => array(),
+                            'unset_fields' => array(),
+                        )
+                    ),
+                    'license_key' => array(
+                        'wc_settings_dayross_plugin_licence_key'
+                    )
+                )
+            );
+
+            return $dayross_quotes;
+        }
+
+        /**
          * fedex_small_dependencies for eniture woo addons
          * @return array
          */

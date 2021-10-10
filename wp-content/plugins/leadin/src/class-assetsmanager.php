@@ -13,6 +13,7 @@ class AssetsManager {
 	const ADMIN_CSS     = 'leadin-css';
 	const BRIDGE_CSS    = 'leadin-bridge-css';
 	const ADMIN_JS      = 'leadin-js';
+	const MENU_JS       = 'menu-js';
 	const FEEDBACK_CSS  = 'leadin-feedback-css';
 	const FEEDBACK_JS   = 'leadin-feedback';
 	const TRACKING_CODE = 'leadin-script-loader-js';
@@ -27,6 +28,7 @@ class AssetsManager {
 	public static function register_assets() {
 		wp_register_style( self::ADMIN_CSS, LEADIN_PATH . '/assets/style/leadin.css', array(), LEADIN_PLUGIN_VERSION );
 		wp_register_script( self::ADMIN_JS, LEADIN_JS_BASE_PATH . '/leadin.js', array( 'jquery' ), LEADIN_PLUGIN_VERSION, true );
+		wp_register_script( self::MENU_JS, LEADIN_JS_BASE_PATH . '/menu.js', array( 'jquery' ), LEADIN_PLUGIN_VERSION, true );
 		wp_localize_script( self::ADMIN_JS, self::LEADIN_CONFIG, AdminConstants::get_leadin_config() );
 		wp_localize_script( self::ADMIN_JS, self::LEADIN_I18N, AdminConstants::get_leadin_i18n() );
 		wp_register_script( self::FEEDBACK_JS, LEADIN_JS_BASE_PATH . '/feedback.js', array( 'jquery', 'thickbox' ), LEADIN_PLUGIN_VERSION, true );
@@ -40,6 +42,7 @@ class AssetsManager {
 	 */
 	public static function enqueue_admin_assets() {
 		wp_enqueue_style( self::ADMIN_CSS );
+		wp_enqueue_script( self::MENU_JS );
 	}
 
 	/**

@@ -9,12 +9,13 @@ function porto_load_carousel_logo_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => __( 'Porto Carousel Logo', 'porto-functionality' ),
-			'base'     => 'porto_carousel_logo',
-			'class'    => 'porto_carousel_logo',
-			'icon'     => 'far fa-circle',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'params'   => array(
+			'name'        => __( 'Porto Carousel Logo', 'porto-functionality' ),
+			'base'        => 'porto_carousel_logo',
+			'class'       => 'porto_carousel_logo',
+			'icon'        => 'far fa-circle',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'Display your partners with a simple logo slider', 'porto-functionality' ),
+			'params'      => array(
 				array(
 					'type'       => 'attach_image',
 					'heading'    => __( 'Logo', 'porto-functionality' ),

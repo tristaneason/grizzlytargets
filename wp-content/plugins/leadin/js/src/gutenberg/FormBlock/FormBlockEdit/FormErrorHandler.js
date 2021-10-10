@@ -25,9 +25,13 @@ export default function FormErrorHandler({ status, resetErrorState }) {
           <b>{errorMessage}</b>
         </p>
         {isUnauthorized ? (
-          <UIButton onClick={redirectToPlugin}>{i18n.goToPlugin}</UIButton>
+          <UIButton data-test-id="authorize-button" onClick={redirectToPlugin}>
+            {i18n.goToPlugin}
+          </UIButton>
         ) : (
-          <UIButton onClick={resetErrorState}>{i18n.refreshForms}</UIButton>
+          <UIButton data-test-id="retry-button" onClick={resetErrorState}>
+            {i18n.refreshForms}
+          </UIButton>
         )}
       </UIContainer>
     </GutenbergWrapper>

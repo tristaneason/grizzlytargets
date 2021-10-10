@@ -189,7 +189,7 @@ if(!class_exists('Wt_Iew_Sh'))
 		*/
 		public static function check_role_access($plugin_id)
 		{
-			$roles = array('manage_options'); 
+			$roles = array('manage_options', 'shop_manager');
 	    	$roles = apply_filters('wt_'.$plugin_id.'_alter_role_access_basic', $roles); //dynamic filter based on plugin id to alter roles 
 	    	$roles = (!is_array($roles) ? array() : $roles);
 	    	$is_allowed = false;

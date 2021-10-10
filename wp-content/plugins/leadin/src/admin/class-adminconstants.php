@@ -2,7 +2,6 @@
 namespace Leadin\admin;
 
 use Leadin\LeadinFilters;
-use Leadin\admin\AdminFilters;
 use Leadin\admin\Links;
 use Leadin\admin\Routing;
 use Leadin\auth\OAuth;
@@ -13,11 +12,20 @@ use Leadin\wp\Website;
 use Leadin\options\AccountOptions;
 use Leadin\options\HubspotOptions;
 use Leadin\admin\Connection;
+use Leadin\admin\Impact;
 
 /**
  * Class containing all the constants used for admin script localization.
  */
 class AdminConstants {
+
+
+	/**
+	 * Development backdoor to enable the odyssey signup flow
+	 */
+	private static function is_odyssey_enabled() {
+		return ! empty( get_option( 'hsdev_odyssey_enabled' ) );
+	}
 
 	/**
 	 * Return utm_campaign to add to the signup link.
@@ -46,6 +54,13 @@ class AdminConstants {
 	}
 
 	/**
+	 * Return a nonce used on the connection class
+	 */
+	private static function get_connection_nonce() {
+		return wp_create_nonce( 'hubspot-nonce' );
+	}
+
+	/**
 	 * Return an array with the user's pre-fill info for signup
 	 */
 	private static function get_signup_prefill_params_array() {
@@ -70,15 +85,8 @@ class AdminConstants {
 		$signup_params['leadinPluginVersion']  = constant( 'LEADIN_PLUGIN_VERSION' );
 		$user_prefill_params                   = self::get_signup_prefill_params_array();
 		$signup_params                         = array_merge( $signup_params, $user_prefill_params );
-		$affiliate_code                        = AdminFilters::apply_affiliate_code();
-		if ( $affiliate_code ) {
-			$signup_params['affiliateCode'] = $affiliate_code;
-			return $signup_params;
-		}
-
-		$utm_params    = self::get_utm_query_params_array();
-		$signup_params = array_merge( $signup_params, $utm_params );
-		return $signup_params;
+		$utm_params                            = self::get_utm_query_params_array();
+		return array_merge( $signup_params, $utm_params );
 	}
 
 	/**
@@ -97,10 +105,10 @@ class AdminConstants {
 			'domain'       => parse_url( get_site_url(), PHP_URL_HOST ),
 			'wp_user'      => $wp_user->first_name ? $wp_user->first_name : $wp_user->user_nicename,
 			'ajaxUrl'      => Website::get_ajax_url(),
-			'nonce'        => wp_create_nonce( 'hubspot-nonce' ),
+			'nonce'        => self::get_connection_nonce(),
 			'accountName'  => AccountOptions::get_account_name(),
 			'portalDomain' => AccountOptions::get_portal_domain(),
-			'',
+			'hsdio'        => DeviceId::get(),
 		);
 
 		if ( User::is_admin() ) {
@@ -120,11 +128,17 @@ class AdminConstants {
 			if ( Routing::is_new_portal_with_oauth() ) {
 				$hubspot_config['isNewPortal'] = true;
 			}
-		} elseif ( ! Connection::is_connected() ) {
+		}
+
+		if ( ! Connection::is_connected() ) {
 			$hubspot_config['oauth'] = true;
 
+			if ( self::is_odyssey_enabled() ) {
+				$hubspot_config['enableOdyssey'] = true;
+			}
+
 			$signup_params  = self::get_signup_query_params_array();
-			$hubspot_config = array_merge( $hubspot_config, $signup_params );
+			$hubspot_config = array_merge( $hubspot_config, $signup_params, Impact::get_params() );
 		}
 
 		return $hubspot_config;
@@ -145,11 +159,13 @@ class AdminConstants {
 			'didDisconnect'         => true,
 			'formsScript'           => LeadinFilters::get_leadin_forms_script_url(),
 			'formsScriptPayload'    => LeadinFilters::get_leadin_forms_payload(),
+			'hublet'                => LeadinFilters::get_leadin_hublet(),
 			'hubspotBaseUrl'        => LeadinFilters::get_leadin_base_url(),
 			'leadinPluginVersion'   => constant( 'LEADIN_PLUGIN_VERSION' ),
 			'locale'                => get_locale(),
 			'ajaxNonce'             => wp_create_nonce( 'hubspot-ajax' ),
 			'restNonce'             => wp_create_nonce( 'wp_rest' ),
+			'hubspotNonce'          => self::get_connection_nonce(),
 			'redirectNonce'         => wp_create_nonce( Routing::REDIRECT_NONCE ),
 			'phpVersion'            => Versions::get_wp_version(),
 			'pluginPath'            => constant( 'LEADIN_PATH' ),
@@ -177,12 +193,24 @@ class AdminConstants {
 	 */
 	public static function get_leadin_config() {
 		$wp_user_id = get_current_user_id();
-		return \array_merge(
+
+		$leadin_config = \array_merge(
 			self::get_background_leadin_config(),
 			array(
 				'iframeUrl' => Links::get_iframe_src(),
 			)
 		);
+
+		if ( ! Connection::is_connected() ) {
+			if ( ! Impact::has_params() ) {
+				$impact_link = Impact::get_affiliate_link();
+				if ( ! empty( $impact_link ) ) {
+					$leadin_config['impactLink'] = Impact::get_affiliate_link();
+				}
+			}
+		}
+
+		return $leadin_config;
 	}
 	/**
 	 * Returns leadinI18n, containing all the translations needed on the frontend.
@@ -190,7 +218,6 @@ class AdminConstants {
 	public static function get_leadin_i18n() {
 		return array(
 			'chatflows'            => __( 'Live Chat', 'leadin' ),
-			'signIn'               => __( 'Sign In', 'leadin' ),
 			'selectExistingForm'   => __( 'Select an existing form', 'leadin' ),
 			'goToPlugin'           => __( 'Go to plugin', 'leadin' ),
 			'refreshForms'         => __( 'Refresh forms', 'leadin' ),

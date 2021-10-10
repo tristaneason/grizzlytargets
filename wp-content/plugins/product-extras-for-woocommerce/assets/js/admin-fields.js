@@ -370,6 +370,16 @@ jQuery( function( $ ) {
         			.find( '.pewc-field-type' )
         			.attr( 'id', 'field_type_' + group_id + '_' + new_item_id );
 
+            $( clone_item )
+              .find( '.pewc-field-price-visibility' )
+              .attr( 'name', '_product_extra_groups_' + group_id + '_' + new_item_id + '[price_visibility]' )
+              .attr( 'id', 'price_visibility_' + group_id + '_' + new_item_id );
+
+            $( clone_item )
+              .find( '.pewc-option-price-visibility' )
+              .attr( 'name', '_product_extra_groups_' + group_id + '_' + new_item_id + '[option_price_visibility]' )
+              .attr( 'id', 'option_price_visibility_' + group_id + '_' + new_item_id );
+
         		$( clone_item )
         			.find( '.pewc-option-fields' )
         			.attr( 'id', 'pewc_option_' + group_id + '_' + new_item_id );
@@ -1138,7 +1148,7 @@ jQuery( function( $ ) {
 
     update_field_names_object: function() {
 
-      if( $( 'body' ).hasClass( 'post-type-product' ) || $( 'body' ).hasClass( 'post-type-pewc_group' ) || $( 'body' ).hasClass( 'pewc_product_extra_page_global' ) ) {
+      if( $( 'body' ).hasClass( 'post-type-product' ) || $( 'body' ).hasClass( 'post-type-pewc_group' ) || $( 'body' ).hasClass( 'pewc_product_extra_page_global' ) || $( 'body' ).hasClass( 'product-add-ons_page_global' ) ) {
   			var all_fields = {};
   			$( 'body' ).find( '.field-item' ).not( '.new-field-item' ).find( '.pewc-field-label' ).each(function(){
   				var group_id = $( this ).closest( '.group-row' ).attr( 'data-group-id' );
@@ -1513,6 +1523,10 @@ jQuery( function( $ ) {
         is_number_field = true;
       }
 
+      if( pewc_obj.enable_numeric_options ) {
+        is_number_field = true;
+      }
+
   		$(field).find('option[value="is"]').attr('disabled', has_multiple);
   		$(field).find('option[value="is-not"]').attr('disabled', has_multiple);
   		$(field).find('option[value="contains"]').attr('disabled', ! has_multiple);
@@ -1520,8 +1534,8 @@ jQuery( function( $ ) {
   		$(field).find('option[value="cost-equals"]').attr('disabled', ! is_number_field );
   		$(field).find('option[value="cost-greater"]').attr('disabled', ! is_number_field );
   		$(field).find('option[value="cost-less"]').attr('disabled', ! is_number_field );
-      $(field).find('option[value="cost-greater-equals"]').attr('disabled', ! is_number_field );
-  		$(field).find('option[value="cost-less-equals"]').attr('disabled', ! is_number_field );
+      $(field).find('option[value="greater-than-equals"]').attr('disabled', ! is_number_field );
+  		$(field).find('option[value="less-than-equals"]').attr('disabled', ! is_number_field );
 
   		// Ensure an enabled option is selected
   		var current_val = $( field ).val();

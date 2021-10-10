@@ -74,10 +74,10 @@
   line-height: 1.3;
 }
 #hub-lists-form .hubwoo-fields-created .hubwoo_groups span {
-	padding-left: 40px;
+  padding-left: 40px;
 }
 #hub-lists-form .hubwoo-fields-created {
-	margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 .hubwoo_pop_up_wrap--content {
   max-width: 40%;
@@ -110,9 +110,6 @@ a {
   outline: none !important;
   box-shadow: none !important;
 }
-#wpwrap {
-  /*background: #091521;*/
-}
 .mwb-heb-wlcm, .mwb-heb-wlcm *, .mwb-heb-setup-wrapper, .mwb-heb-setup-wrapper *, .mwb-heb-dash-wrapper, .mwb-heb-dash-wrapper * {
   box-sizing: border-box;
 }
@@ -137,11 +134,11 @@ a {
   padding: 20px 15px;
 }
 .mwb-heb-welcome {
-	color: #181a25;
-	font-family: 'Nunito Sans', sans-serif;
-	padding: 0px 15px 70px;
-	width: 100%;
-	z-index: 1;
+  color: #181a25;
+  font-family: 'Nunito Sans', sans-serif;
+  padding: 0px 15px 70px;
+  width: 100%;
+  z-index: 1;
 }
 /*=====  End of Plugin Wrapper  ======*/
 
@@ -276,7 +273,7 @@ a {
 =            custom-css            =
 ======================================*/
 .hubwoo-field-checked img {
-	max-width: 30px;
+  max-width: 30px;
 }
 .list-progress-bar {
   margin-top: 20px;
@@ -290,10 +287,10 @@ a {
   text-align: center !important;
 }
 .mwb__accordian-heading-wrap .hubwoo-font-icon {
-	position: absolute;
-	left: 15px;
-	top: 52%;
-	transform: translateY(-50%);
+  position: absolute;
+  left: 15px;
+  top: 52%;
+  transform: translateY(-50%);
 }
 .hubwoo_tooltip_wrap, .hub-woo__checkmark {
   position: absolute;
@@ -447,18 +444,18 @@ a {
   margin-left: 20px;
 }
 .hubwoo-content__para--greeting {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: row-reverse;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row-reverse;
 }
 .hubwoo-content__para--greeting-img {
-	max-width: 80%;
-	flex: 0 0 80%;
+  max-width: 80%;
+  flex: 0 0 80%;
 }
 .hubwoo-content__para--greeting-content {
-	flex: 0 0 20%;
-	max-width: 20%;
+  flex: 0 0 20%;
+  max-width: 20%;
 }
 /*=====  End of custom-css  ======*/
 
@@ -470,29 +467,29 @@ a {
   border-bottom: 1px solid #eee;
 }
 .hubwoo-nav-tab {
-	background-color: #fff;
-	border-image: none;
-	border-bottom: 2px solid transparent !important;
-	color: #939393;
-	display: block;
-	font-size: 11px;
-	font-weight: bold;
-	letter-spacing: 1.2px;
-	line-height: 22px;
-	padding: 20px 15px;
-	text-decoration: none;
-	text-transform: uppercase;
-	text-align: center;
+  background-color: #fff;
+  border-image: none;
+  border-bottom: 2px solid transparent !important;
+  color: #939393;
+  display: block;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1.2px;
+  line-height: 22px;
+  padding: 20px 15px;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-align: center;
 }
 .hubwoo-nav-tab:hover {
-	color: #2d3e50;
+  color: #2d3e50;
 }
 .hubwoo-nav-tab:focus, .hubwoo-nav-tab:hover {
-	box-shadow: none;
+  box-shadow: none;
 }
 .hubwoo-navigator-template {
-	display: block;
-	flex: 0 0 20%;
+  display: block;
+  flex: 0 0 20%;
 }
 
 /*=====  End of nav-tab-css  ======*/
@@ -501,24 +498,24 @@ a {
 =            loader-css            =
 ======================================*/
 #hubwoo_loader.loading-style-bg img {
-	left: 0;
-	margin: 0 auto;
-	position: absolute;
-	right: 0;
-	top: 50%;
-	transform: translateY(-50%);
-	width: 100px;
+  left: 0;
+  margin: 0 auto;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100px;
 }
 #hubwoo_loader.loading-style-bg {
-	background-color: rgba(0, 0, 0, 0.65);
-	bottom: 0;
-	height: 100%;
-	left: 0;
-	position: fixed;
-	right: 0;
-	top: 0;
-	width: 100%;
-	z-index: 2147483647;
+  background-color: rgba(0, 0, 0, 0.65);
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 2147483647;
 }
 
 /*=====  End of loader-css  ======*/
@@ -554,33 +551,33 @@ a {
   video section and sidecontent to it
   *===================================*/
   .hubwoo-ow-intro {
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: column-reverse;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column-reverse;
   }
   .hubwoo-ow-doc, .hubwoo-ow-support {
-	flex: 0 0 100%;
-	padding: 10px;
+  flex: 0 0 100%;
+  padding: 10px;
   }
   .hubwoo-ow-support {
-	padding: 0;
+  padding: 0;
   }
   .hubwoo-ow-doc {
-	max-width: 470px;
-	margin: 15px auto 0;
-	width: 100%;
+  max-width: 470px;
+  margin: 15px auto 0;
+  width: 100%;
   }
   .hubwoo-ow-doc__video {
-	margin: 0 0 20px;
+  margin: 0 0 20px;
   }
   .hubwoo-ow-support h2 {
-	margin-top: 0;
+  margin-top: 0;
   }
   .hubwoo-ow-doc__btn {
-	text-align: center;
+  text-align: center;
   }
   .hubwoo-ow-doc {
-	padding-left: 0px;
+  padding-left: 0px;
   }
   .hubwoo-ow-support {
    padding-right: 0;
@@ -697,36 +694,35 @@ a {
 /*=====  End of connect-section  ======*/
 
 /*=======================================
-			  checkboxes
-		========================================*/
-		.hubwoo-general-settings .forminp-checkbox label,
-		#hubwoo-ocs-form .forminp-checkbox label,
-		.mwb-hub-custom-checkbox, .hubwoo-custom-chheckbox,
-		.hubwoo-connection-container .forminp-checkbox label {
-		  padding-left: 10px;
-		  position: relative;
-		}
-		.hubwoo-general-settings .forminp-checkbox label input[type="checkbox"],
-		#hubwoo-ocs-form .forminp-checkbox label input[type="checkbox"],
-		.mwb-hub-custom-checkbox  input[type="checkbox"],
-		.hubwoo-custom-chheckbox input[type="checkbox"],
-		.hubwoo-connection-container .forminp-checkbox label input[type="checkbox"] {
-		  margin: 0;
-		  padding: 0 !important;
-		  -moz-appearance: none;
-		  -webkit-appearance: none;
-		  -ms-appearance: none;
-		  -o-appearance: none;
-		  border: none;
-		  background-color: transparent;
-		  box-shadow: none;
-		}
+        checkboxes
+    ========================================*/
+    .hubwoo-general-settings .forminp-checkbox label,
+    #hubwoo-ocs-form .forminp-checkbox label,
+    .mwb-hub-custom-checkbox, .hubwoo-custom-chheckbox,
+    .hubwoo-connection-container .forminp-checkbox label {
+      padding-left: 10px;
+      position: relative;
+    }
+    .hubwoo-general-settings .forminp-checkbox label input[type="checkbox"],
+    #hubwoo-ocs-form .forminp-checkbox label input[type="checkbox"],
+    .mwb-hub-custom-checkbox  input[type="checkbox"],
+    .hubwoo-custom-chheckbox input[type="checkbox"],
+    .hubwoo-connection-container .forminp-checkbox label input[type="checkbox"] {
+      margin: 0;
+      padding: 0 !important;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      -ms-appearance: none;
+      -o-appearance: none;
+      border: none;
+      background-color: transparent;
+      box-shadow: none;
+    }
     .hubwoo-disconnect-form label {
       position: relative;
     }
     .hubwoo-disconnect-form input[type="checkbox"] {
       margin-right: 15px;
-      /*opacity: 0;*/
       -moz-appearance: none;
     -webkit-appearance: none;
     -ms-appearance: none;
@@ -735,69 +731,69 @@ a {
     background-color: transparent;
     box-shadow: none;
     }
-		.hubwoo-general-settings .forminp-checkbox label input[type="checkbox"]::after,
+    .hubwoo-general-settings .forminp-checkbox label input[type="checkbox"]::after,
     .hubwoo-disconnect-form input[type="checkbox"]::after,
-		#hubwoo-ocs-form .forminp-checkbox label input[type="checkbox"]::after,
-		.mwb-hub-custom-checkbox  input[type="checkbox"]::after,
-		.hubwoo-custom-chheckbox input[type="checkbox"]::after,
-		.hubwoo-connection-container .forminp-checkbox label input[type="checkbox"]::after {
-		  position: absolute;
-		  content: "";
-		  width: 16px;
-		  height: 16px;
-		  border: 2px solid #10AAC1;
-		  left: 0;
-		  border-radius: 3px;
-		}
-		.hubwoo-general-settings .forminp-checkbox label input[type="checkbox"]:checked::after,
+    #hubwoo-ocs-form .forminp-checkbox label input[type="checkbox"]::after,
+    .mwb-hub-custom-checkbox  input[type="checkbox"]::after,
+    .hubwoo-custom-chheckbox input[type="checkbox"]::after,
+    .hubwoo-connection-container .forminp-checkbox label input[type="checkbox"]::after {
+      position: absolute;
+      content: "";
+      width: 16px;
+      height: 16px;
+      border: 2px solid #10AAC1;
+      left: 0;
+      border-radius: 3px;
+    }
+    .hubwoo-general-settings .forminp-checkbox label input[type="checkbox"]:checked::after,
     .hubwoo-disconnect-form input[type="checkbox"]:checked::after,
-		#hubwoo-ocs-form .forminp-checkbox label input[type="checkbox"]:checked::after,
-		.mwb-hub-custom-checkbox  input[type="checkbox"]:checked::after,
-		.hubwoo-custom-chheckbox input[type="checkbox"]:checked::after,
-		.hubwoo-connection-container .forminp-checkbox label input[type="checkbox"]:checked::after {
-		  background-color: #10AAC1;
-		}
-		.hubwoo-general-settings .forminp-checkbox label input[type="checkbox"]::before,
+    #hubwoo-ocs-form .forminp-checkbox label input[type="checkbox"]:checked::after,
+    .mwb-hub-custom-checkbox  input[type="checkbox"]:checked::after,
+    .hubwoo-custom-chheckbox input[type="checkbox"]:checked::after,
+    .hubwoo-connection-container .forminp-checkbox label input[type="checkbox"]:checked::after {
+      background-color: #10AAC1;
+    }
+    .hubwoo-general-settings .forminp-checkbox label input[type="checkbox"]::before,
     .hubwoo-disconnect-form input[type="checkbox"]::before,
-		#hubwoo-ocs-form .forminp-checkbox label input[type="checkbox"]::before ,
-		.mwb-hub-custom-checkbox  input[type="checkbox"]::before,
-		.hubwoo-custom-chheckbox input[type="checkbox"]:before,
-		.hubwoo-connection-container .forminp-checkbox label input[type="checkbox"]::before {
-		  content: "\f147";
-		  display: block;
-		  position: absolute;
-		  left: -1px;
-		  top: 5px;
-		  margin: 0 auto;
-		  border-radius: 4px;
-		  bottom: 0;
-		  color: #fff;
-		  line-height: 17px;
-		  text-align: center;
-		  opacity: 0;
-		  visibility: hidden;
-		  transition: 0.2s linear all;
-		  transform: scale(0);
-		  font-family: dashicons;
-		  z-index: 1;
-		}
-		.hubwoo-general-settings .forminp-checkbox label input[type="checkbox"]:checked::before,
-		#hubwoo-ocs-form .forminp-checkbox label input[type="checkbox"]:checked::before,
-		.mwb-hub-custom-checkbox  input[type="checkbox"]:checked::before,
-		.hubwoo-custom-chheckbox input[type="checkbox"]:checked::before,
-		.hubwoo-connection-container .forminp-checkbox label input[type="checkbox"]:checked::before,
+    #hubwoo-ocs-form .forminp-checkbox label input[type="checkbox"]::before ,
+    .mwb-hub-custom-checkbox  input[type="checkbox"]::before,
+    .hubwoo-custom-chheckbox input[type="checkbox"]:before,
+    .hubwoo-connection-container .forminp-checkbox label input[type="checkbox"]::before {
+      content: "\f147";
+      display: block;
+      position: absolute;
+      left: -1px;
+      top: 5px;
+      margin: 0 auto;
+      border-radius: 4px;
+      bottom: 0;
+      color: #fff;
+      line-height: 17px;
+      text-align: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.2s linear all;
+      transform: scale(0);
+      font-family: dashicons;
+      z-index: 1;
+    }
+    .hubwoo-general-settings .forminp-checkbox label input[type="checkbox"]:checked::before,
+    #hubwoo-ocs-form .forminp-checkbox label input[type="checkbox"]:checked::before,
+    .mwb-hub-custom-checkbox  input[type="checkbox"]:checked::before,
+    .hubwoo-custom-chheckbox input[type="checkbox"]:checked::before,
+    .hubwoo-connection-container .forminp-checkbox label input[type="checkbox"]:checked::before,
     .hubwoo-disconnect-form input[type="checkbox"]:checked::before {
-		  opacity: 1;
-		  visibility: visible;
-		  transition: 0.2s linear all;
-		  transform: scale(1);
-		}
+      opacity: 1;
+      visibility: visible;
+      transition: 0.2s linear all;
+      transform: scale(1);
+    }
 
-		.hubwoo_listwork_img {
-		  max-width: 30px;
-		  vertical-align: middle;
-		}
-		/*====end======*/
+    .hubwoo_listwork_img {
+      max-width: 30px;
+      vertical-align: middle;
+    }
+    /*====end======*/
 
 /*=======================================
 =            connect-section            =
@@ -918,57 +914,57 @@ a {
   margin: 0 0 10px;
 }
 .hubwoo-full-wdth .hubwoo__btn {
-	margin: 0;
+  margin: 0;
 }
 .grLoader, .grSuccess, .grError, .grToCreate {
-	position: absolute;
-	max-width: 70px;
-	width: 100%;
-	top: 50%;
-	right: 9px;
-	transform: translateY(-50%);
-	text-align: center;
-	cursor: pointer;
+  position: absolute;
+  max-width: 70px;
+  width: 100%;
+  top: 50%;
+  right: 9px;
+  transform: translateY(-50%);
+  text-align: center;
+  cursor: pointer;
  font-weight: bold;
 }
 .mwb-woo__accordion-wrapper:hover {
-	background: #ececec;
+  background: #ececec;
 }
 .mwb-woo__custom-prop .mwb-woo__custom {
-	padding-bottom: 4px;
+  padding-bottom: 4px;
 }
 .mwb-woo__accordion-wrapper:hover .grLoader, .mwb-woo__accordion-wrapper:hover .grSuccess, .mwb-woo__accordion-wrapper:hover .grError, .mwb-woo__accordion-wrapper:hover .grToCreate {
   display: inline-block;
 }
 .hubwoo-cr-btn {
-	cursor: pointer;
-	font-weight: bold;
-	font-size: 13px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 13px;
 }
 .grLoader img, .grSuccess img, .grError img {
-	max-width:30px;
-	display: block;
-	width: auto;
-	background-color: #EAF0F6;
+  max-width:30px;
+  display: block;
+  width: auto;
+  background-color: #EAF0F6;
 }
 .grSuccess .fa, .grCreateNew .fa {
-	font-size: 18px;
-	color: #ff7a59;
+  font-size: 18px;
+  color: #ff7a59;
 }
 .grCreateNew .fa {
-	color: #2e3f51;
+  color: #2e3f51;
 }
 .listLoader, .listSuccess, .listError {
-	position: absolute;
-	right: 20px;
-	top: 50%;
-	transform: translateY(-50%);
-	width: 30px;
-	padding: 0 !important;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  padding: 0 !important;
 }
 .listLoader img, .listSuccess img, .listError img {
-	max-width: 100%;
-	display: block;
+  max-width: 100%;
+  display: block;
 }
 .hubwoo-form-wizard-submit-btn {
   cursor: pointer;
@@ -991,7 +987,7 @@ label.hub-pr-created, .hub-pr-create {
 }
 label.hub-pr-created img, label.hub-pr-created span, label.hub-pr-created,
 label.hub-pr-create img, label.hub-pr-create span, label.hub-pr-create {
-	display: block;
+  display: block;
 }
 label.hub-pr-created img, label.hub-pr-create img {
   max-width: 100%;
@@ -1003,37 +999,37 @@ label.hub-pr-created img, label.hub-pr-create img {
   top: 2px;
 }
 .hubwoo-fields-created-list table {
-	border-collapse: collapse;
-	width: 100%;
+  border-collapse: collapse;
+  width: 100%;
 }
 span.hubwoo-cr-btn.hubwoo-crd-btn {
-	border: 1px solid;
-	padding: 6px 13px !important;
-	display: inline-block;
-	text-decoration: none;
-	border-radius: 4px;
-	max-width: 70px;
+  border: 1px solid;
+  padding: 6px 13px !important;
+  display: inline-block;
+  text-decoration: none;
+  border-radius: 4px;
+  max-width: 70px;
 }
 span.hubwoo-cr-btn.hubwoo-crd-btn:hover {
-	background: #2e3f51;
-	color: #fff;
+  background: #2e3f51;
+  color: #fff;
 }
 .hubwoo-fields-created-list table th {
-	color: #2d3e50;
-	text-align: left;
-	font-weight: bold;
-	font-size: 18px;
-	line-height: 40px;
+  color: #2d3e50;
+  text-align: left;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 40px;
 }
 .hubwoo-fields-created-list table th, .hubwoo-fields-created-list table td {
-	font-weight: 600;
-	padding: 10px 25px;
+  font-weight: 600;
+  padding: 10px 25px;
 }
 .hubwoo-field-heading-col {
   text-align: right;
 }
 .hubwoo-field-heading-col {
-	text-align: right;
+  text-align: right;
 }
 .hubwoo-fields-created .hubwoo_groups {
   border-bottom: 1px solid #ddd;
@@ -1057,63 +1053,63 @@ span.hubwoo-cr-btn.hubwoo-crd-btn:hover {
   transform: translateY(0);
 }
 .hubwoo_groups-content.hubwoo_groups-content--p {
-	padding-left: 40px !important;
-	padding-right: 0 !important;
+  padding-left: 40px !important;
+  padding-right: 0 !important;
 }
 .gr_uncreated {
-	opacity: 0.55;
+  opacity: 0.55;
 }
 .hubwoo-list-desc {
-	margin-top: 20px;
+  margin-top: 20px;
 }
 .hubwoo-fields-created .hubwoo-custom-chheckbox input[type="checkbox"]::before {
   top: 10px;
 }
 label.hubwoo-list-created, .hubwoo-list-create {
-	font-size: 18px;
-	position: absolute;
-	right: 19px;
-	top: 50%;
-	transform: translateY(-50%);
-	width: 70px;
-	text-align: center;
+  font-size: 18px;
+  position: absolute;
+  right: 19px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 70px;
+  text-align: center;
 }
 label.hubwoo-list-created span, .hubwoo-list-create span {
-	padding: 0 !important;
-	display: block !important;
+  padding: 0 !important;
+  display: block !important;
 }
 label.hubwoo-list-created img, .hubwoo-list-create img {
-	max-width: 100%;
-	display: block;
+  max-width: 100%;
+  display: block;
 }
 .hubwoo_groups-content, .hubwoo-wf-text {
-	padding: 0 100px 0 20px;
-	font-weight: normal;
-	font-size: 14px;
-	margin-top: 5px;
+  padding: 0 100px 0 20px;
+  font-weight: normal;
+  font-size: 14px;
+  margin-top: 5px;
 }
 .hubwoo-wf-text {
   padding: 0;
 }
 .hubwoo-fields-created-list tr {
-	border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 .mwb-woo__accordion-wrapper {
-	padding: 5px 10px;
+  padding: 5px 10px;
 }
 .mwb__accordian-heading-wrap {
   padding-left: 30px;
   position: relative;
 }
 .mwb-woo__accordian-heading {
-	box-shadow: none !important;
-	color:#2e3f51 !important;
-	font-weight: bold;
-	margin-left: 10px;
-	display: block;
-	text-decoration: none;
-	outline: none !important;
-	padding: 10px 0;
+  box-shadow: none !important;
+  color:#2e3f51 !important;
+  font-weight: bold;
+  margin-left: 10px;
+  display: block;
+  text-decoration: none;
+  outline: none !important;
+  padding: 10px 0;
 }
 .mwb-woo__accordion-content {
   padding-left: 45px;
@@ -1169,11 +1165,10 @@ ul.mwb-woo__custom-prop {
   margin-left: -15px;
 }
 .hubwoo-notice {
-	padding: 10px;
-	border-left: 4px solid #ff7a59;
-	box-shadow: rgba(61, 61, 61, 0.08) 0px 3px 10px 0px;
-	/* border-radius: 4px; */
-	margin: 35px 0 15px;
+  padding: 10px;
+  border-left: 4px solid #ff7a59;
+  box-shadow: rgba(61, 61, 61, 0.08) 0px 3px 10px 0px;
+  margin: 35px 0 15px;
 }
 .hubwoo-log-notice-txt {
   display: flex;
@@ -1209,8 +1204,6 @@ ul.mwb-woo__custom-prop {
 
 .hubwoo-general-settings, .hubwoo-advanced-settings__form-wrap,
 #hubwoo-ocs-form {
-  /*box-shadow: 2px 3px 20px rgba(0,0,0,0.18);*/
-  /*border-radius: 4px;*/
   margin-bottom: 0;
   padding: 0;
   overflow: hidden;
@@ -1218,7 +1211,6 @@ ul.mwb-woo__custom-prop {
 .hubwoo-general-settings form h2, .hubwoo-advanced-settings__form-wrap h2,
 #hubwoo-ocs-form h2 {
   margin: 0;
-  /*background-color: #2D3E50;*/
   font-size: 20px;
   color: #2D3E50;
   line-height: 1.6;
@@ -1226,7 +1218,6 @@ ul.mwb-woo__custom-prop {
 #hubwoo-order-statuses ~ .select2.select2-container,
 #hubwoo-selected-user-roles ~ .select2.select2-container {
   min-width: 300px;
-  border-radius: ;
   padding: 4px;
 }
 .hubwoo-general-settings form label {
@@ -1244,8 +1235,6 @@ ul.mwb-woo__custom-prop {
   border-radius: 4px;
   min-width: 300px;
   height: auto;
-  /*font-weight: 600;*/
-  /*border-left: 2px solid #fd8567;*/
   box-shadow: rgba(61, 61, 61, 0.08) 0px 3px 10px 0px;
 }
 #hubwoo_ecomm_order_ocs_status {
@@ -1311,8 +1300,8 @@ float: right;
   width: 70%;
 }
 .hubwoo-group-wrap__deal_notice p {
-	margin: 0 10px 0 0;
-	font-size: 16px;
+  margin: 0 10px 0 0;
+  font-size: 16px;
 }
 .hubwoo-group-wrap__deal_notice .hubwoo__btn {
   padding: 8px 10px;
@@ -1331,21 +1320,21 @@ table.hubwoo-deals-stages-conf-table {
   table-layout: fixed;
 }
 th.hubwoo-deal-wrap-con__thead {
-	width: 240px !important;
+  width: 240px !important;
 }
 table.hubwoo-deals-stages-conf-table.form-table th {
-	width: 100%;
+  width: 100%;
 }
 .hubwoo-deals-multiselect ~ .select2 {
-	width: 100% !important;
+  width: 100% !important;
 }
 #hubwoo_real_time_deal_settings > h2, #hubwoo_deals_ocs_form > h2 {
-	display: none;
+  display: none;
 }
 .mwb-heb-setup-content {
-	padding: 0 0 20px;
-	margin: 0 auto;
-	position: relative;
+  padding: 0 0 20px;
+  margin: 0 auto;
+  position: relative;
 }
 .mwb-heb-setup-content .dashicons {
   color: #cccccc;
@@ -1368,43 +1357,43 @@ table.hubwoo-deals-stages-conf-table.form-table th {
 
 }
 .mwb-heb-setup-progress {
-	display: flex;
-	align-items: center;
-	margin-bottom: 0;
-	padding: 20px 20px 10px;
-	background: #f6f6f6;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+  padding: 20px 20px 10px;
+  background: #f6f6f6;
 }
 .mwb-heb-setup-pregress__number {
 
-	margin-right: 40px;
+  margin-right: 40px;
 }
 .mwb-heb-setup-pregress__number span {
-	display: inline-block;
-	height: 30px;
-	width: 30px;
-	text-align: center;
-	line-height: 30px;
-	color: #2D3E50;
-	font-weight: bold;
-	font-size: 14px;
-	margin-right: 5px;
-	border: 1px solid #2D3E50;
-	border-radius: 50%;
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  line-height: 30px;
+  color: #2D3E50;
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 5px;
+  border: 1px solid #2D3E50;
+  border-radius: 50%;
 }
 .hubwoo-list-desc__notice-sec p {
-	margin-bottom: 5px;
-	padding: 8px 10px;
-	background: #f2f2f2;
-	display: flex;
-	align-items: center;
+  margin-bottom: 5px;
+  padding: 8px 10px;
+  background: #f2f2f2;
+  display: flex;
+  align-items: center;
 }
 .mwb-heb-setup-pregress__number.done span {
-	color: #fff;
-	background: #ff7a59;
-	border-color: #ff7a59;
+  color: #fff;
+  background: #ff7a59;
+  border-color: #ff7a59;
 }
 form#hubwoo-ocs-form > div {
-	padding: 15px 25px 0;
+  padding: 15px 25px 0;
 }
 .mwb-heb-setup-box:after {
   background: rgba(232, 232, 232, 0.38);
@@ -1440,9 +1429,6 @@ form#hubwoo-ocs-form > div {
   line-height: 1.6;
   margin: 0 0 15px;
 }
-.mwb-heb-setup-link {
-
-}
 .mwb-heb-gbtn:hover {
   color: #ffffff;
 }
@@ -1464,29 +1450,29 @@ form#hubwoo-ocs-form > div {
   display: block;
 }
 .mwb-heb-setup__info-content {
-	background: #2d3e52;
-	border: 1px solid #2d3e52;
-	border-radius: 5px;
-	bottom: calc( 100% + 6px);
-	color: #fff;
-	display: none;
-	padding: 5px;
-	position: absolute;
-	text-align: center;
-	font-size: 15px;
+  background: #2d3e52;
+  border: 1px solid #2d3e52;
+  border-radius: 5px;
+  bottom: calc( 100% + 6px);
+  color: #fff;
+  display: none;
+  padding: 5px;
+  position: absolute;
+  text-align: center;
+  font-size: 15px;
 }
 .mwb-heb-setup__info-content:after {
-	bottom: -9px;
-	border-left: 8px solid transparent;
-	border-right: 8px solid transparent;
-	border-top: 8px solid #2d3e52;
-	content: "";
-	height: 0;
-	left: 0;
-	margin: 0 auto;
-	position: absolute;
-	right: 0;
-	width: 0;
+  bottom: -9px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #2d3e52;
+  content: "";
+  height: 0;
+  left: 0;
+  margin: 0 auto;
+  position: absolute;
+  right: 0;
+  width: 0;
 }
 .mwb-heb-setup__success {
   background: #63b36d;
@@ -1511,14 +1497,14 @@ form#hubwoo-ocs-form > div {
   display: none;
 }
 .mwb-heb-setup-box.completed + .dashicons {
-	color: #63b36d;
+  color: #63b36d;
 }
 .deal-progress{
-	width: 80%;
-	display: none !important;
+  width: 80%;
+  display: none !important;
 }
 #hubwoo_ecomm_won_stages ~ .select2.select2-container.select2-container--default {
-	width: 100% !important;
+  width: 100% !important;
 }
 
 /*=====  End of hubspot deals  ======*/
@@ -1560,24 +1546,24 @@ form#hubwoo-ocs-form > div {
 =            error-section            =
 =======================================*/
 .hubwoo-error-navs a {
-	text-decoration: none;
-	padding: 3px 10px;
-	display: inline-block;
-	border-bottom: 1px solid #2D3E50;
-	color: #2D3E50;
-	margin-left: 41px;
-	font-weight: bold;
+  text-decoration: none;
+  padding: 3px 10px;
+  display: inline-block;
+  border-bottom: 1px solid #2D3E50;
+  color: #2D3E50;
+  margin-left: 41px;
+  font-weight: bold;
 }
 .hubwoo-error-navs {
-	text-align: center;
-	margin: 60px 0 10px;
+  text-align: center;
+  margin: 60px 0 10px;
 }
 .hubwoo-error-navs a:first-child {
-	margin: 0;
+  margin: 0;
 }
 .hubwoo-error-navs a.active {
-	color: #ff7a59;
-	border-bottom: 1px solid #ff7a59;
+  color: #ff7a59;
+  border-bottom: 1px solid #ff7a59;
 }
 #hubwoo-pro-email-logs{
   margin: 0 0 0 15px!important;
@@ -1677,9 +1663,6 @@ form#hubwoo-ocs-form > div {
   width: 100%;
   word-wrap: break-word;
 }
-.hubwoo-error:hover {
-  /*box-shadow: 0px 1px 20px 0px rgba(70, 46, 46, 0.35);*/
-}
 .hubwoo-error .hubwoo-total-calls, .hubwoo-success-calls, .hubwoo-failed-calls,
 .hubwoo-success-calls,.hubwoo-failed-calls{
   font-size: 20px!important;
@@ -1727,7 +1710,7 @@ select#hubwoo_customers_role_settings ~ .select2-container {
   box-shadow: rgba(61, 61, 61, 0.08) 0px 3px 10px 0px;
 }
 .progress-cover {
-	margin: 0px 25px;
+  margin: 0px 25px;
 }
 .hubwoo-progress-wrap,#hubwoo-ocs-form table tr:nth-child(3),
 #hubwoo-ocs-form table tr:nth-child(4) {
@@ -1740,13 +1723,13 @@ select#hubwoo_customers_role_settings ~ .select2-container {
   margin-top: 10px;
 }
 .hubwoo-progress {
-	background-color: #EAF0F6;
-	border-radius: 6px;
-	display: -ms-flexbox;
-	display: flex;
-	font-size: 12px;
-	height: 32px;
-	overflow: hidden;
+  background-color: #EAF0F6;
+  border-radius: 6px;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 12px;
+  height: 32px;
+  overflow: hidden;
 }
 .hubwoo-progress-bar {
   background-color: #00BDA5;
@@ -1811,19 +1794,16 @@ select#hubwoo_customers_role_settings ~ .select2-container {
   margin: 0;
 }
 .hubwoo-connect-form-submit.hubwoo-connect-form--submit p.submit {
-	margin: 30px 0 0;
-	padding: 20px 15px;
+  margin: 30px 0 0;
+  padding: 20px 15px;
 }
 .hubwoo-connect-form-submit.hubwoo-connect-form--submit {
-	background: #253342;
+  background: #253342;
 }
 
 /*=====  End of HubSpot Deal Page CSS  ======*/
 /* Card Layout CSS */
 
-.hubwoo-box-card:first-child {
-  /*margin-top: 30px;*/
-}
 .hubwoo-box-card .grLoader img, .hubwoo-box-card  .grSuccess img, .hubwoo-box-card  .grError img {
   background: transparent;
 }
@@ -1835,7 +1815,7 @@ select#hubwoo_customers_role_settings ~ .select2-container {
   line-height: 1.6;
 }
 .hubwoo-box-card .hubwoo-common-header, .hubwoo-deal-wrap-con .hubwoo-common-header {
-	margin: 0 0 0;
+  margin: 0 0 0;
 }
 .hubwoo-common-header > h2 > a {
   color: #2d3e50;
@@ -1844,56 +1824,53 @@ select#hubwoo_customers_role_settings ~ .select2-container {
 .hubwoo-box-card .mwb-woo__accordion-wrapper {
   padding: 0 10px;
 }
-.hubwoo-box-card .mwb-woo__accordion-wrapper:hover {
-	/*background: #f0f0f0;*/
-}
 .hubwoo-box-card .hubwoo-group-wrap__glist .mwb-hub-custom-checkbox {
-	left: 0px;
+  left: 0px;
 }
 .hubwoo-btn-cshow__content {
-	display: none;
-	width: 100% !important;
+  display: none;
+  width: 100% !important;
 }
 .hubwoo-btn-cshow__btn {
 }
 .hubwoo-success__heading {
-	display: flex;
-	width: 100%;
-	justify-content: space-between;
-	align-items: center;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 }
 .hubwoo-success__heading img {
-	max-width: 40px;
+  max-width: 40px;
 }
 .hubwoo_oauth_span.hubwoo_auth_section {
-	margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 .hubwoo-strip--button {
-	padding: 10px;
-	text-align: center;
-	background: #253342;
+  padding: 10px;
+  text-align: center;
+  background: #253342;
 }
 .hubwoo_pro_support a i {
-	margin-right: 9px;
-	font-size: 18px;
+  margin-right: 9px;
+  font-size: 18px;
 }
 .hubwoo_pro_support a {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	max-width: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 260px;
 }
 .hubwoo-connect-section__con {
-	padding-bottom: 25px;
-	border-bottom: 1px solid #ddd;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #ddd;
 }
 .hubwoo-connect-section__wrapper .hubwoo-connect-section__con:last-child {
   border-bottom: none;
 }
 .hubwoo-general-setting{
-	box-shadow: none;
-	border-radius: 0;
-	margin-bottom: 0;
+  box-shadow: none;
+  border-radius: 0;
+  margin-bottom: 0;
 
 }
 /* End of Card Layout CSS */
@@ -1932,11 +1909,11 @@ select#hubwoo_customers_role_settings ~ .select2-container {
   margin-bottom: 25px;
 }
 .mwb-heb-wlcm__content p {
-	font-size: 16px;
-	line-height: 25px;
-	margin: 0 0 15px;
-	font-weight: 400;
-	color: #181a25;
+  font-size: 16px;
+  line-height: 25px;
+  margin: 0 0 15px;
+  font-weight: 400;
+  color: #181a25;
 }
 .hubwoo-content__para p:last-child {
   margin: 0;
@@ -1976,7 +1953,6 @@ select#hubwoo_customers_role_settings ~ .select2-container {
   justify-content: center;
   min-height: 464px;
   padding: 100px 15px;
-  /* position: absolute; */
   width: 100%;
   height: 100%;
   top: 0;
@@ -2097,7 +2073,7 @@ a {
 =            Dashboard Section Design            =
 ================================================*/
 .hubwoo-nav ul, .hubwoo-nav ul li {
-	margin: 0;
+  margin: 0;
 }
 .hubwoo-discon {
     margin-right: 22px;
@@ -2149,36 +2125,36 @@ form.hubwoo-disconnect-form label {
   padding: 0;
 }
 .hubwoo-nav ul {
-	display: flex;
-	flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 nav.hubwoo-nav li a {
-	display: inline-block;
-	padding: 15px 10px;
-	text-decoration: none;
-	font-size: 16px;
-	color: #fff;
+  display: inline-block;
+  padding: 15px 10px;
+  text-decoration: none;
+  font-size: 16px;
+  color: #fff;
 }
 .hubwoo-nav li:hover,.hubwoo-nav li.active {
   background: #1c1a1a;
 }
 .hubwoo-db__column .hubwoo-db__box {
-	flex: 0 0 24%;
-	margin-bottom: 25px;
-	max-width: 24%;
+  flex: 0 0 24%;
+  margin-bottom: 25px;
+  max-width: 24%;
 }
 .hubwoo-db__colum-graph {
   width: 100%;
 }
 img.hubwoo-graph-img {
-	margin: 30px 0 0;
-	max-width: 490px;
+  margin: 30px 0 0;
+  max-width: 490px;
 }
 .hubwoo-db__column {
-	flex: 0 0 100%;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
+  flex: 0 0 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 .hubwoo-db__row {
   display: flex;
@@ -2186,11 +2162,11 @@ img.hubwoo-graph-img {
   justify-content: space-between;
 }
 .hubwoo-db__box {
-	flex: 0 0 100%;
-	max-width: 100%;
-	border-right: 1px solid #ddd;
-	padding: 20px 0 23px;
-	box-shadow: rgba(61, 61, 61, 0.17) 0px 3px 10px 0px;
+  flex: 0 0 100%;
+  max-width: 100%;
+  border-right: 1px solid #ddd;
+  padding: 20px 0 23px;
+  box-shadow: rgba(61, 61, 61, 0.17) 0px 3px 10px 0px;
 }
 .hubwoo-db__box-full {
   display: flex;
@@ -2233,26 +2209,26 @@ img.hubwoo-graph-img {
   color: #2d3e50;
 }
 .hubwoo-db__row--info__mtitle {
-	flex: 0 0 100%;
-	max-width: 100%;
-	text-align: center;
+  flex: 0 0 100%;
+  max-width: 100%;
+  text-align: center;
 }
 .hubwoo-db__row--info__mtitle h2 {
-	color: #2d3e50;
-	font-size: 26px;
-	font-weight: 700;
-	margin: 0 0 20px;
-	line-height: normal;
+  color: #2d3e50;
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 20px;
+  line-height: normal;
 }
 .hubwoo-db__box-content {
-	text-align: center;
-	font-size: 50px;
-	line-height: 1.6;
-	font-weight: bold;
-	color: #00AFA0;
+  text-align: center;
+  font-size: 50px;
+  line-height: 1.6;
+  font-weight: bold;
+  color: #00AFA0;
 }
 .hubwoo-db__row--info {
-	margin-top: 70px;
+  margin-top: 70px;
   margin-bottom: 50px;
 }
 .hubwoo-btn--primary.hubwoo-btn--dashboard {
@@ -2266,24 +2242,24 @@ img.hubwoo-graph-img {
   margin-right: 20px;
 }
 .hubwoo-db__box.hubwoo-db__box--info {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	border: 1px solid #dddddd;
-	padding: 45px 20px 130px 20px;
-	margin-bottom: 20px;
-	box-shadow: rgba(61, 61, 61, 0.17) 0px 3px 10px 0px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  border: 1px solid #dddddd;
+  padding: 45px 20px 130px 20px;
+  margin-bottom: 20px;
+  box-shadow: rgba(61, 61, 61, 0.17) 0px 3px 10px 0px;
   max-width: 31%;
   border-radius: 4px;
   position: relative;
 }
 .hubwoo-db__box--infoImg iframe {
-	width: 100%;
+  width: 100%;
 }
 .hubwoo-ocs-btn-notice {
-	display: inline-block;
-	font-size: 14px;
-	font-weight: 700;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 700;
 }
 .hubwoo-deal-order-count{
   display: inline-block;
@@ -2299,10 +2275,10 @@ img.hubwoo-graph-img {
   max-width: 100%;
 }
 .hubwoo-db__box-row-content p {
-	font-size: 16px;
-	line-height: 1.6;
-	text-align: center;
-	margin: 8px 0;
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: center;
+  margin: 8px 0;
 }
 .hubwoo-db__box--info .mwb-heb-wlcm__btn-wrap {
   text-align: center;
@@ -2318,15 +2294,15 @@ img.hubwoo-graph-img {
   box-sizing: border-box;
 }
 nav.mwb-heb__nav {
-	border-bottom: 1px solid #eee;
-	margin-top: 0;
+  border-bottom: 1px solid #eee;
+  margin-top: 0;
 }
 .mwb-heb__nav-list {
-	display: flex;
-	flex-wrap: wrap;
-	margin: 0 auto;
-	max-width: 1000px;
-	padding: 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  max-width: 1000px;
+  padding: 0 20px;
 }
 .mwb-heb__nav-list-item {
   margin: 0;
@@ -2334,34 +2310,31 @@ nav.mwb-heb__nav {
 }
 
 .mwb-heb__nav-list-item a {
-	border-bottom: 2px solid transparent;
-	font-size: 11px;
-	font-weight: 700;
-	display: inline-block;
-	text-decoration: none;
-	padding: 20px 15px;
-	color: #939393;
-	text-transform: uppercase;
-	position: relative;
-	z-index: 5;
-	outline: none !important;
-	box-shadow: none !important;
-	text-align: center;
-	letter-spacing: 1.2px;
-	pointer-events: none;
+  border-bottom: 2px solid transparent;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-block;
+  text-decoration: none;
+  padding: 20px 15px;
+  color: #939393;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 5;
+  outline: none !important;
+  box-shadow: none !important;
+  text-align: center;
+  letter-spacing: 1.2px;
+  pointer-events: none;
 }
 .mwb-heb__nav-list-item.active .mwb-heb__nav-count {
-	background-color: #ff7a59;
-	border-color: #ff7a59;
-	color: #ffffff;
+  background-color: #ff7a59;
+  border-color: #ff7a59;
+  color: #ffffff;
 }
 .mwb-heb__nav-list-item.completed .mwb-heb__nav-count {
-	border-color: #00A4BD;
-	color: #fff;
-	background-color: #00A4BD;
-}
-.mwb-heb__nav-list-item.active a {
-  /*border-color: #ff7a59 !important;*/
+  border-color: #00A4BD;
+  color: #fff;
+  background-color: #00A4BD;
 }
 .mwb-heb__nav-list-item a:hover, .mwb-heb__nav-list-item.completed a, .mwb-heb__nav-list-item.active a {
   background-color: #ffffff;
@@ -2371,42 +2344,42 @@ nav.mwb-heb__nav {
   pointer-events: unset !important;
 }
 .mwb-heb__nav-count {
-	display: inline-block;
-	height: 25px;
-	width: 25px;
-	border: 1px solid;
-	text-align: center;
-	line-height: 22px;
-	border-radius: 50%;
-	margin-right: 5px;
-	position: relative;
+  display: inline-block;
+  height: 25px;
+  width: 25px;
+  border: 1px solid;
+  text-align: center;
+  line-height: 22px;
+  border-radius: 50%;
+  margin-right: 5px;
+  position: relative;
 }
 .mwb-heb__nav-list-item.completed .mwb-heb__nav-count::after {
-	content: "\f00c";
-	background-color: #00A4BD;
-	width: 100%;
-	position: absolute;
-	left: 0;
-	right: 0;
-	border-radius: 50%;
-	font-family: FontAwesome;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	top: 0;
-	bottom: 0;
+  content: "\f00c";
+  background-color: #00A4BD;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-radius: 50%;
+  font-family: FontAwesome;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  bottom: 0;
 }
 /*=====  End of Nav Setion CSS  ======*/
 
 
 .hubwoo-db__connection {
-	padding: 20px 25px;
-	background: #f7fff1;
-	font-size: 16px;
-	line-height: 1.6;
-	display: flex;
-	justify-content: space-between;
-	flex-wrap: wrap;
+  padding: 20px 25px;
+  background: #f7fff1;
+  font-size: 16px;
+  line-height: 1.6;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 .hubwoo-db__connection-notice {
   display: flex;
@@ -2418,37 +2391,35 @@ nav.mwb-heb__nav {
   margin-right: 10px;
 }
 .hubwoo-db__connection-links a {
-	text-decoration: none;
-	/*color: #323547;*/
-	font-weight: 600;
+  text-decoration: none;
+  font-weight: 600;
 }
 .hubwoo-db__connection-links {
-	font-weight: 600;
+  font-weight: 600;
 }
 .hubwoo-db-notice-box {
-	/* max-width: 830px; */
-	width: 100%;
-	margin: 0 auto 50px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 10px;
-	border-left: 2px solid #fd8567;
-	box-shadow: rgba(61, 61, 61, 0.08) 0px 3px 10px 0px;
+  width: 100%;
+  margin: 0 auto 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-left: 2px solid #fd8567;
+  box-shadow: rgba(61, 61, 61, 0.08) 0px 3px 10px 0px;
 }
 .hubwoo-db-notice__heading {
-	font-size: 20px;
-	line-height: 28px;
-	text-align: left;
-	font-weight: 600;
-	margin-bottom: 10px;
+  font-size: 20px;
+  line-height: 28px;
+  text-align: left;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 .hubwoo-db-notice__blink {
-	font-weight: 600;
-	font-size: 16px;
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
 .hubwoo-db-notice__blink .hubwpp-db-notice__link {
   background: #eaf8df;
@@ -2469,51 +2440,49 @@ nav.mwb-heb__nav {
   display: block;
 }
 .hubwoo-tooltipp {
-	position: absolute;
-	width: 200px;
-	font-size: 14px;
-	line-height: 20px;
-	top: -45px;
-	background: #515151;
-	padding: 8px 15px;
-	color: #fff;
-	font-weight: 500;
-	left: 0;
-	display: none;
+  position: absolute;
+  width: 200px;
+  font-size: 14px;
+  line-height: 20px;
+  top: -45px;
+  background: #515151;
+  padding: 8px 15px;
+  color: #fff;
+  font-weight: 500;
+  left: 0;
+  display: none;
 }
 .hubwoo-tooltipp:after {
-	content: "";
-	position: absolute;
-	border-left: 8px solid transparent;
-	height: 8px;
-	border-top: 8px solid #515151;
-	border-right: 8px solid transparent;
-	bottom: -16px;
-	left: 0;
+  content: "";
+  position: absolute;
+  border-left: 8px solid transparent;
+  height: 8px;
+  border-top: 8px solid #515151;
+  border-right: 8px solid transparent;
+  bottom: -16px;
+  left: 0;
 }
 .hubwoo-db-notice__blink img, .hubwoo-db-notice__blink .fa-globe, .hubwoo-db-notice__blink .fa-icon {
-	/*width: 20px;*/
-	display: inline-block;
-	margin-right: 10px;
-	font-size: 20px;
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 20px;
 }
 .hubwoo-m-wrap-c {
-	padding: 30px 0 50px;
-	background: #fff;
-	/* margin: 0 15px 0 0; */
-	color: #181a25;
+  padding: 30px 0 50px;
+  background: #fff;
+  color: #181a25;
 }
 .hubwoo-inner-header > div {
-	margin-bottom: 12px;
+  margin-bottom: 12px;
 }
 .hubwoo-db__connection-notice--default .fa-icon {
   color: #181a25;
 }
 .hubwoo-m-wrap-c form h2 {
-	padding: 0 25px;
+  padding: 0 25px;
 }
 .hubwoo-m-wrap-c form table th {
-	padding-left: 25px;
+  padding-left: 25px;
 }
 .hubwoo-m-wrap-c form .submit {
   padding-bottom: 0;
@@ -2521,19 +2490,19 @@ nav.mwb-heb__nav {
   margin-bottom: 0;
 }
 .hubwoo-discon {
-	display: inline-block;
-	margin-top: 0;
-	color: #595c5d;
-	font-weight: 600;
-	font-size: 14px;
-	line-height: 1.6;
-	text-decoration: none;
-	margin-left: 28px;
+  display: inline-block;
+  margin-top: 0;
+  color: #595c5d;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.6;
+  text-decoration: none;
+  margin-left: 28px;
 }
 .hubwoo-db__connection-links .hubwoo__btn {
-	padding: 7px 11px;
-	min-width: auto;
-	margin-right: 9px;
+  padding: 7px 11px;
+  min-width: auto;
+  margin-right: 9px;
 }
 .hubwoo-db__connection-links .hubwoo__btn:last-child {
   margin-right: 0;
@@ -2542,13 +2511,13 @@ nav.mwb-heb__nav {
 
 /*** General Setting ***/
 .hubwoo-btn-cshow__content {
-	background: #fcfcfc;
-	color: #2e3f51;
-	margin-top: 15px;
+  background: #fcfcfc;
+  color: #2e3f51;
+  margin-top: 15px;
 }
 .hubwoo-gs-wrap, .hubwoo-et-wrap {
-	padding: 30px 25px;
-	color: #181a25;
+  padding: 30px 25px;
+  color: #181a25;
 }
 .hubwoo-gs-wrap--gen .hubwoo-common-header h2, .hubwoo-deal-wrap-con .hubwoo-common-header h2{
   font-size: 20px;
@@ -2559,17 +2528,22 @@ nav.mwb-heb__nav {
   margin: 0;
 }
 .hubwoo-gs-wrap--gen .hubwoo-box-card__subtitle, .hubwoo-deal-wrap-con__intro {
-	font-size: 16px;
-	line-height: 1.6;
-	margin-bottom: 8px;
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 8px;
 }
 .hubwoo-gs-wrap--gen .hubwoo-box-card, .hubwoo-form-wizard-wrapper .hubwoo-form-wizard-content {
-	padding: 15px 0;
-	border-bottom: 1px solid #bebebe;
-	margin-bottom: 0;
+  padding: 15px 0;
+  border-bottom: 1px solid #bebebe;
+  margin-bottom: 0;
 }
 .hubwoo-setting-heading {
   margin-top: 0;
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+.hubwoo-addon-heading {
+  margin-top: 28px;
   font-size: 28px;
   margin-bottom: 10px;
 }
@@ -2590,12 +2564,12 @@ nav.mwb-heb__nav {
   color: #2e3f51;
 }
 .mwb-woo__accordian-main-wrapper {
-	padding: 10px 0;
+  padding: 10px 0;
 }
 .hubwoo-fields-created .hubwoo_groups {
-	background: transparent;
-	padding: 10px 0;
-	font-weight: bold;
+  background: transparent;
+  padding: 10px 0;
+  font-weight: bold;
 }
 .label.hubwoo-list-created {
   left: 13px;
@@ -2608,36 +2582,36 @@ nav.mwb-heb__nav {
 
 /** Advance Setting **/
 .select2-container .select2-selection {
-	border-radius: 4px !important;
+  border-radius: 4px !important;
 }
 .hubwoo-adv-settingg__heading {
-	line-height: 1.6;
-	font-size: 20px;
-	margin: 0;
+  line-height: 1.6;
+  font-size: 20px;
+  margin: 0;
 }
 .hubwoo-adv-settingg__content p {
-	font-size: 16px;
-	margin: 0 0 10px;
-	line-height: 1.6;
+  font-size: 16px;
+  margin: 0 0 10px;
+  line-height: 1.6;
 }
 
 .hubwoo-adv-settingg__wrapper, .hubwoo-box-n-card, .hubwoo-deal-wrap-con-flex {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
 }
 .hubwoo-adv-settingg__con, .hubwoo-box-n-card__content, .hubwoo-deal-wrap-con__h-con {
-	flex: 0 0 80%;
-	max-width: 80%;
+  flex: 0 0 80%;
+  max-width: 80%;
 }
 .hubwoo-adv-settingg__btn, .hubwoo-box-n-card__btn, .hubwoo-deal-wrap-con__h-btn {
-	margin-bottom: 0;
-	flex: 0 0 17%;
-	text-align: right;
+  margin-bottom: 0;
+  flex: 0 0 17%;
+  text-align: right;
 }
 .hubwoo-box-n-card__btn .hubwoo__btn {
-	margin: 0;
+  margin: 0;
 }
 .hubwoo-box-n-card .hubwoo-btn-cshow {
   flex: 0 0 100%;
@@ -2647,63 +2621,63 @@ nav.mwb-heb__nav {
   margin: 0;
 }
 .hubwoo-adv-settingg form > h2 {
-	display: none;
+  display: none;
 }
 .hubwoo-form-wizard-wrapper {
-	padding: 30px 25px;
+  padding: 30px 25px;
 }
 .hubwoo_rfm_settings .tablenav.top {
-	display: none;
+  display: none;
 }
 #hubwoo-rfm-form {
-	padding-top: 15px !important;
+  padding-top: 15px !important;
 }
 .hubwoo-adv-settingg__form {
-	display: none;
-	width: 100% !important;
+  display: none;
+  width: 100% !important;
 }
 .hubwoo-advanced-settings__form-wrap h2 {
-	font-size: 18px;
-	padding: 0 10px;
+  font-size: 18px;
+  padding: 0 10px;
 }
 #hubwoo-enroll {
-	padding: 20px !important;
-	background: #f8f8f8;
-	width: 100% !important;
+  padding: 20px !important;
+  background: #f8f8f8;
+  width: 100% !important;
 }
 #hubwoo-enroll .form-table {
-	background-color: #ffffff;
-	border: 1px solid #e3e3e3;
-	border-bottom: none;
+  background-color: #ffffff;
+  border: 1px solid #e3e3e3;
+  border-bottom: none;
 }
 .hubwoo-adv-table-app-btn {
-	background: #fff;
-	padding: 15px 10px;
-	border: 1px solid #e3e3e3;
-	border-top: none;
+  background: #fff;
+  padding: 15px 10px;
+  border: 1px solid #e3e3e3;
+  border-top: none;
 }
 form#hubwoo-enroll .submit {
-	margin-top: 25px;
-	padding-bottom: 0;
-	margin-bottom: 5px;
+  margin-top: 25px;
+  padding-bottom: 0;
+  margin-bottom: 5px;
 }
 #hubwoo-enroll h2 {
-	margin-bottom: 18px;
+  margin-bottom: 18px;
 }
 .hubwoo-advanced-settings__form-wrap {
-	margin-bottom: 45px;
+  margin-bottom: 45px;
 }
 .hubwoo-advanced-settings__form-wrap:last-child {
   margin-bottom: 0;
 }
 form#hubwoo-enroll .submit {
-	margin-top: 20px;
-	padding-top: 0;
+  margin-top: 20px;
+  padding-top: 0;
 }
 .hubwoo-adv-table-app-btn  .hubwoo-add-action {
-	margin: 0;
-	padding: 4px 12px;
-	min-width: 80px;
+  margin: 0;
+  padding: 4px 12px;
+  min-width: 80px;
 }
 .hubwoo-abncart-setup-form--d th {
   padding-left: 0;
@@ -2715,26 +2689,26 @@ form#hubwoo-enroll .submit {
 }
 /** HubSpot Deals **/
 .hubwoo-deal-wrap-con__store {
-	display: none;
+  display: none;
 }
 
 .hubwoo-deal-wrap-con__store td {
-	padding: 10px;
-	font-size: 16px;
+  padding: 10px;
+  font-size: 16px;
 
 }
 .hubwoo-deal-wrap-con__store th {
-	font-weight: 600;
+  font-weight: 600;
 }
 .hubwoo-deal-head-form h2 {
-	display: none;
+  display: none;
 }
 
 /** Error Tracking CSS **/
 .hubwoo-et-wrap .hubwoo-connect-form-header h2 {
-	line-height: 1.6;
-	margin: 0;
-	font-size: 20px;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 20px;
 }
 .hubwoo-deal-wrap-con__store {
   width: 100% !important;
@@ -2753,21 +2727,21 @@ form#hubwoo-enroll .submit {
 =================================================*/
 @media screen and (max-width: 767px) {
   .hubwoo-db__box.hubwoo-db__box--info{
-	max-width: 100%;
+  max-width: 100%;
   }
   .hubwoo-btn--primary.hubwoo-btn--dashboard.hubwoo-btn--dashboard-chat {
-	margin: 20px 0;
+  margin: 20px 0;
   }
   .hubwoo-db__box-full.box-services {
-	text-align: center;
+  text-align: center;
   }
   .hubwoo-btn--primary.hubwoo-btn--dashboard.hubwoo-btn--dashboard-chat {
-	margin: 20px 0;
+  margin: 20px 0;
   }
   .hubwoo-btn--primary.hubwoo-btn--dashboard {
-	min-width: 190px;
-	padding: 15px 6px;
-	font-size: 13px;
+  min-width: 190px;
+  padding: 15px 6px;
+  font-size: 13px;
   }
 }
 
@@ -2833,6 +2807,31 @@ form#hubwoo-enroll .submit {
     line-height: 1.5 !important;
     max-width: 100% !important;
 }
+.hubwoo-form-control-flname {
+  background-color: #F6F8FA!important;
+  border: 1px solid #D3DBE5 !important;
+  display: block;
+  padding: 10px 19px !important;
+  width: 100%;
+  line-height: 1.5 !important;
+  max-width: 100% !important;
+}
+.hubwoo-onboarding-email__items.flname {
+  display: inline-block;
+  width: 100%;
+  max-width: 49%;
+}
+
+.hubwoo_register.hidefield {
+  display: none;
+}
+
+.hubwoo-onboarding-message {
+  display: block;
+  font-size: 14px;
+  color: #ff0000;
+}
+
 .hubwoo-onboarding-skip--link {
   margin-top: 15px;
 }

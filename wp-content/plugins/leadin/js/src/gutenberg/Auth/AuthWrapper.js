@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import useAuth from './useAuth';
-import LoginBlock from './LoginBlock';
 import LoadingBlock from '../Common/LoadingBlock';
+import FormErrorHandler from '../FormBlock/FormBlockEdit/FormErrorHandler';
 
 export default function AuthWrapper({ children }) {
   const { auth, loading } = useAuth();
@@ -11,6 +11,6 @@ export default function AuthWrapper({ children }) {
   ) : auth ? (
     <Fragment>{children}</Fragment>
   ) : (
-    <LoginBlock />
+    <FormErrorHandler status={401} />
   );
 }

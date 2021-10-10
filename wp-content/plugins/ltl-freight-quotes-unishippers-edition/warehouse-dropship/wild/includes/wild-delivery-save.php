@@ -122,10 +122,13 @@ if (!class_exists("EnWooWdAddonsAjaxReqIncludes")) {
             foreach ($sPostData as $key => &$tag) {
                 $check_characters = $key == "city" ? preg_match('/[#$%@^&!_*()+=\[\]\';,\/{}|":<>?~\\\\]/', $tag) : preg_match('/[#$%@^&!_*()+=\-\[\]\';,\/{}|":<>?~\\\\]/', $tag);
                 if ($check_characters != 1 ||
+                    $key == "address" ||
                     $key == "match_postal_local_delivery" ||
                     $key == "match_postal_store_pickup" ||
                     $key == "checkout_desc_local_delivery" ||
                     $key == "checkout_desc_store_pickup" ||
+                    // Terminal phone number
+                    $key == "phone_instore" ||
                     $key == "nickname") {
                     $data[$key] = sanitize_text_field($tag);
                 } else {
@@ -173,6 +176,8 @@ if (!class_exists("EnWooWdAddonsAjaxReqIncludes")) {
             $input_data_arr = array(
                 'city' => sanitize_text_field($inputData['origin_city']),
                 'state' => sanitize_text_field($inputData['origin_state']),
+                // Origin terminal address
+                'address' => sanitize_text_field($inputData['origin_address']),
                 'zip' => sanitize_text_field($inputData['origin_zip']),
                 'country' => sanitize_text_field($inputData['origin_country']),
                 'location' => sanitize_text_field($inputData['location']),
@@ -180,6 +185,8 @@ if (!class_exists("EnWooWdAddonsAjaxReqIncludes")) {
                 'miles_store_pickup' => sanitize_text_field($inputData['address_miles_instore']),
                 'match_postal_store_pickup' => sanitize_text_field($inputData['zipmatch_instore']),
                 'checkout_desc_store_pickup' => sanitize_text_field($inputData['desc_instore']),
+                // Terminal phone number
+                'phone_instore' => sanitize_text_field($inputData['phone_instore']),
                 'enable_local_delivery' => (sanitize_text_field($inputData['enable_delivery']) === 'true') ? 1 : 0,
                 'miles_local_delivery' => sanitize_text_field($inputData['address_miles_delivery']),
                 'match_postal_local_delivery' => sanitize_text_field($inputData['zipmatch_delivery']),
@@ -233,11 +240,11 @@ if (!class_exists("EnWooWdAddonsAjaxReqIncludes")) {
          */
         function edit_warehouse_ajax()
         {
+            // Terminal phone number
             global $wpdb;
             $get_warehouse_id = (isset($_POST['edit_id']) && intval($_POST['edit_id'])) ? intval($_POST['edit_id']) : "";
             $warehous_list = $wpdb->get_results(
-                "SELECT id, city, state, zip, country , enable_store_pickup , fee_local_delivery , suppress_local_delivery , miles_store_pickup , match_postal_store_pickup , checkout_desc_store_pickup , enable_local_delivery , miles_local_delivery , match_postal_local_delivery , checkout_desc_local_delivery
-                      FROM " . $wpdb->prefix . "warehouse WHERE id=$get_warehouse_id"
+                "SELECT * FROM " . $wpdb->prefix . "warehouse WHERE id=$get_warehouse_id"
             );
             echo json_encode($warehous_list);
             exit;
@@ -278,6 +285,8 @@ if (!class_exists("EnWooWdAddonsAjaxReqIncludes")) {
             $input_data_arr = array(
                 'city' => sanitize_text_field($inputData['dropship_city']),
                 'state' => sanitize_text_field($inputData['dropship_state']),
+                // Origin terminal address
+                'address' => sanitize_text_field($inputData['dropship_address']),
                 'zip' => sanitize_text_field($inputData['dropship_zip']),
                 'country' => sanitize_text_field($inputData['dropship_country']),
                 'location' => sanitize_text_field($inputData['location']),
@@ -286,6 +295,8 @@ if (!class_exists("EnWooWdAddonsAjaxReqIncludes")) {
                 'miles_store_pickup' => sanitize_text_field($inputData['address_miles_instore']),
                 'match_postal_store_pickup' => sanitize_text_field($inputData['zipmatch_instore']),
                 'checkout_desc_store_pickup' => sanitize_text_field($inputData['desc_instore']),
+                // Terminal phone number
+                'phone_instore' => sanitize_text_field($inputData['phone_instore']),
                 'enable_local_delivery' => (sanitize_text_field($inputData['enable_delivery']) === 'true') ? 1 : 0,
                 'miles_local_delivery' => sanitize_text_field($inputData['address_miles_delivery']),
                 'match_postal_local_delivery' => sanitize_text_field($inputData['zipmatch_delivery']),
@@ -338,11 +349,11 @@ if (!class_exists("EnWooWdAddonsAjaxReqIncludes")) {
          */
         function edit_dropship_ajax()
         {
+            // Terminal phone number
             global $wpdb;
             $get_dropship_id = (isset($_POST['dropship_edit_id']) && intval($_POST['dropship_edit_id'])) ? intval($_POST['dropship_edit_id']) : "";
             $warehous_list = $wpdb->get_results(
-                "SELECT id, city, state, zip, country, nickname , enable_store_pickup , fee_local_delivery , suppress_local_delivery , miles_store_pickup , match_postal_store_pickup , checkout_desc_store_pickup , enable_local_delivery , miles_local_delivery , match_postal_local_delivery , checkout_desc_local_delivery
-                      FROM " . $wpdb->prefix . "warehouse WHERE id=$get_dropship_id"
+                "SELECT * FROM " . $wpdb->prefix . "warehouse WHERE id=$get_dropship_id"
             );
             echo json_encode($warehous_list);
             exit;

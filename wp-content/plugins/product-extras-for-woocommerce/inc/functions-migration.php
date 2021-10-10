@@ -28,11 +28,6 @@ function pewc_migration_notice() {
 	if( ! isset( $screen->id ) || $screen->id == 'posts_page_pewc_migration' || $screen->id == 'pewc_product_extra_page_global' ) {
 		return;
 	}
-	// $last_dismissed = get_option( 'pewc_migration_notice_dismissed', false );
-	// $time_now = time();
-	// if( $last_dismissed && ( floatVal( $last_dismissed ) + DAY_IN_SECONDS ) > $time_now ) {
-	// 	return;
-	// }
 	// Have we done the migration?
 	$has_migrated = pewc_has_migrated();
 	if( ! $has_migrated ) {

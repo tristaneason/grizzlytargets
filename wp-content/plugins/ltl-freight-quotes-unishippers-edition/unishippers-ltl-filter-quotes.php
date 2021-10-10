@@ -36,6 +36,7 @@ if (!class_exists('Unishippers_Freight_Quotes')) {
          * @var class type
          */
         public $VersionCompat;
+        public $id;
 
         function __construct()
         {
@@ -48,8 +49,9 @@ if (!class_exists('Unishippers_Freight_Quotes')) {
          * @param array type $quote_settings
          * @return array type
          */
-        public function calculate_quotes($quotes, $quote_settings)
+        public function calculate_quotes($quotes, $quote_settings, $id)
         {
+            $this->id = $id;
             $this->quotes = $quotes;
             $this->quote_settings = $quote_settings;
             $this->total_carriers = (isset($this->quote_settings['total_carriers'])) ? $this->quote_settings['total_carriers'] : 0;
@@ -70,15 +72,19 @@ if (!class_exists('Unishippers_Freight_Quotes')) {
          */
         public function average_rate()
         {
+            $rate_sum = 0;
             $this->quotes = (isset($this->quotes) && (is_array($this->quotes))) ? array_slice($this->quotes, 0, $this->total_carriers) : array();
             $rate_list = $this->VersionCompat->enArrayColumn($this->quotes, 'cost');
-            $rate_sum = array_sum($rate_list) / count($this->quotes);
+            if (count($this->quotes) != 0) {
+                $rate_sum = array_sum($rate_list) / count($this->quotes);
+
+            }
             $quotes_reset = reset($this->quotes);
 
 
             $rate[] = array(
                 'id' => $this->rand_string(),
-                'id' => 'en_unishippers_average_method',
+                'id' => 'en_average_method_' . $this->id,
                 'cost' => $rate_sum,
                 'markup' => (isset($quotes_reset['markup'])) ? $quotes_reset['markup'] : "",
                 'label_sufex' => (isset($quotes_reset['label_sufex'])) ? $quotes_reset['label_sufex'] : array(),

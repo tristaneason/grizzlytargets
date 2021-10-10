@@ -1,17 +1,16 @@
 <?php
-
 /*
   Plugin Name: Residential Address Detection
   Plugin URI:  https://eniture.com/products/
   Description: Detects residential addresses so that the carrier’s residential delivery fee is included in shipping rate estimates. For exclusive use with Eniture Technology’s Small Package Quotes and LTL Freight Quotes plugins.
-  Version:     2.1.1
+  Version:     2.2.3
   Author:      Eniture Technology
   Author URI:  https://eniture.com
   License:     GPL2
   License URI: https://www.gnu.org/licenses/gpl-2.0.html
   Text Domain: eniture-technology
-  WC requires at least: 4.0.0
-  WC tested up to: 4.9.0
+  WC requires at least: 5.0.0
+  WC tested up to: 5.5.2
  */
 
 

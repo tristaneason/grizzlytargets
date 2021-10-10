@@ -43,7 +43,6 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
          */
         function unishippers_ltl_shipping_get_web_service_array($packages, $package_plugin = "")
         {
-
             $EnUniShipfreightFdo = new EnUniShipfreightFdo();
             $en_fdo_meta_data = array();
 
@@ -63,7 +62,21 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
             (get_option('wc_settings_unishippers_freight_lift_gate_delivery') == 'yes') ? $accessorial['LG2'] = 'Liftgate Delivery' : '';
             ($this->quote_settings['liftgate_delivery_option'] == 'yes') ? $accessorial['LG2'] = 'Liftgate Delivery' : '';
             (get_option('wc_settings_unishipper_residential_delivery ') == 'yes') ? $accessorial['RES2'] = 'Residential Delivery' : '';
-
+            // Cuttoff Time
+            $shipment_week_days = "";
+            $order_cut_off_time = "";
+            $shipment_off_set_days = "";
+            $modify_shipment_date_time = "";
+            $store_date_time = "";
+            $unishippers_delivery_estimates = get_option('unishippers_delivery_estimates');
+            $unishippers_show_delivery_estimates = apply_filters('unishippers_freight_quotes_plans_suscription_and_features', 'unishippers_show_delivery_estimates');
+            $shipment_week_days = $this->unishippers_shipment_week_days();
+            if ($unishippers_delivery_estimates == 'delivery_days' || $unishippers_delivery_estimates == 'delivery_date' && !is_array($unishippers_show_delivery_estimates)) {
+                $order_cut_off_time = $this->quote_settings['orderCutoffTime'];
+                $shipment_off_set_days = $this->quote_settings['shipmentOffsetDays'];
+                $modify_shipment_date_time = ($order_cut_off_time != '' || $shipment_off_set_days != '' || (is_array($shipment_week_days) && count($shipment_week_days) > 0)) ? 1 : 0;
+                $store_date_time = $today = date('Y-m-d H:i:s', current_time('timestamp'));
+            }
             $freightClass_unishippers_ltl_gross = "";
             $productName = array();
             $productQty = array();
@@ -88,7 +101,12 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
             $nestingPercentage = $nestedDimension = $nestedItems = $stakingProperty = [];
             $doNesting = false;
             foreach ($packages['items'] as $item) {
-                $lineItem[] = array(
+                // Standard Packaging
+                $ship_as_own_pallet = isset($item['ship_as_own_pallet']) && $item['ship_as_own_pallet'] == 'yes' ? 1 : 0;
+                $vertical_rotation_for_pallet = isset($item['vertical_rotation_for_pallet']) && $item['vertical_rotation_for_pallet'] == 'yes' ? 1 : 0;
+                $uni_counter = (isset($item['variantId']) && $item['variantId'] > 0) ? $item['variantId'] : $item['productId'];
+
+                $lineItem[$uni_counter] = array(
                     'piecesOfLineItem' => $item['productQty'],
                     'lineItemClass' => $item['productClass'],
                     'lineItemWeight' => $item['productWeight'],
@@ -104,8 +122,13 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
 
                     // Shippable handling units
                     'lineItemPalletFlag' => $item['lineItemPalletFlag'],
-                    'lineItemPackageType' => $item['lineItemPackageType']
+                    'lineItemPackageType' => $item['lineItemPackageType'],
+
+                    // Standard Packaging
+                    'shipPalletAlone' => $ship_as_own_pallet,
+                    'vertical_rotation' => $vertical_rotation_for_pallet
                 );
+                $lineItem[$uni_counter] = apply_filters('en_fdo_carrier_service', $lineItem[$uni_counter], $item);
                 $product_name[] = $item['product_name'];
                 isset($item['nestedMaterial']) && !empty($item['nestedMaterial']) &&
                 $item['nestedMaterial'] == 'yes' && !is_array($nested_plan) ? $doNesting = 1 : "";
@@ -158,6 +181,12 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
                 // FDO
                 'en_fdo_meta_data' => $en_fdo_meta_data,
                 'doNesting' => $doNesting,
+                // Cuttoff Time
+                'modifyShipmentDateTime' => $modify_shipment_date_time,
+                'OrderCutoffTime' => $order_cut_off_time,
+                'shipmentOffsetDays' => $shipment_off_set_days,
+                'storeDateTime' => $store_date_time,
+                'shipmentWeekDays' => $shipment_week_days,
             );
 
 //          Hazardous Material
@@ -179,12 +208,42 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
             $post_data = $this->unishippers_freight_update_carrier_service($post_data);
             $post_data = apply_filters("en_woo_addons_carrier_service_quotes_request", $post_data, en_woo_plugin_unishippers_freight);
 
-            // Pallet
+            // Standard Packaging
             $post_data = apply_filters('en_pallet_identify', $post_data);
 
             do_action("eniture_debug_mood", "Quotes Request (Unishippers Freight)", $post_data);
 
             return $post_data;
+        }
+
+        /**
+         * @return shipment days of a week  - Cuttoff time
+         */
+        public function unishippers_shipment_week_days()
+        {
+            $shipment_days_of_week = array();
+
+            if (get_option('all_shipment_days_unishippers') == 'yes') {
+                return $shipment_days_of_week;
+            }
+
+            if (get_option('monday_shipment_day_unishippers') == 'yes') {
+                $shipment_days_of_week[] = 1;
+            }
+            if (get_option('tuesday_shipment_day_unishippers') == 'yes') {
+                $shipment_days_of_week[] = 2;
+            }
+            if (get_option('wednesday_shipment_day_unishippers') == 'yes') {
+                $shipment_days_of_week[] = 3;
+            }
+            if (get_option('thursday_shipment_day_unishippers') == 'yes') {
+                $shipment_days_of_week[] = 4;
+            }
+            if (get_option('friday_shipment_day_unishippers') == 'yes') {
+                $shipment_days_of_week[] = 5;
+            }
+
+            return $shipment_days_of_week;
         }
 
         /**
@@ -302,18 +361,17 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
          */
         function parse_unishippers_freight_output($result, $request_data)
         {
-
             // FDO
             $en_fdo_meta_data = (isset($request_data['en_fdo_meta_data'])) ? $request_data['en_fdo_meta_data'] : '';
             if (isset($result['quotes']->debug)) {
                 $en_fdo_meta_data['handling_unit_details'] = $result['quotes']->debug;
             }
 
+            // Standard Packaging
             $standard_packaging_data = [];
             if (isset($result['quotes']->standardPackagingData)) {
                 $standard_packaging_data = json_encode($result['quotes']->standardPackagingData);
             }
-
             $this->InstorPickupLocalDelivery = (isset($result['quotes']->InstorPickupLocalDelivery)) ? $result['quotes']->InstorPickupLocalDelivery : array();
             $accessorials = [];
             ($this->quote_settings['liftgate_delivery'] == "yes") ? $accessorials[] = "L" : "";
@@ -334,7 +392,9 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
                 $simple_quotes = array();
 
                 foreach ($quote_results as $quote) {
-
+                    // Cuttoff Time
+                    $delivery_estimates = (isset($quote->totalTransitTimeInDays)) ? $quote->totalTransitTimeInDays : '';
+                    $delivery_time_stamp = (isset($quote->deliveryTimestamp)) ? $quote->deliveryTimestamp : '';
                     if (isset($quote->service) && ($quote->service == 'Standard')) {
 
                         if (isset($quote->carrierCode) && in_array($quote->carrierCode, $this->quote_settings['enable_carriers'])) {
@@ -343,6 +403,7 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
                             $meta_data['accessorials'] = json_encode($accessorials);
                             $meta_data['sender_origin'] = $request_data['sender_origin'];
                             $meta_data['product_name'] = json_encode($request_data['product_name']);
+                            // Standard Packaging
                             $meta_data['standard_packaging'] = $standard_packaging_data;
 
                             $allServices[$count] = array(
@@ -350,14 +411,13 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
                                 'code' => $quote->carrierCode,
                                 'label' => $quote->carrierName,
                                 'cost' => $quote->totalNetCharge,
-                                'transit_days' => $quote->transitDays,
+                                // Cuttoff Time
+                                'delivery_estimates' => $delivery_estimates,
+                                'delivery_time_stamp' => $delivery_time_stamp,
                                 'meta_data' => $meta_data,
                                 'markup' => (isset($result['markup'])) ? $result['markup'] : "",
                                 'label_sfx_arr' => $label_sufex_arr,
                                 'surcharges' => $surcharges,
-                                'transit_label' => ($this->quote_settings['rating_method'] != "average_rate" && is_numeric($quote->transitDays) &&
-                                    $this->quote_settings['transit_days'] == "yes") ?
-                                    ' ( Estimated transit time of ' . $quote->transitDays . ' business days. )' : ""
                             );
 
                             // FDO
@@ -365,6 +425,7 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
                             if (isset($en_fdo_meta_data['rate']['meta_data'])) {
                                 unset($en_fdo_meta_data['rate']['meta_data']);
                             }
+                            $en_fdo_meta_data['quote_settings'] = $this->quote_settings;
                             $allServices[$count]['meta_data']['en_fdo_meta_data'] = $en_fdo_meta_data;
 
                             $_price_sorted_key[$count] = (isset($allServices[$count]['cost'])) ? $allServices[$count]['cost'] : 0;
@@ -401,6 +462,9 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
                     $simple_quotes = array();
                     $count = 0;
                     foreach ($result['quotes']->quotesWithoutLiftGate as $key => $service) {
+                        $delivery_estimates = (isset($service->totalTransitTimeInDays)) ? $service->totalTransitTimeInDays : '';
+                        $delivery_time_stamp = (isset($service->deliveryTimestamp)) ? $service->deliveryTimestamp : '';
+
                         if (isset($service->service) && ($service->service == 'Standard')) {
 
                             if (isset($service->carrierCode) && in_array($service->carrierCode, $this->quote_settings['enable_carriers'])) {
@@ -409,6 +473,7 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
                                 $meta_data['accessorials'] = json_encode($accessorials);
                                 $meta_data['sender_origin'] = $request_data['sender_origin'];
                                 $meta_data['product_name'] = json_encode($request_data['product_name']);
+                                // Standard Packaging
                                 $meta_data['standard_packaging'] = $standard_packaging_data;
 
                                 $simple_quotes[$count] = array(
@@ -416,14 +481,13 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
                                     'code' => $service->carrierCode,
                                     'label' => $service->carrierName,
                                     'cost' => $service->totalNetCharge,
-                                    'transit_days' => $service->transitDays,
+                                    // Cuttoff Time
+                                    'delivery_estimates' => $delivery_estimates,
+                                    'delivery_time_stamp' => $delivery_time_stamp,
                                     'markup' => (isset($result['markup'])) ? $result['markup'] : "",
                                     'label_sfx_arr' => $label_sufex_arr,
                                     'surcharges' => $surcharges,
                                     'meta_data' => $meta_data,
-                                    'transit_label' => ($this->quote_settings['rating_method'] != "average_rate" && is_numeric($quote->transitDays) &&
-                                        $this->quote_settings['transit_days'] == "yes") ?
-                                        ' ( Estimated transit time of ' . $quote->transitDays . ' business days. )' : ""
                                 );
 
                                 // FDO
@@ -431,6 +495,7 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
                                 if (isset($en_fdo_meta_data['rate']['meta_data'])) {
                                     unset($en_fdo_meta_data['rate']['meta_data']);
                                 }
+                                $en_fdo_meta_data['quote_settings'] = $this->quote_settings;
                                 $simple_quotes[$count]['meta_data']['en_fdo_meta_data'] = $en_fdo_meta_data;
 
                                 $price_simple_quotes[$count] = (isset($simple_quotes[$count]['cost'])) ? $simple_quotes[$count]['cost'] : 0;
@@ -478,6 +543,7 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
                 if (isset($en_fdo_meta_data['rate']['meta_data'])) {
                     unset($en_fdo_meta_data['rate']['meta_data']);
                 }
+                $en_fdo_meta_data['quote_settings'] = $this->quote_settings;
                 $simple_quotes[$count]['meta_data']['en_fdo_meta_data'] = $en_fdo_meta_data;
 
                 $price_simple_quotes[$count] = (isset($simple_quotes[$count]['cost'])) ? $simple_quotes[$count]['cost'] : 0;

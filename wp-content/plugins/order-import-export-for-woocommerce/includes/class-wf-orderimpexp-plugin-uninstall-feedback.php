@@ -7,7 +7,7 @@ if (!class_exists('WF_OrderImpExp_Uninstall_Feedback')) :
     class WF_OrderImpExp_Uninstall_Feedback {
 
         protected $api_url='https://feedback.webtoffee.com/wp-json/wforderimpexp/v1/uninstall';
-        protected $current_version=WF_ORDERIMPEXP_CURRENT_VERSION;
+        protected $current_version=WT_O_IEW_VERSION;
         protected $auth_key='wforderimpexp_uninstall_1234#';
         protected $plugin_id='wforderimpexp';
         public function __construct() {
@@ -92,12 +92,16 @@ if (!class_exists('WF_OrderImpExp_Uninstall_Feedback')) :
                                 </li>
                             <?php } ?>
                         </ul>
+                        <div class="wt-uninstall-feedback-privacy-policy">
+                            <?php _e('We do not collect any personal data when you submit this form. It\'s your feedback that we value.', 'order-import-export-for-woocommerce'); ?>
+                            <a href="https://www.webtoffee.com/privacy-policy/" target="_blank"><?php _e('Privacy Policy', 'order-import-export-for-woocommerce'); ?></a>
+                        </div>                          
                     </div>
                     <div class="wforderimpexp-modal-footer">
                         <a href="#" class="dont-bother-me"><?php _e('I rather wouldn\'t say', 'order-import-export-for-woocommerce'); ?></a>
                         <a class="button-primary" href="https://wordpress.org/support/plugin/order-import-export-for-woocommerce/" target="_blank">
                         <span class="dashicons dashicons-external" style="margin-top:3px;"></span>
-                        <?php _e('Go to support', 'order-import-export-for-woocommerce'); ?></a>
+                        <?php _e('Get support', 'order-import-export-for-woocommerce'); ?></a>
                         <button class="button-primary wforderimpexp-model-submit"><?php _e('Submit & Deactivate', 'order-import-export-for-woocommerce'); ?></button>
                         <button class="button-secondary wforderimpexp-model-cancel"><?php _e('Cancel', 'order-import-export-for-woocommerce'); ?></button>
                     </div>
@@ -141,6 +145,20 @@ if (!class_exists('WF_OrderImpExp_Uninstall_Feedback')) :
                     padding: 12px 20px;
                     text-align: right;
                 }
+                .wt-uninstall-feedback-privacy-policy {
+                    text-align: left;
+                    font-size: 12px;
+                    color: #aaa;
+                    line-height: 14px;
+                    margin-top: 20px;
+                    font-style: italic;
+                }
+
+                .wt-uninstall-feedback-privacy-policy a {
+                    font-size: 11px;
+                    color: #4b9cc3;
+                    text-decoration-color: #99c3d7;
+                }                
             </style>
             <script type="text/javascript">
                 (function ($) {

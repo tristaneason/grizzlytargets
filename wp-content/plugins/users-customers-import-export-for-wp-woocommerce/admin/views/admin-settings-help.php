@@ -6,11 +6,11 @@ if ( ! defined( 'WPINC' ) ) {
 <div class="wt-iew-tab-content" data-id="<?php echo $target_id;?>">
 	<ul class="wt_iew_sub_tab">
 		<li style="border-left:none; padding-left: 0px;" data-target="help-links"><a><?php _e('Help Links'); ?></a></li>
-		<li data-target="help-doc"><a><?php _e('Help doc');?></a></li>
+		<li data-target="help-doc"><a><?php _e('Sample CSV');?></a></li>
 	</ul>
 	<div class="wt_iew_sub_tab_container">		
 		<div class="wt_iew_sub_tab_content" data-id="help-links" style="display:block;">
-			<h3><?php _e('Help Links'); ?></h3>
+			<!--<h3><?php //_e('Help Links'); ?></h3>-->
 			<ul class="wf-help-links">
 			    <li>
 			        <img src="<?php echo WT_U_IEW_PLUGIN_URL;?>assets/images/documentation.png">
@@ -31,11 +31,12 @@ if ( ! defined( 'WPINC' ) ) {
 			</ul>
 		</div>
 		<div class="wt_iew_sub_tab_content" data-id="help-doc">
-			<h3><?php _e( 'Help Docs' ); ?></h3>
+			<h3><?php //_e( 'Help Docs' ); ?></h3>
 			<ul class="wf-help-links">
 				<?php do_action( 'wt_user_addon_basic_help_content' ); ?>
 				<?php do_action( 'wt_order_addon_basic_help_content' ); ?>
 				<?php do_action( 'wt_coupon_addon_basic_help_content' ); ?>
+                                <?php do_action( 'wt_product_addon_basic_help_content' ); ?>
 			</ul>
 		</div>
 	</div>

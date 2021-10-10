@@ -8,12 +8,13 @@ function porto_load_links_item_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => 'Porto ' . __( 'Links Item', 'porto-functionality' ),
-			'base'     => 'porto_links_item',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'porto_vc_links_item',
-			'as_child' => array( 'only' => 'porto_links_block' ),
-			'params'   => array(
+			'name'        => 'Porto ' . __( 'Links Item', 'porto-functionality' ),
+			'base'        => 'porto_links_item',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'Display the links', 'porto-functionality' ),
+			'icon'        => 'porto_vc_links_item',
+			'as_child'    => array( 'only' => 'porto_links_block' ),
+			'params'      => array(
 				array(
 					'type'        => 'textfield',
 					'heading'     => __( 'Label', 'porto-functionality' ),

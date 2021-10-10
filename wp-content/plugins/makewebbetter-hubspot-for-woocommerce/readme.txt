@@ -3,13 +3,13 @@ Contributors: MakeWebBetter
 Donate link: https://makewebbetter.com/
 Tags: Abandoned Cart, Email Marketing, Marketing Automation, WooCommerce, HubSpot
 Requires at least: 4.4.0
-Tested up to: 5.7.0
-WC requires at least: 3.0.0
-WC tested up to: 5.1.0
+Tested up to: 5.8.1
+WC requires at least: 3.5.0
+WC tested up to: 5.6.0
 Requires PHP: 5.1
-Stable tag: 1.0.8
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Stable tag: 1.2.3
+License: GPLv3 or later
+License URI: http://www.gnu.org/licenses/gpl-3.0.txt
  
 Integrate WooCommerce with HubSpot’s free CRM, abandoned cart tracking, email marketing, marketing automation, analytics & more.
 
@@ -27,6 +27,11 @@ With the [HubSpot for WooCommerce free plugin](https://www.hubspot.com/partners/
 * Create and send beautiful, responsive emails to your leads and customers
 * Build advertising campaigns on Facebook, Instagram, LinkedIn, and Google
 * Create insightful reports on your customers and orders to track the growth of your business
+
+== PLUGIN MEETS YOUR REQUIREMENT, SO ==
+[Download Now!!](https://downloads.wordpress.org/plugin/makewebbetter-hubspot-for-woocommerce.zip)
+Visit [HubSpot for WooCommerce documentation guide](https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
+
  
 What’s included in the [HubSpot for WooCommerce free WordPress plugin](https://www.hubspot.com/partners/wordpress/plugins/woocommerce-by-makewebbetter):
 
@@ -51,8 +56,15 @@ Build beautiful, responsive emails and personalize them based on your customers�
 = AD MANAGEMENT MADE EASY =
 Build Facebook, Instagram, LinkedIn, and Google advertising campaigns with precision. Easily track the ROI of each campaign and stop struggling to justify your paid ad spend. 
 
+= Also check out the add-ons that help you extend the functionality of our integration: =
+
+* [HubSpot Field To Field Sync](https://makewebbetter.com/product/hubspot-field-to-field-sync/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
+* [HubSpot Deals for WooCommerce Memberships](https://makewebbetter.com/product/hubspot-deals-for-woocommerce-memberships/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
+* [HubSpot Recommended Products Addon](https://makewebbetter.com/product/hubspot-recommended-products-addon/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
+
+
 = NEED ADDITIONAL HELP OR CUSTOMIZATION? =
-Read the [HubSpot for WooCommerce documentation guides](https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG) for easy-to-understand onboarding tips. If you need additional help with your onboarding or a customized implementation, learn about the [MakeWebBetter onboarding plans.](https://makewebbetter.com/hubspot-woocommerce-onboarding/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
+Read the [HubSpot for WooCommerce documentation guides](https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG) for easy-to-understand onboarding tips. If you need additional help with your onboarding or a customized implementation, learn about the [MakeWebBetter HubSpot Onboarding plans.](https://makewebbetter.com/hubspot-woocommerce-onboarding/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
 
 = WHAT PEOPLE ARE SAYING ABOUT HUBSPOT FOR WOOCOMMERCE - CRM, ABANDONED CART, EMAIL MARKETING, AUTOMATION & ANALYTICS? =
  
@@ -61,19 +73,20 @@ Read the [HubSpot for WooCommerce documentation guides](https://docs.makewebbett
 > Note “As a HubSpot agency, we’ve set up many eCommerce websites, and even more Inbound marketing campaigns. This plugin helps to bridge the gap between an online shop and the Inbound Methodology. Additionally, the implementation time is reduced by many hours. No question, this is one of the best investments we make for our eCom clients. Lower cost to implement, much faster Return on HubSpot Investment, and quicker time to market. It’s a win, win, win.
 ” *– MediaTown*
 
+If our documentation doesn’t contain the solution to your problem, you can visit the [MakeWebBetter Forums](https://forums.makewebbetter.com/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG) with your question.
 
  
 == Installation ==
  
 = Automatic installation =
 
-Automatic installation is the easiest option as WordPress handles the file transfers itself and you don't need to leave your web browser. To do an automatic install of HubSpot for WooCommerce, log in to your WordPress dashboard, navigate to the Plugins menu and click Add New.
+Automatic installation is the easiest option as WordPress handles the file transfers itself and you don't need to leave your web browser. To do an automatic install of HubSpot For WooCommerce, log in to your WordPress dashboard, navigate to the Plugins menu and click Add New.
 
-In the search field type "HubSpot for WooCommerce" and click Search Plugins. Once you've found our HubSpot for WooCommerce plugin you can view details about it such as the point release, rating and description. Most importantly, of course, you can install it by simply clicking "Install Now".
+In the search field type "HubSpot For WooCommerce" and click Search Plugins. Once you've found our HubSpot For WooCommerce plugin you can view details about it such as the point release, rating and description. Most importantly, of course, you can install it by simply clicking "Install Now".
 
 = Manual installation =
 
-The manual installation method involves downloading our HubSpot for WooCommerce and uploading it to your webserver via your favorite FTP application. The WordPress codex contains [instructions on how to do this here](http://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
+The manual installation method involves downloading our HubSpot For WooCommerce and uploading it to your webserver via your favorite FTP application. The WordPress codex contains [instructions on how to do this here](http://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
 
 = Updating =
 
@@ -111,31 +124,39 @@ Not at all! The HubSpot for WooCommerce plugin is easy to download and starts wo
 If you have over a 1000+ contacts, synchronization may take a while. You can [connect with us](https://makewebbetter.com/hubspot-ecommerce-agency/?utm_source=MWB-hubspot-org&utm_medium=MWB-org-page&utm_campaign=MWB-hubspot-org) for faster syncing.
 
 = My question is not listed =
-Please visit the MakeWebBetter knowledge base for more detailed documentation and support.
+Please visit the MakeWebBetter [knowledge base](https://support.makewebbetter.com/hubspot-knowledge-base/https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG) for more detailed [documentation and support.](https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
 
 
 == Changelog ==
- 
+= 1.2.3 - Released on 13 Sep 2021 =
+* Added - Content Part 
+= 1.2.2 - Released on 18 August 2021 =
+* Added - Fixed deal and contact association issue
+= 1.2.1 - Released on 29 May 2021 =
+* Added - Bug Fixes.
+= 1.2.0 - Released on 23 April 2021 =
+* Added - Historical Sync Data.
 = 1.0.8 - Released on 23 April 2021 =
 * Fix - Creating Groups issue.
+= 1.0.7 - Released on 06 April 2021 =
+* Fix - Authentication issue
+= 1.0.6 - Released on 18 December 2020 =
+* Fix - Deal update issue
+= 1.0.5 =
+* Fix - Bug Fixes.
+= 1.0.4 =
+* Session issue and minor bugs
+= 1.0.3 =
+* Shipment tracking and re-sync deals 
+= 1.0.2 =
+* Multi site support
+= 1.0.1 =
+* Contact sync fixed
+= 1.0.0 =
+* Initial release
+
  
 == Upgrade Notice ==
  
-= 1.0.0 =
-* Initial release
-= 1.0.1 =
-* Contact sync fixed
-= 1.0.2 =
-* Multi site support
-= 1.0.3 =
-* Shipment tracking and re-sync deals 
-= 1.0.4 =
-* Session issue and minor bugs
-= 1.0.5 =
-* Fix - Bug Fixes.
-= 1.0.6 - Released on 18 December 2020 =
-* Fix - Deal update issue
-= 1.0.7 - Released on 06 April 2021 =
-* Fix - Authentication issue
-= 1.0.8 - Released on 23 April 2021 =
-* Fix - Creating Groups issue.
+= 1.2.3 - Released on 13 Sep 2021 =
+* Added - Content Part 

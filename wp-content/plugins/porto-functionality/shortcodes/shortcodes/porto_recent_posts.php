@@ -11,11 +11,12 @@ function porto_load_recent_posts_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => 'Porto ' . __( 'Recent Posts', 'porto-functionality' ),
-			'base'     => 'porto_recent_posts',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'porto-sc Simple-Line-Icons-docs',
-			'params'   => array(
+			'name'        => 'Porto ' . __( 'Recent Posts', 'porto-functionality' ),
+			'base'        => 'porto_recent_posts',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'Show posts by slider', 'porto-functionality' ),
+			'icon'        => 'porto-sc Simple-Line-Icons-docs',
+			'params'      => array(
 				array(
 					'type'        => 'textfield',
 					'heading'     => __( 'Title', 'porto-functionality' ),
@@ -129,7 +130,7 @@ function porto_load_recent_posts_shortcode() {
 					'param_name' => 'image_size',
 					'value'      => porto_sh_commons( 'image_sizes' ),
 					'std'        => '',
-					'dependency'  => array(
+					'dependency' => array(
 						'element'   => 'show_image',
 						'not_empty' => true,
 					),
@@ -205,7 +206,7 @@ function porto_load_recent_posts_shortcode() {
 					'param_name' => 'nav_pos',
 					'value'      => array(
 						__( 'Middle', 'porto-functionality' ) => '',
-						__( 'Top', 'porto-functionality' )    => 'show-nav-title',
+						__( 'Top', 'porto-functionality' ) => 'show-nav-title',
 						__( 'Bottom', 'porto-functionality' ) => 'nav-bottom',
 					),
 					'dependency' => array(

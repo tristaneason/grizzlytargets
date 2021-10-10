@@ -108,6 +108,7 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
      * @return array
      */     
     public function parse_users( $data ) {
+        
         try{
             $data = apply_filters('wt_user_importer_pre_parse_data', $data); 
             $item = $data['mapping_fields'];
@@ -129,7 +130,7 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
                 }          
             } 
 
-            $email = isset($item['user_email']) && '' != $item['user_email'] ? $item['user_email'] : '';
+            $email = isset($item['user_email']) && '' != $item['user_email'] ? trim($item['user_email']) : '';
             $id_found_with_email = '';
             if(!empty($email) && 'email' == $this->merge_with){   
 
@@ -141,7 +142,7 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
                                  
             }
             
-            $username = isset($item['user_login']) && '' != $item['user_login'] ? $item['user_login'] : '';
+            $username = isset($item['user_login']) && '' != $item['user_login'] ? trim($item['user_login']) : '';
             $id_found_with_username = '';
             if(!empty($username) && 'username' == $this->merge_with){  
                 
@@ -175,17 +176,17 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
 //                throw new Exception('Skipping new item' );
 //            } 
              
-            if(!$this->is_user_exist){
-                $create_user_without_email = apply_filters('wt_create_user_without_email',FALSE);  // create user without email address
-                if ( empty($item['user_email']) && $create_user_without_email === FALSE ) {
-                                    $this->hf_log_data_change( 'user-csv-import', __( '> skipped: cannot insert user without email.' ));
-                                unset($item);
-                                return new WP_Error( 'parse-error', __( '> skipped: cannot insert user without email.' ) );
-                }elseif(!is_email($item['user_email']) && $create_user_without_email === FALSE){
-                                    $this->hf_log_data_change( 'user-csv-import', sprintf(__( '> skipped: Email is not valid. %s' ),$item['user_email']) );
-                                unset($item);
-                                return new WP_Error( 'parse-error',  __( '>  skipped: Email is not valid.' ) );
-                }
+            if (!$this->is_user_exist) {
+                    $create_user_without_email = apply_filters('wt_create_user_without_email', FALSE);  // create user without email address
+                    if (empty($email) && $create_user_without_email === FALSE) {
+                        $this->hf_log_data_change('user-csv-import', __('> skipped: cannot insert user without email.'));
+                        unset($item);
+                        return new WP_Error('parse-error', __('> skipped: cannot insert user without email.'));
+                    } elseif (!is_email($email) && $create_user_without_email === FALSE) {
+                        $this->hf_log_data_change('user-csv-import', sprintf(__('> skipped: Email is not valid. %s'), $item['user_email']));
+                        unset($item);
+                        return new WP_Error('parse-error', __('>  skipped: Email is not valid.'));
+                    }
             }
 
             $user_meta = $user_details = array();
@@ -197,12 +198,12 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
                     continue;
                 }                
                 if(isset($item[$value]))
-                    $user_details[$key] = $item[$value];
+                    $user_details[$key] = trim($item[$value]);
                 //$user_details[$key] = isset( $item[$value] ) ? $item[$value] : "" ;
             }
 
             foreach ($this->user_meta_fields as $key => $value){
-                $user_meta[] = array( 'key' => $key, 'value' => isset( $item[$value] ) ? $item[$value] : "" );
+                $user_meta[] = array( 'key' => $key, 'value' => isset( $item[$key] ) ? trim($item[$key]) : "" );
             }
 
             // the $user_details array will now contain the necessary name-value pairs for the wp_users table, and also any meta data in the 'usermeta' array
@@ -210,7 +211,6 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
 
             $parsed_details['user_details'] = $user_details;
             $parsed_details['user_meta'] = $user_meta;
-
 
             return $parsed_details;
         } catch (Exception $e) {
@@ -249,12 +249,12 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
                 if (is_wp_error($user_id)) {
 
                     $this->hf_log_data_change('user-csv-import', sprintf(__('> Error inserting %s: %s'), 1, $user_id->get_error_message()), true);
-                    $skipped++;
+                    //$skipped++;
                     unset($post);
                         return new WP_Error( 'parse-error',sprintf(__('> Error inserting %s: %s'), 1, $user_id->get_error_message()));
                 } elseif (empty($user_id)) {
                     
-                    $skipped++;
+                    //$skipped++;
                     unset($post);
                     return new WP_Error( 'parse-error',__('An error occurred with the customer information provided.'));
                 }
@@ -359,6 +359,7 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
                 } else {
                     $roles_to_remove = array_diff($user_roles, $new_roles);
                 }
+                array_push($roles_to_remove, 'subscriber');
                 if (!empty($new_roles)) {
                     foreach ($roles_to_remove as $_role) {
                         $wp_user_object->remove_role($_role);   //remove the default role before adding new roles
@@ -402,7 +403,14 @@ class Wt_Import_Export_For_Woo_basic_User_Import {
                     $key = trim(str_replace('meta:', '', $key));
 //                    $meta = trim(str_replace('meta:', '', $meta));
                     $meta_value = (!empty($meta_array[$key]) ) ? maybe_unserialize($meta_array[$key]) : '';
-                    if ($key == $wpdb->prefix.'user_level' && $meta_value == ''){                        $meta_value = 0;
+                    if ($key == $wpdb->prefix.'user_level' && $meta_value == ''){
+                        $meta_value = 0;
+                    }
+                    if ('session_tokens' == $key) {
+                        if (!empty($meta_array[$key]) ) {
+                            $session_json = base64_decode($meta_array[$key]);
+                            $meta_value = json_decode($session_json, true);
+                        }
                     }
                     if (empty($meta_value) && !$merge_empty_cells) {
                         continue;

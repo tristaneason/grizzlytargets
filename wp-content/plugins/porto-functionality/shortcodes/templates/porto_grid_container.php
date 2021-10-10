@@ -32,7 +32,7 @@ $rand_escaped     = '';
 $length           = 32;
 for ( $n = 1; $n < $length; $n++ ) {
 	$whichcharacter = rand( 0, strlen( $valid_characters ) - 1 );
-	$rand_escaped  .= $valid_characters{$whichcharacter};
+	$rand_escaped  .= substr( $valid_characters, $whichcharacter, 1 );
 }
 
 $el_class = porto_shortcode_extract_class( $el_class );

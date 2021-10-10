@@ -37,6 +37,8 @@ if ( empty( get_option( 'hubwoo_customers_role_settings', array() ) ) ) {
 
 $onboarding_data = Hubwoo::hubwoo_onboarding_questionaire();
 
+
+
 ?>
 
 <div class="mwb-heb-welcome sync-page" style="display: <?php echo esc_html( $sync_process['display_sync'] ); ?>">
@@ -49,31 +51,40 @@ $onboarding_data = Hubwoo::hubwoo_onboarding_questionaire();
 		<div class="mwb-heb-wlcm__content">
 			<div class="hubwoo-content__para">
 				<p>
-					<?php esc_html_e( "You're almost done! The last step is to sync your WooCommerce data with HubSpot.", 'makewebbetter-hubspot-for-woocommerce' ); ?>
+					<?php esc_html_e( 'You’re almost done! The last step is to sync your existing WooCommerce data to HubSpot. This will sync all your Contacts, Deals, and Products data to HubSpot.', 'makewebbetter-hubspot-for-woocommerce' ); ?>
 				</p>
 				<p>
-					<?php esc_html_e( "Once you sync your data, you'll be able to see all your WooCommerce information in HubSpot, so you can start engaging with your contacts and customers right away.", 'makewebbetter-hubspot-for-woocommerce' ); ?>
+					<?php esc_html_e( 'Once you sync your data, you’ll see all your WooCommerce information on HubSpot so you can start engaging with them right away.', 'makewebbetter-hubspot-for-woocommerce' ); ?>
 				</p>			
 			</div>				
 			<div class="mwb-heb-wlcm__btn-wrap">
-				<?php
-				if ( $total_registered_users < 500 ) {
-					?>
-							<a href="javascript:void(0);" id = "hubwoo-osc-instant-sync" class="hubwoo-osc-instant-sync hubwoo-btn--primary" data-total_users= "<?php echo esc_attr( $total_registered_users ); ?>"><?php esc_html_e( 'Sync Now', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>		
-						<?php
-				} else {
-					?>
-							
-							<a href="?page=hubwoo&hubwoo_tab=hubwoo-sync-contacts&action=hubwoo-osc-schedule-sync" id = "hubwoo-osc-schedule-sync" id="hubwoo-osc-schedule-sync" class="hubwoo-osc-schedule-sync hubwoo__btn"><?php esc_html_e( 'Schedule Sync', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
-						<?php
-				}
-				?>
+
+				<a href="javascript:void(0);" id = "hubwoo-osc-instant-sync-historical" class="hubwoo-osc-instant-sync hubwoo-btn--primary" data-total_users= "<?php echo esc_attr( $total_registered_users ); ?>"><?php esc_html_e( 'Sync Now', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>		
+
+				<a href="?page=hubwoo&hubwoo_tab=hubwoo-sync-contacts&action=hubwoo-osc-schedule-sync" id = "hubwoo-osc-schedule-sync" id="hubwoo-osc-schedule-sync" class="hubwoo-osc-schedule-sync hubwoo__btn"><?php esc_html_e( 'Skip Historical Data Sync', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+
 			</div>
 		</div>
-		<div>
+		<div class="hubwoo-progress-container" >
 			<div class="hubwoo-progress-wrap" style="display: none;">
 				<p>
-					<strong><?php esc_html_e( 'Contact sync is in progress. This should only take a few moments. Thanks for your patience!', 'makewebbetter-hubspot-for-woocommerce' ); ?></strong>
+					<strong><?php esc_html_e( '1. Syncing Your Contacts to HubSpot. This should only take a few moments. Thanks for your patience!', 'makewebbetter-hubspot-for-woocommerce' ); ?></strong>
+				</p>					
+				<div class="hubwoo-progress">
+					<div class="hubwoo-progress-bar" role="progressbar" style="width:0"></div>
+				</div>
+			</div>
+			<div class="hubwoo-progress-wrap-import" style="display: none;">
+				<p>
+					<strong><?php esc_html_e( '2. Syncing your Products to HubSpot. This should only take a few moments. Thanks for your patience!', 'makewebbetter-hubspot-for-woocommerce' ); ?></strong>
+				</p>					
+				<div class="hubwoo-progress">
+					<div class="hubwoo-progress-bar" role="progressbar" style="width:0"></div>
+				</div>
+			</div>
+			<div class="hubwoo-progress-wrap-import-deals" style="display: none;">
+				<p>
+					<strong><?php esc_html_e( '3. Syncing your Deals to Hubspot. This should only take a few moments. Thanks for your patience!', 'makewebbetter-hubspot-for-woocommerce' ); ?></strong>
 				</p>					
 				<div class="hubwoo-progress">
 					<div class="hubwoo-progress-bar" role="progressbar" style="width:0"></div>
@@ -94,7 +105,7 @@ $onboarding_data = Hubwoo::hubwoo_onboarding_questionaire();
 			<div class="hubwoo-content__para hubwoo-content__para--greeting">
 				<div class="hubwoo-content__para--greeting-img" >
 					<p>
-						<?php esc_html_e( "What's next? Go to your dashboard to learn more about the integration." ); ?>
+						<?php esc_html_e( "What's next? Go to your dashboard to learn more about the integration.", 'makewebbetter-hubspot-for-woocommerce' ); ?>
 					</p>
 					<div class="mwb-heb-wlcm__btn-wrap">
 						<a href="javascript:void(0);" class="hubwoo__btn hubwoo_manage_screen" data-process="greet-to-dashboard" data-tab="hubwoo_tab" ><?php esc_html_e( 'Visit DashBoard', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
@@ -116,20 +127,20 @@ $onboarding_data = Hubwoo::hubwoo_onboarding_questionaire();
 			</h2>
 		</div>
 		<div class="hubwoo-onboard-suburb">
-			<p><?php esc_html_e( 'Help us make your experience even better by telling us:' ); ?></p>
+			<p><?php esc_html_e( 'Help us make your experience even better by telling us:', 'makewebbetter-hubspot-for-woocommerce' ); ?></p>
 		</div>		
 		<div class="hubwoo-onboarding-email__body mwb-heb-wlcm__content">
 			<form action="#" method="POST" id="hubwoo-onboarding-form">			
 				<div class="hubwoo-onboarding-email__body-content">
 					<div class="hubwoo-onboard-notice">
-						<span><?php esc_html_e( 'Please fill all of the below fields before submission' ); ?></span>
+						<span><?php esc_html_e( 'Please fill all of the below fields before submission', 'makewebbetter-hubspot-for-woocommerce' ); ?></span>
 					</div>					
 					<?php
 					foreach ( $onboarding_data as $name => $data ) {
 						?>
 					<div class="hubwoo-onboarding-email__items">
 						<label class="hubwoo-onboard-suburb-label"><?php echo esc_textarea( $data['label'] ); ?></label>
-						<select name="<?php echo esc_attr( $name ); ?>[]" <?php echo esc_attr( $data['allow'] ); ?> class="hubwoo-form-control hubwoo-onquest">
+						<select name="<?php echo esc_attr( $name ); ?>[]" <?php echo esc_attr( $data['allow'] ); ?> class="hubwoo-form-control hubwoo-onquest <?php echo esc_attr( $name ); ?>">
 							<?php foreach ( $data['options'] as $option ) : ?>
 								<option value="<?php echo esc_attr( $option ); ?>"><?php echo esc_attr( $option ); ?></option>							
 							<?php endforeach ?>
@@ -139,16 +150,58 @@ $onboarding_data = Hubwoo::hubwoo_onboarding_questionaire();
 						<?php
 					}
 					?>
+					<span class="hubwoo-onboarding-message hidefield hubwoo_register">
+						<?php esc_html_e( 'Choosing the ideal plan for your company might be confusing. ', 'makewebbetter-hubspot-for-woocommerce' ); ?>
+						<a target="_blank" href="https://meetings.hubspot.com/makewebbetter/free-hubspot-consultation"><?php esc_html_e( 'Connect Us ', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+						<?php esc_html_e( 'and we can assist you for free.', 'makewebbetter-hubspot-for-woocommerce' ); ?>
+					</span>
+					<!-- code for adding first name field in form --> 
+					<div class="hubwoo-onboarding-email__items flname hidefield hubwoo_register">
+						<label class="hubwoo-onboard-suburb-label"><?php esc_html_e( 'First Name', 'makewebbetter-hubspot-for-woocommerce' ); ?></label>
+						<input type="esc_textarea" placeholder="First Name" name="firstname" class="hubwoo-form-control-flname" >
+						<img class="hubwoo-onboard-img" name="firstname" height="20px" width="20px" src="<?php echo esc_url( HUBWOO_URL . 'admin/images/checked.png' ); ?>">
+					</div>
+
+					<!-- code for adding last name field in form -->
+					<div class="hubwoo-onboarding-email__items flname hidefield hubwoo_register">
+						<label class="hubwoo-onboard-suburb-label"><?php esc_html_e( 'Last Name', 'makewebbetter-hubspot-for-woocommerce' ); ?></label>
+						<input type="esc_textarea" placeholder="Last Name" name="lastname" class="hubwoo-form-control-flname" >
+						<img class="hubwoo-onboard-img" name="lastname" height="20px" width="20px" src="<?php echo esc_url( HUBWOO_URL . 'admin/images/checked.png' ); ?>">
+					</div>
+
+					<!-- code for adding company name field in form -->
+					<div class="hubwoo-onboarding-email__items hidefield hubwoo_register">
+						<label class="hubwoo-onboard-suburb-label"><?php esc_html_e( 'Company Name', 'makewebbetter-hubspot-for-woocommerce' ); ?></label>
+						<input type="esc_textarea" placeholder="Company Name" name="company" class="hubwoo-form-control" >
+						<img class="hubwoo-onboard-img" name="company" height="20px" width="20px" src="<?php echo esc_url( HUBWOO_URL . 'admin/images/checked.png' ); ?>">
+					</div>
+
+					<!-- code for adding company url field in form -->
+					<div class="hubwoo-onboarding-email__items hidefield hubwoo_register">
+						<label class="hubwoo-onboard-suburb-label"><?php esc_html_e( 'Website URL', 'makewebbetter-hubspot-for-woocommerce' ); ?></label>
+						<input type="esc_textarea" placeholder="URl where you'll install HubSpot" name="website" class="hubwoo-form-control" >
+						<img class="hubwoo-onboard-img" name="website" height="20px" width="20px" src="<?php echo esc_url( HUBWOO_URL . 'admin/images/checked.png' ); ?>">
+					</div>
+
+					<!-- code for adding email field in form -->
 					<div class="hubwoo-onboarding-email__items">
-						<label class="hubwoo-onboard-suburb-label"><?php esc_html_e( 'Email Address' ); ?></label>
+						<label class="hubwoo-onboard-suburb-label"><?php esc_html_e( 'Email Address', 'makewebbetter-hubspot-for-woocommerce' ); ?></label>
 						<input type="email" placeholder="Email Address" name="email" class="hubwoo-form-control" value="<?php echo esc_textarea( get_user_by( 'id', get_current_user_id() )->data->user_email ); ?>">
 						<img class="hubwoo-onboard-img" name="email" height="20px" width="20px" src="<?php echo esc_url( HUBWOO_URL . 'admin/images/checked.png' ); ?>">
-					</div>					
+					</div>	
+
+					<!-- code for adding phone nuber field in form --> 
+					<div class="hubwoo-onboarding-email__items">
+						<label class="hubwoo-onboard-suburb-label"><?php esc_html_e( 'Phone Number', 'makewebbetter-hubspot-for-woocommerce' ); ?></label>
+						<input type="esc_textarea" placeholder="Phone number" name="phone" class="hubwoo-form-control" >
+						<img class="hubwoo-onboard-img" name="phone" height="20px" width="20px" src="<?php echo esc_url( HUBWOO_URL . 'admin/images/checked.png' ); ?>">
+					</div>
+
 					<div class="onboard-spinner"><span class="fa fa-spinner fa-spin"></span></div>
 					<div class="hubwoo-onboarding-email__butttons">
-						<a href="javascript:void" data-type='sync' id= "hubwoo-complete-onboarding" class="hubwoo-onboard-manage hubwoo-btn--dashboard hubwoo-btn--primary"><?php esc_html_e( 'Complete Onboarding' ); ?></a>
+						<a href="javascript:void" data-type='sync' id= "hubwoo-complete-onboarding" class="hubwoo-onboard-manage hubwoo-btn--dashboard hubwoo-btn--primary"><?php esc_html_e( 'Complete Onboarding', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 						<div class="hubwoo-onboard-manage hubwoo-onboarding-skip--link">
-							<a href="javascript:void" data-type='skip' class="hubwoo-onboard-manage" ><?php esc_html_e( 'Skip for now' ); ?></a>
+							<a href="javascript:void" data-type='skip' class="hubwoo-onboard-manage" ><?php esc_html_e( 'Skip for now', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 						</div>
 					</div>
 				</div>

@@ -149,13 +149,17 @@ function pewc_filter_field_price_for_role( $price, $item, $product ) {
 
 		// Get the current user's role(s) and check for any different pricing
 		$user_roles = pewc_get_current_user_roles();
-		foreach( $user_roles as $role ) {
+		if( $user_roles ) {
 
-			if( ! empty( $item['field_price_' . $role] ) && in_array( $role, $enabled_roles ) ) {
+			foreach( $user_roles as $role ) {
 
-				$role_price = $item['field_price_' . $role];
-				// Return the lowest available role-based price for this user
-				$price = min( $price, $role_price );
+				if( ! empty( $item['field_price_' . $role] ) && in_array( $role, $enabled_roles ) ) {
+
+					$role_price = $item['field_price_' . $role];
+					// Return the lowest available role-based price for this user
+					$price = min( $price, $role_price );
+
+				}
 
 			}
 

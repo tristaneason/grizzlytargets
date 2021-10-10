@@ -59,7 +59,7 @@ if( ! empty( $item['products_quantities'] ) ) {
 		$image_url = ( get_post_thumbnail_id( $child_product_id ) ) ? wp_get_attachment_url( get_post_thumbnail_id( $child_product_id ) ) : wc_placeholder_img_src();
 		$image = '<img src="' . esc_url( $image_url ) . '">';
 
-	  $name = get_the_title( $child_product_id ) . apply_filters( 'pewc_option_price_separator', '+', $item ) . $price;
+		$name = apply_filters( 'pewc_child_product_title', get_the_title( $child_product_id ), $child_product ) . apply_filters( 'pewc_option_price_separator', '+', $item ) . $price;
 
 		$field_name = $id . '_child_product';
 

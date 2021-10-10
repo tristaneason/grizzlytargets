@@ -1,5 +1,21 @@
     jQuery(document).ready(function() {
-        
+        // Origin terminal address
+        jQuery("#en_wd_origin_address,#en_wd_dropship_address").keypress(function (e) {
+            if (!String.fromCharCode(e.keyCode).match(/^[a-z\d\-_,.\s]+$/i)) return false;
+        });
+        // Terminal phone number
+        jQuery(".en-phone-number").keypress(function (e) {
+            if (!String.fromCharCode(e.keyCode).match(/^[0-9\d\-+\s]+$/i)) return false;
+        });
+        // Origin terminal address
+        jQuery("#en-phone-number, #en_wd_origin_address, #en_wd_origin_zip , #en_wd_origin_city , #en_wd_origin_state , #en_wd_origin_country, #instore-pickup-address, #instore-pickup-desc, #local-delivery-address, #local-delivery-desc, #local-delivery-fee").focus(function (e) {
+            jQuery("#add_warehouses #" + this.id).css({'border-color': '#ddd'});
+        });
+
+        // Origin terminal address
+        jQuery("#en-phone-number, #en_wd_dropship_address, #en_wd_dropship_nickname , #en_wd_dropship_zip , #en_wd_dropship_city , #en_wd_dropship_state, #en_wd_dropship_country, #instore-pickup-address, #instore-pickup-desc, #local-delivery-address, #local-delivery-desc, #local-delivery-fee").focus(function (e) {
+            jQuery("#add_dropships #" + this.id).css({'border-color': '#ddd'});
+        });
         jQuery("._hazardousmaterials").closest('p').addClass('_hazardousmaterials');
         jQuery("._en_insurance_fee").closest('p').addClass('_en_insurance_fee');
         
@@ -208,7 +224,9 @@
                 'enable_instore'        : jQuery(formID +' #enable-instore-pickup').is(':checked'),
                 'address_miles_instore' : jQuery(formID +' #instore-pickup-address').val(),
                 'zipmatch_instore'      : pickupZipmatch,
-                'desc_instore'          : jQuery(formID +' #instore-pickup-desc').val()
+                'desc_instore'          : jQuery(formID +' #instore-pickup-desc').val(),
+                // Terminal phone number
+                'phone_instore': jQuery(formID + ' #en-phone-number').val()
             };
 
             return instorePickup;
@@ -277,6 +295,8 @@
             ( data[0].suppress_local_delivery == 1 )? jQuery( formID +' #suppress-local-delivery' ).prop('checked', true):'';
 
             jQuery( formID +' #instore-pickup-desc' ).val( data[0].checkout_desc_store_pickup );
+            // Terminal phone number
+            jQuery(formID + ' #en-phone-number').val(data[0].phone_instore);
             jQuery( formID +' #local-delivery-desc' ).val( data[0].checkout_desc_local_delivery );
             jQuery( formID +' #local-delivery-fee' ).val( data[0].fee_local_delivery );
 
@@ -358,6 +378,8 @@
                 'action': 'en_wd_save_warehouse',
                 'origin_id': jQuery('#edit_form_id').val(),
                 'origin_city': city,
+                // Origin terminal address
+                'origin_address': jQuery('#en_wd_origin_address').val(),
                 'origin_state': jQuery('#en_wd_origin_state').val(),
                 'origin_zip': jQuery('#en_wd_origin_zip').val(),
                 'origin_country': jQuery('#en_wd_origin_country').val(),
@@ -481,6 +503,8 @@
                         jQuery('.city_input').show();
                         jQuery('#en_wd_origin_city').css('background', 'none');
                         jQuery('#en_wd_origin_state').val(data[0].state);
+                        // Origin terminal address
+                        jQuery('#en_wd_origin_address').val(data[0].address);
                         jQuery('#en_wd_origin_country').val(data[0].country);
                         jQuery('.en_wd_zip_validation_err').hide();
                         jQuery('.en_wd_city_validation_err').hide();
@@ -557,6 +581,8 @@
                 'dropship_city': city,
                 'nickname': jQuery('#en_wd_dropship_nickname').val(),
                 'dropship_state': jQuery('#en_wd_dropship_state').val(),
+                // Origin terminal address
+                'dropship_address': jQuery('#en_wd_dropship_address').val(),
                 'dropship_zip': jQuery('#en_wd_dropship_zip').val(),
                 'dropship_country': jQuery('#en_wd_dropship_country').val(),
                 'location': jQuery('#en_wd_dropship_location').val(),
@@ -644,6 +670,8 @@
                         jQuery('.city_input').show();
                         jQuery('#en_wd_dropship_city').css('background', 'none');
                         jQuery('#en_wd_dropship_state').val(data[0].state);
+                        // Origin terminal address
+                        jQuery('#en_wd_dropship_address').val(data[0].address);
                         jQuery('#en_wd_dropship_country').val(data[0].country);
                         jQuery('.en_wd_zip_validation_err').hide();
                         jQuery('.en_wd_city_validation_err').hide();

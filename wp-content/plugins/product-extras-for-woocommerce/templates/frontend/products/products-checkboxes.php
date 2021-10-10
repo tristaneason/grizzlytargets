@@ -98,14 +98,12 @@ if( ! empty( $item['products_quantities'] ) ) {
 			// Where $id is the field ID and $child_product_id is the child product ID
 			$quantity_field = sprintf(
 				'<input type="number" min="0" step="1" %s class="pewc-form-field pewc-child-quantity-field" name="%s" value="%s" %s>',
-				$max,
+				apply_filters( 'pewc_child_quantity_max', $max, $child_product_id ),
 				esc_attr( $id ) . '_child_quantity_' . esc_attr( $child_product_id ),
 				$quantity_field_value,
 				$disabled
 			);
 		}
-
-		// $option_cost = pewc_maybe_include_tax( $child_product, $child_product->get_price() );
 
 	  $checkbox = sprintf(
 	    '<div class="%s"><label for="%s"><input data-option-cost="%s" data-field-label="%s" type="checkbox" name="%s[]" id="%s" class="pewc-checkbox-form-field" value="%s" %s %s>%s</label><div class="pewc-checkbox-desc-wrapper">%s<div class="pewc-radio-image-desc">%s</div></div></div>',

@@ -11,11 +11,12 @@ function porto_load_history_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => 'Porto ' . __( 'History', 'porto-functionality' ),
-			'base'     => 'porto_history',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'fas fa-history',
-			'params'   => array(
+			'name'        => 'Porto ' . __( 'History', 'porto-functionality' ),
+			'base'        => 'porto_history',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'Show history with image and text field by year', 'porto-functionality' ),
+			'icon'        => 'fas fa-history',
+			'params'      => array(
 				array(
 					'type'        => 'textfield',
 					'heading'     => __( 'Year', 'porto-functionality' ),

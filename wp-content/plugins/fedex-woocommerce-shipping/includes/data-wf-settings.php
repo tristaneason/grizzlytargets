@@ -16,7 +16,6 @@ if( $saturday_pickup ) {
 
 $freight_classes = include( 'data-wf-freight-classes.php' );
 $smartpost_hubs  = include( 'data-wf-smartpost-hubs.php' );
-$smartpost_hubs  = array( '' => __( 'N/A', 'wf-shipping-fedex' ) ) + $smartpost_hubs;
 
 $ship_from_address_option = array(
 				'origin_address' => __('Origin Address', 'wf-shipping-fedex'),
@@ -58,7 +57,7 @@ foreach ($services as $key => $value) {
 		$dom_services = array_merge($dom_services, array($key=>$value));
 	}
 }
-
+$shipping_type	= ( isset($settings['fedex_duties_and_taxes_rate']) && !empty($settings['fedex_duties_and_taxes_rate']) && $settings['fedex_duties_and_taxes_rate'] == 'yes' ) ? 'DUTIES_AND_TAXES' : 'NET_CHARGE';
 
 /**
  * Array of settings
@@ -430,16 +429,17 @@ return array(
 		'description' => __( 'By enabling this option you can delete the shipment from the order page and thereby recreate the shipping labels.', 'wf-shipping-fedex' ),
 	),
 
-	'advanced_settings'   => array(
-		'title'		   => __( 'Advanced Settings', 'wf-shipping-fedex' ),
+	'title_special_services'	=> array(
+		'title'		   => __( 'Special Services', 'wf-shipping-fedex' ),
 		'type'			=> 'title',
-		'class'			  => 'wf_general_advance_tab fedex_general_tab'
+		'class'			=> 'fedex_special_services_tab',
+		'description'	 => __( 'Configure special services related setting.', 'wf-shipping-fedex' ),
 	),
 	'signature_option'	 => array(
 		'title'		   => __( 'Delivery Signature', 'wf-shipping-fedex' ),
 		'type'			=> 'select',
 		'default'		 => '',
-		'class'		   => 'wc-enhanced-select fedex_general_tab',
+		'class'		   => 'wc-enhanced-select fedex_special_services_tab',
 		'desc_tip'		=> true,
 		'options'		 => array(
 			''	   				=> __( '-Select one-', 'wf-shipping-fedex' ),
@@ -454,7 +454,7 @@ return array(
 	'smartpost_hub'		   => array(
 		'title'		   => __( 'FedEx SmartPost Hub', 'wf-shipping-fedex' ),
 		'type'			=> 'select',
-		'class'		   => 'wc-enhanced-select fedex_general_tab',
+		'class'		   => 'wc-enhanced-select fedex_special_services_tab',
 		'description'	 => __( 'Only required if using SmartPost.', 'wf-shipping-fedex' ),
 		'desc_tip'		=> true,
 		'default'		 => '',
@@ -466,7 +466,7 @@ return array(
 		'desc_tip'	=> true,
 		'description'	 => 'Applicable only for SmartPost. Ex: Parcel Select option requires weight of at-least 1LB. Automatic will choose PRESORTED STANDARD if the weight is less than 1lb and PARCEL SELECT if the weight is more than 1lb',
 		'default'		 => 'PARCEL_SELECT',
-		'class'		   => 'wc-enhanced-select fedex_general_tab',
+		'class'		   => 'wc-enhanced-select fedex_special_services_tab',
 		'options'		 => array(
 			'MEDIA_MAIL'		 => __( 'MEDIA MAIL', 'wf-shipping-fedex' ),
 			'PARCEL_RETURN'	=> __( 'PARCEL RETURN', 'wf-shipping-fedex' ),
@@ -479,30 +479,39 @@ return array(
 
 	//shipping_customs_duties_payer
 	'customs_duties_payer'  => array(
-		'title'		   => __( 'Customs Duties Payer', 'wf-shipping-fedex' ),
-		'type'			=> 'select',
-		'desc_tip'	=> true,
-		'description'	 => 'Select customs duties payer',
-		'default'		 => 'SENDER',
-		'class'		   => 'wc-enhanced-select fedex_general_tab',
-		'options'		 => array(
-			'SENDER' 	  => __( 'Sender', 'wf-shipping-fedex'),
-			'RECIPIENT'	  => __( 'Recipient', 'wf-shipping-fedex'),
-			'THIRD_PARTY'	  => __( 'Third Party (Broker)', 'wf-shipping-fedex'),
+		'title' 		=> __( 'Customs Duties Payer', 'wf-shipping-fedex' ),
+		'type' 			=> 'select',
+		'desc_tip' 		=> true,
+		'description' 	=> 'Select customs duties payer',
+		'default' 		=> 'SENDER',
+		'class' 		=> 'wc-enhanced-select fedex_special_services_tab',
+		'options'		=> array(
+			'SENDER' 	  			=> __( 'Sender', 'wf-shipping-fedex'),
+			'RECIPIENT'	  			=> __( 'Recipient', 'wf-shipping-fedex'),
+			'THIRD_PARTY'	  		=> __( 'Third Party (Broker)', 'wf-shipping-fedex'),
+			'THIRD_PARTY_ACCOUNT'	=> __( 'Third Party', 'wf-shipping-fedex'),
 		)				
 	),
 
+	'third_party_acc_no' 	=> array(
+		'title' 		=> __( 'Third Party Account number', 'wf-shipping-fedex' ),
+		'type' 			=> 'text',
+		'class' 		=> 'third_party_grp fedex_special_services_tab',
+		'default' 		=> '',
+		'desc_tip' 		=> true,
+		'description' 	=> 'Third Party Account number'			
+	),
 	'broker_acc_no'		   => array(
 		'title'		   => __( 'Broker Account number', 'wf-shipping-fedex' ),
 		'type'			=> 'text',
-		'class'			  => 'broker_grp fedex_general_tab',
+		'class'			  => 'broker_grp fedex_special_services_tab',
 		'default'		 => '',
 		'desc_tip'	=> true,
 		'description'	 => 'Broker account number'			
 	),	
 	'broker_name'		   => array(
 		'title'		   => __( 'Broker name', 'wf-shipping-fedex' ),
-		'class'			  => 'broker_grp fedex_general_tab',
+		'class'			  => 'broker_grp fedex_special_services_tab',
 		'type'			=> 'text',
 		'default'		 => '',
 		'desc_tip'	=> true,
@@ -510,7 +519,7 @@ return array(
 	),	
 	'broker_company'		   => array(
 		'title'		   => __( 'Broker Company name', 'wf-shipping-fedex' ),
-		'class'			  => 'broker_grp fedex_general_tab',
+		'class'			  => 'broker_grp fedex_special_services_tab',
 		'type'			=> 'text',
 		'default'		 => '',
 		'desc_tip'	=> true,
@@ -518,7 +527,7 @@ return array(
 	),	
 	'broker_phone'		   => array(
 		'title'		   => __( 'Broker phone number', 'wf-shipping-fedex' ),
-		'class'			  => 'broker_grp fedex_general_tab',
+		'class'			  => 'broker_grp fedex_special_services_tab',
 		'type'			=> 'text',
 		'default'		 => '',
 		'desc_tip'	=> true,
@@ -526,42 +535,42 @@ return array(
 	),	
 	'broker_email'		   => array(
 		'title'		   => __( 'Brocker Email Address', 'wf-shipping-fedex' ),
-		'class'			  => 'broker_grp fedex_general_tab',
+		'class'			  => 'broker_grp fedex_special_services_tab',
 		'type'			=> 'text',
 		'default'		 => '',
 		'desc_tip'	=> true,
 	),	
 	'broker_address'		   => array(
 		'title'		   => __( 'Broker Address', 'wf-shipping-fedex' ),
-		'class'			  => 'broker_grp fedex_general_tab',
+		'class'			  => 'broker_grp fedex_special_services_tab',
 		'type'			=> 'text',
 		'default'		 => '',
 		'desc_tip'	=> true,
 	),	
 	'broker_city'		   => array(
 		'title'		   => __( 'Broker City', 'wf-shipping-fedex' ),
-		'class'			  => 'broker_grp fedex_general_tab',
+		'class'			  => 'broker_grp fedex_special_services_tab',
 		'type'			=> 'text',
 		'default'		 => '',
 		'desc_tip'	=> true,
 	),	
 	'broker_state'		   => array(
 		'title'		   => __( 'Broker State', 'wf-shipping-fedex' ),
-		'class'			  => 'broker_grp fedex_general_tab',
+		'class'			  => 'broker_grp fedex_special_services_tab',
 		'type'			=> 'text',
 		'default'		 => '',
 		'desc_tip'	=> true,
 	),	
 	'broker_zipcode'		   => array(
 		'title'		   => __( 'Zip Code', 'wf-shipping-fedex' ),
-		'class'			  => 'broker_grp fedex_general_tab',
+		'class'			  => 'broker_grp fedex_special_services_tab',
 		'type'			=> 'text',
 		'default'		 => '',
 		'desc_tip'	=> true,
 	),	
 	'broker_country'		   => array(
 		'title'		   => __( 'Country Code', 'wf-shipping-fedex' ),
-		'class'			  => 'broker_grp fedex_general_tab',
+		'class'			  => 'broker_grp fedex_special_services_tab',
 		'type'			=> 'text',
 		'default'		 => '',
 		'desc_tip'	=> true,
@@ -572,7 +581,7 @@ return array(
 		'desc_tip' 		=> true,
 		'description' 	=> 'Select the option that identifies the method by which the package is to be tendered to FedEx.',
 		'default' 		=> 'REGULAR_PICKUP',
-		'class' 		=> 'wc-enhanced-select fedex_general_tab',
+		'class' 		=> 'wc-enhanced-select fedex_special_services_tab',
 		'options' 		=> array(
 			'BUSINESS_SERVICE_CENTER' 	=> __( 'Business Service Center', 'wf-shipping-fedex'),
 			'DROP_BOX' 					=> __( 'Drop Box', 'wf-shipping-fedex'),
@@ -581,11 +590,23 @@ return array(
 			'STATION' 					=> __( 'Station', 'wf-shipping-fedex'),
 		)				
 	),
+	'document_content'	=> array(
+		'title'		=> __('Document Content', 'wf-shipping-fedex'),
+		'type'		=> 'select',
+		'class'		=> 'wc-enhanced-select fedex_special_services_tab',
+		'default'	=> '',
+		'options'	=> array(
+			''					=> __( '-Select one-', 'wf-shipping-fedex'),
+			'DERIVED'			=> __( 'Derived', 'wf-shipping-fedex'),
+			'DOCUMENTS_ONLY'	=> __( 'Documents Only', 'wf-shipping-fedex'),
+			'NON_DOCUMENTS'		=> __( 'Non Documents', 'wf-shipping-fedex'),
+		)
+	),
 	// 'saturday_pickup'	  => array(
 	// 	'title'	   => __( 'FedEx Saturday Pickup', 'wf-shipping-fedex' ),
 	// 	'label'		=> __( 'Enable', 'wf-shipping-fedex' ),
 	// 	'type'		=> 'checkbox',
-	// 	'class'		=>'fedex_general_tab',
+	// 	'class'		=>'fedex_special_services_tab',
 	// 	'default'	 => 'yes',
 	// 	'desc_tip'	=> true,
 	// 	'description' => __( 'If enabled, FedEx will charge additional amount and the pickup will be requested for Saturdays too. Otherwise, the pickups will not happen on Saturdays and will be re-scheduled for Mondays instead.', 'wf-shipping-fedex' ),
@@ -595,7 +616,7 @@ return array(
 		'description'	 => __( 'Enable this to activate dry ice option to product level', 'wf-shipping-fedex' ),
 		'desc_tip'		   => true,
 		'type'			=> 'checkbox',
-		'class'	=>'fedex_general_tab',
+		'class'	=>'fedex_special_services_tab',
 		'default'		 => 'no'
 	),
 	'exclude_tax'	  => array(
@@ -603,12 +624,28 @@ return array(
 		'description'	 => __( 'Taxes will be excluded from product prices while generating label', 'wf-shipping-fedex' ),
 		'desc_tip'		   => true,
 		'type'			=> 'checkbox',
-		'class'			=>'fedex_general_tab',
+		'class'			=>'fedex_special_services_tab',
 		'default'		 => 'no'
 	),
-
-
-
+	'home_delivery_premium'	  => array(
+		'title'		  	=> __( 'Home Delivery Premium', 'wf-shipping-fedex' ),
+		'type'			=> 'checkbox',
+		'label' 		=> __( 'Enable this option to select from various FedEx Premium delivery services', 'wf-shipping-fedex' ),
+		'class'			=> 'fedex_special_services_tab'
+	),
+	'home_delivery_premium_type' => array(
+		'title'		 	=> __('Home Delivery Premium Types', 'wf-shipping-fedex'),
+		'type'		 	=> 'select',
+		'class'		 	=> 'fedex_special_services_tab',
+		'default'	 	=> '',
+		'description'	=> __( '<small>Note: For Date Certain delivery type, make sure to select the date while fulfilling the order under WooCommerce Order Edit page.</small>' ),
+		'options'	 	=> array(
+			'APPOINTMENT'	=> __( 'Appointment', 'wf-shipping-fedex' ),
+			'DATE_CERTAIN'	=> __( 'Date Certain', 'wf-shipping-fedex' ),
+			'EVENING'		=> __( 'Evening', 'wf-shipping-fedex' ),
+		)
+	),
+	
 
 	'title_rate'		   => array(
 		'title'		   => __( 'Rate Settings', 'wf-shipping-fedex' ),
@@ -698,15 +735,6 @@ return array(
 		'desc_tip' 		=> true,
 		'description' 	=> __( 'Additional charges will be applied on Shipping Rates on enabling this service', 'wf-shipping-fedex' ),
 	),
-	'fedex_duties_and_taxes_rate' 		=> array(
-		'title' 		=> __( 'Estimated Duties & Taxes with Shipping Rates', 'wf-shipping-fedex' ),
-		'label' 		=> __( 'Enable', 'wf-shipping-fedex' ),
-		'type' 			=> 'checkbox',
-		'class' 		=> 'fedex_rates_tab',
-		'default' 		=> 'no',
-		'desc_tip' 		=> true,
-		'description' 	=> __( 'Estimated Duties and Taxes will be added to the shipping cost and displayed on the checkout page. Only applies with shipments moving under International services.', 'wf-shipping-fedex' ),
-	),
 	'saturday_delivery'	=> array(
 		'title'				=> __( 'FedEx Saturday Delivery', 'wf-shipping-fedex' ),
 		'label'				=> __( 'Enable', 'wf-shipping-fedex' ),
@@ -725,6 +753,20 @@ return array(
 		'class'				=> 'fedex_rates_tab',
 		'description'		=> __( 'This option will enable FedEx Hold at Location service. If it is enabled, customers can select any hold at location while checkout. FedEx will then hold the shipment at the selected location and the customers will have to pick their shipment from that location .', 'wf-shipping-fedex' ),
 	),
+	'hold_at_location_carrier_code'	 => array(
+		'title'		   => __( 'FedEx Service', 'wf-shipping-fedex' ),
+		'type'			=> 'select',
+		'default'		 => '',
+		'class'		   => 'wc-enhanced-select fedex_rates_tab',
+		'desc_tip'		=> true,
+		'options'		 => array(
+			''		     => __( 'Any', 'wf-shipping-fedex' ),
+			'FDXE'	    => __( 'FedEx Express', 'wf-shipping-fedex' ),
+			'FDXG'		=> __( 'FedEx Ground', 'wf-shipping-fedex' ),
+			'FXFR'	    => __( 'FedEx Freight', 'wf-shipping-fedex' ),
+		),
+		'description'	 => __( 'Select the FedEx Service based on which the hold at location will be displayed at the cart & checkout page.', 'wf-shipping-fedex' )
+	),
 	'request_type'	 => array(
 		'title'		   => __( 'Request Type', 'wf-shipping-fedex' ),
 		'type'			=> 'select',
@@ -736,6 +778,19 @@ return array(
 			'ACCOUNT'	 => __( 'Account Rates', 'wf-shipping-fedex' ),
 		),
 		'description'	 => __( 'Choose whether to return List or Account (discounted) rates from the API.', 'wf-shipping-fedex' )
+	),
+	'shipping_quote_type'	  => array(
+		'title'			=> __( 'Shipping Quote Type', 'wf-shipping-fedex' ),
+		'type'			=> 'select',
+		'default'		=> $shipping_type,
+		'description'	=> __( '<small>Base Shipping Cost: Shipping Cost without any discounts, taxes & surcharges.<br/>Total Net Shipping Cost without Tax: Shipping Cost with discount & surcharges.<br/>Total Net Shipping Cost: Shipping Cost with discount, surcharges & transportation taxes.<br/>Total Net Shipping Cost With Duties & Taxes: Shipping Cost with discount, surcharges, transportation taxes & all other international taxes.</small>' ),
+		'options'		 => array(
+			'BASE_CHARGE'	    => __( 'Base Shipping Cost', 'wf-shipping-fedex' ),
+			'NET_FEDEX_CHARGE'	=> __( 'Total Net Shipping Cost without Tax', 'wf-shipping-fedex' ),
+			'NET_CHARGE'		=> __( 'Total Net Shipping Cost', 'wf-shipping-fedex' ),
+			'DUTIES_AND_TAXES'	=> __( 'Total Net Shipping Cost With Duties & Taxes', 'wf-shipping-fedex' ),
+		),
+		'class'			=> 'fedex_rates_tab',
 	),
 	'offer_rates'   => array(
 		'title'		   => __( 'Offer Rates', 'wf-shipping-fedex' ),
@@ -844,6 +899,22 @@ return array(
 		'description'	=>	__( 'Disable this to hide FedEx meta boxes (Generate label and tracking meta box) on order page).', 'wf-shipping-fedex' ),
 		'desc_tip'		=>	true,
 
+	),
+	'label_maskable_type'	=> array(
+		'title'			=> __( 'Masking Data on the Shipping Labels', 'wf-shipping-fedex' ),
+		'description'	=> __( 'Names for data elements / areas which may be masked from printing on the shipping labels.', 'wf-shipping-fedex' ),
+		'desc_tip'		=> true,
+		'type'			=> 'multiselect',
+		'class'			=> 'fedex_label_tab chosen_select',
+		'default'		=> '',
+		'options'	 	=> array(
+			'CUSTOMS_VALUE'									=> __( 'Custom Value', 'wf-shipping-fedex' ),
+			'DUTIES_AND_TAXES_PAYOR_ACCOUNT_NUMBER'			=> __( 'Duties And Taxes Payor Account Number', 'wf-shipping-fedex' ),
+			'SECONDARY_BARCODE'								=> __( 'Secondary Barcode', 'wf-shipping-fedex' ),
+			'SHIPPER_ACCOUNT_NUMBER'						=> __( 'Shipper Account Number', 'wf-shipping-fedex' ),
+			'TERMS_AND_CONDITIONS'							=> __( 'Terms And Conditions', 'wf-shipping-fedex' ),
+			'TRANSPORTATION_CHARGES_PAYOR_ACCOUNT_NUMBER'	=> __( 'Transportation Charges Payor Account Number', 'wf-shipping-fedex' ),
+		)
 	),
 	'timezone_offset' => array(
 		'title' 		=> __('Time Zone Offset (Minutes)', 'wf-shipping-fedex'),
@@ -1171,6 +1242,15 @@ return array(
 		'description'	 => __( 'Check this option to show all services in create label drop down(FEDEX).', 'wf-shipping-fedex' ),
 		'desc_tip'		   => true,
 	),
+	'saturday_delivery_label' => array(
+		'title'			=> __( 'FedEx Saturday Delivery', 'wf-shipping-fedex' ),
+		'label'		   	=> __( 'Enable', 'wf-shipping-fedex' ),
+		'type'			=> 'checkbox',
+		'default'		=> 'no',
+		'class'			=> 'fedex_label_tab',
+		'description'	=> __('This option will enable Saturday Delivery Shipping Services, It will effect for all orders.', 'wf-shipping-fedex'),
+		'desc_tip'		=> true,
+	),
 	'remove_special_char_product' => array(
 		'title'		   => __('Remove Special Characters from Product Name','wf-shipping-fedex'),
 		'label'		   => __( 'Enable', 'wf-shipping-fedex' ),
@@ -1197,6 +1277,16 @@ return array(
 		'type'			=> 'checkbox',
 		'class'			=> 'fedex_label_tab',
 		'default'		 => 'no'
+	),
+	'auto_label_trigger' 	=> array(
+		'title' 		=> __( 'Trigger Automatic Label Generation', 'wf-shipping-fedex' ),
+		'type'			=> 'select',
+		'default'		=> 'thankyou_page',
+		'class'			=> 'fedex_label_tab',
+		'options' 		=> array(
+			'thankyou_page'	=> __( 'Default - When the order is placed successfully', 'wf-shipping-fedex'),
+			'payment_status'=> __( 'When the payment is confirmed', 'wf-shipping-fedex'),
+		),
 	),
 	'allow_label_btn_on_myaccount'	  => array(
 		'title'		   => __( 'Allow customers to print label from their My Account->Orders page', 'wf-shipping-fedex' ),
@@ -1295,12 +1385,21 @@ return array(
 		'desc_tip'		=> true,
 		'description'	=> 'Enabling this option will display Order Currency in Commercial Invoice.'
 	),
+	'shipment_comments'  => array(
+		'title'		   	=> __( 'Comments', 'wf-shipping-fedex' ),
+		'type'			=> 'textarea',
+		'class'			=> 'commercial_invoice_toggle fedex_commercial_invoice_tab',
+		'default' 		=> '',
+		'desc_tip' 		=> true,
+		'description'	=> __( 'Any comments that need to be communicated about this shipment.', 'wf-shipping-fedex' ),
+		'css' 			=> 'width:44%;height: 100px;',
+	),
 	'special_instructions'  => array(
 		'title'			=> __( 'Special Instructions', 'wf-shipping-fedex' ),
-		'type'			=> 'text',
+		'type'			=> 'textarea',
 		'description'	=> __( 'Specify Special Instructions for Commercial Invoice.', 'wf-shipping-fedex' ),
 		'desc_tip'		=> true,
-		'css'			=> 'width:900px',
+		'css' 			=> 'width:44%;height: 100px;',
 		'class'			=> 'commercial_invoice_toggle fedex_commercial_invoice_tab',
 	),
 	'payment_terms'  => array(
@@ -1330,6 +1429,84 @@ return array(
 		'class'			=> 'commercialinvoice-image-uploader fedex_commercial_invoice_tab',
 		'type' 			=> 'text',
 		'placeholder' 	=> 'Upload an image to set Digital Signature on Commercial Invoice'
+	),
+	//PRO_FORMA_INVOICE
+	'ph_pro_forma_invoice' => array(
+		'title'			=> __( 'Pro Forma Invoice', 'wf-shipping-fedex' ),
+		'label'			=> __( 'Enable', 'wf-shipping-fedex' ),
+		'type'			=> 'checkbox',
+		'class'			=> 'fedex_commercial_invoice_tab',
+		'default'		=> 'no',
+		'desc_tip'		=> true,
+		'description'	=> __( 'On enabling this option PRO FORMA INVOICE will be received as an additional label. Applicable for international shipping only.', 'wf-shipping-fedex' ),
+	),
+	//USMCA Certificate
+	'usmca_certificate' => array(
+		'title'			=> __( 'USMCA Certificate', 'wf-shipping-fedex' ),
+		'label'			=> __( 'Enable', 'wf-shipping-fedex' ),
+		'type'			=> 'checkbox',
+		'class'			=> 'fedex_commercial_invoice_tab',
+		'default'		=> 'no',
+		'desc_tip'		=> true,
+		'description'	=> __( 'On enabling this option USMCA Certificate will be received as an additional label. Applicable for international shipping only.', 'wf-shipping-fedex' ),
+	),
+	'usmca_ci_certificate_of_origin' => array(
+		'title'			=> __( 'USMCA Commercial Invoice Certificate', 'wf-shipping-fedex' ),
+		'label'			=> __( 'Enable', 'wf-shipping-fedex' ),
+		'type'			=> 'checkbox',
+		'class'			=> 'fedex_commercial_invoice_tab',
+		'default'		=> 'no',
+		'desc_tip'		=> true,
+		'description'	=> __( 'On enabling this option USMCA Commercial Invoice Certification Of Origin will be received as an additional label. Applicable for international shipping only.', 'wf-shipping-fedex' ),
+	),
+	'certifier_specification'   => array(
+		'title'		   => __( 'Certifier Specification', 'wf-shipping-fedex' ),
+		'type'			=> 'select',
+		'class'		   => 'wc-enhanced-select fedex_commercial_invoice_tab usmca_and_usmcaci_toggle',
+		'default'		 => 'IMPORTER',
+		'options'		 => array(
+			'EXPORTER' 			=> __( 'Exporter', 'wf-shipping-fedex'),
+			'IMPORTER' 			=> __( 'Importer', 'wf-shipping-fedex'),
+			'PRODUCER' 			=> __( 'Producer', 'wf-shipping-fedex')
+		)				
+	),
+	'producer_specification'   => array(
+		'title'		    => __( 'Producer Specification', 'wf-shipping-fedex' ),
+		'type' 			=> 'select',
+		'class'		   	=> 'wc-enhanced-select fedex_commercial_invoice_tab usmca_and_usmcaci_toggle',
+		'default'		=> 'SAME_AS_EXPORTER',
+		'options'		=> array(
+			'SAME_AS_EXPORTER' 	=> __( 'Same as Exporter', 'wf-shipping-fedex'),
+			'VARIOUS' 			=> __( 'Various', 'wf-shipping-fedex'),
+		)				
+	),
+	'importer_specification'   => array(
+		'title'		    => __( 'Importer Specification', 'wf-shipping-fedex' ),
+		'type'			=> 'select',
+		'class'		    => 'wc-enhanced-select fedex_commercial_invoice_tab usmca_toggle',
+		'default'		=> 'UNKNOWN',
+		'options'		=> array(
+			'UNKNOWN' 			=> __( 'Unknown', 'wf-shipping-fedex'),
+			'VARIOUS' 			=> __( 'Various', 'wf-shipping-fedex'),
+		)				
+	),
+	'blanket_begin_period' => array(
+		'title' 		=> __( 'Blanket Period Begin Date', 'wf-shipping-fedex' ),
+		'label' 		=> __( 'Enable', 'wf-shipping-fedex' ),
+		'desc_tip' 		=> true,
+		'type' 			=> 'date',
+		'css'			=> 'width:400px',
+		'description' 	=> __('Begin date of the blanket period. It is the date upon which the Certificate becomes applicable to the good covered by the blanket Certificate (it may be prior to the date of signing this Certificate)', 'wf-shipping-fedex'),
+		'class'			=> 'fedex_commercial_invoice_tab usmca_toggle'
+	),
+	'blanket_end_period' => array(
+		'title' 		=> __( 'Blanket Period End Date', 'wf-shipping-fedex' ),
+		'label' 		=> __( 'Enable', 'wf-shipping-fedex' ),
+		'desc_tip' 		=> true,
+		'type' 			=> 'date',
+		'css'			=> 'width:400px',
+		'description' 	=> __('End Date of the blanket period. It is the date upon which the blanket period expires', 'wf-shipping-fedex'),
+		'class'			=> 'fedex_commercial_invoice_tab usmca_toggle'
 	),
 
 	'title_packaging'		   => array(

@@ -15,6 +15,10 @@ if( ! defined( 'ABSPATH' ) ) {
  */
 function pewc_calculation_look_up_tables() {
 
+	if( ! is_product() ) {
+		return;
+	}
+
 	$tables = apply_filters( 'pewc_calculation_look_up_tables', array() );
 	$fields = apply_filters( 'pewc_calculation_look_up_fields', array() ); ?>
 

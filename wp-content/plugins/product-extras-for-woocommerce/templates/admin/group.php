@@ -44,6 +44,7 @@ if( ! defined( 'ABSPATH' ) ) {
 		</div>
 		<div class="product-extra-field-two-thirds-right">
 			<select class="pewc-group-layout" name="_product_extra_groups_<?php echo $group_id; ?>[meta][group_layout]">
+				<?php do_action( 'pewc_start_group_layout_options', $group_layout ); ?>
 				<option <?php selected( $group_layout, 'ul', true ); ?> value="ul"><?php _e( 'Standard', 'pewc' ); ?></option>
 				<option <?php selected( $group_layout, 'table', true ); ?> value="table"><?php _e( 'Table', 'pewc' ); ?></option>
 				<option <?php selected( $group_layout, 'cols-2', true ); ?> value="cols-2"><?php _e( 'Two Columns', 'pewc' ); ?></option>

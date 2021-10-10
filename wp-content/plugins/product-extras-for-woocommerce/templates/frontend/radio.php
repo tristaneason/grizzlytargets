@@ -52,7 +52,7 @@ if( isset( $item['field_options'] ) ) {
 				$classes[] = 'pewc-option-has-percentage';
 			}
 
-	    if( ! empty( $option_price ) && apply_filters( 'pewc_show_option_prices', true, $item ) ) {
+	    if( ! empty( $option_price ) && pewc_display_option_prices_product_page( $item ) ) {
 	      $label .= apply_filters( 'pewc_option_price_separator', '+', $item ) . pewc_get_semi_formatted_raw_price( $option_price );
 				$label = apply_filters( 'pewc_option_name', $label, $item, $product, $option_price );
 	    }

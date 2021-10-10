@@ -28,7 +28,7 @@ if ( isset( $_GET['action'] ) && 'hubwoo-osc-schedule-sync' == $_GET['action'] )
 		?>
 		<div>
 			<div class="hubwoo-user-notice" style="margin-bottom: 20px;">
-				<span class="hubwoo-ocs-btn-notice"><?php esc_html_e( 'Fetching all of the recently updated and un-synced users / orders' ); ?></span> <span id='hubwoo-usr-spin' class="fa fa-spin fa-spinner"></span>
+				<span class="hubwoo-ocs-btn-notice"><?php esc_html_e( 'Fetching all of the recently updated and un-synced users / orders', 'makewebbetter-hubspot-for-woocommerce' ); ?></span> <span id='hubwoo-usr-spin' class="fa fa-spin fa-spinner"></span>
 			</div>
 			<a href="javascript:void(0);" style="display: none;" id = "hubwoo-osc-instant-sync" class="hubwoo-osc-instant-sync hubwoo__btn" data-total_users=""><?php esc_html_e( 'Sync Now', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 			<a href="?page=hubwoo&hubwoo_tab=hubwoo-sync-contacts&action=hubwoo-osc-schedule-sync" id = "hubwoo-osc-schedule-sync" style="display: none;" class="hubwoo-osc-schedule-sync hubwoo__btn"><?php esc_html_e( 'Schedule Sync', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>			

@@ -3,14 +3,13 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
+import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
 import {
 	useCollection,
 	useQueryStateByKey,
 	useQueryStateByContext,
 	useCollectionData,
-	usePrevious,
-	useShallowEqual,
-} from '@woocommerce/base-hooks';
+} from '@woocommerce/base-context/hooks';
 import { useCallback, useEffect, useState, useMemo } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import DropdownSelector from '@woocommerce/base-components/dropdown-selector';
@@ -162,13 +161,6 @@ const AttributeFilterBlock = ( {
 		queryState.attributes,
 	] );
 
-	// Track checked STATE changes - if state changes, update the query.
-	useEffect( () => {
-		if ( ! blockAttributes.showFilterButton ) {
-			onSubmit( checked );
-		}
-	}, [ blockAttributes.showFilterButton, checked, onSubmit ] );
-
 	const checkedQuery = useMemo( () => {
 		return productAttributesQuery
 			.filter(
@@ -186,8 +178,17 @@ const AttributeFilterBlock = ( {
 			! isShallowEqual( checked, currentCheckedQuery ) // checked query doesn't match the UI
 		) {
 			setChecked( currentCheckedQuery );
+			if ( ! blockAttributes.showFilterButton ) {
+				onSubmit( currentCheckedQuery );
+			}
 		}
-	}, [ checked, currentCheckedQuery, previousCheckedQuery ] );
+	}, [
+		checked,
+		currentCheckedQuery,
+		previousCheckedQuery,
+		onSubmit,
+		blockAttributes.showFilterButton,
+	] );
 
 	/**
 	 * Returns an array of term objects that have been chosen via the checkboxes.
@@ -313,8 +314,17 @@ const AttributeFilterBlock = ( {
 			}
 
 			setChecked( newChecked );
+			if ( ! blockAttributes.showFilterButton ) {
+				onSubmit( newChecked );
+			}
 		},
-		[ checked, displayedOptions, multiple ]
+		[
+			checked,
+			displayedOptions,
+			multiple,
+			onSubmit,
+			blockAttributes.showFilterButton,
+		]
 	);
 
 	if ( displayedOptions.length === 0 && ! attributeTermsLoading ) {

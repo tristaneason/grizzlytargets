@@ -2,7 +2,7 @@
 
 $banner_title              = $banner_desc = $banner_image = $banner_link = $banner_style = $el_class = '';
 $banner_title_font_size    = '';
-$banner_title_style_inline = $banner_desc_style_inline = $banner_color_bg = $banner_color_title = $banner_color_desc = $banner_title_bg = '';
+$banner_title_style_inline = $banner_desc_style_inline = $banner_color_bg = $banner_color_title = $banner_color_desc = '';
 
 $animation_type     = '';
 $animation_delay    = '';
@@ -16,6 +16,9 @@ extract(
 			'banner_desc'            => '',
 			'banner_image'           => '',
 			'banner_video'           => '',
+			'banner_effect'          => '',
+			'effect_duration'        => '30',
+			'particle_effect'        => '',
 			'lazyload'               => '',
 			'image_opacity'          => '1',
 			'image_opacity_on_hover' => '1',
@@ -24,7 +27,6 @@ extract(
 			'banner_color_bg'        => '',
 			'banner_color_title'     => '',
 			'banner_color_desc'      => '',
-			'banner_title_bg'        => '',
 			'banner_link'            => '',
 			'min_height'             => '',
 			'add_container'          => '',
@@ -44,6 +46,9 @@ extract(
 	)
 );
 
+if ( 'none' == $banner_effect ) {
+	$banner_effect = '';
+}
 if ( $className ) {
 	if ( $el_class ) {
 		$el_class .= ' ' . $className;
@@ -63,9 +68,6 @@ global $porto_settings_optimize;
 
 $output = $target = $link = $banner_style_inline = $title_bg = $img_style = $target = '';
 
-if ( $banner_title_bg && 'style2' == $banner_style ) {
-	$title_bg .= 'background:' . esc_attr( $banner_title_bg ) . ';';
-}
 
 $img             = '';
 $internal_styles = '';
@@ -88,6 +90,9 @@ if ( $banner_image ) {
 	}
 	if ( $img_style ) {
 		$img_attr['style'] = $img_style;
+	}
+	if ( '' !== $banner_effect ) {
+		$img_attr['class'] .= ' invisible';
 	}
 	if ( is_numeric( $banner_image ) ) {
 		$img_data = wp_get_attachment_image_src( $banner_image, 'full' );
@@ -289,6 +294,28 @@ if ( $internal_styles ) {
 	$output .= $internal_styles;
 	$output .= '</style>';
 }
+
+// Banner Effect and Particle effect
+if ( ! empty( $banner_effect ) || ! empty( $particle_effect ) ) {
+	if ( '' == $particle_effect || '' !== $banner_effect ) {
+		if ( is_numeric( $banner_image ) ) {
+			$image_url = wp_get_attachment_image_url( $banner_image, 'full' );
+		} else {
+			$image_url = $banner_image;
+		}
+	}
+
+	$output .= '<div class="banner-effect-wrapper">';
+	if ( ! empty( $banner_image ) ) {
+		$output .= '<div class="banner-effect' . ( empty( $banner_effect ) ? '' : ' ' . $banner_effect ) . '"' . ( empty( $image_url ) ? '' : ' style="background-image: url(' . $image_url . '); background-size: cover;background-position: center;animation-duration: ' . (int) $effect_duration . 's;"' ) . '>';
+		if ( $particle_effect ) {
+			$output .= '<div class="particle-effect' . ( empty( $particle_effect ) ? '' : ' ' . $particle_effect ) . '"></div>';
+		}
+		$output .= '</div>';
+	}
+	$output .= '</div>';
+}
+
 if ( $img ) {
 	$output .= $img;
 }

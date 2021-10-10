@@ -160,6 +160,7 @@
 					total += parseFloat( $( this ).val() );
 				});
 				$( field ).attr( 'data-price', field_price );
+				$( field ).attr( 'data-field-price', field_price );
 				$( '#pewc-grid-total-variations' ).val( total );
 				$( 'body' ).trigger( 'pewc_force_update_total_js' );
 

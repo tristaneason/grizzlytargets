@@ -95,6 +95,15 @@ function pewc_get_general_settings() {
 			'default'	=> 'no',
 			'std'			=> 'no'
 		),
+		'pewc_cart_group_titles' => array(
+			'name'		=> __( 'Display group titles in cart', 'pewc' ),
+			'type'		=> 'checkbox',
+			'desc_tip'	=> true,
+			'desc'		=> __( 'Show the group title in the cart.', 'pewc' ),
+			'id'			=> 'pewc_cart_group_titles',
+			'default'	=> 'no',
+			'std'			=> 'no'
+		),
 		'general_section_end' => array(
 			'type' => 'sectionend',
 			'id' => 'pewc_general_title'
@@ -288,12 +297,88 @@ function pewc_get_general_settings() {
 
 	);
 
+	if( function_exists( 'wcfad_field' ) ) {
+
+		$settings['pewc_wcfad_section_title'] = array(
+			'name'     => __( 'Integrations', 'pewc' ),
+			'type'     => 'title',
+			'desc'     => '',
+			'id'       => 'pewc_wcfad_section_title'
+		);
+		$settings['pewc_disable_wcfad_price_label'] = array(
+			'name'		=> __( 'Disable Fees and Discounts price label', 'pewc' ),
+			'type'		=> 'checkbox',
+			'desc_tip'	=> true,
+			'desc'		=> __( 'Prevent Fees and Discounts from updating the price label on the product page.', 'pewc' ),
+			'id'			=> 'pewc_disable_wcfad_price_label',
+			'default'	=> 'no',
+			'std'			=> 'no'
+		);
+		$settings['pewc_wcfad_section_end'] = array(
+			'type' => 'sectionend',
+			'id' => 'pewc_wcfad_section_title'
+		);
+
+	}
+
 	return apply_filters( 'pewc_filter_settings', $settings );
 
 }
 
+
 /**
- * Get the licence settings
+ * Get the date settings
+ */
+function pewc_get_date_settings() {
+
+	$settings = array(
+
+		'pewc_date_title' => array(
+			'name'     => __( 'Date fields', 'pewc' ),
+			'type'     => 'title',
+			'desc'     => '',
+			'id'       => 'pewc_date_title'
+		),
+		'pewc_disable_days' => array(
+			'name'		=> __( 'Enable days of the week', 'pewc' ),
+			'type'		=> 'checkbox',
+			'desc_tip'	=> true,
+			'desc'		=> __( 'Enable the option to disable specific days of the week.', 'pewc' ),
+			'id'			=> 'pewc_disable_days',
+			'default'	=> 'no',
+			'std'			=> 'no'
+		),
+		'pewc_offset_days' => array(
+			'name'		=> __( 'Enable offset', 'pewc' ),
+			'type'		=> 'checkbox',
+			'desc_tip'	=> true,
+			'desc'		=> __( 'Enable an option to offset the minimum date by a set number of days.', 'pewc' ),
+			'id'			=> 'pewc_offset_days',
+			'default'	=> 'no',
+			'std'			=> 'no'
+		),
+		'pewc_blocked_dates' => array(
+			'name'		=> __( 'Enable blocked dates', 'pewc' ),
+			'type'		=> 'checkbox',
+			'desc_tip'	=> true,
+			'desc'		=> __( 'Enable a field to enter dates that are unavailable.', 'pewc' ),
+			'id'			=> 'pewc_blocked_dates',
+			'default'	=> 'no',
+			'std'			=> 'no'
+		),
+		'date_section_end' => array(
+			'type' => 'sectionend',
+			'id' => 'pewc_date_title'
+		),
+
+	);
+
+	return apply_filters( 'pewc_date_settings', $settings );
+
+}
+
+/**
+ * Get the uploads settings
  */
 function pewc_get_uploads_settings() {
 
@@ -469,6 +554,15 @@ function pewc_get_products_settings() {
 			'default'	=> 'no',
 			'std'			=> 'no'
 		),
+		'pewc_indent_child_product' => array(
+			'name'		=> __( 'Indent child products', 'pewc' ),
+			'type'		=> 'checkbox',
+			'desc_tip'	=> true,
+			'desc'		=> __( 'Add padding to child products in the cart and order.', 'pewc' ),
+			'id'			=> 'pewc_indent_child_product',
+			'default'	=> 'no',
+			'std'			=> 'no'
+		),
 		'pewc_multiply_independent_quantity' => array(
 			'name'		=> __( 'Multiply independent quantities', 'pewc' ),
 			'type'		=> 'checkbox',
@@ -478,6 +572,16 @@ function pewc_get_products_settings() {
 			'default'	=> 'no',
 			'std'			=> 'no'
 		),
+		'pewc_remove_parent' => array(
+			'name'		=> __( 'Remove parent if child product out of stock', 'pewc' ),
+			'type'		=> 'checkbox',
+			'desc_tip'	=> true,
+			'desc'		=> __( 'Enable this to automatically remove parent products if a child product is out of stock.', 'pewc' ),
+			'id'			=> 'pewc_remove_parent',
+			'default'	=> 'no',
+			'std'			=> 'no'
+		),
+
 		'pewc_redirect_hidden_products' => array(
 			'name'		=> __( 'Redirect hidden products', 'pewc' ),
 			'type'		=> 'checkbox',
@@ -554,6 +658,16 @@ function pewc_get_calculations_settings() {
 			),
 			'default'		=> '',
 		),
+		'pewc_zero_missing_field' => array(
+			'name'		=> __( 'Zero value for missing fields', 'pewc' ),
+			'type'		=> 'checkbox',
+			'desc_tip'	=> true,
+			'desc'		=> __( 'Return a 0 as the value for any fields that are not included on the page.', 'pewc' ),
+			'id'			=> 'pewc_zero_missing_field',
+			'default'	=> 'no',
+			'std'			=> 'no'
+		),
+
 		'calculations_section_end' => array(
 			'type' => 'sectionend',
 			'id' => 'pewc_calculations_title'

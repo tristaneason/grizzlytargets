@@ -31,7 +31,7 @@ class Porto_Recent_Posts_Widget extends WP_Widget {
 		$cat        = $instance['cat'];
 		$show_image = $instance['show_image'];
 
-		if ( empty( $items ) ) {
+		if ( empty( $items ) || 0 === (int) $items ) {
 			$items = 3;
 		} else {
 			$items = (int) $items;
@@ -67,8 +67,8 @@ class Porto_Recent_Posts_Widget extends WP_Widget {
 			}
 
 			?>
-			<div<?php echo (int) $number > (int) $items ? ' class="row"' : ''; ?>>
-				<div<?php echo (int) $number > (int) $items ? ' class="post-carousel porto-carousel owl-carousel show-nav-title" data-plugin-options="' . esc_attr( $options ) . '"' : ''; ?>>
+			<div<?php echo (int) $number > $items ? ' class="row"' : ''; ?>>
+				<div<?php echo (int) $number > $items ? ' class="post-carousel porto-carousel owl-carousel show-nav-title" data-plugin-options="' . esc_attr( $options ) . '"' : ''; ?>>
 					<?php
 					$count = 0;
 					while ( $posts->have_posts() ) {

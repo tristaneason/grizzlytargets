@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Product Feed Manager\n"
 "POT-Creation-Date: 2021-04-13 11:40+0200\n"
-"PO-Revision-Date: 2021-04-13 11:41+0200\n"
+"PO-Revision-Date: 2021-06-09 13:51+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: wp-product-feed-manager.php\n"
@@ -852,10 +852,8 @@ msgstr ""
 "régénérer ce flux."
 
 #: includes/user-interface/class-wppfm-i18n-scripts.php:139
-#, fuzzy
-#| msgid "Cloning is not allowed"
 msgid "Channel not installed"
-msgstr "Le clonage n'est pas autorisé"
+msgstr "Canal non installé"
 
 #: includes/user-interface/class-wppfm-i18n-scripts.php:158
 msgid "First enter a file name for the backup file."
@@ -1299,16 +1297,14 @@ msgstr ""
 "pour votre flux et en sélectionnant un canal."
 
 #: includes/user-interface/class-wppfm-product-feed-page.php:69
-#, fuzzy, php-format
-#| msgid ""
-#| "You first need to install a channel before you can add a feed. Open the "
-#| "Manage Channels page and install at least one channel."
+#, php-format
 msgid ""
 "This feed requires the \"%s\" channel to be installed. Please open the "
 "Manage Channels page and install this channel before opening this feed."
 msgstr ""
-"Vous devez d'abord installer un canal avant de pouvoir ajouter un flux. "
-"Ouvrez la page Gérer les canaux et installez au moins un canal."
+"Ce flux nécessite l'installation du canal \"%channelname%\". Veuillez ouvrir "
+"la page Gérer les chaînes et installer le \"%channelname%\" avant de "
+"régénérer ce flux."
 
 #: includes/user-interface/class-wppfm-product-feed-page.php:74
 msgid "Edit Product Feed"

@@ -286,8 +286,16 @@ if ( ! class_exists( 'WPPFM_Data' ) ) :
 			return $this->_queries_class->get_own_variable_product_attributes( $variation_id );
 		}
 
-		public function add_parent_data( &$product_data, $parent_id, $post_columns_query_string ) {
-			$parent_product_data                 = (array) $this->_queries_class->read_post_data( $parent_id, $post_columns_query_string );
+		public function add_parent_data( &$product_data, $parent_id, $post_columns_query_string, $language ) {
+			$parent_product_data = $this->_queries_class->read_post_data( $parent_id, $post_columns_query_string );
+
+			// WPML support.
+			if ( has_filter( 'wpml_translation' ) ) {
+				$parent_product_data = apply_filters( 'wpml_translation', $parent_product_data, $language );
+			}
+
+			$parent_product_data = (array)$parent_product_data;
+
 			$sources_that_always_use_parent_data = apply_filters( 'sources_that_always_use_data_from_parent', array( 'post_excerpt' ) );
 
 			$columns = explode( ', ', $post_columns_query_string );
@@ -464,6 +472,47 @@ if ( ! class_exists( 'WPPFM_Data' ) ) :
 			$this->set_output_attribute_levels( $main_data );
 
 			return $main_data;
+		}
+
+		/**
+		 * Verifies if the categories that are stored in the feeds category mapping selections, are still active Shop Categories.
+		 * Removes categories that are no longer registered in the Shop.
+		 *
+		 * @param string $category_mapping The currently stored category mapping.
+		 *
+		 * @return string Verified category mapping.
+		 * @since 2.21.0.
+		 * @since 2.21.1. Added a conversion of the $categories variable to an array to prevent a PHP Fatal error on line 485 when the $category_mapping contains an empty object.
+		 */
+		public function verify_categories_in_mapping( $category_mapping ) {
+			$categories        = (array)json_decode( $category_mapping );
+			$categories_length = count( $categories );
+			$shop_categories   = get_terms('product_cat');
+
+			for ( $i = 0; $i < $categories_length; $i++ ) {
+				$cat_mapping_id = $categories[$i]->shopCategoryId;
+
+				$cat_exists = false;
+
+				foreach ( $shop_categories as $shop_category ) {
+
+					$shop_id = $shop_category->term_id;
+
+					if ( $cat_mapping_id === (string)$shop_category->term_id ) {
+						$cat_exists = true;
+						break;
+					}
+				}
+
+				if ( ! $cat_exists ) {
+					// Remove the non existing category.
+					unset( $categories[$i] );
+					// Resort the categories object.
+					$categories = array_values($categories);
+				}
+			}
+
+			return json_encode( $categories );
 		}
 
 		// ALERT has a relation with the wppfm_setOutputAttributeLevels() function in the logic.js file

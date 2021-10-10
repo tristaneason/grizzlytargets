@@ -3,6 +3,7 @@ const path = require('path');
 module.exports = {
   entry: {
     leadin: './src/entries/app.js',
+    menu: './src/entries/menu.js',
     gutenberg: './src/entries/gutenberg.js',
     feedback: './src/entries/feedback.js',
   },

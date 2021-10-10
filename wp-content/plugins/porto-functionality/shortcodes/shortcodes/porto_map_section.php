@@ -14,6 +14,7 @@ function porto_load_map_section_shortcode() {
 			'name'            => 'Porto ' . __( 'Map Section', 'porto-functionality' ),
 			'base'            => 'porto_map_section',
 			'category'        => __( 'Porto', 'porto-functionality' ),
+			'description'     => __( 'Display the world map', 'porto-functionality' ),
 			'icon'            => 'porto_vc_map_section',
 			'as_parent'       => array( 'except' => 'porto_map_section' ),
 			'content_element' => true,

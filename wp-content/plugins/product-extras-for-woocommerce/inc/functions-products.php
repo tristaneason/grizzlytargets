@@ -65,9 +65,9 @@ function pewc_add_to_cart( $cart_item_key, $product_id, $quantity, $variation_id
 						}
 
 						// If we're adding a variable product, then get the variation ID
-						if( ! empty( $_POST['pewc_child_variants_' . $value_id] ) ) {
+						if( ! empty( $_POST['pewc_child_variants_' . $field_id . '_' . $value_id] ) ) {
 							// Add the variant, not the variable product
-							$value_id = $_POST['pewc_child_variants_' . $value_id];
+							$value_id = $_POST['pewc_child_variants_' . $field_id . '_' . $value_id];
 						}
 
 						$child_product_ids[] = array(
@@ -97,9 +97,9 @@ function pewc_add_to_cart( $cart_item_key, $product_id, $quantity, $variation_id
 					}
 
 					// If we're adding a variable product, then get the variation ID
-					if( ! empty( $_POST['pewc_child_variants_' . $value] ) ) {
+					if( ! empty( $_POST['pewc_child_variants_' . $field_id . '_' . $value] ) ) {
 						// Add the variant, not the variable product
-						$value_id = $_POST['pewc_child_variants_' . $value];
+						$value_id = $_POST['pewc_child_variants_' . $field_id . '_' . $value];
 					}
 
 					// This checks that the layout isn't swatches
@@ -847,3 +847,56 @@ function pewc_multiply_independent_quantities_by_parent_quantity() {
 	return $multiply;
 
 }
+
+function pewc_enable_child_product_stock_check( $child_product_id ) {
+	$enable = get_option( 'pewc_remove_parent', 'no' );
+	return apply_filters( 'pewc_check_child_product_stock', $enable, $child_product_id );
+}
+
+
+/**
+ * Remove the parent product from the cart if a child product is out of stock
+ * @since 3.9.2
+ */
+function pewc_check_cart_items() {
+
+	// If we've enabled the check
+
+	foreach( WC()->cart->cart_contents as $cart_item_key=>$cart_item ) {
+
+		if( ! empty( $cart_item['product_extras']['products']['child_products'] ) ) {
+
+			// This is a parent product so we might need to check that the child products are still in stock
+			foreach( $cart_item['product_extras']['products']['child_products'] as $child_product_id=>$data ) {
+
+				// Iterate through each child product and check its stock level
+				// Remove the parent from the cart if this option is enabled
+				if( pewc_enable_child_product_stock_check( $child_product_id ) == 'yes' ) {
+
+					$child_product = wc_get_product( $child_product_id );
+
+					if( ( is_object( $child_product ) && ! is_wp_error( $child_product ) ) && ! $child_product->is_in_stock() ) {
+						// Check whether it's still in stock and if we need to prevent purchasing the parent product
+						wc_add_notice(
+							apply_filters(
+								'pewc_child_product_out_of_stock_message',
+								__( 'One of the options in this order is out of stock so the product has been removed from the cart', 'pewc' )
+							),
+							'error'
+						);
+
+						// Remove the main product from the cart
+						WC()->cart->remove_cart_item( $cart_item_key );
+
+					}
+
+				}
+
+			}
+
+		}
+
+	}
+
+};
+add_action( 'woocommerce_check_cart_items', 'pewc_check_cart_items', 10 );

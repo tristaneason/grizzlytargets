@@ -1,13 +1,12 @@
 <?php
-
 /*
   Plugin Name: WordPress Users & WooCommerce Customers Import Export(BASIC)
   Plugin URI: https://wordpress.org/plugins/users-customers-import-export-for-wp-woocommerce/
   Description: Export and Import User/Customers details From and To your WordPress/WooCommerce.
   Author: WebToffee
   Author URI: https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/
-  Version: 2.1.2
-  WC tested up to: 5.2.2
+  Version: 2.2.0
+  WC tested up to: 5.7
   Text Domain: users-customers-import-export-for-wp-woocommerce
   License: GPLv3
   License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -15,35 +14,38 @@
 
 
 
-if ( !defined( 'ABSPATH' ) || !is_admin() ) {
-	return;
+if (!defined('ABSPATH') || !is_admin()) {
+    return;
 }
 
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if (!defined('WPINC')) {
+    die;
 }
 
-define ( 'WT_U_IEW_PLUGIN_BASENAME', plugin_basename(__FILE__) );
-define ( 'WT_U_IEW_PLUGIN_PATH', plugin_dir_path(__FILE__) );
-define ( 'WT_U_IEW_PLUGIN_URL', plugin_dir_url(__FILE__));
-define ( 'WT_U_IEW_PLUGIN_FILENAME', __FILE__);
-if ( ! defined( 'WT_IEW_PLUGIN_ID_BASIC' ) ) {
-    define ( 'WT_IEW_PLUGIN_ID_BASIC', 'wt_import_export_for_woo_basic');
+define('WT_U_IEW_PLUGIN_BASENAME', plugin_basename(__FILE__));
+define('WT_U_IEW_PLUGIN_PATH', plugin_dir_path(__FILE__));
+define('WT_U_IEW_PLUGIN_URL', plugin_dir_url(__FILE__));
+define('WT_U_IEW_PLUGIN_FILENAME', __FILE__);
+if (!defined('WT_IEW_PLUGIN_ID_BASIC')) {
+    define('WT_IEW_PLUGIN_ID_BASIC', 'wt_import_export_for_woo_basic');
 }
-define ( 'WT_U_IEW_PLUGIN_NAME','User Import Export for WordPress/WooCommerce');
-define ( 'WT_U_IEW_PLUGIN_DESCRIPTION','Import and Export User From and To your WordPress/WooCommerce Store.');
+define('WT_U_IEW_PLUGIN_NAME', 'User Import Export for WordPress/WooCommerce');
+define('WT_U_IEW_PLUGIN_DESCRIPTION', 'Import and Export User From and To your WordPress/WooCommerce Store.');
 
-if ( ! defined( 'WT_IEW_DEBUG_BASIC' ) ) {
-    define ( 'WT_IEW_DEBUG_BASIC', false );
+if (!defined('WT_IEW_DEBUG_BASIC')) {
+    define('WT_IEW_DEBUG_BASIC', false);
+}
+if (!defined('WT_IEW_DEBUG_BASIC_TROUBLESHOOT')) {
+    define('WT_IEW_DEBUG_BASIC_TROUBLESHOOT', 'https://www.webtoffee.com/finding-php-error-logs/');
 }
 /**
  * Currently plugin version.
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'WT_U_IEW_VERSION', '2.1.2' );
+define('WT_U_IEW_VERSION', '2.2.0');
 
 /**
  * The code that runs during plugin activation.
@@ -57,30 +59,35 @@ function activate_wt_import_export_for_woo_basic_user() {
 //                    . '</p> <a href="' . admin_url( 'plugins.php' ) . '">' . __( 'go back') . '</a>'
 //            );
 //        }    
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wt-import-export-for-woo-activator.php';
-	Wt_Import_Export_For_Woo_Basic_Activator_User::activate();
+    require_once plugin_dir_path(__FILE__) . 'includes/class-wt-import-export-for-woo-activator.php';
+    Wt_Import_Export_For_Woo_Basic_Activator_User::activate();
 }
-
-
 
 /**
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-wt-import-export-for-woo-deactivator.php
  */
 function deactivate_wt_import_export_for_woo_basic_user() {
-        
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wt-import-export-for-woo-deactivator.php';
-	Wt_Import_Export_For_Woo_Basic_Deactivator_User::deactivate();
+
+    require_once plugin_dir_path(__FILE__) . 'includes/class-wt-import-export-for-woo-deactivator.php';
+    Wt_Import_Export_For_Woo_Basic_Deactivator_User::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_wt_import_export_for_woo_basic_user' );
-register_deactivation_hook( __FILE__, 'deactivate_wt_import_export_for_woo_basic_user' );
+register_activation_hook(__FILE__, 'activate_wt_import_export_for_woo_basic_user');
+register_deactivation_hook(__FILE__, 'deactivate_wt_import_export_for_woo_basic_user');
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-wt-import-export-for-woo.php';
+require plugin_dir_path(__FILE__) . 'includes/class-wt-import-export-for-woo.php';
+
+$advanced_settings = get_option('wt_iew_advanced_settings', array());
+$ier_get_max_execution_time = (isset($advanced_settings['wt_iew_maximum_execution_time']) && $advanced_settings['wt_iew_maximum_execution_time'] != '') ? $advanced_settings['wt_iew_maximum_execution_time'] : ini_get('max_execution_time');
+
+if (strpos(@ini_get('disable_functions'), 'set_time_limit') === false) {
+        @set_time_limit($ier_get_max_execution_time);
+}
 
 /**
  * Begins execution of the plugin.
@@ -92,116 +99,112 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wt-import-export-for-woo.p
  * @since    1.0.0
  */
 function run_wt_import_export_for_woo_basic_user() {
-    
-    if ( ! defined( 'WT_IEW_BASIC_STARTED' ) ) {
-        define ( 'WT_IEW_BASIC_STARTED', 1);
-	$plugin = new Wt_Import_Export_For_Woo_Basic();
-	$plugin->run();                
-    }        
-}
-/** this added for a temporary when a plugin update with the option upload zip file. need to remove this after some version release */
- if(!get_option('wt_u_iew_is_active'))
- {   
-     update_option('wt_user_show_legecy_menu',1);
-     activate_wt_import_export_for_woo_basic_user();
- }
 
-if(get_option('wt_u_iew_is_active'))
-{        
-    run_wt_import_export_for_woo_basic_user();        
+    if (!defined('WT_IEW_BASIC_STARTED')) {
+        define('WT_IEW_BASIC_STARTED', 1);
+        $plugin = new Wt_Import_Export_For_Woo_Basic();
+        $plugin->run();
+    }
+}
+
+/** this added for a temporary when a plugin update with the option upload zip file. need to remove this after some version release */
+if (!get_option('wt_u_iew_is_active')) {
+    update_option('wt_user_show_legecy_menu', 1);
+    activate_wt_import_export_for_woo_basic_user();
+}
+
+if (get_option('wt_u_iew_is_active')) {
+    run_wt_import_export_for_woo_basic_user();
 }
 
 /* Plugin page links */
-add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'wt_uiew_plugin_action_links_basic_user' );
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'wt_uiew_plugin_action_links_basic_user');
 
-function wt_uiew_plugin_action_links_basic_user( $links ) {
+function wt_uiew_plugin_action_links_basic_user($links) {
 
-	$plugin_links = array(
-		'<a href="' . admin_url( 'admin.php?page=wt_import_export_for_woo_basic' ) . '">' . __( 'Settings' ) . '</a>',
-		'<a href="https://www.webtoffee.com/user-import-export-plugin-wordpress-user-guide/" target="_blank">' . __( 'Documentation' ) . '</a>',
-		'<a target="_blank" href="https://wordpress.org/support/plugin/users-customers-import-export-for-wp-woocommerce/">' . __( 'Support' ) . '</a>',
-		'<a target="_blank" href="https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/?utm_source=free_plugin_listing&utm_medium=user_imp_exp_basic&utm_campaign=User_Import_Export&utm_content=' . WT_U_IEW_VERSION . '" style="color:#3db634;">' . __( 'Premium Upgrade' ) . '</a>'
-	);
+    $plugin_links = array(
+        '<a href="' . admin_url('admin.php?page=wt_import_export_for_woo_basic') . '">' . __('Settings') . '</a>',
+        '<a href="https://www.webtoffee.com/user-import-export-plugin-wordpress-user-guide/" target="_blank">' . __('Documentation') . '</a>',
+        '<a target="_blank" href="https://wordpress.org/support/plugin/users-customers-import-export-for-wp-woocommerce/">' . __('Support') . '</a>',
+        '<a target="_blank" href="https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/?utm_source=free_plugin_listing&utm_medium=user_imp_exp_basic&utm_campaign=User_Import_Export&utm_content=' . WT_U_IEW_VERSION . '" style="color:#3db634;">' . __('Premium Upgrade') . '</a>'
+    );
 
-	if ( array_key_exists( 'deactivate', $links ) ) {
-		$links[ 'deactivate' ] = str_replace( '<a', '<a class="userimport-deactivate-link"', $links[ 'deactivate' ] );
-	}
-	return array_merge( $plugin_links, $links );
+    if (array_key_exists('deactivate', $links)) {
+        $links['deactivate'] = str_replace('<a', '<a class="userimport-deactivate-link"', $links['deactivate']);
+    }
+    return array_merge($plugin_links, $links);
 }
 
 /*
  *  Displays update information for a plugin. 
  */
-function wt_users_customers_import_export_for_wp_woocommerce_update_message( $data, $response )
-{
-    if(isset( $data['upgrade_notice']))
-    {
-        add_action( 'admin_print_footer_scripts','wt_users_customers_imex_plugin_screen_update_js');
-            $msg=str_replace(array('<p>','</p>'),array('<div>','</div>'),$data['upgrade_notice']);
-            echo '<style type="text/css">
+
+function wt_users_customers_import_export_for_wp_woocommerce_update_message($data, $response) {
+    if (isset($data['upgrade_notice'])) {
+        add_action('admin_print_footer_scripts', 'wt_users_customers_imex_plugin_screen_update_js');
+        $msg = str_replace(array('<p>', '</p>'), array('<div>', '</div>'), $data['upgrade_notice']);
+        echo '<style type="text/css">
             #users-customers-import-export-for-wp-woocommerce-update .update-message p:last-child{ display:none;}     
             #users-customers-import-export-for-wp-woocommerce-update ul{ list-style:disc; margin-left:30px;}
             .wf-update-message{ padding-left:30px;}
             </style>
-            <div class="update-message wf-update-message">'. wpautop($msg).'</div>';
+            <div class="update-message wf-update-message">' . wpautop($msg) . '</div>';
     }
 }
-add_action( 'in_plugin_update_message-users-customers-import-export-for-wp-woocommerce/users-customers-import-export-for-wp-woocommerce.php', 'wt_users_customers_import_export_for_wp_woocommerce_update_message', 10, 2 );
 
-if(!function_exists('wt_users_customers_imex_plugin_screen_update_js'))
-{
-    function wt_users_customers_imex_plugin_screen_update_js()
-    {
+add_action('in_plugin_update_message-users-customers-import-export-for-wp-woocommerce/users-customers-import-export-for-wp-woocommerce.php', 'wt_users_customers_import_export_for_wp_woocommerce_update_message', 10, 2);
+
+if (!function_exists('wt_users_customers_imex_plugin_screen_update_js')) {
+
+    function wt_users_customers_imex_plugin_screen_update_js() {
         ?>
         <script>
-            ( function( $ ){
-                var update_dv=$( '#users-customers-import-export-for-wp-woocommerce-update');
+            (function ($) {
+                var update_dv = $('#users-customers-import-export-for-wp-woocommerce-update');
                 update_dv.find('.wf-update-message').next('p').remove();
-                update_dv.find('a.update-link:eq(0)').click(function(){
+                update_dv.find('a.update-link:eq(0)').click(function () {
                     $('.wf-update-message').remove();
                 });
-            })( jQuery );
+            })(jQuery);
         </script>
         <?php
     }
+
 }
 // uninstall feedback catch
-include_once plugin_dir_path( __FILE__ ) . 'includes/class-wt-userimport-uninstall-feedback.php';
-
-
+include_once plugin_dir_path(__FILE__) . 'includes/class-wt-userimport-uninstall-feedback.php';
 
 // add dismissble banner for legecy menu
-include_once plugin_dir_path( __FILE__ ) . 'includes/class-wt-legecy-menu-moved.php';
-$user_egecy_menu = new wt_legecy_menu_moved('user');
-$user_egecy_menu->plugin_title = "User Import Export";
-$user_egecy_menu->old_menu = "Users > User Import Export";
-$user_egecy_menu->banner_message = sprintf(__("We have introduced a new main menu %sWebToffee Import Export(basic)%s for the %s plugin. Click the button below or dismiss this banner to remove the old menu from %s."),'<b>','</b>', $user_egecy_menu->plugin_title, $user_egecy_menu->old_menu);
-$user_egecy_menu->old_menu_params = array(array('parent_slug'=>'users.php', 'menu_title'=>'User Import Export', 'capability'=>'list_users'),
-                            array('parent_slug'=>'woocommerce', 'menu_title'=>'Customer Import Export', 'capability'=>'manage_woocommerce')
-                            );
+include_once plugin_dir_path(__FILE__) . 'includes/class-wt-legecy-menu-moved.php';
+$user_legacy_menu = new wt_legecy_menu_moved('user');
+$user_legacy_menu->plugin_title = "User Import Export";
+$user_legacy_menu->old_menu = "Users > User Import Export";
+$user_legacy_menu->banner_message = sprintf(__("We have introduced a new main menu %sWebToffee Import Export(basic)%s for the %s plugin. Click the button below or dismiss this banner to remove the old menu from %s."), '<b>', '</b>', $user_legacy_menu->plugin_title, $user_legacy_menu->old_menu);
+$user_legacy_menu->old_menu_params = array(array('parent_slug' => 'users.php', 'menu_title' => 'User Import Export', 'capability' => 'list_users'),
+    array('parent_slug' => 'woocommerce', 'menu_title' => 'Customer Import Export', 'capability' => 'import')
+);
 
 include_once 'user_import_export_review_request.php';
 
-
 // Add dismissible server info for file restrictions
-include_once plugin_dir_path( __FILE__ ) . 'includes/class-wt-non-apache-info.php';
+include_once plugin_dir_path(__FILE__) . 'includes/class-wt-non-apache-info.php';
 $inform_server_secure = new wt_inform_server_secure('user');
 $inform_server_secure->plugin_title = "User Import Export";
 $inform_server_secure->banner_message = sprintf(__("The <b>%s</b> plugin uploads the imported file into <b>wp-content/webtoffee_import</b> folder. Please ensure that public access restrictions are set in your server for this folder."), $inform_server_secure->plugin_title);
 
-add_action( 'wt_user_addon_basic_help_content', 'wt_user_import_basic_help_content' );
+add_action('wt_user_addon_basic_help_content', 'wt_user_import_basic_help_content');
 
 function wt_user_import_basic_help_content() {
-	if ( defined( 'WT_IEW_PLUGIN_ID_BASIC' ) ) {
-?>
-					<li>
-						<img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/sample-csv.png">
-						<h3><?php _e( 'Sample User CSV' ); ?></h3>
-						<p><?php _e( 'Familiarize yourself with the sample CSV.' ); ?></p>
-						<a target="_blank" href="https://www.webtoffee.com/wp-content/uploads/2020/10/Sample_Users.csv" class="button button-primary">
-		<?php _e( 'Get User CSV' ); ?>        
-						</a>
-					</li>
-		<?php
-	}
+    if (defined('WT_IEW_PLUGIN_ID_BASIC')) {
+        ?>
+        <li>
+            <img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/sample-csv.png">
+            <h3><?php _e('Sample User CSV'); ?></h3>
+            <p><?php _e('Familiarize yourself with the sample CSV.'); ?></p>
+            <a target="_blank" href="https://www.webtoffee.com/wp-content/uploads/2020/10/Sample_Users.csv" class="button button-primary">
+        <?php _e('Get User CSV'); ?>        
+            </a>
+        </li>
+        <?php
+    }
 }

@@ -87,6 +87,8 @@ if( ! empty( $item['products_quantities'] ) ) {
 
 		<?php include( PEWC_DIRNAME . '/templates/admin/views/role-based-prices.php' ); ?>
 
+		<?php include( PEWC_DIRNAME . '/templates/admin/views/price-visibility.php' ); ?>
+
 		<?php do_action( 'pewc_end_fields_heading', $item ); ?>
 
 		<div class="pewc-hide-if-not-pro">
@@ -464,22 +466,39 @@ if( ! empty( $item['products_quantities'] ) ) {
 			<?php if( apply_filters( 'pewc_show_date_params', true, $item, $post_id ) ) { ?>
 
 				<div class="pewc-fields-wrapper pewc-date-fields">
-					<div class="product-extra-field-third">
-						<label>
-							<?php _e( 'Min date today?', 'pewc' ); ?>
-							<?php echo wc_help_tip( 'Select this to prevent entering a date in the past', 'pewc' ); ?>
-						</label>
-						<?php $checked = ! empty( $item['min_date_today'] ); ?>
-						<input <?php checked( $checked, 1, true ); ?> type="checkbox" class="pewc-field-item pewc-field-min_date_today" name="_product_extra_groups_<?php echo esc_attr( $group_id ); ?>_<?php echo esc_attr( $item_key ); ?>[min_date_today]" value="1">
-					</div>
-					<div class="product-extra-field-third">
-						<?php $mindate = isset( $item['field_mindate'] ) ? $item['field_mindate'] : ''; ?>
-						<label>
-							<?php _e( 'Min date', 'pewc' ); ?>
-							<?php echo wc_help_tip( 'The earliest allowable date', 'pewc' ); ?>
-						</label>
-						<input type="text" class="pewc-field-item pewc-date-field pewc-field-mindate" name="_product_extra_groups_<?php echo esc_attr( $group_id ); ?>_<?php echo esc_attr( $item_key ); ?>[field_mindate]" value="<?php echo esc_attr( $mindate ); ?>">
-					</div>
+
+					<?php if( pewc_enable_offset_days( $item ) ) { ?>
+
+						<div class="product-extra-field-third">
+							<?php $offset_days = isset( $item['offset_days'] ) ? $item['offset_days'] : ''; ?>
+							<label>
+								<?php _e( 'Offset days', 'pewc' ); ?>
+								<?php echo wc_help_tip( 'Enter a value to offset the minimum date by the set number', 'pewc' ); ?>
+							</label>
+							<input type="number" class="pewc-field-item pewc-field-offset-days" name="_product_extra_groups_<?php echo esc_attr( $group_id ); ?>_<?php echo esc_attr( $item_key ); ?>[offset_days]" value="<?php echo esc_attr( $offset_days ); ?>">
+						</div>
+
+					<?php } else { ?>
+
+						<div class="product-extra-field-third">
+							<label>
+								<?php _e( 'Min date today?', 'pewc' ); ?>
+								<?php echo wc_help_tip( 'Select this to prevent entering a date in the past', 'pewc' ); ?>
+							</label>
+							<?php $checked = ! empty( $item['min_date_today'] ); ?>
+							<input <?php checked( $checked, 1, true ); ?> type="checkbox" class="pewc-field-item pewc-field-min_date_today" name="_product_extra_groups_<?php echo esc_attr( $group_id ); ?>_<?php echo esc_attr( $item_key ); ?>[min_date_today]" value="1">
+						</div>
+						<div class="product-extra-field-third">
+							<?php $mindate = isset( $item['field_mindate'] ) ? $item['field_mindate'] : ''; ?>
+							<label>
+								<?php _e( 'Min date', 'pewc' ); ?>
+								<?php echo wc_help_tip( 'The earliest allowable date', 'pewc' ); ?>
+							</label>
+							<input type="text" class="pewc-field-item pewc-date-field pewc-field-mindate" name="_product_extra_groups_<?php echo esc_attr( $group_id ); ?>_<?php echo esc_attr( $item_key ); ?>[field_mindate]" value="<?php echo esc_attr( $mindate ); ?>">
+						</div>
+
+					<?php } ?>
+
 					<div class="product-extra-field-third">
 						<?php $maxdate = isset( $item['field_maxdate'] ) ? $item['field_maxdate'] : ''; ?>
 						<label>
@@ -488,6 +507,59 @@ if( ! empty( $item['products_quantities'] ) ) {
 						</label>
 						<input type="text" class="pewc-field-item pewc-date-field pewc-field-maxdate" name="_product_extra_groups_<?php echo esc_attr( $group_id ); ?>_<?php echo esc_attr( $item_key ); ?>[field_maxdate]" value="<?php echo esc_attr( $maxdate ); ?>">
 					</div>
+
+				</div><!-- .pewc-fields-wrapper -->
+
+			<?php } ?>
+
+			<?php if( pewc_show_days_of_the_week( $item ) ) { ?>
+
+				<div class="pewc-fields-wrapper pewc-date-fields">
+					<div class="product-extra-field">
+						<label>
+							<?php _e( 'Disable days of the week?', 'pewc' ); ?>
+							<?php echo wc_help_tip( 'Select weekdays below to disable them on the datepicker calendar', 'pewc' ); ?>
+						</label>
+						<div class="pewc-weekdays-wrapper">
+							<?php $weekdays = array(
+								__( 'Sunday', 'pewc' ),
+								__( 'Monday', 'pewc' ),
+								__( 'Tuesday', 'pewc' ),
+								__( 'Wednesday', 'pewc' ),
+								__( 'Thursday', 'pewc' ),
+								__( 'Friday', 'pewc' ),
+								__( 'Saturday', 'pewc' )
+							);
+							foreach( $weekdays as $index=>$day ) { ?>
+								<div class="pewc-weekday">
+									<?php $checked = ! empty( $item['weekdays'][$index] ); ?>
+									<input <?php checked( $checked, 1, true ); ?> type="checkbox" class="pewc-field-item pewc-field-weekdays" id="_product_extra_groups_weekdays_<?php echo esc_attr( $group_id ); ?>_<?php echo esc_attr( $item_key ); ?>_<?php echo esc_attr( $index ); ?>" name="_product_extra_groups_<?php echo esc_attr( $group_id ); ?>_<?php echo esc_attr( $item_key ); ?>[weekdays][<?php echo esc_attr( $index ); ?>]" value="1">
+									<label for="_product_extra_groups_weekdays_<?php echo esc_attr( $group_id ); ?>_<?php echo esc_attr( $item_key ); ?>_<?php echo esc_attr( $index ); ?>">
+										<?php echo $day; ?>
+									</label>
+								</div>
+							<?php } ?>
+						</div>
+					</div>
+
+				</div><!-- .pewc-fields-wrapper -->
+
+			<?php } ?>
+
+			<?php if( pewc_enable_blocked_dates( $item ) ) { ?>
+
+				<div class="pewc-fields-wrapper pewc-date-fields">
+					<div class="product-extra-field">
+						<label>
+							<?php $blocked = isset( $item['blocked_dates'] ) ? $item['blocked_dates'] : ''; ?>
+							<?php _e( 'Blocked dates', 'pewc' ); ?>
+							<?php echo wc_help_tip( 'Enter a comma-separated list of blocked dates using the YYYY-MM-DD format', 'pewc' ); ?>
+						</label>
+
+						<textarea class="pewc-field-item pewc-field-blocked-dates" name="_product_extra_groups_<?php echo esc_attr( $group_id ); ?>_<?php echo esc_attr( $item_key ); ?>[blocked_dates]"><?php echo esc_html( $blocked ); ?></textarea>
+
+					</div>
+
 				</div><!-- .pewc-fields-wrapper -->
 
 			<?php } ?>

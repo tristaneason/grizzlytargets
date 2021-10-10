@@ -17,6 +17,7 @@ return array(
     'Leadin\\admin\\DeactivationForm' => $baseDir . '/src/admin/class-deactivationform.php',
     'Leadin\\admin\\Gutenberg' => $baseDir . '/src/admin/class-gutenberg.php',
     'Leadin\\admin\\IframeRoutes' => $baseDir . '/src/admin/class-iframeroutes.php',
+    'Leadin\\admin\\Impact' => $baseDir . '/src/admin/class-impact.php',
     'Leadin\\admin\\LeadinAdmin' => $baseDir . '/src/admin/class-leadinadmin.php',
     'Leadin\\admin\\Links' => $baseDir . '/src/admin/class-links.php',
     'Leadin\\admin\\MenuConstants' => $baseDir . '/src/admin/class-menuconstants.php',

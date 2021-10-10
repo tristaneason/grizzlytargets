@@ -42,7 +42,7 @@ if( isset( $item['field_options'] ) ) {
 
 			}
 
-	    if( ! empty( $option_price ) && apply_filters( 'pewc_show_option_prices', true, $item ) ) {
+	    if( ! empty( $option_price ) && pewc_display_option_prices_product_page( $item ) ) {
 				$name .= apply_filters( 'pewc_option_price_separator', '+', $item ) . '<span class="pewc-option-cost-label">' . pewc_get_semi_formatted_raw_price( $option_price ) . '</span>';
 				$name = apply_filters( 'pewc_option_name', $name, $item, $product, $option_price );
 			}

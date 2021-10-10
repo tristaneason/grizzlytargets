@@ -17,12 +17,12 @@ if (!function_exists("en_woo_wd_admin_script_style")) {
             'pluginsUrl' => plugins_url(),
         ));
 
-        wp_enqueue_script('en_woo_wd_script', plugin_dir_url(__FILE__) . '/wild/assets/js/warehouse_section.js', array(), '1.0.0');
+        wp_enqueue_script('en_woo_wd_script', plugin_dir_url(__FILE__) . '/wild/assets/js/warehouse_section.js', array(), '1.0.2');
         wp_localize_script('en_woo_wd_script', 'script', array(
             'pluginsUrl' => plugins_url(),
         ));
 
-        wp_register_style('warehouse_section', plugin_dir_url(__FILE__) . '/wild/assets/css/warehouse_section.css', false, '1.0.0');
+        wp_register_style('warehouse_section', plugin_dir_url(__FILE__) . '/wild/assets/css/warehouse_section.css', false, '1.0.1');
         wp_enqueue_style('warehouse_section');
     }
 
@@ -160,8 +160,7 @@ if (!function_exists('warehouse_template')) {
 
             global $wpdb;
             $dropship_list = $wpdb->get_results(
-                    "SELECT id, city, state, zip, country, location, nickname 
-                  FROM " . $wpdb->prefix . "warehouse WHERE location = 'dropship'"
+                    "SELECT * FROM " . $wpdb->prefix . "warehouse WHERE location = 'dropship'"
             );
 
             $multi_dropship_disabled = "";

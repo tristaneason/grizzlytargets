@@ -42,9 +42,9 @@ $popup_display          = $automation_enabled ? 'true' : 'false';
 						<?php esc_html_e( 'Connect with MakeWebBetter to learn more about HubSpot’s plans', 'makewebbetter-hubspot-for-woocommerce' ); ?>
 					</h2>
 					<p>
-						<?php esc_html_e( 'MakeWebBetter is a HubSpot Gold Solutions Partner. Schedule a meeting with our experts to learn more about HubSpot.', 'makewebbetter-hubspot-for-woocommerce' ); ?>
+						<?php esc_html_e( 'MakeWebBetter is a HubSpot Platinum Solutions Partner. Schedule a meeting with our experts to learn more about HubSpot.', 'makewebbetter-hubspot-for-woocommerce' ); ?>
 					</p>
-					<a target="_blank" href="https://meetings.hubspot.com/umakantsharma/free-hubspot-consultation"><?php esc_html_e( 'Schedule meeting', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+					<a target="_blank" href="https://meetings.hubspot.com/makewebbetter/free-hubspot-consultation"><?php esc_html_e( 'Schedule meeting', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 				</div>
 			</div>
 		</div>

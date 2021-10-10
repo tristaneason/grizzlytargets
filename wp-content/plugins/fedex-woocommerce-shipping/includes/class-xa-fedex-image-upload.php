@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class xa_fedex_image_upload {
 	public function __construct() {
-		$this->upload_document_wsdl_version = 11;
+		$this->upload_document_wsdl_version = 19;
 
 		$this->xa_init();
 		add_action( 'wp_ajax_xa_fedex_upload_image', array($this,'xa_upload_image'), 10, 1 );
@@ -123,7 +123,7 @@ class xa_fedex_image_upload {
 		$request['TransactionDetail'] = array('CustomerTransactionId' => '*** Upload Documents Request using PHP ***');
 		$request['Version'] = array(
 			'ServiceId' => 'cdus', 
-			'Major' => '11', 
+			'Major' => '19', 
 			'Intermediate' => '0', 
 			'Minor' => '0'
 		);

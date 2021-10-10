@@ -175,14 +175,14 @@ function pewc_get_htaccess_rules() {
 
 
 /**
- * Do the file upload
+ * Do the file upload - standard HTML file input method only
  * @param  String $file
  * @return Mixed
  */
 function pewc_handle_upload( $file ) {
 
 	if ( ! function_exists( 'wp_handle_upload' ) ) {
-	    require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		require_once( ABSPATH . 'wp-admin/includes/file.php' );
 	}
 	include_once( ABSPATH . 'wp-admin/includes/media.php' );
 
@@ -194,13 +194,18 @@ function pewc_handle_upload( $file ) {
 	$mime_types = pewc_get_permitted_mimes();
 	// Use wp_check_filetype for additional security
 	$file_info = wp_check_filetype( basename( $file['name'] ), $mime_types );
-	// Check image size for valid image
-	if( ! @getimagesize( $file['tmp_name'] ) ) {
-		// wc_add_notice( apply_filters( 'pewc_file_not_valid_message', __( 'File not valid.', 'pewc' ) ), 'error' );
-		// return false;
-		// wp_die( __( 'File not valid', 'pewc' ) );
-	}
+
 	if( ! empty( $file_info['type'] ) ) {
+
+		$image_mimes = pewc_get_image_mimes();
+		if( is_array( $image_mimes ) && in_array( $file_info['type'], $image_mimes ) ) {
+			// Check image size for valid image
+			if( ! @getimagesize( $file['tmp_name'] ) ) {
+				wc_add_notice( apply_filters( 'pewc_file_not_valid_message', __( 'File not valid.', 'pewc' ) ), 'error' );
+				return false;
+				// wp_die( __( 'File not valid', 'pewc' ) );
+			}
+		}
 
 		add_filter( 'upload_dir', 'pewc_set_upload_dir' );
 
@@ -244,6 +249,25 @@ function pewc_get_permitted_mimes() {
 	$permitted_mimes = apply_filters( 'pewc_permitted_mimes', $permitted_mimes );
 
 	return $permitted_mimes;
+
+}
+
+/**
+ * Return the standard image file types
+ * Used to validate uploads
+ * @since 3.8.10
+ *
+ * @return 	Array
+ */
+function pewc_get_image_mimes() {
+
+	$image_mimes = array(
+		'image/jpeg', 'image/jpg', 'image/jpe', 'image/png', 'image/gif'
+	);
+
+	$image_mimes = apply_filters( 'pewc_image_mimes', $image_mimes );
+
+	return $image_mimes;
 
 }
 
@@ -331,6 +355,30 @@ function pewc_dropzone_upload() {
 			// Does the URL still contain http? Something fishy could be happening, so reject it
 			if( strpos( $truncated_url, 'http' ) !== false || strpos( $truncated_url, ':' ) !== false ) {
 				error_log( 'fail' );
+			}
+
+			$file_type = $_FILES['file']['type'][$index];
+
+			// Validate any images
+			$image_mimes = pewc_get_image_mimes();
+			if( is_array( $image_mimes ) && in_array( $_FILES['file']['type'][$index], $image_mimes ) ) {
+
+				// Check image size for valid image
+				if( ! @getimagesize( $_FILES['file']['tmp_name'][$index] ) ) {
+					wc_add_notice(
+						apply_filters(
+							'pewc_ajax_file_not_valid_message',
+							sprintf(
+								'%s: %s',
+								__( 'File not valid', 'pewc' ),
+								$_FILES['file']['name'][$index]
+							)
+						),
+						'error'
+					);
+					continue;
+				}
+
 			}
 
 			$uploaded_files[$index] = array(

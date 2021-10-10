@@ -90,19 +90,24 @@ if ( ! class_exists( 'WPPFM_Taxonomies' ) ) :
 		}
 
 		/**
-		 * Returns the product category that is selected as primary (only when Yoast plugin is installed)
+		 * Returns the product category that is selected as primary (only when Yoast SEO or RankMath plugin is installed)
 		 *
 		 * @param string $id
 		 *
-		 * @return bool
+		 * @return array|boolean
 		 */
-		public static function get_yoast_primary_cat( $id ) {
-			if ( ! is_plugin_active( 'wordpress-seo/wp-seo.php' ) && ! is_plugin_active_for_network( 'wordpress-seo/wp-seo.php' )
-			&& ! is_plugin_active( 'wordpress-seo-premium/wp-seo-premium.php' ) && ! is_plugin_active_for_network( 'wordpress-seo-premium/wp-seo-premium.php' ) ) {
-				return false; // return false if yoast plugin is inactive
+		public static function get_primary_cat( $id ) {
+			$primary_cat_id = '';
+
+			if ( is_plugin_active( 'wordpress-seo/wp-seo.php' ) || is_plugin_active_for_network( 'wordpress-seo/wp-seo.php' )
+			|| is_plugin_active( 'wordpress-seo-premium/wp-seo-premium.php' ) || is_plugin_active_for_network( 'wordpress-seo-premium/wp-seo-premium.php' ) ) {
+				$primary_cat_id = get_post_meta( $id, '_yoast_wpseo_primary_product_cat', true );
 			}
 
-			$primary_cat_id = get_post_meta( $id, '_yoast_wpseo_primary_product_cat', true );
+			if ( is_plugin_active( 'seo-by-rank-math/rank-math.php' ) || is_plugin_active_for_network( 'seo-by-rank-math/rank-math.php' )
+			|| is_plugin_active( 'seo-by-rank-math-pro/rank-math-pro.php' ) || is_plugin_active_for_network( 'seo-by-rank-math-pro/rank-math-pro.php' ) ) {
+				$primary_cat_id = get_post_meta( $id, 'rank_math_primary_product_cat', true );
+			}
 
 			if ( $primary_cat_id ) {
 				$product_cat[0] = get_term( $primary_cat_id, 'product_cat' );

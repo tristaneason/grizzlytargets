@@ -198,6 +198,11 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 			 * The class responsible for defining functions to return values as per ecomm settings upserted
 			 */
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-hubwooecommpropertycallbacks.php';
+
+			/**
+			 * The class responsible for defining functions for CSV generations of the respective hubspot objects.
+			 */
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-hubwoo-csv-handler.php';
 		}
 
 		/**
@@ -342,9 +347,6 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 					}
 				}
 
-				// Update existing order on admin.
-				$this->loader->add_action( 'woocommerce_update_order', $plugin_public, 'hubwoo_ecomm_deal_update_order' );
-
 				// HubSpot Abandon Carts.
 				if ( get_option( 'hubwoo_abncart_enable_addon', 'yes' ) == 'yes' ) {
 
@@ -353,7 +355,9 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 						$this->loader->add_action( 'init', $plugin_public, 'hubwoo_abncart_start_session', 10 );
 						$this->loader->add_action( 'template_redirect', $plugin_public, 'hubwoo_track_cart_for_formuser' );
 						$this->loader->add_action( 'wp_ajax_nopriv_hubwoo_save_guest_user_cart', $plugin_public, 'hubwoo_save_guest_user_cart' );
-						$this->loader->add_action( 'woocommerce_after_checkout_billing_form', $plugin_public, 'hubwoo_track_email_for_guest_users' );
+						$this->loader->add_action( 'wp_ajax_nopriv_get_order_detail', $plugin_public, 'get_order_detail' );
+						$this->loader->add_action( 'woocommerce_after_checkout_billing_form', $plugin_public, 'hubwoo_track_email_for_guest_users', 10 );
+						$this->loader->add_action( 'woocommerce_after_checkout_billing_form', $plugin_public, 'get_email_checkout_page' );
 						$this->loader->add_action( 'woocommerce_new_order', $plugin_public, 'hubwoo_abncart_woocommerce_new_orders' );
 						$this->loader->add_action( 'woocommerce_cart_updated', $plugin_public, 'hubwoo_abncart_track_guest_cart', 99, 0 );
 						$this->loader->add_action( 'user_register', $plugin_public, 'hubwoo_abncart_user_registeration' );
@@ -1452,6 +1456,8 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 
 			$user_roles = ! empty( $wp_roles->role_names ) ? $wp_roles->role_names : array();
 
+
+
 			if ( is_array( $user_roles ) && count( $user_roles ) ) {
 
 				foreach ( $user_roles as $role => $role_info ) {
@@ -1608,7 +1614,7 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 			$hubspot_url = add_query_arg(
 				array(
 					'client_id'      => $hapikey,
-					'optional_scope' => 'automation%20files%20timeline%20content%20forms%20integration-sync%20e-commerce',
+					'optional_scope' => 'automation%20files%20timeline%20content%20forms%20integration-sync%20e-commerce%20crm.import',
 					'scope'          => 'oauth%20contacts',
 					'redirect_uri'   => admin_url() . 'admin.php?type=hs-auth',
 				),
@@ -1650,6 +1656,7 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 
 			$sync_status['current'] = get_option( 'hubwoo_deals_current_sync_count', 0 );
 			$sync_status['total']   = get_option( 'hubwoo_deals_sync_total', 0 );
+			$sync_status['eta_deals_sync'] = '';
 
 			if ( $sync_status['total'] ) {
 				$perc                          = round( ( $sync_status['current'] / $sync_status['total'] ) * 100 );
@@ -2203,7 +2210,7 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 			if ( $left_items_timer > 90 ) {
 				$float_timer = number_format( ( $left_items_timer / 60 ), 2 );
 				$hours       = intval( $float_timer );
-				$minutes     = round( ( $float_timer - $hours) * 0.6 );
+				$minutes     = round( ( $float_timer - $hours ) * 0.6 );
 				$eta_string  = "{$hours} hours and {$minutes} minutes ";
 			} elseif ( 0 == $left_items_timer ) {
 				$eta_string = 'less than a minute';
@@ -2361,7 +2368,7 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 
 			if ( ! as_next_scheduled_action( 'hubwoo_cron_schedule' ) || ! as_next_scheduled_action( 'hubwoo_deals_sync_check' ) ) {
 				$cron_status['status'] = false;
-				$cron_status['type']   = esc_html__( 'You are having issues with your HubSpot for WooCommerce sync. Please read this doc on how to fix your integration.' );
+				$cron_status['type']   = esc_html__( 'You are having issues with your HubSpot for WooCommerce sync. Please read this doc on how to fix your integration.', 'makewebbetter-hubspot-for-woocommerce' );
 			}
 
 			return $cron_status;
@@ -2396,19 +2403,23 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 						'I know my way around WooCommerce pretty well',
 					),
 				),
-				'mwb_ecomm_challenges' => array(
+				'which_hubspot_packages_do_you_currently_use_' => array(
 					'allow'   => 'multiple',
-					'label'   => 'What are your biggest eCommerce challenges?',
+					'label'   => 'Which HubSpot plan you are using?',
 					'options' => array(
-						'Driving traffic to my store',
-						'Converting traffic into leads and customers',
-						'Tracking and recovering abandoned carts',
-						'Reporting on my business growth',
-						'Automating marketing and sales',
-						'Collecting reviews on my products',
-						'Processing orders efficiently',
-						'Managing inventory of my products',
-						'Integrating my store with other softwares',
+						'I don’t currently use HubSpot',
+						'HubSpot Free',
+						'Marketing Starter',
+						'Marketing Pro',
+						'Marketing Enterprise',
+						'Sales Starter',
+						'Sales Pro',
+						'Sales Enterprise',
+						'Service Starter',
+						'Service Pro',
+						'Service Enterprise',
+						'CMS Hub',
+						'Other',
 					),
 				),
 			);

@@ -57,6 +57,10 @@ if( ! class_exists( 'PEWC_Settings_Tab' ) ) {
 
 				$settings = pewc_get_uploads_settings();
 
+			} else if( $current_section == 'pewc_date' ) {
+
+				$settings = pewc_get_date_settings();
+
 			} else if( $current_section == 'pewc_products' && pewc_is_pro() ) {
 
 				$settings = pewc_get_products_settings();
@@ -87,6 +91,7 @@ if( ! class_exists( 'PEWC_Settings_Tab' ) ) {
 				// Main settings tab
 				$sections = array(
 					'pewc'				 => __( 'General', 'pewc' ),
+					'pewc_date'		 => __( 'Date', 'pewc' ),
 					'pewc_uploads' => __( 'Uploads', 'pewc' )
 				);
 
@@ -123,7 +128,7 @@ if( ! class_exists( 'PEWC_Settings_Tab' ) ) {
 
 		public function upgrade_submenu() {
 	    global $submenu;
-	    $submenu['edit.php?post_type=pewc_product_extra'][] = array( __( 'Upgrade', 'pewc' ), 'manage_plugins', pewc_get_upgrade_url() );
+	    $submenu['pewc_home'][] = array( __( 'Upgrade', 'pewc' ), 'manage_plugins', pewc_get_upgrade_url() );
 		}
 
 		/**

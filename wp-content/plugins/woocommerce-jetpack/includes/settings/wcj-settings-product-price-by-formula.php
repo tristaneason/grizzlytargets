@@ -2,8 +2,8 @@
 /**
  * Booster for WooCommerce - Settings - Product Price by Formula
  *
- * @version 5.1.1
- * @since   2.8.0
+ * @version 5.4.7
+ * @since   2.8.1
  * @author  Pluggabl LLC.
  */
 
@@ -80,6 +80,23 @@ $settings = array_merge( $settings, array(
 		'custom_attributes' => array( 'min' => 0 ),
 	),
 	array(
+		'title'    => __( 'Compatible With Woococommerce Booking Plugin', 'woocommerce-jetpack' ),
+		'desc'     => __( 'Enable on Woocommerce Booking Module', 'woocommerce-jetpack' ),
+		'desc_tip' => __( "If you are facing pricing issue after enable Woocommerce Booking plugin please enable  the section", 'woocommerce-jetpack' ) . '<br />',
+		'type'     => 'checkbox',
+		'id'       => 'wcj_product_price_by_formula_woo_booking_plugin',
+		'default'  => 'no',
+	),
+
+	array(
+		'title'    => __( 'Promotional pricing issue', 'woocommerce-jetpack' ),
+		'desc'     => __( 'Enable', 'woocommerce-jetpack' ),
+		'desc_tip' => __( "If you are facing promotional  pricing issue in booking product then enable the section", 'woocommerce-jetpack' ) . '<br />',
+		'type'     => 'checkbox',
+		'id'       => 'wcj_product_price_by_formula_woo_booking_promotional',
+		'default'  => 'no',
+	),
+	array(
 		'title'    => __( 'Disable Admin Scope', 'woocommerce-jetpack' ),
 		'desc'     => __( 'Disable module on Admin scope.', 'woocommerce-jetpack' ),
 		'desc_tip' => __( "Disable if you want to use ‘Product Price by Formula’ module only on Frontend.", 'woocommerce-jetpack' ) . '<br />' . __( 'For example if you use ‘Cost of Goods’ module the profit will be correctly calculated if you leave the box unticked', 'woocommerce-jetpack' ),
@@ -87,6 +104,16 @@ $settings = array_merge( $settings, array(
 		'id'       => 'wcj_product_price_by_formula_admin_scope',
 		'default'  => 'yes',
 	),
+	array(
+        'title' => __('Disable Quick Edit Product For Admin Scope', 'woocommerce-jetpack'),
+        'desc' => __('Disable For Admin Quick Edit Scope.', 'woocommerce-jetpack'),
+        'desc_tip' => __("Disable if you are facing any compatibility issue in product quick/bulk edit. ", 'woocommerce-jetpack') . '<br />' . __('For example if you use Quick Edit Product  and donot want change the deafult price then the  box ticked', 'woocommerce-jetpack'),
+        'type' => 'checkbox',
+        'id' => 'wcj_product_price_by_formula_admin_quick_edit_product_scope',
+        'default' => 'no',
+    ),
+
+
 	array(
 		'type'     => 'sectionend',
 		'id'       => 'wcj_product_price_by_formula_general_options',
@@ -98,7 +125,7 @@ $settings = array_merge( $settings, array(
 	),
 	array(
 		'title'    => __( 'Price Filters Priority', 'woocommerce-jetpack' ),
-		'desc_tip' => __( 'Priority for all module\'s price filters. Set to zero to use default priority.' ),
+		'desc_tip' => __( 'Priority for all module\'s price filters. If you face pricing issues while using another plugin or booster module, You can change the Priority, Greater value for high priority & Lower value for low priority. Set to zero to use default priority.', 'woocommerce-jetpack' ),
 		'id'       => 'wcj_product_price_by_formula_advanced_price_hooks_priority',
 		'default'  => 0,
 		'type'     => 'number',

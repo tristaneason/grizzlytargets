@@ -120,14 +120,25 @@ class Wt_Import_Export_For_Woo_Admin_Basic {
 				'settings_success'=>__('Settings updated.'),
 				'all_fields_mandatory'=>__('All fields are mandatory'),
 				'settings_error'=>__('Unable to update Settings.'),
+                                'template_del_error'=>__('Unable to delete template'),
+                                'template_del_loader'=>__('Deleting template...'),                               
 				'value_empty'=>__('Value is empty.'),
-				'error'=>__('Error.'),
+				'error'=>sprintf(__('An unknown error has occurred! Refer to our %stroubleshooting guide%s for assistance.'), '<a href="'.WT_IEW_DEBUG_BASIC_TROUBLESHOOT.'" target="_blank">', '</a>'),
 				'success'=>__('Success.'),
 				'loading'=>__('Loading...'),
 				'sure'=>__('Are you sure?'),
 				'use_expression'=>__('Use expression as value.'),
 				'cancel'=>__('Cancel'),
-			)
+			),
+                        'pro_plugins' => array(
+                                'order' => "https://www.webtoffee.com/product/order-import-export-plugin-for-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Order_Import_Export&utm_content=".WT_U_IEW_VERSION,
+                                'coupon' => "https://www.webtoffee.com/product/order-import-export-plugin-for-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Order_Import_Export&utm_content=".WT_U_IEW_VERSION,
+                                'product' => "https://www.webtoffee.com/product/product-import-export-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Product_Import_Export&utm_content=".WT_U_IEW_VERSION,
+                                'product_review' => "https://www.webtoffee.com/product/product-import-export-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Product_Import_Export&utm_content=".WT_U_IEW_VERSION,
+                                'product_categories' => "https://www.webtoffee.com/product/product-import-export-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Product_Import_Export&utm_content=".WT_U_IEW_VERSION,
+                                'product_tags' => "https://www.webtoffee.com/product/product-import-export-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Product_Import_Export&utm_content=".WT_U_IEW_VERSION,
+                                'user' => "https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=User_Import_Export&utm_content=".WT_U_IEW_VERSION,
+                    )                    
 		);
 		wp_localize_script($this->plugin_name, 'wt_iew_basic_params', $params);
             }
@@ -147,7 +158,7 @@ class Wt_Import_Export_For_Woo_Admin_Basic {
 				'menu',
 				__('General Settings'),
 				__('General Settings'),
-				'manage_options',
+				apply_filters('wt_import_export_allowed_capability', 'import'),
 				WT_IEW_PLUGIN_ID_BASIC,
 				array($this,'admin_settings_page'),
 				'dashicons-controls-repeat',
@@ -169,7 +180,7 @@ class Wt_Import_Export_For_Woo_Admin_Basic {
 			$parent_menu_key,
 			__('General Settings'),
 			__('General Settings'), 
-			"manage_options",
+			apply_filters('wt_import_export_allowed_capability', 'import'),
 			WT_IEW_PLUGIN_ID_BASIC,
 			array($this, 'admin_settings_page')
 		);
@@ -243,6 +254,33 @@ class Wt_Import_Export_For_Woo_Admin_Basic {
 		exit();
 	}
 
+        /**
+	* 	Delete pre-saved temaplates entry from DB - ajax hook
+	*/
+        public function delete_template() {
+            $out = array(
+                'status' => false,
+                'msg' => __('Error'),
+            );
+
+            if (Wt_Iew_Sh::check_write_access(WT_IEW_PLUGIN_ID_BASIC)) {
+                if (isset($_POST['template_id'])) {
+
+                    global $wpdb;
+                    $template_id = absint($_POST['template_id']);
+                    $tb = $wpdb->prefix . Wt_Import_Export_For_Woo_Basic::$template_tb;
+                    $where = "=%d";
+                    $where_data = array($template_id);
+                    $wpdb->query($wpdb->prepare("DELETE FROM $tb WHERE id" . $where, $where_data));
+                    $out['status'] = true;
+                    $out['msg'] = __('Template deleted successfully');
+                    $out['template_id'] = $template_id;
+                }
+            }
+            wp_send_json($out);
+
+        }        
+          
 	/**
 	 Registers modules: admin	 
 	 */
@@ -304,7 +342,10 @@ class Wt_Import_Export_For_Woo_Admin_Basic {
                 
                 $addon_modules_basic = array(
                     'user'=>'users-customers-import-export-for-wp-woocommerce',
-                    'product'=>'product-import-export-for-woo',                    
+                    'product'=>'product-import-export-for-woo',
+                    'product_review'=>'product-import-export-for-woo', 
+                    'product_categories'=>'product-import-export-for-woo', 
+                    'product_tags'=>'product-import-export-for-woo',                     
                     'order'=>'order-import-export-for-woocommerce',
                     'coupon'=>'order-import-export-for-woocommerce',                                        
                 );

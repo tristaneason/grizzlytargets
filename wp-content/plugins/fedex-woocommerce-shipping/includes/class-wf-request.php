@@ -12,9 +12,9 @@ class wfFedexRequest{
 	public function __construct( $settings = null ) {
 		$this->settings = $settings;
 		$this->id                               = WF_Fedex_ID;
-		$this->rateservice_version              = 16;
-		$this->ship_service_version              = 15;
-		$this->addressvalidationservice_version = 2;
+		$this->rateservice_version              = 31;
+		$this->ship_service_version             = 28;
+		$this->addressvalidationservice_version = 4;
 		$this->init();		
 	}
 	

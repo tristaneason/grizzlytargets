@@ -12,6 +12,9 @@ jQuery(function($){
 	$(".tab_commercial_invoice").on("click",function(){
 		return xa_fedex_show_selected_tab($(this),"commercial_invoice");
 	});
+	$(".tab_special_services").on("click",function(){
+		return xa_fedex_show_selected_tab($(this),"special_services");
+	});
 	$(".tab_packaging").on("click",function(){
 		return xa_fedex_show_selected_tab($(this),"packaging");
 	});
@@ -42,6 +45,9 @@ jQuery(function($){
 		$(".fedex_commercial_invoice_tab").closest("tr,h3").hide();
 		$(".fedex_commercial_invoice_tab").next("p").hide();
 
+		$(".fedex_special_services_tab").closest("tr,h3").hide();
+		$(".fedex_special_services_tab").next("p").hide();
+
 		$(".fedex_packaging_tab").closest("tr,h3").hide();
 		$(".fedex_packaging_tab").next("p").hide();
 
@@ -61,12 +67,12 @@ jQuery(function($){
 			wf_fedex_return_label_options();
 			wf_fedex_custom_shipment_message();
 			wf_fedex_automatic_label_generation();
+			ph_fedex_auto_label_trigger();
 			ph_fedex_toggle_doc_tab();
 			ph_fedex_toggle_csb_shipments();
 			ph_fedex_toggle_label_show_browser();
 		}
 		if( $tab == 'general' ){
-			xa_fedex_duties_payer_options();
 			xa_fedex_payment_type_options();
 			ph_fedex_toggle_alt_return_address();
 			ph_fedex_toggle_alt_return_address_as_billing();
@@ -86,11 +92,18 @@ jQuery(function($){
 		}
 		if( $tab == 'rates' ){
 			ph_fedex_toggle_alt_estimated_delivery();
-			wf_fedex_load_availability_options()
+			wf_fedex_load_availability_options();
+			ph_fedex_toggle_hold_at_location();
 		}
 		if( $tab == 'commercial_invoice' ){
 			wf_fedex_load_commercialinvoice_image_uploader();
 			ph_fedex_load_commercial_invoice_toggler();
+			ph_fedex_load_usmca_toggler();
+			ph_fedex_load_usmca_commercial_invoice_toggler();
+		}
+		if( $tab == 'special_services' ){
+			xa_fedex_duties_payer_options();
+			ph_fedex_toggle_home_delivery_premium();
 		}
 
 		return_reason = jQuery('.ph_return_label_return').val();
@@ -138,9 +151,24 @@ jQuery(function($){
 		ph_fedex_load_commercial_invoice_toggler();
 	});
 
+	// Toggle USMCA options
+	jQuery('#woocommerce_wf_fedex_woocommerce_shipping_usmca_certificate').click(function(){
+		ph_fedex_load_usmca_toggler();
+	});
+
+	// Toggle USMCA Commercial Invoice Cirtificate Of Origin
+	jQuery('#woocommerce_wf_fedex_woocommerce_shipping_usmca_ci_certificate_of_origin').click(function(){
+		ph_fedex_load_usmca_commercial_invoice_toggler();
+	});
+
 	// Toggle Est. Delivery Date
 	jQuery('#woocommerce_wf_fedex_woocommerce_shipping_delivery_time').click(function(){
 		ph_fedex_toggle_alt_estimated_delivery();
+	});
+
+	// Toggle Hold at Location
+	jQuery('#woocommerce_wf_fedex_woocommerce_shipping_hold_at_location').click(function(){
+		ph_fedex_toggle_hold_at_location();
 	});
 
 	// Toggle Alternative Return Address
@@ -177,6 +205,11 @@ jQuery(function($){
 		xa_fedex_duties_payer_options()
 	});
 
+	// Toggle Home Delivery Premium Type.
+	jQuery('#woocommerce_wf_fedex_woocommerce_shipping_home_delivery_premium').change(function(){
+		ph_fedex_toggle_home_delivery_premium();
+	});
+
 	jQuery('.packing_method').change(function(){
 		wf_fedex_load_packing_method_options();
 		xa_fedex_packing_method_options();
@@ -191,6 +224,10 @@ jQuery(function($){
 	});
 	jQuery('#woocommerce_wf_fedex_woocommerce_shipping_automate_package_generation').click(function(){
 		wf_fedex_automatic_label_generation();
+		ph_fedex_auto_label_trigger();
+	});
+	jQuery('#woocommerce_wf_fedex_woocommerce_shipping_automate_label_generation').click(function(){
+		ph_fedex_auto_label_trigger();
 	});
 	//Silent Debug mode
 	jQuery('#woocommerce_wf_fedex_woocommerce_shipping_debug').click(function(){
@@ -463,6 +500,24 @@ function xa_fedex_duties_payer_options(){
 	}else{
 		jQuery('.broker_grp').closest('tr').hide();
 	}
+	if( me.val() =='THIRD_PARTY_ACCOUNT' ){
+		jQuery('.third_party_grp').closest('tr').show();
+	}else{
+		jQuery('.third_party_grp').closest('tr').hide();
+	}
+}
+
+/**
+ * Toggle Home Delivery Premium Type.
+ */
+function ph_fedex_toggle_home_delivery_premium(){
+
+	var checked	= jQuery('#woocommerce_wf_fedex_woocommerce_shipping_home_delivery_premium').is(":checked");
+	if(checked){
+		jQuery('#woocommerce_wf_fedex_woocommerce_shipping_home_delivery_premium_type').closest('tr').show();
+	}else{
+		jQuery('#woocommerce_wf_fedex_woocommerce_shipping_home_delivery_premium_type').closest('tr').hide();
+	}
 }
 
 function wf_fedex_return_label_options(){
@@ -530,6 +585,34 @@ function ph_fedex_load_commercial_invoice_toggler(){
 	}
 }
 
+// Toggle USMCA options
+function ph_fedex_load_usmca_toggler(){
+	var checked	=	jQuery('#woocommerce_wf_fedex_woocommerce_shipping_usmca_certificate').is(":checked");
+
+	if( checked ){
+		jQuery('.usmca_toggle').closest('tr').show();
+		jQuery('.usmca_and_usmcaci_toggle').closest('tr').show();
+	}
+	else{
+		jQuery('.usmca_and_usmcaci_toggle').closest('tr').hide();
+		jQuery('.usmca_toggle').closest('tr').hide();
+		ph_fedex_load_usmca_commercial_invoice_toggler();
+	}
+}
+
+// Toggle USMCA options
+function ph_fedex_load_usmca_commercial_invoice_toggler(){
+	var checked	=	jQuery('#woocommerce_wf_fedex_woocommerce_shipping_usmca_ci_certificate_of_origin').is(":checked");
+
+	if( checked ){
+		jQuery('.usmca_and_usmcaci_toggle').closest('tr').show();
+	}
+	else{
+		jQuery('.usmca_and_usmcaci_toggle').closest('tr').hide();
+		ph_fedex_load_usmca_toggler();
+	}
+}
+
 function wf_fedex_load_availability_options(){
 	me = jQuery('#woocommerce_wf_fedex_woocommerce_shipping_availability');
 	if( me.val() =='all' ){
@@ -556,6 +639,15 @@ function wf_fedex_automatic_label_generation(){
 		jQuery('#woocommerce_wf_fedex_woocommerce_shipping_automate_label_generation').closest('tr').hide();
 	}
 }
+function ph_fedex_auto_label_trigger(){
+	let checked1 = jQuery('#woocommerce_wf_fedex_woocommerce_shipping_automate_package_generation').is(":checked");
+	let checked2 = jQuery('#woocommerce_wf_fedex_woocommerce_shipping_automate_label_generation').is(":checked");
+	if( checked1 && checked2 ){
+		jQuery('#woocommerce_wf_fedex_woocommerce_shipping_auto_label_trigger').closest('tr').show();
+	}else{
+		jQuery('#woocommerce_wf_fedex_woocommerce_shipping_auto_label_trigger').closest('tr').hide();
+	}
+}
 //silent debug
 function ph_fedex_silent_debug_option(){
 	var checked	=	jQuery('#woocommerce_wf_fedex_woocommerce_shipping_debug').is(":checked");
@@ -577,6 +669,19 @@ function ph_fedex_toggle_alt_estimated_delivery(){
 		jQuery('.ph_fedex_est_delivery_date').closest('tr').show();
 	}else{
 		jQuery('.ph_fedex_est_delivery_date').closest('tr').hide();
+	}
+}
+
+/**
+ * Toggle Hold at location 
+**/
+function ph_fedex_toggle_hold_at_location() {
+	
+	if(jQuery('#woocommerce_wf_fedex_woocommerce_shipping_hold_at_location').is(":checked")) {
+		
+		jQuery('#woocommerce_wf_fedex_woocommerce_shipping_hold_at_location_carrier_code').closest('tr').show();
+	}else{
+		jQuery('#woocommerce_wf_fedex_woocommerce_shipping_hold_at_location_carrier_code').closest('tr').hide();
 	}
 }
 
@@ -775,3 +880,67 @@ jQuery( document ).ready( function( $ ) {
 	});
 
 });
+
+
+/**
+ * Order Edit Page, Toggle Home Delivery Premium
+**/
+
+jQuery(document).ready( function() {
+
+	var manual_service_arr	= [];
+	var manual_single_service_arr = [];
+
+	jQuery('.fedex_manual_service').each(function(){
+		manual_service_arr.push( jQuery(this).val() );
+		manual_single_service_arr.push(jQuery("input[id='wf_fedex_service_choosing_radio']:checked").val());
+	});
+	var manual_service = manual_service_arr;
+
+	if( jQuery("input[id='wf_fedex_service_choosing_radio']:checked").val() != 'wf_fedex_individual_service' ){
+		var manual_service = manual_single_service_arr;
+	}
+
+	jQuery(document).on("change", ".fedex_manual_service", function(){
+		
+		var manual_service_arr	= [];
+		var manual_single_service_arr = [];
+
+		jQuery('.fedex_manual_service').each(function(){
+			manual_service_arr.push( jQuery(this).val() );
+			manual_single_service_arr.push(jQuery("input[id='wf_fedex_service_choosing_radio']:checked").val());
+		});
+		var manual_service = manual_service_arr;
+
+		if( jQuery("input[id='wf_fedex_service_choosing_radio']:checked").val() != 'wf_fedex_individual_service' ){
+			var manual_service 	= manual_single_service_arr;
+		}
+
+		ph_fedex_toggle_home_delivery_premium_date(manual_service);
+	});
+
+	ph_fedex_toggle_home_delivery_premium_date(manual_service);
+});
+
+function ph_fedex_toggle_home_delivery_premium_date(manual_service){
+
+	var flag;
+
+	for( x in manual_service ){
+
+		var manual_service_temp = manual_service[x];
+
+		if ( manual_service_temp == 'GROUND_HOME_DELIVERY' ) {
+			
+			flag = true;
+		}
+	}
+	if ( flag ) {
+
+		jQuery('.ph_fedex_home_delivery_premium_date').closest('tr').show();
+
+	}else{
+
+		jQuery('.ph_fedex_home_delivery_premium_date').closest('tr').hide();
+	}
+}

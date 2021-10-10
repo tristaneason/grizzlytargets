@@ -47,7 +47,7 @@ class Wt_Import_Export_For_Woo_Basic_History
 		add_filter('wt_iew_admin_menu_basic', array($this, 'add_admin_pages'), 10, 1);
 
 		/* advanced plugin settings */
-		add_filter('wt_iew_advanced_setting_fields_basic', array($this, 'advanced_setting_fields'), 11);
+		add_filter('wt_iew_advanced_setting_fields_basic', array($this, 'advanced_setting_fields'), 12);
 
 		/* main ajax hook. The callback function will decide which action is to execute. */
 		add_action('wp_ajax_iew_history_ajax_basic', array($this, 'ajax_main'), 11);
@@ -70,7 +70,7 @@ class Wt_Import_Export_For_Woo_Basic_History
 			WT_IEW_PLUGIN_ID_BASIC,
 			__('History'),
 			__('History'),
-			'manage_options',
+			apply_filters('wt_import_export_allowed_capability', 'import'),
 			$this->module_id,
 			array($this, 'admin_settings_page')
 		);
@@ -79,7 +79,7 @@ class Wt_Import_Export_For_Woo_Basic_History
 			WT_IEW_PLUGIN_ID_BASIC,
 			__('Logs'),
 			__('Logs'),
-			'manage_options',
+			apply_filters('wt_import_export_allowed_capability', 'import'),
 			$this->module_id.'_log',
 			array($this, 'admin_log_page')
 		);
@@ -162,7 +162,10 @@ class Wt_Import_Export_For_Woo_Basic_History
 							include plugin_dir_path(__FILE__).'views/_log_table.php';
 							$out['html']=ob_get_clean();
 						}
-					}
+					}else{
+                                            $out['status']=1;                                            
+                                            $out['html']= sprintf( __( 'Please check the Generate import log is enabled under <a target = "_blank" href="%s">settings</a>' ), admin_url('admin.php?page=wt_import_export_for_woo_basic'));
+                                        }
 				}
 			}
 		}else /* raw log viewing */

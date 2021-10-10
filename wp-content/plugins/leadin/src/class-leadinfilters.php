@@ -1,7 +1,9 @@
 <?php
 namespace Leadin;
 
-use Leadin\options\HubspotOptions;
+use Leadin\options\AccountOptions;
+
+const NA1_HUBLET = 'na1';
 
 /**
  * Class containing all the custom filters defined to be used instead of constants.
@@ -11,7 +13,7 @@ class LeadinFilters {
 	 * Return the current hublet.
 	 */
 	public static function get_leadin_hublet() {
-		return apply_filters( 'leadin_hublet', HubspotOptions::get_hublet() );
+		return apply_filters( 'leadin_hublet', AccountOptions::get_hublet() );
 	}
 
 	/**
@@ -22,7 +24,7 @@ class LeadinFilters {
 	private static function apply_hublet( $prefix ) {
 		$hublet = self::get_leadin_hublet();
 		$result = $prefix;
-		if ( ! empty( $hublet ) ) {
+		if ( ! empty( $hublet ) && NA1_HUBLET !== $hublet ) {
 			$result = "$prefix-$hublet";
 		}
 		return $result;
@@ -79,14 +81,16 @@ class LeadinFilters {
 	 * Apply leadin_forms_script_url filter.
 	 */
 	public static function get_leadin_forms_script_url() {
-		return apply_filters( 'leadin_forms_script_url', 'https://js.hsforms.net/forms/v2.js' );
+		$hublet_domain = self::apply_hublet( 'js' );
+		return apply_filters( 'leadin_forms_script_url', "https://$hublet_domain.hsforms.net/forms/v2.js" );
 	}
 
 	/**
 	 * Apply leadin_script_loader_domain filter.
 	 */
 	public static function get_leadin_script_loader_domain() {
-		return apply_filters( 'leadin_script_loader_domain', 'js.hs-scripts.com' );
+		$hublet_domain = self::apply_hublet( 'js' );
+		return apply_filters( 'leadin_script_loader_domain', "$hublet_domain.hs-scripts.com" );
 	}
 
 	/**

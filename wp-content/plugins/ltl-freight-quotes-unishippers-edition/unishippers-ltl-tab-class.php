@@ -126,7 +126,7 @@ if (!class_exists('WC_unishippers_ltl_Settings_tabs')) {
                 'plugin_licence_key' => array(
                     'name' => __('Plugin License Key ', 'woocommerce-settings-unishipper_quetes'),
                     'type' => 'text',
-                    'desc' => __('Obtain a License Key from <a href="https://eniture.com/products/" target="_blank" >eniture.com </a>', 'woocommerce-settings-unishipper_quetes'),
+                    'desc' => __('Obtain a License Key from <a href="https://eniture.com/woocommerce-unishippers-ltl-freight/" target="_blank" >eniture.com </a>', 'woocommerce-settings-unishipper_quetes'),
                     'id' => 'wc_settings_unishippers_freight_licence_key'
                 ),
                 'save_unishipper_buuton' => array(
@@ -227,6 +227,29 @@ if (!class_exists('WC_unishippers_ltl_Settings_tabs')) {
                     break;
 
                 case 'section-2':
+                    // Cuttoff Time
+                    $unishippers_disable_cutt_off_time_ship_date_offset = "";
+                    $unishippers_cutt_off_time_package_required = "";
+                    $unishippers_disable_show_delivery_estimates = "";
+                    $unishippers_show_delivery_estimates_required = "";
+
+                    //  Check the cutt of time & offset days plans for disable input fields
+                    $unishippers_action_cutOffTime_shipDateOffset = apply_filters('unishippers_freight_quotes_plans_suscription_and_features', 'unishippers_cutt_off_time');
+                    if (is_array($unishippers_action_cutOffTime_shipDateOffset)) {
+                        $unishippers_disable_cutt_off_time_ship_date_offset = "disabled_me";
+                        $unishippers_cutt_off_time_package_required = apply_filters('unishippers_freight_plans_notification_link', $unishippers_action_cutOffTime_shipDateOffset);
+                    }
+                    // check the delivery estimate option plan
+                    $unishippers_show_delivery_estimates = apply_filters('unishippers_freight_quotes_plans_suscription_and_features', 'unishippers_show_delivery_estimates');
+                    if (is_array($unishippers_show_delivery_estimates)) {
+                        $unishippers_disable_show_delivery_estimates = "disabled_me";
+                        $unishippers_show_delivery_estimates_required = apply_filters('unishippers_freight_plans_notification_link', $unishippers_show_delivery_estimates);
+                    }
+
+                    $ltl_enable = get_option('en_plugins_return_Unishippers_quotes');
+                    $weight_threshold_class = $ltl_enable == 'yes' ? 'show_en_weight_threshold_lfq' : 'hide_en_weight_threshold_lfq';
+                    $weight_threshold = get_option('en_weight_threshold_lfq');
+                    $weight_threshold = isset($weight_threshold) && $weight_threshold > 0 ? $weight_threshold : 150;
                     echo '<div class="quote_section_class_unishippers_ltl">';
                     $settings = array(
                         'section_title_quote' => array(
@@ -278,12 +301,102 @@ if (!class_exists('WC_unishippers_ltl_Settings_tabs')) {
                             'desc' => 'By default, the plugin will sort all shipping methods by price in ascending order.',
                             'id' => 'shipping_methods_do_not_sort_by_price'
                         ),
-
-                        'show_delivery_estimate_unishipper' => array(
-                            'name' => __('Show Delivery Estimate ', 'woocommerce-settings-unishipper_quetes'),
-                            'type' => 'checkbox',
-                            'id' => 'wc_settings_unishippers_freight_delivery_estimate'
+                        //** Start Delivery Estimate Options - Cuttoff Time
+                        'service_unishippers_estimates_title' => array(
+                            'name' => __('Delivery Estimate Options ', 'woocommerce-settings-en_woo_addons_packages_quotes'),
+                            'type' => 'text',
+                            'desc' => $unishippers_show_delivery_estimates_required,
+                            'id' => 'service_unishippers_estimates_title'
                         ),
+                        'unishippers_show_delivery_estimates_options_radio' => array(
+                            'name' => __("", 'woocommerce-settings-unishippers'),
+                            'type' => 'radio',
+                            'default' => 'dont_show_estimates',
+                            'options' => array(
+                                'dont_show_estimates' => __("Don't display delivery estimates.", 'woocommerce'),
+                                'delivery_days' => __("Display estimated number of days until delivery.", 'woocommerce'),
+                                'delivery_date' => __("Display estimated delivery date.", 'woocommerce'),
+                            ),
+                            'id' => 'unishippers_delivery_estimates',
+                            'class' => $unishippers_disable_show_delivery_estimates . ' unishippers_dont_show_estimate_option',
+                        ),
+                        //** End Delivery Estimate Options
+                        //**Start: Cut Off Time & Ship Date Offset
+                        'cutOffTime_shipDateOffset_unishippers_freight' => array(
+                            'name' => __('Cut Off Time & Ship Date Offset ', 'woocommerce-settings-en_woo_addons_packages_quotes'),
+                            'type' => 'text',
+                            'class' => 'hidden',
+                            'desc' => $unishippers_cutt_off_time_package_required,
+                            'id' => 'unishippers_freight_cutt_off_time_ship_date_offset'
+                        ),
+                        'orderCutoffTime_unishippers_freight' => array(
+                            'name' => __('Order Cut Off Time ', 'woocommerce-settings-unishippers_freight_freight_orderCutoffTime'),
+                            'type' => 'text',
+                            'placeholder' => '-- : -- --',
+                            'desc' => 'Enter the cut off time (e.g. 2.00) for the orders. Orders placed after this time will be quoted as shipping the next business day.',
+                            'id' => 'unishippers_freight_order_cut_off_time',
+                            'class' => $unishippers_disable_cutt_off_time_ship_date_offset,
+                        ),
+                        'shipmentOffsetDays_unishippers_freight' => array(
+                            'name' => __('Fullfillment Offset Days ', 'woocommerce-settings-unishippers_freight_shipment_offset_days'),
+                            'type' => 'text',
+                            'desc' => 'The number of days the ship date needs to be moved to allow the processing of the order.',
+                            'placeholder' => 'Fullfillment Offset Days, e.g. 2',
+                            'id' => 'unishippers_freight_shipment_offset_days',
+                            'class' => $unishippers_disable_cutt_off_time_ship_date_offset,
+                        ),
+                        'all_shipment_days_unishippers' => array(
+                            'name' => __("What days do you ship orders?", 'woocommerce-settings-unishippers_quotes'),
+                            'type' => 'checkbox',
+                            'desc' => 'Select All',
+                            'class' => "all_shipment_days_unishippers $unishippers_disable_cutt_off_time_ship_date_offset",
+                            'id' => 'all_shipment_days_unishippers'
+                        ),
+                        'monday_shipment_day_unishippers' => array(
+                            'name' => __("", 'woocommerce-settings-unishippers_quotes'),
+                            'type' => 'checkbox',
+                            'desc' => 'Monday',
+                            'class' => "unishippers_shipment_day $unishippers_disable_cutt_off_time_ship_date_offset",
+                            'id' => 'monday_shipment_day_unishippers'
+                        ),
+                        'tuesday_shipment_day_unishippers' => array(
+                            'name' => __("", 'woocommerce-settings-unishippers_quotes'),
+                            'type' => 'checkbox',
+                            'desc' => 'Tuesday',
+                            'class' => "unishippers_shipment_day $unishippers_disable_cutt_off_time_ship_date_offset",
+                            'id' => 'tuesday_shipment_day_unishippers'
+                        ),
+                        'wednesday_shipment_day_unishippers' => array(
+                            'name' => __("", 'woocommerce-settings-unishippers_quotes'),
+                            'type' => 'checkbox',
+                            'desc' => 'Wednesday',
+                            'class' => "unishippers_shipment_day $unishippers_disable_cutt_off_time_ship_date_offset",
+                            'id' => 'wednesday_shipment_day_unishippers'
+                        ),
+                        'thursday_shipment_day_unishippers' => array(
+                            'name' => __("", 'woocommerce-settings-unishippers_quotes'),
+                            'type' => 'checkbox',
+                            'desc' => 'Thursday',
+                            'class' => "unishippers_shipment_day $unishippers_disable_cutt_off_time_ship_date_offset",
+                            'id' => 'thursday_shipment_day_unishippers'
+                        ),
+                        'friday_shipment_day_unishippers' => array(
+                            'name' => __("", 'woocommerce-settings-unishippers_quotes'),
+                            'type' => 'checkbox',
+                            'desc' => 'Friday',
+                            'class' => "unishippers_shipment_day $unishippers_disable_cutt_off_time_ship_date_offset",
+                            'id' => 'friday_shipment_day_unishippers'
+                        ),
+                        'show_delivery_estimate_unishipper' => array(
+                            'title' => __('', 'woocommerce'),
+                            'name' => __('', 'woocommerce-settings-unishippers_quotes'),
+                            'desc' => '',
+                            'id' => 'unishippers_show_delivery_estimates',
+                            'css' => '',
+                            'default' => '',
+                            'type' => 'title',
+                        ),
+                        //**End: Cut Off Time & Ship Date Offset
                         'Services_to_include_in_quoted_price_unishipper' => array(
                             'title' => __('', 'woocommerce'),
                             'name' => __('', 'woocommerce-settings-unishipper_quetes'),
@@ -373,11 +486,19 @@ if (!class_exists('WC_unishippers_ltl_Settings_tabs')) {
                             )
                         ),
                         'return_Unishippers_quotes_unishipper' => array(
-                            'name' => __('Return Unishippers Freight quotes when an order parcel shipment weight exceeds 150 lbs ', 'woocommerce-settings-unishipper_quetes'),
+                            'name' => __("Return LTL quotes when an order parcel shipment weight exceeds the weight threshold ", 'woocommerce-settings-unishipper_quetes'),
                             'type' => 'checkbox',
-                            'desc' => '<span class="description" >When checked, the Unishippers Freight Quote plugin will return quotes when an order’s total weight exceeds 150 lbs (the maximum permitted by FedEx and UPS), even if none of the products have settings to indicate that it will ship Unishippers Freight. To increase the accuracy of the returned quote(s), all products should have accurate weights and dimensions. </span>',
+                            'desc' => '<span class="description" >When checked, the LTL Freight Quote will return quotes when an order’s total weight exceeds the weight threshold (the maximum permitted by WWE and UPS), even if none of the products have settings to indicate that it will ship LTL Freight. To increase the accuracy of the returned quote(s), all products should have accurate weights and dimensions. </span>',
                             'id' => 'en_plugins_return_Unishippers_quotes'
                         ),
+                        // Weight threshold for LTL freight
+                        'weight_threshold_unishippers_freight' => [
+                            'name' => __('Weight threshold for LTL Freight Quotes  ', 'woocommerce-settings-unishippers_freight'),
+                            'type' => 'text',
+                            'default' => $weight_threshold,
+                            'class' => $weight_threshold_class,
+                            'id' => 'en_weight_threshold_lfq'
+                        ],
                         'section_end_quote' => array(
                             'type' => 'sectionend',
                             'id' => 'wc_settings_quote_section_end'
@@ -448,9 +569,30 @@ if (!class_exists('WC_unishippers_ltl_Settings_tabs')) {
             global $current_section;
             if ($current_section != 'section-1') {
                 $settings = $this->get_settings($current_section);
+                // Cuttoff Time
+                if (isset($_POST['unishippers_freight_order_cut_off_time']) && $_POST['unishippers_freight_order_cut_off_time'] != '') {
+                    $time_24_format = $this->unishippers_get_time_in_24_hours($_POST['unishippers_freight_order_cut_off_time']);
+                    $_POST['unishippers_freight_order_cut_off_time'] = $time_24_format;
+                }
                 WC_Admin_Settings::save_fields($settings);
             }
         }
+        /**
+         * Cuttoff Time
+         * @param $timeStr
+         * @return false|string
+         */
+        public function unishippers_get_time_in_24_hours($timeStr)
+        {
+            $cutOffTime = explode(' ', $timeStr);
+            $hours = $cutOffTime[0];
+            $separator = $cutOffTime[1];
+            $minutes = $cutOffTime[2];
+            $meridiem = $cutOffTime[3];
+            $cutOffTime = "{$hours}{$separator}{$minutes} $meridiem";
+            return date("H:i", strtotime($cutOffTime));
+        }
+
 
     }
 

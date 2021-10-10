@@ -291,3 +291,95 @@ input[type="checkbox"]{
 .disabled_me._nestedDimension, .disabled_me._nestedStakingProperty {
     color: #000000;
 }
+/* Cuttoff Time */
+input#service_unishippers_estimates_title {
+    display: none;
+}
+tr.unishippers_estimates_title th {
+    font-size: 1.2em;
+}
+
+tr.all_shipment_days_unishippers_tr th {
+    padding-left: 23px;
+    font-weight: 400;
+}
+
+tr.unishippers_shipment_day_tr {
+    display: inline-block;
+}
+
+.quote_section_class_unishippers_ltl table.form-table tbody {
+    width: 100%;
+    display: block;
+}
+
+tr.all_shipment_days_unishippers_tr {
+    display: inline;
+}
+
+tr.all_shipment_days_unishippers_tr td {
+    padding-left: 10px;
+}
+
+tr.unishippers_shipment_day_tr th {
+    display: none;
+}
+
+.quote_section_class_unishippers_ltl tr.wc_pervent_proceed_checkout_eniture th {
+    padding-left: 18px;
+}
+
+.unishippers_ship_date_offset a {
+    text-decoration: none;
+    font-size: 17px;
+    color: red;
+    font-weight: bold;
+    padding-right: 15px;
+    position: relative;
+    left: -130px;
+    top: -2px;
+}
+
+.unishippers_estimates_title a {
+    text-decoration: none;
+    font-size: 17px;
+    color: red;
+    font-weight: bold;
+    padding-right: 15px;
+    position: relative;
+    left: -130px;
+    top: -2px;
+}
+.plan_color {
+    text-decoration: none;
+    color: red !important;
+    margin: 0 0 0 60px;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+.plan_color:hover {
+    color: #ff0000;
+}
+.unishippers_freight_shipment_offset_days_tr th {
+    padding-left: 23px;
+    font-weight: 400;
+}
+.unishippers_freight_shipment_offset_days_tr th label {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+.unishippers_freight_cutt_off_time_ship_date_offset th label {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.unishippers_freight_cutt_off_time_ship_date_offset th {
+    padding-left: 23px;
+    font-weight: 400;
+}
+/* Weight threshold for LTL freight */
+tr.hide_en_weight_threshold_lfq {
+    display: none;
+}
+/*Fix estimate options*/
+.quote_section_class_unishippers_ltl td.forminp.forminp-radio ul li {
+    display: block !important;
+}

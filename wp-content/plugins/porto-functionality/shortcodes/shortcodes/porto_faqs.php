@@ -11,11 +11,12 @@ function porto_load_faqs_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => 'Porto ' . __( 'FAQs', 'porto-functionality' ),
-			'base'     => 'porto_faqs',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'fas fa-question-circle',
-			'params'   => array(
+			'name'        => 'Porto ' . __( 'FAQs', 'porto-functionality' ),
+			'base'        => 'porto_faqs',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'Show faqs with accordion', 'porto-functionality' ),
+			'icon'        => 'fas fa-question-circle',
+			'params'      => array(
 				array(
 					'type'        => 'textfield',
 					'heading'     => __( 'Title', 'porto-functionality' ),

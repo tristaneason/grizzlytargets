@@ -31,7 +31,7 @@ if (!class_exists('EnOrderWidget')) {
                         case 'en_fdo_meta_data':
                             $en_widget_details = json_decode($meta_data->value, true);
                             if (!empty($en_widget_details)) {
-                                $this->en_widget_details = $en_widget_details;
+                                $this->en_widget_details[] = $en_widget_details;
                             }
                             break;
                         case 'en_flat_rate_details':
@@ -55,7 +55,7 @@ if (!class_exists('EnOrderWidget')) {
         /**
          * Show order details.
          */
-        public function en_show_order_widget($number_shipment, $sender_origin, $label, $cost, $accessorials, $items)
+        public function en_show_order_widget($number_shipment, $sender_origin, $label, $cost, $accessorials, $items, $en_extra_accessories)
         {
             if (!strlen($sender_origin) > 0) {
                 return;
@@ -75,6 +75,10 @@ if (!class_exists('EnOrderWidget')) {
             /* Show Accessorials */
             if ($cost > 0) {
                 $this->en_show_accessorials($accessorials);
+            }
+
+            foreach ($en_extra_accessories as $index => $value) {
+                echo '<li>' . esc_attr($index) . ': ' . $value . '</li>';
             }
 
             echo "</ul>";
@@ -105,33 +109,39 @@ if (!class_exists('EnOrderWidget')) {
                 return;
             }
 
-            $shipments = isset($this->en_widget_details['data']) ? $this->en_widget_details['data'] : [];
-            $number_shipment = 1;
-            foreach ($shipments as $count => $shipment) {
-                $items = $accessorials = $address = $rate = [];
-                extract($shipment);
+            foreach ($this->en_widget_details as $method_key => $en_widget_details) {
+                $shipments = isset($en_widget_details['data']) ? $en_widget_details['data'] : [];
+                $number_shipment = 1;
+                foreach ($shipments as $count => $shipment) {
+                    $items = $accessorials = $address = $rate = $en_extra_accessories = [];
+                    extract($shipment);
 
-                $location = $city = $state = $zip = '';
-                extract($address);
-                $sender_origin = ucwords($location) . ": " . $city . ", " . $state . " " . $zip;
+                    $label = (isset($rate['label'])) ? $rate['label'] : 'Shipping';
+                    $cost = (isset($rate['cost'])) ? $rate['cost'] : 0;
 
-                $label = (isset($rate['label'])) ? $rate['label'] : 'Shipping';
-                $cost = (isset($rate['cost'])) ? $rate['cost'] : 0;
+                    $location = $city = $state = $zip = '';
+                    if (!empty($address)) {
+                        extract($address);
+                        $sender_origin = ucwords($location) . ": " . $city . ", " . $state . " " . $zip;
+                    } else {
+                        $sender_origin = $label;
+                    }
 
-                $items_li = [];
-                foreach ($items as $key => $item) {
-                    $quantity = $name = '';
-                    extract($item);
-                    $items_li[] = $quantity . " X " . $name;
+                    $items_li = [];
+                    foreach ($items as $key => $item) {
+                        $quantity = $name = '';
+                        extract($item);
+                        $items_li[] = $quantity . " X " . $name;
+                    }
+
+                    $this->en_show_order_widget($number_shipment, $sender_origin, $label, $cost, $accessorials, $items_li, $en_extra_accessories);
+
+                    $number_shipment++;
                 }
-
-                $this->en_show_order_widget($number_shipment, $sender_origin, $label, $cost, $accessorials, $items_li);
-
-                $number_shipment++;
             }
 
             if (!empty($this->en_flat_rate_details) && $this->en_flat_rate_total > 0) {
-                $this->en_show_order_widget($number_shipment, 'Flat Rate Shipping', 'Flat Rate', $this->en_flat_rate_total, [], $this->en_flat_rate_details);
+                $this->en_show_order_widget($number_shipment, 'Flat Rate Shipping', 'Flat Rate', $this->en_flat_rate_total, [], $this->en_flat_rate_details, $en_extra_accessories);
             }
         }
 

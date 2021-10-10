@@ -27,6 +27,8 @@ if (!defined('ABSPATH')) {
         jQuery('#en_wd_origin_city').css('background', 'none');
         jQuery("#en_wd_origin_city").val('');
         jQuery("#en_wd_origin_state").val('');
+        // Origin terminal address
+        jQuery("#en_wd_origin_address").val('');
         jQuery("#en_wd_origin_country").val('');
         jQuery('.en_wd_zip_validation_err').hide();
         jQuery('.en_wd_city_validation_err').hide();
@@ -191,6 +193,15 @@ if (!defined('ABSPATH')) {
                 
                 <form method="post" id="add_warehouses">
                     <input type="hidden" name="edit_form_id" value="" id="edit_form_id">
+                    <!-- Origin terminal address -->
+                    <div class="en_wd_add_warehouse_input">
+                        <label for="en_wd_origin_address">Street Address</label>
+                        <input type="text" title="Street Address" data-optional="1"
+                               name="en_wd_origin_address" data-optional="1"
+                               placeholder="320 W. Lanier Ave, Ste 200"
+                               id="en_wd_origin_address">
+                        <span class="en_wd_err"></span>
+                    </div>
                     <div class="en_wd_add_warehouse_input">
                         <label for="en_wd_origin_zip">Zip </label>
                         <input type="text" title="Zip"  maxlength="7" onchange="change_warehouse_zip()" value="" name="en_wd_origin_zip" placeholder="30214" id="en_wd_origin_zip">
@@ -265,7 +276,12 @@ if (!defined('ABSPATH')) {
                         <label>Checkout description:</label>
                         <input type="text" class="<?php echo esc_attr($disabled); ?>" title="Checkout description:" id="instore-pickup-desc" placeholder="In-store pick up" data-optional="1" name="instore-pickup-desc">
                     </div>
-
+                    <!-- Terminal phone number -->
+                    <div class="en_wd_add_warehouse_input">
+                        <label>Phone number:</label>
+                        <input type="text" class="<?php echo $disabled; ?> en-phone-number" title="Phone number:" id="en-phone-number"
+                               placeholder="404-369-0680" data-optional="1" name="en-phone-number">
+                    </div>
 
                     <div style="clear: both;"></div>
                     <br>

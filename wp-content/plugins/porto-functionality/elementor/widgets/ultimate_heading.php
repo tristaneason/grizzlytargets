@@ -20,15 +20,19 @@ class Porto_Elementor_Ultimate_Heading_Widget extends \Elementor\Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Ultimate Heading', 'porto-functionality' );
+		return __( 'Porto Ultimate Heading', 'porto-functionality' );
 	}
 
 	public function get_categories() {
-		return array( 'theme-elements' );
+		return array( 'porto-elements' );
 	}
 
 	public function get_keywords() {
 		return array( 'heading', 'title', 'text' );
+	}
+
+	public function get_icon() {
+		return 'eicon-heading';
 	}
 
 	protected function _register_controls() {
@@ -52,7 +56,33 @@ class Porto_Elementor_Ultimate_Heading_Widget extends \Elementor\Widget_Base {
 				'placeholder' => __( 'Title', 'porto-functionality' ),
 			)
 		);
-
+		$this->add_control(
+			'enable_typewriter',
+			array(
+				'type'  => Controls_Manager::SWITCHER,
+				'label' => __( 'Enable typewriter effect', 'porto-functionality' ),
+			)
+		);
+		$this->add_control(
+			'typewriter_delay',
+			array(
+				'type'      => Controls_Manager::NUMBER,
+				'label'     => __( 'Start Delay(ms)', 'porto-functionality' ),
+				'condition' => array(
+					'enable_typewriter' => 'yes',
+				),
+			)
+		);
+		$this->add_control(
+			'typewriter_width',
+			array(
+				'type'      => Controls_Manager::NUMBER,
+				'label'     => __( 'Input min width that can work. (px)', 'porto-functionality' ),
+				'condition' => array(
+					'enable_typewriter' => 'yes',
+				),
+			)
+		);				
 		$this->add_control(
 			'content',
 			array(
@@ -185,7 +215,7 @@ class Porto_Elementor_Ultimate_Heading_Widget extends \Elementor\Widget_Base {
 			Elementor\Group_Control_Typography::get_type(),
 			array(
 				'name'     => 'main_heading_typography',
-				'scheme'   => Elementor\Scheme_Typography::TYPOGRAPHY_1,
+				'scheme'   => Elementor\Core\Schemes\Typography::TYPOGRAPHY_1,
 				'label'    => __( 'Main Heading Typograhy', 'porto-functionality' ),
 				'selector' => '{{WRAPPER}} .porto-u-main-heading > *',
 			)
@@ -214,7 +244,7 @@ class Porto_Elementor_Ultimate_Heading_Widget extends \Elementor\Widget_Base {
 			Elementor\Group_Control_Typography::get_type(),
 			array(
 				'name'     => 'sub_heading_typography',
-				'scheme'   => Elementor\Scheme_Typography::TYPOGRAPHY_1,
+				'scheme'   => Elementor\Core\Schemes\Typography::TYPOGRAPHY_1,
 				'label'    => __( 'Sub Heading Typograhy', 'porto-functionality' ),
 				'selector' => '{{WRAPPER}} .porto-u-sub-heading',
 			)
@@ -280,7 +310,7 @@ class Porto_Elementor_Ultimate_Heading_Widget extends \Elementor\Widget_Base {
 		}
 	}
 
-	protected function _content_template() {
+	protected function content_template() {
 		?>
 		<#
 			view.addRenderAttribute( 'wrapper', 'class', 'porto-u-heading' );
@@ -318,6 +348,20 @@ class Porto_Elementor_Ultimate_Heading_Widget extends \Elementor\Widget_Base {
 					settings.main_heading_margin_bottom += 'px';
 				}
 				view.addRenderAttribute( 'main_heading', 'style', 'margin-bottom:' + settings.main_heading_margin_bottom );
+			}
+			if ( settings.enable_typewriter ) {
+				var typewriter = {
+					startDelay: 0,
+					minWindowWidth: 0
+				}
+				if( settings.typewriter_delay ) {
+					typewriter[ 'startDelay' ] = parseInt( settings.typewriter_delay, 10 );
+				}
+				if( settings.typewriter_width ) {
+					typewriter[ 'minWindowWidth' ] = parseInt( settings.typewriter_width, 10 );
+				}
+				view.addRenderAttribute( 'main_heading', 'data-plugin-animated-letters', '' );
+				view.addRenderAttribute( 'main_heading', 'data-plugin-options', JSON.stringify( typewriter ) );
 			}
 			view.addInlineEditingAttributes( 'main_heading' );
 			if ( settings.sub_heading_margin_bottom || '0' == settings.sub_heading_margin_bottom ) {

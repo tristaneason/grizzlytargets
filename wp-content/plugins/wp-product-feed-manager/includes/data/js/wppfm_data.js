@@ -14,7 +14,8 @@ function wppfm_queryOptionsEng() {
 
 function wppfm_changeValuesOptions() {
 
-	return [ 'change nothing', 'overwrite', 'replace', 'remove', 'add prefix', 'add suffix', 'recalculate', 'convert to child-element' ];
+	// @since 2.22.0 strip tags and limit characters.
+	return [ 'change nothing', 'overwrite', 'replace', 'remove', 'add prefix', 'add suffix', 'recalculate', 'convert to child-element', 'strip tags', 'limit characters' ];
 }
 
 function wppfm_changeValuesRecalculateOptions() {
@@ -82,6 +83,11 @@ function wppfm_woocommerceSourceOptions() {
 		{value: 'wc_currency', label: 'WooCommerce Currency', prop: 'main'},
 		{value: 'last_update', label: 'Last Feed Update', prop: 'main'},
 		{value: 'empty', label: 'Remove from feed', prop: 'meta'},
+		// @since 2.21.0
+		{value: '_variation_parent_id', label: 'Variation Parent Id', prop: 'meta'},
+		{value: '_product_parent_id', label: 'Product Parent Id', prop: 'meta'},
+		{value: '_max_group_price', label: 'Highest Grouped Price', prop: 'meta'},
+		{value: '_min_group_price', label: 'Lowest Grouped Price', prop: 'meta'},
 	];
 }
 

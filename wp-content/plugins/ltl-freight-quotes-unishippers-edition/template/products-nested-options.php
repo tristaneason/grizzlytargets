@@ -62,20 +62,24 @@ if (!class_exists("EnUpdateProductNestedOptions")) {
 
             if (isset($post_id) && $post_id > 0) {
 
-                // add / update Nested Material
-                $nestedMaterial = $_POST['_nestedMaterials'];
+                //               add / update Nested Material
+                $nestedMaterial = isset($_POST['_nestedMaterials'.$post_id]) ? $_POST['_nestedMaterials'.$post_id]: '';
                 update_post_meta($post_id, '_nestedMaterials', esc_attr($nestedMaterial));
-                // add / update Nested Percentage 
-                $nestedPercentage = isset($_POST['_nestedPercentage']) && !empty($_POST['_nestedPercentage']) ? $_POST['_nestedPercentage'] : 0;
+
+//              add / update Nested Percentage
+                $nestedPercentage = isset($_POST['_nestedPercentage'.$post_id]) && !empty($_POST['_nestedPercentage'.$post_id]) ? $_POST['_nestedPercentage'.$post_id] : 0;
+
                 update_post_meta($post_id, '_nestedPercentage', esc_attr($nestedPercentage));
-                // add / update Nested Dimension 
-                $nestedDimension = $_POST['_nestedDimension'];
+
+//              add / update Nested Dimension
+                $nestedDimension = $_POST['_nestedDimension'.$post_id];
                 update_post_meta($post_id, '_nestedDimension', esc_attr($nestedDimension));
-                // add / update Max. Nested Items 
-                $maxNestedItems = $_POST['_maxNestedItems'];
+
+//              add / update Max. Nested Items
+                $maxNestedItems = $_POST['_maxNestedItems'.$post_id];
                 update_post_meta($post_id, '_maxNestedItems', esc_attr($maxNestedItems));
-                // add / update Max. Nested Items 
-                $nestedStakingProperty = $_POST['_nestedStakingProperty'];
+//              add / update Max. Nested Items
+                $nestedStakingProperty = $_POST['_nestedStakingProperty'.$post_id];
                 update_post_meta($post_id, '_nestedStakingProperty', esc_attr($nestedStakingProperty));
             }
         }
@@ -130,10 +134,10 @@ if (!class_exists("EnUpdateProductNestedOptions")) {
             $nestedDimensionSelected = get_post_meta($post_id, '_nestedDimension', true);
             $nestedStakingPropertySelected = get_post_meta($post_id, '_nestedStakingProperty', true);
 
-            // Nested Material checkbox
+            //          Nested Material checkbox
             $field_array = array(
-                'name' => '_nestedMaterials',
-                'id' => '_nestedMaterials[' . $post_id . ']',
+                'name' => '_nestedMaterials'.$post_id,
+                'id' => '_nestedMaterials'.$post_id,
                 'class' => "_nestedMaterials $disable_nested",
                 'label' => __(
                     'Nested material', 'woocommerce'
@@ -147,9 +151,9 @@ if (!class_exists("EnUpdateProductNestedOptions")) {
             );
             woocommerce_wp_checkbox($field_array);
 
-            // Nesting percentage input
+//          Nesting percentage input
             $field_array = array(
-                'name' => '_nestedPercentage',
+                'name' => '_nestedPercentage'.$post_id,
                 'id' => '_nestedPercentage[' . $post_id . ']',
                 'class' => "_nestedPercentage $disable_nested",
                 'placeholder' => 'Range from 0 to 100',
@@ -164,9 +168,9 @@ if (!class_exists("EnUpdateProductNestedOptions")) {
             );
             woocommerce_wp_text_input($field_array);
 
-            // Nested Dimension dropdown
+//          Nested Dimension dropdown
             $field_array = array(
-                'name' => '_nestedDimension',
+                'name' => '_nestedDimension'.$post_id,
                 'id' => '_nestedDimension',
                 'class' => "_nestedDimension $disable_nested",
                 'label' => __(
@@ -183,9 +187,9 @@ if (!class_exists("EnUpdateProductNestedOptions")) {
             );
             woocommerce_wp_select($field_array);
 
-            // Maximum nested items input field
+//          Maximum nested items input field
             $field_array = array(
-                'name' => '_maxNestedItems',
+                'name' => '_maxNestedItems'.$post_id,
                 'id' => '_maxNestedItems[' . $post_id . ']',
                 'class' => "_nestedDimension $disable_nested",
                 'label' => __(
@@ -199,9 +203,9 @@ if (!class_exists("EnUpdateProductNestedOptions")) {
             );
             woocommerce_wp_text_input($field_array);
 
-            // Stacking property dropdown
+//          Stacking property dropdown
             $field_array = array(
-                'name' => '_nestedStakingProperty',
+                'name' => '_nestedStakingProperty'.$post_id,
                 'id' => '_nestedStakingProperty',
                 'class' => "_nestedStakingProperty $disable_nested",
                 'label' => __(

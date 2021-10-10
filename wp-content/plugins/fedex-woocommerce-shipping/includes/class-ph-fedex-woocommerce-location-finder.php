@@ -19,7 +19,8 @@ if( ! class_exists('Ph_Fedex_Woocommerce_Location_Finder') ) {
             "FEDEX_HOME_DELIVERY_STATION",
             "FEDEX_OFFICE",
             "FEDEX_SHIPSITE",
-            "FEDEX_SMART_POST_HUB"
+            "FEDEX_SMART_POST_HUB",
+            "FEDEX_ONSITE"
         );
         private function is_soap_available(){
             if( extension_loaded( 'soap' ) ){
@@ -96,6 +97,9 @@ if( ! class_exists('Ph_Fedex_Woocommerce_Location_Finder') ) {
          * Get Fedex Location Search Request.
          */
         public function get_request( $package = array() ){
+            
+            $hold_at_location_carrier_code = isset($this->fedex_settings['hold_at_location_carrier_code'])  && !empty($this->fedex_settings['hold_at_location_carrier_code']) ? $this->fedex_settings['hold_at_location_carrier_code']: '';
+
             $request['WebAuthenticationDetail'] = array(
                 'UserCredential' => array(
                     'Key'       => $this->api_key,
@@ -108,7 +112,7 @@ if( ! class_exists('Ph_Fedex_Woocommerce_Location_Finder') ) {
             );
             $request['Version']                 = array(
                 'ServiceId'     => 'locs',
-                'Major'         => '7',
+                'Major'         => '12',
                 'Intermediate'  => '0',
                 'Minor'         => '0'
             );
@@ -124,6 +128,19 @@ if( ! class_exists('Ph_Fedex_Woocommerce_Location_Finder') ) {
                 'Criterion'     => 'DISTANCE',
                 'Order'         => 'LOWEST_TO_HIGHEST',
             );
+            $request['Constraints'] =[];
+            $request['Constraints'] = array(
+             'RadiusDistance' => array(
+                 'Value'      => '10',
+                 'Units'      => 'MI',
+             ),
+             'RequiredLocationCapabilities' => array(
+                 'TransferOfPossessionType' => 'HOLD_AT_LOCATION',
+             )
+            );
+            if(!empty($hold_at_location_carrier_code)){
+             $request['Constraints']['RequiredLocationCapabilities']['CarrierCode'] = $hold_at_location_carrier_code;
+            }
             return $request;
         }
 
@@ -139,7 +156,7 @@ if( ! class_exists('Ph_Fedex_Woocommerce_Location_Finder') ) {
             {
                 return json_decode(get_transient( $this->request_hash ));
             }
-            $this->location_service_version = '7';          // Search Location WSDL version
+            $this->location_service_version = '12';          // Search Location WSDL version
             $client = $this->ph_create_soap_client( plugin_dir_path( dirname( __FILE__ ) ) . 'fedex-wsdl/'. ( $this->production ? 'production' : 'test' ) .'/LocationsService_v'.$this->location_service_version.'.wsdl' );
             $result = null;
             if( $this->soap_method == 'nusoap' ){
@@ -168,7 +185,7 @@ if( ! class_exists('Ph_Fedex_Woocommerce_Location_Finder') ) {
             catch( Exception $e ){
                 $this->debug( __('Something Went Wrong while Fetching Search Loactions Request & Response', 'wf-shipping-fedex') );
             }
-            set_transient($this->request_hash,json_encode($result),2*24*60*60);  // store result in transient using request hash, it will expiry within two days.
+            set_transient($this->request_hash,json_encode($result),HOUR_IN_SECONDS);  // store result in transient using request hash, it will expiry within one hour.
             return $result;
         }
 
@@ -214,17 +231,36 @@ if( ! class_exists('Ph_Fedex_Woocommerce_Location_Finder') ) {
          */
         public function ph_fedex_add_hold_at_location_to_checkout_fields( $fields ) {
             
-            $fields['billing']['ph_fedex_hold_at_locations'] = array(
-                'label'       => __('FedEx Hold at Location', 'wf-shipping-fedex'),
-                'placeholder' => _x('', 'placeholder', 'wf-shipping-fedex'),
-                'required'    => false,
-                'clear'       => false,
-                'type'        => 'select',
-                'class'       => array ('address-field', 'update_totals_on_change' ),
-                'options'     => array(
-                    '' => __('Select FedEx Hold at Location', 'wf-shipping-fedex' )
-                    )
-            );
+            $cart = array();
+
+            if( WC() != null && WC()->cart != null) {
+
+                $cart = WC()->cart->cart_contents;
+            }
+
+            if( !empty($cart) && is_array($cart)  ) {
+
+                foreach( $cart as $cart_item) {
+
+                    $product = $cart_item['data'];
+
+                    if( !$product->is_virtual() ) {
+                        
+                        $fields['billing']['ph_fedex_hold_at_locations'] = array(
+                            'label'       => __('FedEx Hold at Location', 'wf-shipping-fedex'),
+                            'placeholder' => _x('', 'placeholder', 'wf-shipping-fedex'),
+                            'required'    => false,
+                            'clear'       => false,
+                            'type'        => 'select',
+                            'class'       => array ('address-field', 'update_totals_on_change' ),
+                            'options'     => array(
+                                '' => __('Select FedEx Hold at Location', 'wf-shipping-fedex' )
+                            )
+                        );
+                        break;
+                    }
+                }
+            }
 
             return apply_filters('ph_fedex_checkout_fields', $fields, $this->fedex_settings);
         }
@@ -317,7 +353,11 @@ if( ! class_exists('Ph_Fedex_Woocommerce_Location_Finder') ) {
                     'Residential'=>$selected_fedex_hold_at_location->LocationDetail->LocationContactAndAddress->Address->Residential,
                     'GeographicCoordinates'=>$selected_fedex_hold_at_location->LocationDetail->LocationContactAndAddress->Address->GeographicCoordinates
                 );
-                $request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes']   = [];
+                
+                if( !isset($request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes']) ) {
+                    $request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'] = [];
+                }
+                
                 $request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'][] = 'HOLD_AT_LOCATION';
                 $request['RequestedShipment']['SpecialServicesRequested']['HoldAtLocationDetail'] = array(
                     'LocationType'              => $selected_fedex_hold_at_location->LocationDetail->LocationType,

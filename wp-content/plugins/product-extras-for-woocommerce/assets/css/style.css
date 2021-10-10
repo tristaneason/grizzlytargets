@@ -30,8 +30,19 @@ li.pewc-group label .pewc-field-price {
 	float: right;
 	font-weight: normal;
 }
+.pewc-hide-option-price .dd-desc {
+	display: none
+}
 label.pewc-field-label .dashicons {
 	margin-top: 2px
+}
+label.pewc-field-label .dashicons.tooltip {
+	position: relative;
+	display: inline-block;
+	font-family: dashicons;
+	font-size: 20px;
+	line-height: 1;
+	opacity: 1
 }
 .pewc-group-checkbox label {
 	display: inline;
@@ -55,6 +66,10 @@ label.pewc-field-label .dashicons {
 	display: grid;
 	grid-template-columns: minmax(100px, 120px) 1fr;
 }
+.pewc-item-upload .pewc-field-label {
+	display:inherit;
+	overflow:auto;
+}
 /* Conditional styles */
 .pewc-group-hidden,
 .pewc-hidden-conditional-fields {
@@ -64,15 +79,17 @@ label.pewc-field-label .dashicons {
 .pewc-hidden-field.pewc-variation-dependent.active {
 	display: none;
 }
-.pewc-variation-dependent.active {
+.pewc-item.pewc-variation-dependent.active {
 	display: block;
 	visibility: visible;
 }
 table .pewc-variation-dependent.active {
 	display: table-row;
+	visibility: visible;
 }
 /* Image styles */
-li.pewc-item.pewc-has-field-image {
+li.pewc-has-field-image,
+li.pewc-has-field-image.pewc-variation-dependent.active {
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;
 	-webkit-align-items: center;
@@ -87,8 +104,10 @@ li.pewc-has-field-image .pewc-item-field-wrapper {
 	margin-right: 1em
 }
 .pewc-hidden-field,
-li.pewc-item.pewc-has-field-image.pewc-hidden-field,
-.pewc-variation-dependent {
+.pewc-hidden-calculation,
+.pewc-item.pewc-has-field-image.pewc-hidden-field,
+.pewc-item.pewc-variation-dependent,
+.pewc-item.pewc-variation-dependent.pewc-hidden-calculation {
 	display: none;
 	visibility: hidden;
 }
@@ -249,6 +268,9 @@ td.pewc-information-image:empty {
 .dropzone .dz-preview .dz-details .dz-filename:not(:hover) span {
   border: 0;
 }
+.dropzone .dz-preview .dz-details .dz-filename {
+  white-space: break-spaces;
+}
 .dropzone .dz-preview .dz-details .dz-filename span,
 .dropzone .dz-preview .dz-details .dz-size span {
   background-color: transparent;
@@ -339,16 +361,17 @@ li.pewc-item-calculation label {
 li .pewc-calculation-field-wrapper {
 	float: right;
 }
-.pewc-hidden-calculation {
+/* maybe not needed anymore? combine with hidden field above */
+/*.pewc-hidden-calculation {
 	display: none;
-}
+}*/
 @keyframes spin {
 	100% {
 		transform: rotate( 360deg );
 	}
 }
 /* Radio and checkboxes images */
-pewc-radio-image-wrapper label {
+.pewc-radio-image-wrapper label {
 	display: block;
 	height: 100%
 }
@@ -479,6 +502,19 @@ select.pewc-variable-child-select {
 .pewc-checkbox-disabled.pewc-checkbox-image-wrapper .pewc-column-add-wrapper {
 	display: none;
 }
+@media screen and (max-width: 800px) {
+  .pewc-radio-images-wrapper.pewc-columns-3 .pewc-radio-image-wrapper, .pewc-checkboxes-images-wrapper.pewc-columns-3 .pewc-checkbox-image-wrapper {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+  }
+  .pewc-checkbox-desc-wrapper {
+    display: block
+  }
+  .pewc-has-quickview .pewc-radio-image-desc {
+    margin-left: 1em
+  }
+}
 body[class^="storefront-"] .pewc-column-wrapper p.pewc-column-price-wrapper,
 body[class*=" storefront-"] .pewc-column-wrapper p.pewc-column-price-wrapper {
 	margin-bottom: 0.5em;
@@ -496,7 +532,7 @@ body[class*=" storefront-"] .pewc-column-wrapper p.pewc-column-price-wrapper {
 }
 input[type=number].pewc-child-quantity-field {
 	margin-left: 1em;
-	width: 50px;
+	width: 70px;
 	text-align: center
 }
 .products-quantities-independent .pewc-child-quantity-field {
@@ -583,10 +619,15 @@ h4.pewc-swatches-main-title {
 	transform: translate(-50%,-50%);
 	width: 800px;
 	max-width: 90%;
+	max-height: 90%;
+  overflow: scroll;
 	padding: 2em;
 	background: #fff;
 	box-shadow: 0 0 55px 15px rgba(0, 0, 0, 0.1);
 	z-index: 9999
+}
+.pewc-quickview-product-wrapper .product {
+	overflow: scroll;
 }
 .pewc-quickview-product-wrapper .storefront-product-pagination {
 	display: none
@@ -648,6 +689,7 @@ a.pewc-close-quickview {
 	height: auto;
 	max-height: 9999px;
 	padding: 1em;
+	overflow: visible;
 }
 .pewc-groups-accordion .pewc-group-wrap h3 {
 	padding: 0.5em;
@@ -682,6 +724,13 @@ a.pewc-close-quickview {
 .pewc-tabs-wrapper {
 	display: -webkit-flex;
 	display: flex;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap
+}
+@media screen and (max-width: 767px) {
+	.pewc-tabs-wrapper {
+		display: block;
+	}
 }
 .pewc-tabs-wrapper .pewc-tab {
 	padding: 1em 2em;
@@ -823,6 +872,10 @@ td.pewc-summary-panel-price {
 table td.pewc-summary-line-item {
 	padding: 0
 }
+.pewc-summary-panel-price.pewc-hide-option-price span,
+.pewc-summary-panel-price.pewc-hide-field-price span {
+	display: none
+}
 
 /* Lightbox */
 body.pewc-lightbox-active {
@@ -916,6 +969,32 @@ ul.dd-options {
 
 .pewc-item-field-wrapper .wp-picker-input-wrap label {
 	display: inline-block !important;
+}
+
+/* Variations grid */
+.grid-layout table th,
+.grid-layout table td {
+	vertical-align: middle;
+}
+.pewc-attribute-name-wrap {
+	display: -webkit-flex;
+	display: flex;
+  align-items: center;
+	-webkit-align-items: center;
+}
+img.pewc-attribute-image {
+  max-width: 100px;
+	margin-right: 10px
+}
+
+/* Cart */
+span.pewc-cart-group-heading {
+	font-size: 110%;
+	text-decoration: underline;
+}
+dl.variation dd:empty {
+	margin-bottom: 0.5em;
+	clear:left;
 }
 
 /* Date Picker Default Styles */

@@ -11,6 +11,7 @@ use Leadin\utils\QueryParameters;
 use Leadin\utils\Versions;
 use Leadin\auth\OAuth;
 use Leadin\admin\Connection;
+use Leadin\admin\Impact;
 use Leadin\admin\AdminConstants;
 use Leadin\includes\utils as utils;
 
@@ -107,6 +108,7 @@ class Links {
 	 */
 	public static function get_query_params() {
 		$config_array = AdminConstants::get_hubspot_query_params_array();
+		\array_merge( $config_array, Impact::get_params() );
 
 		return self::http_build_query( $config_array );
 	}

@@ -48,8 +48,34 @@ jQuery(window).on('load', function () {
     }
 
 });
+// Weight threshold for LTL freight
+if (typeof en_weight_threshold_limit != 'function') {
+    function en_weight_threshold_limit() {
+        // Weight threshold for LTL freight
+        jQuery("#en_weight_threshold_lfq").keypress(function (e) {
+            if (String.fromCharCode(e.keyCode).match(/[^0-9]/g) || !jQuery("#en_weight_threshold_lfq").val().match(/^\d{0,3}$/)) return false;
+        });
 
+        jQuery('#en_plugins_return_Unishippers_quotes').on('change', function () {
+            if (jQuery('#en_plugins_return_Unishippers_quotes').prop("checked")) {
+                jQuery('tr.en_weight_threshold_lfq').css('display', 'contents');
+            } else {
+                jQuery('tr.en_weight_threshold_lfq').css('display', 'none');
+            }
+        });
+        jQuery("#en_plugins_return_Unishippers_quotes").closest('tr').addClass("en_plugins_return_Unishippers_quotes_tr");
+        // Weight threshold for LTL freight
+        var weight_threshold_class = jQuery("#en_weight_threshold_lfq").attr("class");
+        jQuery("#en_weight_threshold_lfq").closest('tr').addClass("en_weight_threshold_lfq " + weight_threshold_class);
+        // Weight threshold for LTL freight is empty
+        if (jQuery('#en_weight_threshold_lfq').length && !jQuery('#en_weight_threshold_lfq').val().length > 0) {
+            jQuery('#en_weight_threshold_lfq').val(150);
+        }
+    }
+}
 jQuery(document).ready(function () {
+    en_weight_threshold_limit();
+
     jQuery("#order_shipping_line_items .shipping .view .display_meta").css('display', 'none');
 
     jQuery("#wc_settings_unishipper_residential_delivery ").closest('tr').addClass("wc_settings_unishipper_residential_delivery ");
@@ -59,7 +85,91 @@ jQuery(document).ready(function () {
     jQuery("#unishippers_freight_liftgate_delivery_as_option").closest('tr').addClass("unishippers_freight_liftgate_delivery_as_option");
     jQuery("#residential_delivery_options_label").closest('tr').addClass("residential_delivery_options_label");
     jQuery("#liftgate_delivery_options_label").closest('tr').addClass("liftgate_delivery_options_label");
+// Cuttoff Time
+    jQuery("#unishippers_freight_shipment_offset_days").closest('tr').addClass("unishippers_freight_shipment_offset_days_tr");
+    jQuery("#all_shipment_days_unishippers").closest('tr').addClass("all_shipment_days_unishippers_tr");
+    jQuery(".unishippers_shipment_day").closest('tr').addClass("unishippers_shipment_day_tr");
+    jQuery("#unishippers_freight_order_cut_off_time").closest('tr').addClass("unishippers_freight_cutt_off_time_ship_date_offset");
+    var unishippers_current_time = en_unishippers_freight_admin_script.unishippers_freight_order_cutoff_time;
+    if (unishippers_current_time == '') {
 
+        jQuery('#unishippers_freight_order_cut_off_time').wickedpicker({
+            now: '',
+            title: 'Cut Off Time',
+        });
+    } else {
+        jQuery('#unishippers_freight_order_cut_off_time').wickedpicker({
+
+            now: unishippers_current_time,
+            title: 'Cut Off Time'
+        });
+    }
+
+    var delivery_estimate_val = jQuery('input[name=unishippers_delivery_estimates]:checked').val();
+    if (delivery_estimate_val == 'dont_show_estimates') {
+        jQuery("#unishippers_freight_order_cut_off_time").prop('disabled', true);
+        jQuery("#unishippers_freight_shipment_offset_days").prop('disabled', true);
+        jQuery("#unishippers_freight_shipment_offset_days").css("cursor", "not-allowed");
+        jQuery("#unishippers_freight_order_cut_off_time").css("cursor", "not-allowed");
+    } else {
+        jQuery("#unishippers_freight_order_cut_off_time").prop('disabled', false);
+        jQuery("#unishippers_freight_shipment_offset_days").prop('disabled', false);
+        // jQuery("#unishippers_freight_order_cut_off_time").css("cursor", "auto");
+        jQuery("#unishippers_freight_order_cut_off_time").css("cursor", "");
+    }
+
+    jQuery("input[name=unishippers_delivery_estimates]").change(function () {
+        var delivery_estimate_val = jQuery('input[name=unishippers_delivery_estimates]:checked').val();
+        if (delivery_estimate_val == 'dont_show_estimates') {
+            jQuery("#unishippers_freight_order_cut_off_time").prop('disabled', true);
+            jQuery("#unishippers_freight_shipment_offset_days").prop('disabled', true);
+            jQuery("#unishippers_freight_order_cut_off_time").css("cursor", "not-allowed");
+            jQuery("#unishippers_freight_shipment_offset_days").css("cursor", "not-allowed");
+        } else {
+            jQuery("#unishippers_freight_order_cut_off_time").prop('disabled', false);
+            jQuery("#unishippers_freight_shipment_offset_days").prop('disabled', false);
+            jQuery("#unishippers_freight_order_cut_off_time").css("cursor", "auto");
+            jQuery("#unishippers_freight_shipment_offset_days").css("cursor", "auto");
+        }
+    });
+
+    /*
+     * Uncheck Week days Select All Checkbox
+     */
+    jQuery(".unishippers_shipment_day").on('change load', function () {
+
+        var checkboxes = jQuery('.unishippers_shipment_day:checked').length;
+        var un_checkboxes = jQuery('.unishippers_shipment_day').length;
+        if (checkboxes === un_checkboxes) {
+            jQuery('.all_shipment_days_unishippers').prop('checked', true);
+        } else {
+            jQuery('.all_shipment_days_unishippers').prop('checked', false);
+        }
+    });
+
+    /*
+     * Select All Shipment Week days
+     */
+
+    var all_int_checkboxes = jQuery('.all_shipment_days_unishippers');
+    if (all_int_checkboxes.length === all_int_checkboxes.filter(":checked").length) {
+        jQuery('.all_shipment_days_unishippers').prop('checked', true);
+    }
+
+    jQuery(".all_shipment_days_unishippers").change(function () {
+        if (this.checked) {
+            jQuery(".unishippers_shipment_day").each(function () {
+                this.checked = true;
+            });
+        } else {
+            jQuery(".unishippers_shipment_day").each(function () {
+                this.checked = false;
+            });
+        }
+    });
+
+
+    //** End: Order Cut Off Time
     /**
      * Offer lift gate delivery as an option and Always include residential delivery fee
      * @returns {undefined}
@@ -327,15 +437,15 @@ jQuery(document).ready(function () {
         jQuery('._nestedStakingProperty_tr').show();
     }
 
-    jQuery("input[name=_nestedPercentage]").attr('min', '0');
-    jQuery("input[name=_maxNestedItems]").attr('min', '0');
-    jQuery("input[name=_nestedPercentage]").attr('max', '100');
-    jQuery("input[name=_maxNestedItems]").attr('max', '100');
-    jQuery("input[name=_nestedPercentage]").attr('maxlength', '3');
-    jQuery("input[name=_maxNestedItems]").attr('maxlength', '3');
+    jQuery("._nestedPercentage").attr('min', '0');
+    jQuery("._maxNestedItems").attr('min', '0');
+    jQuery("._nestedPercentage").attr('max', '100');
+    jQuery("._maxNestedItems").attr('max', '100');
+    jQuery("._nestedPercentage").attr('maxlength', '3');
+    jQuery("._maxNestedItems").attr('maxlength', '3');
 
-    if (jQuery("input[name=_nestedPercentage]").val() == '') {
-        jQuery("input[name=_nestedPercentage]").val(0);
+    if (jQuery("._nestedPercentage").val() == '') {
+        jQuery("._nestedPercentage").val(0);
     }
 
     jQuery("._nestedPercentage").keydown(function (eve) {
@@ -364,7 +474,7 @@ jQuery(document).ready(function () {
         unishippers_lfq_stop_special_characters(eve);
     });
 
-    jQuery("input[name=_nestedMaterials]").change(function () {
+    jQuery("._nestedMaterials").change(function () {
         if (!jQuery('._nestedMaterials').is(":checked")) {
             jQuery('._nestedPercentage_tr').hide();
             jQuery('._nestedDimension_tr').hide();

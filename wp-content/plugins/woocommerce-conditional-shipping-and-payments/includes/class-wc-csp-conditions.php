@@ -63,6 +63,7 @@ class WC_CSP_Conditions {
 			'WC_CSP_Condition_Cart_Subtotal',
 			'WC_CSP_Condition_Order_Status',
 			'WC_CSP_Condition_Date_Time',
+			'WC_CSP_Condition_Stock_Quantity',
 		) );
 
 		// Load conditions.

@@ -51,7 +51,8 @@ function pewc_minicart_item_price( $price, $cart_item, $cart_item_key ) {
 	return $price;
 
 }
-add_filter( 'woocommerce_cart_item_price', 'pewc_minicart_item_price', 10, 3 );
+// Removed in 3.8.10 to prevent line item price showing without tax in the cart
+// add_filter( 'woocommerce_cart_item_price', 'pewc_minicart_item_price', 10, 3 );
 
 /**
  * Add product_extra flat rates to cart.
@@ -262,6 +263,15 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 	if( $product_extra_groups ) {
 
 		foreach( $product_extra_groups as $group_id=>$group ) {
+
+			// Display a group title if enabled
+			if( pewc_show_group_titles_in_cart( $group_id ) == 'yes' ) {
+				$cart_item_data['product_extras']['groups'][$group_id][$group_id] = array(
+					'label'			=> pewc_get_group_title( $group_id, $group, true ),
+					'value'			=> '',
+					'type'			=> 'group_heading'
+				);
+			}
 
 			if( isset( $group['items'] ) ) {
 
@@ -559,6 +569,7 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 								'value'   	=> $value,
 								'flat_rate'	=> $flat_rate_items,
 								'hidden'		=> ! empty( $item['hidden_calculation'] ) ? sanitize_text_field( $item['hidden_calculation'] ) : '',
+								'price_visibility' => isset( $item['price_visibility'] ) ? $item['price_visibility'] : ''
 							);
 
 							// We use this value when editing a product from the cart
@@ -593,12 +604,20 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 
 							$extra_price += floatval( $price );
 
+							// Are we using a price set by a calculation field?
 							if( $use_calc_set_price ) {
-								// Are we using a price set by a calculation field?
+
+								// Remove these filters to prevent F+D applying the role-based price instead of the calculated price
+								remove_filter( 'woocommerce_product_get_price', 'wcfad_get_regular_price', 10, 2 );
+								remove_filter( 'woocommerce_product_variation_get_price', 'wcfad_get_regular_price', 10, 2 );
+
 								$new_price = isset( $_POST['pewc_calc_set_price'] ) ? $_POST['pewc_calc_set_price'] : 0;
 								$cart_item_data['product_extras']['use_calc_set_price'] = true;
+
 							} else {
+
 								$new_price = floatval( $product_price ) + floatval( $extra_price );
+
 							}
 
 							// Ensure price can't be less than 0
@@ -643,7 +662,7 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 									'child_product_id' 	=> $child_product_id,
 									'field_id' 					=> $field_id,
 									'quantities'				=> $_POST[$field_id . '_quantities'],
-									'quantity'					=> $_POST[$field_id . '_child_quantity_' . $each_id],
+									'quantity'					=> isset( $_POST[$field_id . '_child_quantity_' . $child_product_id] ) ? $_POST[$field_id . '_child_quantity_' . $child_product_id] : 1,
 									'allow_none'				=> $_POST[$field_id . '_allow_none']
 								);
 
@@ -685,7 +704,7 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 								'id'    		=> esc_attr( $item['id'] ),
 								'group_id'  => $item['group_id'],
 								'field_id'  => $item['field_id'],
-								'value'			=> apply_filters( 'pewc_cart_item_value_child_products', $value, $item )
+								'value'			=> apply_filters( 'pewc_cart_item_value_child_products', $value, $item ),
 							);
 
 						}
@@ -798,6 +817,10 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 
 					$uploads = array();
 
+					if( empty( $file['size'] ) ) {
+						continue;
+					}
+
 					foreach( $file['size'] as $i=>$size ) {
 
 						// Check file size
@@ -863,7 +886,8 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 								'price'   	=> floatval( $price ),
 								// 'url'   		=> wc_clean( $upload['url'] ),
 								// 'display' 	=> basename( wc_clean( $upload['url'] ) ),
-								'flat_rate'	=> $flat_rate_items
+								'flat_rate'	=> $flat_rate_items,
+								'price_visibility' => isset( $item['price_visibility'] ) ? $item['price_visibility'] : ''
 							),
 							$item,
 							$group_id,
@@ -1156,7 +1180,9 @@ function pewc_validate_cart_item_data( $passed, $product_id, $quantity, $variati
 					} else if( isset( $item['field_type'] ) && $item['field_type'] == 'products' ) {
 
 						// Validate minimum / maximum
-						if( $item['products_quantities'] == 'independent' && ( ! empty( $item['min_products'] ) || ! empty( $item['max_products'] ) ) ) {
+						if( $item['products_quantities'] == 'independent' &&
+						 	( $item['products_layout'] == 'column' || $item['products_layout'] == 'checkboxes' ) &&
+							( ! empty( $item['min_products'] ) || ! empty( $item['max_products'] ) ) ) {
 
 							$min_products = ! empty( $item['min_products'] ) ? $item['min_products'] : 0;
 							$max_products = ! empty( $item['max_products'] ) ? $item['max_products'] : '';
@@ -1164,7 +1190,7 @@ function pewc_validate_cart_item_data( $passed, $product_id, $quantity, $variati
 							$child_products = ! empty( $item['child_products'] ) ? $item['child_products'] : array();
 							$child_quantity = 0;
 							foreach( $child_products as $key=>$child_product_id ) {
-								if( isset( $_POST[$id . '_child_quantity_' . $child_product_id] ) ) {
+								if( ! empty( $_POST[$id . '_child_quantity_' . $child_product_id] ) ) {
 									$child_quantity += $_POST[$id . '_child_quantity_' . $child_product_id];
 								}
 							}
@@ -1224,15 +1250,78 @@ function pewc_validate_cart_item_data( $passed, $product_id, $quantity, $variati
 							$passed = false;
 						}
 
-						if( empty( $_POST[$id . '_child_product'] ) && $is_required ) {
+						if( empty( $_POST[$id . '_child_product'] ) && $is_required && $item['products_layout'] != 'grid' ) {
 							// Required field
 							wc_add_notice( apply_filters( 'pewc_filter_validation_notice', esc_html( $label ) . __( ' is a required field.', 'pewc' ), $label, $item ), 'error' );
-							$passed = false;
+							return false;
+						}
+
+						if( $item['products_layout'] == 'grid' ) {
+
+							if( array_sum( $_POST[$id . '_grid_child_variation'] ) <= 0 && $is_required ) {
+								// Required field
+								wc_add_notice( apply_filters( 'pewc_filter_validation_notice', esc_html( $label ) . __( ' is a required field.', 'pewc' ), $label, $item ), 'error' );
+								return false;
+							}
 
 						}
+
+						// Check for out of stock child products
+						if( apply_filters( 'pewc_validate_child_products_stock', false, $item ) ) {
+
+							$child_products = ! empty( $item['child_products'] ) ? $item['child_products'] : array();
+
+							$child_quantity = 0;
+							foreach( $child_products as $key=>$child_product_id ) {
+
+								if( ! is_array( $_POST[$id . '_child_product'] ) ) {
+									$_POST[$id . '_child_product'] = array( $_POST[$id . '_child_product'] );
+								}
+
+								if( isset( $_POST[$id . '_child_product'] ) && in_array( $child_product_id, $_POST[$id . '_child_product'] ) ) {
+
+									$child_product = wc_get_product( $child_product_id );
+									$products_qty_in_cart = WC()->cart->get_cart_item_quantities();
+
+									// Check the quantity
+									if( $item['products_quantities'] == 'independent' ) {
+										$quantity_in_cart = isset( $_POST[$id . '_child_quantity_' . $child_product_id] ) ? isset( $_POST[$id . '_child_quantity_' . $child_product_id] ) : 1;
+									} else if( $item['products_quantities'] == 'linked' ) {
+										$quantity_in_cart = $quantity;
+									} if( $item['products_quantities'] == 'one-only' ) {
+										$quantity_in_cart = 1;
+									}
+
+									if( isset( $products_qty_in_cart[$child_product_id] ) ) {
+										$quantity_in_cart += $products_qty_in_cart[$child_product_id];
+									}
+
+									if( ! $child_product->has_enough_stock( $quantity_in_cart ) ) {
+										// Required field
+										wc_add_notice(
+											apply_filters(
+												'pewc_child_products_stock_validation_notice',
+												__( 'The product has not been added to the cart because one or more of its components is out of stock.', 'pewc' ),
+												$item
+											),
+											'error'
+										);
+										$passed = false;
+										break;
+									}
+
+								}
+
+							}
+
+						}
+
 					}
+
 				}
+
 			}
+
 		}
 
 		$passed = apply_filters( 'pewc_filter_validate_cart_item_status', $passed, $_POST, $item );
@@ -1345,14 +1434,21 @@ function pewc_get_item_data( $other_data, $cart_item ) {
 							if( ! empty( $item['files'] ) ) {
 
 								$display = sprintf(
-									'<div class="pewc-upload-thumb-wrapper"><span class="pewc-cart-item-price">%s</span>',
+									'<div class="pewc-upload-thumb-wrapper">',
 									$price
 								);
+
+								if( pewc_show_field_prices_in_cart( $item ) ) {
+									$display .= sprintf(
+										'<span class="pewc-cart-item-price">%s</span>',
+										$price
+									);
+								}
 
 								foreach( $item['files'] as $index=>$file ) {
 
 									// Add a thumb for image files
-									if( is_array( getimagesize( $file['file'] ) ) || apply_filters( 'pewc_force_always_display_thumbs', false ) ) {
+									if( file_exists( $file['file'] ) && is_array( getimagesize( $file['file'] ) ) || apply_filters( 'pewc_force_always_display_thumbs', false ) ) {
 										$thumb = $file['url'];
 										$display .= sprintf(
 											'<br><img src="%s">',
@@ -1386,30 +1482,51 @@ function pewc_get_item_data( $other_data, $cart_item ) {
 							}
 
 						} else if( $item['type'] == 'checkbox' ) {
+
+							$value = '';
+							if( pewc_show_field_prices_in_cart( $item ) ) {
+								$value = '<span class="pewc-price pewc-cart-item-price">' . sanitize_text_field( $price ). '</span>';
+							}
 							$other_data[] = array(
 								'name'    => sanitize_text_field( $item['label'] ),
-								'value'   => '<span class="pewc-price pewc-cart-item-price">' . sanitize_text_field( $price ). '</span>',
+								'value'   => $value,
 								'display' => '',
 							);
+
 						} else if( $item['type'] == 'checkbox_group' ) {
+
+							$value = str_replace( ' | ', '<br>', $item['value'] );
+							if( pewc_show_field_prices_in_cart( $item ) ) {
+								$value .= '<span class="pewc-price pewc-cart-item-price">' . sanitize_text_field( $price ). '</span>';
+							}
+
 							$other_data[] = array(
 								'name'    => sanitize_text_field( $item['label'] ),
-								'value'   => str_replace( ' | ', '<br>', $item['value'] ),
+								'value'   => $value,
 								'display' => '',
 							);
+
 						} else if( $item['type'] == 'name_price' ) {
+
 							$value = wc_price( $item['value'] );
 							$other_data[] = array(
 								'name'    => sanitize_text_field( $item['label'] ),
 								'value'   => sanitize_text_field( $value ),
 								'display' => '',
 							);
+
+						} else if( $item['type'] == 'group_heading' ) {
+							$other_data[] = array(
+								'name'    => '<span class="pewc-cart-group-heading">' . sanitize_text_field( $item['label'] ) . '</span>',
+								'value'   => '',
+								'display' => '',
+							);
 						} else {
 
-							$show_option_prices_in_cart = pewc_show_option_prices_in_cart( $item );
+							$show_field_prices_in_cart = pewc_show_field_prices_in_cart( $item );
 							$display = wp_kses_post( apply_filters( 'pewc_filter_item_value_in_cart', $item['value'], $item ) );
 
-							if( $show_option_prices_in_cart ) {
+							if( $show_field_prices_in_cart ) {
 								$display .= '<span class="pewc-cart-item-price">' . $price . '</span>';
 							}
 
@@ -1495,6 +1612,18 @@ function pewc_after_cart_item_name( $cart_item, $cart_item_key ) {
 add_action( 'woocommerce_after_cart_item_name', 'pewc_after_cart_item_name', 100, 2 );
 
 /**
+ * Indent child product names in the cart
+ * @since 3.9.2
+ */
+function pewc_cart_item_name( $product_name, $cart_item, $cart_item_key ) {
+	if( pewc_indent_child_product() == 'yes' && pewc_is_order_item_child_product( $cart_item ) ) {
+		$product_name = apply_filters( 'pewc_indent_markup', '<span style="padding-left: 15px"></span>' ) . $product_name;
+	}
+	return $product_name;
+}
+add_filter( 'woocommerce_cart_item_name', 'pewc_cart_item_name', 10, 3 );
+
+/**
  * Filter the added to cart notice if we are editing a product in the cart
  * @since 3.4.0
  */
@@ -1572,10 +1701,39 @@ function pewc_product_single_add_to_cart_text( $text, $product ) {
 add_filter( 'woocommerce_product_single_add_to_cart_text', 'pewc_product_single_add_to_cart_text', 10, 2 );
 
 /**
+ * Get whether to show the field price in the cart
+ * @since 3.9.0
+ */
+function pewc_show_field_prices_in_cart( $field=false ) {
+
+	$display = true;
+	if( isset( $field['price_visibility'] ) && $field['price_visibility'] == 'hidden' ) {
+		$display = false;
+	}
+	return apply_filters( 'pewc_show_field_prices_in_cart', $display );
+
+}
+/**
+ * Get whether to show the option prices in the cart
+ * @since 3.9.0
+ */
+function pewc_show_option_prices_in_cart( $item ) {
+
+	$display = true;
+	if( isset( $item['option_price_visibility'] ) && $item['option_price_visibility'] == 'hidden' ) {
+		$display = false;
+	}
+
+	$display = apply_filters( 'pewc_show_option_prices_in_cart', $display, $item );
+	return $display;
+
+}
+
+/**
  * Get whether to show the option prices in the cart
  * @since 3.5.2
  */
-function pewc_show_option_prices_in_cart( $item ) {
-	$display = apply_filters( 'pewc_show_option_prices_in_cart', true, $item );
-	return $display;
+function pewc_show_group_titles_in_cart( $group_id ) {
+	$show = get_option( 'pewc_cart_group_titles', 'no' );
+	return apply_filters( 'pewc_display_group_titles_cart', $show, $group_id );
 }

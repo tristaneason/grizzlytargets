@@ -111,6 +111,8 @@ if ( ! class_exists( 'WPPFM_Product_Feed_Page' ) ) :
 				$source_fields  = $data_class->get_source_fields( '1' );
 				$attribute_data = $data_class->get_attribute_data( $this->_feed_id, $feed_data['channel'] );
 
+				// Verify the categories in the stored category mapping are still active.
+				$feed_data['category_mapping'] = $data_class->verify_categories_in_mapping( $feed_data['category_mapping'] );
 			} else {
 				$source_fields  = [];
 				$attribute_data = [];

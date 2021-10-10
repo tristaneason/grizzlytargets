@@ -149,11 +149,24 @@
   font-weight: normal;
 }
 
-a[href='admin.php?page=leadin_pricing'] {
+#toplevel_page_leadin > ul a {
+  display: none;
+}
+
+#toplevel_page_leadin > ul a.visible {
+  display: inherit;
+}
+
+#toplevel_page_leadin a[href*='leadin_settings'],
+#toplevel_page_leadin a[href*='leadin_user_guide'] {
+  display: inherit;
+}
+
+#toplevel_page_leadin a[href='admin.php?page=leadin_pricing'] {
   color: #ff7a59 !important;
 }
 
-a[href='admin.php?page=leadin_pricing']:hover {
+#toplevel_page_leadin a[href='admin.php?page=leadin_pricing']:hover {
   color: #ffbcac !important;
 }
 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Product Feed Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-13 11:37+0200\n"
-"PO-Revision-Date: 2021-04-13 11:40+0200\n"
+"POT-Creation-Date: 2021-06-09 13:47+0200\n"
+"PO-Revision-Date: 2021-06-09 13:48+0200\n"
 "Last-Translator: webgo-admin <nobody@localhost>\n"
 "Language-Team: Deutsch\n"
 "Language: de_DE\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: wp-product-feed-manager.php\n"
@@ -138,7 +138,7 @@ msgstr ""
 "Fehler beim Löschen des Feeds. Sie haben nicht die richtigen Befugnisse, um "
 "die Datei zu löschen."
 
-#: includes/data/class-wppfm-ajax-file.php:200
+#: includes/data/class-wppfm-ajax-file.php:201
 #: includes/user-interface/class-wppfm-i18n-scripts.php:37
 msgid ""
 "Error writing the feed. You do not have the correct authorities to write the "
@@ -147,12 +147,12 @@ msgstr ""
 "Fehler beim Schreiben des Feeds. Sie haben nicht die richtigen "
 "Berechtigungen, um die Datei zu schreiben."
 
-#: includes/data/class-wppfm-ajax-file.php:385
+#: includes/data/class-wppfm-ajax-file.php:386
 msgid "Feed processing data cleared"
 msgstr "Feed-Verarbeitungsdaten gelöscht"
 
 #. translators: clearing the feed data failed
-#: includes/data/class-wppfm-ajax-file.php:389
+#: includes/data/class-wppfm-ajax-file.php:390
 msgid "Clearing failed!"
 msgstr "Löschen fehlgeschlagen!"
 
@@ -864,10 +864,8 @@ msgstr ""
 "bevor Sie diesen Feed neu generieren."
 
 #: includes/user-interface/class-wppfm-i18n-scripts.php:139
-#, fuzzy
-#| msgid "Cloning is not allowed"
 msgid "Channel not installed"
-msgstr "Das Klonen ist nicht erlaubt"
+msgstr "Kanal nicht installiert"
 
 #: includes/user-interface/class-wppfm-i18n-scripts.php:158
 msgid "First enter a file name for the backup file."
@@ -1017,7 +1015,7 @@ msgid "Status"
 msgstr "Status"
 
 #: includes/user-interface/class-wppfm-main-admin-page.php:87
-#: includes/user-interface/class-wppfm-options-page.php:166
+#: includes/user-interface/class-wppfm-options-page.php:167
 msgid "Actions"
 msgstr "Aktionen"
 
@@ -1233,11 +1231,21 @@ msgstr ""
 "Geben Sie kommagetrennte Schlüsselwörter und Platzhalter ein, um Attribute "
 "von Drittanbietern zu verwenden."
 
-#: includes/user-interface/class-wppfm-options-page.php:131
+#: includes/user-interface/class-wppfm-options-page.php:128
+msgid ""
+"Use specific wildcards. Do not use to broad wildcards like %_% because that "
+"will include default WooCommerce attributes and can sometimes result in "
+"incorrect feed outputs."
+msgstr ""
+"Verwenden Sie bestimmte Wildcards. Verwenden Sie keine breiten Wildcards wie "
+"%_%, da dies standardmäßige WooCommerce-Attribute enthält und manchmal zu "
+"falschen Feed-Ausgaben führen kann."
+
+#: includes/user-interface/class-wppfm-options-page.php:132
 msgid "Notice recipient"
 msgstr "Hinweis Empfänger"
 
-#: includes/user-interface/class-wppfm-options-page.php:136
+#: includes/user-interface/class-wppfm-options-page.php:137
 msgid ""
 "Enter the email address of the person you want to be notified when a feed "
 "fails during an automatic feed update."
@@ -1245,12 +1253,12 @@ msgstr ""
 "Geben Sie die e-Mail-Adresse der Person ein, die Sie benachrichtigen "
 "möchten, wenn ein Feed während eines automatischen Feed-Updates ausfällt."
 
-#: includes/user-interface/class-wppfm-options-page.php:140
-#: includes/user-interface/class-wppfm-options-page.php:143
+#: includes/user-interface/class-wppfm-options-page.php:141
+#: includes/user-interface/class-wppfm-options-page.php:144
 msgid "Clear feed process"
 msgstr "Feed-Prozess entblocken"
 
-#: includes/user-interface/class-wppfm-options-page.php:145
+#: includes/user-interface/class-wppfm-options-page.php:146
 msgid ""
 "Use this option when feeds get stuck processing - does not delete your "
 "current feeds or settings."
@@ -1258,15 +1266,15 @@ msgstr ""
 "Wählen Sie diese Option, wenn Feeds nicht verarbeitet werden können - Ihre "
 "aktuellen Feeds oder Einstellungen werden dabei NICHT gelöscht."
 
-#: includes/user-interface/class-wppfm-options-page.php:149
+#: includes/user-interface/class-wppfm-options-page.php:150
 msgid "Re-initialize"
 msgstr "Neuinitialisierung"
 
-#: includes/user-interface/class-wppfm-options-page.php:152
+#: includes/user-interface/class-wppfm-options-page.php:153
 msgid "Re-initiate plugin"
 msgstr "Plugin erneut starten"
 
-#: includes/user-interface/class-wppfm-options-page.php:154
+#: includes/user-interface/class-wppfm-options-page.php:155
 msgid ""
 "Updates the tables if required, re-initiates the cron events and resets the "
 "stored license - does not delete your current feeds or settings."
@@ -1275,27 +1283,27 @@ msgstr ""
 "setzt die gespeicherte Lizenz zurück - löscht nicht Ihre aktuellen Feeds "
 "oder Einstellungen."
 
-#: includes/user-interface/class-wppfm-options-page.php:158
+#: includes/user-interface/class-wppfm-options-page.php:159
 msgid "Backups"
 msgstr "Backups"
 
-#: includes/user-interface/class-wppfm-options-page.php:164
+#: includes/user-interface/class-wppfm-options-page.php:165
 msgid "File name"
 msgstr "Dateiname"
 
-#: includes/user-interface/class-wppfm-options-page.php:165
+#: includes/user-interface/class-wppfm-options-page.php:166
 msgid "Backup date"
 msgstr "Backup Datum"
 
-#: includes/user-interface/class-wppfm-options-page.php:171
+#: includes/user-interface/class-wppfm-options-page.php:172
 msgid "Add new backup"
 msgstr "Neues Backup hinzufügen"
 
-#: includes/user-interface/class-wppfm-options-page.php:176
+#: includes/user-interface/class-wppfm-options-page.php:177
 msgid "Backup current feeds"
 msgstr "Aktuelle Feeds sichern"
 
-#: includes/user-interface/class-wppfm-options-page.php:177
+#: includes/user-interface/class-wppfm-options-page.php:178
 msgid "Cancel backup"
 msgstr "Backup beenden"
 
@@ -1312,17 +1320,14 @@ msgstr ""
 "für Ihren Feed ein und wählen Sie einen Kanal aus."
 
 #: includes/user-interface/class-wppfm-product-feed-page.php:69
-#, fuzzy, php-format
-#| msgid ""
-#| "You first need to install a channel before you can add a feed. Open the "
-#| "Manage Channels page and install at least one channel."
+#, php-format
 msgid ""
 "This feed requires the \"%s\" channel to be installed. Please open the "
 "Manage Channels page and install this channel before opening this feed."
 msgstr ""
-"Sie müssen zuerst einen Kanal installieren, bevor Sie einen Feed hinzufügen "
-"können. Öffnen Sie die Seite Kanäle verwalten und installieren Sie "
-"mindestens einen Kanal."
+"Für diesen Feed muss der Kanal \"%s\" installiert werden. Öffnen Sie die "
+"Seite Kanäle verwalten, und installieren Sie diesen Kanal, bevor Sie diesen "
+"Feed öffnen."
 
 #: includes/user-interface/class-wppfm-product-feed-page.php:74
 msgid "Edit Product Feed"

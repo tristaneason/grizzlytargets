@@ -11,11 +11,12 @@ function porto_load_diamonds_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => 'Porto ' . __( 'Diamonds', 'porto-functionality' ),
-			'base'     => 'porto_diamonds',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'far fa-gem',
-			'params'   => array(
+			'name'        => 'Porto ' . __( 'Diamonds', 'porto-functionality' ),
+			'base'        => 'porto_diamonds',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'Insert image gallery with diamond style', 'porto-functionality' ),
+			'icon'        => 'far fa-gem',
+			'params'      => array(
 				array(
 					'type'       => 'checkbox',
 					'heading'    => __( 'Enable Lightbox', 'porto-functionality' ),

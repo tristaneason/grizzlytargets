@@ -193,7 +193,7 @@
 .wt_iew_sort_handle{ width:25px; cursor:move; }
 .wt-iew-mapping-tb tbody tr:hover td{ background:#f6f6f6; }
 .wt-iew-mapping-tb .wt_iew_mapping_checkbox_main{ margin-left:29px; }
-.wt-iew-mapping-tb .wt_iew_mapping_checkbox_sub{ margin-left:4px; margin-top:6px; }
+.wt-iew-mapping-tb .wt_iew_mapping_checkbox_sub{ margin-left:4px; margin-top:2px; }
 .wt_iew_sort_handle{ float:left; }
 .wt_iew_sort_handle img{ margin-top:5px; color:#ccc; height:15px; opacity:.8; }
 .wt_iew_checkbox{ display:inline-block; padding:0px 15px; }
@@ -311,6 +311,14 @@ border-top-right-radius: 5px; padding:5px; padding-left: 15px; line-height: 35px
 .wt_iew_mapping_field_selector li:hover{ background:#0073aa; color:#fff; }
 .wt_iew_mapping_field_selector_no_column{ float:left; width:100%; color:red; }
 .wt_iew_no_sample_mapping_data{ color:gray; display:inline-block !important; padding:0px !important; margin:0px !important; font-style:italic; }
+.wt_evaluation_expression_points{list-style: none;}
+.wt_evaluation_expression_points li::before {
+  content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+  color: red; /* Change the color */
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 1em; /* Also needed for space (tweak if needed) */
+}
 
 /* debug panel */
 .wt_iew_debug_panel{ position:fixed; top:30px; right:0px; background:#fff; padding:5px; padding-bottom:0px; box-shadow:2px 2px 2px #ccc; }
@@ -443,3 +451,356 @@ img.tips {
 .wt_iew_dropzone .dz-preview .dz-progress .dz-upload-info{display:inline-block;text-align:center;width:100%;}
 .wt_iew_dropzone.dz-started .dz-message{ display:none;}
 
+/* start marketing section */
+.wt-import-export-upsell-wrapper.market-box{
+    width:27%;
+    float: right;
+}
+.wrap .wt-import-export-upsell-wrapper .ier-premium-upgrade {
+    margin-top: 0px;
+    margin-right: 0px;
+}
+.wt-import-export-upsell-wrapper .ier-premium-upgrade{
+    background: #fff;
+    padding: 5px;  
+    margin-top: 30px;
+    margin-right: 15px;
+    box-shadow: 2px 2px 4px #ccc;
+}
+.wt-ier-sidebar-wrapper{
+    background: #FFFFFF;
+    border-radius: 5px;
+    max-width: 300px;
+}
+.wt-ier-sidebar-img{
+    margin: 0 auto 20px auto;
+    display: block;
+}
+.wt-ier-sidebar-title{
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 25px;
+    color: #000000;
+    margin-bottom: 20px;
+}
+.wt-ier-icon{
+    width: auto;
+    height: 100%;
+    max-height: 25px;
+    margin-right: 8px;
+}
+.wt-ier-sidebar-p{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 16px;
+    color: #000000;
+    margin: 0;
+}
+.wt-ier-green-btn{
+    background: #00CB95;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    padding: 15px 20px;
+    color: #FFFFFF;
+    display: inline-block;
+    text-decoration: none;
+    transition: all .2s ease;
+    border:none;
+    margin-top: 20px;
+}
+.wt-ier-green-btn:hover,.wt-ier-green-btn:focus{
+    color: #fff;
+    text-decoration: none;
+    opacity: .8;
+    transition: all .2s ease;
+    border:none;
+    transform: translateY(1px);
+}
+.wt-ier-wrapper{
+    background-color: #fff;
+    padding: 30px;
+}
+.wt-ier-box-wrapper{
+    background: #FFFFFF;
+    border: 1px solid #D2D2D2;
+    border-radius: 6px;
+    min-height: 100%;
+}
+.wt-ier-page-title{
+    font-style: normal;
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 30px;
+    color: #111111;
+    margin-bottom: 13px;
+    margin-top: 10px;
+}
+.wt-ier-subp{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 18px;
+    margin-bottom: 40px;
+    margin-top: 0;
+    color: #111111;
+}
+.wt-ier-plugin-name{
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 25px;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    margin-top: 12px;
+    color: #000000;
+}
+.wt-ier-p{
+    font-size: 14px;
+    line-height: 23px;
+    color: #445359;
+    margin-top: 15px;
+    margin-bottom: 18px;
+}
+.wt-ier-primary-btn{
+    background: #007CBA;
+    border:1px solid #007CBA;
+    color: #FFFFFF;
+}
+.wt-ier-secondary-btn{
+    color: #007CBA;
+    border:1px solid #007CBA;
+}
+.wt-ier-secondary-btn,.wt-ier-primary-btn{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    text-decoration: none;
+    padding:10px 12px;
+    border-radius: 5px;
+    text-align: center;
+    display: inline-block;
+    transition: all .2s ease;
+    margin-top: 18px;
+}
+.wt-ier-primary-btn:hover,.wt-ier-primary-btn:focus{
+    color:#fff;
+}
+.wt-ier-secondary-btn:hover,.wt-ier-primary-btn:hover,
+.wt-ier-secondary-btn:focus,.wt-ier-primary-btn:focus{
+    transform: translateY(1px);
+    transition: all .2s ease;
+}
+.wt-ier-btn-group{
+    justify-content: space-between!important;
+    margin: -8px;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+}
+.wt-ier-btn-group .wt-ier-btn{
+    margin: 8px;
+}
+.wt-ier-box-highlight{
+    box-shadow: 0px 0px 20px rgba(19, 109, 200, 0.3);
+}
+.wt-ier-center{
+    text-align: center;
+}
+.wt-ier-p-5{
+    padding:30px;
+}
+.wt-ier-p-4{
+    padding:20px;
+}
+.wt-ier-px-3{
+    padding-right:12px;
+    padding-left:12px;
+}
+.wt-ier-mb-4{
+    margin-bottom: 20px;
+}
+.wt-ier-mt-5{
+    margin-top: 30px;
+}
+.wt-ier-v-center{
+    -ms-flex-align: center;
+    align-items: center;
+}
+.wt-ier-row{
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    /*flex-wrap: wrap;*/
+    width:95%;
+    margin-left: -17px;
+}
+.wt-ier-col-12{
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+
+}
+.wt-ier-col-md-6,.wt-ier-col-12{
+    position: relative;
+    width: 100%;
+    padding:15px; 
+}
+.wt-ier-flex {
+    display: -ms-flexbox;
+    display: flex;
+}
+.wt-ier-modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    padding-top: 50px; 
+    padding-bottom: 50px; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 90%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.wt-ier-modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    border: 1px solid #888;
+    width: 78%;
+}
+.wt-ier-close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.wt-ier-close:hover,
+.wt-ier-close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+.wt-ier-pre-icon{
+    height: 15px;
+    margin-right: 9px;
+}
+.wt-ier-resposive-table {
+    width: 100%;
+    overflow-x: auto;
+}
+.wt-ier-table{
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+.wt-ier-table th, .wt-ier-table td{
+    padding: 18px 25px;
+}
+.wt-ier-table td{
+    border-top: 1px solid #E9E9E9;
+    border-right: 1px solid #E9E9E9;
+}
+.wt-ier-table th{
+    border-right: 1px solid #E9E9E9;
+}
+
+.wt-ier-top-tr th{
+    padding-bottom: 0; 
+}
+.wt-ier-table th{
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 22px;
+    color: #007CBA;
+    text-align: center;
+}
+.wt-ier-table tr td{
+    width:23%;
+    text-align: center;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+
+    color: #000000;
+}
+.wt-ier-table tr td p,.wt-ier-table tr td{
+    margin: 0;
+}
+.wt-ier-table tr td p {
+    margin-top: 5px!important;
+}
+.wt-ier-table tr td:first-child{
+    width:31%;
+}
+.wt-ier-table tr td:first-child{
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 18px;
+    color: #000000;
+}
+.wt-ier-table tr td:first-child,.wt-ier-table tr th:first-child,
+.wt-ier-table tr td:last-child,.wt-ier-table tr th:last-child{
+    border-right: none!important;
+}
+.wt-ier-table tr td:first-child,.wt-ier-table tr th:first-child{
+    background-color: #F7FAFE;
+    text-align: left!important;
+}
+.wt-ier-table tr td li{
+    text-align: left;
+    list-style: inside;
+}
+
+@media (min-width: 992px){
+    .wt-ier-col-lg-6{
+        -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    .wt-ier-col-lg-4{
+        -ms-flex: 0 0 33.333333%;
+        flex: 0 0 33.333333%;
+        max-width: 33.333333%;
+    }
+    .wt-ier-mb-lg-0{
+        margin-bottom: 0;
+    }
+    .wt-ier-suite{
+        background-image: url(../../assets/images/upgrade/suite-cover.svg);
+        background-position: right;
+        background-size: 50% 100%;
+        background-repeat: no-repeat;
+    }
+}
+@media (min-width: 768px){
+    .wt-ier-col-md-6{
+        -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    .wt-ier-mb-md-0{
+        margin-bottom: 0;
+    }
+    .wt-ier-border-md-right{
+        border-right: 1px solid #E8E8E8;
+    }
+
+}
+@media (min-width: 576px){
+    .wt-ier-d-sm-flex{
+        display: flex;
+    }
+}
+/* end marketing */

@@ -5,8 +5,8 @@
  * @link       https://makewebbetter.com/
  * @since      1.0.0
  *
- * @package    hubspot-for-woocommerce
- * @subpackage hubspot-for-woocommerce/includes
+ * @package    makewebbetter-hubspot-for-woocommerce
+ * @subpackage makewebbetter-hubspot-for-woocommerce/includes
  */
 
 /**
@@ -16,8 +16,8 @@
  * about contacts properties and there callback functions to
  * get value of that property.
  *
- * @package    hubspot-for-woocommerce
- * @subpackage hubspot-for-woocommerce/includes
+ * @package    makewebbetter-hubspot-for-woocommerce
+ * @subpackage makewebbetter-hubspot-for-woocommerce/includes
  */
 class HubWooPropertyCallbacks {
 

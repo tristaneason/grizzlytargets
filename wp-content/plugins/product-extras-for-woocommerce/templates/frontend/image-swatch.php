@@ -63,7 +63,7 @@ if( isset( $item['field_options'] ) ) {
 				// $option_percentage = floatval( $item['field_price'] );
 			}
 
-			if( ! empty( $option_price ) && apply_filters( 'pewc_show_option_prices', true, $item ) ) {
+			if( ! empty( $option_price ) && pewc_display_option_prices_product_page( $item ) ) {
 				$name .= apply_filters( 'pewc_option_price_separator', '+', $item ) . pewc_get_semi_formatted_raw_price( $option_price );
 				$name = apply_filters( 'pewc_option_name', $name, $item, $product, $option_price );
 			}
@@ -91,7 +91,7 @@ if( isset( $item['field_options'] ) ) {
 			}
 
 	    $radio = sprintf(
-	      '<div class="%s"><label for="%s"><input data-option-cost="%s" type="%s" name="%s[]" id="%s" class="%s" data-option-percentage="%s" value="%s" %s>%s<div class="pewc-radio-image-desc">%s</div></label></div>',
+	      '<div class="%s"><label for="%s"><input data-option-cost="%s" type="%s" name="%s[]" id="%s" class="%s" data-option-percentage="%s" value="%s" %s>%s<div class="pewc-radio-image-desc"><span>%s</span></div></label></div>',
 				join( ' ', $wrapper_classes ),
 	      esc_attr( $radio_id ),
 	      esc_attr( $option_price ),

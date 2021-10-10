@@ -1,7 +1,7 @@
 <?php
 
 add_filter( 'ph_fedex_change_currency_to_fedex_currency', 'ph_change_it_to_fedex_currency_value' , 10, 4 );
-add_filter( 'ph_fedex_change_currency_to_order_currency', 'ph_change_it_to_order_currency_value' , 10, 4 );
+add_filter( 'ph_fedex_change_currency_to_order_currency', 'ph_fedex_change_it_to_order_currency_value' , 10, 4 );
 
 
 if( ! function_exists('ph_change_it_to_fedex_currency_value') ) {
@@ -26,8 +26,8 @@ if( ! function_exists('ph_change_it_to_fedex_currency_value') ) {
 	}
 }
 
-if( ! function_exists('ph_change_it_to_order_currency_value') ) {
-	function ph_change_it_to_order_currency_value( $product_unit_price, $order_currency, $store_currency, $order ) {
+if( ! function_exists('ph_fedex_change_it_to_order_currency_value') ) {
+	function ph_fedex_change_it_to_order_currency_value( $product_unit_price, $order_currency, $store_currency, $order ) {
 
 		$order_meta = $order->get_meta_data();
 

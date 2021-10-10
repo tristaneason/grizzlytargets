@@ -9,7 +9,8 @@ if (!defined('ABSPATH')) {
 
 if (!class_exists("EnWooAddonsCarrierService")) {
 
-    class EnWooAddonsCarrierService extends EnWooAddonsQuoteSettings {
+    class EnWooAddonsCarrierService extends EnWooAddonsQuoteSettings
+    {
 
         public $always_auto_residential_accessorial;
         public $always_lift_gate_quote_accessorial;
@@ -22,7 +23,8 @@ if (!class_exists("EnWooAddonsCarrierService")) {
         public $plugin_id;
         public $en_addresses_enabled;
 
-        public function __construct() {
+        public function __construct()
+        {
 
             parent::__construct();
             add_filter('en_woo_addons_carrier_service_quotes_request', array($this, 'carrier_service_quotes_request'), 10, 2);
@@ -32,7 +34,8 @@ if (!class_exists("EnWooAddonsCarrierService")) {
          * set index autoResidentials for carrier request
          * @return array type
          */
-        public function auto_residential_enable() {
+        public function auto_residential_enable()
+        {
 
             $this->post_data['autoResidentials'] = '1';
         }
@@ -41,7 +44,8 @@ if (!class_exists("EnWooAddonsCarrierService")) {
          * set index liftGateWithAutoResidentials for carrier request
          * @return array type
          */
-        public function auto_resid_wd_lift_enable() {
+        public function auto_resid_wd_lift_enable()
+        {
 
             $this->post_data['liftGateWithAutoResidentials'] = '1';
         }
@@ -52,7 +56,8 @@ if (!class_exists("EnWooAddonsCarrierService")) {
          * @param string type $plugin_id
          * @return array type
          */
-        public function carrier_service_quotes_request($post_data, $plugin_id) {
+        public function carrier_service_quotes_request($post_data, $plugin_id)
+        {
 
             $this->post_data = $post_data;
             $this->plugin_id = $plugin_id;
@@ -66,23 +71,29 @@ if (!class_exists("EnWooAddonsCarrierService")) {
         }
 
         /**
-         * update carrier service for every carrier request 
+         * update carrier service for every carrier request
          * @return array type
          */
-        public function update_carrier_common() {
+        public function update_carrier_common()
+        {
+            $en_post_data = [];
             $EnWooAddonsGenrtRequestKey = new EnWooAddonsGenrtRequestKey();
             $this->post_data['requestKey'] = $EnWooAddonsGenrtRequestKey->en_woo_addons_genrt_request_key();
             $this->post_data['server_name'] = en_residential_get_domain();
-            $this->post_data['addressLine'] = (isset($_POST['s_address'])) ? $this->trim_string($_POST['s_address']) : $this->shipping_address;
-            $this->post_data['addressLine2'] = (isset($_POST['s_address_2'])) ? $this->trim_string($_POST['s_address_2']) : $this->shipping_address_2;
+            $en_post_data['addressLine'] = $this->post_data['addressLine'] = (isset($_POST['s_address'])) ? $this->trim_string($_POST['s_address']) : $this->shipping_address;
+            $en_post_data['addressLine2'] = $this->post_data['addressLine2'] = (isset($_POST['s_address_2'])) ? $this->trim_string($_POST['s_address_2']) : $this->shipping_address_2;
 
             if (!$this->en_addresses_enabled) {
                 $en_default_unconfirmed_address_types_to = get_option('en_default_unconfirmed_address_types_to');
-                $this->post_data['defaultRADAddressType'] = ($en_default_unconfirmed_address_types_to && strlen($en_default_unconfirmed_address_types_to) > 0) ? $en_default_unconfirmed_address_types_to : 'residential';
+                $en_post_data['defaultRADAddressType'] = $this->post_data['defaultRADAddressType'] = ($en_default_unconfirmed_address_types_to && strlen($en_default_unconfirmed_address_types_to) > 0) ? $en_default_unconfirmed_address_types_to : 'residential';
             }
-            
+
             if (!isset($this->post_data['receiverCountryCode'])) {
-                $this->post_data['receiverCountryCode'] = (isset($_POST['s_country'])) ? $this->trim_string($_POST['s_country']) : $this->shipping_country;
+                $en_post_data['receiverCountryCode'] = $this->post_data['receiverCountryCode'] = (isset($_POST['s_country'])) ? $this->trim_string($_POST['s_country']) : $this->shipping_country;
+            }
+
+            if ($this->plugin_id == 'cerasis_freights' && isset($this->post_data['receiverAddress'])) {
+                $this->post_data['receiverAddress'] = $this->post_data['receiverAddress'] + $en_post_data;
             }
 
             if ($this->plugin_id == "fedex_small") {
@@ -94,11 +105,12 @@ if (!class_exists("EnWooAddonsCarrierService")) {
          * update carrier service for autoResidentials & liftGateWithAutoResidentials
          * @return array type
          */
-        public function update_carrier_service() {
+        public function update_carrier_service()
+        {
 
             if ($this->rtrn_valid_option_val("option_1", $this->plugin_id) &&
-                    $this->rtrn_valid_fr_addon('addon_1', $this->plugin_id) &&
-                    $this->get_validate_street_address()) {
+                $this->rtrn_valid_fr_addon('addon_1', $this->plugin_id) &&
+                $this->get_validate_street_address()) {
 
                 $eniture_small_apps = [
                     'fedex_small' => ['residential_delivery' => 'on'],
@@ -127,7 +139,7 @@ if (!class_exists("EnWooAddonsCarrierService")) {
                     $this->auto_residential_enable();
                 }
                 $this->rtrn_valid_option_val("option_2", $this->plugin_id) && $this->rtrn_valid_fr_addon('addon_2', $this->plugin_id) ?
-                                $this->auto_resid_wd_lift_enable() : "";
+                    $this->auto_resid_wd_lift_enable() : "";
             }
 
             $this->update_carrier_common();

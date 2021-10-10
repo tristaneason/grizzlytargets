@@ -471,7 +471,7 @@ var wt_iew_basic_import=(function( $ ) {
 				}
 			}
 
-			if(this.current_step=='method_import' && !this.is_valid_file) /* method import page, then check file validation is done. */
+			if(this.current_step=='method_import') // && !this.is_valid_file) /* method import page, then check file validation is done. */
 			{
 				if(action_type=='step' && this.is_previous_step(action)) /* step action and previous step */
 				{
@@ -779,6 +779,7 @@ var wt_iew_basic_import=(function( $ ) {
 				this.to_import_title=$('[name="wt_iew_import_post_type"] option:selected').text();
 			}
 			$('.wt_iew_step_head_post_type_name').html(this.to_import_title);
+                        $('.wt-ier-green-btn').attr("href", wt_iew_basic_params.pro_plugins[this.to_import]);  
 			if(this.to_import_title.includes('User'))
 			$('#user-required-field-message').show();
 		},
@@ -869,6 +870,7 @@ var wt_iew_basic_import=(function( $ ) {
 				wt_iew_dropzone.init('wt_iew_local_file_dropzone');
                                 /* Auto populate template file. */
 				wt_iew_dropzone.auto_populate();
+                                wt_iew_basic_import.warn_on_refresh();
 			}
 			else if(step=='mapping') /* mapping page */ 
 			{
@@ -876,10 +878,11 @@ var wt_iew_basic_import=(function( $ ) {
 				this.mapping_box_accordian();
 				this.reg_mapping_field_bulk_action();
 				wt_iew_popover.Set();
+                                wt_iew_basic_import.warn_on_refresh();
 			}
 			else if(step=='advanced')
 			{	
-						
+				wt_iew_basic_import.warn_on_refresh();		
 			}
 
 			/* common events */
@@ -1040,7 +1043,13 @@ var wt_iew_basic_import=(function( $ ) {
 		is_object:function(obj)
 		{
 		    return obj !== undefined && obj !== null && obj.constructor == Object;
-		}
+		},
+                warn_on_refresh: function () {
+                    window.onbeforeunload = function (event)
+                    {
+                        return confirm("Changes that you made may not be saved.");
+                    };
+                }                
 	}
 
 	var mapping_field_editor=
@@ -1314,11 +1323,12 @@ var wt_iew_dropzone=
 			return false;
 		}
 		this.elm=jQuery("#"+elm_id);
-
+                var map_profile =jQuery('.wt-iew-import-template-sele').val();
 		var ajax_data={
 	            '_wpnonce': wt_iew_basic_params.nonces.main,
 	            'action': "iew_import_ajax_basic",
 	            'import_action': 'upload_import_file',
+                    'map_profile_id':map_profile,
 	            'data_type': 'json',
 	            'file_url': '',
 	       	};
@@ -1424,6 +1434,7 @@ var wt_iew_dropzone=
 			e.stopPropagation();
 
 			var dropzone_target=wt_iew_dropzone.elm.attr('wt_iew_dropzone_target');
+                        var mapping_profile =jQuery('.wt-iew-import-template-sele').val();
 			var dropzone_target_elm=jQuery(dropzone_target);
 			if(dropzone_target_elm.length>0)
 			{
@@ -1441,6 +1452,7 @@ var wt_iew_dropzone=
 		            		'_wpnonce': wt_iew_basic_params.nonces.main,
 				            'action': "iew_import_ajax_basic",
 				            'import_action': 'delete_import_file',
+                                            'mapping_profile': mapping_profile,
 				            'data_type': 'json',
 				            'file_url':file_url,
 				        },

@@ -11,6 +11,8 @@ table.wf-shipment-package-table{
 	border: 1px solid #ddd;
 	border-spacing: 0;
 	background-color: #f9f9f9;
+	overflow: scroll;
+	display: block;
 }
 
 table.wf-shipment-package-table th{
@@ -22,6 +24,48 @@ table.wf-shipment-package-table th{
 
 table.wf-shipment-package-table td{
 	background-color: #FFFFFF;
+}
+
+table.wf-shipment-calculate-cost-table{
+	margin: 0;
+	width: 100%;
+	border: 1px solid #ddd;
+	border-spacing: 0;
+	background-color: #f9f9f9;
+}
+
+table.wf-shipment-calculate-cost-table th{
+	font-size: 12px;
+	border-bottom: 1px solid;
+	text-align:left;
+	padding: 0 0 0 2px;
+}
+
+table.wf-shipment-calculate-cost-table td{
+	background-color: #FFFFFF;
+}
+
+table.ph-order-edit-options-table{
+	margin: 0;
+	width: 100%;
+	border: 1px solid #ddd;
+	border-spacing: 0;
+	background-color: #f9f9f9;
+}
+
+table.ph-order-edit-options-table th{
+	font-size: 12px;
+	border-bottom: 1px solid;
+	text-align:center;
+	padding: 0 0 0 2px;
+}
+
+table.ph-order-edit-options-table td{
+	background-color: #FFFFFF;
+	padding: 10px;
+	border: .1px solid #ddd;
+	border-collapse: collapse;
+	width:20%;
 }
 
 .wf-action-button{

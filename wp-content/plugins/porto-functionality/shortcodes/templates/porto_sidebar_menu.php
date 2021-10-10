@@ -34,9 +34,9 @@ if ( $title ) {
 }
 	$output .= '<div class="sidebar-menu-wrap">';
 
-	ob_start();
+$nav_menu_html_escaped = '';
 if ( $nav_menu ) {
-	$args = array(
+	$args                  = array(
 		'container'   => '',
 		'menu_class'  => 'sidebar-menu',
 		'before'      => '',
@@ -46,11 +46,14 @@ if ( $nav_menu ) {
 		'fallback_cb' => false,
 		'walker'      => new porto_sidebar_navwalker,
 		'menu'        => $nav_menu,
+		'echo'        => false,
 	);
-	wp_nav_menu( $args );
+	$nav_menu_html_escaped = wp_nav_menu( $args );
 }
-
-	$output .= str_replace( '&nbsp;', '', ob_get_clean() );
+if ( ! $nav_menu_html_escaped ) {
+	$nav_menu_html_escaped = esc_html__( 'Please select a valid menu to display.', 'porto-functionality' );
+}
+$output .= $nav_menu_html_escaped;
 
 	$output .= '</div>';
 

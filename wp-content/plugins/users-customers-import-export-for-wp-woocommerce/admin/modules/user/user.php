@@ -354,15 +354,20 @@ class Wt_Import_Export_For_Woo_basic_User {
         if ($this->module_base != $base) {
             return $fields;
         }  
-        $fields = array();
         /* altering help text of default fields */
+
+	$fields['limit']['label']=__('Total number of users to export'); 
+	$fields['limit']['help_text']=__('Exports specified number of users. e.g. Entering 500 with a skip count of 10 will export users from 11th to 510th position.');
+	$fields['offset']['label']=__('Skip first <i>n</i> users');
+	$fields['offset']['help_text']=__('Skips specified number of users from the beginning. e.g. Enter 10 to skip first 10 users from export.');
+
         
         $fields['email'] = array(
-            'label' => __('User Email'),
-            'placeholder' => __('All User'),
+            'label' => __('User email'),
+            'placeholder' => __('All users'),
             'field_name' => 'email',
             'sele_vals' => '',
-            'help_text' => __('Input the customer emails separated by comma to export information pertaining to only these customers.'),            
+            'help_text' => __('Input the user emails separated by comma to export information pertaining to only these users.'),            
             'validation_rule' => array('type'=>'text_arr')
         );        
         if(is_plugin_active('woocommerce/woocommerce.php'))
@@ -373,61 +378,38 @@ class Wt_Import_Export_For_Woo_basic_User {
         }
         
         $fields['roles'] = array(
-            'label' => __('User Roles'),
-            'placeholder' => __('All Roles'),
+            'label' => __('User role'),
+            'placeholder' => __('Any role'),
             'field_name' => 'roles',
             'sele_vals' => self::get_user_roles(),
-            'help_text' => __('Input specific roles to export information pertaining to all customers with the respective role/s.'),
+            'help_text' => __('Input specific roles to export information pertaining to all users with the respective role/s.'),
             'type' => 'multi_select',
             'css_class' => 'wc-enhanced-select',
             'validation_rule' => array('type'=>'text_arr')
         );
         
         $fields['date_from'] = array(
-            'label' => __('Customer Registration - From Date'),
-            'placeholder' => __('Date'),
+            'label' => __('From date'),
+            'placeholder' => __('Date from'),
             'field_name' => 'date_from',
             'sele_vals' => '',
-            'help_text' => __('Date on which the customer registered. Export customers registered on and after the specified date.'),
+            'help_text' => __('Date on which the user registered. Export users registered on and after the specified date.'),
             'type' => 'text',
             'css_class' => 'wt_iew_datepicker',
         );
         
         $fields['date_to'] = array(
-            'label' => __('Customer Registration - To Date'),
-            'placeholder' => __('Date'),
+            'label' => __('To date'),
+            'placeholder' => __('Date to'),
             'field_name' => 'date_to',
             'sele_vals' => '',
-            'help_text' => __('Export customers registered upto the specified date.'),
+            'help_text' => __('Export users registered upto the specified date.'),
             'type' => 'text',
             'css_class' => 'wt_iew_datepicker',
         );
         
-		$fields['limit'] = array(
-            'label' => __('Total number of users to export'),
-            'placeholder' => __('Unlimited'),
-            'field_name' => 'limit',
-            'help_text'=>__('Exports specified number of users. e.g. Entering 500 with a skip count of 10 will export users from 11th to 510th position.'),
-            'type' => 'number',
-            'value'=>'',
-            'attr'=>array('step'=>1,'min_val'=>0),
-            'validation_rule' => array('type'=>'absint')
-        ); 
-        
-        $fields['offset'] = array(            
-            'label' => __('Skip first <i>n</i> users'),
-            'placeholder' => __('0'),
-            'field_name' => 'offset',
-            'help_text'=>__('Skips specified number of users from the beginning. e.g. Enter 10 to skip first 10 users from export.'),
-            'type' => 'number', 
-            'value'=>0,
-            'attr'=>array('step'=>1,'min_val'=>0),
-            'validation_rule' => array('type'=>'absint')
-        );
-                                     
-        
         $fields['sort_columns'] = array(
-                'label' => __('Sort Columns'),
+                'label' => __('Sort columns'),
                 'placeholder' => __('user_login'),
                 'field_name' => 'sort_columns',
                 'sele_vals' => self::get_user_sort_columns(),
@@ -438,7 +420,7 @@ class Wt_Import_Export_For_Woo_basic_User {
             );
 
         $fields['order_by'] = array(
-            'label' => __('Sort By'),
+            'label' => __('Sort by'),
             'placeholder' => __('ASC'),
             'field_name' => 'order_by',
             'sele_vals' => array('ASC' => 'Ascending', 'DESC' => 'Descending'),
@@ -521,7 +503,21 @@ class Wt_Import_Export_For_Woo_basic_User {
             ),
             'value' => '1',
             'field_name' => 'use_same_password',
-            'help_text' => __("Choose 'Yes' to migrate user passwords as is. Option 'No' will encrypt the password; use this option particularly while using a plain text(unencrypted) password."),
+            'help_text' => __("WordPress encrypts passwords and stores the hashed value in database."),
+            'help_text_conditional'=>array(
+                array(
+                    'help_text'=> __('Choose ‘Yes’ to import hashed passwords(that were exported from another WordPress install) as is.'),
+                    'condition'=>array(
+                        array('field'=>'wt_iew_use_same_password', 'value'=>'1')
+                    )
+                ),
+                array(
+                    'help_text'=> __('Choose ‘No’ to import a plaintext password.'),
+                    'condition'=>array(
+                        array('field'=>'wt_iew_use_same_password', 'value'=>'0')
+                    )
+                )
+            ),
         );
 
         
@@ -534,6 +530,7 @@ class Wt_Import_Export_For_Woo_basic_User {
     public function get_item_by_id($id) {
         $post['edit_url']=get_edit_user_link($id);
         $user_info = get_userdata($id);
+        if($user_info)
         $post['title'] = $user_info->user_login;        
         return $post; 
     }

@@ -17,20 +17,20 @@ if( isset( $_GET['do_export'] ) ) {
 
 function pewc_register_export_page() {
 	add_submenu_page(
-		'edit.php?post_type=pewc_product_extra',
-		__( 'Export', 'pewc' ),
-		__( 'Export', 'pewc' ),
+		'pewc_home',
+		__( 'Export Orders', 'pewc' ),
+		__( 'Export Orders', 'pewc' ),
 		'manage_options',
 		'export-product-extras',
 		'pewc_export_page_callback'
 	);
 }
-add_action( 'admin_menu', 'pewc_register_export_page', 99 );
+add_action( 'admin_menu', 'pewc_register_export_page', 199 );
 
 function pewc_export_page_callback() { ?>
 	<div class="wrap">
-		<?php printf( '<h1>%s</h2>', __( 'Export Product Add-Ons', 'pewc' ) ); ?>
-		<p><?php _e( 'Click the Export button to export all your Product Add-Ons to a csv file which you can then open with Excel or other spreadsheet software.', 'pewc' ); ?></p>
+		<?php printf( '<h1>%s</h2>', __( 'Export Product Add-Ons by Order', 'pewc' ) ); ?>
+		<p><?php _e( 'Click the Export button to export all your Product Add-Ons from orders to a csv file which you can then open with Excel or other spreadsheet software.', 'pewc' ); ?></p>
 		<p class="submit">
 			<a href="<?php echo admin_url( 'admin.php?page=export-product-extras&do_export=true' ); ?>" id="export_product-extras" class="button button-primary"><?php _e( 'Export', 'pewc' ); ?></a>
 		</p>

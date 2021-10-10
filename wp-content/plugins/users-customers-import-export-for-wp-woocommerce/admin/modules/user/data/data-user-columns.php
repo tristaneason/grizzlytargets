@@ -33,6 +33,8 @@ $columns['show_admin_bar_front'] = 'show_admin_bar_front';
 $columns['locale'] = 'locale';
 $columns[$wpdb->prefix.'user_level'] = $wpdb->prefix.'user_level';
 $columns['dismissed_wp_pointers'] = 'dismissed_wp_pointers';
+$columns['show_welcome_panel'] = 'show_welcome_panel';
+$columns['session_tokens'] = 'session_tokens';
 $columns['last_update'] = 'last_update';
 
 
@@ -41,26 +43,27 @@ if (!function_exists( 'is_plugin_active' ) )
 
 if( is_plugin_active( 'woocommerce/woocommerce.php' ) ):
     
-    $columns['billing_first_name'] = 'billing_first_name';
-    $columns['billing_last_name'] = 'billing_last_name';
-    $columns['billing_company'] = 'billing_company';
-    $columns['billing_email'] = 'billing_email';
-    $columns['billing_phone'] = 'billing_phone';
-    $columns['billing_address_1'] = 'billing_address_1';
-    $columns['billing_address_2'] = 'billing_address_2';
-    $columns['billing_postcode'] = 'billing_postcode';
-    $columns['billing_city'] = 'billing_city';
-    $columns['billing_state'] = 'billing_state';
-    $columns['billing_country'] = 'billing_country';
-    $columns['shipping_first_name'] = 'shipping_first_name';
-    $columns['shipping_last_name'] = 'shipping_last_name';
-    $columns['shipping_company'] = 'shipping_company';
-    $columns['shipping_address_1'] = 'shipping_address_1';
-    $columns['shipping_address_2'] = 'shipping_address_2';
-    $columns['shipping_postcode'] = 'shipping_postcode';
-    $columns['shipping_city'] = 'shipping_city';
-    $columns['shipping_state'] = 'shipping_state';
-    $columns['shipping_country'] = 'shipping_country';
+    $columns['billing_first_name'] = 'Billing first name';
+    $columns['billing_last_name'] = 'Billing last name';
+    $columns['billing_company'] = 'Billing company';
+    $columns['billing_email'] = 'Billing email';
+    $columns['billing_phone'] = 'Billing phone';
+    $columns['billing_address_1'] = 'Billing address 1';
+    $columns['billing_address_2'] = 'Billing address 2';
+    $columns['billing_postcode'] = 'Billing postcode';
+    $columns['billing_city'] = 'Billing city';
+    $columns['billing_state'] = 'Billing state';
+    $columns['billing_country'] = 'Billing country';
+    $columns['shipping_first_name'] = 'Shipping first name';
+    $columns['shipping_last_name'] = 'Shipping last name';
+    $columns['shipping_company'] = 'Shipping company';
+    $columns['shipping_phone'] = 'Shipping phone';
+    $columns['shipping_address_1'] = 'Shipping address 1';
+    $columns['shipping_address_2'] = 'Shipping address 2';
+    $columns['shipping_postcode'] = 'Shipping postcode';
+    $columns['shipping_city'] = 'Shipping city';
+    $columns['shipping_state'] = 'Shipping state';
+    $columns['shipping_country'] = 'Shipping country';
     
 endif;
 

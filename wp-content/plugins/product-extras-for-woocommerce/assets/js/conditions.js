@@ -14,9 +14,11 @@
 				$( '.pewc-calculation-trigger input' ).on( 'change input keyup paste', this.trigger_calculation );
 
 				if( pewc_vars.conditions_timer > 0 ) {
+					$( '.pewc-field-triggers-condition' ).on( 'pewc_update_select_box', this.trigger_field_condition_check );
 					$( '.pewc-field-triggers-condition input' ).on( 'change input keyup paste', this.trigger_field_condition_check );
 					$( '.pewc-field-triggers-condition select' ).on( 'update change', this.trigger_field_condition_check );
-					$( '.pewc-calculation-value' ).on( 'calculation_field_updated', this.trigger_field_condition_check );
+					$( '.pewc-field-triggers-condition .pewc-calculation-value' ).on( 'calculation_field_updated', this.trigger_field_condition_check );
+					// $( 'body' ).on( 'pewc_update_select_box', this.trigger_field_condition_check );
 					$( '.qty' ).on( 'change input keyup paste', this.trigger_quantity_condition_check );
 					$( 'body' ).on( 'pewc_reset_field_condition', this.trigger_field_reset_condition_check );
 					if( typeof pewc_cost_triggers !== 'undefined' && pewc_cost_triggers.length > 0 ) {
@@ -85,6 +87,10 @@
 					pewc_conditions.assign_group_classes( conditions_obtain, action, groups[g] );
 				}
 
+				if( pewc_vars.reset_fields == 'yes' ) {
+					pewc_conditions.reset_fields();
+				}
+
 			},
 
 			trigger_field_condition_check: function() {
@@ -92,8 +98,8 @@
 				var field = $( this ).closest( '.pewc-item' );
 				var field_value = pewc_conditions.get_field_value( $( field ).attr( 'data-field-id' ), $( field ).attr( 'data-field-type' ) );
 				var triggers_for = JSON.parse( $( field ).attr( 'data-triggers-for' ) );
-				// Iterate through each field that is conditional on the updated field
 
+				// Iterate through each field that is conditional on the updated field
 				for( var g in triggers_for ) {
 					conditions_obtain = pewc_conditions.check_field_conditions( triggers_for[g], field_value );
 					var action = $( '.pewc-field-' + triggers_for[g] ).attr( 'data-field-conditions-action' );
@@ -103,6 +109,7 @@
 				if( pewc_vars.reset_fields == 'yes' ) {
 					pewc_conditions.reset_fields();
 				}
+
 			},
 
 			// Iterate through fields that have had their values reset
@@ -173,6 +180,9 @@
 				}
 				for( var i in conditions ) {
 					var condition = conditions[i];
+					if( ! condition.field_type ) {
+						condition.field_type = $( '.' + condition.field ).attr( 'data-field-type' );
+					}
 					var value = pewc_conditions.get_field_value( $( '.' + condition.field ).attr( 'data-field-id' ), condition.field_type );
 					var meets_condition = this.field_meets_condition( value, condition.rule, condition.value );
 					if( meets_condition && match =='any' ) {
@@ -211,6 +221,7 @@
 
 			// Get the value of the specified field
 			get_field_value: function( field_id, field_type ) {
+
 				var field_wrapper = $( '.' + field_id.replace( 'field', 'group' ) );
 				var input_fields = ['text','number'];
 				if( input_fields.includes( field_type ) ) {
@@ -219,21 +230,21 @@
 					return $( '.pewc-field-' + field_id + ' select' ).val();
 				} else if( field_type == 'checkbox_group' ) {
 					var field_value = [];
-					$( field_wrapper ).find( 'input:checked' ).each( function() {
+					$( '.pewc-field-' + field_id ).find( 'input:checked' ).each( function() {
 						field_value.push( $( this ).val() );
 					});
 					return field_value;
 				} else if( field_type == 'products' ) {
 					var field_value = [];
-					$( field_wrapper ).find( 'input:checked' ).each( function() {
-						field_value.push( $( this ).val() );
+					$( '.pewc-field-' + field_id ).find( 'input:checked' ).each( function() {
+						field_value.push( Number( $( this ).val() ) );
 					});
 					return field_value;
 				} else if( field_type == 'image_swatch' ) {
-					if( $( field_wrapper ).hasClass( 'pewc-item-image-swatch-checkbox' ) ) {
+					if( $( '.pewc-field-' + field_id ).hasClass( 'pewc-item-image-swatch-checkbox' ) ) {
 						// Array
 						var field_value = [];
-						$( field_wrapper ).find( 'input:checked' ).each( function() {
+						$( '.pewc-field-' + field_id ).find( 'input:checked' ).each( function() {
 							field_value.push( $( this ).val() );
 						});
 						return field_value;
@@ -241,7 +252,7 @@
 						return $( '.pewc-field-' + field_id + ' input:radio:checked' ).val();
 					}
 				} else if( field_type == 'checkbox' ) {
-					if( $( '#' + field_id ).prop( 'checked' ) ) {
+					if( $( '.pewc-field-' + field_id ).find( 'input' ).prop( 'checked' ) ) {
 						return '__checked__';
 					}
 					return false;
@@ -261,7 +272,7 @@
 
 			field_meets_condition: function( value, rule, required_value ) {
 
-				if( rule == 'is' || rule == 'cost-equals' ) {
+				if( rule == 'is') {
 					return value == required_value;
 				} else if( rule == 'is-not' ) {
 					return value != required_value;
@@ -269,14 +280,16 @@
 					return value.includes( required_value );
 				} else if( rule == 'does-not-contain' ) {
 					return ! value.includes( required_value );
+				} else if ( rule == 'cost-equals' ) {
+					return parseFloat(value) == parseFloat(required_value);
 				} else if( rule == 'greater-than' || rule == 'cost-greater' ) {
-					return value > required_value;
+					return parseFloat(value) > parseFloat(required_value);
 				} else if( rule == 'greater-than-equals' ) {
-					return value >= required_value;
+					return parseFloat(value) >= parseFloat(required_value);
 				} else if( rule == 'less-than' || rule == 'cost-less' ) {
-					return value < required_value;
+					return parseFloat(value) < parseFloat(required_value);
 				} else if( rule == 'less-than-equals' ) {
-					return value <= required_value;
+					return parseFloat(value) <= parseFloat(required_value);
 				}
 
 			},
@@ -287,17 +300,21 @@
 					if( action == 'show' ) {
 						$( '#pewc-group-' + group_id ).removeClass( 'pewc-group-hidden' );
 						$( '#pewc-tab-' + group_id ).removeClass( 'pewc-group-hidden' );
+						$( '#pewc-group-' + group_id ).removeClass( 'pewc-reset-group' );
+						$( '#pewc-tab-' + group_id ).removeClass( 'pewc-reset-group' );
 					} else {
-						$( '#pewc-group-' + group_id ).addClass( 'pewc-group-hidden' );
-						$( '#pewc-tab-' + group_id ).addClass( 'pewc-group-hidden' );
+						$( '#pewc-group-' + group_id ).addClass( 'pewc-group-hidden pewc-reset-group' );
+						$( '#pewc-tab-' + group_id ).addClass( 'pewc-group-hidden pewc-reset-group' );
 					}
 				} else {
 					if( action == 'show' ) {
-						$( '#pewc-group-' + group_id ).addClass( 'pewc-group-hidden' );
-						$( '#pewc-tab-' + group_id ).addClass( 'pewc-group-hidden' );
+						$( '#pewc-group-' + group_id ).addClass( 'pewc-group-hidden pewc-reset-group' );
+						$( '#pewc-tab-' + group_id ).addClass( 'pewc-group-hidden pewc-reset-group' );
 					} else {
 						$( '#pewc-group-' + group_id ).removeClass( 'pewc-group-hidden' );
 						$( '#pewc-tab-' + group_id ).removeClass( 'pewc-group-hidden' );
+						$( '#pewc-group-' + group_id ).removeClass( 'pewc-reset-group' );
+						$( '#pewc-tab-' + group_id ).removeClass( 'pewc-reset-group' );
 					}
 				}
 
@@ -327,11 +344,26 @@
 
 			reset_fields: function() {
 
+				if( $( '.pewc-reset-me' ).length < 1 && $( '.pewc-reset-group' ).length < 1 ) {
+					return;
+				}
+
 				$( '.pewc-reset-me' ).each( function() {
 
 					var field = $( this );
 					pewc_conditions.reset_field_value( field );
 					$( field ).removeClass( 'pewc-reset-me' ).addClass( 'pewc-reset' );
+
+				});
+
+				$( '.pewc-reset-group' ).each( function() {
+
+					$( this ).find( '.pewc-item' ).each( function() {
+
+						var field = $( this );
+						pewc_conditions.reset_field_value( field );
+
+					});
 
 				});
 
@@ -343,8 +375,9 @@
 				var inputs = ['date', 'name_price', 'number', 'text', 'textarea'];
 				var checks = ['checkbox', 'checkbox_group', 'radio'];
 				var field_type = $( field ).attr( 'data-field-type' );
+				var new_value = $( field ).attr( 'data-default-value' );
 				if( inputs.includes( field_type ) ) {
-					$( field ).find( '.pewc-form-field' ).val( '' );
+					$( field ).find( '.pewc-form-field' ).val( new_value );
 				} else if( field_type == 'image_swatch' ) {
 					$( field ).find( 'input' ).prop( 'checked', false );
 					$( field ).find( '.pewc-radio-image-wrapper, .pewc-checkbox-image-wrapper' ).removeClass( 'checked' );
@@ -354,8 +387,32 @@
 					$( field ).find( '.pewc-radio-image-wrapper, .pewc-checkbox-image-wrapper' );
 				} else if( checks.includes( field_type ) ) {
 					$( field ).find( 'input' ).prop( 'checked', false );
+					$( '#' + $( field ).attr( 'data-id' ) + '_' + new_value ).prop( 'checked', true );
 				} else if( field_type == 'select' ) {
-					$( field ).find( '.pewc-form-field' ).prop( 'selectedIndex', 0 );
+					if( new_value ) {
+						$( field ).find( '.pewc-form-field' ).val( new_value );
+					} else {
+						$( field ).find( '.pewc-form-field' ).prop( 'selectedIndex', 0 );
+					}
+				} else if( field_type == 'calculation' ) {
+
+					$( field ).attr( 'data-price', 0 ).attr( 'data-field-price', 0 );
+					var action = $( field ).find( '.pewc-action' ).val();
+					if( pewc_vars.conditions_timer > 0 ) {
+						if( action == 'price' ) {
+							$( '#pewc_calc_set_price' ).val( 0 );
+							$( field ).find( '.pewc-calculation-value' ).val( 0 ).trigger( 'change' );
+						} else {
+							$( field ).find( '.pewc-calculation-value' ).val( 0 );
+						}
+					} else {
+						// This is an older method with some performance issues
+						$( field ).find( '.pewc-calculation-value' ).val( 0 ).trigger( 'change' );
+						if( action == 'price' ) {
+							$( '#pewc_calc_set_price' ).val( 0 );
+						}
+					}
+
 				}
 
 				$( 'body' ).trigger( 'pewc_reset_field_condition' );

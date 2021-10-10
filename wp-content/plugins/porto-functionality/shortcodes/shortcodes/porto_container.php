@@ -14,6 +14,7 @@ function porto_load_container_shortcode() {
 			'name'         => 'Porto ' . __( 'Container', 'porto-functionality' ),
 			'base'         => 'porto_container',
 			'category'     => __( 'Porto', 'porto-functionality' ),
+			'description'  => __( 'Contain your sections and rows', 'porto-functionality' ),
 			'icon'         => 'fas fa-arrows-alt-h',
 			'is_container' => true,
 			'js_view'      => 'VcColumnView',

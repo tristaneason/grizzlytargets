@@ -36,7 +36,7 @@ function porto_load_shortcode_products_filter() {
 			'description' => __( 'Display a list of select boxes to filter products by category, price or attributes.', 'porto-functionality' ),
 			'params'      => array(
 				array(
-					'type'        => 'checkbox',
+					'type'        => 'porto_multiselect',
 					'heading'     => __( 'Filter Areas', 'porto-functionality' ),
 					'param_name'  => 'filter_areas',
 					'value'       => array_merge(
@@ -46,6 +46,7 @@ function porto_load_shortcode_products_filter() {
 						),
 						$filter_areas
 					),
+					'std'         => '',
 					'admin_label' => true,
 				),
 				array(

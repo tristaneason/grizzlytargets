@@ -36,7 +36,7 @@ if( ! class_exists( 'PEWC_Product_Extra_Post_Type' ) ) {
 		public function enqueue_scripts( $hook ) {
 			global $post;
 			$is_post_type = ( isset( $post->post_type ) && ( $post->post_type == 'product' || $post->post_type == 'pewc_product_extra' || $post->post_type == 'pewc_group'  || $post->post_type == 'pewc_field' || $post->post_type == 'shop_order' ) ) ? true : false;
-			if( $hook == 'pewc_product_extra_page_global' || $is_post_type || ( isset( $_GET['tab'] ) && $_GET['tab'] == 'pewc' ) ) {
+			if( strpos( $hook, 'page_global' ) !== false || $hook == 'pewc_product_extra_page_global' || $hook == 'toplevel_page_pewc_home' || $is_post_type || ( isset( $_GET['tab'] ) && $_GET['tab'] == 'pewc' ) ) {
 				$has_migrated = pewc_has_migrated();
 				if( ! $has_migrated ) {
 					$admin_js_file = 'admin-pewc.js';
@@ -55,7 +55,8 @@ if( ! class_exists( 'PEWC_Product_Extra_Post_Type' ) ) {
 					'condition_continue' 	=> __( 'This field is used in a condition. Changing its field type may affect the condition. Continue?', 'pewc' ),
 					'copy_label'					=> __( 'copy', 'pewc' ),
 					'select_text'					=> __( ' -- Select a field -- ', 'pewc' ),
-					'load_addons_ajax'		=> pewc_enable_ajax_load_addons()
+					'load_addons_ajax'		=> pewc_enable_ajax_load_addons(),
+					'enable_numeric_options'		=> apply_filters( 'pewc_enable_numeric_options', false )
 				);
 				if( class_exists( 'WC' ) ) {
 					$params['placeholder_src'] = wc_placeholder_img_src();
@@ -66,11 +67,6 @@ if( ! class_exists( 'PEWC_Product_Extra_Post_Type' ) ) {
 					'pewc_obj',
 					$params
 				);
-				// wp_localize_script(
-				// 	'pewc-admin-fields',
-				// 	'pewc_obj',
-				// 	$params
-				// );
 
 				wp_enqueue_style( 'pewc-dropzone-basic', trailingslashit( PEWC_PLUGIN_URL ) . 'assets/css/basic.min.css', array(), $version );
 				wp_enqueue_style( 'pewc-dropzone', trailingslashit( PEWC_PLUGIN_URL ) . 'assets/css/dropzone.min.css', array(), $version );
@@ -110,13 +106,13 @@ if( ! class_exists( 'PEWC_Product_Extra_Post_Type' ) ) {
 				'capabilities'								=> array(
 					'create_posts'							=> 'do_not_allow'
 				),
-				'menu_position'								=> apply_filters( 'pewc_menu_position', 56 ),
-				'menu_icon'										=> 'dashicons-plus-alt',
 				'map_meta_cap'								=> true,
 				'publicly_queryable'					=> false,
 				'exclude_from_search'					=> true,
 				'hierarchical'								=> false,
-				'show_in_nav_menus'						=> true,
+				'show_in_menu'								=> 'pewc_home',
+				'menu_position'								=> 200,
+				// 'show_in_nav_menus'						=> true,
 				'rewrite'											=> false,
 				'query_var'										=> false,
 				'supports'										=> array( '' ),
@@ -164,7 +160,7 @@ if( ! class_exists( 'PEWC_Product_Extra_Post_Type' ) ) {
 				$group_args['show_ui'] = true;
 				$group_args['publicly_queryable'] = false;
 				$group_args['exclude_from_search'] = true;
-				$group_args['show_in_menu'] = 'edit.php?post_type=pewc_product_extra';
+				$group_args['show_in_menu'] = 'pewc_home';
 				$group_args['supports'] = array( 'title', 'page-attributes' );
 			}
 
@@ -859,6 +855,8 @@ if( ! class_exists( 'PEWC_Product_Extra_Post_Type' ) ) {
 					// Delete the conditional rules transient
 					delete_transient( 'pewc_rules_transient_pewc_group_' . $group_id . '_' . $field_id );
 
+					$all_params = array( 'field_id' => $field_id );
+
 					// Save each parameter as post meta
 					foreach( $params as $param ) {
 
@@ -870,6 +868,7 @@ if( ! class_exists( 'PEWC_Product_Extra_Post_Type' ) ) {
 
 							// Need to sanitise this
 							update_post_meta( $field_id, $param, $value[$param] );
+							$all_params[$param] = $value[$param];
 
 						} else {
 
@@ -878,6 +877,11 @@ if( ! class_exists( 'PEWC_Product_Extra_Post_Type' ) ) {
 						}
 
 					}
+
+					// Filter any values here just before they're saved
+					$all_params = apply_filters( 'pewc_before_update_field_all_params', $all_params, $field_id );
+
+					update_post_meta( $field_id, 'all_params', $all_params );
 
 					delete_transient( 'pewc_item_object_' . $field_id );
 

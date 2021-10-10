@@ -66,13 +66,26 @@ echo '<table class="pewc-summary-panel-table">';
 								$price = '';
 							}
 
+							$classes = array(
+								'pewc-summary-panel-price'
+							);
+
+							if( ! pewc_display_option_prices_product_page( $field ) ) {
+								$classes[] = 'pewc-hide-option-price';
+							}
+
+							if( ! pewc_display_field_prices_product_page( $field ) ) {
+								$classes[] = 'pewc-hide-field-price';
+							}
+
 							printf(
-								'<tr id="pewc-summary-row-%s" class="%s"><td class="pewc-summary-panel-label"><span class="pewc-summary-panel-product-name">%s</span><span class="pewc-summary-panel-separator">%s</span><span class="pewc-summary-panel-product-value">%s</span></td><td class="pewc-summary-panel-price">%s</td></tr>',
+								'<tr id="pewc-summary-row-%s" class="%s"><td class="pewc-summary-panel-label"><span class="pewc-summary-panel-product-name">%s</span><span class="pewc-summary-panel-separator">%s</span><span class="pewc-summary-panel-product-value">%s</span></td><td class="%s">%s</td></tr>',
 								esc_attr( $field_id ),
 								join( ' ', $row_class ),
 								$field['label'],
 								apply_filters( 'pewc_summary_panel_separator', ' - ', $field_id ),
 								$value,
+								join( ' ', $classes ),
 								$price
 							);
 

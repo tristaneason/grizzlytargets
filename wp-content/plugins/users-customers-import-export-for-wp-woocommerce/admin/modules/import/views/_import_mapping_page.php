@@ -18,9 +18,10 @@ if (!defined('ABSPATH')) {
 		
 		<label><?php _e('Expression');?></label>
 		<p class="wt_iew_mapping_field_editor_info">
-			<?php _e('Any of the operators +*/-()&@ or string constants can be used along with the attributes to manipulate the respective value.'); ?>
-			<br />
-			<?php echo sprintf(__('Enclose the operations within square brackets. e.g. if you want to increase the stock quantity of %sall imported products%s by 5 units during import simply use [{_stock}+5].'), '<b>', '</b>');?>	
+			<ul class="wt_evaluation_expression_points">
+				<li><?php _e('Append operators like + * / - () & @ or string constants along with the column names to update the values on import.'); ?></li>
+				<li><?php echo sprintf(__('Ensure to enclose the expressions in square brackets. E.g. To increase the stock quantity of %sall imported products%s by 5 units, input [{_stock}+5] in the stock column.'), '<b>', '</b>');?></li>	
+			</ul>
 		</p>
 		<p class="wt_iew_mapping_field_editor_er"></p>
 		<div class="wt_iew_mapping_field_editor_box">

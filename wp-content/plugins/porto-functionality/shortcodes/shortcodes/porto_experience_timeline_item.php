@@ -8,12 +8,13 @@ function porto_load_experience_timeline_item_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => __( 'Experience Timeline Item', 'porto-functionality' ),
-			'base'     => 'porto_experience_timeline_item',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'fas fa-list-ul',
-			'as_child' => array( 'only' => 'porto_experience_timeline_container' ),
-			'params'   => array(
+			'name'        => __( 'Experience Timeline Item', 'porto-functionality' ),
+			'base'        => 'porto_experience_timeline_item',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'Show events or posts by timeline layouts', 'porto-functionality' ),
+			'icon'        => 'fas fa-list-ul',
+			'as_child'    => array( 'only' => 'porto_experience_timeline_container' ),
+			'params'      => array(
 				array(
 					'type'       => 'textfield',
 					'heading'    => __( 'From', 'porto-functionality' ),

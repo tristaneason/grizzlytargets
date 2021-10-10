@@ -19,7 +19,7 @@ function pewc_add_global_settings() {
 	$has_migrated = pewc_has_migrated();
 	$enable_groups_as_post_types = pewc_enable_groups_as_post_types();
 
-	$page_slug = 'edit.php?post_type=pewc_product_extra';
+	$page_slug = 'pewc_home';
 	if( $enable_groups_as_post_types ) {
 		$page_slug = 'edit.php?post_type=pewc_group';
 	}
@@ -34,7 +34,7 @@ function pewc_add_global_settings() {
 	);
 
 }
-add_action( 'admin_menu', 'pewc_add_global_settings' );
+add_action( 'admin_menu', 'pewc_add_global_settings', 1 );
 
 /**
  * Print the settings page
@@ -186,10 +186,9 @@ function pewc_do_global_settings_page() {
  */
 function pewc_global_after_group_title( $group_key, $group, $post_id, $import ) {
 	$screen = get_current_screen();
-	if( ! $screen || $screen->id != 'pewc_product_extra_page_global' ) {
-		return;
+	if( $screen && ( $screen->id == 'pewc_product_extra_page_global' || $screen->id == 'product-add-ons_page_global' ) ) {
+		include( PEWC_DIRNAME . '/templates/admin/global-rule.php' );
 	}
-	include( PEWC_DIRNAME . '/templates/admin/global-rule.php' );
 }
 add_action( 'pewc_after_group_title', 'pewc_global_after_group_title', 10, 4 );
 
@@ -199,10 +198,9 @@ add_action( 'pewc_after_group_title', 'pewc_global_after_group_title', 10, 4 );
  */
 function pewc_global_after_new_group_title( $group_key, $group, $post_id, $import ) {
 	$screen = get_current_screen();
-	if( $screen->id != 'pewc_product_extra_page_global' ) {
-		return;
+	if( $screen && ( $screen->id == 'pewc_product_extra_page_global' || $screen->id == 'product-add-ons_page_global' ) ) {
+		include( PEWC_DIRNAME . '/templates/admin/new-global-rule.php' );
 	}
-	include( PEWC_DIRNAME . '/templates/admin/new-global-rule.php' );
 }
 add_action( 'pewc_after_new_group_title', 'pewc_global_after_new_group_title', 10, 4 );
 

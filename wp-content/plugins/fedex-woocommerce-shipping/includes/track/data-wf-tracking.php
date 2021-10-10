@@ -20,7 +20,7 @@ return array(
 	),
 	'wf_fedex' => array(
 		'name'  => 'FedEx',
-		'tracking_url' => 'http://www.fedex.com/Tracking?action=track&tracknumbers=',
+		'tracking_url' => 'https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=',
 		'api_url' => ''
 	),
 	'wf_dhl_express' => array(

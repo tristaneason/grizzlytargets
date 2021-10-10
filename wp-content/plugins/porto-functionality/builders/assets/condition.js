@@ -4,7 +4,10 @@ jQuery(document).ready(function($) {
 	var porto_query_post_type = '';
 	if (typeof elementor != 'undefined') {
 		elementor.on('panel:init', function() {
-			$('<div id="porto-elementor-builder-condition" class="elementor-panel-footer-sub-menu-item"><i class="elementor-icon fas fa-network-wired" aria-hidden="true"></i><div class="elementor-title">Display Conditions</div></div>').insertAfter('#elementor-panel-footer-sub-menu-item-save-draft');
+			$('<div class="elementor-panel-footer-sub-menu-item" data-href="' + porto_builder_condition.list_url + '"><i class="elementor-icon fas fa-list-ul" aria-hidden="true"></i><div class="elementor-title">' + porto_builder_condition.i18n.back_to_list + '</div></div>').insertAfter('#elementor-panel-footer-sub-menu-item-save-draft').on('click', function() {
+				window.location.href = $(this).data('href');
+			});
+			$('<div id="porto-elementor-builder-condition" class="elementor-panel-footer-sub-menu-item"><i class="elementor-icon fas fa-network-wired" aria-hidden="true"></i><div class="elementor-title">' + porto_builder_condition.i18n.display_condition + '</div></div>').insertAfter('#elementor-panel-footer-sub-menu-item-save-draft');
 		});
 	}
 	$(document.body).on('click', '#porto-elementor-builder-condition, #porto-condition-button, .porto-meta-tab #condition', function(e) {
@@ -199,7 +202,10 @@ jQuery(document).ready(function($) {
 jQuery(window).on('load', function() {
 	setTimeout(function() {
 		if (jQuery('.vcv-ui-navbar-sandwich').length) {
-			jQuery('<span id="porto-condition-button" class="vcv-ui-navbar-control" title="Display Condition"><span class="vcv-ui-navbar-control-content">Display Condition</span></span>').insertBefore(jQuery('.vcv-ui-navbar-sandwich .vcv-ui-navbar-control').last());
+			jQuery('<span id="porto-condition-button" class="vcv-ui-navbar-control" title="' + porto_builder_condition.i18n.display_condition + '"><span class="vcv-ui-navbar-control-content">' + porto_builder_condition.i18n.display_condition + '</span></span>').insertBefore(jQuery('.vcv-ui-navbar-sandwich .vcv-ui-navbar-control').last());
+			jQuery('<span class="vcv-ui-navbar-control porto-builder-back-to-list" title="' + porto_builder_condition.i18n.back_to_list + '" data-href="' + porto_builder_condition.list_url + '"><span class="vcv-ui-navbar-control-content">' + porto_builder_condition.i18n.back_to_list + '</span></span>').insertBefore(jQuery('.vcv-ui-navbar-sandwich .vcv-ui-navbar-control').last()).on('click', function() {
+				window.location.href = jQuery(this).data('href');
+			});
 		}
 	}, 200);
 });

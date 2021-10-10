@@ -82,14 +82,6 @@ if( isset( $item['field_options'] ) ) {
 
 	echo '</select>';
 
-	// printf(
-	// 	'<input type="hidden" class="pewc-form-field pewc-select-box-hidden" id="%s" name="%s" value="%s" data-selected-option-price="%s">',
-	// 	esc_attr( $id ),
-	// 	esc_attr( $id ),
-	// 	$value,
-	// 	''
-	// );
-
 	// Store the options elsewhere so we can get prices etc
 	if( $all_options ) {
 		foreach( $all_options as $option_id=>$option ) {

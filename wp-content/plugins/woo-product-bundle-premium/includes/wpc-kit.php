@@ -122,7 +122,7 @@ if ( ! class_exists( 'WPCleverKit' ) ) {
 			add_thickbox();
 			?>
             <div class="wpclever_settings_page wrap">
-                <br/>
+                <h1>WPClever | Essential Kit</h1>
                 <div class="wp-list-table widefat plugin-install-network">
 					<?php
 					if ( ! function_exists( 'plugins_api' ) ) {

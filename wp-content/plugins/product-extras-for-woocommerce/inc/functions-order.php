@@ -152,48 +152,47 @@ function pewc_order_item_name( $product_name, $item ) {
 
 				$product_name .= '<ul>';
 
-				foreach( $groups as $group ) {
+				foreach( $groups as $field_id=>$field ) {
 
-					if( isset( $group['type'] ) ) {
+					if( isset( $field['type'] ) ) {
 
-						if( in_array( $group['type'], $hidden_group_types ) ) {
+						if( in_array( $field['type'], $hidden_group_types ) ) {
 							// Don't add this to the order if it's a hidden field type
 							continue;
 						}
 
-						if( ! empty( $group['hidden'] ) ) {
+						if( ! empty( $field['hidden'] ) ) {
 							// Don't add hidden fields
 							continue;
 						}
 
-						if( $group['type'] == 'products' && ! $display_product_meta ) {
+						if( $field['type'] == 'products' && ! $display_product_meta ) {
 							continue;
 						}
 
-					// if( isset( $group['type'] ) && empty( $group['flat_rate'] ) ) {
-						$classes = array( strtolower( str_replace( ' ', '_', $group['type'] ) ) );
-						$classes[] = strtolower( str_replace( ' ', '_', $group['label'] ) );
+						$classes = array( strtolower( str_replace( ' ', '_', $field['type'] ) ) );
+						$classes[] = strtolower( str_replace( ' ', '_', $field['label'] ) );
 
 						$product_id = $item->get_product_id();
 						$product = wc_get_product( $product_id );
-						$price = pewc_get_field_price_order( $group, $product );
+						$price = pewc_get_field_price_order( $field, $product );
 
-						if( ! apply_filters( 'pewc_show_field_prices_in_order', true ) ) {
+						if( ! pewc_show_field_prices_in_front_end_order( $field ) ) {
 							$price = '';
 						}
 
-						if( $group['type'] == 'upload' ) {
+						if( $field['type'] == 'upload' ) {
 
-							if( ! empty( $group['files'] ) ) {
+							if( ! empty( $field['files'] ) ) {
 
 								$display = sprintf(
 									'<li class="%s"><span class="pewc-order-item-label">%s:</span> <span class="pewc-order-item-price">%s</span>',
 									join( ' ', $classes ),
-									$group['label'],
+									$field['label'],
 									$price
 								);
 
-								foreach( $group['files'] as $index=>$file ) {
+								foreach( $field['files'] as $index=>$file ) {
 
 									// Only generate a thumb for image files
 									if( is_array( getimagesize( $file['file'] ) ) || apply_filters( 'pewc_force_always_display_thumbs', false ) ) {
@@ -230,20 +229,47 @@ function pewc_order_item_name( $product_name, $item ) {
 
 							}
 
-						} else if( $group['type'] == 'checkbox' ) {
+						} else if( $field['type'] == 'checkbox' ) {
 
-							$product_name .= '<li class="' . join( ' ', $classes ) . '"><span class="pewc-order-item-label">' . $group['label'] . '</span> <span class="pewc-order-item-price">' . $price . '</span></li>';
+							$product_name .= sprintf(
+								'<li class="%s">',
+								join( ' ', $classes )
+							);
+
+							$product_name .= sprintf(
+								'<span class="pewc-order-item-label">%s</span> <span class="pewc-order-item-price">%s</span>',
+								$field['label'],
+								$price
+							);
+
+							$product_name .= '</li>';
 
 						} else {
 
-							$value = wp_kses_post( apply_filters( 'pewc_filter_item_value_in_cart', $group['value'], $group ) );
+							$value = wp_kses_post( apply_filters( 'pewc_filter_item_value_in_cart', $field['value'], $field ) );
 
-							$product_name .= apply_filters(
-								'pewc_order_item_product_name',
-								'<li class="' . join( ' ', $classes ) . '"><span class="pewc-order-item-label">' . $group['label'] . ':</span> <span class="pewc-order-item-item">' . nl2br( $value ) . '</span> <span class="pewc-order-item-price">' . $price . '</span></li>',
-								$group,
-								$price
-							);
+							if( ! apply_filters( 'pewc_use_item_meta_in_order_item', false, $item ) ) {
+
+								$product_name .= apply_filters(
+									'pewc_order_item_product_name',
+									'<li class="' . join( ' ', $classes ) . '"><span class="pewc-order-item-label">' . $field['label'] . ':</span> <span class="pewc-order-item-item">' . nl2br( $value ) . '</span> <span class="pewc-order-item-price">' . $price . '</span></li>',
+									$field,
+									$price
+								);
+
+							} else {
+
+								$field_label = pewc_get_field_label_order_meta( $field, $item );
+								$field_meta = $item->get_meta( $field_label );
+								$field_label = ltrim( $field_label, '_' );
+								$product_name .= apply_filters(
+									'pewc_order_item_product_name',
+									'<li class="' . join( ' ', $classes ) . '"><span class="pewc-order-item-label">' . $field_label . ':</span> <span class="pewc-order-item-item">' . nl2br( $field_meta ) . '</span></li>',
+									$field,
+									$price
+								);
+
+							}
 
 						}
 					}
@@ -266,10 +292,24 @@ function pewc_order_item_name( $product_name, $item ) {
 		}
 	}
 
+	if( pewc_indent_child_product() == 'yes' && pewc_is_order_item_child_product( $item ) ) {
+		$product_name = apply_filters( 'pewc_indent_markup', '<span style="padding-left: 15px"></span>' ) . $product_name;
+	}
+
 	return $product_name;
 
 }
 add_filter( 'woocommerce_order_item_name', 'pewc_order_item_name', 10, 2 );
+
+function pewc_show_field_prices_in_front_end_order( $field=false ) {
+
+	$display = true;
+	if( isset( $field['price_visibility'] ) && $field['price_visibility'] == 'hidden' ) {
+		$display = false;
+	}
+	return apply_filters( 'pewc_show_field_prices_in_order', $display );
+
+}
 
 /**
  * Create product_extra post when the order is processed
@@ -342,7 +382,7 @@ function pewc_create_product_extra( $order_id ) {
 
 							foreach( $groups as $group ) {
 
-								if( isset( $group['type'] ) ) {
+								if( isset( $group['type'] ) && $group['type'] != 'group_heading' ) {
 
 									$group_id = $group['group_id'];
 									$field_id = $group['field_id'];
@@ -466,7 +506,6 @@ function pewc_rename_uploaded_files_item_meta( $item ) {
 											mkdir( $order_upload_dir, 0755, true );
 											// Top level blank index.php
 											@file_put_contents( $order_upload_dir . '/index.php', '<?php' . PHP_EOL . '// That whereof we cannot speak, thereof we must remain silent.' );
-
 										}
 
 										$new_file_name = trailingslashit( $order_upload_dir ) . $basename . $ext;
@@ -474,13 +513,12 @@ function pewc_rename_uploaded_files_item_meta( $item ) {
 
 									}
 
+									error_log( $file['file'] );
 									// Move / rename the file
 									if( file_exists( $file['file'] ) ) {
-
-										// Don't rename twice, it's not New York
+										// Don't rename twice
 										rename( $file['file'], $new_file_name );
 										$uploaded_files[] = $new_file_name;
-
 									}
 
 									$new_item_meta['groups'][$group_id][$field_id]['files'][$index]['file'] = $new_file_name;
@@ -596,5 +634,28 @@ function pewc_get_field_label_order_meta( $field, $item ) {
 		$field_label = '_' . $field_label;
 	}
 	return apply_filters( 'pewc_field_label_item_meta_data', $field_label, $field, $item );
+
+}
+
+/**
+ * Check if we nend to indent child products
+ * @since 3.9.2
+ */
+function pewc_indent_child_product( ) {
+
+	return apply_filters( 'pewc_indent_child_product', get_option( 'pewc_indent_child_product', 'no' ) );
+
+}
+/**
+ * Check if this order item is a child product
+ * @since 3.9.2
+ */
+function pewc_is_order_item_child_product( $item ) {
+
+	if( ! empty( $item['product_extras']['products']['child_field'] ) ) {
+		return true;
+	}
+
+	return false;
 
 }

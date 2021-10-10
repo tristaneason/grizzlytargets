@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit0ba92c2c005985687f7f4f5782ae812f
+class ComposerStaticInit82c9f43e6cfe7a01d4033ba16d363513
 {
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
@@ -18,6 +18,7 @@ class ComposerStaticInit0ba92c2c005985687f7f4f5782ae812f
         'Leadin\\admin\\DeactivationForm' => __DIR__ . '/../..' . '/src/admin/class-deactivationform.php',
         'Leadin\\admin\\Gutenberg' => __DIR__ . '/../..' . '/src/admin/class-gutenberg.php',
         'Leadin\\admin\\IframeRoutes' => __DIR__ . '/../..' . '/src/admin/class-iframeroutes.php',
+        'Leadin\\admin\\Impact' => __DIR__ . '/../..' . '/src/admin/class-impact.php',
         'Leadin\\admin\\LeadinAdmin' => __DIR__ . '/../..' . '/src/admin/class-leadinadmin.php',
         'Leadin\\admin\\Links' => __DIR__ . '/../..' . '/src/admin/class-links.php',
         'Leadin\\admin\\MenuConstants' => __DIR__ . '/../..' . '/src/admin/class-menuconstants.php',
@@ -49,7 +50,7 @@ class ComposerStaticInit0ba92c2c005985687f7f4f5782ae812f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit0ba92c2c005985687f7f4f5782ae812f::$classMap;
+            $loader->classMap = ComposerStaticInit82c9f43e6cfe7a01d4033ba16d363513::$classMap;
 
         }, null, ClassLoader::class);
     }

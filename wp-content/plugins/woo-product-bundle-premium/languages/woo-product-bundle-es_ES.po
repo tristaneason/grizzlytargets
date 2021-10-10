@@ -1,749 +1,740 @@
-# Copyright (C) 2020 WPClever.net
-# This file is distributed under the same license as the WPC Product Bundles for WooCommerce plugin.
+# Translation of Plugins - WPC Product Bundles for WooCommerce - Development (trunk) in Spanish (Spain)
+# This file is distributed under the same license as the Plugins - WPC Product Bundles for WooCommerce - Development (trunk) package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WPC Product Bundles for WooCommerce 5.0.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woo-product-bundle\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2021-07-01 12:13:56+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-04-24T10:11:28+00:00\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.2.0\n"
-"X-Domain: woo-product-bundle\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/3.0.0-alpha.2\n"
+"Language: es\n"
+"Project-Id-Version: Plugins - WPC Product Bundles for WooCommerce - Development (trunk)\n"
 
-#. Plugin Name of the plugin
-msgid "WPC Product Bundles for WooCommerce"
+#: includes/class-woosb.php:989
+msgid "Sorry, you can only choose at max a total quantity of [max] products before adding this bundle to the cart."
 msgstr ""
 
-#. Plugin URI of the plugin
-msgid "https://wpclever.net/"
+#: includes/class-woosb.php:988
+msgid "Please choose at least a total quantity of [min] products before adding this bundle to the cart."
 msgstr ""
+
+#: includes/class-woosb.php:986
+msgid "Please select a purchasable variation for [name] before adding this bundle to the cart."
+msgstr ""
+
+#: includes/class-woosb.php:1904
+msgid "Allow the customer can change the quantity of each product."
+msgstr "Permitir que el cliente pueda cambiar la cantidad de cada producto."
+
+#. Author of the plugin
+msgid "WPClever"
+msgstr "WPClever"
+
+#: includes/wpc-kit.php:310
+msgid "%s ago"
+msgstr "hace %s"
+
+#: includes/wpc-kit.php:309
+msgid "Last Updated:"
+msgstr "Última actualización:"
+
+#: includes/wpc-kit.php:303
+msgid "+ Active Installations"
+msgstr "+ Instalaciones activas"
+
+#: includes/wpc-kit.php:297
+msgid "Version"
+msgstr "Versión"
+
+#: includes/wpc-kit.php:232
+msgid "More Details"
+msgstr "Más detalles"
+
+#: includes/wpc-kit.php:230
+msgid "More information about %s"
+msgstr "Más información acerca de %s"
+
+#: includes/wpc-kit.php:223
+msgid "Install Now"
+msgstr "Instalar ahora"
+
+#: includes/wpc-kit.php:216 includes/wpc-kit.php:269
+msgid "Activate"
+msgstr "Activar"
+
+#: includes/wpc-kit.php:209 includes/wpc-kit.php:262
+msgid "Deactivate"
+msgstr "Desactivar"
+
+#: includes/class-woosb.php:289 includes/wpc-kit.php:115
+msgid "Essential Kit"
+msgstr "Kit esencial"
+
+#: includes/wpc-kit.php:115
+msgid "WPC Essential Kit"
+msgstr "Kit esencial WPC"
+
+#: includes/class-woosb.php:1032
+msgid "Support"
+msgstr "Soporte"
+
+#: includes/class-woosb.php:280 includes/class-woosb.php:1031
+msgid "Docs"
+msgstr "Documentación"
+
+#: includes/class-woosb.php:481
+msgid "Show the plus/minus button for the quantity input."
+msgstr "Mostrar el botón más/menos donde se introduce la cantidad."
+
+#: includes/class-woosb.php:469
+msgid "Show plus/minus button"
+msgstr "Mostrar el botón más/menos"
+
+#: includes/class-woosb.php:2024
+msgid "sold individually"
+msgstr "vendido individualmente"
+
+#: includes/class-woosb.php:1924
+msgid "All items' quantity limit"
+msgstr "Límite de cantidad de todos los artículos"
+
+#: includes/class-woosb.php:1908
+msgid "Each item's quantity limit"
+msgstr "Límite de cantidad de cada artículo"
+
+#: includes/class-woosb.php:920
+msgid "WooCommerce PDF Invoices, Packing Slips, Delivery Notes & Shipping Labels"
+msgstr "Facturas en PDF de WooCommerce, albaranes, notas de entrega y etiquetas de envío"
+
+#: includes/class-woosb.php:910 includes/class-woosb.php:936
+msgid "Hide bundled products"
+msgstr "Ocultar productos en lote"
+
+#: includes/class-woosb.php:901 includes/class-woosb.php:927
+msgid "Hide bundles"
+msgstr "Ocultar lotes"
+
+#: includes/class-woosb.php:894
+msgid "WooCommerce PDF Invoices & Packing Slips"
+msgstr "WooCommerce PDF Invoices & Packing Slips"
+
+#: includes/class-woosb.php:340
+msgid "Bundled pricing methods: from Sale price (default) or Regular price."
+msgstr "Métodos de fijación de precios por lotes: de precio de venta (por defecto) o de precio normal."
+
+#: includes/class-woosb.php:336
+msgid "from Regular price"
+msgstr "desde el precio normal"
+
+#: includes/class-woosb.php:332
+msgid "from Sale price"
+msgstr "desde el precio rebajado"
+
+#: includes/class-woosb.php:327
+msgid "Calculate bundled prices"
+msgstr "Calcular los precios de los paquetes"
+
+#: includes/class-woosb.php:277
+msgid "Compatible"
+msgstr "Compatible"
+
+#: includes/class-woosb.php:692
+msgid "Choose products you want to exclude from coupons."
+msgstr "Elige los productos que quieres excluir de los cupones."
+
+#: includes/class-woosb.php:688
+msgid "Exclude both bundles and bundled products"
+msgstr "Excluye tanto los paquetes como los productos agrupados"
+
+#: includes/class-woosb.php:684
+msgid "Exclude bundled products"
+msgstr "Excluir los productos agrupados"
+
+#: includes/class-woosb.php:680
+msgid "Exclude bundles"
+msgstr "Excluir lotes"
+
+#: includes/class-woosb.php:671
+msgid "Coupon restrictions"
+msgstr "Restricciones de los cupones"
+
+#: includes/class-woosb.php:1900
+msgid "Custom quantity"
+msgstr "Cantidad personalizada"
+
+#: includes/class-woosb.php:613 includes/class-woosb.php:1973
+msgid "Under text"
+msgstr "Debajo del texto"
+
+#: includes/class-woosb.php:604 includes/class-woosb.php:1964
+msgid "Above text"
+msgstr "Sobre el texto"
+
+#: includes/class-woosb.php:371
+msgid "Under the excerpt"
+msgstr "Debajo del extracto"
+
+#: includes/class-woosb.php:367
+msgid "Under the price"
+msgstr "Debajo del precio"
+
+#: includes/class-woosb.php:363
+msgid "Under the title"
+msgstr "Debajo del título"
+
+#: includes/class-woosb.php:2807
+msgid "Added %s product(s) to this bundle."
+msgstr "Se ha(n) añadido %s producto(s) a este paquete."
+
+#: includes/class-woosb.php:2788
+msgid "Create a Smart bundle"
+msgstr "Crear un paquete inteligente"
+
+#: includes/class-woosb.php:2769
+msgid "Bundle (%s)"
+msgstr "Paquete (%s)"
+
+#: includes/class-woosb.php:1148
+msgid "One of the bundled products is unavailable."
+msgstr "Uno de los productos incluidos no está disponible."
+
+#: includes/class-woosb.php:710
+msgid "Make the bundle still purchasable when one of the bundled products is un-purchasable. These bundled products are excluded from the orders."
+msgstr "Haz que el paquete siga pudiendo comprarse cuando uno de los productos agrupados no se pueda comprar. Estos productos agrupados se excluyen de los pedidos."
+
+#: includes/class-woosb.php:697
+msgid "Exclude un-purchasable products"
+msgstr "Excluir los productos no comprables"
+
+#: includes/class-woosb.php:1952
+msgid "By default, the bundle' stock was calculated automatically from bundled products. After enabling, please press \"Update\" then you can change the stock settings on the \"Inventory\" tab."
+msgstr "Por defecto, el inventario del paquete se calcula automáticamente a partir de los productos agrupados. Después de activarlo, pulsa en «Actualizar» y podrás cambiar los ajustes de las existencias en la pestaña «Inventario»."
+
+#: includes/class-woosb.php:1155 includes/class-woosb.php:1162
+msgid "\"%s\" is un-purchasable."
+msgstr "«%s» no se puede comprar."
+
+#: includes/class-woosb.php:537
+msgid "Yes, custom selector"
+msgstr "Sí, selector personalizado"
+
+#: includes/class-woosb.php:1875
+msgid "Fixed price"
+msgstr "Precio fijo"
+
+#: includes/class-woosb.php:396
+msgid "Use WPC Variations Radio Buttons"
+msgstr "Utiliza los botones de selección única de las variaciones de WPC"
+
+#: includes/class-woosb.php:392
+msgid "Default"
+msgstr "Por defecto"
+
+#: includes/class-woosb.php:387
+msgid "Variations selector"
+msgstr "Selector de variaciones"
+
+#: includes/class-woosb.php:359 includes/class-woosb.php:587
+msgid "Under the add to cart button"
+msgstr "Bajo el botón de añadir al carrito"
+
+#: includes/class-woosb.php:355 includes/class-woosb.php:583
+msgid "Above the add to cart button"
+msgstr "Por encima del botón añadir al carrito"
+
+#: includes/class-woosb.php:1956
+msgid "Custom display price"
+msgstr "Mostrar precio personalizado"
+
+#: includes/class-woosb.php:1896
+msgid "If you fill both, the amount will be used."
+msgstr "Si rellenas ambos, se utilizará el importe."
+
+#: includes/class-woosb.php:826
+msgid "Search by ID when only entered the numeric."
+msgstr "Buscar por ID cuando solo se introduce el número."
+
+#: includes/class-woosb.php:814
+msgid "Search by ID"
+msgstr "Búsqueda por ID"
+
+#: includes/class-woosb.php:2817
+msgid "Bundle(s) out of stock"
+msgstr "Paquete(s) agotado(s)"
+
+#: includes/class-woosb.php:2851
+msgid "%1$s is low in stock. There are %2$d left."
+msgstr "%1$s tiene pocas existencias. Quedan %2$d."
+
+#: includes/class-woosb.php:2848
+msgid "%s is low in stock."
+msgstr "%s tiene pocas existencias."
+
+#: includes/class-woosb.php:2843
+msgid "Bundle(s) low in stock"
+msgstr "Paquete(s) con pocas existencias"
+
+#: includes/class-woosb.php:2822 includes/class-woosb.php:2825
+msgid "%s is out of stock."
+msgstr "%s está agotado."
+
+#: includes/class-woosb.php:498
+msgid "Yes, open quick view popup"
+msgstr "Sí, ábrela en una vista rápida emergente"
+
+#: includes/class-woosb.php:485
+msgid "Link to individual product"
+msgstr "Enlazar al producto individual"
+
+#: includes/class-woosb.php:379 includes/class-woosb.php:595
+msgid "No (hide it)"
+msgstr "No (ocultarlo)"
+
+#: includes/class-woosb.php:598
+msgid "Choose the position to show the bundles list."
+msgstr "Elige la posición para mostrar la lista de lotes."
+
+#: includes/class-woosb.php:574
+msgid "Settings for bundles on the bundled product page."
+msgstr "Ajustes para los lotes en la página de productos agrupados."
+
+#: includes/class-woosb.php:571 includes/class-woosb.php:1773
+msgid "Bundles"
+msgstr "Lotes"
+
+#: includes/class-woosb.php:1890
+msgid "% or amount"
+msgstr "% o la cantidad"
+
+#: includes/class-woosb.php:1169 includes/class-woosb.php:1186
+msgid "\"%s\" has not enough stock."
+msgstr "\"%s\" no tiene suficientes existencias."
+
+#: includes/class-woosb.php:565
+msgid "Use [d] to show the saved percentage or amount."
+msgstr "Utiliza [d] para mostrar el ahorro o la cantidad."
+
+#: includes/class-woosb.php:563 includes/class-woosb.php:979
+#: includes/class-woosb.php:982
+msgid "(saved [d])"
+msgstr "(guardado [d])"
+
+#: includes/class-woosb.php:560
+msgid "Saved text"
+msgstr "Texto guardado"
+
+#: includes/class-woosb.php:553
+msgid "Total text"
+msgstr "Texto del total"
+
+#: includes/class-woosb.php:548
+msgid "Change the main product price when choosing the variation of bundled products. It uses JavaScript to change product price so it is very dependent on theme’s HTML. If it cannot find and update the product price, please contact us and we can help you find the right selector or adjust the JS file."
+msgstr "Cambia el precio del producto principal al elegir la variación de los productos agrupados. Utiliza JavaScript para cambiar el precio del producto por lo que es muy dependiente del HTML del tema. Si no puedes encontrar y actualizar el precio del producto, ponte en contacto con nosotros y podremos ayudarte a encontrar el selector correcto o ajustar el archivo JS."
+
+#: includes/class-woosb.php:528
+msgid "Change price"
+msgstr "Cambiar precio"
+
+#: includes/class-woosb.php:1879
+msgid "If checked, %s click here to set price %s by manually."
+msgstr "En caso afirmativo, %s haz clic aquí para establecer el precio %s manualmente."
+
+#: includes/class-woosb.php:1879
+msgid "Disable auto calculate price."
+msgstr "Desactivar el cálculo automático del precio."
+
+#: includes/class-woosb.php:1912
+msgid "Use default quantity as min?"
+msgstr "¿Usar la cantidad por defecto como mínima?"
+
+#: includes/class-woosb.php:2012
+msgid "Remove"
+msgstr "Eliminar"
+
+#: includes/class-woosb.php:2010
+msgid "Add"
+msgstr "Añadir"
+
+#: includes/class-woosb.php:2024
+msgid "Default quantity"
+msgstr "Cantidad por defecto"
+
+#: includes/class-woosb.php:1194
+msgid "\"%s\" is protected and cannot be purchased."
+msgstr "«%s» está protegido y no se puede comprar."
+
+#: includes/class-woosb.php:1149 includes/class-woosb.php:1156
+#: includes/class-woosb.php:1163 includes/class-woosb.php:1170
+#: includes/class-woosb.php:1177 includes/class-woosb.php:1187
+#: includes/class-woosb.php:1195
+msgid "You cannot add this bundle to the cart."
+msgstr "No puedes añadir este lote al carrito."
+
+#: includes/class-woosb.php:1176
+msgid "You cannot add another \"%s\" to the cart."
+msgstr "No puedes añadir otro \"%s\" al carrito."
+
+#: includes/class-woosb.php:382
+msgid "Choose the position to show the bundled products list."
+msgstr "Elige la posición para mostrar la lista de productos en lote."
+
+#: includes/class-woosb.php:375 includes/class-woosb.php:591
+msgid "In a new tab"
+msgstr "En una nueva pestaña"
+
+#: includes/class-woosb.php:350 includes/class-woosb.php:578
+msgid "Position"
+msgstr "Posición"
+
+#: includes/class-woosb.php:1883
+msgid "Discount"
+msgstr "Descuento"
 
 #. Description of the plugin
 msgid "WPC Product Bundles is a plugin help you bundle a few products, offer them at a discount and watch the sales go up!"
-msgstr ""
+msgstr "WPC Product Bundles es un plugin que te ayuda a realizar paquetes de unos pocos productos, ofrecerlos con un descuento y ¡ver cómo tu ventas suben!"
 
-#. Author of the plugin
-msgid "WPClever.net"
-msgstr ""
+#: includes/class-woosb.php:728
+msgid "Both bundles and bundled products"
+msgstr "Tanto los paquetes como los productos agrupados"
+
+#: includes/class-woosb.php:724
+msgid "Bundled products only"
+msgstr "Sólo productos en lote"
+
+#: includes/class-woosb.php:720
+msgid "Bundles only"
+msgstr "Solo en lotes"
+
+#: includes/class-woosb.php:715
+msgid "Cart contents count"
+msgstr "Contador de contenidos del carrito"
+
+#: includes/class-woosb.php:1950
+msgid "Enable stock management at bundle level."
+msgstr "Permitir la gestión de las existencias a nivel de paquete."
+
+#: includes/class-woosb.php:1946
+msgid "Manage stock"
+msgstr "Gestionar inventario"
+
+#: includes/class-woosb.php:625
+msgid "Leave blank if you want to use the default text and can be translated."
+msgstr "Déjalo en blanco si quieres que se utilice el texto por defecto y pueda traducirse."
+
+#: includes/class-woosb.php:2249 includes/class-woosb.php:2280
+msgid "From"
+msgstr "De"
+
+#: includes/class-woosb.php:1941
+msgid "Apply to each bundled product"
+msgstr "Aplicar a cada producto agrupado"
+
+#: includes/class-woosb.php:1940
+msgid "Apply to the whole bundle"
+msgstr "Aplicar a todo el lote"
+
+#: includes/class-woosb.php:1937
+msgid "Shipping fee"
+msgstr "Tasa de envio"
+
+#: includes/class-woosb.php:1869
+msgid "Regular price"
+msgstr "Precio normal"
+
+#: includes/class-woosb.php:1838
+msgid "Selected"
+msgstr "Seleccionado"
+
+#: includes/class-woosb.php:1832
+msgid "Type any keyword to search"
+msgstr "Escribe cualquier palabra clave para buscar"
+
+#: includes/class-woosb.php:1830
+msgid "searching..."
+msgstr "buscando..."
+
+#: includes/class-woosb.php:1824
+msgid "settings"
+msgstr "ajustes"
+
+#: includes/class-woosb.php:1736 includes/class-woosb.php:1791
+msgid "Smart bundle"
+msgstr "Lote inteligente"
+
+#: includes/class-woosb.php:1690
+msgid "No results found for \"%s\""
+msgstr "No se han encontrado resultados para \"%s\""
+
+#: includes/class-woosb.php:1605
+msgid "(bundled in %s)"
+msgstr "(en lote en %s)"
+
+#: includes/class-woosb.php:1743
+msgid "Bundled Products"
+msgstr "Productos en lotes"
+
+#: includes/class-woosb.php:987
+msgid "Please choose at least one product before adding this bundle to the cart."
+msgstr "Por favor elige al menos un producto antes de añadir este paquete al carrito."
+
+#: includes/class-woosb.php:880 includes/class-woosb.php:947
+msgid "Update Options"
+msgstr "Actualizar opciones"
+
+#: includes/class-woosb.php:874
+msgid "If yes, a product can be added many times."
+msgstr "En caso afirmativo, un producto puede añadirse muchas veces."
+
+#: includes/class-woosb.php:862
+msgid "Accept same products"
+msgstr "Aceptar los mismos productos"
+
+#: includes/class-woosb.php:858
+msgid "Do a phrase search?"
+msgstr "¿Hacer una búsqueda de frases?"
+
+#: includes/class-woosb.php:846
+msgid "Search sentence"
+msgstr "Frase de búsqueda"
+
+#: includes/class-woosb.php:842
+msgid "Match whole product title or content?"
+msgstr "¿Coincide con el título exacto o el contenido completo del producto?"
+
+#: includes/class-woosb.php:830
+msgid "Search exact"
+msgstr "Búsqueda exacta"
+
+#: includes/class-woosb.php:799
+msgid "Search by SKU"
+msgstr "Buscar por SKU"
+
+#: includes/class-woosb.php:791
+msgid "Search limit"
+msgstr "Límite de búsqueda"
+
+#: includes/class-woosb.php:787 includes/class-woosb.php:1822
+msgid "Search"
+msgstr "Buscar"
+
+#: includes/class-woosb.php:781
+msgid "Hide bundled products, just show the main product on mini-cart."
+msgstr "Ocultar productos en lotes, sólo mostrar el producto principal en el mini-carrito."
+
+#: includes/class-woosb.php:768
+msgid "Hide bundled products on mini-cart"
+msgstr "Ocultar productos en lotes en el mini-carrito"
+
+#: includes/class-woosb.php:758
+msgid "Yes, but show bundled product names under the main product"
+msgstr "Sí, pero muestra los nombres de los productos agrupados bajo el producto principal"
+
+#: includes/class-woosb.php:754
+msgid "Yes, just show the main product"
+msgstr "Sí, sólo mostrar el producto principal"
+
+#: includes/class-woosb.php:749
+msgid "Hide bundled products on cart & checkout page"
+msgstr "Ocultar productos en lotes en el carrito y en la página de pago"
+
+#: includes/class-woosb.php:734
+msgid "Hide bundle name before bundled products"
+msgstr "Ocultar el nombre del lote antes de los productos empaquetados"
+
+#: includes/class-woosb.php:667
+msgid "Cart & Checkout"
+msgstr "Carrito y finalizar compra"
+
+#: includes/class-woosb.php:658
+msgid "Single product page"
+msgstr "Pagina de producto única"
+
+#: includes/class-woosb.php:652
+msgid "For un-purchasable bundle."
+msgstr "Para el paquete que no se puede comprar."
+
+#: includes/class-woosb.php:644
+msgid "For purchasable bundle and has variable product(s)."
+msgstr "Para el paquete que se puede comprar y tiene producto(s) variable(s)."
+
+#: includes/class-woosb.php:636
+msgid "For purchasable bundle."
+msgstr "Para el paquete que se puede comprar."
+
+#: includes/class-woosb.php:629
+msgid "Archive/shop page"
+msgstr "Página de archivo/tienda"
+
+#: includes/class-woosb.php:622
+msgid "\"Add to Cart\" button labels"
+msgstr "Etiquetas del botón «Añadir al carrito»"
+
+#: includes/class-woosb.php:556
+msgid "Bundle price:"
+msgstr "Precio del lote:"
+
+#: includes/class-woosb.php:523
+msgid "Change the main product image when choosing the variation of bundled products."
+msgstr "Cambia la imagen del producto principal al elegir la variación de los productos agrupados."
+
+#: includes/class-woosb.php:510
+msgid "Change image"
+msgstr "Cambiar imagen"
+
+#: includes/class-woosb.php:494
+msgid "Yes, open in the new tab"
+msgstr "Sí, abrir en una nueva pestaña"
+
+#: includes/class-woosb.php:490
+msgid "Yes, open in the same tab"
+msgstr "Sí, abrir en la misma pestaña"
+
+#: includes/class-woosb.php:459
+msgid "Subtotal"
+msgstr "Subtotal"
+
+#: includes/class-woosb.php:455
+msgid "Price"
+msgstr "Precio"
+
+#: includes/class-woosb.php:450
+msgid "Show price"
+msgstr "Mostrar precio"
+
+#: includes/class-woosb.php:435
+msgid "Show short description"
+msgstr "Mostrar descripción corta"
+
+#: includes/class-woosb.php:420
+msgid "Show quantity"
+msgstr "Mostrar cantidad"
+
+#: includes/class-woosb.php:405
+msgid "Show thumbnail"
+msgstr "Mostrar miniatura"
+
+#: includes/class-woosb.php:346 includes/class-woosb.php:1486
+#: includes/class-woosb.php:1509 includes/class-woosb.php:1765
+msgid "Bundled products"
+msgstr "Productos en lote"
+
+#: includes/class-woosb.php:414 includes/class-woosb.php:429
+#: includes/class-woosb.php:444 includes/class-woosb.php:463
+#: includes/class-woosb.php:478 includes/class-woosb.php:502
+#: includes/class-woosb.php:519 includes/class-woosb.php:541
+#: includes/class-woosb.php:676 includes/class-woosb.php:706
+#: includes/class-woosb.php:743 includes/class-woosb.php:762
+#: includes/class-woosb.php:777 includes/class-woosb.php:808
+#: includes/class-woosb.php:823 includes/class-woosb.php:839
+#: includes/class-woosb.php:855 includes/class-woosb.php:871
+#: includes/class-woosb.php:905 includes/class-woosb.php:914
+#: includes/class-woosb.php:931 includes/class-woosb.php:940
+msgid "No"
+msgstr "No"
+
+#: includes/class-woosb.php:410 includes/class-woosb.php:425
+#: includes/class-woosb.php:440 includes/class-woosb.php:474
+#: includes/class-woosb.php:515 includes/class-woosb.php:533
+#: includes/class-woosb.php:702 includes/class-woosb.php:739
+#: includes/class-woosb.php:773 includes/class-woosb.php:804
+#: includes/class-woosb.php:819 includes/class-woosb.php:835
+#: includes/class-woosb.php:851 includes/class-woosb.php:867
+#: includes/class-woosb.php:904 includes/class-woosb.php:913
+#: includes/class-woosb.php:930 includes/class-woosb.php:939
+msgid "Yes"
+msgstr "Sí"
+
+#: includes/class-woosb.php:322
+msgid "Choose the price format for bundle on the shop page."
+msgstr "Cambia el formato del precio para el paquete en la página de tienda."
+
+#: includes/class-woosb.php:319
+msgid "Regular and sale price"
+msgstr "Precio de venta y precio rebajado"
+
+#: includes/class-woosb.php:318
+msgid "Min - max"
+msgstr "Min - max"
+
+#: includes/class-woosb.php:317
+msgid "Min price only"
+msgstr "Solo precio mínimo"
+
+#: includes/class-woosb.php:316
+msgid "From min price"
+msgstr "Desde precio mínimo"
+
+#: includes/class-woosb.php:313
+msgid "Price format"
+msgstr "Formato de precio"
+
+#: includes/class-woosb.php:309
+msgid "General"
+msgstr "General"
+
+#: includes/class-woosb.php:297
+msgid "When creating the product, please choose product data is \"Smart Bundle\" then you can see the search field to start search and add products to the bundle."
+msgstr "Al crear el producto, elige los datos del producto es «Paquete inteligente» y luego podrás ver el campo de búsqueda para iniciarla y añadir productos al paquete."
+
+#: includes/class-woosb.php:285 includes/class-woosb.php:1022
+msgid "Premium Version"
+msgstr "Versión Premium"
+
+#: includes/class-woosb.php:273 includes/class-woosb.php:1021
+msgid "Settings"
+msgstr "Ajustes"
+
+#: includes/class-woosb.php:269
+msgid "How to use?"
+msgstr "¿Cómo usarlo?"
+
+#: includes/class-woosb.php:262
+msgid "Discussion"
+msgstr "Debate"
+
+#: includes/class-woosb.php:260
+msgid "Changelog"
+msgstr "Registro de cambios"
+
+#: includes/class-woosb.php:258
+msgid "Reviews"
+msgstr "Valoraciones"
+
+#: includes/class-woosb.php:255
+msgid "Thank you for using our plugin! If you are satisfied, please reward it a full five-star %s rating."
+msgstr "¡Gracias por usar nuestro plugin! Si estás satisfecho, por favor déjanos una valoración de cinco estrellas %s."
+
+#: includes/class-woosb.php:241 includes/class-woosb.php:252
+msgid "WPC Product Bundles"
+msgstr "WPC Product Bundles"
+
+#: includes/class-woosb.php:241
+msgid "Product Bundles"
+msgstr "Lotes de productos"
+
+#: includes/class-product.php:50 includes/class-woosb.php:650
+msgid "Read more"
+msgstr "Leer más"
+
+#: includes/class-product.php:43 includes/class-woosb.php:642
+msgid "Select options"
+msgstr "Seleccionar opciones"
+
+#: includes/class-product.php:37 includes/class-product.php:63
+#: includes/class-woosb.php:634 includes/class-woosb.php:662
+msgid "Add to cart"
+msgstr "Añadir al carrito"
 
 #. Author URI of the plugin
 msgid "https://wpclever.net"
-msgstr ""
-
-#: wpc-product-bundles.php:71
-#: wpc-product-bundles.php:97
-#: wpc-product-bundles.php:1211
-#: wpc-product-bundles.php:1234
-msgid "Add to cart"
-msgstr ""
-
-#: wpc-product-bundles.php:77
-#: wpc-product-bundles.php:1217
-msgid "Select options"
-msgstr ""
-
-#: wpc-product-bundles.php:84
-#: wpc-product-bundles.php:1223
-msgid "Read more"
-msgstr ""
-
-#: wpc-product-bundles.php:715
-msgid "Once Every 5 Minutes"
-msgstr ""
-
-#: wpc-product-bundles.php:861
-#: wpc-product-bundles.php:872
-#: wpc-product-bundles.php:2251
-msgid "WPC Product Bundles"
-msgstr ""
-
-#: wpc-product-bundles.php:861
-msgid "Product Bundles"
-msgstr ""
-
-#: wpc-product-bundles.php:875
-msgid "Thank you for using our plugin! If you are satisfied, please reward it a full five-star %s rating."
-msgstr ""
-
-#: wpc-product-bundles.php:878
-msgid "Reviews"
-msgstr ""
-
-#: wpc-product-bundles.php:880
-msgid "Changelog"
-msgstr ""
-
-#: wpc-product-bundles.php:882
-msgid "Discussion"
-msgstr ""
-
-#: wpc-product-bundles.php:889
-msgid "How to use?"
-msgstr ""
-
-#: wpc-product-bundles.php:893
-#: wpc-product-bundles.php:1594
-msgid "Settings"
-msgstr ""
-
-#: wpc-product-bundles.php:897
-msgid "Tools"
-msgstr ""
-
-#: wpc-product-bundles.php:901
-#: wpc-product-bundles.php:1595
-msgid "Premium Version"
-msgstr ""
-
-#: wpc-product-bundles.php:909
-msgid "When creating the product, please choose product data is \"Smart Bundle\" then you can see the search field to start search and add products to the bundle."
-msgstr ""
-
-#: wpc-product-bundles.php:921
-msgid "General"
-msgstr ""
-
-#: wpc-product-bundles.php:925
-msgid "Price format"
-msgstr ""
-
-#: wpc-product-bundles.php:928
-msgid "From min price"
-msgstr ""
-
-#: wpc-product-bundles.php:929
-msgid "Min price only"
-msgstr ""
-
-#: wpc-product-bundles.php:930
-msgid "Min - max"
-msgstr ""
-
-#: wpc-product-bundles.php:931
-msgid "Regular and sale price"
-msgstr ""
-
-#: wpc-product-bundles.php:934
-msgid "Choose the price format for bundle on the shop page."
-msgstr ""
-
-#: wpc-product-bundles.php:940
-#: wpc-product-bundles.php:2034
-#: wpc-product-bundles.php:2057
-#: wpc-product-bundles.php:2349
-msgid "Bundled products"
-msgstr ""
-
-#: wpc-product-bundles.php:944
-#: wpc-product-bundles.php:1156
-msgid "Position"
-msgstr ""
-
-#: wpc-product-bundles.php:949
-#: wpc-product-bundles.php:1161
-msgid "Above the add to cart button"
-msgstr ""
-
-#: wpc-product-bundles.php:953
-#: wpc-product-bundles.php:1165
-msgid "Under the add to cart button"
-msgstr ""
-
-#: wpc-product-bundles.php:957
-msgid "Under the title"
-msgstr ""
-
-#: wpc-product-bundles.php:961
-msgid "Under the price"
-msgstr ""
-
-#: wpc-product-bundles.php:965
-msgid "Under the excerpt"
-msgstr ""
-
-#: wpc-product-bundles.php:969
-#: wpc-product-bundles.php:1169
-msgid "In a new tab"
-msgstr ""
-
-#: wpc-product-bundles.php:973
-#: wpc-product-bundles.php:1173
-msgid "No (hide it)"
-msgstr ""
-
-#: wpc-product-bundles.php:976
-msgid "Choose the position to show the bundled products list."
-msgstr ""
-
-#: wpc-product-bundles.php:981
-msgid "Variations selector"
-msgstr ""
-
-#: wpc-product-bundles.php:986
-msgid "Default"
-msgstr ""
-
-#: wpc-product-bundles.php:990
-msgid "Use WPC Variations Radio Buttons"
-msgstr ""
-
-#: wpc-product-bundles.php:999
-msgid "Show thumbnail"
-msgstr ""
-
-#: wpc-product-bundles.php:1004
-#: wpc-product-bundles.php:1019
-#: wpc-product-bundles.php:1034
-#: wpc-product-bundles.php:1093
-#: wpc-product-bundles.php:1111
-#: wpc-product-bundles.php:1274
-#: wpc-product-bundles.php:1311
-#: wpc-product-bundles.php:1345
-#: wpc-product-bundles.php:1376
-#: wpc-product-bundles.php:1391
-#: wpc-product-bundles.php:1407
-#: wpc-product-bundles.php:1423
-#: wpc-product-bundles.php:1439
-#: wpc-product-bundles.php:1460
-#: wpc-product-bundles.php:1477
-msgid "Yes"
-msgstr ""
-
-#: wpc-product-bundles.php:1008
-#: wpc-product-bundles.php:1023
-#: wpc-product-bundles.php:1038
-#: wpc-product-bundles.php:1057
-#: wpc-product-bundles.php:1080
-#: wpc-product-bundles.php:1097
-#: wpc-product-bundles.php:1119
-#: wpc-product-bundles.php:1248
-#: wpc-product-bundles.php:1278
-#: wpc-product-bundles.php:1315
-#: wpc-product-bundles.php:1334
-#: wpc-product-bundles.php:1349
-#: wpc-product-bundles.php:1380
-#: wpc-product-bundles.php:1395
-#: wpc-product-bundles.php:1411
-#: wpc-product-bundles.php:1427
-#: wpc-product-bundles.php:1443
-#: wpc-product-bundles.php:1464
-#: wpc-product-bundles.php:1481
-msgid "No"
-msgstr ""
-
-#: wpc-product-bundles.php:1014
-msgid "Show quantity"
-msgstr ""
-
-#: wpc-product-bundles.php:1029
-msgid "Show short description"
-msgstr ""
-
-#: wpc-product-bundles.php:1044
-msgid "Show price"
-msgstr ""
-
-#: wpc-product-bundles.php:1049
-msgid "Price"
-msgstr ""
-
-#: wpc-product-bundles.php:1053
-msgid "Subtotal"
-msgstr ""
-
-#: wpc-product-bundles.php:1063
-msgid "Link to individual product"
-msgstr ""
-
-#: wpc-product-bundles.php:1068
-msgid "Yes, open in the same tab"
-msgstr ""
-
-#: wpc-product-bundles.php:1072
-msgid "Yes, open in the new tab"
-msgstr ""
-
-#: wpc-product-bundles.php:1076
-msgid "Yes, open quick view popup"
-msgstr ""
-
-#: wpc-product-bundles.php:1088
-msgid "Change image"
-msgstr ""
-
-#: wpc-product-bundles.php:1101
-msgid "Change the main product image when choosing the variation of bundled products."
-msgstr ""
-
-#: wpc-product-bundles.php:1106
-msgid "Change price"
-msgstr ""
-
-#: wpc-product-bundles.php:1115
-msgid "Yes, custom selector"
-msgstr ""
-
-#: wpc-product-bundles.php:1126
-msgid "Change the main product price when choosing the variation of bundled products. It uses JavaScript to change product price so it is very dependent on theme’s HTML. If it cannot find and update the product price, please contact us and we can help you find the right selector or adjust the JS file."
-msgstr ""
-
-#: wpc-product-bundles.php:1131
-msgid "Total text"
-msgstr ""
-
-#: wpc-product-bundles.php:1134
-msgid "Bundle price:"
-msgstr ""
-
-#: wpc-product-bundles.php:1138
-msgid "Saved text"
-msgstr ""
-
-#: wpc-product-bundles.php:1141
-#: wpc-product-bundles.php:1559
-msgid "(saved [d])"
-msgstr ""
-
-#: wpc-product-bundles.php:1143
-msgid "Use [d] to show the saved percentage or amount."
-msgstr ""
-
-#: wpc-product-bundles.php:1149
-#: wpc-product-bundles.php:2357
-msgid "Bundles"
-msgstr ""
-
-#: wpc-product-bundles.php:1152
-msgid "Settings for bundles on the bundled product page."
-msgstr ""
-
-#: wpc-product-bundles.php:1176
-msgid "Choose the position to show the bundles list."
-msgstr ""
-
-#: wpc-product-bundles.php:1182
-#: wpc-product-bundles.php:2547
-msgid "Above text"
-msgstr ""
-
-#: wpc-product-bundles.php:1191
-#: wpc-product-bundles.php:2556
-msgid "Under text"
-msgstr ""
-
-#: wpc-product-bundles.php:1200
-msgid "\"Add to Cart\" button labels"
-msgstr ""
-
-#: wpc-product-bundles.php:1203
-msgid "Leave blank if you want to use the default text and can be translated."
-msgstr ""
-
-#: wpc-product-bundles.php:1207
-msgid "Archive/shop page"
-msgstr ""
-
-#: wpc-product-bundles.php:1213
-msgid "For purchasable bundle."
-msgstr ""
-
-#: wpc-product-bundles.php:1219
-msgid "For purchasable bundle and has variable product(s)."
-msgstr ""
-
-#: wpc-product-bundles.php:1225
-msgid "For un-purchasable bundle."
-msgstr ""
-
-#: wpc-product-bundles.php:1230
-msgid "Single product page"
-msgstr ""
-
-#: wpc-product-bundles.php:1239
-msgid "Cart & Checkout"
-msgstr ""
-
-#: wpc-product-bundles.php:1243
-msgid "Coupon restrictions"
-msgstr ""
-
-#: wpc-product-bundles.php:1252
-msgid "Exclude bundles"
-msgstr ""
-
-#: wpc-product-bundles.php:1256
-msgid "Exclude bundled products"
-msgstr ""
-
-#: wpc-product-bundles.php:1260
-msgid "Exclude both bundles and bundled products"
-msgstr ""
-
-#: wpc-product-bundles.php:1264
-msgid "Choose products you want to exclude from coupons."
-msgstr ""
-
-#: wpc-product-bundles.php:1269
-msgid "Exclude un-purchasable products"
-msgstr ""
-
-#: wpc-product-bundles.php:1282
-msgid "Make the bundle still purchasable when one of the bundled products is un-purchasable. These bundled products are excluded from the orders."
-msgstr ""
-
-#: wpc-product-bundles.php:1287
-msgid "Cart contents count"
-msgstr ""
-
-#: wpc-product-bundles.php:1292
-msgid "Bundles only"
-msgstr ""
-
-#: wpc-product-bundles.php:1296
-msgid "Bundled products only"
-msgstr ""
-
-#: wpc-product-bundles.php:1300
-msgid "Both bundles and bundled products"
-msgstr ""
-
-#: wpc-product-bundles.php:1306
-msgid "Hide bundle name before bundled products"
-msgstr ""
-
-#: wpc-product-bundles.php:1321
-msgid "Hide bundled products on cart & checkout page"
-msgstr ""
-
-#: wpc-product-bundles.php:1326
-msgid "Yes, just show the main product"
-msgstr ""
-
-#: wpc-product-bundles.php:1330
-msgid "Yes, but show bundled product names under the main product"
-msgstr ""
-
-#: wpc-product-bundles.php:1340
-msgid "Hide bundled products on mini-cart"
-msgstr ""
-
-#: wpc-product-bundles.php:1353
-msgid "Hide bundled products, just show the main product on mini-cart."
-msgstr ""
-
-#: wpc-product-bundles.php:1359
-#: wpc-product-bundles.php:2406
-msgid "Search"
-msgstr ""
-
-#: wpc-product-bundles.php:1363
-msgid "Search limit"
-msgstr ""
-
-#: wpc-product-bundles.php:1371
-msgid "Search by SKU"
-msgstr ""
-
-#: wpc-product-bundles.php:1386
-msgid "Search by ID"
-msgstr ""
-
-#: wpc-product-bundles.php:1398
-msgid "Search by ID when only entered the numeric."
-msgstr ""
-
-#: wpc-product-bundles.php:1402
-msgid "Search exact"
-msgstr ""
-
-#: wpc-product-bundles.php:1414
-msgid "Match whole product title or content?"
-msgstr ""
-
-#: wpc-product-bundles.php:1418
-msgid "Search sentence"
-msgstr ""
-
-#: wpc-product-bundles.php:1430
-msgid "Do a phrase search?"
-msgstr ""
-
-#: wpc-product-bundles.php:1434
-msgid "Accept same products"
-msgstr ""
-
-#: wpc-product-bundles.php:1446
-msgid "If yes, a product can be added many times."
-msgstr ""
-
-#: wpc-product-bundles.php:1451
-msgid "Advance"
-msgstr ""
-
-#: wpc-product-bundles.php:1455
-#: wpc-product-bundles.php:1515
-msgid "Price sync"
-msgstr ""
-
-#: wpc-product-bundles.php:1467
-msgid "Enable this option to change the bundle price automatically when changing the price of the bundled product. You also can do it by manually on the Tools tab."
-msgstr ""
-
-#: wpc-product-bundles.php:1472
-msgid "Price update"
-msgstr ""
-
-#: wpc-product-bundles.php:1484
-msgid "Enable this option to show the update price tool in each product. Use this tool to update the price for all bundles contain the current product."
-msgstr ""
-
-#: wpc-product-bundles.php:1491
-msgid "Update Options"
-msgstr ""
-
-#: wpc-product-bundles.php:1504
-msgid "Product bundles"
-msgstr ""
-
-#: wpc-product-bundles.php:1509
-msgid "View all product bundles"
-msgstr ""
-
-#: wpc-product-bundles.php:1520
-msgid "Update price for all bundles"
-msgstr ""
-
-#: wpc-product-bundles.php:1523
-msgid "The bundle price will be updated every 5 minutes automatically, you can click to update immediately."
-msgstr ""
-
-#: wpc-product-bundles.php:1554
-msgid "Please select some product options for [name] before adding this bundle to the cart."
-msgstr ""
-
-#: wpc-product-bundles.php:1555
-msgid "Please choose at least one product before adding this bundle to the cart."
-msgstr ""
-
-#: wpc-product-bundles.php:1556
-msgid "Please choose at least [min] in the whole products before adding this bundle to the cart."
-msgstr ""
-
-#: wpc-product-bundles.php:1557
-msgid "Please choose maximum [max] in the whole products before adding this bundle to the cart."
-msgstr ""
-
-#: wpc-product-bundles.php:1611
-msgid "Premium support"
-msgstr ""
-
-#: wpc-product-bundles.php:1737
-msgid "One of the bundled products is unavailable."
-msgstr ""
-
-#: wpc-product-bundles.php:1738
-#: wpc-product-bundles.php:1745
-#: wpc-product-bundles.php:1752
-#: wpc-product-bundles.php:1759
-#: wpc-product-bundles.php:1766
-#: wpc-product-bundles.php:1776
-#: wpc-product-bundles.php:1784
-msgid "You cannot add this bundle to the cart."
-msgstr ""
-
-#: wpc-product-bundles.php:1744
-#: wpc-product-bundles.php:1751
-msgid "\"%s\" is un-purchasable."
-msgstr ""
-
-#: wpc-product-bundles.php:1758
-#: wpc-product-bundles.php:1775
-msgid "\"%s\" has not enough stock."
-msgstr ""
-
-#: wpc-product-bundles.php:1765
-msgid "You cannot add another \"%s\" to your cart."
-msgstr ""
-
-#: wpc-product-bundles.php:1783
-msgid "\"%s\" is protected and cannot be purchased."
-msgstr ""
-
-#: wpc-product-bundles.php:2151
-msgid "(bundled in %s)"
-msgstr ""
-
-#: wpc-product-bundles.php:2244
-msgid "No results found for \"%s\""
-msgstr ""
-
-#: wpc-product-bundles.php:2266
-msgid "Update the price of all bundles containing this product. The completion time for this process depends on the number of bundles you have in your store."
-msgstr ""
-
-#: wpc-product-bundles.php:2269
-msgid "Update Price"
-msgstr ""
-
-#: wpc-product-bundles.php:2273
-msgid "This tool is for updating the price of all bundles containing the modified product. It is invalid for a bundle."
-msgstr ""
-
-#: wpc-product-bundles.php:2276
-msgid "This box content just appears after you publish the product."
-msgstr ""
-
-#: wpc-product-bundles.php:2320
-#: wpc-product-bundles.php:2375
-msgid "Smart bundle"
-msgstr ""
-
-#: wpc-product-bundles.php:2327
-msgid "Bundled Products"
-msgstr ""
-
-#: wpc-product-bundles.php:2408
-msgid "settings"
-msgstr ""
-
-#: wpc-product-bundles.php:2413
-msgid "searching..."
-msgstr ""
-
-#: wpc-product-bundles.php:2415
-msgid "Type any keyword to search"
-msgstr ""
-
-#: wpc-product-bundles.php:2421
-msgid "Selected"
-msgstr ""
-
-#: wpc-product-bundles.php:2452
-msgid "Regular price"
-msgstr ""
-
-#: wpc-product-bundles.php:2458
-msgid "Fixed price"
-msgstr ""
-
-#: wpc-product-bundles.php:2462
-msgid "Disable auto calculate price."
-msgstr ""
-
-#: wpc-product-bundles.php:2462
-msgid "If checked, %s click here to set price %s by manually."
-msgstr ""
-
-#: wpc-product-bundles.php:2466
-msgid "Discount"
-msgstr ""
-
-#: wpc-product-bundles.php:2473
-msgid "% or amount"
-msgstr ""
-
-#: wpc-product-bundles.php:2479
-msgid "If you fill both, the amount will be used."
-msgstr ""
-
-#: wpc-product-bundles.php:2483
-msgid "Custom quantity"
-msgstr ""
-
-#: wpc-product-bundles.php:2487
-msgid "Buyer can change the quantity of bundled products."
-msgstr ""
-
-#: wpc-product-bundles.php:2491
-msgid "Limit of each item"
-msgstr ""
-
-#: wpc-product-bundles.php:2495
-msgid "Use default quantity as min?"
-msgstr ""
-
-#: wpc-product-bundles.php:2507
-msgid "Limit of whole items"
-msgstr ""
-
-#: wpc-product-bundles.php:2520
-msgid "Shipping fee"
-msgstr ""
-
-#: wpc-product-bundles.php:2523
-msgid "Apply to the whole bundle"
-msgstr ""
-
-#: wpc-product-bundles.php:2524
-msgid "Apply to each bundled product"
-msgstr ""
-
-#: wpc-product-bundles.php:2529
-msgid "Manage stock"
-msgstr ""
-
-#: wpc-product-bundles.php:2533
-msgid "Enable stock management at bundle level."
-msgstr ""
-
-#: wpc-product-bundles.php:2535
-msgid "By default, the bundle' stock was calculated automatically from bundled products. After enabling, please press \"Update\" then you can change the stock settings on the \"Inventory\" tab."
-msgstr ""
-
-#: wpc-product-bundles.php:2539
-msgid "Custom display price"
-msgstr ""
-
-#: wpc-product-bundles.php:2592
-msgid "Add"
-msgstr ""
-
-#: wpc-product-bundles.php:2594
-msgid "Remove"
-msgstr ""
-
-#: wpc-product-bundles.php:2599
-msgid "Default quantity"
-msgstr ""
-
-#: wpc-product-bundles.php:2827
-#: wpc-product-bundles.php:2869
-msgid "From"
-msgstr ""
-
-#: wpc-product-bundles.php:3353
-msgid "Bundle(s) low in stock"
-msgstr ""
-
-#: wpc-product-bundles.php:3358
-msgid "%s is low in stock."
-msgstr ""
-
-#: wpc-product-bundles.php:3361
-msgid "%1$s is low in stock. There are %2$d left."
-msgstr ""
-
-#: wpc-product-bundles.php:3382
-msgid "Bundle (%s)"
-msgstr ""
-
-#: wpc-product-bundles.php:3401
-msgid "Create a Smart bundle"
-msgstr ""
-
-#: wpc-product-bundles.php:3420
-msgid "Added %s product(s) to this bundle."
-msgstr ""
-
-#: wpc-product-bundles.php:3430
-msgid "Bundle(s) out of stock"
-msgstr ""
-
-#: wpc-product-bundles.php:3435
-#: wpc-product-bundles.php:3438
-msgid "%s is out of stock."
-msgstr ""
+msgstr "https://wpclever.net"
+
+#. Plugin URI of the plugin
+msgid "https://wpclever.net/"
+msgstr "https://wpclever.net/"
+
+#. Plugin Name of the plugin
+msgid "WPC Product Bundles for WooCommerce"
+msgstr "WPC Product Bundles for WooCommerce"

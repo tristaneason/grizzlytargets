@@ -81,7 +81,7 @@ if (!class_exists("EnWDQuotes")) {
          */
         public function en_wd_update_query_string()
         {
-            return " , enable_store_pickup , fee_local_delivery , suppress_local_delivery , miles_store_pickup , match_postal_store_pickup , checkout_desc_store_pickup , enable_local_delivery , miles_local_delivery , match_postal_local_delivery , checkout_desc_local_delivery ";
+            return " ,phone_instore, enable_store_pickup , fee_local_delivery , suppress_local_delivery , miles_store_pickup , match_postal_store_pickup , checkout_desc_store_pickup , enable_local_delivery , miles_local_delivery , match_postal_local_delivery , checkout_desc_local_delivery ";
         }
 
         /**
@@ -94,6 +94,10 @@ if (!class_exists("EnWDQuotes")) {
             $zip = (isset($origin->zip)) ? $origin->zip : "";
             $city = (isset($origin->city)) ? $origin->city : "";
             $state = (isset($origin->state)) ? $origin->state : "";
+            // Origin terminal address
+            $address = (isset($origin->address)) ? $origin->address : "";
+            // Terminal phone number
+            $phone_instore = (isset($origin->phone_instore)) ? $origin->phone_instore : "";
             $country = (isset($origin->country)) ? $origin->country : "";
             $location = (isset($origin->location)) ? $origin->location : "";
             $locationId = (isset($origin->id)) ? $origin->id : "";
@@ -115,6 +119,10 @@ if (!class_exists("EnWDQuotes")) {
                 'zip' => $zip,
                 'city' => $city,
                 'state' => $state,
+                // Origin terminal address
+                'address' => $address,
+                // Terminal phone number
+                'phone_instore' => $phone_instore,
                 'location' => $location,
                 'country' => $country,
                 'enable_store_pickup' => $enable_store_pickup,

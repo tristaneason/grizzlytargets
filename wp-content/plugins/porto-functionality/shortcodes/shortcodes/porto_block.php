@@ -11,11 +11,12 @@ function porto_load_block_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => 'Porto ' . __( 'Block', 'porto-functionality' ),
-			'base'     => 'porto_block',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'dashicons dashicons-tagcloud',
-			'params'   => array(
+			'name'        => 'Porto ' . __( 'Block', 'porto-functionality' ),
+			'base'        => 'porto_block',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'A simple block that supports on porto template builder', 'porto-functionality' ),
+			'icon'        => 'dashicons dashicons-tagcloud',
+			'params'      => array(
 				array(
 					'type'       => 'label',
 					'heading'    => __( 'Input block id & slug name', 'porto-functionality' ),

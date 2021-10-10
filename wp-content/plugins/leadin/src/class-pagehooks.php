@@ -139,6 +139,7 @@ class PageHooks {
 		switch ( $parsed_attributes['type'] ) {
 			case 'form':
 				$form_div_uuid = $this->generate_div_uuid();
+				$hublet        = LeadinFilters::get_leadin_hublet();
 				AssetsManager::enqueue_forms_script();
 				return '
 					<script>
@@ -147,6 +148,7 @@ class PageHooks {
 							formId: "' . $id . '",
 							target: "#hbspt-form-' . $form_div_uuid . '",
 							shortcode: "wp",
+							region: "' . $hublet . '",
 							' . LeadinFilters::get_leadin_forms_payload() . '
 						});
 					</script>

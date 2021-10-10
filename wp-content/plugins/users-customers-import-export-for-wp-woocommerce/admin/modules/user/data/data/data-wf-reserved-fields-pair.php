@@ -32,31 +32,34 @@ $columns['show_admin_bar_front'] = array('title'=>'show_admin_bar_front','descri
 $columns['locale'] = array('title'=>'locale','description'=>'');
 $columns['wp_user_level'] = array('title'=>'wp_user_level','description'=>'');
 $columns['dismissed_wp_pointers'] = array('title'=>'dismissed_wp_pointers','description'=>'');
+$columns['show_welcome_panel'] = array('title'=>'show_welcome_panel','description'=>'');
+$columns['session_tokens'] = array('title'=>'session_tokens','description'=>'');
 $columns['last_update'] = array('title'=>'last_update','description'=>'');
 
 
 if( is_plugin_active( 'woocommerce/woocommerce.php' ) ):
     
-    $columns['billing_first_name'] = array('title'=>'billing_first_name','description'=>'');
-    $columns['billing_last_name'] = array('title'=>'billing_last_name','description'=>'');
-    $columns['billing_company'] = array('title'=>'billing_company','description'=>'');
-    $columns['billing_email'] = array('title'=>'billing_email','description'=>'');
-    $columns['billing_phone'] = array('title'=>'billing_phone','description'=>'');
-    $columns['billing_address_1'] = array('title'=>'billing_address_1','description'=>'');
-    $columns['billing_address_2'] = array('title'=>'billing_address_2','description'=>'');
-    $columns['billing_postcode'] = array('title'=>'billing_postcode','description'=>'');
-    $columns['billing_city'] = array('title'=>'billing_city','description'=>'');
-    $columns['billing_state'] = array('title'=>'billing_state','description'=>'');
-    $columns['billing_country'] = array('title'=>'billing_country','description'=>'');
-    $columns['shipping_first_name'] = array('title'=>'shipping_first_name','description'=>'');
-    $columns['shipping_last_name'] = array('title'=>'shipping_last_name','description'=>'');
-    $columns['shipping_company'] = array('title'=>'shipping_company','description'=>'');
-    $columns['shipping_address_1'] = array('title'=>'shipping_address_1','description'=>'');
-    $columns['shipping_address_2'] = array('title'=>'shipping_address_2','description'=>'');
-    $columns['shipping_postcode'] = array('title'=>'shipping_postcode','description'=>'');
-    $columns['shipping_city'] = array('title'=>'shipping_city','description'=>'');
-    $columns['shipping_state'] = array('title'=>'shipping_state','description'=>'');
-    $columns['shipping_country'] = array('title'=>'shipping_country','description'=>'');
+    $columns['billing_first_name'] = array('title'=>'Billing first name','description'=>'');
+    $columns['billing_last_name'] = array('title'=>'Billing last name','description'=>'');
+    $columns['billing_company'] = array('title'=>'Billing company','description'=>'');
+    $columns['billing_email'] = array('title'=>'Billing email','description'=>'');
+    $columns['billing_phone'] = array('title'=>'Billing phone','description'=>'');
+    $columns['billing_address_1'] = array('title'=>'Billing address 1','description'=>'');
+    $columns['billing_address_2'] = array('title'=>'Billing address 2','description'=>'');
+    $columns['billing_postcode'] = array('title'=>'Billing postcode','description'=>'');
+    $columns['billing_city'] = array('title'=>'Billing city','description'=>'');
+    $columns['billing_state'] = array('title'=>'Billing state','description'=>'');
+    $columns['billing_country'] = array('title'=>'Billing country','description'=>'');
+    $columns['shipping_first_name'] = array('title'=>'Shipping first name','description'=>'');
+    $columns['shipping_last_name'] = array('title'=>'Shipping last name','description'=>'');
+    $columns['shipping_company'] = array('title'=>'Shipping company','description'=>'');
+    $columns['shipping_phone'] = array('title'=>'Shipping phone','description'=>'');
+    $columns['shipping_address_1'] = array('title'=>'Shipping address 1','description'=>'');
+    $columns['shipping_address_2'] = array('title'=>'Shipping address 2','description'=>'');
+    $columns['shipping_postcode'] = array('title'=>'Shipping postcode','description'=>'');
+    $columns['shipping_city'] = array('title'=>'Shipping city','description'=>'');
+    $columns['shipping_state'] = array('title'=>'Shipping state','description'=>'');
+    $columns['shipping_country'] = array('title'=>'Shipping country','description'=>'');
     
 endif;
 

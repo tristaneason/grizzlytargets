@@ -66,9 +66,16 @@ class OAuth {
 	 * Returns the refresh token stored in the options table.
 	 *
 	 * @return string The stored refresh token in the Options table.
+	 *
+	 * @throws \Exception If no refresh token is available.
 	 */
 	private static function get_refresh_token() {
 		$encrypted_refresh_token = LeadinOptions::get( 'refresh_token' );
+
+		if ( '' === $encrypted_refresh_token ) {
+			throw new \Exception( 'Refresh token is empty' );
+		}
+
 		return OAuthCrypto::decrypt( $encrypted_refresh_token );
 	}
 
@@ -107,7 +114,7 @@ class OAuth {
 				$refreshed_credentials->expires_in
 			);
 		} catch ( \Exception $e ) {
-			throw new \Exception( \json_encode( 'Failed to refresh OAuth token' ), 401 );
+			throw new \Exception( \json_encode( $e->getMessage() ), 401 );
 		}
 	}
 }

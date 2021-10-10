@@ -2,7 +2,7 @@
 /**
  * Booster for WooCommerce - Price by Country - Core
  *
- * @version 5.3.0
+ * @version 5.4.5
  * @author  Pluggabl LLC.
  */
 
@@ -29,7 +29,17 @@ class WCJ_Price_by_Country_Core {
 					$this->init();
 				}
 			}
-			$this->add_hooks();
+			if ('no' === wcj_get_option('wcj_price_by_country_admin_quick_edit_product_scope', 'no')) {
+				$this->add_hooks();
+			}
+			else
+			{
+				if(!wcj_is_admin_product_quick_edit_page()){
+
+					$this->add_hooks();
+				}
+
+			}
 			// `maybe_init_customer_country_by_ip()` executed on `init` hook - in case we need to call `get_customer_country_by_ip()` `WC_Geolocation` class is ready
 			add_action( 'init', array( $this, 'maybe_init_customer_country_by_ip' ) );
 		}
@@ -101,7 +111,7 @@ class WCJ_Price_by_Country_Core {
 	/**
 	 * add_hooks.
 	 *
-	 * @version 5.3.0
+	 * @version 5.4.5
 	 */
 	function add_hooks() {
 
@@ -131,9 +141,9 @@ class WCJ_Price_by_Country_Core {
 				if ( 1 == (float) $country_exchange_rate ) {
 					return;
 				}
-				wcj_remove_class_filter( 'posts_clauses', 'WC_Query', 'order_by_price_asc_post_clauses' );
-				wcj_remove_class_filter( 'posts_clauses', 'WC_Query', 'order_by_price_desc_post_clauses' );
-				wcj_remove_class_filter( 'posts_clauses', 'WC_Query', 'price_filter_post_clauses' );
+				wcj_remove_class_filter( 'posts_clauses', 'WC_Query', 'order_by_price_asc_post_clauses',0 );
+				wcj_remove_class_filter( 'posts_clauses', 'WC_Query', 'order_by_price_desc_post_clauses',0 );
+				wcj_remove_class_filter( 'posts_clauses', 'WC_Query', 'price_filter_post_clauses',0 );
 			} );
 			add_filter( 'woocommerce_price_filter_widget_step', function ( $step ) {
 				$step = 1;

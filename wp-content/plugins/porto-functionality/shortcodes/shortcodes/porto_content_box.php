@@ -14,6 +14,7 @@ function porto_load_content_box_shortcode() {
 			'name'            => 'Porto ' . __( 'Content Box', 'porto-functionality' ),
 			'base'            => 'porto_content_box',
 			'category'        => __( 'Porto', 'porto-functionality' ),
+			'description'     => __( 'Contain your any elements as you mind', 'porto-functionality' ),
 			'icon'            => 'far fa-newspaper',
 			'as_parent'       => array( 'except' => 'porto_content_box' ),
 			'content_element' => true,

@@ -26,6 +26,32 @@ function porto_load_ultimate_heading_shortcode() {
 					'value'      => '',
 				),
 				array(
+					'type'       => 'checkbox',
+					'heading'    => __( 'Enable typewriter effect', 'porto-functionality' ),
+					'param_name' => 'enable_typewriter',
+					'value'      => array( __( 'Yes, please', 'js_composer' ) => 'yes' ),
+				),
+				array(
+					'type'        => 'textfield',
+					'heading'     => __( 'Start Delay(ms)', 'porto-functionality' ),
+					'param_name'  => 'typewriter_delay',
+					'value'       => '',
+					'dependency' => array(
+						'element'   => 'enable_typewriter',
+						'not_empty' => true,
+					),
+				),
+				array(
+					'type'        => 'textfield',
+					'heading'     => __( 'Please input min width that can work. (px)', 'porto-functionality' ),
+					'param_name'  => 'typewriter_width',
+					'value'       => '',
+					'dependency' => array(
+						'element'   => 'enable_typewriter',
+						'not_empty' => true,
+					),
+				),
+				array(
 					'type'       => 'porto_param_heading',
 					'text'       => __( 'Heading Settings', 'porto-functionality' ),
 					'param_name' => 'main_heading_typograpy',
@@ -33,54 +59,13 @@ function porto_load_ultimate_heading_shortcode() {
 					'class'      => '',
 				),
 				array(
-					'type'       => 'checkbox',
-					'heading'    => __( 'Use theme default font family?', 'porto-functionality' ),
-					'param_name' => 'main_heading_use_theme_fonts',
-					'value'      => array( __( 'Yes', 'js_composer' ) => 'yes' ),
-					'std'        => 'yes',
+					'type'       => 'porto_typography',
+					'heading'    => __( 'Typography', 'porto-functionality' ),
+					'param_name' => 'main_heading_porto_typography',
 					'group'      => 'Typography',
-					'class'      => '',
-				),
-				array(
-					'type'       => 'google_fonts',
-					'param_name' => 'main_heading_font',
-					'settings'   => array(
-						'fields' => array(
-							'font_family_description' => __( 'Select Font Family.', 'porto-functionality' ),
-							'font_style_description'  => __( 'Select Font Style.', 'porto-functionality' ),
-						),
+					'selectors'  => array(
+						'{{WRAPPER}}.porto-u-heading .porto-u-main-heading > *',
 					),
-					'dependency' => array(
-						'element'            => 'main_heading_use_theme_fonts',
-						'value_not_equal_to' => 'yes',
-					),
-					'group'      => 'Typography',
-				),
-				array(
-					'type'       => 'textfield',
-					'class'      => 'font-size',
-					'heading'    => __( 'Font size', 'porto-functionality' ),
-					'param_name' => 'main_heading_font_size',
-					'group'      => 'Typography',
-				),
-				array(
-					'type'       => 'dropdown',
-					'class'      => '',
-					'heading'    => __( 'Font Weight', 'porto-functionality' ),
-					'param_name' => 'main_heading_font_weight',
-					'value'      => array(
-						__( 'Default', 'porto-functionality' ) => '',
-						'100' => '100',
-						'200' => '200',
-						'300' => '300',
-						'400' => '400',
-						'500' => '500',
-						'600' => '600',
-						'700' => '700',
-						'800' => '800',
-						'900' => '900',
-					),
-					'group'      => 'Typography',
 				),
 				array(
 					'type'       => 'colorpicker',
@@ -90,23 +75,6 @@ function porto_load_ultimate_heading_shortcode() {
 					'value'      => '',
 					'group'      => 'Typography',
 				),
-
-				array(
-					'type'       => 'textfield',
-					'class'      => 'font-size',
-					'heading'    => __( 'Line Height', 'porto-functionality' ),
-					'param_name' => 'main_heading_line_height',
-					'group'      => 'Typography',
-				),
-
-				array(
-					'type'       => 'textfield',
-					'class'      => 'font-size',
-					'heading'    => __( 'Letter Spacing', 'porto-functionality' ),
-					'param_name' => 'main_heading_letter_spacing',
-					'group'      => 'Typography',
-				),
-
 				array(
 					'type'       => 'number',
 					'heading'    => __( 'Heading Margin Bottom', 'porto-functionality' ),
@@ -144,56 +112,14 @@ function porto_load_ultimate_heading_shortcode() {
 					'class'            => '',
 					'edit_field_class' => 'vc_column vc_col-sm-12',
 				),
-
 				array(
-					'type'       => 'checkbox',
-					'heading'    => __( 'Use theme default font family?', 'porto-functionality' ),
-					'param_name' => 'sub_heading_use_theme_fonts',
-					'value'      => array( __( 'Yes', 'js_composer' ) => 'yes' ),
-					'std'        => 'yes',
+					'type'       => 'porto_typography',
+					'heading'    => __( 'Typography', 'porto-functionality' ),
+					'param_name' => 'sub_heading_porto_typography',
 					'group'      => 'Typography',
-					'class'      => '',
-				),
-				array(
-					'type'       => 'google_fonts',
-					'param_name' => 'sub_heading_font',
-					'settings'   => array(
-						'fields' => array(
-							'font_family_description' => __( 'Select Font Family.', 'porto-functionality' ),
-							'font_style_description'  => __( 'Select Font Style.', 'porto-functionality' ),
-						),
+					'selectors'  => array(
+						'{{WRAPPER}} .porto-u-sub-heading',
 					),
-					'dependency' => array(
-						'element'            => 'sub_heading_use_theme_fonts',
-						'value_not_equal_to' => 'yes',
-					),
-					'group'      => 'Typography',
-				),
-				array(
-					'type'       => 'textfield',
-					'class'      => '',
-					'heading'    => __( 'Font Size', 'porto-functionality' ),
-					'param_name' => 'sub_heading_font_size',
-					'group'      => 'Typography',
-				),
-				array(
-					'type'       => 'dropdown',
-					'class'      => '',
-					'heading'    => __( 'Font Weight', 'porto-functionality' ),
-					'param_name' => 'sub_heading_font_weight',
-					'value'      => array(
-						__( 'Default', 'porto-functionality' ) => '',
-						'100' => '100',
-						'200' => '200',
-						'300' => '300',
-						'400' => '400',
-						'500' => '500',
-						'600' => '600',
-						'700' => '700',
-						'800' => '800',
-						'900' => '900',
-					),
-					'group'      => 'Typography',
 				),
 				array(
 					'type'       => 'colorpicker',
@@ -203,23 +129,6 @@ function porto_load_ultimate_heading_shortcode() {
 					'value'      => '',
 					'group'      => 'Typography',
 				),
-
-				array(
-					'type'       => 'textfield',
-					'class'      => '',
-					'heading'    => __( 'Line Height', 'porto-functionality' ),
-					'param_name' => 'sub_heading_line_height',
-					'group'      => 'Typography',
-				),
-
-				array(
-					'type'       => 'textfield',
-					'class'      => '',
-					'heading'    => __( 'Letter Spacing', 'porto-functionality' ),
-					'param_name' => 'sub_heading_letter_spacing',
-					'group'      => 'Typography',
-				),
-
 				array(
 					'type'       => 'number',
 					'heading'    => 'Sub Heading Margin Bottom',
@@ -228,15 +137,24 @@ function porto_load_ultimate_heading_shortcode() {
 					'group'      => 'Design',
 				),
 				array(
-					'type'       => 'dropdown',
-					'class'      => '',
+					'type'       => 'porto_button_group',
 					'heading'    => __( 'Alignment', 'porto-functionality' ),
 					'param_name' => 'alignment',
 					'value'      => array(
-						__( 'Center', 'porto-functionality' ) => 'center',
-						__( 'Left', 'porto-functionality' )   => 'left',
-						__( 'Right', 'porto-functionality' )  => 'right',
+						'left'   => array(
+							'title' => esc_html__( 'Left', 'porto-functionality' ),
+							'icon'  => 'fas fa-align-left',
+						),
+						'center' => array(
+							'title' => esc_html__( 'Center', 'porto-functionality' ),
+							'icon'  => 'fas fa-align-center',
+						),
+						'right'  => array(
+							'title' => esc_html__( 'Right', 'porto-functionality' ),
+							'icon'  => 'fas fa-align-right',
+						),
 					),
+					'std'        => 'center',
 				),
 				array(
 					'type'        => 'dropdown',

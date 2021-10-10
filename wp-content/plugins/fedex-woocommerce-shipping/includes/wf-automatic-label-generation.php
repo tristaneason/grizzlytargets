@@ -3,7 +3,25 @@
 
 	if(isset($shipping_setting['automate_package_generation']) && $shipping_setting['automate_package_generation']=='yes' )
 	{
-		add_action( 'woocommerce_thankyou', 'wf_automatic_package_and_label_generation_fedex' );
+		if( isset($shipping_setting['auto_label_trigger']) && $shipping_setting['auto_label_trigger'] == 'payment_status' ){
+
+			add_action( 'woocommerce_order_payment_status_changed', 'wf_automatic_package_and_label_generation_fedex' );
+		}
+		else{
+
+			add_action( 'woocommerce_thankyou', 'wf_automatic_package_and_label_generation_fedex' );
+			add_action( 'woocommerce_order_status_changed', 'ph_automatic_label_generation_for_failed_label_generation', 10, 3 );
+		}
+	}
+
+	function ph_automatic_label_generation_for_failed_label_generation( $order_id, $old_status, $new_status )
+	{
+		$auto_label_generation = get_post_meta( $order_id, 'ph_fedex_auto_label_generation', true );
+		
+		if( $auto_label_generation == 'failed' && $new_status == 'processing' ){
+
+			wf_automatic_package_and_label_generation_fedex( $order_id );
+		}
 	}
 	
 	function wf_automatic_package_and_label_generation_fedex( $order_id )
@@ -11,7 +29,7 @@
 		$order 					= new WC_Order($order_id);
 		$order_status 			= $order->get_status();
 		$shipping_setting_fedex = get_option('woocommerce_wf_fedex_woocommerce_shipping_settings');
-		$allowed_order_status 	= apply_filters( 'xa_automatic_label_generation_allowed_order_status', array('processing'), $order_status, $order_id );	// Allowed order status for automatic label generation
+		$allowed_order_status 	= apply_filters( 'xa_automatic_label_generation_allowed_order_status', array('processing'), $order_status, $order_id );	// Allowed order status for automatic label 
 
 		// Add transient to check for duplicate label generation
 		$transient			 	= 'fedex_auto_generate' . md5( $order_id );
@@ -27,6 +45,7 @@
 			if( $shipping_setting_fedex['debug'] == 'yes' ) {
 				WC_Admin_Meta_Boxes::add_error( __( "Since Order Status is ", 'wf-shipping-fedex' ).$order_status.__( ". Automatic label generation has been suspended (Fedex).", 'wf-shipping-fedex' ) );
 			}
+			update_post_meta( $order_id, 'ph_fedex_auto_label_generation', 'failed' );
 			return;
 		}
 		
@@ -44,7 +63,9 @@
 
 		$fedex_admin_class 	= new wf_fedex_woocommerce_shipping_admin();
 
-		$fedex_admin_class->ph_fedex_auto_generate_packages( base64_encode($order_id), md5($current_minute), $shipping_setting_fedex );
+		$fedex_admin_class->ph_fedex_auto_generate_packages( base64_encode($order_id), $shipping_setting_fedex,md5($current_minute) );
+
+		update_post_meta( $order_id, 'ph_fedex_auto_label_generation', '' );
 		
 		// $package_url=admin_url( '/post.php?wf_fedex_generate_packages='.base64_encode($order_id).'&auto_generate='.md5($current_minute) );
 		// $ch = curl_init();
@@ -140,7 +161,7 @@
 			
 			$fedex_admin_class 	= new wf_fedex_woocommerce_shipping_admin();
 
-			$fedex_admin_class->ph_fedex_auto_create_shipment( $order_id, md5($current_minute), $shipping_setting_fedex, $weight, $length, $width, $height, $services );
+			$fedex_admin_class->ph_fedex_auto_create_shipment( $order_id, $shipping_setting_fedex, $weight, $length, $width, $height, $services,md5($current_minute) );
 
 			// $package_url.='&weight=["'.implode('","',$weight).'"]';
 			// $package_url.='&length=["'.implode('","',$length).'"]';

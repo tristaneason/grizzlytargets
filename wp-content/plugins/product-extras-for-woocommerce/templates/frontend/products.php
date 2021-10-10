@@ -31,7 +31,7 @@ if( isset( $item['child_products'] ) ) {
 	<input type="hidden" name="<?php echo esc_attr( $id ); ?>_min_products" value="<?php echo esc_attr( $min_products ); ?>">
 	<?php $max_products = ! empty( $item['max_products'] ) ? absint( $item['max_products'] ) : ''; ?>
 	<input type="hidden" name="<?php echo esc_attr( $id ); ?>_max_products" value="<?php echo esc_attr( $max_products ); ?>">
-	<?php $child_discount = ! empty( $item['child_discount'] ) ? absint( $item['child_discount'] ) : ''; ?>
+	<?php $child_discount = ! empty( $item['child_discount'] ) ? wc_format_decimal( $item['child_discount'] ) : ''; ?>
 	<input type="hidden" name="<?php echo esc_attr( $id ); ?>_child_discount" value="<?php echo esc_attr( $child_discount ); ?>">
 	<?php $discount_type = ! empty( $item['discount_type'] ) ? $item['discount_type'] : ''; ?>
 	<input type="hidden" name="<?php echo esc_attr( $id ); ?>_discount_type" value="<?php echo esc_attr( $discount_type ); ?>">

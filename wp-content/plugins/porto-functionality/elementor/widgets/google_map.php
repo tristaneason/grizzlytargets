@@ -20,15 +20,19 @@ class Porto_Elementor_Google_Map_Widget extends \Elementor\Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Google Map', 'porto-functionality' );
+		return __( 'Porto Google Map', 'porto-functionality' );
 	}
 
 	public function get_categories() {
-		return array( 'theme-elements' );
+		return array( 'porto-elements' );
 	}
 
 	public function get_keywords() {
 		return array( 'google', 'map', 'location' );
+	}
+
+	public function get_icon() {
+		return 'eicon-google-maps';
 	}
 
 	public function get_script_depends() {

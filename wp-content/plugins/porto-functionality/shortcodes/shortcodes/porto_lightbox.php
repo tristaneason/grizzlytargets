@@ -14,6 +14,7 @@ function porto_load_lightbox_shortcode() {
 			'name'            => 'Porto ' . __( 'Lightbox', 'porto-functionality' ),
 			'base'            => 'porto_lightbox',
 			'category'        => __( 'Porto', 'porto-functionality' ),
+			'description'     => __( 'Display the lightbox', 'porto-functionality' ),
 			'icon'            => 'fas fa-clone',
 			'content_element' => true,
 			'controls'        => 'full',

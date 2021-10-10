@@ -3,6 +3,7 @@
  * Smartpost hubs in array format
  */
 return array(
+	'' 	   => 'N/A',
 	'5185' => 'ALPA Allentown',
 	'5303' => 'ATGA Atlanta',
 	'5281' => 'CHNC Charlotte',

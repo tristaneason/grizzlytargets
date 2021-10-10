@@ -11,15 +11,16 @@ function porto_load_grid_container_shortcode() {
 
 	vc_map(
 		array(
-			'name'            => 'Porto ' . __( 'Masonry Container', 'porto-functionality' ),
-			'base'            => 'porto_grid_container',
-			'category'        => __( 'Porto', 'porto-functionality' ),
-			'icon'            => 'porto_vc_grid_container',
-			'as_parent'       => array( 'only' => 'porto_grid_item' ),
-			'controls'        => 'full',
+			'name'        => 'Porto ' . __( 'Masonry Container', 'porto-functionality' ),
+			'base'        => 'porto_grid_container',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'Masonry Grid with any elements', 'porto-functionality' ),
+			'icon'        => 'porto_vc_grid_container',
+			'as_parent'   => array( 'only' => 'porto_grid_item' ),
+			'controls'    => 'full',
 			//'is_container' => true,
-			'js_view'         => 'VcColumnView',
-			'params'          => array(
+			'js_view'     => 'VcColumnView',
+			'params'      => array(
 				array(
 					'type'       => 'dropdown',
 					'heading'    => __( 'Layout', 'porto-functionality' ),

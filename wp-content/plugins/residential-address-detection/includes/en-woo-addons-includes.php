@@ -105,7 +105,8 @@ if (!class_exists("EnWooAddonsInclude")) {
                 'transportation_insight_freight_dependencies',
                 'trinet_small_dependencies',
                 'daylight_quotes_dependencies',
-                'freightview_dependencies'
+                'freightview_dependencies',
+                'dayross_quotes_dependencies'
             );
 
             foreach ($plugins_dependies_function_arr as $value) {

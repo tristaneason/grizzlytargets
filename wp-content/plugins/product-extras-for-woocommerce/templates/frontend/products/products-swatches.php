@@ -1,6 +1,6 @@
 <?php
 /**
- * A products field template for the column layout
+ * A products field template for the swatches layout
  * @since 2.6.0
  * @package WooCommerce Product Add-Ons Ultimate
  */

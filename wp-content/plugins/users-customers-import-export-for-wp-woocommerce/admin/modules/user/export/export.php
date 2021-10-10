@@ -145,7 +145,11 @@ class Wt_Import_Export_For_Woo_basic_User_Export {
             if ($key == 'customer_id') {
                 $customer_data[$key] = !empty($user->ID) ? maybe_serialize($user->ID) : '';
                 continue;
-            }
+            }            
+            if ($key == 'session_tokens') {
+                $customer_data[$key] = !empty($user->{$key}) ? base64_encode(json_encode(maybe_unserialize($user->{$key}))) : '';
+                continue;
+            }            
             if($key == $wpdb->prefix.'user_level'){
                 $customer_data[$key] = (!empty($user->{$key})) ? $user->{$key} : 0;
                 continue;
@@ -165,7 +169,7 @@ class Wt_Import_Export_For_Woo_basic_User_Export {
     public function get_guest_customers_csv_row($order) {
         $customer_data = array();
         $csv_columns = $this->parent_module->get_selected_column_names();
-        $key_array = array('billing_first_name', 'billing_last_name', 'billing_company', 'billing_email', 'billing_phone', 'billing_address_1', 'billing_address_2', 'billing_postcode', 'billing_city', 'billing_state', 'billing_country', 'shipping_first_name', 'shipping_last_name', 'shipping_company', 'shipping_address_1', 'shipping_address_2', 'shipping_postcode', 'shipping_city', 'shipping_state', 'shipping_country', 'shipping_method');
+        $key_array = array('billing_first_name', 'billing_last_name', 'billing_company', 'billing_email', 'billing_phone', 'billing_address_1', 'billing_address_2', 'billing_postcode', 'billing_city', 'billing_state', 'billing_country', 'shipping_first_name', 'shipping_last_name', 'shipping_company', 'shipping_phone', 'shipping_address_1', 'shipping_address_2', 'shipping_postcode', 'shipping_city', 'shipping_state', 'shipping_country', 'shipping_method');
         foreach ($csv_columns as $key) {
             if (in_array($key, $key_array)) {
                 if ($key == 'user_email') {

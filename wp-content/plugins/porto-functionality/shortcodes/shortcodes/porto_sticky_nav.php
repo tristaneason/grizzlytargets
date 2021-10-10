@@ -14,6 +14,7 @@ function porto_load_sticky_nav_shortcode() {
 			'name'            => 'Porto ' . __( 'Sticky Nav', 'porto-functionality' ),
 			'base'            => 'porto_sticky_nav',
 			'category'        => __( 'Porto', 'porto-functionality' ),
+			'description'     => __( 'Stick navigation', 'porto-functionality' ),
 			'icon'            => 'porto_vc_sticky_nav',
 			'as_parent'       => array( 'only' => 'porto_sticky_nav_link' ),
 			'content_element' => true,

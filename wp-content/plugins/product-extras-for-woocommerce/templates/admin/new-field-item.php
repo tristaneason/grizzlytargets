@@ -59,6 +59,8 @@ if( ! defined( 'ABSPATH' ) ) {
 
 		<?php include( PEWC_DIRNAME . '/templates/admin/views/role-based-prices.php' ); ?>
 
+		<?php include( PEWC_DIRNAME . '/templates/admin/views/price-visibility.php' ); ?>
+
 		<?php do_action( 'pewc_end_fields_heading' ); ?>
 
 		<div class="pewc-hide-if-not-pro">

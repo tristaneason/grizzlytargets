@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Restrict Payment Gateways.
  *
  * @class    WC_CSP_Restrict_Payment_Gateways
- * @version  1.9.0
+ * @version  1.9.4
  */
 class WC_CSP_Restrict_Payment_Gateways extends WC_CSP_Restriction implements WC_CSP_Checkout_Restriction {
 
@@ -600,7 +600,7 @@ class WC_CSP_Restrict_Payment_Gateways extends WC_CSP_Restriction implements WC_
 
 		// If the session is empty, let's get the gateway from the $posted array
 		if ( ! $chosen_gateway ) {
-			$chosen_gateway = $posted[ 'check_gateway' ];
+			$chosen_gateway = isset( $posted[ 'check_gateway' ] ) ? $posted[ 'check_gateway' ] : false;
 		}
 
 		if ( empty( $available_gateways ) || ! $chosen_gateway || ! isset( $available_gateways[ $chosen_gateway ] ) ) {

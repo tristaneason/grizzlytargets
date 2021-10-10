@@ -28,13 +28,31 @@ function pewc_filter_field_types_pro( $field_types ) {
 
 function pewc_field_item_pro_message( $item ) {
 	if( ! pewc_is_pro() ) {
+		$upgrade = sprintf(
+			'<a target="_blank" href="%s">%s</a><span style="font-size: 14px;" class="dashicons dashicons-external"></span>',
+			pewc_get_upgrade_url(),
+			__( 'upgrade to the Pro licence', 'pewc' )
+		);
+		$enter = sprintf(
+			'<a target="_blank" href="%s">%s</a><span style="font-size: 14px;" class="dashicons dashicons-external"></span>',
+			pewc_get_settings_url(),
+			__( 'enter your Pro licence key here', 'pewc' )
+		);
+		$support = sprintf(
+			'<a target="_blank" href="%s">%s</a><span style="font-size: 14px;" class="dashicons dashicons-external"></span>',
+			'https://pluginrepublic.com/documentation/pro-features-not-activating-after-upgrade/',
+			__( 'see this support article', 'pewc' )
+		);
 		printf(
-			'<div class="pewc-pro-only">%s %s</div>',
-			__( 'This field is not available with the Basic licence. Please upgrade to the Pro licence to use this field.', 'pewc' ),
+			'<div class="pewc-pro-only"><p>%s</p><p>%s</p></div>',
 			sprintf(
-				'<a target="_blank" href="%s">%s</a>',
-				pewc_get_upgrade_url(),
-				__( 'Upgrade', 'pewc' ) . '<span style="font-size: 14px;" class="dashicons dashicons-external"></span>'
+				__( 'This field is not available with the Basic licence. Please %s or %s to use this field.', 'pewc' ),
+				$upgrade,
+				$enter
+			),
+			sprintf(
+				__( 'If you have recently upgraded to Pro, please %s.', 'pewc' ),
+				$support
 			)
 		);
 	}
@@ -78,20 +96,27 @@ function pewc_do_group_tabs( $args ) {
 		if( $product_extra_groups ) {
 			$class = 'active-tab';
 			echo '<div class="pewc-' . $display . '-wrapper">';
+
+			$group_index = 0;
+
 			foreach( $product_extra_groups as $group_id=>$group ) {
 
 				$group_title = pewc_get_group_title( $group_id, $group, pewc_has_migrated() );
 
 				if( isset( $group_title ) ) {
 					printf(
-						'<div id="pewc-tab-%s" data-group-id="%s" class="pewc-tab %s">%s</div>',
+						'<div id="pewc-tab-%s" data-group-id="%s" data-group-index="%s" class="pewc-tab %s">%s</div>',
 						$group_id,
 						$group_id,
+						$group_index,
 						$class,
 						esc_html( $group_title )
 					);
 				}
 				$class = '';
+
+				$group_index++;
+
 			}
 			echo '</div>';
 		}
@@ -109,7 +134,7 @@ function pewc_next_step_button( $group, $group_id, $display, $groups ) {
 		if( isset( $groups[$position - 1] ) ) {
 	    $prev_group = $groups[$position - 1];
 			printf(
-				'<a href="#" id="pewc-step-%s" data-group-id="%s" class="button pewc-next-step-button">%s</a>',
+				'<a href="#" id="pewc-step-%s" data-group-id="%s" data-direction="previous" class="button pewc-next-step-button">%s</a>',
 				$prev_group,
 				$prev_group,
 				__( 'Previous', 'pewc' )
@@ -118,7 +143,7 @@ function pewc_next_step_button( $group, $group_id, $display, $groups ) {
 		if( isset( $groups[$position + 1] ) ) {
 	    $next_group = $groups[$position + 1];
 			printf(
-				'<a href="#" id="pewc-step-%s" data-group-id="%s" class="button pewc-next-step-button">%s</a>',
+				'<a href="#" id="pewc-step-%s" data-group-id="%s" data-direction="next" class="button pewc-next-step-button">%s</a>',
 				$next_group,
 				$next_group,
 				__( 'Next', 'pewc' )

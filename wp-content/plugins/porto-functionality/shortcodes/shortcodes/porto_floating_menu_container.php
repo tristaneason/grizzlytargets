@@ -11,6 +11,7 @@ function porto_load_floating_menu_container_shortcode() {
 			'name'                    => 'Porto ' . __( 'Floating Menu Container', 'porto-functionality' ),
 			'base'                    => 'porto_floating_menu_container',
 			'category'                => __( 'Porto', 'porto-functionality' ),
+			'description'             => __( 'Show menu with floating', 'porto-functionality' ),
 			'icon'                    => 'fas fa-ellipsis-v',
 			'as_parent'               => array( 'only' => 'porto_floating_menu_item' ),
 			'content_element'         => true,

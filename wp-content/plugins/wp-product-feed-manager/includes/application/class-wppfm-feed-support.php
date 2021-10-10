@@ -57,7 +57,12 @@ if ( ! class_exists( 'WPPFM_Feed_Support' ) ) :
 			$queries_class = new WPPFM_Feed_Queries;
 			$current_data  = key_exists( $query_split[1], $product_data ) ? $product_data[ $query_split[1] ] : '';
 
-			// the following attributes can or will contain an array so surpress the type warning for these attributes
+			// @since 2.24.0
+			if ( '_weight' === $query_split[1] ) {
+				$current_data = $this->format_weight_value( $current_data );
+			}
+
+			// the following attributes can or will contain an array so suppress the type warning for these attributes
 			$suppress_type_warning_attributes = apply_filters(
 				'wppfm_suppress_type_warning_attributes',
 				array(
@@ -184,6 +189,14 @@ if ( ! class_exists( 'WPPFM_Feed_Support' ) ) :
 					$result = $value_editors->convert_to_element( $query_split, $current_value );
 					break;
 
+				case 'strip tags':
+					$result = $value_editors->strip_tags_from_value( $current_value );
+					break;
+
+				case 'limit characters':
+					$result = $value_editors->limit_characters_value( $query_split, $current_value );
+					break;
+
 				default:
 					$result = false;
 					break;
@@ -264,6 +277,25 @@ if ( ! class_exists( 'WPPFM_Feed_Support' ) ) :
 				for ( $i = 0; $i < 10; $i ++ ) {
 					array_push( $active_fields, "DraftImages[$i]" );
 				}
+			}
+		}
+
+		/**
+		 * The Weight data of a WooCommerce product always uses a period as decimal separator, independent of the WC price decimal separator
+		 * setting. This function will convert a weight value to a format with the correct decimal separator for calculations.
+		 *
+		 * @since 2.24.0
+		 *
+		 * @param $weight
+		 *
+		 * @return string
+		 */
+		private function format_weight_value( $weight )
+		{
+			if ( ',' === wc_get_price_decimal_separator() ) {
+				return str_replace( '.', ',', $weight );
+			} else {
+				return $weight;
 			}
 		}
 

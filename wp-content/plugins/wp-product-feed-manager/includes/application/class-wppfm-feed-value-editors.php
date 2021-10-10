@@ -43,6 +43,14 @@ if ( ! class_exists( 'WPPFM_Feed_Value_Editors' ) ) :
 			return $current_value . $condition[2];
 		}
 
+		public function strip_tags_from_value( $current_value ) {
+			return strip_tags( $current_value );
+		}
+
+		public function limit_characters_value( $condition, $current_value ) {
+			return substr( $current_value, 0, $condition[2] );
+		}
+
 		public function recalculate_value( $condition, $current_value, $combination_string, $combined_data_elements, $feed_language ) {
 			if ( ! $combination_string ) {
 				$values           = $this->make_recalculate_inputs( $current_value, $condition[3] );
@@ -131,27 +139,32 @@ if ( ! class_exists( 'WPPFM_Feed_Value_Editors' ) ) :
 		}
 
 		/**
-		 * Checks is a certain value could be a money value or not
+		 * Checks is a certain value could be a money value or not.
 		 *
-		 * @param int or string $value
+		 * @param int or string $value.
 		 *
-		 * @return boolean true if it is a money value
+		 * @return boolean true if it is a money value.
 		 */
 		public function is_money_value( $value ) {
-			// replace a comma separator with a period so it can be recognized as numeric
+			// replace a comma separator with a period so it can be recognized as numeric.
 			$possible_number = wppfm_number_format_parse( $value );
 
-			// if its not a number it cannot be a money value
+			// if its not a number it cannot be a money value.
 			if ( ! is_numeric( $possible_number ) ) {
 				return false;
 			}
 
 			$last_pos     = strrpos( (string) $value, get_option( 'woocommerce_price_decimal_sep' ) );
+
+			if ( ! $last_pos ) { // Has no decimal separator.
+				return false;
+			}
+
 			$value_length = strlen( (string) $value );
 
 			$actual_decimals = $value_length - $last_pos - 1;
 
-			return absint( get_option( 'woocommerce_price_num_decimals', 2 ) ) === $actual_decimals ? true : false;
+			return absint( get_option( 'woocommerce_price_num_decimals', 2 ) ) === $actual_decimals;
 		}
 
 		private function recalculate( $math, $main_value, $sub_value ) {

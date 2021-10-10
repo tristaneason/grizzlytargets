@@ -2,7 +2,6 @@ import $ from 'jquery';
 
 import { domElements } from './constants/selectors';
 import urlsMap from './constants/urlsMap';
-import { i18n } from './constants/leadinConfig';
 
 function setSelectedMenuItem(url) {
   $(domElements.subMenuButtons).removeClass('current');
@@ -52,37 +51,6 @@ export function syncRoute(path = '', searchQuery = '') {
 
   setSelectedMenuItem(newUrl);
   window.history.replaceState(null, null, newUrl);
-}
-
-export function disableNavigation() {
-  $(domElements.allMenuButtons).off('click');
-}
-
-function filterAuthedMenuItems(menuItems) {
-  let authedMenuItems = menuItems
-    .filter(':not(.current)')
-    .has(':not(a[href*="leadin_settings"])');
-
-  if (authedMenuItems.length !== menuItems.length - 3) {
-    authedMenuItems = authedMenuItems.filter(':not(.wp-first-item)');
-  }
-
-  return authedMenuItems;
-}
-
-export function setLeadinUnAuthedNavigation() {
-  const itemsToRemove = filterAuthedMenuItems($(domElements.subMenuButtons));
-  itemsToRemove.remove();
-
-  const buttonToChangeText = $(domElements.subMenuButtons)
-    .children()
-    .filter(':not(a[href*="leadin_settings"])');
-  buttonToChangeText.text(i18n.signIn);
-}
-
-export function setLeadinCookiesDisabledNavigation() {
-  const itemsToRemove = filterAuthedMenuItems($(domElements.subMenuButtons));
-  itemsToRemove.remove();
 }
 
 export const leadinPageReload = () => window.location.reload(true);

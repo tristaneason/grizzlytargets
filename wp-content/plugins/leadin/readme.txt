@@ -4,9 +4,9 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: CRM, Email Marketing, Live Chat, Forms, Analytics, Popups, Newsletter
 Requires at least: 4.0
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 8.0.1
+Stable tag: 8.4.90
 
 Capture, organize and engage web visitors with free forms, live chat, CRM (contact management), email marketing, and analytics. Easy to use, no coding.
 
@@ -228,13 +228,12 @@ Please visit the <a href="https://community.hubspot.com/?utm_source=wordpress-pl
 == Changelog ==
 
 <a href="http://plugins.svn.wordpress.org/leadin/trunk/changelog.txt" target="_blank">Full changelog here</a>
-- Current version: 8.0.1
-- Version release date: 2021-04-22
+- Current version: 8.4.90
+- Version release date: 2021-08-10
 
-= 8.0.1 (2021-04-22) =
-* Fix undefined website name in the authorisation screen
+= 8.4.90 (2021-08-10) =
+* Add EU prefix to scripts domains for EU portals
 
-= 8.0.0 (2021-04-22) =
-* Created OAuth2 flows to authorize the plugin.
-* Enabled OAuth2 authorization flows for users with third party cookies disabled.
+= 8.4.60 (2021-08-05) =
+* Added development backdoor for the new odyssey signup flow
 

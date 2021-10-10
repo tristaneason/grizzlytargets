@@ -7,16 +7,16 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Pagination from '@woocommerce/base-components/pagination';
 import { useEffect } from '@wordpress/element';
+import { usePrevious } from '@woocommerce/base-hooks';
 import {
-	usePrevious,
+	useStoreEvents,
 	useStoreProducts,
 	useSynchronizedQueryState,
 	useQueryStateByKey,
-} from '@woocommerce/base-hooks';
+} from '@woocommerce/base-context/hooks';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import { useInnerBlockLayoutContext } from '@woocommerce/shared-context';
 import { speak } from '@wordpress/a11y';
-import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -27,7 +27,12 @@ import ProductSortSelect from './product-sort-select';
 import ProductListItem from './product-list-item';
 import './style.scss';
 
-const generateQuery = ( { sortValue, currentPage, attributes } ) => {
+const generateQuery = ( {
+	sortValue,
+	currentPage,
+	attributes,
+	hideOutOfStockItems,
+} ) => {
 	const { columns, rows } = attributes;
 	const getSortArgs = ( orderName ) => {
 		switch ( orderName ) {
@@ -52,8 +57,6 @@ const generateQuery = ( { sortValue, currentPage, attributes } ) => {
 		}
 	};
 
-	const hideOutOfStockItems = getSetting( 'hideOutOfStockItems', false );
-
 	return {
 		...getSortArgs( sortValue ),
 		catalog_visibility: 'catalog',
@@ -75,8 +78,8 @@ const generateQuery = ( { sortValue, currentPage, attributes } ) => {
  */
 
 const extractPaginationAndSortAttributes = ( query ) => {
-	/* eslint-disable-next-line no-unused-vars, camelcase */
-	const { order, orderby, page, per_page, ...totalQuery } = query;
+	/* eslint-disable-next-line no-unused-vars */
+	const { order, orderby, page, per_page: perPage, ...totalQuery } = query;
 	return totalQuery || {};
 };
 
@@ -115,19 +118,22 @@ const ProductList = ( {
 	onSortChange,
 	sortValue,
 	scrollToTop,
+	hideOutOfStockItems = false,
 } ) => {
 	const [ queryState ] = useSynchronizedQueryState(
 		generateQuery( {
 			attributes,
 			sortValue,
 			currentPage,
+			hideOutOfStockItems,
 		} )
 	);
 	const { products, totalProducts, productsLoading } = useStoreProducts(
 		queryState
 	);
-	const { parentClassName } = useInnerBlockLayoutContext();
+	const { parentClassName, parentName } = useInnerBlockLayoutContext();
 	const totalQuery = extractPaginationAndSortAttributes( queryState );
+	const { dispatchStoreEvent } = useStoreEvents();
 
 	// These are possible filters.
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
@@ -137,15 +143,21 @@ const ProductList = ( {
 	const [ minPrice, setMinPrice ] = useQueryStateByKey( 'min_price' );
 	const [ maxPrice, setMaxPrice ] = useQueryStateByKey( 'max_price' );
 
-	// Only update previous query totals if the query is different and
-	// the total number of products is a finite number.
+	// Only update previous query totals if the query is different and the total number of products is a finite number.
 	const previousQueryTotals = usePrevious(
 		{ totalQuery, totalProducts },
 		areQueryTotalsDifferent
 	);
 
-	// If query state (excluding pagination/sorting attributes) changed,
-	// reset pagination to the first page.
+	// If the product list changes, trigger an event.
+	useEffect( () => {
+		dispatchStoreEvent( 'product-list-render', {
+			products,
+			listName: parentName,
+		} );
+	}, [ products, parentName, dispatchStoreEvent ] );
+
+	// If query state (excluding pagination/sorting attributes) changed, reset pagination to the first page.
 	useEffect( () => {
 		if ( isEqual( totalQuery, previousQueryTotals?.totalQuery ) ) {
 			return;
@@ -242,6 +254,7 @@ const ProductList = ( {
 
 ProductList.propTypes = {
 	attributes: PropTypes.object.isRequired,
+	hideOutOfStockItems: PropTypes.bool,
 	// From withScrollToTop.
 	scrollToTop: PropTypes.func,
 };

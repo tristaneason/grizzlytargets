@@ -11,11 +11,12 @@ function porto_load_blockquote_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => 'Porto ' . __( 'Blockquote', 'porto-functionality' ),
-			'base'     => 'porto_blockquote',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'fas fa-quote-left',
-			'params'   => array(
+			'name'        => 'Porto ' . __( 'Blockquote', 'porto-functionality' ),
+			'base'        => 'porto_blockquote',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'Show blockquote with border', 'porto-functionality' ),
+			'icon'        => 'fas fa-quote-left',
+			'params'      => array(
 				array(
 					'type'        => 'textarea_html',
 					'heading'     => __( 'Quote', 'porto-functionality' ),

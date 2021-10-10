@@ -31,6 +31,8 @@ if (!defined('ABSPATH')) {
         jQuery("#en_wd_dropship_city").val('');
         jQuery('.en_wd_multi_state').empty();
         jQuery("#en_wd_dropship_state").val('');
+        // Origin terminal address
+        jQuery("#en_wd_dropship_address").val('');
         jQuery("#en_wd_dropship_country").val('');
         jQuery('.en_wd_zip_validation_err').hide();
         jQuery('.en_wd_city_validation_err').hide();
@@ -218,6 +220,15 @@ if (!defined('ABSPATH')) {
                         <input type="text" title="Nickname" value="" data-optional="1" name="en_wd_dropship_nickname" placeholder="Nickname" id="en_wd_dropship_nickname">
                         <span class="en_wd_err"></span>
                     </div>
+                    <!-- Origin terminal address -->
+                    <div class="en_wd_add_warehouse_input">
+                        <label for="en_wd_origin_address">Street Address</label>
+                        <input type="text" title="Street Address"
+                               name="en_wd_dropship_address" data-optional="1"
+                               placeholder="320 W. Lanier Ave, Ste 200"
+                               id="en_wd_dropship_address">
+                        <span class="en_wd_err"></span>
+                    </div>
                     <div class="en_wd_add_warehouse_input">
                         <label for="en_wd_origin_zip">Zip </label>
                         <input title="Zip" type="text" maxlength="7" value="" onchange="change_dropship_zip()" name="en_wd_dropship_zip" placeholder="30214" id="en_wd_dropship_zip">
@@ -288,7 +299,13 @@ if (!defined('ABSPATH')) {
                         <label>Checkout description:</label>
                         <input type="text" class="<?php echo esc_attr($disabled); ?>" title="Checkout description:" id="instore-pickup-desc" placeholder="In-store pick up" data-optional="1" name="instore-pickup-desc">
                     </div>
-
+                    <!-- Terminal phone number -->
+                    <div class="en_wd_add_warehouse_input">
+                        <label>Phone number:</label>
+                        <input type="text" class="<?php echo $disabled; ?> en-phone-number" title="Phone number:"
+                               id="en-phone-number" placeholder="404-369-0680" data-optional="1"
+                               name="en-phone-number">
+                    </div>
 
                     <div style="clear: both;"></div>
                     <br>

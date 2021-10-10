@@ -1,10 +1,10 @@
 === Booster for WooCommerce ===
 Contributors: anbinder, karzin, pluggabl
-Tags: woocommerce bundle, woocommerce product addon, woocommerce integration, woocommerce customization, ecommerce plugin
+Tags: woocommerce customization, woocommerce bundle, woocommerce product addon, woocommerce integration, ecommerce plugin
 Requires at least: 4.4
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 5.3.9
+Stable tag: 5.4.7
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -13,7 +13,9 @@ One plugin to replace them all. Upgrade your WooCommerce website with the ultima
 == Description ==
 
 **The only WooCommerce bundle you’ll ever need.**
-Replace all those WooCommerce plugins with one single plugin that does the job of them all, and then some! Booster combines everything you need to fully customize your site's functionality into a single WooCommerce bundle, with 110 features and counting. With zero coding needed and easy setup options, Booster makes customization simple for everyone. Discover why 100,000+ websites rely on Booster to expand the possibilities of your website. Increase your sales with a multitude of features with the #1 all-in-one WooCommerce plugin. Stop relying on multiple WordPress product plugins today!
+Replace all those WooCommerce plugins with one single plugin that does the job of them all, and then some! Booster combines everything you need to fully customize your site's functionality into a single WooCommerce bundle, with 110 features and counting. With zero coding needed and easy setup options, Booster makes customization simple for everyone. 
+
+Discover why <strong>100,000+ websites</strong> rely on Booster to expand the possibilities of your website. Increase your sales with a multitude of features with the <strong>#1 all-in-one WooCommerce plugin</strong>. Stop relying on multiple WordPress product plugins today!
 
 **100+ WooCommerce addons in one single package.**
 Multiple WordPress WooCommerce plugins are a thing of the past! Boost the functionality of your Woocommerce website with just one plugin. Here’s what you get with Booster:
@@ -21,37 +23,40 @@ Multiple WordPress WooCommerce plugins are a thing of the past! Boost the functi
 **Maximum Features:** Add customized functionality to your WooCommerce business quickly with more than one hundred modules. Create a seamless customer experience on the front end and equip yourself with robust admin and reporting tools on the backend.
 
 **Zero Coding:** Booster is for everyone. It’s easy to set up and entirely flexible for maximum customization with just a few clicks. No coding required.
+
 **Maximum Savings:** Save time and money by installing one plugin that will customize your website like no other. Increase your sales with a host of additional features for the perfect shopping experience.
 
 **Zero Bloat:** Booster has a modular architecture, so you can enable only what you need. With just one plugin, you’re automatically boosting your website speed.
 
 **Key Features of Booster for WooCommerce**
-* *[PDF Invoicing and Packing slips:](https://booster.io/features/woocommerce-pdf-invoicing-and-packing-slips/)* * Streamline WooCommerce orders and paperwork by adding professional WooCommerce PDF invoices and offline packing docs. 
-* *[Product Input fields:](https://booster.io/features/woocommerce-product-input-fields/)* * Add additional custom input fields on all products or per product and allow customers to add more information for the perfect custom product. If you’re selling customized products, this is a must! 
-* *[Prices and Currencies:](https://booster.io/category/features/prices-currencies/)* * Attract international customers to your site by displaying their currency with automatic exchange rates.  Define price rules with WooCommerce Dynamic Pricing and offer global discounts. 
-* *[Cart and checkout:](https://booster.io/category/features/cart-checkout/)* * Customize the shopping cart and checkout experience for your customers. Create and add custom fields, coupons, additional fees, buttons, and more. Customize the checkout experience with WooCommerce custom fields, like VAT for EU countries, coupon codes, and checkout fees. Reduce cart abandonment with WooCommerce One Page Checkout. 
-* *[Product Addons:](https://booster.io/features/woocommerce-product-addons/)* * Use the WooCommerce Product Addons module to customize any product, such as setting product labels and prices for each addon or creating automatic discounts. Addons can be added globally or per product. 
-* *[Button and Price labels:](https://booster.io/features/woocommerce-free-price-labels/)* * Change price labels and create custom buttons of your choice. Add customized buttons and price labels to your products. The WooCommerce Free Price Labels module lets you set automatic prices for products with an empty price field. 
-* *[Payment gateways:](https://booster.io/category/features/payment-gateways/)* * Set up custom WooCommerce payment gateways based on currency, shipping method, or location. Set up a multi-currency converter, and add min/max amounts for payment gateways to show up. 
-* *[Emails, reporting, and Administrative tools:](https://booster.io/category/features/emails-misc/)* * Add custom emails, additional recipients, and basic WPML support. Generate various reports (sales, customers, etc.), track users, and include verification for increased security.Key Features of Booster for WooCommerce
+<ul>
+<li><a href="https://booster.io/woocommerce-pdf-invoicing-and-packing-slips/"><strong>PDF Invoicing and Packing slips:</strong></a> Streamline WooCommerce orders and paperwork by adding professional WooCommerce PDF invoices and offline packing docs. </li>
+<li><a href="https://booster.io/features/woocommerce-product-input-fields/"><strong>Product Input fields:</strong></a> Add additional custom input fields on all products or per product and allow customers to add more information for the perfect custom product. If you’re selling customized products, this is a must! </li>
+<li><a href="https://booster.io/category/features/prices-currencies/"><strong>Prices and Currencies:</strong></a> Attract international customers to your site by displaying their currency with automatic exchange rates.  Define price rules with WooCommerce Dynamic Pricing and offer global discounts. </li>
+<li><a href="https://booster.io/category/features/cart-checkout/"><strong>Cart and Checkout:</strong></a> Customize the shopping cart and checkout experience for your customers. Create and add custom fields, coupons, additional fees, buttons, and more. Customize the checkout experience with WooCommerce custom fields, like VAT for EU countries, coupon codes, and checkout fees. Reduce cart abandonment with WooCommerce One Page Checkout.</li> 
+<li><a href="https://booster.io/features/woocommerce-product-addons/"><strong>Product Addons:</strong></a> Use the WooCommerce Product Addons module to customize any product, such as setting product labels and prices for each addon or creating automatic discounts. Addons can be added globally or per product.</li> 
+<li><a href="https://booster.io/features/woocommerce-free-price-labels/" ><strong>Button and Price labels:</strong></a> Change price labels and create custom buttons of your choice. Add customized buttons and price labels to your products. The WooCommerce Free Price Labels module lets you set automatic prices for products with an empty price field.</li> 
+<li><a href="https://booster.io/category/features/payment-gateways/"><strong>Payment gateways:</strong></a> Set up custom WooCommerce payment gateways based on currency, shipping method, or location. Set up a multi-currency converter, and add min/max amounts for payment gateways to show up.</li> 
+<li><a href="https://booster.io/category/features/emails-misc/"><strong>Emails, reporting, and Administrative tools:</strong></a> Add custom emails, additional recipients, and basic WPML support. Generate various reports (sales, customers, etc.), track users, and include verification for increased security.Key Features of Booster for WooCommerce.</li>
+</ul>
 
 **Need more? Check out Booster Plus**
 Booster Plus is a paid upgrade of Booster that unlocks more functionality. Boost your business with all the best WooCommerce features and get access to additional administrative tools and reports.
 
-* *PDF Invoicing and Packing:* * Create proforma invoices, credit notes, and packing slips
-* *Cart and Checkout:* * Add multiple custom fields, custom info blocks, check out file uploads.
-* *Prices and Currencies:* * Add an unlimited number of currencies to WooCommerce.
-* *Add to Cart:* *Customize add to cart messages, button labels with multiple category groups allowed.
-* *Empty Cart:* * Customize empty cart button text, different button positions on your cart page, and more.
-* *Mini Cart:* * Add more custom information options.
-* *Export options:* * Enable additional fields.
-* *Configuration options:* * Include additional payments and shipping options.
+* *PDF Invoicing and Packing:* Create proforma invoices, credit notes, and packing slips
+* *Cart and Checkout:* Add multiple custom fields, custom info blocks, check out file uploads.
+* *Prices and Currencies:* Add an unlimited number of currencies to WooCommerce.
+* *Add to Cart:* Customize add to cart messages, button labels with multiple category groups allowed.
+* *Empty Cart:* Customize empty cart button text, different button positions on your cart page, and more.
+* *Mini Cart:* Add more custom information options.
+* *Export options:* Enable additional fields.
+* *Configuration options:* Include additional payments and shipping options.
 
 Booster Plus has all of these additional features and more. Discover what Booster has to offer now: 
-[Compare Booster Free and Plus versions](https://booster.io/booster-woocommerce-free-vs-plus/)
+<a href="https://booster.io/booster-woocommerce-free-vs-plus/"><strong>Compare Booster Free and Plus versions</strong></a>
 
 Booster Plus comes with a 30-day no-questions-asked money-back guarantee. If you’re not completely satisfied, we will give you 100% of your money back!
-[Upgrade Now](https://booster.io/buy-booster/)
+<a href="https://booster.io/buy-booster/"><strong>Upgrade Now</strong></a>
 
 == Screenshots ==
 
@@ -70,7 +75,7 @@ Booster Plus comes with a 30-day no-questions-asked money-back guarantee. If you
 
 The easiest way to install Booster is via your site’s Dashboard. Please follow these instructions to install and connect Booster:
 
-= Log in to your site’s Dashboard (e.g. http://www.yourdomain.com/wp-admin) =
+Log in to your site’s Dashboard (e.g. http://www.yourdomain.com/wp-admin)
 
 Click on the “Plugins” tab in the left panel, then click “Add New”.
 Search for “Booster for WooCommerce” and the latest version will appear at the top of the list of results.
@@ -131,6 +136,7 @@ To unlock all Booster for WooCommerce features, please install additional [Boost
 
 **Products**
 
+* *WooCommerce Product Extra Fees* - Lets you set extra fees for all your shop’s products. Fees can be fixed or calculated as percent from the price. (Plus only)
 * *Add to Cart* - Set any local URL to redirect to on Add to Cart (Per product not allowed in free version). Automatically add to cart on product visit. Display radio buttons instead of drop box for variable products (Plus). Disable quantity input. Open external products on the add to cart in the new window. Replace Add to Cart button on archives with button from single product pages. Customize Add to Cart messages (Plus).
 * *Add to Cart Button Visibility* - Enable/disable Add to Cart button globally or on per product basis.
 * *Admin Products List* - Customize admin products list (1 custom column allowed in free).
@@ -178,6 +184,9 @@ To unlock all Booster for WooCommerce features, please install additional [Boost
 * *Empty Cart Button* - Add (and customize) "Empty Cart" button to the cart and checkout pages. Customize empty cart button text (Plus). Different button positions on the cart page (Plus).
 * *Mini Cart Custom Info* - Add custom info to the mini cart widget (1 block allowed in free version).
 * *URL Coupons* - WooCommerce URL coupons. Redirect after coupon has been applied (Plus).
+* *Frequently Bought Together* - Add Frequently Bought Together section with suggest items usually bought together with the product watched by your customer. (Plus only)
+* *One Page Checkout* - One Page Checkout make easier for customers to buy from custom checkout pages by displaying both product selection and checkout forms on a single page. (Plus only)
+
 
 **Payment Gateways**
 
@@ -218,7 +227,14 @@ To unlock all Booster for WooCommerce features, please install additional [Boost
 
 **PDF Invoicing & Packing Slips**
 
-* *PDF Invoicing* - Invoices, Proforma Invoices (Plus), Credit Notes (Plus) and Packing Slips (Plus).
+* *PDF Invoicing* - Invoices, Proforma Invoices (Plus), Credit Notes (Plus), Paid Stamp (Plus) and Packing Slips (Plus).
+* *Paid Stamp (Plus)*
+* *Display product image on pdf (Plus)*
+* *Display product addons on pdf (Plus)*
+* *Display product input fields on pdf (Plus)*
+* *Display checkout custom fields on pdf (Plus)*
+* *Display WooCommerce order’s meta on pdf (Plus)*
+* *Display WooCommerce subscription order details on pdf (Plus)*
 
 **Emails & Misc.**
 
@@ -249,7 +265,75 @@ To unlock all Booster for WooCommerce features, please install additional [Boost
 
 == Changelog ==
 
-= 5.3.9 - 17/03/2021 =
+= 5.4.7 29/09/2021 =
+
+* Feature - PRICES & CURRENCIES - Product Price by Formula - Added Compatibility with WoocommerceBooking plugin.
+* Fix - CART & CHECKOUT - Checkout Custom Fields - Fixed PHP warning array_key() expects parameter 1.
+* Fix - CART & CHECKOUT - Checkout Core Fields - Fixed Error Uncaught TypeError: Cannot read property '0' of undefined.
+* WooCommerce 5.7.1 tested
+* WordPress 5.8.1 tested
+
+= 5.4.6 27/08/2021 =
+
+* Fix - SHIPPING & ORDERS - Order Numbers - Fixed order number sequential bug for a new order for different PHP versions.
+
+= 5.4.5 25/08/2021 =
+* Fix - PDF INVOICING & PACKING SLIPS - Fixed table border is not being shown when we use a background image.
+* Fix - PDF INVOICING & PACKING SLIPS - Fixed page break not working when extra header css is being added.
+* Fix - PDF INVOICING & PACKING SLIPS - Fixed refund extra fee and shipping value not being shown on item table.
+* Fix - CART & CHECKOUT - Checkout Custom Fields - Fixed Category rules of checkout were not being reflected on email.
+* Fix - CART & CHECKOUT - EU VAT Number - Fixed EU vat number required notice when the field is empty.
+* Fix - SHIPPING & ORDERS - Order Numbers - Fixed order number sequential bug for a new order.
+* Fix - PRICES & CURRENCIES - Prices and Currencies by Country - Fixed closure error when widgets are being used on shop page.
+* Fix - PRICES & CURRENCIES - Wholesale Price - Fixed per product price issue with the multicurrency switcher.
+* WooCommerce 5.6.0 tested
+* WordPress 5.8 tested
+
+= 5.4.4 11/08/2021 =
+* Fix - Emails & Misc.- Email Verification - Fixed security issue for Authentication link.
+
+= 5.4.3 28/07/2021 =
+* Fix - SHIPPING & ORDERS- Order Quantities - Fixed Steps issue on product detail page.
+* Fix - PRODUCTS - Product Addons - Fixed issue when "Enable AJAX on Single Product Page" option, Prices of Related products are also change while changing varition of variable product.
+* Fix - CART & CHECKOUT - Checkout Custom Fields - Fixed meta key issue for input type select.
+* Fix - PRICES & CURRENCIES - Multicurrency (Currency Switcher) - Fixed Compatibility issue with WooCommerce Attribute Swatches by Iconic Plugin
+* Fix - Fixed error WP_Scripts::localize was called incorrectly. The $l10n parameter must be an array
+* Feature - SHIPPING & ORDERS - Order Quantities - Show notice while add to cart, if the Maximum order quantity limit reached.
+* Feature - SHIPPING & ORDERS - Order Quantities - Allow any quantity if the product is lower than the minimum quantity.
+* Feature - PRODUCTS - Product Visibility by Country - Added options to choose All countries or WooCommerce Selling Locations for For [wcj_selector selector_type="country"]
+* WooCommerce 5.5.2 tested
+* Wordpress 5.8 tested
+
+= 5.4.2 24/06/2021 =
+* Fix - CART & CHECKOUT - Checkout Custom Fields - Fixed duplicate meta key issue.
+* Fix - SHIPPING & ORDERS - Order Numbers - Fixed hashid dependency issue.
+* Fix - PRODUCTS - SKU - Fixed hashid dependency issue.
+* Feature - CONTACT SUPPORT - Quick link to reach us for technical support or suggest an idea.
+* PHP 8.0.6 tested
+* WooCommerce 5.4.1 tested
+* Wordpress 5.7.2 tested
+
+= 5.4.1 27/05/2021 =
+* PHP 8.0.6 tested
+* WooCommerce 5.3.0 tested
+* Wordpress 5.7.2 tested
+
+= 5.4.0 29/04/2021 =
+* Dev - Add Tooltip & Suggestion for fields
+* Dev - Shortcodes - Orders - Add `[Wcj_order_shipping_price_without_html_custom]` shortcode.
+* Dev - Shortcodes - Orders - Add `[Wcj_order_total_without_html_custom]` shortcode.
+* Dev - Shortcodes - Orders - Add `[Wcj_order_total_fees_incl_tax_without_html_custom]` shortcode.
+* Dev - Shortcodes - Orders - Add `[Wcj_order_total_tax_without_html_custom]` shortcode.
+* Dev - Shortcodes - Product - Add `[wcj_product_regular_price_without_html_custom]` shortcode.
+* Dev - Shortcodes - Product - Add `[wcj_product_purchase_price_without_html_custom]` shortcode.
+* Fix - CART & CHECKOUT - Checkout Core Fields - Fix "Checkout Field arragement & Lable for required field" issue.
+* Fix - PRICES & CURRENCIES - Product Price by Formula - Quick edit issue fixed
+* Fix - PRICES & CURRENCIES - Prices and Currencies by Country - Quick edit issue fixed
+* PHP 8.0.3 tested
+* WooCommerce 5.2.2 tested
+* Wordpress 5.7.1 tested
+
+= 5.3.9 17/03/2021 =
 * PHP 8.0.2 tested
 * WooCommerce 5.1.0 tested
 * Wordpress 5.7 tested
@@ -271,7 +355,6 @@ To unlock all Booster for WooCommerce features, please install additional [Boost
 * Fix - PRICES & CURRENCIES - Currency Exchange Rates - Fix "Woocommerce store base currency Exchange rate" issue.
 * Dev - EMAILS & MISC. - Export - Added feature to export new column for 'allowed_user_roles' and 'not_allowed_user_roles'.
 * Fix - PDF INVOICING & PACKING SLIPS - PDF Invoicing - Fix "Order total after refund" shortcode with new attribute.
-* Fix - PRODUCTS - Cost of Goods - Fix "Profit" amount to consider "Wholesale discount","product price by formula" and also made it compatible with multi-currency.
 * Fix - CART & CHECKOUT - EU VAT Number - Fix "EU VAT Number" should be required for EU countries only.
 
 = 5.3.6 - 30/12/2020 =
@@ -768,7 +851,7 @@ To unlock all Booster for WooCommerce features, please install additional [Boost
 * Dev - EMAILS & MISC. - General - "PHP Options" options moved from "Admin Tools" module.
 * Dev - EMAILS & MISC. - General - Module description updated. Admin settings descriptions updated.
 * Dev - Functions - Products - `wcj_get_products()` - Code optimized.
-* Dev - Shortcodes - Orders - `[wcj_order_total_in_words]` - `whole` attribute now automatically gets order currency symbol or currency code (set by `use_currency_symbol` attribute) (instead of `Dollars`). `decimal` attribute set to `¢` (instead of `Cents`).
+* Dev - Shortcodes - Orders - `[wcj_order_total_in_words]` - `whole` attribute now automatically gets order currency symbol or currency code (set by `use_currency_symbol` attribute) (instead of `Dollars`). `decimal` attribute set to `&cent;` (instead of `Cents`).
 * Dev - Shortcodes - Products - `[wcj_product_you_save_percent]` - Add compatibility with "Dynamic Pricing" plugin.
 * Dev - Shortcodes - Products Crowdfunding - `get_product_orders_data()` - `start_date` and `order_status` optional attributes added.
 * Dev - Shortcodes - Products Crowdfunding - `get_product_orders_data()` - Code cleaned up.

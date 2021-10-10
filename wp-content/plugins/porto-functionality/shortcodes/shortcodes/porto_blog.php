@@ -25,11 +25,12 @@ function porto_load_blog_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => 'Porto ' . __( 'Blog', 'porto-functionality' ),
-			'base'     => 'porto_blog',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'far fa-calendar-alt',
-			'params'   => array_merge(
+			'name'        => 'Porto ' . __( 'Blog', 'porto-functionality' ),
+			'base'        => 'porto_blog',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'Show posts by beautiful layout', 'porto-functionality' ),
+			'icon'        => 'far fa-calendar-alt',
+			'params'      => array_merge(
 				array(
 					array(
 						'type'        => 'textfield',

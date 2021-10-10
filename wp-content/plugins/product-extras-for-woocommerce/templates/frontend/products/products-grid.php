@@ -92,7 +92,7 @@ $manage_stock = false; ?>
 
 					printf(
 						'<th>%s</th>',
-						$name
+						apply_filters( 'pewc_v_term_name', $name, $term_obj, $available_variations )
 					);
 
 				}
@@ -116,7 +116,7 @@ $manage_stock = false; ?>
 
 						printf(
 							'<th>%s</th>',
-							$name
+							apply_filters( 'pewc_h_term_name', $name, $h_term_obj, $available_variations )
 						);
 
 						foreach( $v_attributes as $v_term ) {
@@ -139,6 +139,7 @@ $manage_stock = false; ?>
 							$variation_obj = wc_get_product( $variation_id );
 
 							if( ! is_object( $variation_obj ) || is_wp_error( $variation_obj ) ) {
+								echo '<td></td>';
 								continue;
 							}
 

@@ -378,6 +378,7 @@ class HubWooConnectionMananager {
 
 		$url      = '/crm/v3/properties/' . $object_type . '/' . $property_name;
 		$headers  = $this->get_token_headers();
+		$res_body = '';
 		$response = wp_remote_get( $this->base_url . $url, array( 'headers' => $headers ) );
 		if ( is_wp_error( $response ) ) {
 			$status_code = $response->get_error_code();
@@ -416,6 +417,7 @@ class HubWooConnectionMananager {
 
 				$url          = '/properties/v1/contacts/properties';
 				$headers      = $this->get_token_headers();
+				$res_body     = '';
 				$prop_details = wp_json_encode( $prop_details );
 				$response     = wp_remote_post(
 					$this->base_url . $url,
@@ -462,6 +464,7 @@ class HubWooConnectionMananager {
 
 			$url          = '/crm/v3/properties/' . $object_type . '/batch/create';
 			$headers      = $this->get_token_headers();
+			$res_body     = '';
 			$request_body = wp_json_encode( $request_body );
 			$response     = wp_remote_post(
 				$this->base_url . $url,
@@ -590,8 +593,9 @@ class HubWooConnectionMananager {
 
 		if ( is_array( $contacts ) ) {
 
-			$url     = '/contacts/v1/contact/batch/';
-			$headers = $this->get_token_headers();
+			$url      = '/contacts/v1/contact/batch/';
+			$headers  = $this->get_token_headers();
+			$res_body = '';
 
 			$contacts = wp_json_encode( $contacts );
 			$response = wp_remote_post(
@@ -668,6 +672,7 @@ class HubWooConnectionMananager {
 			if ( isset( $list_details['name'] ) ) {
 				$url          = '/contacts/v1/lists';
 				$headers      = $this->get_token_headers();
+				$res_body	  = '';
 				$list_details = wp_json_encode( $list_details );
 				$response     = wp_remote_post(
 					$this->base_url . $url,
@@ -857,6 +862,7 @@ class HubWooConnectionMananager {
 
 				$url      = '/automation/v3/workflows';
 				$headers  = $this->get_token_headers();
+				$res_body = '';
 				$workflow = wp_json_encode( $workflow_details );
 				$response = wp_remote_post(
 					$this->base_url . $url,
@@ -971,58 +977,61 @@ class HubWooConnectionMananager {
 	 */
 	public function create_log( $message, $url, $response ) {
 
-		if ( 400 == $response['status_code'] || 401 == $response['status_code'] ) {
+		if ( isset( $response['status_code'] ) ) {
 
-			update_option( 'hubwoo_pro_alert_param_set', true );
-			$error_apis = get_option( 'hubwoo-error-api-calls', 0 );
-			$error_apis ++;
-			update_option( 'hubwoo-error-api-calls', $error_apis );
-		} elseif ( 200 == $response['status_code'] || 202 == $response['status_code'] || 201 == $response['status_code'] || 204 == $response['status_code'] ) {
+			if ( 400 == $response['status_code'] || 401 == $response['status_code'] ) {
 
-			$success_apis = get_option( 'hubwoo-success-api-calls', 0 );
-			$success_apis ++;
-			update_option( 'hubwoo-success-api-calls', $success_apis );
-			update_option( 'hubwoo_pro_alert_param_set', false );
-		} else {
+				update_option( 'hubwoo_pro_alert_param_set', true );
+				$error_apis = get_option( 'hubwoo-error-api-calls', 0 );
+				$error_apis ++;
+				update_option( 'hubwoo-error-api-calls', $error_apis );
+			} elseif ( 200 == $response['status_code'] || 202 == $response['status_code'] || 201 == $response['status_code'] || 204 == $response['status_code'] ) {
 
-			update_option( 'hubwoo_pro_alert_param_set', false );
-		}
+				$success_apis = get_option( 'hubwoo-success-api-calls', 0 );
+				$success_apis ++;
+				update_option( 'hubwoo-success-api-calls', $success_apis );
+				update_option( 'hubwoo_pro_alert_param_set', false );
+			} else {
 
-		if ( 200 == $response['status_code'] ) {
-
-			$final_response['status_code'] = 200;
-		} elseif ( 202 == $response['status_code'] ) {
-
-			$final_response['status_code'] = 202;
-		} else {
-
-			$final_response = $response;
-		}
-
-		$log_enable = get_option( 'hubwoo_pro_log_enable', 'yes' );
-
-		if ( 'yes' == $log_enable ) {
-
-			if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
-				$server = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
+				update_option( 'hubwoo_pro_alert_param_set', false );
 			}
 
-			$log_dir = WC_LOG_DIR . 'hubspot-for-woocommerce-logs.log';
+			if ( 200 == $response['status_code'] ) {
 
-			if ( ! is_dir( $log_dir ) ) {
+				$final_response['status_code'] = 200;
+			} elseif ( 202 == $response['status_code'] ) {
 
-				@fopen( WC_LOG_DIR . 'hubspot-for-woocommerce-logs.log', 'a' );
+				$final_response['status_code'] = 202;
+			} else {
+
+				$final_response = $response;
 			}
 
-			$log = 'Website: ' . $server . PHP_EOL .
-					'Time: ' . current_time( 'F j, Y  g:i a' ) . PHP_EOL .
-					'Process: ' . $message . PHP_EOL .
-					'URL: ' . $url . PHP_EOL .
-					'Response: ' . json_encode( $final_response ) . PHP_EOL .
-					'-----------------------------------' . PHP_EOL;
+			$log_enable = get_option( 'hubwoo_pro_log_enable', 'yes' );
 
-			file_put_contents( $log_dir, $log, FILE_APPEND );
-		}
+			if ( 'yes' == $log_enable ) {
+
+				if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
+					$server = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
+				}
+
+				$log_dir = WC_LOG_DIR . 'hubspot-for-woocommerce-logs.log';
+
+				if ( ! is_dir( $log_dir ) ) {
+
+					@fopen( WC_LOG_DIR . 'hubspot-for-woocommerce-logs.log', 'a' );
+				}
+
+				$log = 'Website: ' . $server . PHP_EOL .
+						'Time: ' . current_time( 'F j, Y  g:i a' ) . PHP_EOL .
+						'Process: ' . $message . PHP_EOL .
+						'URL: ' . $url . PHP_EOL .
+						'Response: ' . json_encode( $final_response ) . PHP_EOL .
+						'-----------------------------------' . PHP_EOL;
+
+				file_put_contents( $log_dir, $log, FILE_APPEND );
+			}
+		}	
 	}
 
 	/**
@@ -1233,6 +1242,7 @@ class HubWooConnectionMananager {
 
 		$url          = '/deals/v1/deal/' . $deal_id;
 		$headers      = $this->get_token_headers();
+		$res_body     = '';
 		$deal_details = json_encode( $deal_details );
 
 		$response = wp_remote_request(
@@ -1423,6 +1433,43 @@ class HubWooConnectionMananager {
 	}
 
 	/**
+	 * Get customer vid using email.
+	 *
+	 * @since 1.0.0
+	 * @param string $email contact email.
+	 * @return string $vid hubspot vid of contact.
+	 */
+	public function get_customer_vid_historical( $email ) {
+		$vid      = '';
+		$url      = '/contacts/v1/contact/email/' . $email . '/profile';
+		$headers  = $this->get_token_headers();
+		$res_body = '';
+
+		$response = wp_remote_get(
+			$this->base_url . $url,
+			array(
+				'headers' => $headers,
+			)
+		);
+		if ( is_wp_error( $response ) ) {
+			$status_code = $response->get_error_code();
+			$res_message = $response->get_error_message();
+		} else {
+			$status_code = wp_remote_retrieve_response_code( $response );
+			$res_message = wp_remote_retrieve_response_message( $response );
+			$res_body    = wp_remote_retrieve_body( $response );
+		}
+			$parsed_response = array(
+				'status_code' => $status_code,
+				'response'    => $res_message,
+				'body'        => $res_body,
+			);
+			$message         = esc_html__( 'Fetching Contact VID by email', 'makewebbetter-hubspot-for-woocommerce' );
+			$this->create_log( $message, $url, $parsed_response );
+			return $parsed_response;
+	}
+
+	/**
 	 * Creating deals on HubSpot.
 	 *
 	 * @since 1.0.0
@@ -1433,6 +1480,7 @@ class HubWooConnectionMananager {
 
 		$url          = '/deals/v1/deal/';
 		$headers      = $this->get_token_headers();
+		$res_body     = '';
 		$deal_details = wp_json_encode( $deal_details );
 		$response     = wp_remote_post(
 			$this->base_url . $url,
@@ -1485,7 +1533,7 @@ class HubWooConnectionMananager {
 			$res_message = wp_remote_retrieve_response_message( $response );
 		}
 
-		if ( 200 == $status_code ) {
+		if ( 200 === $status_code ) {
 			$api_body = wp_remote_retrieve_body( $response );
 			if ( $api_body ) {
 				$api_body = json_decode( $api_body, true );
@@ -1529,6 +1577,7 @@ class HubWooConnectionMananager {
 	public function create_or_update_store( $stores ) {
 
 		$headers  = self::get_token_headers();
+		$res_body = '';
 		$url      = '/extensions/ecomm/v2/stores';
 		$stores   = json_encode( $stores );
 		$response = wp_remote_request(
@@ -1575,6 +1624,7 @@ class HubWooConnectionMananager {
 		$url                    = '/extensions/ecomm/v2/sync/messages';
 		$headers                = self::get_token_headers();
 		$messages               = json_encode( $messages );
+		$res_body				= '';
 
 		$response = wp_remote_request(
 			$this->base_url . $url,
@@ -1616,6 +1666,7 @@ class HubWooConnectionMananager {
 		$store_id = get_option( 'hubwoo_ecomm_store_id', '' );
 		$url      = '/extensions/ecomm/v2/sync/status/' . $store_id . '/' . $object_type . '/' . $object_id;
 		$headers  = self::get_token_headers();
+		$res_body = '';
 		$response = wp_remote_get(
 			$this->base_url . $url,
 			array(
@@ -1690,6 +1741,8 @@ class HubWooConnectionMananager {
 		$url       = '/forms/v2/forms';
 		$headers   = $this->get_token_headers();
 		$form_data = wp_json_encode( $form_data );
+		$res_body  = '';
+
 		$response  = wp_remote_post(
 			$this->base_url . $url,
 			array(
@@ -1727,8 +1780,9 @@ class HubWooConnectionMananager {
 	 */
 	public function submit_form_data( $form_data, $portal_id, $form_guid ) {
 
-		$url     = 'https://api.hsforms.com/submissions/v3/integration/submit/' . $portal_id . '/' . $form_guid;
-		$headers = $this->get_token_headers();
+		$url      = 'https://api.hsforms.com/submissions/v3/integration/submit/' . $portal_id . '/' . $form_guid;
+		$headers  = $this->get_token_headers();
+		$res_body = '';
 
 		$form_data = json_encode( $form_data );
 
@@ -1766,8 +1820,9 @@ class HubWooConnectionMananager {
 	 */
 	public function hubwoo_get_batch_vids( $batch_emails ) {
 
-		$url     = '/contacts/v1/contact/emails/batch/?' . $batch_emails . 'property=email';
-		$headers = $this->get_token_headers();
+		$url      = '/contacts/v1/contact/emails/batch/?' . $batch_emails . 'property=email';
+		$headers  = $this->get_token_headers();
+		$res_body = '';
 
 		$batch_emails = json_encode( $batch_emails );
 
@@ -1805,8 +1860,9 @@ class HubWooConnectionMananager {
 	 */
 	public function hubwoo_get_all_forms() {
 
-		$url     = '/forms/v2/forms';
-		$headers = $this->get_token_headers();
+		$url      = '/forms/v2/forms';
+		$headers  = $this->get_token_headers();
+		$res_body = '';
 
 		$response = wp_remote_get(
 			$this->base_url . $url,
@@ -1832,4 +1888,47 @@ class HubWooConnectionMananager {
 		$this->create_log( $message, $url, $parsed_response );
 		return $parsed_response;
 	}
+
+	/**
+	 * Fetchig user by email.
+	 *
+	 * @since 1.0.0
+	 * @param string $email email of user.
+	 */
+	public function get_customer_by_email( $email ) {
+
+		$vid = '';
+		$url = '/contacts/v1/contact/email/' . $email . '/profile';
+		$headers = $this->get_token_headers();
+		$response = wp_remote_get(
+			$this->base_url . $url,
+			array(
+				'headers' => $headers,
+			)
+		);
+		if ( is_wp_error( $response ) ) {
+			$status_code = $response->get_error_code();
+			$res_message = $response->get_error_message();
+		} else {
+			$status_code = wp_remote_retrieve_response_code( $response );
+			$res_message = wp_remote_retrieve_response_message( $response );
+			$res_body = wp_remote_retrieve_body( $response );
+		}
+		$parsed_response = array(
+			'status_code' => $status_code,
+			'response' => $res_message,
+			'body' => $res_body,
+		);
+		
+		if ( 200 == $parsed_response['status_code'] ) {
+			$parsed_response['body'] = json_decode( $parsed_response['body'], true );
+			if ( ! empty( $parsed_response['body'] ) && isset( $parsed_response['body']['vid'] ) ) {
+				$vid = $parsed_response['body']['vid'];
+			}
+		}
+		$message = esc_html__( 'Fetching Contact by email', 'makewebbetter-hubspot-for-woocommerce' );
+		$this->create_log( $message, $url, $parsed_response );
+		return $vid;
+	}
+
 }

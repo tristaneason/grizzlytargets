@@ -182,13 +182,18 @@ if (!function_exists('en_import_dropship_location_csv')) {
      */
     function en_import_dropship_location_csv($data, $parseData)
     {
-        $_ltl_freight_class = '';
+        $_product_freight_class = $_product_freight_class_variation = '';
         $_dropship_location = $locations = [];
         foreach ($data['meta_data'] as $key => $metaData) {
             $location = explode(',', trim($metaData['value']));
             switch ($metaData['key']) {
-                case '_ltl_freight_class':
-                    $_ltl_freight_class = trim($metaData['value']);
+                // Update new columns
+                case '_product_freight_class':
+                    $_product_freight_class = trim($metaData['value']);
+                    unset($data['meta_data'][$key]);
+                    break;
+                case '_product_freight_class_variation':
+                    $_product_freight_class_variation = trim($metaData['value']);
                     unset($data['meta_data'][$key]);
                     break;
                 case '_dropship_location_nickname':
@@ -216,10 +221,19 @@ if (!function_exists('en_import_dropship_location_csv')) {
             }
         }
 
-        if (strlen($_ltl_freight_class) > 0) {
+        // Update new columns
+        if (strlen($_product_freight_class) > 0) {
             $data['meta_data'][] = [
                 'key' => '_ltl_freight',
-                'value' => $_ltl_freight_class,
+                'value' => $_product_freight_class,
+            ];
+        }
+
+        // Update new columns
+        if (strlen($_product_freight_class_variation) > 0) {
+            $data['meta_data'][] = [
+                'key' => '_ltl_freight_variation',
+                'value' => $_product_freight_class_variation,
             ];
         }
 

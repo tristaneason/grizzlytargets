@@ -14,6 +14,7 @@ function porto_load_toggles_shortcode() {
 			'name'            => 'Porto ' . __( 'Toggles', 'porto-functionality' ),
 			'base'            => 'porto_toggles',
 			'category'        => __( 'Porto', 'porto-functionality' ),
+			'description'     => __( 'Add toggle for your faq', 'porto-functionality' ),
 			'icon'            => 'fas fa-indent',
 			'as_parent'       => array( 'only' => 'vc_toggle' ),
 			'content_element' => true,

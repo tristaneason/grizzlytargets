@@ -396,7 +396,7 @@ $final_properties = array_map(
 					<p>
 						<?php esc_html_e( 'MakeWebBetter is a HubSpot Gold Solutions Partner. Schedule a meeting with our experts to learn more about HubSpot', 'makewebbetter-hubspot-for-woocommerce' ); ?>
 					</p>
-					<a href="https://meetings.hubspot.com/umakantsharma/free-hubspot-consultation"><?php esc_html_e( 'Schedule meeting', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+					<a href="https://meetings.hubspot.com/makewebbetter/free-hubspot-consultation"><?php esc_html_e( 'Schedule meeting', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 				</div>
 			</div>
 		</div>

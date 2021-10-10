@@ -106,7 +106,7 @@ if ( 1 == get_option( 'hubwoo_connection_setup_established', 0 ) ) {
 								</div>
 							</div> 
 						</div>						
-					  <a href="javascript:;" data-action="stop-contact" class="manage_contact_sync hubwoo__btn"><?php esc_html_e( 'Stop Sync', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+						<a href="javascript:;" data-action="stop-contact" class="manage_contact_sync hubwoo__btn"><?php esc_html_e( 'Stop Sync', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 					</div>					
 				</div>	
 				<?php
@@ -185,7 +185,6 @@ if ( 1 == get_option( 'hubwoo_connection_setup_established', 0 ) ) {
 				</li>
 			</ul>
 		</nav>
-		
 		<?php
 
 			$tab_content_path = 'admin/templates/setup/hubwoo-' . $setup_tab . '.php';

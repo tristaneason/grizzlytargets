@@ -117,6 +117,22 @@ if( !class_exists('WF_Admin_Options') ){
 				),
 			));
 
+			// Signature Option PDS-179
+			woocommerce_wp_select( array(
+				'id'        	=> '_ph_fedex_signature_option',
+				'label'     	=> __( 'Delivery Signature(FedEx)', 'wf-shipping-fedex'),
+				'description'   => __( 'FedEx Web Services selects the appropriate signature option for your shipping service.', 'wf-shipping-fedex'),
+				'desc_tip'  	=> true,
+				'options'   	=> array(
+					null        			=> __( 'Select Anyone', 'wf-shipping-fedex' ),
+					'ADULT'	   				=> __( 'Adult', 'wf-shipping-fedex' ),
+					'DIRECT'	  			=> __( 'Direct', 'wf-shipping-fedex' ),
+					'INDIRECT'	  			=> __( 'Indirect', 'wf-shipping-fedex' ),
+					'NO_SIGNATURE_REQUIRED' => __( 'No Signature Required', 'wf-shipping-fedex' ),
+					'SERVICE_DEFAULT'	  	=> __( 'Service Default', 'wf-shipping-fedex' ),
+				),
+			));
+
 			//Pre packed
 			woocommerce_wp_checkbox( array(
 				'id' => '_wf_fedex_pre_packed',
@@ -312,6 +328,11 @@ if( !class_exists('WF_Admin_Options') ){
 			if( isset($_POST['_wf_fedex_sst_alcohal_recipient']) && !is_array($_POST['_wf_fedex_sst_alcohal_recipient']) ) {
 				update_post_meta( $post_id, '_wf_fedex_sst_alcohal_recipient', $_POST['_wf_fedex_sst_alcohal_recipient'] );
 			}
+
+			// Signature Option PDS-179
+			if( isset($_POST['_ph_fedex_signature_option']) && !is_array($_POST['_ph_fedex_signature_option']) ) {
+				update_post_meta( $post_id, '_ph_fedex_signature_option', $_POST['_ph_fedex_signature_option'] );
+			}
 			
 			//Dangerous Goods
 			$dangerous_goods =  ( isset( $_POST['_dangerous_goods'] ) && !is_array($_POST['_dangerous_goods']) && esc_attr($_POST['_dangerous_goods'])=='yes') ? esc_attr($_POST['_dangerous_goods'])  : false;
@@ -434,6 +455,24 @@ if( !class_exists('WF_Admin_Options') ){
 					null        => __( 'Select Anyone', 'wf-shipping-fedex' ),
 					'CONSUMER'  => __( 'CONSUMER', 'wf-shipping-fedex' ),
 					'LICENSEE'  => __( 'LICENSEE', 'wf-shipping-fedex' ),
+				),
+			));
+
+			// Signature Option PDS-179
+			woocommerce_wp_select( array(
+				'id'        	=> '_ph_fedex_signature_option[' . $variation->ID . ']',
+				'class'     	=> 'ph_fedex_variation_class_select',
+				'label'     	=> __( 'Delivery Signature(FedEx)', 'wf-shipping-fedex'),
+				'value'     	=> get_post_meta( $variation->ID, '_ph_fedex_signature_option', true ),
+				'description'   => __( 'FedEx Web Services selects the appropriate signature option for your shipping service.', 'wf-shipping-fedex'),
+				'desc_tip'  	=> true,
+				'options'   	=> array(
+					null        			=> __( 'Select Anyone', 'wf-shipping-fedex' ),
+					'ADULT'	   				=> __( 'Adult', 'wf-shipping-fedex' ),
+					'DIRECT'	  			=> __( 'Direct', 'wf-shipping-fedex' ),
+					'INDIRECT'	  			=> __( 'Indirect', 'wf-shipping-fedex' ),
+					'NO_SIGNATURE_REQUIRED' => __( 'No Signature Required', 'wf-shipping-fedex' ),
+					'SERVICE_DEFAULT'	  	=> __( 'Service Default', 'wf-shipping-fedex' ),
 				),
 			));
 
@@ -612,6 +651,11 @@ if( !class_exists('WF_Admin_Options') ){
 			// Save alcohal recipient types
 			if( isset($_POST['_wf_fedex_sst_alcohal_recipient'][$post_id]) ) {
 				update_post_meta( $post_id, '_wf_fedex_sst_alcohal_recipient', $_POST['_wf_fedex_sst_alcohal_recipient'][$post_id] );
+			}
+
+			// Signature Option PDS-179
+			if( isset($_POST['_ph_fedex_signature_option'][$post_id]) ) {
+				update_post_meta( $post_id, '_ph_fedex_signature_option', $_POST['_ph_fedex_signature_option'][$post_id] );
 			}
 			
 			// Save dangerous goods options for variation

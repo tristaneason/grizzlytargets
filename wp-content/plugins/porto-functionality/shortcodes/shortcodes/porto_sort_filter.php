@@ -8,12 +8,13 @@ function porto_load_sort_filter_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => 'Porto ' . __( 'Sort Filter', 'porto-functionality' ),
-			'base'     => 'porto_sort_filter',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'fas fa-filter',
-			'as_child' => array( 'only' => 'porto_sort_filters' ),
-			'params'   => array(
+			'name'        => 'Porto ' . __( 'Sort Filter', 'porto-functionality' ),
+			'base'        => 'porto_sort_filter',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'We can sort of any elements', 'porto-functionality' ),
+			'icon'        => 'fas fa-filter',
+			'as_child'    => array( 'only' => 'porto_sort_filters' ),
+			'params'      => array(
 				array(
 					'type'        => 'textfield',
 					'heading'     => __( 'Label', 'porto-functionality' ),

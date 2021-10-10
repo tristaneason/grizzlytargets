@@ -64,9 +64,10 @@ if ( $id || $name ) {
 	}
 
 	if ( $post_id ) {
-		$post_id = (int) $post_id;
+		$post_id     = (int) $post_id;
+		$before_html = '';
 		// Add edit link for admins.
-		if ( current_user_can( 'edit_pages' ) && defined( 'PORTO_VERSION' ) && ! is_customize_preview() && (
+		if ( current_user_can( 'edit_pages' ) && ! is_customize_preview() && (
 				( ! function_exists( 'vc_is_inline' ) || ! vc_is_inline() ) &&
 				( ! porto_is_elementor_preview() ) &&
 				( ! porto_is_vc_preview() )
@@ -83,7 +84,7 @@ if ( $id || $name ) {
 				$builder_type = __( 'Template', 'porto' );
 			}
 			/* translators: template name */
-			echo '<div class="pb-edit-link" data-title="' . sprintf( esc_html__( 'Edit %s: %s', 'porto' ), esc_attr( $builder_type ), esc_attr( get_the_title( $post_id ) ) ) . '" data-link="' . esc_url( $edit_link ) . '"></div>';
+			$before_html = '<div class="pb-edit-link" data-title="' . sprintf( esc_html__( 'Edit %s: %s', 'porto' ), esc_attr( $builder_type ), esc_attr( get_the_title( $post_id ) ) ) . '" data-link="' . esc_url( $edit_link ) . '"></div>';
 		}
 
 		$the_post = get_post( $post_id, null, 'display' );
@@ -110,7 +111,8 @@ if ( $id || $name ) {
 			$css_file               = new Elementor\Core\Files\CSS\Post( $post_id );
 			$shortcodes_custom_css .= $css_file->get_content();
 
-			$post_content = '<div class="porto-block' . ( function_exists( 'porto_is_elementor_preview' ) && porto_is_elementor_preview() && is_single( $post_id ) ? '" data-el_cls="elementor elementor-' . intval( $post_id ) : ' elementor elementor-' . intval( $post_id ) ) . '">';
+			$post_content  = $before_html;
+			$post_content .= '<div class="porto-block' . ( function_exists( 'porto_is_elementor_preview' ) && porto_is_elementor_preview() && is_single( $post_id ) ? '" data-el_cls="elementor elementor-' . intval( $post_id ) : ' elementor elementor-' . intval( $post_id ) ) . '">';
 			if ( 'fluid' == $inner_container ) {
 				$post_content .= '<div class="container-fluid">';
 			}
@@ -551,6 +553,7 @@ if ( $id || $name ) {
 				$post_content = do_shortcode( $post_content );
 			}
 
+			$output .= $before_html;
 			$output .= '<div class="porto-block' . ( $el_class ? esc_attr( $el_class ) : '' ) . '"';
 			if ( $animation_type ) {
 				$output .= ' data-appear-animation="' . esc_attr( $animation_type ) . '"';

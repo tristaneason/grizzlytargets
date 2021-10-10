@@ -11,11 +11,12 @@ function porto_load_tooltip_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => 'Porto ' . __( 'Tooltip', 'porto-functionality' ),
-			'base'     => 'porto_tooltip',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'far fa-comment-dots',
-			'params'   => array(
+			'name'        => 'Porto ' . __( 'Tooltip', 'porto-functionality' ),
+			'base'        => 'porto_tooltip',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'Please give you tooltip for particular text or widget', 'porto-functionality' ),
+			'icon'        => 'far fa-comment-dots',
+			'params'      => array(
 				array(
 					'type'       => 'textfield',
 					'heading'    => __( 'Prefix', 'porto-functionality' ),

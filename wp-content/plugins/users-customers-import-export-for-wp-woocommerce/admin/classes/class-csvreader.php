@@ -73,8 +73,8 @@ class Wt_Import_Export_For_Woo_Basic_Csvreader
 	            $val=(isset($sample_data_val[$k]) ? $this->format_data_from_csv($sample_data_val[$k], $enc) : '');
 	            
 	            /* removing BOM like non characters */
-//	            $key=preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $key);
-                    $key= wt_removeBomUtf8_basic($key);                    	            
+	            $key=preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $key);
+                    //$key= wt_removeBomUtf8_basic($key);                    	            
 	            if($grouping)
 				{
 					if(strrpos($key, ':')!==false)
@@ -157,8 +157,8 @@ class Wt_Import_Export_For_Woo_Basic_Csvreader
 	    		}else
 	    		{
 	    			/* removing BOM like non characters */
-//	    			$head_arr[$head_key]=preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $head_val);
-                                $head_arr[$head_key]= wt_removeBomUtf8_basic($head_val); 
+	    			$head_arr[$head_key]=preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $head_val);
+                                //$head_arr[$head_key]= wt_removeBomUtf8_basic($head_val); 
 	    		}
 	    	}
 

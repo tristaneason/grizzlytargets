@@ -63,7 +63,7 @@ class Api {
 	 * @return array
 	 */
 	public function add_payment_method_script_dependencies( $dependencies, $handle ) {
-		if ( ! in_array( $handle, [ 'wc-checkout-block', 'wc-checkout-block-frontend', 'wc-cart-block', 'wc-cart-block-frontend' ], true ) ) {
+		if ( ! in_array( $handle, [ 'wc-checkout-block', 'wc-checkout-block-frontend', 'wc-checkout-i2-block', 'wc-checkout-i2-block-frontend', 'wc-cart-block', 'wc-cart-block-frontend' ], true ) ) {
 			return $dependencies;
 		}
 		return array_merge( $dependencies, $this->payment_method_registry->get_all_active_payment_method_script_dependencies() );
@@ -198,7 +198,7 @@ class Api {
 				if ( ! wp_script_is( $dep, 'registered' ) ) {
 					$error_handle  = $dep . '-dependency-error';
 					$error_message = sprintf(
-						'Payment gateway with handle \'%1$s\' has been deactivated because its dependency \'%2$s\' is not registered. Read the docs about registering assets for payment methods: https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/payment-method-integration.md#registering-assets',
+						'Payment gateway with handle \'%1$s\' has been deactivated in Cart and Checkout blocks because its dependency \'%2$s\' is not registered. Read the docs about registering assets for payment methods: https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/payment-method-integration.md#registering-assets',
 						esc_html( $payment_method_script ),
 						esc_html( $dep )
 					);
@@ -214,7 +214,7 @@ class Api {
 						sprintf( 'console.error( "%s" );', $error_message )
 					);
 
-					$cart_checkout_scripts = [ 'wc-cart-block', 'wc-cart-block-frontend', 'wc-checkout-block', 'wc-checkout-block-frontend' ];
+					$cart_checkout_scripts = [ 'wc-cart-block', 'wc-cart-block-frontend', 'wc-checkout-block', 'wc-checkout-block-frontend', 'wc-checkout-i2-block', 'wc-checkout-i2-block-frontend' ];
 					foreach ( $cart_checkout_scripts as $script_handle ) {
 						if (
 							! array_key_exists( $script_handle, $wp_scripts->registered ) ||

@@ -11,6 +11,7 @@ function porto_load_sort_item_shortcode() {
 			'name'            => 'Porto ' . __( 'Sort Item', 'porto-functionality' ),
 			'base'            => 'porto_sort_item',
 			'category'        => __( 'Porto', 'porto-functionality' ),
+			'description'     => __( 'We can sort of any elements', 'porto-functionality' ),
 			'icon'            => 'porto_vc_sort_item',
 			'as_parent'       => array( 'except' => 'porto_sort_item' ),
 			'as_child'        => array( 'only' => 'porto_sort_container' ),

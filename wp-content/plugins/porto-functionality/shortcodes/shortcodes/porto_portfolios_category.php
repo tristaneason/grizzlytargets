@@ -9,11 +9,12 @@ function porto_load_portfolios_category_shortcode() {
 	$custom_class = porto_vc_custom_class();
 	vc_map(
 		array(
-			'name'     => 'Porto ' . __( 'Portfolios Categories', 'porto-functionality' ),
-			'base'     => 'porto_portfolios_category',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'far fa-folder-open',
-			'params'   => array(
+			'name'        => 'Porto ' . __( 'Portfolios Categories', 'porto-functionality' ),
+			'base'        => 'porto_portfolios_category',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'Show portfolio categories by beautiful layouts. e.g. masonry, slider, grid and so on', 'porto-functionality' ),
+			'icon'        => 'far fa-folder-open',
+			'params'      => array(
 				array(
 					'type'        => 'textfield',
 					'heading'     => __( 'Title', 'porto-functionality' ),

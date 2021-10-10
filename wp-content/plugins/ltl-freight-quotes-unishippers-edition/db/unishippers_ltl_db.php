@@ -47,6 +47,8 @@ if (!function_exists('create_unishippers_ltl_wh_db')) {
                     id mediumint(9) NOT NULL AUTO_INCREMENT,
                     city varchar(200) NOT NULL,
                     state varchar(200) NOT NULL,
+                    address varchar(255) NOT NULL,
+                    phone_instore varchar(255) NOT NULL,
                     zip varchar(200) NOT NULL,
                     country varchar(200) NOT NULL,
                     location varchar(200) NOT NULL,
@@ -79,10 +81,26 @@ if (!function_exists('create_unishippers_ltl_wh_db')) {
                 . "ADD COLUMN fee_local_delivery VARCHAR(255) NOT NULL , "
                 . "ADD COLUMN suppress_local_delivery VARCHAR(255) NOT NULL", $warehouse_table));
         }
+        // Origin terminal address
+        unishippers_freight_update_warehouse();
     }
 
 }
-
+/**
+ * Update warehouse
+ */
+function unishippers_freight_update_warehouse()
+{
+    // Origin terminal address
+    // Terminal phone number
+    global $wpdb;
+    $warehouse_table = $wpdb->prefix . "warehouse";
+    $warehouse_address = $wpdb->get_row("SHOW COLUMNS FROM " . $warehouse_table . " LIKE 'phone_instore'");
+    if (!(isset($warehouse_address->Field) && $warehouse_address->Field == 'phone_instore')) {
+        $wpdb->query(sprintf("ALTER TABLE %s ADD COLUMN address VARCHAR(255) NOT NULL", $warehouse_table));
+        $wpdb->query(sprintf("ALTER TABLE %s ADD COLUMN phone_instore VARCHAR(255) NOT NULL", $warehouse_table));
+    }
+}
 /**
  * Install Carriers On Activation
  */

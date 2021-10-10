@@ -221,7 +221,7 @@ if ( ! class_exists( 'WPPFM_Feed_Processor' ) ) :
 
 				// Add parent data when this item is not available in the variation.
 				if ( $post_columns_query_string ) {
-					$class_data->add_parent_data( $product_data, $product_parent_id, $post_columns_query_string );
+					$class_data->add_parent_data( $product_data, $product_parent_id, $post_columns_query_string, $this->_feed_data->language );
 				}
 
 				$wpmr_variation_data = $class_data->get_own_variation_data( $product_id );
@@ -263,8 +263,10 @@ if ( ! class_exists( 'WPPFM_Feed_Processor' ) ) :
 					if ( ( ! empty( $feed_object[ $key ] ) || '0' === $feed_object[ $key ] ) || 'xml' !== pathinfo( $this->_feed_file_path, PATHINFO_EXTENSION ) ) {
 
 						// Keep money values that have a 0 value out of the feed. @since 2.11.2.
+						// Modified @since 2.24.0, so it first converts money values to a standard decimal separator that it evaluates correctly in the floatval() evaluation.
 						if ( wppfm_meta_key_is_money( $key ) ) {
-							if ( 0.0 === floatval( $feed_object[ $key ] ) ) { continue; }
+							$money_value = wppfm_number_format_parse( $feed_object[ $key ] );
+							if ( 0.0 === floatval( $money_value ) ) { continue; }
 						}
 
 						// Catch the DraftImages key for the Ricardo.ch channel.

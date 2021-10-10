@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import { healthcheckRestApi } from '../api/wordpressApiClient';
 import Raven, { configureRaven } from '../lib/Raven';
 
 export function initApp(initFn) {
@@ -12,10 +11,4 @@ export function initAppOnReady(initFn) {
     $(document).ready(initFn);
   }
   initApp(main);
-
-  healthcheckRestApi().catch(error =>
-    Raven.captureMessage(
-      `WP Rest API healthcheck failed: ${error.responseText}`
-    )
-  );
 }

@@ -2,9 +2,9 @@
 Contributors: woocommerce, automattic
 Tags: ecommerce, e-commerce, store, sales, reports, analytics, dashboard, activity, notices, insights, stats, woo commerce, woocommerce
 Requires at least: 5.4.0
-Tested up to: 5.6.0
+Tested up to: 5.7.0
 Requires PHP: 7.0
-Stable tag: 2.1.5
+Stable tag: 2.6.5
 License: GPLv3
 License URI: https://github.com/woocommerce/woocommerce-admin/blob/main/license.txt
 
@@ -73,6 +73,289 @@ Release and roadmap notes are available on the [WooCommerce Developers Blog](htt
 
 == Changelog ==
 
+== Unreleased ==
+
+- Add: Add unit tests around extended payment gateway controller #7133
+- Add: Add payment gateway suggestion unit tests #7142
+- Add: Feature toggle to disable Analytics UI #7168
+- Add: SlotFill to Abbreviated Notification panel #7091
+- Dev: Add `woocommerce_admin_export_id` filter for customizing the export file name #7178
+- Dev: Remove old payment gateway task components #7224
+- Fix: Currency display on Orders activity card on homescreen #7181
+- Fix: Fix obsolete key property in gateway defaults #7229
+- Fix: Fixing button state logic for remote payment gateways #7200
+- Fix: Include onboarding settings on the analytic pages #7109
+- Fix: Load Analytics API only when feature is turned on #7193
+- Fix: Localize string for description #7219
+- Fix: RemoteFreeExtension hide bundle when all of its plugins are not visible #7182
+- Add: Adding tests for PaymentGatewaySuggestions > List component #7201
+- Fix: Report export filtering bug. #7165
+- Fix: Use tab char for the CSV injection prevention. #7154
+- Fix: Use saved form values if available when switching tabs #7226
+- Fix: Skip schedule customer data deletion on site deletion #7214
+- Fix: The use of gridicons for Analytics section controls. #7237
+- Fix: WCPay not working in local payments task #7151
+- Fix: WordPress 5.8 compatibility UI fixes #7255
+- Fix: CurrencyFactory constructor to use proper function #7261
+- Fix: Currency display on Orders activity card on homescreen #7181
+- Fix: Report export filtering bug. #7165
+- Fix:  Use tab char for the CSV injection prevention. #7154
+- Fix: Fix and refactor explat polling to use setTimeout #7274
+- Tweak: Remove performance indicators when Analytics Flag disabled #7234
+- Tweak: Revert Card component removal #7167
+- Tweak: Repurpose disable wc-admin filter to remove optional features #7232
+- Tweak: Removed unused feature flags #7233
+- Update: Notes to use a date range. #7222
+
+== 2.4.0 6/10/2021 ==
+- Dev: Add Jetpack Backup admin note #6738
+- Add: Adding WCPay payment configuration defaults. #7097
+- Fix: Transformer casing is incorrect and creates an error on case-sensitive systems #7104
+- Dev: Reduce the specificity and complexity of the ReportError component #6846
+- Add: Create onboarding package to house refactored WCPay card and relevant components #7058
+- Fix: Preventing redundant notices when installing plugins via payments task list. #7026
+- Fix: Autocompleter for custom Search in CompareFilter #6911
+- Fix: Include onboarding settings on the analytic pages #7109
+- Dev: Converting <SettingsForm /> component to TypeScript. #6981
+- Enhancement: Adding Slotfills for remote payments and SettingsForm component. #6932
+- Fix: Make `Search` accept synchronous `autocompleter.options`. #6884
+- Fix: Set autoload to false for all remote inbox notifications options. #7060
+- Add: Consume remote payment methods on frontend #6867
+- Add: Extend payment gateways REST endpoint #6919
+- Add: Add remote payment gateway recommendations initial docs #6962
+- Add: Add loading placeholders for payment gateways task #7123
+- Add: Note date range logic for GivingFeedback, and InsightFirstSale note. #6969
+- Add: Add transient notices feature #6809
+- Add: Add transformers in remote inbox notifications #6948
+- Add: Add Mercado Pago as default fallback payment gateway #7043
+- Add: Add in Razorpay as default fallback payment gateway #7096
+- Add: Get post install scripts from gateway and enqueue in client #6967
+- Add: Add eWAY as default fallback gateway #7108
+- Add: Free extension list powered by remote config #6952
+- Add: Add PayPal to fallback payment gateways #7001
+- Add: Add a data store for WC Payments REST APIs #6918
+- Add: Progressive setup checklist copy and call to action buttons. #6956
+- Add: Add Paystack as fallback gateway #7025
+- Add: Add Square as default fallback gateway #7107
+- Add: Add COD method to default payment gateway recommendations #7057
+- Add: Add BACS as default fallback payment gateway #7073
+- Add: A/B test of progressive checklist features. #7089
+- Add: Add payment gateway return URL and action #7095
+- Add: Add Mollie to the default payment gateways. #7092
+- Add: Show task and activity notifications in the Inbox panel #7017
+- Add: Adding WCPay payment configuration defaults. #7097
+- Add: Create onboarding package to house refactored WCPay card and relevant components #7058
+- Dev: Add Jetpack Backup admin note #6738
+- Dev: Reduce the specificity and complexity of the ReportError component #6846
+- Dev: Converting <SettingsForm /> component to TypeScript. #6981
+- Dev: Update package-lock to fix versioning of local packages. #6843
+- Dev: Use rule processing for remote payment methods #6830
+- Dev: Update E2E jest config, so it correctly creates screenshots on failure. #6858
+- Dev: Fixed storybook build script #6875
+- Dev: Removed allowed keys list for adding woocommerce_meta data. #6889 🎉 @xristos3490
+- Dev: Delete all products when running product import tests, unskip previously skipped test. #6905
+- Dev: Add payment method selector to onboarding store #6921
+- Dev: Add disabled prop to SelectControl #6902
+- Dev: Add filter variation to tracks data in products analytics. #6913
+- Dev: Offload remote inbox notifications engine run using action-scheduler. #6995
+- Dev: Add source param support for notes query. #6979
+- Dev: Remove the use of Dashicons and replace with @wordpress/icons or gridicons. #7020
+- Dev: Refactor inbox panel components and moved to experimental package. #7006
+- Dev: Business features uncheck creative mail by default #7139
+- Dev: Remove support for IE11. #7112
+- Dev: Drop styling support for IE11. #7137
+- Dev: Remove react-docgen docs in favor of Storybook #7055
+- Enhancement: Add expand/collapse to extendable task list. #6910
+- Enhancement: Add task hierarchy support to extended task list. #6916
+- Enhancement: Add remind me later option to task list. #6923
+- Enhancement: Enable Remote Free Extensions List #7144
+- Enhancement: Adding Slotfills for remote payments and SettingsForm component. #6932
+- Fix: Rule Processing Transformer to handle dotNotation default value #7009
+- Fix: Remove Navigation's uneeded SlotFill context #6832
+- Fix: Report filters expecting specific ordering. #6847
+- Fix: Render bug with report comparison mode selections. #6862
+- Fix: Throw exception if the data store cannot be loaded when trying to use notes. #6771
+- Fix: Autocompleter for custom Search in FilterPicker #6880
+- Fix: Get currency from CurrencyContext #6723
+- Fix: Correct the left position of transient notices when the new nav is used. #6914
+- Fix: Exclude WC Shipping for store that are only offering downloadable products #6917
+- Fix: SelectControl focus and de-focus bug #6906
+- Fix: Multiple preload tag output bug. #6998
+- Fix: Call existing filters for leaderboards in analytics. #6626
+- Fix: Set target to blank for the external links #6999
+- Fix style regression with the Chart header. #7002
+- Fix styling of the advanced filter operator selection. #7005
+- Fix: Deprecated warnings from select control @wordpress/data-controls. #7007
+- Fix: Bug with Orders Report coupon exclusion filter. #7021
+- Fix: Show Google Listing and Ads in installed marketing extensions section. #7029
+- Fix: Attribute filter bug with "any X" variations. #7046
+- Fix: Notices not dissapearing. #7077
+- Fix: Keyboard accessibility on the free features tab. #7149
+- Fix: Fix error handling when remote free extension API returns empty array. #7147
+- Fix: Transformer casing is incorrect and creates an error on case-sensitive systems #7104
+- Fix: Preventing redundant notices when installing plugins via payments task list. #7026
+- Fix: Autocompleter for custom Search in CompareFilter #6911
+- Fix: Add target to the button to open it in a new tab  #7110
+- Fix: Make `Search` accept synchronous `autocompleter.options`. #6884
+- Fix: Set autoload to false for all remote inbox notifications options. #7060
+- Fix: Issue where summary stats were not showing in Analytics > Stock. #7161
+- Tweak: Only fetch remote payment gateway recommendations when opted in #6964
+- Tweak: Setup checklist copy revert. #7015
+- Update: Task list component with new Experimental Task list. #6849
+- Update: Optimize payment gateway resolution #7124
+- Update: Experimental task list import to the experimental package. #6950
+- Update: Redirect to WC Home after setting up a payment method #6891
+- Update: Hook up payments gateway data store #7038
+- Update: Update remote payment docs gateway methods #7079
+- Update: Remove original business step flow #7103
+- Update: WooCommerce Shipping copy on onboarding steps #7148
+
+== 2.3.1 5/24/2021 ==
+- Tweak: Store profiler - Changed MailPoet's title and description #6990
+- Update: Payment recommendation screen transition and add external link icon. #7022
+- Fix: A JS exception being thrown on the product tags page. #7053
+- Fix: Show Google Listing and Ads in installed marketing extensions section. #7029
+- Tweak: Adjust WC Pay supported countries #7048
+
+== 2.3.0 5/13/2021 ==
+- Add: Add plugin installer to allow installation of plugins via URL #6805
+- Add: Optional children prop to SummaryNumber component #6748
+- Dev: Add data source filter to remote inbox notification system #6794
+- Dev: Introduce usage of ExPlat, an A/B testing tool. See https://woocommerce.com/usage-tracking/ for more #6669
+- Dev: Add support for nonces in note actions #6726
+- Dev: Add support for running php unit tests in PHP 8. #6678
+- Dev: Add event recording to start of gateway connections #6801
+- Feature: Add recommended payment methods in payment settings. #6760
+- Fix: Event tracking for merchant email notes #6616
+- Fix: Use the store timezone to make time data requests #6632
+- Fix: Update the checked input radio button margin style #6701
+- Fix: Convert date to timestamp before passing to set_date_prop to persist timezone #6795
+- Fix: Make pagination buttons height and width consistent #6725
+- Fix: Retain persisted queries when navigating to Homescreen #6614
+- Fix: Update folded header style #6724
+- Fix: Unreleated variations showing up in the Products reports #6647
+- Fix: Check active plugins before getting the PayPal onboarding status #6625
+- Fix: Remove no-reply from inbox notification emails #6644
+- Fix: Set up shipping costs task, redirect to shipping settings after completion. #6791
+- Fix: Onboarding logic on WooCommerce update to keep task list present. #6803
+- Fix: Pause inbox message “GivingFeedbackNotes” #6802
+- Fix: Missed DB version number updates causing unnecessary upgrades. #6818
+- Fix: Parsing bad JSON string data from user WooCommerce meta. #6819
+- Fix: Remove PayPal for India #6828
+- Performance: Avoid updating customer info synchronously from the front end. #6765
+- Tweak: Add settings_section event prop for CES #6762
+- Tweak: Refactor payments to allow management of methods #6786
+- Tweak: Add tracking data for the preview site button #6623
+- Tweak: Update WC Payments copy on the task list #6734
+- Tweak: Update payment gateway suggestions semantics to be more consistent #7130
+- Tweak: Add check to see if value for contains is array, show warning if not. #6645
+- Tweak: Sort the extension task list by completion status and allow toggling visibility. #6792
+- Tweak: Only fetch remote payment gateway recommendations when opted in #6964
+- Update: Replace marketing extension - Google Listings and Ads. #6939
+- Update: Update choose niche note cta URL #6733
+- Update: UI updates to Payment Task screen #6766
+- Update: Update payment gateway suggestions semantics to be more consistent #7130
+- Update: Adding setup required icon for non-configured payment methods #6811
+
+== 2.2.6 5/7/2021 ==
+
+- Fix: Address an issue with OBW when installing only WooCommerce payments and Jetpack. #6957
+
+== 2.2.5 5/7/2021 ==
+
+- Fix: Calling of get_script_asset_filename with extra parameter #6955
+
+== 2.2.4 5/7/2021 ==
+
+- Dev: Fix a bug where trying to load an asset registry causes a crash. #6951
+
+== 2.2.3 5/6/2021 ==
+
+- Dev: Do a git clean before the core release. #6945
+
+== 2.2.2 4/28/2021 ==
+
+- Fix: Disable the continue btn on OBW when requested are being made #6838
+- Tweak: Revert WCPay international support for bundled package #6901
+- Tweak: Store profiler - Changed MailPoet's title and description #6886
+- Tweak: Update PayU logo #6829
+
+== 2.2.0 3/30/2021 ==
+
+- Fix: Check if features are currently being enabled #6688
+- Add: Next new novel navigation nudge note #6610
+- Fix: Fix the activity panel toggle not closing on click #6679
+- Tweak: Add default value for contains op #6622
+- Fix: Fix use of feature checks and remove deprecated method calls #6687
+- Dev: Close activity panel tabs by default and track #6566
+- Dev: Update undefined task name properties for help panel tracks #6565
+- Fix: Allow the manager role to query certain options #6577
+- Dev: Refactor profile wizard benefits step and add tests #6583
+- Fix: Delete customer data on network user deletion #6574
+- Fix: Fix Themes step visibility in IE 11 #6578
+- Fix: Fix hidden menu title on smaller screens #6562
+- Fix: Add gross sales column to CSV export #6567
+- Dev: Add filter to profile wizard steps #6564
+- Tweak: Adjust targeting store age for the Add First Product note #6554
+- Tweak: Improve WC Shipping & Tax logic #6547
+- Tweak: Update Insight inbox note content #6555
+- Dev: Add nav intro modal tests #6518
+- Dev: Use wc filter to get status tabs for tools category #6525
+- Tweak: Remove mobile activity panel toggle #6539
+- Dev: Add nav header component tests #6509
+- Add: Add legacy report items to new navigation #6507
+- Dev: Add initial tests for navigation Menu class #6492
+- Dev: Remove active item from navigation store #6486
+- Dev: Add navigation container tests #6464
+- Add: Add preview site button on the appearance task #6457
+- Fix: Add check for navigating being enabled. #6462
+- Dev: Add nav favorite button tests #6446
+- Dev: Add a changelog lint check to PRs. #6414
+- Dev: Add navigation favorites tests #6409
+- Fix: Move the shipping input and text 1px lower. #6408
+- Dev: support use of Array.flat in client and packages. #6411
+- Fix: Correct the Klarna slug #6440
+- Tweak: Refactor autoloader to remove global variable. #6412
+- Dev: Deprecate Onboarding::has_woocommerce_support. #6401
+- Fix: Broken link anchors to online documentation. #6455
+- Dev: Add Dependency Extraction Webpack Plugin #5762
+- Dev: Add client-side filter for Navigation rootBackUrl #6505
+- Add: Back button to go to home screen from tasks in the task list. #6397
+- Fix: Update payment card style on mobile #6413
+- Fix: Missing i18n in Welcome modal. #6456
+- Fix: Restore visual styles back to Analytics tabs. #5913
+- Add: Add a "rather not say" option to revenue in the profile wizard. #6475
+- Fix: Update contrast and hover / active colors for analytics dropdown buttons #6504
+- Dev: Remove `items_purchased` and `account_type` props from onboarding profile API. #6520
+- Dev: Added warning when WC-Admin is active but not being used #6453
+- Fix: Associated Order Number for refunds was hidden #6428
+- Add: Remove Mollie promo note on install #6510
+- Add: Remote Inbox Notifications rule to trigger when WooCommerce Admin is upgraded. #6040
+- Dev: Store profiler - Added MailPoet to Business Details step  #6503
+- Dev: Store profiler - Added MailPoet to new Business Details step  #6515
+- Dev: Add tilde (~) to represent client root directory for imports. #6517
+- Fix: Fix issue where Loader::is_admin_page() would error if WooCommerce admin is disabled. #6563
+- Add: Add Ireland to Square payment method #6559
+- Add: CES survey for search product, order, customer #6420
+- Add: CES survey for importing products #6419
+- Add: CES survey for adding product categories, tags, and attributes #6418
+- Add: Additional analytics tracking for the business details step. #6575
+- Add: Include tracking for mail poet installs in the selective bundle install #6603
+- Dev: Add script automation for gathering hooks and filters. #6454
+- Dev: Add TypeScript to CustomerFeedbackModal component. #6498
+- Fix: Correct a bug where the JP connection flow would not happen when installing JP in the OBW. #6521
+- Dev: Add TypeScript and page objects to the E2E test suite. #6582
+- Dev: Introduce Typescript to Navigation utils #6477
+- Add: Paystack payment provider to several african countries. #6579
+- Dev: Payments task: include Mercado Pago #6572
+- Dev: Ensure script asset.php files are included in builds #6635
+- Fix: Show management links when the task list is complete (even if its not hidden). #6657
+- Fix: Adding New Zealand and Ireland to selective bundle option, previously missed. #6649
+- Fix: Update the Mercado option used for enabling/disabling. #6677
+- Dev: Ensure production script asset names don't include .min suffix #6681
+- Fix: Improve AddFirstProduct email note contents. #6617
+- Fix: Missing margin between cards and viewport in setup wizard #6620
+
 == 2.1.4 3/29/2021  ==
 
 - Fix: Adding New Zealand and Ireland to selective bundle option, previously missed. #6649
@@ -81,6 +364,7 @@ Release and roadmap notes are available on the [WooCommerce Developers Blog](htt
 
 - Feature: Increase target audience for business feature step. #6508
 - Fix: Correct a bug where the JP connection flow would not happen when installing JP in the OBW. #6521
+- Fix: Add customer name column to CSV export #6556
 
 == 2.1.2 3/10/2021  ==
 
@@ -135,9 +419,11 @@ Release and roadmap notes are available on the [WooCommerce Developers Blog](htt
 - Dev: Change `siteUrl` to `homeUrl` on navigation site title #6240
 - Dev: Add navigation favorites data store #6275
 - Add: Add navigation intro modal. #6367
+- Fix: Fix double prefixing of full navigation URLs #6460
 - Fix: Reset Navigation submenu before making Flyout #6396
-- Fix: Broken link anchors to online documentation. #6455
-- Fix: Add check for navigating being enabled. #6462
+- Dev: Add a changelog lint check to PRs. #6414
+- Fix: Move the shipping input and text 1px lower. #6408
+- Add: WC Admin Docker setup with WP-ENV
 
 == 2.0.3 03/10/2021 ==
 
@@ -193,12 +479,12 @@ Release and roadmap notes are available on the [WooCommerce Developers Blog](htt
 - Dev: Revert work done in #4857 for automated shipping after OBW is completed #5971
 - Add: Welcome modal when coming from Calypso #6004
 - Enhancement: Add an a/b experiment for installing free business features #5786
-- Dev: Add `onChangeCallback` feature to the wc-admin <Form> component #5786 
-- Dev: Add merchant email notifications #5922 
+- Dev: Add `onChangeCallback` feature to the wc-admin <Form> component #5786
+- Dev: Add merchant email notifications #5922
 - Add: Email note to add first product. #6024
 - Add: Note for users coming from Calypso. #6030
 - Fix: Fixed error hiding core task list. #6050
-- Enhancement: Add an "unread" indicator to inbox messages. #6047 
+- Enhancement: Add an "unread" indicator to inbox messages. #6047
 - Tweak: update the content for the ChooseNiche note. #6048
 - Fix: Generate JSON translation chunks on plugin activation #6028
 - Dev: Update travis CI distribution. #6067
@@ -393,7 +679,7 @@ Release and roadmap notes are available on the [WooCommerce Developers Blog](htt
 - Fix: Center continue buttons in the onboarding profile wizard #4082
 - Fix: Homepage template used in setup checklist customization task #4807
 - Fix: Errant Jetpack activation prompt in Stats Overview home screen widget #4817
-- Fix: Unable to activate theme with uppercase name #4393 🎉 @ayubadiputra 
+- Fix: Unable to activate theme with uppercase name #4393 🎉 @ayubadiputra
 - Fix: Set active theme when OBW is shown via the task list #4834
 - Enhancement: Add option to dismiss tasks in Setup Checklist #4733
 - Enhancement: Show contextual help menu when working on store setup tasks. #4779
@@ -453,7 +739,7 @@ Release and roadmap notes are available on the [WooCommerce Developers Blog](htt
 - Fix: The WCPay method not appearing as recommended sometimes #4345
 - Fix: Removed URLSearchParams method #4501
 - Fix: REST API collections schema. #4484
-- Fix: null issue in wpNavMenuClassChange #4513 🎉 @gradosevic 
+- Fix: null issue in wpNavMenuClassChange #4513 🎉 @gradosevic
 - Fix: RTL stylesheet loading for split code chunks. #4542
 - Fix: Don't show store location step in tax and shipping tasks if the address has already been provided #4507
 - Fix: Check for enabled methods before payment task completion #4530
@@ -487,7 +773,7 @@ Release and roadmap notes are available on the [WooCommerce Developers Blog](htt
 - Enhancement: Add Jetpack connection to plugin benefits step #4374
 
 = 1.2.0 2020-05-18 =
-- Enhancement: Add onboarding payments note #4157 
+- Enhancement: Add onboarding payments note #4157
 - Enhancement: Marketing Inbox Note #4030
 - Performance: Use Route based code splitting to reduce bundle size #4094
 - Performance: trim down inbox note API request. #3977
@@ -502,7 +788,7 @@ Release and roadmap notes are available on the [WooCommerce Developers Blog](htt
 - Tweak: Adjust "demo products" verbiage to "Sample Products" #4184 🎉 @jobthomas
 - Tweak: Don't reschedule imports on failed imports #4263
 - Tweak: Remove obsolete inbox messages #4182
-- Dev: Make query selector for admin alerts more specific #4289 🎉 @pauloiankoski 
+- Dev: Make query selector for admin alerts more specific #4289 🎉 @pauloiankoski
 - Dev: Guard against null themes in OBW #4244
 - Dev: Update wcadmin db version after db callback #4323
 - Dev: Only migrate options on version change #4324
@@ -532,7 +818,7 @@ Release and roadmap notes are available on the [WooCommerce Developers Blog](htt
 - Tweak: Added link to "go shopping" button #3712
 - Fix: Make analytics tables use the site's date format setting #3715
 - Fix: Alignment of select text #3723 🎉 @edmundcwm
-- Tweak: Add PayFast payment gateway option for sites in South Africa #3738 
+- Tweak: Add PayFast payment gateway option for sites in South Africa #3738
 - Tweak: Onboarding: Update screen order and remove Jetpack connection in profiler #3739
 - Tweak: Onboarding - business step: add more options in the competitors list and other fixes #3812
 - Tweak: Onboarding: Redesign plugin benefits screen #3764
@@ -549,7 +835,7 @@ Release and roadmap notes are available on the [WooCommerce Developers Blog](htt
 - Enahncement: Create flat rate or free shipping methods from the onboarding task list #3927
 - Fix: Add WooCommerce support if store is using default theme #3908
 - Fix: Make WooCommerce breadcrumbs use WooCommerce Branding if it is installed #3798
-- Fix undefined variable slug on theme activation error #3942 🎉 2nad@m1992 
+- Fix undefined variable slug on theme activation error #3942 🎉 2nad@m1992
 - Tweak: Style and icon updates for Activity Panel #3965
 - Fix: handle cases where coupon dates are in an unexpected format. #3984
 - Enhancement: "Personalize your store" reminder: new inbox notification #3895
@@ -584,7 +870,7 @@ Release and roadmap notes are available on the [WooCommerce Developers Blog](htt
 
 - Enhancement: Onboarding: business step: add Google Ads extension install #3725
 - Dev: Update prestart script so readme.txt stable tag is updated #3911
-- Tweak: create database tables on an earlier hook to avoid conflicts with core WooCommerce. #3896 
+- Tweak: create database tables on an earlier hook to avoid conflicts with core WooCommerce. #3896
 - Fix - Made the admin note loading more resilient to prevent failures when loading notes with invalid content_data. #3926
 
 = 1.0.1 2020-03-12 =
@@ -643,67 +929,67 @@ Release and roadmap notes are available on the [WooCommerce Developers Blog](htt
 
 = 0.25.1 2020-02-07 =
 
-- Dev: Enable onboarding #3651 (Onboarding) 
-- Now `decodeEntities` method is used to correct the breadcrumb. #3653 (Activity Panel) 
-- Fix: Fix styling of search control in report table header and filters. #3603 (Analytics, Components, Packages) 
+- Dev: Enable onboarding #3651 (Onboarding)
+- Now `decodeEntities` method is used to correct the breadcrumb. #3653 (Activity Panel)
+- Fix: Fix styling of search control in report table header and filters. #3603 (Analytics, Components, Packages)
 🤯
 
 = 0.25.0 2020-01-29 =
 
-- Fix: Onboarding: Mark profiler complete on WC update #3590 (On Merge to WC Core, Onboarding) 
-- Dev: fix strict standards in Scheduler classes #3583  
-- Task: Avoid redundant/unnecessary cleanup. #3580 (On Merge to WC Core) 
-- Fix: Fix styling of search control in report table header and filters. #3603 (Analytics, Components, Packages) 
-- Fix: report table search component. #3618 (Analytics, Components, Packages) 
-- Performance: Remove unnecessary use of lodash get #3598 (Onboarding) 
-- Tweak: don't modify page titles for existing WooCommerce pages. #3585 (On Merge to WC Core) 
-- Dev: Handle custom currency formats #3349 (Components, Packages) 
-- Fix: Update broken note action hooks #3535 (Activity Panel, Inbox) 
-- Dev: Onboarding: Only Show Retry Button on Plugin install failure #3545  
-- Dev: SelectControl: Add an option to show all options on refocus #3551 (Components, Packages) 
-- Fix: SQL error in category table sort. #3521 (Analytics) 
-- Dev: Onboarding: Add option to track appearance completion #3503 (Onboarding) 
-- Enhancement: add customer privacy erasure support. #3511 (Analytics) 
-- Fix: handle uninstallation when in feature plugin mode. #3546 (On Merge to WC Core) 
-- Fix: Exception on dashboard once Onboarding tasks are complete #3513  
-- Tweak: Onboarding - Add Skip Step link on Themes Step. #3490 (Onboarding) 
-- Bug: Add SelectControl debouncing and keyboard fixes #3507 (Components, Packages) 
+- Fix: Onboarding: Mark profiler complete on WC update #3590 (On Merge to WC Core, Onboarding)
+- Dev: fix strict standards in Scheduler classes #3583
+- Task: Avoid redundant/unnecessary cleanup. #3580 (On Merge to WC Core)
+- Fix: Fix styling of search control in report table header and filters. #3603 (Analytics, Components, Packages)
+- Fix: report table search component. #3618 (Analytics, Components, Packages)
+- Performance: Remove unnecessary use of lodash get #3598 (Onboarding)
+- Tweak: don't modify page titles for existing WooCommerce pages. #3585 (On Merge to WC Core)
+- Dev: Handle custom currency formats #3349 (Components, Packages)
+- Fix: Update broken note action hooks #3535 (Activity Panel, Inbox)
+- Dev: Onboarding: Only Show Retry Button on Plugin install failure #3545
+- Dev: SelectControl: Add an option to show all options on refocus #3551 (Components, Packages)
+- Fix: SQL error in category table sort. #3521 (Analytics)
+- Dev: Onboarding: Add option to track appearance completion #3503 (Onboarding)
+- Enhancement: add customer privacy erasure support. #3511 (Analytics)
+- Fix: handle uninstallation when in feature plugin mode. #3546 (On Merge to WC Core)
+- Fix: Exception on dashboard once Onboarding tasks are complete #3513
+- Tweak: Onboarding - Add Skip Step link on Themes Step. #3490 (Onboarding)
+- Bug: Add SelectControl debouncing and keyboard fixes #3507 (Components, Packages)
 - Tweak: Included RegExp for JS files in examples.config.js #3510 (Build, Extensibility) 👏 @yash-webkul
-- Bug: Onboarding: Don't show skip link if no plugins exist to skip #3485 (Onboarding) 
-- Fix: Make package-based load inert when plugin is active. #3555 (On Merge to WC Core) 
-- Dev: Onboarding: Add purchase products task list item #3472 (Onboarding) 
-- Fix: Properly style theme selection button in Site Profiler #3489  
-- Dev: Onboarding: Add tracks to extension purchase task and modal #3493 (Onboarding) 
-- Tweak: Change Refunds to Returns on the dashboard. #3514  
-- Dev: Update translation scripts and instructions for creating `.json` files. #3433 (Build) 
-- Bug: Onboarding: Add in tracks for failed plugin installation #3483 (Onboarding) 
-- Dev: Onboarding: Add theme install and activation endpoints #3482 (Onboarding, REST API) 
-- Fix: component styles for WordPress 5.3. #3357 (Build, Components, Design, Packages) 
-- Dev: Onboarding: Add another option to platforms. #3471 (Onboarding) 
-- Fix: `CompareFilter` functionality regression. #3421 (Analytics, Components, Packages) 
-- Fix: don't run database migrations on new installs. #3473  
-- Fix: WC-Admin header on settings and status pages. #3389 (Activity Panel) 
-- Enhancement: allow filtering of hidden WP notices. #3391 (Activity Panel, Extensibility) 
-- Fix: show pending product reviews when comment moderation is disabled. #3459 (Activity Panel) 
-- Dev: AssetDataRegistry: update SQL example #3418  
-- Tweak: Scroll to notices when displayed while the notice area is scrolled out of view. #3390 (Activity Panel) 
-- Dev: DataStores: normalize contexts to plural #3419  
-- Enhancement: allow report cache layer to be turned off. #3434  
-- Bug: Fix user data fields filter name. #3428 (Dashboard) 
-- Fix: error when trying to download report data. #3429 (Analytics) 
-- Dev: Update to latest PHPUnit 7 #3571 (Build) 
-- Fix: invalidate Reports cache when changing Analytics settings. #3465 (Analytics, REST API, Settings) 
-- Bug: Onboarding: Skip Shipping connect step if Jetpack is already connected #3486 (Onboarding) 
-- Fix: Time zone offset calculation on customer last active date. #3388 (Analytics) 
-- Dev: Default the Calypso environment to production #3347 (Onboarding) 
-- Bug: Onboarding: Update shipping task button text #3400 (Onboarding) 
-- Bug: Onboarding: Update check for TOS accepted in tax step #3245 (Onboarding) 
-- Fix: remove the header when user doesn't have required permissions #3386 (Activity Panel) 
-- Dev: Add autocomplete props to address fields in onboarding and adjust country/state matching #3338 (Onboarding) 
-- Dev: Add purchase modal at the end of the profile wizard #3444 (Onboarding) 
-- Dev: Standardize hook and filter prefixes. #3339 (On Merge to WC Core) 
-- Fix: make report filter date props optional #3359 (Components, Extensibility, Packages) 
-- Tweak: Add/disable plugin filter #3361  
+- Bug: Onboarding: Don't show skip link if no plugins exist to skip #3485 (Onboarding)
+- Fix: Make package-based load inert when plugin is active. #3555 (On Merge to WC Core)
+- Dev: Onboarding: Add purchase products task list item #3472 (Onboarding)
+- Fix: Properly style theme selection button in Site Profiler #3489
+- Dev: Onboarding: Add tracks to extension purchase task and modal #3493 (Onboarding)
+- Tweak: Change Refunds to Returns on the dashboard. #3514
+- Dev: Update translation scripts and instructions for creating `.json` files. #3433 (Build)
+- Bug: Onboarding: Add in tracks for failed plugin installation #3483 (Onboarding)
+- Dev: Onboarding: Add theme install and activation endpoints #3482 (Onboarding, REST API)
+- Fix: component styles for WordPress 5.3. #3357 (Build, Components, Design, Packages)
+- Dev: Onboarding: Add another option to platforms. #3471 (Onboarding)
+- Fix: `CompareFilter` functionality regression. #3421 (Analytics, Components, Packages)
+- Fix: don't run database migrations on new installs. #3473
+- Fix: WC-Admin header on settings and status pages. #3389 (Activity Panel)
+- Enhancement: allow filtering of hidden WP notices. #3391 (Activity Panel, Extensibility)
+- Fix: show pending product reviews when comment moderation is disabled. #3459 (Activity Panel)
+- Dev: AssetDataRegistry: update SQL example #3418
+- Tweak: Scroll to notices when displayed while the notice area is scrolled out of view. #3390 (Activity Panel)
+- Dev: DataStores: normalize contexts to plural #3419
+- Enhancement: allow report cache layer to be turned off. #3434
+- Bug: Fix user data fields filter name. #3428 (Dashboard)
+- Fix: error when trying to download report data. #3429 (Analytics)
+- Dev: Update to latest PHPUnit 7 #3571 (Build)
+- Fix: invalidate Reports cache when changing Analytics settings. #3465 (Analytics, REST API, Settings)
+- Bug: Onboarding: Skip Shipping connect step if Jetpack is already connected #3486 (Onboarding)
+- Fix: Time zone offset calculation on customer last active date. #3388 (Analytics)
+- Dev: Default the Calypso environment to production #3347 (Onboarding)
+- Bug: Onboarding: Update shipping task button text #3400 (Onboarding)
+- Bug: Onboarding: Update check for TOS accepted in tax step #3245 (Onboarding)
+- Fix: remove the header when user doesn't have required permissions #3386 (Activity Panel)
+- Dev: Add autocomplete props to address fields in onboarding and adjust country/state matching #3338 (Onboarding)
+- Dev: Add purchase modal at the end of the profile wizard #3444 (Onboarding)
+- Dev: Standardize hook and filter prefixes. #3339 (On Merge to WC Core)
+- Fix: make report filter date props optional #3359 (Components, Extensibility, Packages)
+- Tweak: Add/disable plugin filter #3361
 - Dev: Onboarding -  Add button to continue setup after importing products #3402 (Build, Onboarding)
 
 = 0.24.0 2020-01-06 =

@@ -317,6 +317,9 @@ function pewc_get_field_params( $field_id=null ) {
 		'min_date_today',
 		'field_mindate',
 		'field_maxdate',
+		'offset_days',
+		'weekdays',
+		'blocked_dates',
 		'field_color',
 		'field_width',
 		'field_show',
@@ -339,7 +342,9 @@ function pewc_get_field_params( $field_id=null ) {
 		'multiple_uploads',
 		'max_files',
 		'multiply_price',
-		'hidden_calculation'
+		'hidden_calculation',
+		'price_visibility',
+		'option_price_visibility'
 	);
 
 	return apply_filters( 'pewc_item_params', $params, $field_id );
@@ -527,7 +532,7 @@ function pewc_get_conditions_by_field_id( $groups, $product_id ) {
 		}
 	}
 
-	return $field_conditions;
+	return apply_filters( 'pewc_all_conditions_by_field_id', $field_conditions, $groups, $product_id );
 
 }
 
@@ -613,7 +618,6 @@ function pewc_get_all_calculation_components( $groups ) {
 		foreach( $groups as $group_id=>$group ) {
 			if( $group['items'] ) {
 				foreach( $group['items'] as $field_id=>$field ) {
-
 					if( isset( $field['field_type'] ) && $field['field_type'] == 'calculation' ) {
 						$formula = isset( $field['formula'] ) ? $field['formula'] : false;
 						$formula = str_replace( '_field_price', '', $formula );
@@ -624,6 +628,7 @@ function pewc_get_all_calculation_components( $groups ) {
 
 								// Find the elements for the look up table
 								$lookup_fields = apply_filters( 'pewc_calculation_look_up_fields', array() );
+
 								if( isset( $lookup_fields[$field_id][1] ) ) {
 									$component_id = $lookup_fields[$field_id][1];
 									if( isset( $components[$field_id] ) ) {
@@ -1055,12 +1060,38 @@ function pewc_get_adjusted_product_addon_price( $cart_item, $cart_key ) {
 
 	} else if( $adjust_tax == 'add' ) {
 
-		$original_extras = $original_extras * 1.2;
+		$tax_rate = pewc_get_tax_rate( $cart_item );
+
+		$original_extras = $original_extras * $tax_rate;
 		$new_price = $original_price + $original_extras;
 
 	}
 
 	return $new_price;
+
+}
+
+/**
+ * Get the tax rate for an order line item
+ * @since 3.9.2
+ */
+function pewc_get_tax_rate( $cart_item ) {
+
+	$wc_tax = new WC_Tax();
+	$billing_country = WC()->customer->get_billing_country();
+
+	// Get the tax class and relevant tax data
+	$tax_class = $cart_item['data']->get_tax_class();
+	$tax_data = $wc_tax->find_rates( array( 'country' => $billing_country, 'tax_class' => $tax_class ) );
+
+	if( ! empty( $tax_data ) ) {
+		$tax_rate = reset($tax_data)['rate'];
+		// Return the tax rate as a decimal
+		$tax_rate = 1 + ( $tax_rate / 100 );
+		return $tax_rate;
+	}
+
+	return 1;
 
 }
 
@@ -1166,9 +1197,9 @@ function pewc_get_subscription_variations() {
  */
 function pewc_user_can_edit_products() {
 
-	if( ! pewc_is_pro() ) {
-		return false;
-	}
+	// if( ! pewc_is_pro() ) {
+	// 	return false;
+	// }
 
 	$can_edit = false;
 	if( get_option( 'pewc_enable_cart_editing', 'no' ) == 'yes' ) {

@@ -1,4 +1,16 @@
  *** HubSpot for WooCommerce Changelog ***
+2021-09-13 - version 1.2.3
+* Add - Content Part
+
+2021-08-18 - version 1.2.2
+* Add - Fixed deal and contact association issue.
+
+2021-05-29 - version 1.2.1
+* Add - Bug Fixes.
+
+2021-04-23 - version 1.2.0
+* Add - Historical Sync Data.
+
 2021-04-23 - version 1.0.8
 * Fix - Creating Groups issue.
 

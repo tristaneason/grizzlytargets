@@ -197,7 +197,7 @@ if ( 1 == get_option( 'hubwoo_fields_setup_completed', 0 ) ) {
 															$acc_class = 'mwb-woo__accordion-content';
 														if ( 'created' == $single_group['status'] ) {
 															?>
-																<span class="grSuccess"><?php esc_html_e( 'Created', 'huboo' ); ?></span>
+																<span class="grSuccess"><?php esc_html_e( 'Created', 'makewebbetter-hubspot-for-woocommerce' ); ?></span>
 																<?php
 														} else {
 															$acc_class .= '-disable';

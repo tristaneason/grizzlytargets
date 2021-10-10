@@ -14,6 +14,7 @@ function porto_load_sticky_shortcode() {
 			'name'            => 'Porto ' . __( 'Sticky', 'porto-functionality' ),
 			'base'            => 'porto_sticky',
 			'category'        => __( 'Porto', 'porto-functionality' ),
+			'description'     => __( 'Stick any elements especially images or text', 'porto-functionality' ),
 			'icon'            => 'fas fa-compress',
 			'as_parent'       => array( 'except' => 'porto_sticky' ),
 			'content_element' => true,

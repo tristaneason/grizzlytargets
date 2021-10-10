@@ -28,9 +28,14 @@ extract(
 		$atts
 	)
 );
-$el_class = porto_shortcode_extract_class( $el_class );
+$el_class  = porto_shortcode_extract_class( $el_class );
+$img_attrs = '';
 if ( ! $photo_url && $photo_id ) {
-	$photo_url = wp_get_attachment_thumb_url( $photo_id );
+	$image = wp_get_attachment_image_src( $photo_id, 'thumbnail' );
+	if ( $image ) {
+		$photo_url  = $image[0];
+		$img_attrs .= ' width="' . absint( $image[1] ) . '" height="' . absint( $image[2] ) . '"';
+	}
 }
 $porto_url = str_replace( array( 'http:', 'https:' ), '', $photo_url );
 $output    = '<div class="porto-testimonial wpb_content_element ' . $el_class . '"';
@@ -47,7 +52,7 @@ $output .= '>';
 if ( 'transparent' == $view ) {
 	$output .= '<div class="testimonial' . ( $style ? ' ' . $style : '' ) . ' testimonial-with-quotes' . ( 'white' == $color ? ' testimonial-light' : '' ) . ( $remove_border ? ' testimonial-no-borders' : '' ) . '">';
 	if ( $photo_url ) {
-		$output .= '<img class="img-responsive img-circle" src="' . esc_url( $porto_url ) . '" alt="' . esc_attr( $name ) . '">';
+		$output .= '<img class="img-responsive img-circle" src="' . esc_url( $porto_url ) . '" alt="' . esc_attr( $name ) . '"' . $img_attrs . '>';
 	}
 	$output .= '<blockquote class="testimonial-carousel' . ( $color ? ' ' . esc_attr( $color ) : '' ) . '"' . ( $quote_color ? ' style="color:' . esc_attr( $quote_color ) . '"' : '' ) . '>';
 	$output .= '<p>' . do_shortcode( $content ? $content : $quote ) . '</p>';
@@ -77,7 +82,7 @@ if ( 'transparent' == $view ) {
 			$content_class = 'col-lg-12';
 	if ( $photo_url ) {
 		$output       .= '<div class="col-8 col-md-4 col-lg-2 center p-t-lg">';
-			$output   .= '<img src="' . esc_url( $porto_url ) . '" alt="' . esc_attr( $name ) . '" class="img-responsive custom-rounded-image">';
+			$output   .= '<img src="' . esc_url( $porto_url ) . '" alt="' . esc_attr( $name ) . '" class="img-responsive custom-rounded-image"' . $img_attrs . '>';
 		$output       .= '</div>';
 		$content_class = 'col-lg-10';
 	}
@@ -117,14 +122,14 @@ if ( 'transparent' == $view ) {
 			case 'testimonial-style-2':
 			case 'testimonial-style-5':
 			case 'testimonial-style-6':
-				$output .= '<img class="img-responsive img-circle" src="' . esc_url( $photo_url ) . '" alt="' . esc_attr( $name ) . '">';
+				$output .= '<img class="img-responsive img-circle" src="' . esc_url( $photo_url ) . '" alt="' . esc_attr( $name ) . '"' . $img_attrs . '>';
 				break;
 			case 'testimonial-style-3':
 			case 'testimonial-style-4':
-				$output .= '<div class="testimonial-author-thumbnail"><img class="img-responsive img-circle" src="' . esc_url( $photo_url ) . '" alt="' . esc_attr( $name ) . '"></div>';
+				$output .= '<div class="testimonial-author-thumbnail"><img class="img-responsive img-circle" src="' . esc_url( $photo_url ) . '" alt="' . esc_attr( $name ) . '"' . $img_attrs . '></div>';
 				break;
 			default:
-				$output .= '<div class="testimonial-author-thumbnail"><img src="' . esc_url( $photo_url ) . '" alt="' . esc_attr( $name ) . '" class="img-circle"></div>';
+				$output .= '<div class="testimonial-author-thumbnail"><img src="' . esc_url( $photo_url ) . '" alt="' . esc_attr( $name ) . '" class="img-circle"' . $img_attrs . '></div>';
 				break;
 		}
 	}

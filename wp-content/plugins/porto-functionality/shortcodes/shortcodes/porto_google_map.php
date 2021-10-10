@@ -123,10 +123,10 @@ function porto_load_google_map_shortcode() {
 				),
 				array(
 					'type'       => 'checkbox',
-					'heading'    => '',
+					'heading'    => __( 'Disable map zoom on mouse wheel scroll', 'porto-functionality' ),
 					'param_name' => 'scrollwheel',
 					'value'      => array(
-						__( 'Disable map zoom on mouse wheel scroll', 'porto-functionality' ) => 'disable',
+						'' => 'disable',
 					),
 					'group'      => 'General Settings',
 				),

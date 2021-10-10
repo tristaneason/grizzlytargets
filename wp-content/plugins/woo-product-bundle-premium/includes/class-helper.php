@@ -35,9 +35,44 @@ if ( ! class_exists( 'WPCleverWoosb_Helper' ) ) {
 		}
 
 		public static function woosb_clean_ids( $ids ) {
-			$ids = preg_replace( '/[^,.\/0-9]/', '', $ids );
+			return apply_filters( 'woosb_clean_ids', $ids );
+		}
 
-			return $ids;
+		public static function woosb_minify_items( $items ) {
+			$minify_items = array();
+
+			foreach ( $items as $item ) {
+				if ( empty( $minify_items ) ) {
+					$minify_items[] = $item;
+				} else {
+					$has_item = false;
+
+					foreach ( $minify_items as $key => $minify_item ) {
+						if ( $minify_item['id'] === $item['id'] ) {
+							$minify_items[ $key ]['qty'] += $item['qty'];
+							$has_item                    = true;
+						}
+					}
+
+					if ( ! $has_item ) {
+						$minify_items[] = $item;
+					}
+				}
+			}
+
+			return $minify_items;
+		}
+
+		public static function woosb_localization( $key = '', $default = '' ) {
+			$str = '';
+
+			if ( ! empty( $key ) && ! empty( WPCleverWoosb::$localization[ $key ] ) ) {
+				$str = WPCleverWoosb::$localization[ $key ];
+			} elseif ( ! empty( $default ) ) {
+				$str = $default;
+			}
+
+			return apply_filters( 'woosb_localization_' . $key, $str );
 		}
 	}
 

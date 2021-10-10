@@ -1,7 +1,8 @@
 <?php
-
 /**
  * Builder Condition
+ *
+ * @since 6.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -11,6 +12,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'Porto_Builder_Condition' ) ) :
 
 	class Porto_Builder_Condition {
+
+		protected $post_id;
+
+		protected $builder_type;
 
 		/**
 		 * Constructor
@@ -40,6 +45,11 @@ if ( ! class_exists( 'Porto_Builder_Condition' ) ) :
 		 * Enqueue needed scripts
 		 */
 		public function enqueue() {
+			$this->post_id      = is_singular() ? get_the_ID() : ( isset( $_GET['post'] ) ? (int) $_GET['post'] : (int) $_GET['post_id'] );
+			$this->builder_type = get_post_meta( $this->post_id, PortoBuilders::BUILDER_TAXONOMY_SLUG, true );
+			if ( ! $this->builder_type ) {
+				return;
+			}
 			do_action( 'porto_builder_condition_pre_enqueue' );
 			if ( defined( 'ELEMENTOR_VERSION' ) || defined( 'VCV_VERSION' ) ) {
 				wp_dequeue_script( 'porto-builder-admin' );
@@ -49,13 +59,22 @@ if ( ! class_exists( 'Porto_Builder_Condition' ) ) :
 			wp_localize_script(
 				'porto-builder-condition',
 				'porto_builder_condition',
-				array(
-					'nonce' => wp_create_nonce( 'porto-builder-condition-nonce' ),
+				apply_filters( 'porto_builder', 
+					array(
+						'nonce' => wp_create_nonce( 'porto-builder-condition-nonce' ),
+						'list_url' => esc_url( admin_url( 'edit.php?post_type=' . PortoBuilders::BUILDER_SLUG . '&' . PortoBuilders::BUILDER_TAXONOMY_SLUG . '=' . $this->builder_type ) ),
+						'i18n' => array(
+							'display_condition' => esc_html__( 'Display Conditions', 'porto-functionality' ),
+							'back_to_list'      => esc_html__( 'Back To List', 'porto-functionality' ),
+						),
+					)
 				)
 			);
 		}
 
 		public function builder_condition_template() {
+			$post_id      = $this->post_id;
+			$builder_type = $this->builder_type;
 			include_once PORTO_BUILDERS_PATH . 'views/condition_template.php';
 		}
 

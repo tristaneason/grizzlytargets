@@ -18,12 +18,15 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 	public $splCharToFind 		= array('é','á','ä','Ä','Ã','ö','Ö','ü','Ü','ß','б','в','г','д','ё','ж','з','и','й','к','л','м','н','п','т','ф','х','ц','ч','ш','щ','ъ','ы','ь','э','ю','я','А','Б','Г','Д','Ё','Ж','З','И','Й','Л','П','У','Ф','Ц','Ч','Ш','Щ','Ъ','Ы','Ь','Э','Ю','Я','№');
 	public $splCharToReplace 	= array('e','a','a','A','A','o','O','u','U','B','b','v','g','d','io','zh','z','i','y','k','l','m','n','p','t','f','h','ts','ch','sh','sht','a','i','y','e','yu','ya','A','B','G','D','Io','Zh','Z','I','Y','L','P','U','F','Ts','Ch','Sh','Sht','A','I','Y','e','Yu','Ya','No.');
 
+	//PDS-179	
+	public $prioritizedSignatureOption 	= array( 5=>'ADULT',4=>'DIRECT',3=>'INDIRECT',2=>'SERVICE_DEFAULT',1=>'NO_SIGNATURE_REQUIRED',0=>'');
+
 	public function __construct() {
 		$this->id                                   = WF_Fedex_ID;
-		$this->rateservice_version                  = 26;
-		$this->ship_service_version                 = 25;
-		$this->pickup_service_version               = 20;
-		$this->addressvalidationservice_version     = 2;
+		$this->rateservice_version                  = 31;
+		$this->ship_service_version                 = 28;
+		$this->pickup_service_version               = 23;
+		$this->addressvalidationservice_version     = 4;
 		$this->tracking_ids                         = '';
 		$this->init();
 	}
@@ -119,6 +122,14 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 		$this->output_format				= $this->settings['output_format'];
 		$this->image_type					= $this->settings['image_type'];
 		$this->commercial_invoice 			= (isset($this->settings['commercial_invoice']) && ($this->settings['commercial_invoice'] == 'yes')) ? true : false;
+        //USMCA Certificate
+		$this->usmca_certificate 			= (isset($this->settings['usmca_certificate']) && ($this->settings['usmca_certificate'] == 'yes')) ? true : false;
+		$this->usmca_ci_certificate_of_origin = (isset($this->settings['usmca_ci_certificate_of_origin']) && ($this->settings['usmca_ci_certificate_of_origin'] == 'yes')) ? true : false;
+		$this->blanket_begin_period		= ( isset( $this->settings['blanket_begin_period'] ) && !empty($this->settings['blanket_begin_period']) ) ? $this->settings['blanket_begin_period'] : '';
+		$this->blanket_end_period		= ( isset( $this->settings['blanket_end_period'] ) && !empty($this->settings['blanket_end_period']) ) ? $this->settings['blanket_end_period'] : '';
+		$this->certifier_specification 	= ( isset($this->settings['certifier_specification']) && !empty($this->settings['certifier_specification'])) ? $this->settings['certifier_specification'] : 'IMPORTER' ;
+		$this->importer_specification 	= ( isset($this->settings['importer_specification']) && !empty($this->settings['importer_specification'])) ? $this->settings['importer_specification'] : 'UNKNOWN' ;
+		$this->producer_specification 	= ( isset($this->settings['producer_specification']) && !empty($this->settings['producer_specification'])) ? $this->settings['producer_specification'] : 'SAME_AS_EXPORTER' ;
 		$this->etd_label 					= (isset($this->settings['etd_label']) && ($this->settings['etd_label'] == 'yes')) ? true : false;
 		$this->cod_collection_type 			= isset($this->settings[ 'cod_collection_type']) ? $this->settings[ 'cod_collection_type'] : 'ANY';
 
@@ -142,6 +153,7 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 		$this->email_notification 	= isset ( $this->settings['email_notification'] ) ? $this->settings['email_notification'] : false;
 		$this->shipper_email 		= isset ( $this->settings['shipper_email'] ) ? $this->settings['shipper_email'] : '';
 		$this->signature_option 	= isset ( $this->settings['signature_option'] ) ? $this->settings['signature_option'] : '';
+		$this->signature_option 	= array_search($this->signature_option, $this->prioritizedSignatureOption);
 		$this->exclude_tax		 	= isset ( $this->settings['exclude_tax'] ) && $this->settings['exclude_tax'] == 'yes' ? true : false;
 		$this->timezone_offset 		= !empty($this->settings['timezone_offset']) ? intval($this->settings['timezone_offset']) * 60 : 0;
 		$this->is_dry_ice_enabled 	= isset( $this->settings['dry_ice_enabled'] ) && $this->settings['dry_ice_enabled'] == 'yes' ? true : false;
@@ -207,6 +219,15 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 		$this->csb_termsofsale 	= ( isset($this->settings['csb_termsofsale']) && !empty($this->settings['csb_termsofsale']) ) ? $this->settings['csb_termsofsale'] : 'FOB';
 		$this->under_bond 		= ( isset($this->settings['under_bond']) && !empty($this->settings['under_bond']) ) ? $this->settings['under_bond'] : 'U';
 		$this->meis_shipment 	= ( isset($this->settings['meis_shipment']) && !empty($this->settings['meis_shipment']) ) ? $this->settings['meis_shipment'] : 'M';
+		$this->saturday_delivery_label 	= ( isset($this->settings['saturday_delivery_label']) && !empty($this->settings['saturday_delivery_label']) && $this->settings['saturday_delivery_label'] == 'yes' ) ? true : false;
+		$this->pro_forma_invoice 	= ( isset($this->settings['ph_pro_forma_invoice']) && !empty($this->settings['ph_pro_forma_invoice']) && $this->settings['ph_pro_forma_invoice'] == 'yes' ) ? true : false;
+		$this->document_content 	= ( isset($this->settings['document_content']) && !empty($this->settings['document_content']) ? $this->settings['document_content'] : '');
+		$this->third_party_acc_no 	= ( isset($this->settings['third_party_acc_no']) && !empty($this->settings['third_party_acc_no']) ? $this->settings['third_party_acc_no'] : '');
+		$this->shipment_comments 	= ( isset($this->settings['shipment_comments']) && !empty($this->settings['shipment_comments']) ? $this->settings['shipment_comments'] : '');
+		$this->label_maskable_type 	= ( isset($this->settings['label_maskable_type'	]) && !empty($this->settings['label_maskable_type'	]) ) ? $this->settings['label_maskable_type'	] : array();
+		$this->home_delivery_premium    	= (isset($this->settings['home_delivery_premium']) && ($this->settings['home_delivery_premium'] == 'yes')) ? true : false;
+		$this->home_delivery_premium_type 	=	( isset($this->settings['home_delivery_premium_type']) && !empty($this->settings['home_delivery_premium_type']) ) ? $this->settings['home_delivery_premium_type'] : '';
+		$this->default_dom_service 			=	( isset($this->settings['default_dom_service']) && !empty($this->settings['default_dom_service']) ) ? $this->settings['default_dom_service'] : '';
 
 		if( $this->saturday_pickup ) {
 
@@ -416,6 +437,7 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 			
 			$additional_products = apply_filters( 'xa_alter_products_list', array($values) );	// To support Product addon, WooCommerce Measurement Price Calculator plugin
 			
+			$signature 	= '';
 			foreach( $additional_products as $values) {
 				if ( ! $values['data']->needs_shipping() ) {
 					$this->debug( sprintf( __( 'Product #%d is virtual. Skipping.', 'wf-shipping-fedex' ), $item_id ), 'error' );
@@ -442,7 +464,17 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 					return;
 				}
 
-				$group = array();
+				//PDS-179
+				$parentId 		= wp_get_post_parent_id($values['data']->get_id());
+				$productId 		= $values['data']->get_id();
+				$signature_temp = get_post_meta( $productId, '_ph_fedex_signature_option', true );
+
+				if ( empty($signature_temp) && !empty($parentId) ) {
+					$signature_temp = get_post_meta( $parentId, '_ph_fedex_signature_option', true );
+				}
+
+				$signature 	= array_search($signature_temp, $this->prioritizedSignatureOption);
+				$group 		= array();
 
 				$group = array(
 					'GroupNumber'			=> $group_id,
@@ -454,6 +486,14 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 					),
 					'packed_products'		=> array( $values['data'] )
 				);
+
+				//PDS-179
+				if( isset($signature) && !empty($signature)){
+					$group['signature_option']	= $signature ;
+				}
+				else{
+					$group['signature_option']	=  $this->signature_option ;
+				}
 
 				if ( $values['data']->length && $values['data']->height && $values['data']->width ) {
 
@@ -648,8 +688,22 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 
 			if(isset($package->packed))
 			{
+				$signature = '';
 				foreach( $package->packed as $box_item)
 				{
+					//PDS-179
+					$item 			= $box_item->meta['data'];
+					$parentId 		= wp_get_post_parent_id($item->get_id());
+					$productId 		= $item->get_id();
+					$signature_temp = get_post_meta( $productId, '_ph_fedex_signature_option', true );
+
+					if ( empty($signature_temp) && !empty($parentId) ) {
+						$signature_temp = get_post_meta( $parentId, '_ph_fedex_signature_option', true );
+					}
+
+                    $signature_temp = array_search($signature_temp, $this->prioritizedSignatureOption);
+                    $signature_temp = empty($signature_temp) ? $signature : $signature_temp;
+                    $signature 		= !empty($signature) && $signature > $signature_temp ? $signature : $signature_temp;
 					$boxinsuredprice += $this->wf_get_insurance_amount($box_item->meta['data']);
 
 					if ( $this->freight_enabled ) {
@@ -698,8 +752,17 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 				),
 
 				'packed_products'		=> array(),
-				'package_id'			=> $package->id
+				'package_id'			=> $package->id,
+				'boxName'               => $package->id,
 			);
+
+			//PDS-179
+			if( isset($signature) && !empty($signature)){
+				$group['signature_option']	= $signature ;
+			}
+			else{
+				$group['signature_option']	=  $this->signature_option ;
+			}
 
 			if ( ! empty( $package->packed ) && is_array( $package->packed ) ) {
 
@@ -831,7 +894,8 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 					$all_items[]	=	$packable_item['data'];
 				}
 			}
-
+            
+            $signature = '';
 			foreach($packages as $package) {
 
 				$insured_value			= 0;
@@ -841,6 +905,18 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 
 					foreach($package['items'] as $item) {
 
+						//PDS-179
+						$parentId 		= wp_get_post_parent_id($item->get_id());
+						$productId 		= $item->get_id();
+						$signature_temp = get_post_meta( $productId, '_ph_fedex_signature_option', true );
+
+						if ( empty($signature_temp) && !empty($parentId) ) {
+							$signature_temp = get_post_meta( $parentId, '_ph_fedex_signature_option', true );
+						}
+
+						$signature_temp = array_search($signature_temp, $this->prioritizedSignatureOption);
+						$signature_temp = empty($signature_temp) ? $signature : $signature_temp;
+						$signature 		= !empty($signature) && $signature > $signature_temp ? $signature : $signature_temp;
 						$insured_value	= $insured_value + $this->wf_get_insurance_amount($item);
 						
 						if ( $this->freight_enabled ) {
@@ -883,6 +959,14 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 					'Amount'		=> round( $this->convert_to_fedex_currency($insured_value), 2),
 					'Currency'		=> $this->wf_get_fedex_currency()
 				);
+
+				//PDS-179
+				if( isset($signature) && !empty($signature)){
+					$group['signature_option']	= $signature ;
+				}
+				else{
+					$group['signature_option']	=  $this->signature_option ;
+				}
 
 				if ( $this->freight_enabled ) {
 
@@ -929,6 +1013,7 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 
 		$to_ship  		= array();
 		$freight_id 	= 1;
+		$signature 		= '';
 
 		 // Get weight of order
 		foreach ( $pre_packed_items as $item_id => $values ) {
@@ -950,7 +1035,17 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 				return;
 			}
 
-			$group = array();
+			//PDS-179
+			$parentId 		= wp_get_post_parent_id($values['data']->get_id());
+			$productId 		= $values['data']->get_id();
+			$signature_temp = get_post_meta( $productId, '_ph_fedex_signature_option', true );
+
+			if ( empty($signature_temp) && !empty($parentId) ) {
+				$signature_temp = get_post_meta( $parentId, '_ph_fedex_signature_option', true );
+			}
+
+			$signature 	= array_search($signature_temp, $this->prioritizedSignatureOption);
+			$group 		= array();
 
 			$group = array(
 				'GroupNumber'			=> $group_id,
@@ -962,6 +1057,18 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 				),
 				'packed_products'		=> array( $values['data'] )
 			);
+			
+			//PDS-179
+			if( isset($signature) && !empty($signature)){
+				$group['signature_option']	= $signature ;
+			}
+			else{
+				$group['signature_option']	=  $this->signature_option ;
+			}
+
+			if( $this->packing_method == 'box_packing' ) {
+				$group['boxName']= "Pre-packed Product";
+			}
 
 			$dimensions = array( $values['data']->get_length(), $values['data']->get_width(), $values['data']->get_height() );
 
@@ -1050,7 +1157,7 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 					'AccountNumber' => $this->account_number,
 					'MeterNumber'   => $this->meter_number
 				);
-				$request['TransactionDetail'] = array( 'CustomerTransactionId' => ' *** Address Validation Request v2 from WooCommerce ***' );
+				$request['TransactionDetail'] = array( 'CustomerTransactionId' => ' *** Address Validation Request v4 from WooCommerce ***' );
 				$request['Version'] = array( 'ServiceId' => 'aval', 'Major' => $this->addressvalidationservice_version, 'Intermediate' => '0', 'Minor' => '0' );
 				$request['RequestTimestamp'] = date( 'c' );
 				$request['Options'] = array(
@@ -1089,9 +1196,9 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 					else
 						$addressResult = $response->AddressResults;
 
-					if ( $addressResult->ProposedAddressDetails->ResidentialStatus == 'BUSINESS' )
+					if ( $addressResult->Classification == 'BUSINESS' )
 						$residential = false;
-					elseif ( $addressResult->ProposedAddressDetails->ResidentialStatus == 'RESIDENTIAL' )
+					elseif ( $addressResult->Classification == 'RESIDENTIAL' )
 						$residential = true;
 				}
 
@@ -1255,6 +1362,15 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 			'LabelStockType'		=> $this->output_format
 		);
 
+		// Data elements / areas which may be masked from printing on the shipping labels.
+		if ( !empty( $this->label_maskable_type )) {
+
+			$request['RequestedShipment']['LabelSpecification']['CustomerSpecifiedDetail'] = array(
+
+				'MaskedData' => $this->label_maskable_type,
+			);
+		}
+
 		if( $this->doc_tab_content && strtoupper($this->image_type) == 'ZPLII' ) {
 
 			$request['RequestedShipment']['LabelSpecification']['LabelPrintingOrientation'] = $this->doc_tab_orientation;
@@ -1348,8 +1464,16 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 
 			foreach ( $fedex_packages as $key => $parcel ) {
 
-				$total_packages += $parcel['GroupPackageCount'];
-				$total_weight   += $parcel['Weight']['Value'] * $parcel['GroupPackageCount'];
+				$num_of_packages = isset( $parcel['num_of_packages'] ) && !empty( $parcel['num_of_packages'] ) ? $parcel['num_of_packages'] : 1;
+				if( $num_of_packages>1 ){
+					$total_packages += $num_of_packages;
+					$total_weight   += $parcel['Weight']['Value'] * $num_of_packages;
+				}
+
+				else{
+					$total_packages += $parcel['GroupPackageCount'];
+					$total_weight   += $parcel['Weight']['Value'] * $parcel['GroupPackageCount'];
+				}
 
 				if ( isset($parcel['packed_products']) && $request_type === 'freight' ) {
 
@@ -1442,6 +1566,10 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 			}
 
 			foreach ( $fedex_packages as $key => $parcel ) {
+
+			  $num_of_packages = isset( $parcel['num_of_packages'] ) && !empty( $parcel['num_of_packages'] ) ? $parcel['num_of_packages'] : 1;
+
+              for ( $i=0; $i < $num_of_packages ; $i++) {  //looping packages based on no: of packages selected in order page
 
 				$package_request = $this->get_fedex_api_request( $parcel, $package, $request_type );
 				$package_count++;
@@ -1591,7 +1719,7 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 							$custom_declared_value = get_post_meta( $product_id, '_wf_fedex_custom_declared_value', true );
 
                             //PDS-149
-							if ( ( !empty($custom_declared_value) && empty($this->invoice_commodity_value) ) || $this->invoice_commodity_value == 'declared_price' ) {
+							if ( ( !empty($custom_declared_value) && empty($this->invoice_commodity_value) ) || ( !empty($custom_declared_value) && $this->invoice_commodity_value == 'declared_price' ) ) {
 
 								if( $this->commercial_invoice_order_currency ) {
 
@@ -1838,7 +1966,7 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 					}
 					
 					//$request['RequestedShipment']['SpecialServicesRequested']['SignatureOptionDetail']['OptionType']='SERVICE_DEFAULT';
-					if(isset($_GET['sat_delivery']) && $_GET['sat_delivery'] === 'true'){
+					if( ( isset($_GET['sat_delivery']) && $_GET['sat_delivery'] === 'true' ) || ( $this->saturday_delivery_label && !isset($_GET['sat_delivery']) ) ) {
 						
 						$special_servicetypes[] = 'SATURDAY_DELIVERY';
 					}
@@ -1893,6 +2021,22 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 						$request['RequestedShipment']['SpecialServicesRequested']['EventNotificationDetail']['EventNotifications']['FormatSpecification']['Type']	= 'HTML';
 						
 					}
+
+					//FedEx Premium delivery service
+					if ( $this->home_delivery_premium && $parcel['service'] == "GROUND_HOME_DELIVERY" && isset($_GET['wf_fedex_createshipment']) ) {
+
+						$special_servicetypes[] = 'HOME_DELIVERY_PREMIUM';
+						$request['RequestedShipment']['SpecialServicesRequested']['HomeDeliveryPremiumDetail'] = array(
+							'HomeDeliveryPremiumType' => $this->home_delivery_premium_type,
+							'PhoneNumber' 			  => $this->freight_shipper_phone_number,
+						);
+
+						//If Date - Certain is selectaed and date passed from Order Edit page it will take here, Date is Required only for Date - Certain.
+						if ( isset($_GET['home_delivery_date']) && !empty($_GET['home_delivery_date']) && $this->home_delivery_premium_type == 'DATE_CERTAIN' ) {
+							$request['RequestedShipment']['SpecialServicesRequested']['HomeDeliveryPremiumDetail']['Date'] = $_GET['home_delivery_date'];
+						}
+					}
+
 					if(!empty($special_servicetypes)){
 						$request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'] = $special_servicetypes;
 					}
@@ -1916,7 +2060,7 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 					$parcel_request['InsuredValue']['Currency'] = $insurance_currency; 
 				}
 
-				if ( ! $this->insure_contents || 'smartpost' === $request_type ) {
+				if ( ! $this->insure_contents || 'smartpost' === $request_type || empty($parcel['InsuredValue']['Amount'])) {
 					unset( $parcel_request['InsuredValue'] );
 				}				
 				if ( 'smartpost' === $request_type ) {
@@ -1936,12 +2080,40 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 					);
 				}
 
+				//PDS-179
 				if ( 'smartpost' !== $request_type ){
-					if( isset($this->signature_option) && !empty($this->signature_option) ){
-						$line_items_special_services['SpecialServiceTypes'][]	=	'SIGNATURE_OPTION';
-						$line_items_special_services['SignatureOptionDetail']	=	array('OptionType'=>$this->signature_option);
+					
+					if(isset($_GET['signature_option']) && !empty($_GET['signature_option']) ){
+
+						$line_items_special_services['SpecialServiceTypes'][]	= 'SIGNATURE_OPTION';
+						$line_items_special_services['SignatureOptionDetail']	= array( 'OptionType'=>$_GET['signature_option'] );
+						update_post_meta( $this->order->id, 'ph_fedex_signature_option_meta', array_search($_GET['signature_option'], $this->prioritizedSignatureOption) );
+
+					} else if( !isset( $_GET['signature_option'] )) {
+
+						$bulk_label_signature  	= isset($parcel['signature_option']) && !empty($parcel['signature_option']) ? $parcel['signature_option'] : $this->signature_option;
+						$bulk_label_signature 	= $this->prioritizedSignatureOption[$bulk_label_signature];
+						
+						if( !empty($bulk_label_signature)){
+
+							$line_items_special_services['SpecialServiceTypes'][]	= 'SIGNATURE_OPTION';
+							$line_items_special_services['SignatureOptionDetail']	= array( 'OptionType'=> $bulk_label_signature );
+						}
 					}
 				}
+				if( isset($parcel_request['signature_option']) ){
+
+					unset( $parcel_request['signature_option'] );
+				}
+				if( isset($parcel_request['boxName']) ){
+
+					unset( $parcel_request['boxName'] );
+				}
+				if( isset($parcel_request['num_of_packages']) ){
+
+					unset( $parcel_request['num_of_packages'] );
+				}
+
 				// Dangerous Goods
 				$dangerous_goods = $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_dangerous_goods' );
 				$hazmat_products = $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_hazmat_products' );
@@ -2135,11 +2307,13 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 						$total_insurance 		= round( $parcel_value, 2 );
 						$insurance_currency 	= $this->wf_get_fedex_currency();
 					}
-
-					$request['RequestedShipment']['TotalInsuredValue'] = array(
-						'Amount'   => $total_insurance,
-						'Currency' => $insurance_currency,
-					);
+                    
+					if (!empty($total_insurance)) {
+						$request['RequestedShipment']['TotalInsuredValue'] = array(
+							'Amount'   => $total_insurance,
+							'Currency' => $insurance_currency,
+						);
+					}
 				}
 
 				if( $hazmat_products ) {
@@ -2242,7 +2416,7 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 					$this->customs_duties_payer			= apply_filters('xa_shipping_duties_payer',$this->customs_duties_payer, $package );
 					
 					$request['RequestedShipment']['CustomsClearanceDetail']['DutiesPayment'] = array(
-						'PaymentType' => $this->customs_duties_payer
+						'PaymentType' => $this->customs_duties_payer == 'THIRD_PARTY_ACCOUNT'  ? 'THIRD_PARTY' : $this->customs_duties_payer
 					);
 					
 
@@ -2252,7 +2426,7 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 							'AccountNumber'           => strtoupper( $this->account_number ),
 							'CountryCode'             => $this->origin_country
 						);
-					}elseif( $this->customs_duties_payer == 'THIRD_PARTY' ){
+					}elseif ( $this->customs_duties_payer == 'THIRD_PARTY' ){
 						$request['RequestedShipment']['CustomsClearanceDetail']['DutiesPayment']['PaymentType'] = 'RECIPIENT';
 
 						$require ['CustomsClearanceDetailBrokers']['AccountNumber'] = $this->broker_acc_no;
@@ -2269,6 +2443,16 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 						$request['RequestedShipment']['CustomsClearanceDetail']['Brokers']['Broker']['Address']['StateOrProvinceCode'] = $this->broker_state;
 						$request['RequestedShipment']['CustomsClearanceDetail']['Brokers']['Broker']['Address']['PostalCode'] = $this->broker_zipcode;
 						$request['RequestedShipment']['CustomsClearanceDetail']['Brokers']['Broker']['Address']['CountryCode'] = $this->broker_country;
+					}elseif ( $this->customs_duties_payer == 'THIRD_PARTY_ACCOUNT' ) {
+
+						$request['RequestedShipment']['CustomsClearanceDetail']['DutiesPayment']['Payor']['ResponsibleParty']=array(
+							'AccountNumber' 	=> strtoupper( $this->third_party_acc_no ),
+						);
+					}
+
+					if( isset($this->document_content) && !empty($this->document_content) ) {
+
+						$request['RequestedShipment']['CustomsClearanceDetail']['DocumentContent'] = $this->document_content;
 					}
 
 					if( $this->commercial_invoice_order_currency ) {
@@ -2340,6 +2524,11 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 							$request['RequestedShipment']['CustomsClearanceDetail']['CommercialInvoice']['SpecialInstructions'] = $this->special_instructions;
 						}
 
+						if( isset($this->shipment_comments) && !empty($this->shipment_comments) ) {
+
+							$request['RequestedShipment']['CustomsClearanceDetail']['CommercialInvoice']['Comments'] = $this->shipment_comments;
+						}
+
 						if( !empty($this->payment_terms) ) {
 
 							$request['RequestedShipment']['CustomsClearanceDetail']['CommercialInvoice']['PaymentTerms'] = $this->payment_terms;
@@ -2380,12 +2569,108 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 							'Currency' => $shipping_currency,
 						);
 					}
+
+					//USMCA Certificate
+					if( $this->usmca_certificate && $this->is_international )
+					{
+
+						$request['RequestedShipment']['ShippingDocumentSpecification']['ShippingDocumentTypes'][] = 'USMCA_CERTIFICATION_OF_ORIGIN';
+						$request['RequestedShipment']['ShippingDocumentSpecification']['UsmcaCertificationOfOriginDetail']['Format'] = array(
+							'ImageType' 		=> 'PDF',
+							'StockType' 		=> 'PAPER_LETTER',
+						);
+						$request['RequestedShipment']['ShippingDocumentSpecification']['UsmcaCertificationOfOriginDetail']['BlanketPeriod'] = array(
+							'Begins' 	=> $this->blanket_begin_period,
+							'Ends' 		=> $this->blanket_end_period,
+						);
+						$request['RequestedShipment']['ShippingDocumentSpecification']['UsmcaCertificationOfOriginDetail']['CertifierSpecification'] = $this->certifier_specification;
+						$request['RequestedShipment']['ShippingDocumentSpecification']['UsmcaCertificationOfOriginDetail']['ImporterSpecification']  = $this->importer_specification;
+						$request['RequestedShipment']['ShippingDocumentSpecification']['UsmcaCertificationOfOriginDetail']['ProducerSpecification']  = $this->producer_specification;
+
+						$request['RequestedShipment']['ShippingDocumentSpecification']['UsmcaCertificationOfOriginDetail']['Producer'] = array(
+							'AccountNumber' 	=> strtoupper( $this->account_number ),
+							'Tins' 				=> array(
+								'TinType' => isset( $this->settings['tin_type'] ) ? $this->settings['tin_type'] : 'BUSINESS_STATE',
+								'Number'  => isset($package['origin']['tin_number']) ? $package['origin']['tin_number'] : $this->tin_number,
+							),
+							'Contact' 				=> array(
+								'PersonName' 		  => isset($this->settings['shipper_person_name']) ? $this->settings['shipper_person_name'] : '',
+								'CompanyName' 		  => isset($this->settings['shipper_company_name']) ? $this->settings['shipper_company_name'] : '',
+								'PhoneNumber' 		  => isset($this->settings['shipper_phone_number']) ? $this->settings['shipper_phone_number'] : '',
+								'EMailAddress' 		  => isset($this->settings['shipper_email']) ? $this->settings['shipper_email'] : '', 
+							),
+							'Address' 				=> array(
+								'StreetLines' 		  	=> isset($this->settings['frt_shipper_street']) ? $this->settings['frt_shipper_street'] : '',
+								'City' 		  			=> isset($this->settings['freight_shipper_city']) ? $this->settings['freight_shipper_city'] : '',
+								'StateOrProvinceCode' 	=> $this->origin_state,
+								'PostalCode' 		 	=> isset($this->settings['origin']) ? $this->settings['origin'] : '',
+								'CountryCode'	  		=> $this->origin_country,
+								'CountryName' 			=> strtoupper( WC()->countries->countries[ $this->origin_country ] ),
+								'Residential' 		  	=> isset($this->settings['shipper_residential']) && $this->settings['shipper_residential'] == 'yes' ? true : false,
+							),
+						);
+						
+						$digital_signature = isset($this->settings['digital_signature']) && !empty($this->settings['digital_signature']) ? true : false;
+
+						if($digital_signature){
+							$request['RequestedShipment']['ShippingDocumentSpecification']['UsmcaCertificationOfOriginDetail']['CustomerImageUsages'] = array(
+								'Type' 	=> 'SIGNATURE',
+								'Id' 	=> 'IMAGE_2',
+							);	
+						}	
+					}
+
+					//USMCA Commercial Invoice Certificate Of Origin
+					if( $this->usmca_ci_certificate_of_origin && $this->is_international )
+					{
+						
+						$request['RequestedShipment']['ShippingDocumentSpecification']['ShippingDocumentTypes'][] = 'USMCA_COMMERCIAL_INVOICE_CERTIFICATION_OF_ORIGIN';
+						$request['RequestedShipment']['ShippingDocumentSpecification']['UsmcaCommercialInvoiceCertificationOfOriginDetail']['Format'] = array(
+							'ImageType' 		=> 'PDF',
+							'StockType' 		=> 'PAPER_LETTER',
+						);
+						$request['RequestedShipment']['ShippingDocumentSpecification']['UsmcaCommercialInvoiceCertificationOfOriginDetail']['CertifierSpecification'] = $this->certifier_specification;
+						$request['RequestedShipment']['ShippingDocumentSpecification']['UsmcaCommercialInvoiceCertificationOfOriginDetail']['ProducerSpecification']  = $this->producer_specification;
+
+						$request['RequestedShipment']['ShippingDocumentSpecification']['UsmcaCommercialInvoiceCertificationOfOriginDetail']['Producer'] = array(
+							'AccountNumber' 	=> strtoupper( $this->account_number ),
+							'Tins' 				=> array(
+								'TinType' => isset( $this->settings['tin_type'] ) ? $this->settings['tin_type'] : 'BUSINESS_STATE',
+								'Number'  => isset($package['origin']['tin_number']) ? $package['origin']['tin_number'] : $this->tin_number,
+							),
+							'Contact' 				=> array(
+								'PersonName' 		  => isset($this->settings['shipper_person_name']) ? $this->settings['shipper_person_name'] : '',
+								'CompanyName' 		  => isset($this->settings['shipper_company_name']) ? $this->settings['shipper_company_name'] : '',
+								'PhoneNumber' 		  => isset($this->settings['shipper_phone_number']) ? $this->settings['shipper_phone_number'] : '',
+								'EMailAddress' 		  => isset($this->settings['shipper_email']) ? $this->settings['shipper_email'] : '', 
+							),
+							'Address' 				=> array(
+								'StreetLines' 		  	=> isset($this->settings['frt_shipper_street']) ? $this->settings['frt_shipper_street'] : '',
+								'City' 		  			=> isset($this->settings['freight_shipper_city']) ? $this->settings['freight_shipper_city'] : '',
+								'StateOrProvinceCode' 	=> $this->origin_state,
+								'PostalCode' 		 	=> isset($this->settings['origin']) ? $this->settings['origin'] : '',
+								'CountryCode'	  		=> $this->origin_country,
+								'CountryName' 			=> strtoupper( WC()->countries->countries[ $this->origin_country ] ),
+								'Residential' 		  	=> isset($this->settings['shipper_residential']) && $this->settings['shipper_residential'] == 'yes' ? true : false,
+							),
+						);
+						
+						$digital_signature = isset($this->settings['digital_signature']) && !empty($this->settings['digital_signature']) ? true : false;
+
+						if($digital_signature){
+							$request['RequestedShipment']['ShippingDocumentSpecification']['UsmcaCommercialInvoiceCertificationOfOriginDetail']['CustomerImageUsages'] = array(
+								'Type' 	=> 'SIGNATURE',
+								'Id' 	=> 'IMAGE_2',
+							);	
+						}	
+					}
 				}
 
 				// Add request				
 				$request=apply_filters('wf_fedex_request',$request,$this->order, $parcel,$fedex_packages); // to support Snippet - Adjust importer price for international Shipment FedEx
 				$requests[] = $request;
-			}			
+			}
+		  }				
 		}
 		return $requests;
 	}
@@ -2553,6 +2838,8 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 	private function get_return_request( $shipment_id, $order_id, $serviceCode ){
 		$request	= get_post_meta($order_id, 'wf_woo_fedex_request_'.$shipment_id, true);
 		
+		$request['Version']['Major'] =$this->ship_service_version;
+		
 		$request['RequestedShipment']['ServiceType'] 				= $serviceCode;
 
 		$shipper_address = $request['RequestedShipment']['Shipper'];
@@ -2613,10 +2900,19 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 				}
 			}
 
-			$custom_clearance_details = $request['RequestedShipment']['CustomsClearanceDetail'];
+			$custom_clearance_details	= $request['RequestedShipment']['CustomsClearanceDetail'];
+			$dest_country 				= $request['RequestedShipment']['Recipient']['Address']['CountryCode'];
+
+			if ( $request['RequestedShipment']['Shipper']['Address']['CountryCode'] == 'CA' && ( $dest_country != 'US' && $dest_country != 'CA' && $dest_country != 'PR' && $dest_country != 'VI' ) ) {
+				$export_compliance = array(
+					'B13AFilingOption' 			=> 'NOT_REQUIRED',
+					'ExportComplianceStatement' => '02',
+				);
+				$request['RequestedShipment']['CustomsClearanceDetail']['ExportDetail'] = $export_compliance;
+			}
 
 			// Duties Payment Type as Recepient is not allowed for Return Shipments
-			if( isset($custom_clearance_details['DutiesPayment']) && isset($custom_clearance_details['DutiesPayment']['PaymentType']) && $custom_clearance_details['DutiesPayment']['PaymentType'] == 'RECIPIENT' && $this->customs_duties_payer != 'THIRD_PARTY' ) {
+			if( isset($custom_clearance_details['DutiesPayment']) && isset($custom_clearance_details['DutiesPayment']['PaymentType']) && $custom_clearance_details['DutiesPayment']['PaymentType'] == 'RECIPIENT' && $this->customs_duties_payer != 'THIRD_PARTY' && $this->customs_duties_payer != 'THIRD_PARTY_ACCOUNT' ) {
 
 				$request['RequestedShipment']['CustomsClearanceDetail']['DutiesPayment'] = array(
 					'PaymentType' => 'SENDER',
@@ -2644,7 +2940,7 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 		$this->shipmentId 	= $shipment_id;
 
 		$request = $this->get_return_request($shipment_id, $order_id, $serviceCode);
-		$this->process_result( $this->get_result($request), $request );
+		$this->process_result( $request, $this->get_result($request) );
 	}
 	
 	public function void_shipment( $order_id , $shipment_id, $tracking_completedata){
@@ -2752,6 +3048,8 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 		$weight_arr		= json_decode(stripslashes(html_entity_decode($_GET["weight"])));  
 		$service_arr	= json_decode(stripslashes(html_entity_decode($_GET["service"])));
 		$insurance_arr	= json_decode(stripslashes(html_entity_decode($_GET["insurance"])));
+        $num_of_packages  = json_decode(stripslashes(html_entity_decode($_GET["num_of_packages"])));
+
 
 		// To recreate packages for package removed from order page, not required in case of automatic label generation
 		if ( isset($_GET["package_key"]) ) {
@@ -2760,7 +3058,7 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 			$temp_insurance_arr			= $insurance_arr;
 			$new_packages 				= [];
 
-			foreach( $group_index_package_index as $packages_indexes ) {
+			foreach( $group_index_package_index as $key => $packages_indexes ) {
 
 				// Empty for extra added packages manually
 				if( ! empty($packages_indexes) ) {
@@ -2770,7 +3068,12 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 					if( ! empty($packages[$main_arr_index][$inner_arr_index]) ) {
 
 						$new_packages[$main_arr_index][$inner_arr_index] 							= $packages[$main_arr_index][$inner_arr_index];
-						$new_packages[$main_arr_index][$inner_arr_index]['InsuredValue']['Amount'] 	= round( array_shift($temp_insurance_arr), 2);
+						if (!empty($insurance_arr[$key])) {
+							$new_packages[$main_arr_index][$inner_arr_index]['InsuredValue']['Amount'] 	= round( array_shift($temp_insurance_arr), 2);
+						}else{
+							$new_packages[$main_arr_index][$inner_arr_index]['InsuredValue']['Amount'] 	= 0;
+							array_shift($temp_insurance_arr);
+						}
 					}
 				}
 			}
@@ -2911,6 +3214,11 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 					$packages[$package_key][$key]['Weight']['Units'] 	=   $this->labelapi_weight_unit;
 				}
 
+				if (isset($num_of_packages[$i])) {
+
+					$packages[$package_key][$key]['num_of_packages'] = $num_of_packages[$i];
+				}
+
 				$i++;
 			}
 		}
@@ -2948,12 +3256,24 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 
 							array_unshift( $special_servicetypes, 'ELECTRONIC_TRADE_DOCUMENTS' );
 
-							$request['RequestedShipment']['SpecialServicesRequested']['EtdDetail']['RequestedDocumentCopies'] = 'COMMERCIAL_INVOICE';
+							$request['RequestedShipment']['SpecialServicesRequested']['EtdDetail']['RequestedDocumentCopies'] = [];
+							$request['RequestedShipment']['SpecialServicesRequested']['EtdDetail']['RequestedDocumentCopies'][] = 'COMMERCIAL_INVOICE';
+
+							if( $this->pro_forma_invoice ){
+
+								$request['RequestedShipment']['SpecialServicesRequested']['EtdDetail']['RequestedDocumentCopies'][] = 'PRO_FORMA_INVOICE';
+							}
 						}
 
 						$request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'] = $special_servicetypes;
 						
 						$request['RequestedShipment']['ShippingDocumentSpecification']['ShippingDocumentTypes'][] = 'COMMERCIAL_INVOICE';
+
+						if( $this->pro_forma_invoice ){
+
+							$request['RequestedShipment']['ShippingDocumentSpecification']['ShippingDocumentTypes'][] = 'PRO_FORMA_INVOICE';
+						}
+
 						$request['RequestedShipment']['ShippingDocumentSpecification']['CommercialInvoiceDetail']['Format']['ImageType'] = 'PDF';
 						$request['RequestedShipment']['ShippingDocumentSpecification']['CommercialInvoiceDetail']['Format']['StockType'] = 'PAPER_LETTER';
 						
@@ -2971,9 +3291,9 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 							);
 						}
 					}
-					$this->process_result( $this->get_result( $request ) , $request );
+					$this->process_result( $request, $this->get_result( $request ));
 				} else {
-					$this->process_result($this->get_result( $request ), $request );
+					$this->process_result( $request, $this->get_result( $request ));
 				}
 				$first_package =  false;
 			}
@@ -3073,7 +3393,7 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 	public function get_result( $request ) {
 		if( !empty($this->pre_service) && $this->pre_service !== $request['RequestedShipment']['ServiceType'] ){
 			$this->master_tracking_id = ''; 
-			$request['RequestedShipment']['PackageCount'] = 1;
+			//$request['RequestedShipment']['PackageCount'] = 1;
 		}
 		$this->pre_service = $request['RequestedShipment']['ServiceType'];
 
@@ -3129,7 +3449,7 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 		return $result;
 	}
 
-	private function process_result( $result = '' , $request) {
+	private function process_result( $request, $result = '' ) {
 		if(!$result)
 			return false;
 		
@@ -3754,7 +4074,8 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 					$custom_declared_value = get_post_meta( $product_id, '_wf_fedex_custom_declared_value', true );
 
 					//PDS-149
-					if ( ( !empty($custom_declared_value) && empty($this->invoice_commodity_value) ) || $this->invoice_commodity_value == 'declared_price' ) {
+					if ( ( !empty($custom_declared_value) && empty($this->invoice_commodity_value) ) || ( !empty($custom_declared_value) && $this->invoice_commodity_value == 'declared_price' ) ) {
+
 
 						if( $this->commercial_invoice_order_currency ) {
 
@@ -3993,8 +4314,8 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 			'AccountNumber' => $this->account_number,
 			'MeterNumber'   => $this->meter_number
 		);
-		$request['TransactionDetail'] = array( 'CustomerTransactionId' => ' *** Pickup Request V20 from WooCommerce ***' );
-		$request['Version'] = array( 'ServiceId' => 'disp', 'Major' => 20, 'Intermediate' => '0', 'Minor' => '0' );
+		$request['TransactionDetail'] = array( 'CustomerTransactionId' => ' *** Pickup Request V23 from WooCommerce ***' );
+		$request['Version'] = array( 'ServiceId' => 'disp', 'Major' => 23, 'Intermediate' => '0', 'Minor' => '0' );
 
 		$ready_date					= date('Y-m-d');
 		$pickup_ready_timestamp		= strtotime($ready_date);
@@ -4607,8 +4928,8 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 			'AccountNumber' => $this->account_number,
 			'MeterNumber'   => $this->meter_number
 		);
-		$request['TransactionDetail'] = array( 'CustomerTransactionId' => 'CancelPickupRequest_V20' );
-		$request['Version'] = array( 'ServiceId' => 'disp', 'Major' => 20, 'Intermediate' => '0', 'Minor' => '0' );
+		$request['TransactionDetail'] = array( 'CustomerTransactionId' => 'CancelPickupRequest_V23' );
+		$request['Version'] = array( 'ServiceId' => 'disp', 'Major' => 23, 'Intermediate' => '0', 'Minor' => '0' );
 		$request['Remarks'] =	'Pickup Cancelation Request';
 		$request['Reason'] =	'Cancel Pickup';
 

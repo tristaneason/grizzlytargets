@@ -19,6 +19,7 @@ class Connection {
 		'portal_id',
 		'portal_domain',
 		'portal_name',
+		'hublet',
 	);
 
 	const CONNECT_NONCE_ARG    = 'leadin_connect';
@@ -88,12 +89,11 @@ class Connection {
 	 * @param String $portal_name   HubSpot account name.
 	 * @param String $portal_domain HubSpot account domain.
 	 * @param String $hs_user_email HubSpot user email.
+	 * @param String $hublet        HubSpot account's hublet.
 	 */
-	public static function connect( $portal_id, $portal_name, $portal_domain, $hs_user_email ) {
+	public static function connect( $portal_id, $portal_name, $portal_domain, $hs_user_email, $hublet ) {
 		self::disconnect();
-
-		self::store_portal_info( $portal_id, $portal_name, $portal_domain );
-
+		self::store_portal_info( $portal_id, $portal_name, $portal_domain, $hublet );
 		self::add_metadata( array( 'leadin_email' => $hs_user_email ) );
 	}
 
@@ -104,8 +104,13 @@ class Connection {
 		$connect_params = QueryParameters::get_parameters( self::CONNECT_KEYS, 'hubspot-nonce', self::CONNECT_NONCE_ARG );
 
 		self::disconnect();
+		self::store_portal_info(
+			$connect_params['portal_id'],
+			$connect_params['portal_name'],
+			$connect_params['portal_domain'],
+			$connect_params['hublet']
+		);
 
-		self::store_portal_info( $connect_params['portal_id'], $connect_params['portal_name'], $connect_params['portal_domain'] );
 		OAuth::authorize( $connect_params['access_token'], $connect_params['refresh_token'], $connect_params['expires_in'] );
 	}
 
@@ -129,11 +134,13 @@ class Connection {
 	 * @param String $portal_id ID for connecting portal.
 	 * @param String $portal_name Name of the connecting portal.
 	 * @param String $portal_domain Domain for the connecting portal.
+	 * @param String $hublet Hublet for the connecting portal.
 	 */
-	private static function store_portal_info( $portal_id, $portal_name, $portal_domain ) {
+	public static function store_portal_info( $portal_id, $portal_name, $portal_domain, $hublet ) {
 		AccountOptions::add_portal_id( $portal_id );
 		AccountOptions::add_account_name( $portal_name );
 		AccountOptions::add_portal_domain( $portal_domain );
+		AccountOptions::add_hublet( $hublet );
 	}
 
 	/**
@@ -143,5 +150,6 @@ class Connection {
 		AccountOptions::delete_portal_id();
 		AccountOptions::delete_account_name();
 		AccountOptions::delete_portal_domain();
+		AccountOptions::delete_hublet();
 	}
 }

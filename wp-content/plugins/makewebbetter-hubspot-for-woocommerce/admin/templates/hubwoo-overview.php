@@ -24,7 +24,7 @@ $portal_id = get_option( 'hubwoo_pro_hubspot_id', '' );
 		<div class="hubwoo-disconnect-wrapper">		
 			<h2><?php esc_html_e( 'Disconnect your WooCommerce store from HubSpot', 'makewebbetter-hubspot-for-woocommerce' ); ?></h2>			
 			<form class="hubwoo-disconnect-form">
-				<label for='delete_meta'><input name="delete_meta" type="checkbox" name="hubwoo-acc-meta"><?php esc_html_e( 'Do you want to delete all your WooCommerce data from HubSpot? If yes, check the box.' ); ?>
+				<label for='delete_meta'><input name="delete_meta" type="checkbox" name="hubwoo-acc-meta"><?php esc_html_e( 'Do you want to delete all your WooCommerce data from HubSpot? If yes, check the box.', 'makewebbetter-hubspot-for-woocommerce' ); ?>
 				</label>
 			</form>
 			<div class="hubwoo-discon-spinner">
@@ -45,7 +45,7 @@ $portal_id = get_option( 'hubwoo_pro_hubspot_id', '' );
 					<div class="hubwoo-db__box-title">
 						<h4><?php esc_html_e( 'Connected Hubspot Account', 'makewebbetter-hubspot-for-woocommerce' ); ?></h4>
 						<p>
-							<?php echo esc_textarea( $portal_id ); ?> 
+							<?php echo esc_textarea( $portal_id, 'makewebbetter-hubspot-for-woocommerce' ); ?> 
 							<a id ="hubwoo-re-auth" href="<?php echo esc_url( $hubspot_url ); ?>" class="hubwoo-discon">
 								<?php esc_html_e( 'Re-Authorize your Account', 'makewebbetter-hubspot-for-woocommerce' ); ?>
 							</a>
@@ -65,19 +65,19 @@ $portal_id = get_option( 'hubwoo_pro_hubspot_id', '' );
 		<div class="hubwoo-db__counter">
 			<div class="hubwoo-db__row">
 				<div class="hubwoo-db__counter-column">
-					<p class="hubwoo-db__counter-title"><?php esc_html_e( 'CONTACTS SYNCED' ); ?></p>
-					<h6 class="hubwoo-db__counter-number"><a target="_blank" href=" <?php echo esc_url( 'https://app.hubspot.com/contacts/' . $portal_id . '/contacts/list/' ); ?> "><?php echo esc_textarea( $display_data['reg_users'] + $display_data['guest_users'] ); ?></a></h6>
-					<span class="hubwoo-db__counter-desc"><?php echo esc_textarea( $display_data['contacts_left'] ); ?></span>
+					<p class="hubwoo-db__counter-title"><?php esc_html_e( 'CONTACTS SYNCED', 'makewebbetter-hubspot-for-woocommerce' ); ?></p>
+					<h6 class="hubwoo-db__counter-number"><a target="_blank" href=" <?php echo esc_url( 'https://app.hubspot.com/contacts/' . $portal_id . '/contacts/list/' ); ?> "><?php echo esc_textarea( $display_data['reg_users'] + $display_data['guest_users'], 'makewebbetter-hubspot-for-woocommerce' ); ?></a></h6>
+					<span class="hubwoo-db__counter-desc"><?php echo esc_textarea( $display_data['contacts_left'], 'makewebbetter-hubspot-for-woocommerce' ); ?></span>
 				</div>
 				<div class="hubwoo-db__counter-column">
-					<p class="hubwoo-db__counter-title"><?php esc_html_e( 'DEALS SYNCED' ); ?></p>
-					<h6 class="hubwoo-db__counter-number"><a target="_blank" href=" <?php echo esc_url( 'https://app.hubspot.com/contacts/' . $portal_id . '/deals/board/' ); ?> "><?php echo esc_textarea( $display_data['deal'] ); ?></a></h6>
-					<span class="hubwoo-db__counter-desc"><a href="<?php echo esc_attr( admin_url( 'admin.php?page=hubwoo&hubwoo_tab=hubwoo-deals&trn=shDls' ) ); ?>"><?php echo esc_textarea( $display_data['deals_left'] ); ?></a></span>
+					<p class="hubwoo-db__counter-title"><?php esc_html_e( 'DEALS SYNCED', 'makewebbetter-hubspot-for-woocommerce' ); ?></p>
+					<h6 class="hubwoo-db__counter-number"><a target="_blank" href=" <?php echo esc_url( 'https://app.hubspot.com/contacts/' . $portal_id . '/deals/board/' ); ?> "><?php echo esc_textarea( $display_data['deal'], 'makewebbetter-hubspot-for-woocommerce' ); ?></a></h6>
+					<span class="hubwoo-db__counter-desc"><a href="<?php echo esc_attr( admin_url( 'admin.php?page=hubwoo&hubwoo_tab=hubwoo-deals&trn=shDls' ) ); ?>"><?php echo esc_textarea( $display_data['deals_left'], 'makewebbetter-hubspot-for-woocommerce' ); ?></a></span>
 				</div>
 				<div class="hubwoo-db__counter-column">
-					<p class="hubwoo-db__counter-title"><?php esc_html_e( 'PRODUCTS SYNCED' ); ?></p>
-					<h6 class="hubwoo-db__counter-number"><a target="_blank" href=" <?php echo esc_url( 'https://app.hubspot.com/settings/' . $portal_id . '/sales/products' ); ?> "><?php echo esc_textarea( $display_data['product'] ); ?></a></h6>
-					<span class="hubwoo-db__counter-desc"><?php echo esc_textarea( $display_data['products_left'] ); ?></span>
+					<p class="hubwoo-db__counter-title"><?php esc_html_e( 'PRODUCTS SYNCED', 'makewebbetter-hubspot-for-woocommerce' ); ?></p>
+					<h6 class="hubwoo-db__counter-number"><a target="_blank" href=" <?php echo esc_url( 'https://app.hubspot.com/settings/' . $portal_id . '/sales/products' ); ?> "><?php echo esc_textarea( $display_data['product'], 'makewebbetter-hubspot-for-woocommerce' ); ?></a></h6>
+					<span class="hubwoo-db__counter-desc"><?php echo esc_textarea( $display_data['products_left'], 'makewebbetter-hubspot-for-woocommerce' ); ?></span>
 				</div>
 			</div>
 			<div class="hubwoo-db__counter-button--wrap">
@@ -91,7 +91,6 @@ $portal_id = get_option( 'hubwoo_pro_hubspot_id', '' );
 						<?php
 						esc_html_e( 'Sync WooCommerce orders with HubSpot eCommerce pipeline', 'makewebbetter-hubspot-for-woocommerce' );
 						?>
-																		
 					</div>
 					<div class="hubwoo-db__box-row-content">
 						<p>
@@ -208,7 +207,7 @@ $portal_id = get_option( 'hubwoo_pro_hubspot_id', '' );
 						</p>
 					</div>
 					<div class="mwb-heb-wlcm__btn-wrap">
-						<a target="_blank" href="https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/" class="hubwoo-btn--primary hubwoo-btn--dashboard"><?php esc_html_e( 'View User Guides', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+						<a target="_blank" href="https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" class="hubwoo-btn--primary hubwoo-btn--dashboard"><?php esc_html_e( 'View User Guides', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 					</div>
 				</div>
 			</div>

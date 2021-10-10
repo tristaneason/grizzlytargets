@@ -2,8 +2,8 @@
 Contributors: Gareth Harris
 Tags: add-ons, ecommerce
 Requires at least: 4.7
-Tested up to: 5.7
-Stable tag: 3.8.9
+Tested up to: 5.8
+Stable tag: 3.9.4
 Allow your users to customise products through additional fields
 
 == Description ==
@@ -23,31 +23,112 @@ WooCommerce Product Add Ons Ultimate allows your users to customise products thr
 1.
 
 == To Do List ==
-* grid calculations / calculation extension - multiple conditional calculations, get total price, multiple variables
-* steps layout for groups - do one, next one appears, continue button, breadcrumb menu
-* customizer - enhancements to layout and style options
 * field repeater and quantity repeater
-* image extension - resize images, set different mime types per field
-* finalise groups post type
-* pricing table
-* change product images
 * change variation image in single column layout when variation is selected
 * table layout for child products
 * allow add-ons at cart and checkout
 * importing fields via CSV
 * include product ID in child product ID attr
-* placeholder text
 * filter child products (e.g. by tag)
-* conditions on groups
 * user role specific groups?
 * Save Extras button so you don't need to update the product to save
-* new pot file
 * tidy up validation
 * exclude products from globals / list global groups that a product belongs to
-* font field
 * modal pop-up with child product after added to cart
 
 == Changelog ==
+
+= 3.9.4, 22 September 2021 =
+* Fixed: parse error in functions-pro-helpers.php
+
+= 3.9.3, 21 September 2021 =
+* Fixed: image swatch optimised condition
+
+= 3.9.2, 20 September 2021 =
+* Added: pewc_child_product_title to products-radio.php template
+* Added: styles for mobile products layout
+* Added: maxThumbnailFilesize param to Dropzone
+* Added: field param to pewc_dropzone_thumbnail_width and pewc_dropzone_thumbnail_height filters
+* Added: option to return a zero value in a calculation for any fields that are not present on the page or that have an empty value
+* Added: indent child products option
+* Added: extra date parameters
+* Added: pewc_child_product_title filter on select and column child products layout
+* Added: pewc_filter_select_option_field filter
+* Fixed: error message in cart for uploaded file when cancelling Klarna or Clearpay order
+* Fixed: admin CSS enqueued correctly for Dutch language
+* Fixed: variation-dependent add-on fields with field images leaves a gap when hidden
+* Fixed: div container of uploaded images not displayed in cart
+* Fixed: upload field price not displayed if field does not have a label and is not required
+* Fixed: variation-dependent hidden calculation fields are still displayed
+* Fixed: child product discount does not allow decimals
+* Fixed: group title was misaligned in cart when displayed in some themes
+* Fixed: when using the same variable product as child products in different fields, and when using Column layout, selected variations was not saved correctly
+* Fixed: optimised conditions on products
+* Fixed: add to cart button disabled for uploads re-enabled by calculations
+* Fixed: clicking headings in steps layout could close group
+* Fixed: checkbox label not displaying in order email when price hidden
+* Updated: remove file size comparison in Dropzone queuecomplete
+* Updated: set datepicker dynamically on field focus
+* Updated: more information for message on unavailable Pro fields
+* Updated: hide option and field price in summary panel when visibility setting requires
+* Updated: performance improvements to pewc_update_total_js
+* Updated: performance improvements to conditions.js
+
+= 3.9.1, 10 August 2021 =
+* Added: pewc_start_group_layout_options action
+* Added: pewc_group_content_wrapper_class filter
+* Added: pewc_group_layout filter
+* Added: pewc_before_group_inner_tag_open action
+* Added: pewc_before_group_inner_tag_close action
+* Added: tooltipster filters
+* Added: scroll to top when selecting next step
+* Added: pewc_enable_numeric_options filter for conditions
+* Added: pewc_all_conditions_by_field_id
+* Added: pewc_get_tax_rate
+* Fixed: JS error from Select Box on Product Table Ultimate
+* Fixed: required Products field with Grid layout failing validation
+* Fixed: conditions based on is-not for radio buttons not functioning correctly
+* Fixed: missing variation in grid layout causing layout to break
+* Updated: removed check for y_axis in pewc.js for look up tables
+* Updated: changed order of submenu items
+* Updated: changed method to count files uploaded to dropzone
+* Updated: performance improvements to pewc_update_total_js
+
+= 3.9.0, 15 June 2021 =
+* Added: new settings for choosing where to display field and option prices
+* Added: support for ACF fields in calculations via Advanced Calculations
+* Added: trigger wcaouau-update-quantity-field on upload removal
+* Added: pewc_update_select_box trigger
+* Added: reset calculation field values
+* Added: pewc_validate_child_products_stock filter to prevent parent product added to cart if child product is out of stock
+* Added: new Home page in Product Add-Ons menu
+* Fixed: set max chars with/without spaces in text fields
+* Fixed: expanded select box hidden in accordion group
+* Fixed: allow uploads with same filename
+* Fixed: next/previous buttons miss hidden groups in steps layout
+
+= 3.8.10, 3 May 2021 =
+* Added: pewc_child_product_excerpt filter
+* Added: pewc_v_term_name and pewc_h_term_name filters
+* Added: option to display group titles in cart
+* Added: use getimagesize to validate uploaded files
+* Added: pewc_use_item_meta_in_order_item filter
+* Added: reset values when using group conditions
+* Fixed: disable dropzone while file is removed
+* Fixed: image swatch option prices not updating for percentage variations
+* Fixed: quickview template removing tabs and related products
+* Fixed: update price correctly when removing uploaded file
+* Fixed: >= condition not respected in cart
+* Fixed: products fields not triggering group conditions
+* Fixed: tabs layout on mobile
+* Fixed: ensure calculation fields set price correctly on variable products
+* Fixed: escape field attributes on single-product.php
+* Fixed: updated metadata not shown in resent email notifications
+* Fixed: min number of child products respected on column and checkbox layout only
+* Fixed: product field select layout not discounting correctly
+* Updated: cart editing allowed in Basic licence
+* Updated: removed pewc_minicart_item_price filter
+* Updated: resetting values through conditions restores defaults (in certain cases)
 
 = 3.8.9, 25 March 2021 =
 * Added: pewc_after_upload_script_init and pewc_dz_tpl_td actions
@@ -146,7 +227,7 @@ WooCommerce Product Add Ons Ultimate allows your users to customise products thr
 * Updated: improved rounding on calculations
 * Updated: use transients on product archive to check for select options button
 
-= 3.8.1, 11 December 2020  =
+= 3.8.1, 11 December 2020 =
 * Fixed: Select Box compatibility with jQuery 3x
 * Updated: AJAX uploader compatibility
 

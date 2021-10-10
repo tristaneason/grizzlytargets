@@ -163,7 +163,7 @@ function porto_load_featured_products_shortcode() {
 						),
 					),
 					array(
-						'type'       => 'checkbox',
+						'type'       => 'porto_multiselect',
 						'heading'    => __( 'Show Sort by', 'porto-functionality' ),
 						'param_name' => 'show_sort',
 						'value'      => array(
@@ -173,10 +173,11 @@ function porto_load_featured_products_shortcode() {
 							__( 'Rating', 'porto-functionality' ) => 'rating',
 							__( 'On Sale', 'porto-functionality' ) => 'onsale',
 						),
+						'std'        => '',
 					),
 					array(
 						'type'       => 'textfield',
-						'heading'    => __( 'Title for "Sort by Popular"', 'woocommerce' ),
+						'heading'    => __( 'Title for "Sort by Popular"', 'porto-functionality' ),
 						'param_name' => 'show_sales_title',
 						'dependency' => array(
 							'element' => 'show_sort',
@@ -185,7 +186,7 @@ function porto_load_featured_products_shortcode() {
 					),
 					array(
 						'type'       => 'textfield',
-						'heading'    => __( 'Title for "Sort by Date"', 'woocommerce' ),
+						'heading'    => __( 'Title for "Sort by Date"', 'porto-functionality' ),
 						'param_name' => 'show_new_title',
 						'dependency' => array(
 							'element' => 'show_sort',
@@ -194,7 +195,7 @@ function porto_load_featured_products_shortcode() {
 					),
 					array(
 						'type'       => 'textfield',
-						'heading'    => __( 'Title for "Sort by Rating"', 'woocommerce' ),
+						'heading'    => __( 'Title for "Sort by Rating"', 'porto-functionality' ),
 						'param_name' => 'show_rating_title',
 						'dependency' => array(
 							'element' => 'show_sort',
@@ -203,7 +204,7 @@ function porto_load_featured_products_shortcode() {
 					),
 					array(
 						'type'       => 'textfield',
-						'heading'    => __( 'Title for "On Sale"', 'woocommerce' ),
+						'heading'    => __( 'Title for "On Sale"', 'porto-functionality' ),
 						'param_name' => 'show_onsale_title',
 						'dependency' => array(
 							'element' => 'show_sort',
@@ -219,7 +220,7 @@ function porto_load_featured_products_shortcode() {
 					),
 					array(
 						'type'        => 'dropdown',
-						'heading'     => __( 'Filter Style', 'js_composer' ),
+						'heading'     => __( 'Filter Style', 'porto-functionality' ),
 						'param_name'  => 'filter_style',
 						'value'       => array(
 							__( 'Vertical', 'porto-functionality' )   => '',

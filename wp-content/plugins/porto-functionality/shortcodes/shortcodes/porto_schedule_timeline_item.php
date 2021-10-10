@@ -11,12 +11,13 @@ function porto_load_schedule_timeline_item_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => __( 'Schedule Timeline Item', 'porto-functionality' ),
-			'base'     => 'porto_schedule_timeline_item',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'far fa-calendar',
-			'as_child' => array( 'only' => 'porto_schedule_timeline_container' ),
-			'params'   => array(
+			'name'        => __( 'Schedule Timeline Item', 'porto-functionality' ),
+			'base'        => 'porto_schedule_timeline_item',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'Show schedule by beautiful timeline', 'porto-functionality' ),
+			'icon'        => 'far fa-calendar',
+			'as_child'    => array( 'only' => 'porto_schedule_timeline_container' ),
+			'params'      => array(
 				array(
 					'type'       => 'textfield',
 					'heading'    => __( 'Subtitle/time', 'porto-functionality' ),

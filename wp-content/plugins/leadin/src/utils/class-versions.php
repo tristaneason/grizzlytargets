@@ -49,4 +49,14 @@ class Versions {
 		global $wp_version;
 		return version_compare( $wp_version, LEADIN_REQUIRED_WP_VERSION, '<' );
 	}
+
+	/**
+	 * Return true if a given version is less than the supported version
+	 *
+	 * @param String $version Given version to check.
+	 * @param String $version_to_compare The version number to test the given version against.
+	 */
+	public static function is_version_less_than( $version, $version_to_compare ) {
+		return version_compare( $version, $version_to_compare, '<' );
+	}
 }

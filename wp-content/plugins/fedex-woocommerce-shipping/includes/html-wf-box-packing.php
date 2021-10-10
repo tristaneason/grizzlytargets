@@ -62,6 +62,9 @@
 			<tbody id="rates">
 				<?php
 					if ( $this->default_boxes ) {
+
+						$this->boxes = $this->get_option( 'boxes', array( ));
+						
 						foreach ( $this->default_boxes as $key => $box ) {
 
 							if ( $this->boxes && isset($this->boxes[ $box['id'] ]) && isset($this->boxes[$box['id']]['id']) && in_array($this->boxes[$box['id']]['id'], $this->standard_boxes) )

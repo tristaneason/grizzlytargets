@@ -270,7 +270,46 @@ function porto_show_meta_field( $meta_field ) {
 		</div>
 		<?php
 	endif;
-
+	if ( 'video' == $type ) : // attach video
+		?>
+		<div class="metabox" <?php echo porto_filter_output( $required ); ?>>
+			<h3><?php echo esc_html( $title ); ?></h3>
+			<div class="metainner">
+				<div class="box-option">
+					<div class="attach_video" id="<?php echo esc_attr( $name ); ?>_thumb">
+						<?php if ( $meta_value ) : ?>
+							<video controls autoplay loop src="<?php echo wp_get_attachment_url( (int) $meta_value ); ?>" ></video>
+						<?php endif; ?>
+					</div>
+					<input value="<?php echo stripslashes( $meta_value ); ?>" type="hidden" name="<?php echo esc_attr( $name ); ?>"  id="<?php echo esc_attr( $name ); ?>" size="50%" />
+					<br/>
+					<input class="button_attach_video button" data-id="<?php echo esc_attr( $name ); ?>" type="button" value="<?php esc_attr_e( 'Attach Video', 'porto-functionality' ); ?>" />
+					<input class="button_remove_video button" data-id="<?php echo esc_attr( $name ); ?>" type="button" value="<?php esc_attr_e( 'Remove Video', 'porto-functionality' ); ?>" />
+					<label>
+					<?php if ( $desc ) : ?>
+						<p class="description">
+						<?php
+							echo wp_kses(
+								$desc,
+								array(
+									'em'     => array(),
+									'i'      => array(),
+									'strong' => array(),
+									'a'      => array(
+										'class' => array(),
+										'href'  => array(),
+									),
+								)
+							);
+						?>
+						</p>
+					<?php endif; ?>
+					</label>
+				</div>
+			</div>
+		</div>
+		<?php
+	endif;
 	if ( 'editor' == $type ) : // editor
 		?>
 		<div class="metabox" <?php echo porto_filter_output( $required ); ?>>
@@ -841,9 +880,7 @@ function porto_edit_tax_meta_field( $tag, $taxonomy, $meta_field, $woocommerce =
 		<tr class="form-field<?php echo ! $tab ? '"' : ' porto-tab-row" data-tab="' . esc_attr( $tab ) . '"'; ?> <?php echo porto_filter_output( $required ); ?>>
 			<th scope="row" valign="top"<?php echo ! $tab ? '' : ' class="text-right"'; ?>><label for="<?php echo esc_attr( $name ); ?>"><?php echo esc_html( $title ); ?></label></th>
 			<td>
-			<?php if ( $meta_value ) : ?>
-				<textarea id="<?php echo esc_attr( $name ); ?>" name="<?php echo esc_attr( $name ); ?>"><?php echo wp_kses_post( $meta_value ); ?></textarea>
-			<?php endif; ?>
+			<textarea id="<?php echo esc_attr( $name ); ?>" name="<?php echo esc_attr( $name ); ?>"><?php echo ! $meta_value ? '' : wp_kses_post( $meta_value ); ?></textarea>
 				<?php
 				if ( $desc ) :
 					?>

@@ -1,12 +1,6 @@
 import Penpal from 'penpal';
 import Raven from './Raven';
-import {
-  syncRoute,
-  leadinPageReload,
-  leadinPageRedirect,
-  setLeadinUnAuthedNavigation,
-  setLeadinCookiesDisabledNavigation,
-} from '../navigation';
+import { syncRoute, leadinPageReload, leadinPageRedirect } from '../navigation';
 import * as leadinConfig from '../constants/leadinConfig';
 import {
   leadinClearQueryParam,
@@ -19,7 +13,12 @@ import {
   leadinDisconnectPortal,
   skipSignup,
 } from '../api/wordpressAjaxClient';
-import { makeInterframeProxyRequest } from '../api/wordpressApiClient';
+
+import {
+  fetchOAuthToken,
+  makeInterframeProxyRequest,
+} from '../api/wordpressApiClient';
+import { setLeadinUnAuthedNavigation } from '../utils/sideNav';
 
 const methods = {
   leadinClearQueryParam,
@@ -31,8 +30,8 @@ const methods = {
   getLeadinConfig: () => leadinConfig,
   skipSignup,
   setLeadinUnAuthedNavigation,
-  setLeadinCookiesDisabledNavigation,
   makeInterframeProxyRequest,
+  fetchOAuthToken,
 };
 
 const UNAUTHORIZED = 'unauthorized';

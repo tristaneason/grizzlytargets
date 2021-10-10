@@ -3,9 +3,9 @@
 Contributors: WPMarketingRobot, Michel Jongbloed, AukeJomm
 Tags: Google Merchant Export, Product feed, woocommerce, Google product feed export, google, shopping, Google Adwords, Google Merchant, wooCommerce export, woocommerce variations, e-commerce, google merchant product feed, product variations, variations export, wp-e-commerce export, wp marketing robot
 Requires at least: 5.4
-Tested up to: 5.7
+Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 1.30.0
+Stable tag: 1.34.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -96,6 +96,32 @@ In case it does please do submit your feed in your Google Merchant center and ch
 3. Save and generate your feed
 
 == Changelog ==
+= 1.34.0 - 18/08/2021 =
+* Fixed an issue when using more than one filter in a "change values" option.
+* Fixed an issue that could leave a .0 in the result of a change values calculation.
+* Fixed an issue that would cause a sale_price below 1 to disappear from the feed.
+* Fixed an issue that prevented the buttons on the Edit Feed page to become selectable when editing a feed.
+* Fixed an issue causing an incorrect outcome when using the Weight source in a filter with a decimal value.
+* Tested on WooCommerce 5.6.
+
+= 1.33.0 - 14/07/2021 =
+* Added primary category support for the Rank Math SEO plugin.
+* Tested on WooCommerce 5.5.
+
+= 1.32.0 - 09/06/2021 =
+* Added the "strip tags" and "limit characters" actions to the edit value options.
+* Tested on WooCommerce 5.4.
+
+= 1.31.1 - 18/05/2021 =
+* Fixed an issue that caused a fatal PHP error when a feed with no selected Shop Categories is opened.
+
+= 1.31.0 - 13/05/2021 =
+* Fixed an issue that would add incorrect products to the feed in the case the feeds category selection contains categories that where removed from the shop.
+* Added the "Variation Parent Id" and "Product Parent Id" sources.
+* Added the "Highest Grouped Price" and "Lowest Grouped Price" sources to the list.
+* Fixed an issue where the GTIN of a product variation would not save to the database.
+* Tested on WooCommerce 5.3.0.
+
 = 1.30.0 - 13/04/2021 =
 * Tested on WooCommerce 5.2
 * Password protected products are now excluded from the feed.

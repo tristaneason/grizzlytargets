@@ -3,6 +3,7 @@
 namespace Leadin\admin;
 
 use Leadin\AssetsManager;
+use Leadin\utils\Versions;
 
 /**
  * Contains all the methods used to initialize Gutenberg blocks.
@@ -18,7 +19,12 @@ class Gutenberg {
 		}
 
 		add_action( 'init', array( $this, 'register_gutenberg_block' ) );
-		add_filter( 'block_categories', array( $this, 'add_hubspot_category' ) );
+
+		// block_categories hook deprecated in 5.8 for block_categories_all https://developer.wordpress.org/reference/hooks/block_categories/.
+		global $wp_version;
+		$is_block_categories_supported = Versions::is_version_less_than( $wp_version, '5.8' );
+		$block_categories_hook         = $is_block_categories_supported ? 'block_categories' : 'block_categories_all';
+		add_filter( $block_categories_hook, array( $this, 'add_hubspot_category' ) );
 	}
 
 	/**

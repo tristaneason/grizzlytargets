@@ -30,28 +30,28 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '0170b9a974bb3ad19398e3b8e9d352084a9d9087',
+    'reference' => '1036ccd738dee45f2f8556e3b55ba0709ffe7d05',
     'name' => 'woocommerce/woocommerce-blocks',
   ),
   'versions' => 
   array (
     'automattic/jetpack-autoloader' => 
     array (
-      'pretty_version' => 'v2.9.1',
-      'version' => '2.9.1.0',
+      'pretty_version' => 'v2.10.3',
+      'version' => '2.10.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'd6ca2cc26ad6963e1be19b3338a9e98f40d9bd88',
+      'reference' => 'aab966d6f2c8fd6669d6f5b1378d8ced5fd665b4',
     ),
     'composer/installers' => 
     array (
-      'pretty_version' => 'v1.10.0',
-      'version' => '1.10.0.0',
+      'pretty_version' => 'v1.11.0',
+      'version' => '1.11.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '1a0357fccad9d1cc1ea0c9a05b8847fbccccb78d',
+      'reference' => 'ae03311f45dfe194412081526be2e003960df74b',
     ),
     'roundcube/plugin-installer' => 
     array (
@@ -74,7 +74,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '0170b9a974bb3ad19398e3b8e9d352084a9d9087',
+      'reference' => '1036ccd738dee45f2f8556e3b55ba0709ffe7d05',
     ),
   ),
 );

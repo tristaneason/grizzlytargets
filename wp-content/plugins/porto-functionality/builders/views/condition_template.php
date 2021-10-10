@@ -2,9 +2,7 @@
 if ( ! is_singular() && ! isset( $_GET['post'] ) && ! isset( $_GET['post_id'] ) ) {
 	return;
 }
-	$post_id      = is_singular() ? get_the_ID() : ( isset( $_GET['post'] ) ? (int) $_GET['post'] : (int) $_GET['post_id'] );
-	$builder_type = get_post_meta( $post_id, PortoBuilders::BUILDER_TAXONOMY_SLUG, true );
-if ( ! $builder_type || ! in_array( $builder_type, array( 'header', 'footer', 'shop', 'product' ) ) ) {
+if ( ! $builder_type || ! in_array( $builder_type, array( 'header', 'footer', 'shop', 'product', 'popup' ) ) ) {
 	return;
 }
 

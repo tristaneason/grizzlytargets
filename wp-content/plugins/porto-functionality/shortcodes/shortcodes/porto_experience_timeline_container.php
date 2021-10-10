@@ -11,6 +11,7 @@ function porto_load_experience_timeline_container_shortcode() {
 			'name'                    => 'Porto ' . __( 'Experience Timeline Container', 'porto-functionality' ),
 			'base'                    => 'porto_experience_timeline_container',
 			'category'                => __( 'Porto', 'porto-functionality' ),
+			'description'             => __( 'Show events or posts by timeline layouts', 'porto-functionality' ),
 			'icon'                    => 'fas fa-list-ul',
 			'as_parent'               => array( 'only' => 'porto_experience_timeline_item' ),
 			'content_element'         => true,

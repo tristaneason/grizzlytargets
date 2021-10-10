@@ -151,11 +151,19 @@ if ( $title ) {
 }
 
 if ( ! empty( $show_sort ) || $category_filter ) {
-	$term_args = array( 'hide_empty' => true );
+	$term_args = array(
+		'taxonomy'   => 'product_cat',
+		'hide_empty' => true,
+	);
 	if ( $category ) {
-		$term_exists           = term_exists( $category, 'product_cat' );
-		$term_id               = is_array( $term_exists ) ? $term_exists['term_id'] : $term_exists;
-		$term_args['child_of'] = $term_id;
+		$categories = explode( ',', sanitize_text_field( $category ) );
+		if ( 1 === count( $categories ) ) {
+			$term_exists           = term_exists( $categories[0], 'product_cat' );
+			$term_id               = is_array( $term_exists ) ? $term_exists['term_id'] : $term_exists;
+			$term_args['child_of'] = $term_id;
+		} else {
+			$term_args['include'] = $categories;
+		}
 	} else {
 		$term_args['parent'] = 0;
 	}
@@ -170,25 +178,25 @@ if ( ! empty( $show_sort ) || $category_filter ) {
 			$category_html .= '<li class="current"><a href="javascript:void(0)" data-cat_id="">' . esc_html__( 'All', 'porto-functionality' ) . '</a></li>';
 		}
 		if ( in_array( 'popular', $show_sort ) ) {
-			$filter_title = $show_sales_title ? $show_sales_title : __( 'Best Seller', 'porto-functionality' );
+			$filter_title   = $show_sales_title ? $show_sales_title : __( 'Best Seller', 'porto-functionality' );
 			$category_html .= '<li><a href="javascript:void(0)" data-sort_id="popularity"' . ( $category ? ' data-cat_id="' . esc_attr( $category ) . '"' : '' ) . '>' . esc_html( $filter_title ) . '</a></li>';
 		}
 		if ( in_array( 'date', $show_sort ) ) {
-			$filter_title = $show_new_title ? $show_new_title : __( 'New Arrivals', 'porto-functionality' );
+			$filter_title   = $show_new_title ? $show_new_title : __( 'New Arrivals', 'porto-functionality' );
 			$category_html .= '<li><a href="javascript:void(0)" data-sort_id="date"' . ( $category ? ' data-cat_id="' . esc_attr( $category ) . '"' : '' ) . '>' . esc_html( $filter_title ) . '</a></li>';
 		}
 		if ( in_array( 'rating', $show_sort ) ) {
-			$filter_title = $show_rating_title ? $show_rating_title : __( 'Best Rating', 'porto-functionality' );
+			$filter_title   = $show_rating_title ? $show_rating_title : __( 'Best Rating', 'porto-functionality' );
 			$category_html .= '<li><a href="javascript:void(0)" data-sort_id="rating"' . ( $category ? ' data-cat_id="' . esc_attr( $category ) . '"' : '' ) . '>' . esc_html( $filter_title ) . '</a></li>';
 		}
 		if ( in_array( 'onsale', $show_sort ) ) {
-			$filter_title = $show_onsale_title ? $show_onsale_title : __( 'On Sale', 'porto-functionality' );
+			$filter_title   = $show_onsale_title ? $show_onsale_title : __( 'On Sale', 'porto-functionality' );
 			$category_html .= '<li><a href="javascript:void(0)" data-sort_id="onsale"' . ( $category ? ' data-cat_id="' . esc_attr( $category ) . '"' : '' ) . '>' . esc_html( $filter_title ) . '</a></li>';
 		}
 	}
 
 	if ( $category_filter ) {
-		$terms = get_terms( 'product_cat', $term_args );
+		$terms = get_terms( $term_args );
 		foreach ( $terms as $term_cat ) {
 			if ( 'Uncategorized' == $term_cat->name ) {
 				continue;
@@ -315,6 +323,8 @@ if ( 'featured' == $status ) {
 	$extra_atts .= ' visibility="featured"';
 } elseif ( 'on_sale' == $status ) {
 	$extra_atts .= ' on_sale="1"';
+} elseif ( 'pre_order' == $status ) {
+	$extra_atts .= ' visibility="pre_order"';
 }
 
 if ( $navigation ) {

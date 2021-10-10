@@ -105,7 +105,7 @@ if ( ! defined( 'WPINC' ) ) {
 					<input type="checkbox" name="" class="wt_iew_history_checkbox_main">
 					<?php _e("No."); ?>
 				</th>
-				<th><?php _e("Id"); ?></th>
+				<th width="50"><?php _e("Id"); ?></th>
 				<th><?php _e("Action type"); ?></th>
 				<th><?php _e("Post type"); ?></th>
 				<th><?php _e("Started at"); ?></th>
@@ -178,6 +178,13 @@ if ( ! defined( 'WPINC' ) ) {
 						<?php
 						}
 					}
+                                        if($action_type=='export' && Wt_Import_Export_For_Woo_Admin_Basic::module_exists($action_type))
+					{
+                                            $export_download_url=wp_nonce_url(admin_url('admin.php?wt_iew_export_download=true&file='.$history_item['file_name']), WT_IEW_PLUGIN_ID_BASIC);
+						?>
+                                                        | <a class="wt_iew_export_download_btn" target="_blank" href="<?php echo $export_download_url;?>"><?php _e('Download');?></a>
+						<?php
+					}                                        
 					?>
 				</td>
 			</tr>

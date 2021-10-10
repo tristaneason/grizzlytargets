@@ -204,7 +204,7 @@ function googleStaticFieldOptions( fieldName ) {
 			break;
 
 		case 'availability':
-			options = [ 'in stock', 'out of stock', 'preorder' ];
+			options = [ 'in stock', 'out of stock', 'preorder', 'backorder' ];
 			break;
 
 		case 'identifier_exists':
@@ -261,11 +261,24 @@ function switchToGoogleFeedFormMainInputs( isNew, channel ) {
 
 function googleInputChanged( feedId, categoryChanged ) {
 	var fileName             = jQuery( '#file-name' ).val();
-	var selectedCountry      = jQuery( '#countries' ).val();
-	var selectedMainCategory = jQuery( '#lvl_0' ).val();
+	var selectedCountry      = jQuery( '#wppfm-countries-selector' ).val();
+	var selectedMainCategory = '';
+
+	var categorySelectors       = jQuery( '#lvl_0' );
+	var categorySelectedDisplay = jQuery( '#selected-categories' );
+	var categoryFreeInput       = jQuery( '#free-category-text-input' );
+
+	// Get the correct selected category value depending on the situation.
+	if ( categorySelectors.is( ':visible' ) ) {
+		selectedMainCategory = categorySelectors.val();
+	} else if ( categoryFreeInput.is( ':visible' ) ) {
+		selectedMainCategory = categoryFreeInput.val();
+	} else {
+		selectedMainCategory = categorySelectedDisplay.text();
+	}
 
 	// enable or disable the correct buttons for the google channel
-	if ( fileName && selectedCountry !== '0' && selectedMainCategory && selectedMainCategory !== '0' ) {
+	if ( fileName && selectedCountry !== '0' && ( selectedMainCategory !== '' && selectedMainCategory !== '0' ) ) {
 		updateFeedFormAfterInputChanged( feedId, categoryChanged );
 	} else {
 		// keep the Generate and Save buttons disabled

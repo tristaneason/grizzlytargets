@@ -10,22 +10,17 @@ import {
 	ReturnToCartButton,
 } from '@woocommerce/base-components/cart-checkout';
 import {
-	CheckoutProvider,
 	useCheckoutContext,
 	useEditorContext,
 	useValidationContext,
 } from '@woocommerce/base-context';
-import { useStoreCart, useStoreNotices } from '@woocommerce/base-hooks';
+import { useStoreCart, useStoreNotices } from '@woocommerce/base-context/hooks';
 import {
 	Sidebar,
 	SidebarLayout,
 	Main,
 } from '@woocommerce/base-components/sidebar-layout';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
-import {
-	CHECKOUT_ALLOWS_GUEST,
-	CHECKOUT_ALLOWS_SIGNUP,
-} from '@woocommerce/block-settings';
 import { isWcVersion, getSetting } from '@woocommerce/settings';
 
 /**
@@ -37,20 +32,6 @@ import CheckoutOrderError from './checkout-order-error';
 import { CheckoutExpressPayment } from '../payment-methods';
 import { LOGIN_TO_CHECKOUT_URL } from './utils';
 import './style.scss';
-
-/**
- * Renders the Checkout block wrapped within the CheckoutProvider.
- *
- * @param {Object} props Component props.
- * @return {*} The component.
- */
-const Block = ( props ) => {
-	return (
-		<CheckoutProvider>
-			<Checkout { ...props } />
-		</CheckoutProvider>
-	);
-};
 
 /**
  * Main Checkout Component.
@@ -105,8 +86,8 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 	if (
 		! isEditor &&
 		! customerId &&
-		! CHECKOUT_ALLOWS_GUEST &&
-		! ( allowCreateAccount && CHECKOUT_ALLOWS_SIGNUP )
+		! getSetting( 'checkoutAllowsGuest', false ) &&
+		! ( allowCreateAccount && getSetting( 'checkoutAllowsSignup', false ) )
 	) {
 		return (
 			<>
@@ -159,6 +140,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 						cartItems={ cartItems }
 						cartTotals={ cartTotals }
 						cartFees={ cartFees }
+						showRateAfterTaxName={ attributes.showRateAfterTaxName }
 					/>
 				</Sidebar>
 			</SidebarLayout>
@@ -166,4 +148,4 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 	);
 };
 
-export default withScrollToTop( Block );
+export default withScrollToTop( Checkout );

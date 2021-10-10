@@ -80,7 +80,7 @@ class Wt_Import_Export_For_Woo_Basic {
 		if ( defined( 'WT_U_IEW_VERSION' ) ) {
 			$this->version = WT_U_IEW_VERSION;
 		} else {
-			$this->version = '2.1.2';
+			$this->version = '2.2.0';
 		}
 		$this->plugin_name = 'wt-import-export-for-woo-basic';
 
@@ -193,7 +193,7 @@ class Wt_Import_Export_For_Woo_Basic {
 	{
 		//ajax hook for saving settings, Includes plugin main settings and settings from module
 		$this->loader->add_action('wp_ajax_wt_iew_save_settings_basic',$this->plugin_admin,'save_settings');
-
+                $this->loader->add_action('wp_ajax_wt_iew_delete_template',$this->plugin_admin,'delete_template');
 		/* Loading admin modules */
 		$this->plugin_admin->admin_modules();
 

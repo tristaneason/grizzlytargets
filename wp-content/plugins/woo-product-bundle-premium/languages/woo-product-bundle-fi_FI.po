@@ -1,0 +1,861 @@
+# Finnish translation by Kirsi-Maria Hiltunen for WooCommerce Product Bundles
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce Product Bundles\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woo-product-"
+"bundle-premium\n"
+"POT-Creation-Date: 2021-07-21T07:30:49+00:00\n"
+"PO-Revision-Date: 2021-07-21 16:38+0200\n"
+"Last-Translator: Kirsi-Maria Hiltunen\n"
+"Language-Team: Suomi\n"
+"Language: fi_FI\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;"
+"_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;"
+"esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.0\n"
+"X-Loco-Version: 2.3.3; wp-5.4\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#. Plugin Name of the plugin
+msgid "WPC Product Bundles for WooCommerce (Premium)"
+msgstr "WPC Product Bundles for WooCommerce (Premium)"
+
+#. Plugin URI of the plugin
+msgid "https://wpclever.net/"
+msgstr "https://wpclever.net/"
+
+#. Description of the plugin
+msgid ""
+"WPC Product Bundles is a plugin help you bundle a few products, offer them "
+"at a discount and watch the sales go up!"
+msgstr ""
+"WPC Product Bundle -liitännäinen auttaa sinua pakkaamaan tuotteita, "
+"tarjoamaan niitä alennuksella - ja myynti lähtee ylös!"
+
+#. Author of the plugin
+msgid "WPClever"
+msgstr "WPClever"
+
+#. Author URI of the plugin
+msgid "https://wpclever.net"
+msgstr "https://wpclever.net"
+
+#: includes/class-product.php:37 includes/class-product.php:63
+#: includes/class-woosb.php:640 includes/class-woosb.php:668
+msgid "Add to cart"
+msgstr "Lisää ostoskoriin"
+
+#: includes/class-product.php:43 includes/class-woosb.php:648
+msgid "Select options"
+msgstr "Valitse vaihtoehdot"
+
+#: includes/class-product.php:50 includes/class-woosb.php:656
+msgid "Read more"
+msgstr "Lue lisää"
+
+#: includes/class-woosb.php:242 includes/class-woosb.php:253
+msgid "WPC Product Bundles"
+msgstr "WPC Product Bundles"
+
+#: includes/class-woosb.php:242
+msgid "Product Bundles"
+msgstr "Tuotepaketit"
+
+#: includes/class-woosb.php:256
+msgid ""
+"Thank you for using our plugin! If you are satisfied, please reward it a "
+"full five-star %s rating."
+msgstr ""
+"Kiitos tuotteemme käytöstä! Jos olet tyytyväinen, paras palkkio meille"
+"on täysi viiden tähden arvio %s."
+
+#: includes/class-woosb.php:259
+msgid "Reviews"
+msgstr "Arvostelut"
+
+#: includes/class-woosb.php:261
+msgid "Changelog"
+msgstr "Muutosloki"
+
+#: includes/class-woosb.php:263
+msgid "Discussion"
+msgstr "Keskustelu"
+
+#: includes/class-woosb.php:270
+msgid "How to use?"
+msgstr "Kuinka käyttää?"
+
+#: includes/class-woosb.php:274 includes/class-woosb.php:1028
+msgid "Settings"
+msgstr "Asetukset"
+
+#: includes/class-woosb.php:278
+msgid "Compatible"
+msgstr "Yhteensopiva"
+
+#: includes/class-woosb.php:284
+msgid "Premium Version"
+msgstr "Premium-versio"
+
+#: includes/class-woosb.php:288 includes/class-woosb.php:1038
+msgid "Docs"
+msgstr "Documentaatio"
+
+#: includes/class-woosb.php:291 includes/class-woosb.php:1039
+msgid "Support"
+msgstr "Tuki"
+
+#: includes/class-woosb.php:295
+msgid "Essential Kit"
+msgstr "Tärkeimmät välineet"
+
+#: includes/class-woosb.php:303
+msgid ""
+"When creating the product, please choose product data is \"Smart Bundle\" "
+"then you can see the search field to start search and add products to the "
+"bundle."
+msgstr ""
+"Kun luot tuotteet, valitse tuotetiedoista \"Älykkäät tuotepaketit\","
+"niin näet hakupalkin, jolla voit hakea ja lisätä tuotteita tuotepakettiin."
+
+#: includes/class-woosb.php:315
+msgid "General"
+msgstr "Yleinen"
+
+#: includes/class-woosb.php:319
+msgid "Price format"
+msgstr "Hintamuotoilu"
+
+#: includes/class-woosb.php:322
+msgid "From min price"
+msgstr "Minimihinnasta"
+
+#: includes/class-woosb.php:323
+msgid "Min price only"
+msgstr "Ainoastaan minimihinta"
+
+#: includes/class-woosb.php:324
+msgid "Min - max"
+msgstr "Min - max"
+
+#: includes/class-woosb.php:325
+msgid "Regular and sale price"
+msgstr "Normaali ja alennettu hinta"
+
+#: includes/class-woosb.php:328
+msgid "Choose the price format for bundle on the shop page."
+msgstr "Valitse tuotepaketin hintamuotoilu kauppasivulla."
+
+#: includes/class-woosb.php:333
+msgid "Calculate bundled prices"
+msgstr "Laske tuotepakettihinnat"
+
+#: includes/class-woosb.php:338
+msgid "from Sale price"
+msgstr "alennetusta hinnasta"
+
+#: includes/class-woosb.php:342
+msgid "from Regular price"
+msgstr "alennetusta hinnasta"
+
+#: includes/class-woosb.php:346
+msgid "Bundled pricing methods: from Sale price (default) or Regular price."
+msgstr "Tuotepakettien hinnoittelumenetelmät:"
+"Alennetusta hinnasta (oletus) tai normaalista hinnasta."
+
+#: includes/class-woosb.php:352 includes/class-woosb.php:1493
+#: includes/class-woosb.php:1516 includes/class-woosb.php:1784
+msgid "Bundled products"
+msgstr "Paketoidut tuotteet"
+
+#: includes/class-woosb.php:356 includes/class-woosb.php:584
+msgid "Position"
+msgstr "Sijainti"
+
+#: includes/class-woosb.php:361 includes/class-woosb.php:589
+msgid "Above the add to cart button"
+msgstr "\"Lisää ostoskoriin\"-painikkeen yläpuolella"
+
+#: includes/class-woosb.php:365 includes/class-woosb.php:593
+msgid "Under the add to cart button"
+msgstr "\"Lisää ostoskoriin\"-painikkeen alapuolella"
+
+#: includes/class-woosb.php:369
+msgid "Under the title"
+msgstr "Otsikon alapuolella"
+
+#: includes/class-woosb.php:373
+msgid "Under the price"
+msgstr "Hinnan alla"
+
+#: includes/class-woosb.php:377
+msgid "Under the excerpt"
+msgstr "Otteen alla"
+
+#: includes/class-woosb.php:381 includes/class-woosb.php:597
+msgid "In a new tab"
+msgstr "Uudella välilehdellä"
+
+#: includes/class-woosb.php:385 includes/class-woosb.php:601
+msgid "No (hide it)"
+msgstr "Ei (piilota se)"
+
+#: includes/class-woosb.php:388
+msgid "Choose the position to show the bundled products list."
+msgstr "Valitse sijainti, jossa tuotepakettilista näytetään."
+
+#: includes/class-woosb.php:393
+msgid "Variations selector"
+msgstr "Muunnosten valitsin"
+
+#: includes/class-woosb.php:398
+msgid "Default"
+msgstr "Oletus"
+
+#: includes/class-woosb.php:402
+msgid "Use WPC Variations Radio Buttons"
+msgstr "Käytä WPC Variations -valintanappuloita"
+
+#: includes/class-woosb.php:411
+msgid "Show thumbnail"
+msgstr "Näytä esikatselukuva"
+
+#: includes/class-woosb.php:416 includes/class-woosb.php:431
+#: includes/class-woosb.php:446 includes/class-woosb.php:480
+#: includes/class-woosb.php:521 includes/class-woosb.php:539
+#: includes/class-woosb.php:708 includes/class-woosb.php:745
+#: includes/class-woosb.php:779 includes/class-woosb.php:810
+#: includes/class-woosb.php:825 includes/class-woosb.php:841
+#: includes/class-woosb.php:857 includes/class-woosb.php:873
+#: includes/class-woosb.php:910 includes/class-woosb.php:919
+#: includes/class-woosb.php:936 includes/class-woosb.php:945
+msgid "Yes"
+msgstr "Kyllä"
+
+#: includes/class-woosb.php:420 includes/class-woosb.php:435
+#: includes/class-woosb.php:450 includes/class-woosb.php:469
+#: includes/class-woosb.php:484 includes/class-woosb.php:508
+#: includes/class-woosb.php:525 includes/class-woosb.php:547
+#: includes/class-woosb.php:682 includes/class-woosb.php:712
+#: includes/class-woosb.php:749 includes/class-woosb.php:768
+#: includes/class-woosb.php:783 includes/class-woosb.php:814
+#: includes/class-woosb.php:829 includes/class-woosb.php:845
+#: includes/class-woosb.php:861 includes/class-woosb.php:877
+#: includes/class-woosb.php:911 includes/class-woosb.php:920
+#: includes/class-woosb.php:937 includes/class-woosb.php:946
+msgid "No"
+msgstr "Ei"
+
+#: includes/class-woosb.php:426
+msgid "Show quantity"
+msgstr "Näytä määrä"
+
+#: includes/class-woosb.php:441
+msgid "Show short description"
+msgstr "Näytä lyhyt kuvaus"
+
+#: includes/class-woosb.php:456
+msgid "Show price"
+msgstr "Näytä hinta"
+
+#: includes/class-woosb.php:461
+msgid "Price"
+msgstr "Hinta"
+
+#: includes/class-woosb.php:465
+msgid "Subtotal"
+msgstr "Osasumma"
+
+#: includes/class-woosb.php:475
+msgid "Show plus/minus button"
+msgstr "Näytä plus/miinus-painikkeet"
+
+#: includes/class-woosb.php:487
+msgid "Show the plus/minus button for the quantity input."
+msgstr "Näytä plus/miinus-painikkeet määrän lisäämisessä."
+
+#: includes/class-woosb.php:491
+msgid "Link to individual product"
+msgstr "Linkitä yksittäiseen tuotteeseen"
+
+#: includes/class-woosb.php:496
+msgid "Yes, open in the same tab"
+msgstr "Kyllä, aukaise samalla välilehdellä"
+
+#: includes/class-woosb.php:500
+msgid "Yes, open in the new tab"
+msgstr "Kyllä, aukaise uudessa välilehdessä"
+
+#: includes/class-woosb.php:504
+msgid "Yes, open quick view popup"
+msgstr "Kyllä, aukaise pikaikkuna"
+
+#: includes/class-woosb.php:516
+msgid "Change image"
+msgstr "Vaihda kuva"
+
+#: includes/class-woosb.php:529
+msgid ""
+"Change the main product image when choosing the variation of bundled "
+"products."
+msgstr ""
+"MMuuta päätuotteen kuva, kun valitaan paketoitavien tuotteiden muunnelma."
+
+#: includes/class-woosb.php:534
+msgid "Change price"
+msgstr "Muuta hinta"
+
+#: includes/class-woosb.php:543
+msgid "Yes, custom selector"
+msgstr "Kyllä, muokattu valinta"
+
+#: includes/class-woosb.php:554
+msgid ""
+"Change the main product price when choosing the variation of bundled "
+"products. It uses JavaScript to change product price so it is very dependent "
+"on theme’s HTML. If it cannot find and update the product price, please "
+"contact us and we can help you find the right selector or adjust the JS file."
+msgstr ""
+"Vaihda päätuotteen hinta, kun valitset pakettituotteiden muunnelman."
+"Tuotehinnan muuttamiseen käytetään JavaScriptiä, joten teeman HTML vaikuttaa"
+"siihen. Jos tuotteen hintaa ei voi löytää ja päivittää, ota meihin yhteyttä,"
+"niin voimme auttaa sinua löytämään oikean valitsijan tai muokkaamaan JS-tiedostoa."
+
+#: includes/class-woosb.php:559
+msgid "Total text"
+msgstr "Koko teksti"
+
+#: includes/class-woosb.php:562
+msgid "Bundle price:"
+msgstr "Tuotepaketin hinta:"
+
+#: includes/class-woosb.php:566
+msgid "Saved text"
+msgstr "Talletettu teksti"
+
+#: includes/class-woosb.php:569 includes/class-woosb.php:985
+#: includes/class-woosb.php:988
+msgid "(saved [d])"
+msgstr "(säästit [d])"
+
+#: includes/class-woosb.php:571
+msgid "Use [d] to show the saved percentage or amount."
+msgstr "Käytä [d] näyttämään säästetty osuus tai määrä."
+
+#: includes/class-woosb.php:577 includes/class-woosb.php:1792
+msgid "Bundles"
+msgstr "Tuotepaketit"
+
+#: includes/class-woosb.php:580
+msgid "Settings for bundles on the bundled product page."
+msgstr "Asetukset pakettituotesivun tuotepaketeille."
+
+#: includes/class-woosb.php:604
+msgid "Choose the position to show the bundles list."
+msgstr "Valitse sijainti, jossa tuotepakettilista näytetään."
+
+#: includes/class-woosb.php:610 includes/class-woosb.php:1983
+msgid "Above text"
+msgstr "Tekstin yläpuolella"
+
+#: includes/class-woosb.php:619 includes/class-woosb.php:1992
+msgid "Under text"
+msgstr "Tekstin alapuolella"
+
+#: includes/class-woosb.php:628
+msgid "\"Add to Cart\" button labels"
+msgstr "\"Lisää ostoskoriin\"-painikkeen nimikkeet"
+
+#: includes/class-woosb.php:631
+msgid "Leave blank if you want to use the default text and can be translated."
+msgstr "Jätä tyhjäksi, jos haluat käyttää käännettävää oletustekstiä."
+
+#: includes/class-woosb.php:635
+msgid "Archive/shop page"
+msgstr "Arkisto/kauppasivu"
+
+#: includes/class-woosb.php:642
+msgid "For purchasable bundle."
+msgstr "Ostettavissa olevalle tuotepaketille."
+
+#: includes/class-woosb.php:650
+msgid "For purchasable bundle and has variable product(s)."
+msgstr "Tuotepaketille, joka on ostettavissa ja jolla on muunneltav(i)a tuote/tuotteita."
+
+#: includes/class-woosb.php:658
+msgid "For un-purchasable bundle."
+msgstr "Tuotepaketille, jota ei voi ostaa."
+
+#: includes/class-woosb.php:664
+msgid "Single product page"
+msgstr "Yksittäisen tuotteen sivu"
+
+#: includes/class-woosb.php:673
+msgid "Cart & Checkout"
+msgstr "Ostoskori & Kassa"
+
+#: includes/class-woosb.php:677
+msgid "Coupon restrictions"
+msgstr "Kupongin rajoitukset"
+
+#: includes/class-woosb.php:686
+msgid "Exclude bundles"
+msgstr "Rajoita tuotepaketit ulkopuolelle"
+
+#: includes/class-woosb.php:690
+msgid "Exclude bundled products"
+msgstr "Rajoita paketoidut tuotteet ulkopuolelle"
+
+#: includes/class-woosb.php:694
+msgid "Exclude both bundles and bundled products"
+msgstr "Rajoita ulkopuolelle sekä tuotepaketit että paketoidut tuotteet"
+
+#: includes/class-woosb.php:698
+msgid "Choose products you want to exclude from coupons."
+msgstr "Valitse tuotteet, jotka haluat rajoittaa kupongin ulkopuolelle."
+
+#: includes/class-woosb.php:703
+msgid "Exclude un-purchasable products"
+msgstr "Rajoita ulkopuolelle tuotteet, jotka eivät ole ostettavissa"
+
+#: includes/class-woosb.php:716
+msgid ""
+"Make the bundle still purchasable when one of the bundled products is un-"
+"purchasable. These bundled products are excluded from the orders."
+msgstr ""
+"Tee tuotepaketista ostettava, vaikka yksi paketoiduista tuotteista"
+"ei ole ostettavissa. Nämä paketoidut tuotteet poistetaan tilauksesta."
+
+#: includes/class-woosb.php:721
+msgid "Cart contents count"
+msgstr "Ostoskorin sisällön määrä"
+
+#: includes/class-woosb.php:726
+msgid "Bundles only"
+msgstr "Ainoastaan tuotepaketit"
+
+#: includes/class-woosb.php:730
+msgid "Bundled products only"
+msgstr "Ainoastaan paketoidut tuotteet"
+
+#: includes/class-woosb.php:734
+msgid "Both bundles and bundled products"
+msgstr "Sekä tuotepaketit että paketoidut tuotteet"
+
+#: includes/class-woosb.php:740
+msgid "Hide bundle name before bundled products"
+msgstr "Piilota tuotepaketin nimi ennen paketoituja tuotteita"
+
+#: includes/class-woosb.php:755
+msgid "Hide bundled products on cart & checkout page"
+msgstr "Piilota paketoidut tuotteet ostoskorissa & kassalla"
+
+#: includes/class-woosb.php:760
+msgid "Yes, just show the main product"
+msgstr "Kyllä, näytä ainoastaan päätuote"
+
+#: includes/class-woosb.php:764
+msgid "Yes, but show bundled product names under the main product"
+msgstr "Kyllä, mutta näytä paketoidut tuotteet päätuotteen alla"
+
+#: includes/class-woosb.php:774
+msgid "Hide bundled products on mini-cart"
+msgstr "Piilota paketoidut tuotteet mini-ostoskorissa"
+
+#: includes/class-woosb.php:787
+msgid "Hide bundled products, just show the main product on mini-cart."
+msgstr "Piilota paketoidut tuotteet, näytä ainoastaan"
+"päätuotteet mini-ostoskorissa."
+
+#: includes/class-woosb.php:793 includes/class-woosb.php:1841
+msgid "Search"
+msgstr "Etsi"
+
+#: includes/class-woosb.php:797
+msgid "Search limit"
+msgstr "Hakuraja"
+
+#: includes/class-woosb.php:805
+msgid "Search by SKU"
+msgstr "Hae SKU:n avulla"
+
+#: includes/class-woosb.php:820
+msgid "Search by ID"
+msgstr "Hae ID-numerolla"
+
+#: includes/class-woosb.php:832
+msgid "Search by ID when only entered the numeric."
+msgstr "Hae ID-numerolla kun vain numero lisätty."
+
+#: includes/class-woosb.php:836
+msgid "Search exact"
+msgstr "Hae täsmälleen samaa"
+
+#: includes/class-woosb.php:848
+msgid "Match whole product title or content?"
+msgstr "Etsi täysin samanlaista tuotteen otsikkoa tai sisältöä?"
+
+#: includes/class-woosb.php:852
+msgid "Search sentence"
+msgstr "Hakulause"
+
+#: includes/class-woosb.php:864
+msgid "Do a phrase search?"
+msgstr "Tee lausehaku?"
+
+#: includes/class-woosb.php:868
+msgid "Accept same products"
+msgstr "Hyväksy samat tuotteet"
+
+#: includes/class-woosb.php:880
+msgid "If yes, a product can be added many times."
+msgstr "Jos kyllä, tuote voidaan lisätä monta kertaa."
+
+#: includes/class-woosb.php:886 includes/class-woosb.php:953
+msgid "Update Options"
+msgstr "Päivitä valikko"
+
+#: includes/class-woosb.php:900
+msgid "WooCommerce PDF Invoices & Packing Slips"
+msgstr "WooCommerce PDF-laskut & Osoitetarrat"
+
+#: includes/class-woosb.php:907 includes/class-woosb.php:933
+msgid "Hide bundles"
+msgstr "Piilota tuotepaketit"
+
+#: includes/class-woosb.php:916 includes/class-woosb.php:942
+msgid "Hide bundled products"
+msgstr "Piilota paketoidut tuotteet"
+
+#: includes/class-woosb.php:926
+msgid ""
+"WooCommerce PDF Invoices, Packing Slips, Delivery Notes & Shipping Labels"
+msgstr "WooCommerce PDF-laskut, Pakkausluettelot, Lähetyslistat & Osoitetarrat"
+
+#: includes/class-woosb.php:992
+msgid ""
+"Please select a purchasable variation for [name] before adding this bundle "
+"to the cart."
+msgstr ""
+"Valitse ostettava muunnos tuotteelle [name] ennen kuin lisäät"
+"tämän tuotepaketin ostoskoriin."
+
+#: includes/class-woosb.php:993
+msgid ""
+"Please choose at least one product before adding this bundle to the cart."
+msgstr ""
+"Valitse ainakin yksi tuote ennen tämän tuotepaketin lisäämistä ostoskoriin."
+
+#: includes/class-woosb.php:994
+msgid ""
+"Please choose at least a total quantity of [min] products before adding this "
+"bundle to the cart."
+msgstr ""
+"Valitse vähintään [min] tuotetta ennen kuin lisäät tuotepaketin ostoskoriin."
+
+#: includes/class-woosb.php:995
+msgid ""
+"Sorry, you can only choose at max a total quantity of [max] products before "
+"adding this bundle to the cart."
+msgstr ""
+"Voit valita enintään [max] määrän tuotteita ennen tämän tuotepaketin"
+"lisäämistä ostoskoriin."
+
+#: includes/class-woosb.php:1155
+msgid "One of the bundled products is unavailable."
+msgstr "Yksi paketoiduista tuotteista ei ole saatavilla."
+
+#: includes/class-woosb.php:1156 includes/class-woosb.php:1163
+#: includes/class-woosb.php:1170 includes/class-woosb.php:1177
+#: includes/class-woosb.php:1184 includes/class-woosb.php:1194
+#: includes/class-woosb.php:1202
+msgid "You cannot add this bundle to the cart."
+msgstr "Et voi lisätä tätä tuotepakettia ostoskoriin."
+
+#: includes/class-woosb.php:1162 includes/class-woosb.php:1169
+msgid "\"%s\" is un-purchasable."
+msgstr "\"%s\" ei ole ostettavissa."
+
+#: includes/class-woosb.php:1176 includes/class-woosb.php:1193
+msgid "\"%s\" has not enough stock."
+msgstr "\"%s\" ei ole riittävästi varastossa."
+
+#: includes/class-woosb.php:1183
+msgid "You cannot add another \"%s\" to the cart."
+msgstr "Et voi lisätä toista \"%s\" ostoskoriin."
+
+#: includes/class-woosb.php:1201
+msgid "\"%s\" is protected and cannot be purchased."
+msgstr "\"%s\" on suojattu eikä sitä voi ostaa."
+
+#: includes/class-woosb.php:1612
+msgid "(bundled in %s)"
+msgstr "(paketoituna tässä tuotepaketissa: %s)"
+
+#: includes/class-woosb.php:1709
+msgid "No results found for \"%s\""
+msgstr "Ei tuloksia haulle \"%s\""
+
+#: includes/class-woosb.php:1755 includes/class-woosb.php:1810
+msgid "Smart bundle"
+msgstr "Älykäs tuotepaketti"
+
+#: includes/class-woosb.php:1762
+msgid "Bundled Products"
+msgstr "Paketoidut tuotteet"
+
+#: includes/class-woosb.php:1843
+msgid "settings"
+msgstr "asetukset"
+
+#: includes/class-woosb.php:1849
+msgid "searching..."
+msgstr "etsitään..."
+
+#: includes/class-woosb.php:1851
+msgid "Type any keyword to search"
+msgstr "Kirjoita mitä tahansa hakeaksesi"
+
+#: includes/class-woosb.php:1857
+msgid "Selected"
+msgstr "Valittu"
+
+#: includes/class-woosb.php:1888
+msgid "Regular price"
+msgstr "Normaali hinta"
+
+#: includes/class-woosb.php:1894
+msgid "Fixed price"
+msgstr "Kiinteä hinta"
+
+#: includes/class-woosb.php:1898
+msgid "Disable auto calculate price."
+msgstr "Kytke pois päältä hinnan automaattinen laskeminen."
+
+#: includes/class-woosb.php:1898
+msgid "If checked, %s click here to set price %s by manually."
+msgstr "Jos valittuna, %s paina tästä asettaaksesi %s hinnan manuaalisesti."
+
+#: includes/class-woosb.php:1902
+msgid "Discount"
+msgstr "Alennus"
+
+#: includes/class-woosb.php:1909
+msgid "% or amount"
+msgstr "% tai määrä"
+
+#: includes/class-woosb.php:1915
+msgid "If you fill both, the amount will be used."
+msgstr "Jos täytät molemmat, käytetään määrää."
+
+#: includes/class-woosb.php:1919
+msgid "Custom quantity"
+msgstr "Mukautettu määrä"
+
+#: includes/class-woosb.php:1923
+msgid "Allow the customer can change the quantity of each product."
+msgstr "Salli asiakkaan vaihtaa jokaisen tuotteen määrä."
+
+#: includes/class-woosb.php:1927
+msgid "Each item's quantity limit"
+msgstr "Kunkin tuotteen määräraja"
+
+#: includes/class-woosb.php:1931
+msgid "Use default quantity as min?"
+msgstr "Käytä oletusmäärää miniminä?"
+
+#: includes/class-woosb.php:1943
+msgid "All items' quantity limit"
+msgstr "Kaikkien tuotteiden määräraja"
+
+#: includes/class-woosb.php:1956
+msgid "Shipping fee"
+msgstr "Lähetyskulut"
+
+#: includes/class-woosb.php:1959
+msgid "Apply to the whole bundle"
+msgstr "Käytä koko tuotepakettiin"
+
+#: includes/class-woosb.php:1960
+msgid "Apply to each bundled product"
+msgstr "Käytä jokaiseen paketoituun tuotteeseen"
+
+#: includes/class-woosb.php:1965
+msgid "Manage stock"
+msgstr "Hallinnoi varastoa"
+
+#: includes/class-woosb.php:1969
+msgid "Enable stock management at bundle level."
+msgstr "Mahdollista varaston hallinta tuotepakettitasolla."
+
+#: includes/class-woosb.php:1971
+msgid ""
+"By default, the bundle' stock was calculated automatically from bundled "
+"products. After enabling, please press \"Update\" then you can change the "
+"stock settings on the \"Inventory\" tab."
+msgstr ""
+"Oletuksena tuotepaketin varastomäärä laskettiin automaattisesti"
+"paketoiduista tuotteista. Aktivoinnin jälkeen paina \"Update\","
+"jolloin voit vaihtaa varastoasetukset \"Varasto\"-välilehdellä."
+
+#: includes/class-woosb.php:1975
+msgid "Custom display price"
+msgstr "Mukautettu hinnan näyttö"
+
+#: includes/class-woosb.php:2029
+msgid "Add"
+msgstr "Lisää"
+
+#: includes/class-woosb.php:2031
+msgid "Remove"
+msgstr "Poista"
+
+#: includes/class-woosb.php:2043
+msgid "Default quantity"
+msgstr "Oletusmäärä"
+
+#: includes/class-woosb.php:2043
+msgid "sold individually"
+msgstr "myydään yksittäin"
+
+#: includes/class-woosb.php:2268 includes/class-woosb.php:2299
+msgid "From"
+msgstr "Alkaen"
+
+#: includes/class-woosb.php:2549
+msgid "Choose"
+msgstr "Valitse"
+
+#: includes/class-woosb.php:2556
+msgid "Clear"
+msgstr "Tyhjennä"
+
+#: includes/class-woosb.php:2830
+msgid "Bundle (%s)"
+msgstr "Tuotepaketti (%s)"
+
+#: includes/class-woosb.php:2849
+msgid "Create a Smart bundle"
+msgstr "Luo Älykäs tuotepaketti"
+
+#: includes/class-woosb.php:2868
+msgid "Added %s product(s) to this bundle."
+msgstr "Lisätty %s tuotetta tuotepakettiin."
+
+#: includes/class-woosb.php:2878
+msgid "Bundle(s) out of stock"
+msgstr "Tuotepaketit loppu varastosta"
+
+#: includes/class-woosb.php:2883 includes/class-woosb.php:2886
+msgid "%s is out of stock."
+msgstr "%s varasto loppu."
+
+#: includes/class-woosb.php:2904
+msgid "Bundle(s) low in stock"
+msgstr "Tuotepakettien varastomäärä vähissä"
+
+#: includes/class-woosb.php:2909
+msgid "%s is low in stock."
+msgstr "%s varastomäärä vähissä."
+
+#: includes/class-woosb.php:2912
+msgid "%1$s is low in stock. There are %2$d left."
+msgstr "%1$s varastomäärä on vähissä. Jäljellä %2$d."
+
+#~ msgid ""
+#~ "Please choose at least [min] in the whole products before adding this "
+#~ "bundle to the cart."
+#~ msgstr ""
+#~ "Valitse vähintään [min] tuotteissa ennen tämän tuotepaketin lisäämistä"
+"ostoskoriin."
+
+#~ msgid ""
+#~ "Please choose maximum [max] in the whole products before adding this "
+#~ "bundle to the cart."
+#~ msgstr ""
+#~ "Valitse maksimi [max] tuotteissa ennen kuin lisäät tämän tuotepaketin"
+"ostoskoriin."
+
+#~ msgid "Once Every 5 Minutes"
+#~ msgstr "Viiden minuutin välein"
+
+#~ msgid "Tools"
+#~ msgstr "Työkalut"
+
+#~ msgid "Advance"
+#~ msgstr "Edistyneet"
+
+#~ msgid "Price sync"
+#~ msgstr "Hinnan synkronointi"
+
+#~ msgid ""
+#~ "Enable this option to change the bundle price automatically when changing "
+#~ "the price of the bundled product. You also can do it by manually on the "
+#~ "Tools tab."
+#~ msgstr ""
+#~ "Laita tämä valinta päälle vaihtaaksesi tuotepaketin hinnan automaattisesti"
+"silloin, kun vaihdat paketoidun tuotteen hintaa. Voit myös tehdä sen"
+"manuaalsesti Työkalut-välilehdellä."
+
+#~ msgid ""
+#~ "Enable this option to show the update price tool in each product. Use "
+#~ "this tool to update the price for all bundles contain the current product."
+#~ msgstr ""
+#~ "Lait tämä valinta päälle näyttääksesi Päivitä hinta -työkalun jokaiselle"
+"tuotteelle. Käytä tätä työkalua päivittääksesi päivittääksesi hinnan kaikille"
+"niille tuotepaketeille, jotka sisältävät tämän tuotteen."
+
+#~ msgid "Product bundles"
+#~ msgstr "Tuotepaketit"
+
+#~ msgid "View all product bundles"
+#~ msgstr "Katso kaikki tuotepaketit"
+
+#~ msgid "Update price for all bundles"
+#~ msgstr "Päivitä kaikkien tuotepakettien hinnat"
+
+#~ msgid ""
+#~ "The bundle price will be updated every 5 minutes automatically, you can "
+#~ "click to update immediately."
+#~ msgstr ""
+#~ "Tuotepaketin hinta päivittyy automaattisesti viiden minuutin välein,"
+"voit klikata päivittääksesi heti."
+
+#~ msgid "Premium support"
+#~ msgstr "Premium-tuki"
+
+#~ msgid ""
+#~ "Update the price of all bundles containing this product. The completion "
+#~ "time for this process depends on the number of bundles you have in your "
+#~ "store."
+#~ msgstr ""
+#~ "Päivitä hinta kaikkiin tuotepaketteihin, jotka sisältävät tämän tuotteen."
+"Prosessin suoritusaika riippuu siitä, kuinka paljon tuotepaketteja sinulla"
+on kaupassasi."
+
+#~ msgid "Update Price"
+#~ msgstr "Päivitä hinta"
+
+#~ msgid ""
+#~ "This tool is for updating the price of all bundles containing the "
+#~ "modified product. It is invalid for a bundle."
+#~ msgstr ""
+#~ "Tämä työkalu on tarkoitettu tuotepaketeille, jotka sisältävät muokatun"
+"tuotteen. Se ei toimi tuotepaketille."
+
+#~ msgid "This box content just appears after you publish the product."
+#~ msgstr ""
+#~ "Tämä sisältö näkyy sen jälkeen, kun julkaiset tuotteen."
+
+#~ msgid "Limit of each item"
+#~ msgstr "Raja yksittäisille tuotteille"
+
+#~ msgid "Limit of whole items"
+#~ msgstr "Raja kaikille tuotteille"

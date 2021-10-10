@@ -1,9 +1,9 @@
 ﻿=== LTL Freight Quotes - Unishippers Edition ===
 Contributors: Eniture Technology
 Tags: Unishippers,Unishippers freight,freight,shipping,shipping rates,shipping calculator,shipping estimate,estimator,carriers, woocommerce,woocommerce shipping,eniture,eniture technology,small package,shipping quotes,eniture unishippers_ltl freight quotes
-Requires at least: 5.2
-Tested up to: 5.7
-Stable tag: 5.7
+Requires at least: 5.7
+Tested up to: 5.8
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,7 +32,7 @@ result as shipping charges in your WooCommerce shopping cart. To establish a Uni
 
 **Requirements**
 
-* WooCommerce 4.0 or newer.
+* WooCommerce 5.0 or newer.
 * A Unishippers account number.
 * Your username and password to Unishippers's online shipping system.
 * Your Unishippers web services authentication key.
@@ -166,7 +166,23 @@ then you have one or more of the following licensing issues:
 
 == Changelog ==
 
-= 1.1.3 =
+= 2.0.0 =
+* Update: Compatibility with PHP version 8.0.
+* Update: Compatibility with WordPress version 5.8.
+* Fix: Corrected product page URL in connection settings tab.
+
+= 1.3.1 =
+* Update: Added feature "Weight threshold limit".
+* Update: Added feature In-store pickup with terminal information.
+
+= 1.3.0 =
+* Update: Cuttoff Time
+* Update: Added images URL for FDO portal
+* Update: CSV columns updated
+* Update: Compatibility with Shippable addon
+* Update: Compatibility with Micro-warehouse addon
+
+= 1.2.0 =
 * Update: Introduced new features, Order detail widget for draft orders, improved order detail widget for Freightdesk.online, compatibly with Shippable add-on, compatibly with Account Details(ET) add-don(Capturing account number on checkout page).
 
 = 1.1.1 =

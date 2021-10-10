@@ -78,8 +78,11 @@ table.wc-block-cart-items {
 	}
 }
 
-.wc-block-cart .wc-block-components-shipping-rates-control__package {
-	@include with-translucent-border(1px 0 0);
+.wc-block-cart {
+	.wc-block-components-totals-taxes,
+	.wc-block-components-totals-footer-item {
+		margin: 0;
+	}
 }
 
 // Loading placeholder state.
@@ -236,12 +239,14 @@ table.wc-block-cart-items {
 		}
 		td {
 			@include with-translucent-border(1px 0 0);
-			padding: $gap $gap $gap 0;
+			padding: $gap 0 $gap $gap;
 			vertical-align: top;
 		}
-		th:last-child,
-		td:last-child {
+		th:last-child {
 			padding-right: 0;
+		}
+		td:last-child {
+			padding-right: $gap;
 		}
 	}
 
@@ -250,7 +255,6 @@ table.wc-block-cart-items {
 	}
 
 	.wc-block-cart__totals-title {
-		@include with-translucent-border(0 0 1px);
 		@include text-heading();
 		@include font-size(smaller);
 		display: block;

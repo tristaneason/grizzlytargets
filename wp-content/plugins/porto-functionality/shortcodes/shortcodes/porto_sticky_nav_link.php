@@ -8,12 +8,13 @@ function porto_load_sticky_nav_link_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => 'Porto ' . __( 'Sticky Nav Link', 'porto-functionality' ),
-			'base'     => 'porto_sticky_nav_link',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'porto_vc_sticky_nav_link',
-			'as_child' => array( 'only' => 'porto_sticky_nav' ),
-			'params'   => array(
+			'name'        => 'Porto ' . __( 'Sticky Nav Link', 'porto-functionality' ),
+			'base'        => 'porto_sticky_nav_link',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'Stick navigation', 'porto-functionality' ),
+			'icon'        => 'porto_vc_sticky_nav_link',
+			'as_child'    => array( 'only' => 'porto_sticky_nav' ),
+			'params'      => array(
 				array(
 					'type'        => 'textfield',
 					'heading'     => __( 'Label', 'porto-functionality' ),

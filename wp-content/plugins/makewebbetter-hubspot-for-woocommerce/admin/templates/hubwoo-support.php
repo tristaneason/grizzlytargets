@@ -26,7 +26,7 @@ global $hubwoo;
 				</div>
 			</div>
 			<div class="hubwoo-box-n-card__btn">
-				<a href="https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'View Guide', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+				<a href="https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'View Guide', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 			</div>
 		</div>
 	</div>
@@ -43,7 +43,7 @@ global $hubwoo;
 				</div>
 			</div>
 			<div class="hubwoo-box-n-card__btn">
-				<a href="https://support.makewebbetter.com/hubspot-knowledge-base/" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'View', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+				<a href="https://support.makewebbetter.com/hubspot-knowledge-base/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'View', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 			</div>
 		</div>
 	</div>	
@@ -60,7 +60,7 @@ global $hubwoo;
 				</div>
 			</div>
 			<div class="hubwoo-box-n-card__btn">
-				<a href="https://makewebbetter.com/submit-query/" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'Submit', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+				<a href="https://makewebbetter.com/product/hubspot-for-woocommerce/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'Submit', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 			</div>
 		</div>
 	</div>	
@@ -77,7 +77,7 @@ global $hubwoo;
 				</div>
 			</div>
 			<div class="hubwoo-box-n-card__btn">
-				<a href="https://makewebbetter.com/hubspot-woocommerce-onboarding" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'View plans', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+				<a href="https://makewebbetter.com/product/hubspot-for-woocommerce/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'View plans', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 			</div>
 		</div>
 	</div>
@@ -94,7 +94,7 @@ global $hubwoo;
 				</div>
 			</div>
 			<div class="hubwoo-box-n-card__btn">
-				<a href="https://makewebbetter.com/hubspot-woocommerce-onboarding" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'View Plans', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+				<a href="https://makewebbetter.com/hubspot-woocommerce-onboarding?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'View Plans', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 			</div>
 		</div>
 	</div>
@@ -114,5 +114,24 @@ global $hubwoo;
 				<a href="?action=download-log" class="hubwoo__btn"><?php esc_html_e( 'Download', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 			</div>
 		</div>
-	</div>		
+	</div>
+	<div class="hubwoo-box-card hubwoo-box-n-card">
+		<div class="hubwoo-box-n-card">
+			<div class="hubwoo-box-n-card__content">
+				<div class="hubwoo-fields-header hubwoo-common-header">
+					<h2><?php esc_html_e( 'HubSpot CMS Services', 'makewebbetter-hubspot-for-woocommerce' ); ?></h2>
+				</div>
+				<div class="hubwoo-box-card__subtitle">
+					<?php
+						esc_html_e( 'Build amazingly beautiful and interactive websites with our easy-to-use HubSpot themes. Using our themes, you can create websites that will engage, convert visitors and delight your visitors.', 'makewebbetter-hubspot-for-woocommerce' );
+					?>
+				</div>
+			</div>
+			<div class="hubwoo-box-n-card__btn">
+				<div>
+					<a href="https://makewebbetter.com/hubspot-themes/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'Browse now', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+				</div>
+			</div>
+		</div>
+	</div>	
 </div>

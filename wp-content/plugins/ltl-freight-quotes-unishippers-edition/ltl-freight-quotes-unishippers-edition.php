@@ -5,21 +5,29 @@
   Description: Dynamically retrieves your negotiated LTL freight rates from Unishippers and displays the results in the WooCommerce shopping cart..
   Author: Eniture Technology
   Author URI: http://eniture.com/
-  Version: 1.1.3
+  Version: 2.1.0
   Text Domain: eniture-technology
   License: GPL version 2 or later - http://www.eniture.com/
-  WC requires at least: 4.0.0
-  WC tested up to: 5.1.0
+  WC requires at least: 5.0.0
+  WC tested up to: 5.5.2
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
-
 define('UNISHIPPERS_FREIGHT_DOMAIN_HITTING_URL', 'https://ws063.eniture.com');
 define('UNISHIPPERS_FREIGHT_FDO_HITTING_URL', 'https://freightdesk.online/api/updatedWoocomData');
 
 define('UNISHIPPERS_MAIN_FILE', __FILE__);
+
+// Define reference
+function en_unishippers_freight_plugin($plugins)
+{
+    $plugins['lfq'] = (isset($plugins['lfq'])) ? array_merge($plugins['lfq'], ['uni_ltl_shipping_method' => 'WC_unishippers_Shipping_Method']) : ['uni_ltl_shipping_method' => 'WC_unishippers_Shipping_Method'];
+    return $plugins;
+}
+
+add_filter('en_plugins', 'en_unishippers_freight_plugin');
 
 if (!function_exists('is_plugin_active')) {
     require_once(ABSPATH . 'wp-admin/includes/plugin.php');
@@ -109,7 +117,6 @@ if (!function_exists('unishippers_freight_get_domain')) {
         $url = home_url($wp->request);
         return getHost($url);
     }
-
 }
 
 /**
@@ -119,7 +126,13 @@ if (!function_exists('unishippers_freight_admin_script')) {
 
     function unishippers_freight_admin_script()
     {
-        wp_register_style('unishippers_ltl_style', plugin_dir_url(__FILE__) . '/css/unishippers_ltl_style.css', array(), '1.0.6', 'screen');
+        // Cuttoff Time
+        wp_register_style('unishippers_wickedpicker_style', plugin_dir_url(__FILE__) . 'css/wickedpicker.min.css', false, '1.0.0');
+        wp_register_script('unishippers_wickedpicker_script', plugin_dir_url(__FILE__) . 'js/wickedpicker.js', false, '1.0.0');
+        wp_enqueue_style('unishippers_wickedpicker_style');
+
+        wp_enqueue_script('unishippers_wickedpicker_script');
+        wp_register_style('unishippers_ltl_style', plugin_dir_url(__FILE__) . '/css/unishippers_ltl_style.css', array(), '1.0.9', 'screen');
         wp_enqueue_style('unishippers_ltl_style');
     }
 
@@ -167,13 +180,15 @@ add_action('admin_enqueue_scripts', 'en_unishippers_freight_script');
 function en_unishippers_freight_script()
 {
     wp_enqueue_script('jquery');
-    wp_enqueue_script('en_unishippers_freight_script', plugin_dir_url(__FILE__) . 'js/en-unishippers-freight.js', array(), '1.0.1');
+    wp_enqueue_script('en_unishippers_freight_script', plugin_dir_url(__FILE__) . 'js/en-unishippers-freight.js', array(), '1.0.4');
     wp_localize_script('en_unishippers_freight_script', 'en_unishippers_freight_admin_script', array(
         'plugins_url' => plugins_url(),
         'allow_proceed_checkout_eniture' => trim(get_option("allow_proceed_checkout_eniture")),
         'prevent_proceed_checkout_eniture' => trim(get_option("prevent_proceed_checkout_eniture")),
         'wc_settings_unishippers_freight_rate_method' => get_option("wc_settings_unishippers_freight_rate_method"),
-    ));
+        // Cuttoff Time
+        'unishippers_freight_order_cutoff_time' => get_option("unishippers_freight_order_cut_off_time"),
+        ));
 }
 
 /**
@@ -182,10 +197,10 @@ function en_unishippers_freight_script()
 require_once('warehouse-dropship/wild-delivery.php');
 require_once('standard-package-addon/standard-package-addon.php');
 require_once('warehouse-dropship/get-distance-request.php');
-require_once('template/unishippers-ltl-products-options.php');
 require_once('update-plan.php');
 
 require_once('fdo/en-fdo.php');
+require_once('order/en-order-export.php');
 require_once('order/en-order-widget.php');
 require_once('order/rates/order-rates.php');
 require_once('template/products-nested-options.php');
@@ -207,8 +222,14 @@ require_once 'unishipper-ltl-admin-filter.php';
 require_once 'unishipper-ltl-carrier-list.php';
 include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 require_once 'unishippers-ltl-update-change.php';
-require_once 'template/unishippers-ltl-product-detail.php';
 require_once 'unishippers-ltl-curl-class.php';
+
+// Micro Warehouse
+$all_plugins = apply_filters('active_plugins', get_option('active_plugins'));
+if (!stripos(implode($all_plugins), 'micro-warehouse-shipping.php')) {
+    require_once 'template/unishippers-ltl-product-detail.php';
+    require_once('template/unishippers-ltl-products-options.php');
+}
 
 
 /**
@@ -298,7 +319,10 @@ if (!function_exists('unishippers_freight_quotes_plans_suscription_and_features'
             'instore_pickup_local_devlivery' => array('3'),
             'hazardous_material' => array('2', '3'),
             'multi_warehouse' => array('2', '3'),
-            'nested_material' => array('3')
+            'nested_material' => array('3'),
+            // Cuttoff Time
+            'unishippers_cutt_off_time' => array('2', '3'),
+            'unishippers_show_delivery_estimates' => array('1', '2', '3')
         );
 
         return (isset($features[$feature]) && (in_array($package, $features[$feature]))) ? TRUE : ((isset($features[$feature])) ? $features[$feature] : '');
@@ -316,7 +340,7 @@ if (!function_exists('unishippers_freight_plans_notification_link')) {
         $plan_to_upgrade = "";
         switch ($plan) {
             case 2:
-                $plan_to_upgrade = "<a target='_blank' href='https://eniture.com/woocommerce-unishippers-ltl-freight/'>Standard Plan required</a>";
+                $plan_to_upgrade = "<a target='_blank' class='plan_color' href='https://eniture.com/woocommerce-unishippers-ltl-freight/'>Standard Plan required</a>";
                 break;
             case 3:
                 $plan_to_upgrade = "<a target='_blank' href='https://eniture.com/woocommerce-unishippers-ltl-freight/'>Advanced Plan required</a>";
@@ -333,3 +357,6 @@ if (!defined('EN_UNISHIPPER_LOADER')) {
 
     define('EN_UNISHIPPER_LOADER', plugin_dir_url(__FILE__));
 }
+
+// Origin terminal address
+add_action('admin_init', 'unishippers_freight_update_warehouse');

@@ -8,11 +8,12 @@ function porto_load_preview_image_shortcode() {
 
 	vc_map(
 		array(
-			'name'     => 'Porto ' . __( 'Preview Image', 'porto-functionality' ),
-			'base'     => 'porto_preview_image',
-			'category' => __( 'Porto', 'porto-functionality' ),
-			'icon'     => 'fas fa-camera',
-			'params'   => array(
+			'name'        => 'Porto ' . __( 'Preview Image', 'porto-functionality' ),
+			'base'        => 'porto_preview_image',
+			'category'    => __( 'Porto', 'porto-functionality' ),
+			'description' => __( 'Show preview images with loading frame', 'porto-functionality' ),
+			'icon'        => 'fas fa-camera',
+			'params'      => array(
 				array(
 					'type'        => 'vc_link',
 					'heading'     => __( 'URL (Link)', 'porto-functionality' ),

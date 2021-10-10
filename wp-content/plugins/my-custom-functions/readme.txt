@@ -3,9 +3,9 @@ Contributors: Arthur Gareginyan
 Tags: inject code, inject function, inject snippet, inject php, insert code, insert function, insert snippet, insert php, execute code, execute function, execute snippet, execute php, inject custom code, inject custom function, inject custom snippet, inject custom php, insert custom code, insert custom function, insert custom snippet, insert custom php, execute custom code, execute custom function, execute custom snippet, execute custom php, code, function, snippet, php, functionality plugin
 Donate link: https://www.spacexchimp.com/donate.html
 Requires at least: 4.9
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 4.49
+Stable tag: 4.51
 License: GPL3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -256,6 +256,13 @@ Commercial licensing (e.g. for projects that can’t use an open-source license)
 
 
 == Changelog ==
+
+= 4.51 - Sep 6, 2021 =
+* Fixed: Strange behavior of the toggle switches (ON/OFF buttons) on the plugin settings page. (Thanks to Werner Krauß)
+
+= 4.50 - Jul 19, 2021 =
+* Maintenance: Ensure compatibility with upcoming WordPress 5.8.
+* Framework update: The CodeMirror library has been updated to the latest version v5.62.0.
 
 = 4.49 - Mar 8, 2021 =
 * Maintenance: Ensure compatibility with upcoming WordPress 5.7.

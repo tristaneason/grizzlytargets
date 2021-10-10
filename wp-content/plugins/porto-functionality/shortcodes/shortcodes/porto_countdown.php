@@ -51,8 +51,7 @@ function porto_load_countdown_shortcode() {
 					'group'      => 'General Settings',
 				),
 				array(
-					'type'       => 'checkbox',
-					'class'      => '',
+					'type'       => 'porto_multiselect',
 					'heading'    => __( 'Select Time Units To Display In Countdown Timer', 'porto-functionality' ),
 					'param_name' => 'countdown_opts',
 					'value'      => array(
@@ -64,7 +63,18 @@ function porto_load_countdown_shortcode() {
 						__( 'Minutes', 'porto-functionality' ) => 'smin',
 						__( 'Seconds', 'porto-functionality' ) => 'ssec',
 					),
+					'std'        => '',
 					'group'      => 'General Settings',
+				),
+				array(
+					'type'       => 'porto_dimension',
+					'heading'    => __( 'Each Countdown Section Padding', 'porto-functionality' ),
+					'param_name' => 'section_padding',
+					'value'      => '',
+					'group'      => 'General Settings',
+					'selectors'  => array(
+						'{{WRAPPER}}.porto_countdown .porto_countdown-section' => 'padding-top: {{TOP}};padding-right: {{RIGHT}};padding-bottom: {{BOTTOM}};padding-left: {{LEFT}};',
+					),
 				),
 				$custom_class,
 				array(

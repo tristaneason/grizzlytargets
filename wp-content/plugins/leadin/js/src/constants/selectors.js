@@ -1,5 +1,7 @@
 export const domElements = {
   iframe: '#leadin-iframe',
+  subMenu: '.toplevel_page_leadin > ul',
+  subMenuLinks: '.toplevel_page_leadin > ul a',
   subMenuButtons: '.toplevel_page_leadin > ul > li',
   deactivatePluginButton: '[data-slug="leadin"] .deactivate a',
   deactivateFeedbackForm: 'form.leadin-deactivate-form',

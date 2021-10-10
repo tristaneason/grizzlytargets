@@ -5,8 +5,8 @@
  * @link       https://makewebbetter.com/
  * @since      1.0.0
  *
- * @package    hubspot-ecomm-bridge-for-woocommerce
- * @subpackage hubspot-ecomm-bridge-for-woocommerce/includes
+ * @package    makewebbetter-hubspot-for-woocommerce
+ * @subpackage makewebbetter-hubspot-for-woocommerce/includes
  */
 
 /**
@@ -284,7 +284,7 @@ class HubwooEcommPropertyCallbacks {
 				$deal_name .= ' ' . $value;
 			}
 		}
-		$deal_stage = self::huboo_get_valid_deal_stage( 'wc-' . $status );
+		$deal_stage = self::hubwoo_get_valid_deal_stage( 'wc-' . $status );
 
 		if ( ! in_array( $deal_stage, self::hubwoo_ecomm_won_stages() ) ) {
 
@@ -344,6 +344,7 @@ class HubwooEcommPropertyCallbacks {
 		return $value;
 	}
 
+
 	/**
 	 * Format an array in hubspot accepted enumeration value.
 	 *
@@ -369,7 +370,7 @@ class HubwooEcommPropertyCallbacks {
 	 * @param  string $order_key  order status key.
 	 * @return string  hubspot deal stage
 	 */
-	public static function huboo_get_valid_deal_stage( $order_key ) {
+	public static function hubwoo_get_valid_deal_stage( $order_key ) {
 
 		$saved_mappings = get_option( 'hubwoo_ecomm_final_mapping', array() );
 		$key            = array_search( $order_key, array_column( $saved_mappings, 'status' ) );

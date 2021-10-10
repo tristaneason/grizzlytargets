@@ -1,6 +1,6 @@
 /*
   Theme Name: Porto Child
-  Template: porto
+  Template: porto-6.1.6
   Version: 1.0.0
 */
 
@@ -76,18 +76,13 @@
         font-size: 1.25rem
     }
     .header-bottom {
-        border-top: 1px solid rgba(0, 0, 0, .08);
+        border-top: 1px solid rgba(0,0,0,.08);
     }
 }
 
 /* Header Sub Nav  */
 #header .main-menu > li.menu-item ul.sub-menu > li.menu-item > a {
     font-size: 13px;
-}
-
-#header .main-menu > li.menu-item > a {
-	font-size: 13px !important;
-	padding: 15px 12px !important;
 }
 
 /* Header Font Color */
@@ -97,11 +92,11 @@
 #header .header-right i,
 #header .header-right .top-links > li.menu-item > a,
 #header .header-right #mini-cart .cart-head:after {
-    color: #333 !important;
+    color: #333;
 }
 
 #header.sticky-header .main-menu > li.menu-item > a.current {
-    color: #d30005 !important;
+    color: #d30005;
 }
 
 /* FAQs */
@@ -114,12 +109,13 @@
     background-color: #d30005;
 }
 
-/* Secure Checkout Image on Product Pages */
-.wp-image-10152 {
+/* Single Products */
+.single-product img[src="https://www.grizzlytargets.com/wp-content/uploads/2019/12/secure-checkout.jpg"] {
 	display: none;
 }
 
 /* Customize CSS */
+
 .cfw-shipping-methods-list li label {
     display: initial;
 }
@@ -833,7 +829,7 @@ body.woocommerce .right-sidebar {
     padding-right: 0;
 }
 
-ul.products li.product-col .woocommerce-loop-product__title {
+ul.products li.product-col .product-loop-title .woocommerce-loop-product__title {
     white-space: normal;
     overflow: visible;
     text-overflow: unset;

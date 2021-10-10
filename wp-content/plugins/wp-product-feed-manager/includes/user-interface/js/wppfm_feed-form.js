@@ -2263,8 +2263,12 @@ function wppfm_validSourceSelected( rowId, sourceLevel ) {
 }
 
 function wppfm_valueInputOptionsChanged( rowId, sourceLevel, valueEditorLevel ) {
-
 	var option = jQuery( '#value-options-' + rowId + '-' + sourceLevel + '-' + valueEditorLevel + ' option:selected' ).text();
+
+	if ( ! option ) {
+		return;
+	}
+
 	var value  = jQuery( '#value-options-input-' + rowId + '-' + sourceLevel + '-' + valueEditorLevel ).val();
 	var store  = '';
 	var pre    = sourceLevel > 0 ? 'and' : 'change';
@@ -2272,7 +2276,7 @@ function wppfm_valueInputOptionsChanged( rowId, sourceLevel, valueEditorLevel ) 
 	if ( option !== 'replace' && option !== 'recalculate' ) {
 
 		store = pre + '#' + option + '#';
-		store += option === 'change nothing' ? 'blank' : value;
+		store += option === 'change nothing' || option === 'strip tags' ? 'blank' : value;
 
 		_feedHolder.addChangeValue( rowId, sourceLevel, valueEditorLevel, store );
 	} else if ( option === 'replace' ) {

@@ -297,25 +297,6 @@ class Hubwoo_Public {
 	}
 
 	/**
-	 * Update a ecomm deal.
-	 *
-	 * @since 1.0.0
-	 * @param int $order_id order id to be updated.
-	 */
-	public function hubwoo_ecomm_deal_update_order( $order_id ) {
-
-		if ( ! empty( $order_id ) ) {
-
-			$post_type = get_post_type( $order_id );
-
-			if ( 'shop_subscription' == $post_type ) {
-				return;
-			}
-			as_schedule_single_action( time() + 10, 'hubwoo_ecomm_deal_upsert', array( $order_id ) );
-		}
-	}
-
-	/**
 	 * Start session for abandonec carts.
 	 *
 	 * @since 1.0.0
@@ -389,7 +370,7 @@ class Hubwoo_Public {
 
 		if ( ! empty( $_POST['email'] ) ) {
 
-			$posted_email = wp_unslash( $_POST['email'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$posted_email = sanitize_email( wp_unslash( $_POST['email'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 			$guest_user_cart = array();
 
@@ -882,5 +863,102 @@ class Hubwoo_Public {
 				exit;
 			}
 		}
+	}
+
+	/**
+	 * Tracking subscribe box for guest users
+	 *
+	 * @since 1.2.2
+	 */
+	public function get_email_checkout_page() {
+		if ( ! is_user_logged_in() ) {
+			?>
+			<script type="text/javascript">
+				jQuery( 'input#billing_email' ).on( 'change', function() {
+					var guestuser_email = jQuery( 'input#billing_email' ).val();
+					var ajaxUrl = "<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>";
+					var nonce = "<?php echo esc_html( wp_create_nonce( 'hubwoo_cart_security' ) ); ?>";
+					jQuery.post( ajaxUrl, { 
+							'action' : 'get_order_detail', 
+							'email'  : guestuser_email, 
+							'nonce' : nonce 
+						}, function( response ) {
+							if ( response == '"success"' ) {
+								jQuery('#hubwoo_checkout_marketing_optin').prop('checked', true);
+							} 
+
+							if ( response == '"failure"' ) {
+								jQuery('#hubwoo_checkout_marketing_optin').prop('checked', false);
+							} 
+						}
+					);
+				});
+			</script>
+			<style>
+				.hubwoo-input-checkbox label.checkbox {
+					display: inline-block;
+				}
+			</style>
+			<?php
+		}	
+	}
+
+
+	/**
+	 * Getting orders of guest user
+	 *
+	 * @since 1.2.2
+	 */
+	public function get_order_detail() {
+
+		check_ajax_referer( 'hubwoo_cart_security', 'nonce' );
+
+		if ( ! empty( $_POST['email'] ) ) {
+
+			$order_statuses = array_keys( wc_get_order_statuses() );
+
+			$fetched_email  = sanitize_email( wp_unslash( $_POST['email'] ) );
+
+			$query = new WP_Query();
+
+			$customer_orders =  $query->query( 
+				array(
+					'post_type'           => 'shop_order',
+					'posts_per_page'      => 1,
+					'post_status'         => $order_statuses,
+					'orderby'             => 'id',
+					'order'               => 'desc',
+					'fields'              => 'ids',
+					'no_found_rows'       => true,
+					'ignore_sticky_posts' => true, 
+					'meta_query'          => array(
+						array(
+							'key'   => '_billing_email',
+							'value' => $fetched_email,
+						),
+					),
+				)
+			);
+
+			$value = null;
+
+			foreach ( $customer_orders as $single_order ) {
+				$orders    = wc_get_order( $single_order );
+				$meta_data = $orders->get_meta_data();
+				foreach ( $meta_data as $data ) {
+					$key = $data->key;
+					if ( 'hubwoo_checkout_marketing_optin' == $key ) {
+						$value = 'success';
+						break;
+					} else {
+						$value = 'failure';
+					}
+				}
+			}
+
+			echo wp_json_encode( $value );
+		}
+
+		wp_die();
 	}
 }

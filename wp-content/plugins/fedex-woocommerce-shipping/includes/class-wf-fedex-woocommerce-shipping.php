@@ -25,6 +25,9 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 
 	public $standard_boxes = array( 'FEDEX_SMALL_BOX','FEDEX_SMALL_BOX:2','FEDEX_MEDIUM_BOX','FEDEX_MEDIUM_BOX:2','FEDEX_LARGE_BOX','FEDEX_LARGE_BOX:2','FEDEX_EXTRA_LARGE_BOX','FEDEX_EXTRA_LARGE_BOX:2','FEDEX_PAK','FEDEX_ENVELOPE','FEDEX_10KG_BOX','FEDEX_25KG_BOX','FEDEX_BOX','FEDEX_TUBE');
 
+	//PDS-179	
+	public $prioritizedSignatureOption 	= array( 5=>'ADULT',4=>'DIRECT',3=>'INDIRECT',2=>'SERVICE_DEFAULT',1=>'NO_SIGNATURE_REQUIRED',0=>'');
+
 	/**
 	 * Current Wordpress time.
 	 */
@@ -58,8 +61,8 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 
 		$this->method_title					= __( 'FedEx', 'wf-shipping-fedex' );
 		$this->method_description 			= __( 'WooCommerce FedEx Shipping Plugin with Print Label by PluginHive', 'wf-shipping-fedex' );
-		$this->rateservice_version			= 26;
-		$this->addressvalidationservice_version = 2;
+		$this->rateservice_version			= 31;
+		$this->addressvalidationservice_version = 4;
 		$this->default_boxes				= include( 'data-wf-box-sizes.php' );
 		$this->speciality_boxes				= include( 'data-wf-speciality-boxes.php' );
 		$this->services						= include( 'data-wf-service-codes.php' );
@@ -191,7 +194,8 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 		);
 
 		$this->fedex_cod_rate 		= ( isset($this->settings['fedex_cod_rate']) && !empty($this->settings['fedex_cod_rate']) && $this->settings['fedex_cod_rate'] == 'yes' ) ? true : false;
-		$this->duties_and_taxes_rate = ( isset($this->settings['fedex_duties_and_taxes_rate']) && !empty($this->settings['fedex_duties_and_taxes_rate']) && $this->settings['fedex_duties_and_taxes_rate'] == 'yes' ) ? true : false;
+		$shipping_type          	= ( isset($this->settings['fedex_duties_and_taxes_rate']) && !empty($this->settings['fedex_duties_and_taxes_rate']) && $this->settings['fedex_duties_and_taxes_rate'] == 'yes' ) ? 'DUTIES_AND_TAXES' : 'NET_CHARGE';
+		$this->shipping_charge 	    = isset ( $this->settings['shipping_quote_type'] ) && !empty($this->settings['shipping_quote_type']) ? $this->settings['shipping_quote_type'] : $shipping_type;  
 		$this->saturday_delivery 	= ( isset($this->settings['saturday_delivery']) && !empty($this->settings['saturday_delivery']) && $this->settings['saturday_delivery'] == 'yes' ) ? true : false;
 		
 		$this->delivery_time_details		= '';
@@ -229,6 +233,7 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 		$this->dropoff_type 		= isset($this->settings['dropoff_type']) && !empty($this->settings['dropoff_type']) ? $this->settings['dropoff_type'] : 'REGULAR_PICKUP';
 		
 		$this->signature_option 	= isset ( $this->settings['signature_option'] ) ? $this->settings['signature_option'] : '';
+		$this->signature_option 	= array_search($this->signature_option, $this->prioritizedSignatureOption);
 		$this->min_amount	  		= isset( $this->settings['min_amount'] ) ? $this->settings['min_amount'] : 0;
 		$this->customs_duties_payer	= isset ( $this->settings['customs_duties_payer'] ) ? $this->settings['customs_duties_payer'] : '';
 		$this->enable_speciality_box	= ( $bool = $this->get_option( 'enable_speciality_box' ) ) && $bool == 'yes' ? true : false;
@@ -642,7 +647,8 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 				'general' 			=> __("General", 'wf-shipping-fedex'),
 				'rates' 			=> __("Rates & Services", 'wf-shipping-fedex'),
 				'labels' 			=> __("Label Generation", 'wf-shipping-fedex'),
-				'commercial_invoice'=> __("Commercial Invoice", 'wf-shipping-fedex'),
+				'commercial_invoice'=> __("International Forms", 'wf-shipping-fedex'),
+				'special_services'	=> __("Special Services", 'wf-shipping-fedex'),
 				'packaging' 		=> __("Packaging", 'wf-shipping-fedex'),
 				'pickup' 			=> __("Pickup", 'wf-shipping-fedex'),
 				'freight' 			=> __("Freight", 'wf-shipping-fedex'),
@@ -723,20 +729,24 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 
 		$boxes = array();
 
-		// For Standard Boxes
+		// For Standard Boxes,Custom Boxes and Speciality Boxes
 		if ( !empty( $boxes_name ) && sizeof( $boxes_name ) > 0 ) {
 			
 			foreach ($boxes_name as $key => $value) {
 
 				if ( !in_array($key, $this->standard_boxes) || is_numeric( $key ) ) {
-					continue;
+					$box_pack_type  =  isset( $box_type[ $key] ) ? $box_type[ $key ] : '';
+					$box_id         = '';
+				}
+				else{
+					$box_pack_type  = 'standard_box';
+					$box_id         = $key;
 				}
 				
 				if ( $boxes_length[ $key ] && $boxes_width[ $key ] && $boxes_height[ $key ] ) {
 
 					$boxes[$key] = array(
-						'box_type'	=> 'standard_box',
-						'id'		=> $key,
+						'box_type'	=> $box_pack_type,
 						'name'		=> strval($boxes_name[$key]),
 						'length'	=> floatval( $boxes_length[ $key ] ),
 						'width'		=> floatval( $boxes_width[ $key ] ),
@@ -751,36 +761,9 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 						'max_weight'	=> floatval( $boxes_max_weight[ $key ] ),
 						'enabled'		=> isset( $boxes_enabled[ $key ] ) ? true : false
 					);
-				}
-			}
-		}
-
-		// For Custom and Speciality Boxes
-		if ( ! empty( $boxes_length ) && sizeof( $boxes_length ) > 0 ) {
-			for ( $i = 0; $i <= max( array_keys( $boxes_length ) ); $i ++ ) {
-
-				if ( ! isset( $boxes_length[ $i ] ) ) {
-					continue;
-				}
-
-				if ( $boxes_length[ $i ] && $boxes_width[ $i ] && $boxes_height[ $i ] ) {
-
-					$boxes[] = array(
-						'box_type'	=> isset( $box_type[ $i ] ) ? $box_type[ $i ] : '',
-						'name'		=> strval($boxes_name[$i]),
-												'length'	=> floatval( $boxes_length[ $i ] ),
-						'width'		=> floatval( $boxes_width[ $i ] ),
-						'height'	=> floatval( $boxes_height[ $i ] ),
-
-						/* Old version compatibility: If inner dimensions are not provided, assume outer dimensions as inner.*/
-						'inner_length'	=> isset( $boxes_inner_length[ $i ] ) ? floatval( $boxes_inner_length[ $i ] ) : floatval( $boxes_length[ $i ] ),
-						'inner_width'	=> isset( $boxes_inner_width[ $i ] ) ? floatval( $boxes_inner_width[ $i ] ) : floatval( $boxes_width[ $i ] ), 
-						'inner_height'	=> isset( $boxes_inner_height[ $i ] ) ? floatval( $boxes_inner_height[ $i ] ) : floatval( $boxes_height[ $i ] ),
-						
-						'box_weight'	=> floatval( $boxes_box_weight[ $i ] ),
-						'max_weight'	=> floatval( $boxes_max_weight[ $i ] ),
-						'enabled'	=> isset( $boxes_enabled[ $i ] ) ? true : false
-					);
+					if(!empty( $box_id )) {
+						$boxes[$key]['id'] = $box_id ;
+					}
 				}
 			}
 		}
@@ -912,7 +895,7 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 			$values['data'] = $this->wf_load_product( $values['data'] );
 
 			$additional_products = apply_filters( 'xa_alter_products_list', array($values) );	// To support product addon, WooCommerce Measurement Price Calculator plugin
-			
+			$signature = '';
 			foreach( $additional_products as $values) {
 
 				if ( ! $values['data']->needs_shipping() ) {
@@ -941,7 +924,17 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 					return;
 				}
 
-				$group = array();
+				//PDS-179
+				$parentId 		= wp_get_post_parent_id($values['data']->get_id());
+				$productId 		= $values['data']->get_id();
+				$signature_temp = get_post_meta( $productId, '_ph_fedex_signature_option', true );
+
+				if ( empty($signature_temp) && !empty($parentId) ) {
+					$signature_temp = get_post_meta( $parentId, '_ph_fedex_signature_option', true );
+				}
+
+				$signature 	= array_search($signature_temp, $this->prioritizedSignatureOption);
+				$group 		= array();
 
 				$group = array(
 					'GroupNumber'		=> $group_id,
@@ -959,6 +952,14 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 					'Amount'		=> $this->convert_to_fedex_currency($this->wf_get_insurance_amount($values['data'])),
 					'Currency'		=> $this->wf_get_fedex_currency()
 				);
+
+				//PDS-179
+				if( isset($signature) && !empty($signature)){
+					$group['signature_option']	= $signature ;
+				}
+				else{
+					$group['signature_option']	=  $this->signature_option ;
+				}
 
 				$dimensions = array( $values['data']->get_length(), $values['data']->get_width(), $values['data']->get_height() );
 
@@ -994,7 +995,8 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 	}
 	
 	private function wf_fedex_add_pre_packed_product( $pre_packed_items,$group_id=1,$weightflag=false ) {
-		$to_ship  = array();
+		$to_ship  	= array();
+		$signature 	= '';
 
 		foreach ( $pre_packed_items as $item_id => $values ) {
 			$values['data'] = $this->wf_load_product( $values['data'] );
@@ -1015,7 +1017,17 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 				return;
 			}
 
-			$group 	= array();
+			//PDS-179
+			$parentId 		= wp_get_post_parent_id($values['data']->get_id());
+			$productId 		= $values['data']->get_id();
+			$signature_temp = get_post_meta( $productId, '_ph_fedex_signature_option', true );
+
+			if ( empty($signature_temp) && !empty($parentId) ) {
+				$signature_temp = get_post_meta( $parentId, '_ph_fedex_signature_option', true );
+			}
+
+			$signature 	= array_search($signature_temp, $this->prioritizedSignatureOption);
+			$group 		= array();
 
 			$group = array(
 				'GroupNumber'			=> $group_id,
@@ -1032,6 +1044,14 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 				'Amount'   => $this->convert_to_fedex_currency($this->wf_get_insurance_amount($values['data'])),
 				'Currency' => $this->wf_get_fedex_currency()
 			);
+
+			//PDS-179
+			if( isset($signature) && !empty($signature)){
+				$group['signature_option']	= $signature ;
+			}
+			else{
+				$group['signature_option']	=  $this->signature_option ;
+			}
 
 			if ( $values['data']->length && $values['data']->height && $values['data']->width && !$weightflag ) {
 
@@ -1208,9 +1228,23 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 			$associatedLineItemId 	= array();
 
 			if( ! empty($package->packed) ) {
-
+                
+                $signature = '';
 				foreach( $package->packed as $box_item)
 				{
+					//PDS-179
+                    $item 			= $box_item->meta['data'];
+                    $parentId 		= wp_get_post_parent_id($item->get_id());
+                    $productId 		= $item->get_id();
+                    $signature_temp = get_post_meta( $productId, '_ph_fedex_signature_option', true );
+
+                    if ( empty($signature_temp) && !empty($parentId) ) {
+                    	$signature_temp = get_post_meta( $parentId, '_ph_fedex_signature_option', true );
+                    }
+					
+                    $signature_temp = array_search($signature_temp, $this->prioritizedSignatureOption);
+                    $signature_temp = empty($signature_temp) ? $signature : $signature_temp;
+                    $signature 		= !empty($signature) && $signature > $signature_temp ? $signature : $signature_temp;
 					$boxinsuredprice += $this->wf_get_insurance_amount($box_item->meta['data']);
 
 					if ( $this->freight_enabled ) {
@@ -1252,6 +1286,14 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 				'packed_products'	=> array(),
 				'package_id'		=> $package->id
 			);
+
+			//PDS-179
+			if( isset($signature) && !empty($signature)){
+				$group['signature_option']	= $signature ;
+			}
+			else{
+				$group['signature_option']	=  $this->signature_option ;
+			}
 
 			if ( ! empty( $package->packed ) && is_array( $package->packed ) ) {
 
@@ -1367,16 +1409,28 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 			$weightflag 			=	false;
 			
 			$packages	=	array_merge( $boxes,	$unpacked_items ); // merge items if unpacked are allowed
-            
+            $signature  = '';
+
 			foreach($packages as $package){
 				
 				$insured_value 			= 0;
 				$associatedLineItemId 	= array();
 
 				foreach($package['items'] as $item) {
-					
 
-					$insured_value		= $insured_value + $this->wf_get_insurance_amount($item);
+					//PDS-179
+					$parentId 		= wp_get_post_parent_id($item->get_id());
+                    $productId 		= $item->get_id();
+                    $signature_temp = get_post_meta( $productId, '_ph_fedex_signature_option', true );
+
+                    if ( empty($signature_temp) && !empty($parentId) ) {
+                    	$signature_temp = get_post_meta( $parentId, '_ph_fedex_signature_option', true );
+                    }
+
+					$signature_temp = array_search($signature_temp, $this->prioritizedSignatureOption);
+					$signature_temp = empty($signature_temp) ? $signature : $signature_temp;
+					$signature 		= !empty($signature) && $signature > $signature_temp ? $signature : $signature_temp;
+					$insured_value	= $insured_value + $this->wf_get_insurance_amount($item);
 
 					if ( $this->freight_enabled ) {
 
@@ -1410,6 +1464,14 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 					'Amount'   => $this->convert_to_fedex_currency($insured_value),
 					'Currency' => $this->wf_get_fedex_currency()
 				);
+
+				//PDS-179
+				if( isset($signature) && !empty($signature)){
+					$group['signature_option']	= $signature ;
+				}
+				else{
+					$group['signature_option']	=  $this->signature_option ;
+				}
 
 				if ( $this->freight_enabled ) {
 
@@ -1454,7 +1516,7 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 					'AccountNumber' => $this->account_number,
 					'MeterNumber'   => $this->meter_number,
 				);
-				$request['TransactionDetail'] = array( 'CustomerTransactionId' => ' *** Address Validation Request v2 from WooCommerce ***' );
+				$request['TransactionDetail'] = array( 'CustomerTransactionId' => ' *** Address Validation Request v4 from WooCommerce ***' );
 				$request['Version'] = array( 'ServiceId' => 'aval', 'Major' => $this->addressvalidationservice_version, 'Intermediate' => '0', 'Minor' => '0' );
 				$request['RequestTimestamp'] = date( 'c' );
 				$request['Options'] = array(
@@ -1538,9 +1600,9 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 					else
 						$addressResult = $response->AddressResults;
 
-					if ( $addressResult->ProposedAddressDetails->ResidentialStatus == 'BUSINESS' )
+					if ( $addressResult->Classification == 'BUSINESS' )
 						$residential = false;
-					elseif ( $addressResult->ProposedAddressDetails->ResidentialStatus == 'RESIDENTIAL' )
+					elseif ( $addressResult->Classification == 'RESIDENTIAL' )
 						$residential = true;
 
 					if( isset( $addressResult->ProposedAddressDetails->Address) )
@@ -1687,7 +1749,7 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 		);
 		$request['RequestedShipment']['RateRequestTypes'] = $this->request_type === 'LIST' ? 'LIST' : 'NONE';
 
-		if( $this->duties_and_taxes_rate && $this->origin_country !=  $package['destination']['country'] )
+		if( $this->shipping_charge === 'DUTIES_AND_TAXES' && $this->origin_country !=  $package['destination']['country'] )
 		{
 			$request['RequestedShipment']['EdtRequestType'] = 'ALL';
 		}
@@ -1752,7 +1814,8 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 		if ( $fedex_packages ) {
 
 			// Fedex Supports a Max of 99 per request
-			$parcel_chunks = array_chunk( $fedex_packages, 99 );
+			$parcel_chunks 		= array_chunk( $fedex_packages, 99 );
+			$num_of_packages  	= isset($_GET["num_of_packages"]) ? json_decode(stripslashes(html_entity_decode($_GET["num_of_packages"]))) : 0;
 
 			foreach ( $parcel_chunks as $parcels ) {
 
@@ -1770,206 +1833,397 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 
 				foreach ( $parcels as $key => $parcel ) {
 
-					$request['RequestedShipment']['PackagingType']  = empty($parcel['package_id']) ? 'YOUR_PACKAGING' : $parcel['package_id'];
+					$no_of_packages = isset($num_of_packages) && !empty($num_of_packages) ? $num_of_packages[$key] : 1;
+					$order_no 		= isset($_GET['oid'])? $_GET['oid']:'';
 
-					//Temp Fix
-					if('US' === $package['destination']['country'] && 'US' === $this->origin_country)
-					{
-						if( $request['RequestedShipment']['PackagingType'] == 'FEDEX_25KG_BOX' ||  $request['RequestedShipment']['PackagingType'] == 'FEDEX_10KG_BOX' )
-						{
-							$request['RequestedShipment']['PackagingType'] = 'YOUR_PACKAGING';
-						}
-					}
-
-					if( in_array($this->origin_country, $this->fedexBoxCountries) && in_array($request['RequestedShipment']['PackagingType'], $this->fedexBox) ) {
-						$request['RequestedShipment']['PackagingType'] = 'FEDEX_BOX';
-					}
-					
-					$is_dry_ice_shipment = false;
-					$single_package_weight = $parcel['Weight']['Value'];
-				
-					$parcel_request = $parcel;
-					$total_value	+= $parcel['InsuredValue']['Amount'] * $parcel['GroupPackageCount'];
-					$total_packages += $parcel['GroupPackageCount'];
-					$total_weight   += $parcel['Weight']['Value'] * $parcel['GroupPackageCount'];
-
-					if ( 'freight' === $request_type ) {
+					if ( !empty( $order_no )) {
 						
-						if ( isset($parcel_request['packed_products']) ) {
+						update_post_meta( $order_no, 'ph_get_no_of_packages'.$parcel['GroupNumber'], $no_of_packages );
+					}
 
-							$executed_prouducts 	= array();
+					for( $i=0; $i<$no_of_packages; $i++ ) { 
 
-							foreach ( $parcel_request['packed_products'] as $product ) {
+						if ( isset( $parcel['AssociatedFreightLineItems'] ) && !empty( $parcel['AssociatedFreightLineItems'] ) && is_array( $parcel['AssociatedFreightLineItems'] ) ) {
 
-								for ($loop = 0; $loop < $parcel_request['GroupPackageCount']; $loop++) {
+							foreach ( $parcel['AssociatedFreightLineItems'] as $associatedId => $values ) {
 
-									$line_items 	= array();
-									$freight_class 	= $this->get_freight_class( $product );
-									$product_id 	= $product->get_id();
+								if( isset( $values ) && !empty( $values ) && is_array( $values ) ){
 
-									$freight_id 	= $line_item_id;
-									$flag 			= true;
+									foreach ( $values as $id => $value ) {
 
-									// When a Package contains Multiple Quantity of Same Product, add the Weight to the Same Line Items
-									if( isset($executed_prouducts[$product_id]) && !empty($executed_prouducts[$product_id]) ) {
+										$parcel['AssociatedFreightLineItems'][$associatedId][$id] = $value + $i;
+									}
+								}
+							}
+						}
 
-										$freight_id 	= $executed_prouducts[$product_id];
-										$flag 			= false;
+						$request['RequestedShipment']['PackagingType']  = empty($parcel['package_id']) ? 'YOUR_PACKAGING' : $parcel['package_id'];
 
-										$freight_line_items[$product_id.'_'.$freight_id]['Weight']['Value'] += $this->round_up( Ph_Fedex_Woocommerce_Shipping_Common::ph_get_converted_weight( $product->get_weight(), $this->weight_unit ), 2 );
+						//Temp Fix
+						if('US' === $package['destination']['country'] && 'US' === $this->origin_country)
+						{
+							if( $request['RequestedShipment']['PackagingType'] == 'FEDEX_25KG_BOX' ||  $request['RequestedShipment']['PackagingType'] == 'FEDEX_10KG_BOX' )
+							{
+								$request['RequestedShipment']['PackagingType'] = 'YOUR_PACKAGING';
+							}
+						}
+
+						if( in_array($this->origin_country, $this->fedexBoxCountries) && in_array($request['RequestedShipment']['PackagingType'], $this->fedexBox) ) {
+							$request['RequestedShipment']['PackagingType'] = 'FEDEX_BOX';
+						}
+
+						$is_dry_ice_shipment = false;
+						$single_package_weight = $parcel['Weight']['Value'];
+
+						$parcel_request = $parcel;
+						$total_value	+= $parcel['InsuredValue']['Amount'] * $parcel['GroupPackageCount'];
+						$total_packages += $parcel['GroupPackageCount'];
+						$total_weight   += $parcel['Weight']['Value'] * $parcel['GroupPackageCount'];
+
+						if ( 'freight' === $request_type ) {
+
+							if ( isset($parcel_request['packed_products']) ) {
+
+								$executed_prouducts 	= array();
+
+								foreach ( $parcel_request['packed_products'] as $product ) {
+
+									for ($loop = 0; $loop < $parcel_request['GroupPackageCount']; $loop++) {
+
+										$line_items 	= array();
+										$freight_class 	= $this->get_freight_class( $product );
+										$product_id 	= $product->get_id();
+
+										$freight_id 	= $line_item_id;
+										$flag 			= true;
+
+										// When a Package contains Multiple Quantity of Same Product, add the Weight to the Same Line Items
+										if( isset($executed_prouducts[$product_id]) && !empty($executed_prouducts[$product_id]) ) {
+
+											$freight_id 	= $executed_prouducts[$product_id];
+											$flag 			= false;
+
+											$freight_line_items[$product_id.'_'.$freight_id]['Weight']['Value'] += $this->round_up( Ph_Fedex_Woocommerce_Shipping_Common::ph_get_converted_weight( $product->get_weight(), $this->weight_unit ), 2 );
+											continue;
+										}
+
+										$freight_class = $freight_class ? $freight_class : $this->freight_class;
+										$freight_class = $freight_class < 100 ?  '0' . $freight_class : $freight_class;
+										$freight_class = 'CLASS_' . str_replace( '.', '_', $freight_class );
+
+										$line_items = array(
+
+											'Id'				=> $freight_id,
+											'FreightClass' 		=> $freight_class,
+											'Packaging'			=> 'SKID',
+											'Weight'	   		=> array(
+
+												'Units'		=> $this->labelapi_weight_unit,
+												'Value'		=> $this->round_up( Ph_Fedex_Woocommerce_Shipping_Common::ph_get_converted_weight( $product->get_weight(), $this->weight_unit ), 2 ),
+											),
+
+										);
+
+										$dimensions = array( $product->get_length(), $product->get_width(), $product->get_height() );
+
+										if ( $dimensions[0] && $dimensions[1] && $dimensions[2] ) {
+
+											sort( $dimensions );
+
+											$line_items['Dimensions'] = array(
+
+												'Length' => max( 1, round( Ph_Fedex_Woocommerce_Shipping_Common::ph_get_converted_dimension( $dimensions[2], $this->dimension_unit ), 0 ) ),
+												'Width'  => max( 1, round( Ph_Fedex_Woocommerce_Shipping_Common::ph_get_converted_dimension( $dimensions[1], $this->dimension_unit ), 0 ) ),
+												'Height' => max( 1, round( Ph_Fedex_Woocommerce_Shipping_Common::ph_get_converted_dimension( $dimensions[0], $this->dimension_unit ), 0 ) ),
+												'Units'  => $this->labelapi_dimension_unit
+											);
+										}
+
+										$freight_line_items[$product_id.'_'.$freight_id] = $line_items;
+
+										// Increment Line Item Id only when new Product is added
+										if ( $flag || !isset($executed_prouducts[$product_id]) ) {
+
+											$executed_prouducts[$product_id] 	= $line_item_id;
+											$line_item_id++;
+										}
+									}
+								}
+
+								// Use only Array Values
+								$freight_line_items = array_values($freight_line_items);
+							}
+
+						} else {
+
+							// Work out the commodoties for CA shipments
+							if ( $parcel_request['packed_products'] ) {
+
+								$dry_ice_total_weight 			= 0;
+								$contain_non_standard_product 	= false;
+
+								foreach ( $parcel_request['packed_products'] as $product ) {
+
+									$product 		= $this->wf_load_product( $product );
+									$product_id 	= wp_get_post_parent_id($product->get_id());
+
+									if(empty($product_id)) {
+
+										$product_id=$product->get_id();
+									}
+
+									$is_dry_ice_product = get_post_meta($product_id , '_wf_dry_ice', 1);
+
+									if( $is_dry_ice_product=='yes' ){
+										$is_dry_ice_shipment = true;
+										$meta_exists=metadata_exists('post', $product_id, '_wf_dry_ice_weight');
+										$dry_ice_weight=($meta_exists)?get_post_meta($product_id , '_wf_dry_ice_weight', 1):$product->get_weight();           // for backward compactibility ( added on 22/11/2018) 
+										$dry_ice_total_weight += Ph_Fedex_Woocommerce_Shipping_Common::ph_get_converted_weight( $dry_ice_weight, 'kg' )*$parcel['GroupPackageCount']; //Fedex support dry ice weight in KG only
+									}
+
+									if ( isset( $commodoties[ $product->id ] ) ) {
+										$commodoties[ $product->get_id() ]['Quantity'] ++;
+										$commodoties[ $product->get_id() ]['CustomsValue']['Amount'] += $this->convert_to_fedex_currency($this->wf_get_insurance_amount($product));
 										continue;
 									}
+									$product_name 	= html_entity_decode( $product->get_title() );
+									$commodity_desc = html_entity_decode( get_post_meta( $product_id , '_ph_commodity_description', 1) );
 
-									$freight_class = $freight_class ? $freight_class : $this->freight_class;
-									$freight_class = $freight_class < 100 ?  '0' . $freight_class : $freight_class;
-									$freight_class = 'CLASS_' . str_replace( '.', '_', $freight_class );
+									$commodity_desc = !empty($commodity_desc) ? $commodity_desc : $product_name;
+									//Remove special-characters from Product name and description
+									$remove_special_char =  ( isset( $this->settings['remove_special_char_product'] ) && $this->settings['remove_special_char_product'] == 'yes' && !empty( $this->settings['remove_special_char_product'] ) ) ? true : false;
 
-									$line_items = array(
+									if( $remove_special_char == true ){
+										$product_name 	= preg_replace('/[^A-Za-z0-9-() ]/', '', $product_name);
+										$commodity_desc = preg_replace('/[^A-Za-z0-9-() ]/', '', $commodity_desc);
+									}
 
-										'Id'				=> $freight_id,
-										'FreightClass' 		=> $freight_class,
-										'Packaging'			=> 'SKID',
-										'Weight'	   		=> array(
+									$commodity_desc = ( strlen( $commodity_desc ) >= 450 ) ? substr( $commodity_desc, 0, 445 ).'...' : $commodity_desc;
 
-											'Units'		=> $this->labelapi_weight_unit,
-											'Value'		=> $this->round_up( Ph_Fedex_Woocommerce_Shipping_Common::ph_get_converted_weight( $product->get_weight(), $this->weight_unit ), 2 ),
+									$commodoties[ $product->get_id() ] = array(
+										'Name'				 => $product_name,
+										'NumberOfPieces'	   => 1,
+										'Description'		  => $commodity_desc,
+										'CountryOfManufacture' => ( $country = get_post_meta( $product_id, '_wf_manufacture_country', true ) ) ? $country : $this->origin_country,
+										'Weight'			   => array(
+											'Units'			=> $this->labelapi_weight_unit,
+											'Value'			=> round( Ph_Fedex_Woocommerce_Shipping_Common::ph_get_converted_weight( $product->get_weight(), $this->weight_unit ), 2 ),
 										),
-
+										'Quantity'			 => $parcel['GroupPackageCount'],
+										'UnitPrice'			=> array(
+											'Amount'		   => $this->convert_to_fedex_currency($product->get_price()),
+											'Currency'		 => $this->wf_get_fedex_currency()
+										),
+										'CustomsValue'		 => array(
+											'Amount'		   => $this->convert_to_fedex_currency($this->wf_get_insurance_amount($product)),
+											'Currency'		 => $this->wf_get_fedex_currency()
+										)
 									);
 
-									$dimensions = array( $product->get_length(), $product->get_width(), $product->get_height() );
 
-									if ( $dimensions[0] && $dimensions[1] && $dimensions[2] ) {
+									$product_id = $product->get_type() == 'simple' ? $product->get_id() : $product->get_parent_id();
 
-										sort( $dimensions );
+									$hst = get_post_meta( $product_id, '_wf_hs_code', 1);
 
-										$line_items['Dimensions'] = array(
+									if( ! empty($hst) ) {
 
-											'Length' => max( 1, round( Ph_Fedex_Woocommerce_Shipping_Common::ph_get_converted_dimension( $dimensions[2], $this->dimension_unit ), 0 ) ),
-											'Width'  => max( 1, round( Ph_Fedex_Woocommerce_Shipping_Common::ph_get_converted_dimension( $dimensions[1], $this->dimension_unit ), 0 ) ),
-											'Height' => max( 1, round( Ph_Fedex_Woocommerce_Shipping_Common::ph_get_converted_dimension( $dimensions[0], $this->dimension_unit ), 0 ) ),
-											'Units'  => $this->labelapi_dimension_unit
-										);
+										$commodoties[ $product->get_id() ]['HarmonizedCode'] = $hst;
+
+									} else if ( !empty($this->global_hs_code) ) {
+
+										$commodoties[ $product->get_id() ]['HarmonizedCode'] = $this->global_hs_code;
 									}
+								}
 
-									$freight_line_items[$product_id.'_'.$freight_id] = $line_items;
+								$commodoties = apply_filters( 'ph_fedex_commodities', $commodoties, $request, $fedex_packages );
+							}
 
-									// Increment Line Item Id only when new Product is added
-									if ( $flag || !isset($executed_prouducts[$product_id]) ) {
+							$request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'] = array();
 
-										$executed_prouducts[$product_id] 	= $line_item_id;
-										$line_item_id++;
-									}
+							// Is this valid for a ONE rate? Smart post does not support it
+							if ( $this->fedex_one_rate && '' === $request_type && isset($parcel_request['package_id']) && in_array( $parcel_request['package_id'], $this->fedex_one_rate_package_ids ) && count($parcels) == 1 ) {
+								$this->packaging_type = $this->xa_get_countrywise_packagin_type( $parcel_request['package_id'], $this->origin_country );
+								$request['RequestedShipment']['PackagingType'] = $this->packaging_type;
+
+								if( in_array($this->origin_country, $this->fedexBoxCountries) && in_array($request['RequestedShipment']['PackagingType'], $this->fedexBox) ) {
+									$request['RequestedShipment']['PackagingType'] = 'FEDEX_BOX';
+								}
+
+								if('US' === $package['destination']['country'] && 'US' === $this->origin_country){
+									$request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'][] = 'FEDEX_ONE_RATE';
 								}
 							}
 
-							// Use only Array Values
-							$freight_line_items = array_values($freight_line_items);
-						}
+							if( $this->fedex_cod_rate && $this->origin_country == $package['destination']['country'] )
+							{
+								$cart_total = isset($package['cart_subtotal']) ? $package['cart_subtotal'] : 0;
 
-					} else {
-
-						// Work out the commodoties for CA shipments
-						if ( $parcel_request['packed_products'] ) {
-							
-							$dry_ice_total_weight 			= 0;
-							$contain_non_standard_product 	= false;
-
-							foreach ( $parcel_request['packed_products'] as $product ) {
-
-								$product 		= $this->wf_load_product( $product );
-								$product_id 	= wp_get_post_parent_id($product->get_id());
-								
-								if(empty($product_id)) {
-
-									$product_id=$product->get_id();
-								}
-
-								$is_dry_ice_product = get_post_meta($product_id , '_wf_dry_ice', 1);
-
-								if( $is_dry_ice_product=='yes' ){
-									$is_dry_ice_shipment = true;
-									$meta_exists=metadata_exists('post', $product_id, '_wf_dry_ice_weight');
-									$dry_ice_weight=($meta_exists)?get_post_meta($product_id , '_wf_dry_ice_weight', 1):$product->get_weight();           // for backward compactibility ( added on 22/11/2018) 
-									$dry_ice_total_weight += Ph_Fedex_Woocommerce_Shipping_Common::ph_get_converted_weight( $dry_ice_weight, 'kg' )*$parcel['GroupPackageCount']; //Fedex support dry ice weight in KG only
-								}
-
-								if ( isset( $commodoties[ $product->id ] ) ) {
-									$commodoties[ $product->get_id() ]['Quantity'] ++;
-									$commodoties[ $product->get_id() ]['CustomsValue']['Amount'] += $this->convert_to_fedex_currency($this->wf_get_insurance_amount($product));
-									continue;
-								}
-								$product_name 	= html_entity_decode( $product->get_title() );
-								$commodity_desc = html_entity_decode( get_post_meta( $product_id , '_ph_commodity_description', 1) );
-								
-								$commodity_desc = !empty($commodity_desc) ? $commodity_desc : $product_name;
-								//Remove special-characters from Product name and description
-								$remove_special_char =  ( isset( $this->settings['remove_special_char_product'] ) && $this->settings['remove_special_char_product'] == 'yes' && !empty( $this->settings['remove_special_char_product'] ) ) ? true : false;
-
-								if( $remove_special_char == true ){
-									$product_name 	= preg_replace('/[^A-Za-z0-9-() ]/', '', $product_name);
-									$commodity_desc = preg_replace('/[^A-Za-z0-9-() ]/', '', $commodity_desc);
-								}
-
-								$commodity_desc = ( strlen( $commodity_desc ) >= 450 ) ? substr( $commodity_desc, 0, 445 ).'...' : $commodity_desc;
-
-								$commodoties[ $product->get_id() ] = array(
-									'Name'				 => $product_name,
-									'NumberOfPieces'	   => 1,
-									'Description'		  => $commodity_desc,
-									'CountryOfManufacture' => ( $country = get_post_meta( $product_id, '_wf_manufacture_country', true ) ) ? $country : $this->origin_country,
-									'Weight'			   => array(
-										'Units'			=> $this->labelapi_weight_unit,
-										'Value'			=> round( Ph_Fedex_Woocommerce_Shipping_Common::ph_get_converted_weight( $product->get_weight(), $this->weight_unit ), 2 ),
+								$address = array(
+									'Address' => array(
+										'StreetLines' 			=> isset( $package['destination']['address1'] ) ? $package['destination']['address1'] : (isset( $package['destination']['address'] ) ? $package['destination']['address'] : '' ),
+										'PostalCode' 			=> str_replace( ' ', '', strtoupper( $package['destination']['postcode'] ) ),
+										'City' 					=> isset($package['destination']['city']) ? strtoupper( $package['destination']['city'] ) : ' ',
+										'StateOrProvinceCode' 	=> strlen( $package['destination']['state'] ) == 2 ? strtoupper( $package['destination']['state'] ) : '',
+										'CountryCode' 			=> $package['destination']['country'],
 									),
-									'Quantity'			 => $parcel['GroupPackageCount'],
-									'UnitPrice'			=> array(
-										'Amount'		   => $this->convert_to_fedex_currency($product->get_price()),
-										'Currency'		 => $this->wf_get_fedex_currency()
-									),
-									'CustomsValue'		 => array(
-										'Amount'		   => $this->convert_to_fedex_currency($this->wf_get_insurance_amount($product)),
-										'Currency'		 => $this->wf_get_fedex_currency()
-									)
 								);
-								
 
-								$product_id = $product->get_type() == 'simple' ? $product->get_id() : $product->get_parent_id();
+								$request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'][] = 'COD';
 
-								$hst = get_post_meta( $product_id, '_wf_hs_code', 1);
-								
-								if( ! empty($hst) ) {
+								$request['RequestedShipment']['SpecialServicesRequested']['CodDetail']['CodCollectionAmount'] = array(
+									'Currency' 	=> $this->wf_get_fedex_currency(),
+									'Amount' 	=> $cart_total ? $this->convert_to_fedex_currency($cart_total) : $total_value,
+								);
 
-									$commodoties[ $product->get_id() ]['HarmonizedCode'] = $hst;
+								$request['RequestedShipment']['SpecialServicesRequested']['CodDetail']['CollectionType'] = 'ANY';
 
-								} else if ( !empty($this->global_hs_code) ) {
-									
-									$commodoties[ $product->get_id() ]['HarmonizedCode'] = $this->global_hs_code;
-								}
+								$request['RequestedShipment']['SpecialServicesRequested']['CodDetail']['FinancialInstitutionContactAndAddress'] = $address;
+
 							}
+						}	
 
-							$commodoties = apply_filters( 'ph_fedex_commodities', $commodoties, $request, $fedex_packages );
+						if( $request_type == 'saturday_delivery' ) {
+
+							$request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'][] = 'SATURDAY_DELIVERY';
+
+						}				
+
+						// Remove temp elements
+						unset( $parcel_request['freight_class'] );
+						unset( $parcel_request['packed_products'] );
+						unset( $parcel_request['package_id'] );
+
+						if ( ! $this->insure_contents || 'smartpost' === $request_type || empty($parcel['InsuredValue']['Amount'])) {
+							unset( $parcel_request['InsuredValue'] );
 						}
 
-						$request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'] = array();
+						$parcel_request = array_merge( array( 'SequenceNumber' => $key + 1 ), $parcel_request );
 
-						// Is this valid for a ONE rate? Smart post does not support it
-						if ( $this->fedex_one_rate && '' === $request_type && isset($parcel_request['package_id']) && in_array( $parcel_request['package_id'], $this->fedex_one_rate_package_ids ) && count($parcels) == 1 ) {
-							$this->packaging_type = $this->xa_get_countrywise_packagin_type( $parcel_request['package_id'], $this->origin_country );
-							$request['RequestedShipment']['PackagingType'] = $this->packaging_type;
-							
-							if( in_array($this->origin_country, $this->fedexBoxCountries) && in_array($request['RequestedShipment']['PackagingType'], $this->fedexBox) ) {
-								$request['RequestedShipment']['PackagingType'] = 'FEDEX_BOX';
-							}
-							
-							if('US' === $package['destination']['country'] && 'US' === $this->origin_country){
-								$request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'][] = 'FEDEX_ONE_RATE';
-							}
+						$SpecialServices = array();
+
+						//PDS-179
+						$order_ID = isset($_GET['oid'])? $_GET['oid']:'';
+
+						if( ( isset($parcel_request['signature_option']) && !empty($parcel_request['signature_option'])) || ( isset( $_GET['signature_option'] ) ) ){
+							$signature_option = isset( $_GET['signature_option'] ) ? array_search($_GET['signature_option'], $this->prioritizedSignatureOption) : $parcel_request['signature_option'];
+
+							update_post_meta( $order_ID, 'ph_fedex_signature_option_meta', $signature_option );
+						}
+						else{
+							$signature_option = isset($this->signature_option) && !empty($this->signature_option) ? $this->signature_option : 0;
+						}
+
+						if( isset($parcel_request['signature_option']) ){
+
+							unset( $parcel_request['signature_option'] );
+						}
+
+						$signature_option = isset($this->prioritizedSignatureOption[$signature_option]) && !empty($this->prioritizedSignatureOption[$signature_option]) ? $this->prioritizedSignatureOption[$signature_option] : '';
+
+						if(isset($signature_option) && !empty($signature_option)){
+							$signature = array();
+							$SpecialServices['SpecialServiceTypes'][] = 'SIGNATURE_OPTION';
+							$SpecialServices['SignatureOptionDetail'] = array('OptionType'=>$signature_option);
+						}
+
+						if( $this->is_dry_ice_enabled && $is_dry_ice_shipment ){
+							$SpecialServices['SpecialServiceTypes'][] = 'DRY_ICE';
+							$SpecialServices['DryIceWeight'] = array('Units' => 'KG','Value' => round($dry_ice_total_weight,2) );
+						}
+
+						$non_standard_product = $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_wf_fedex_non_standard_product' );
+						if( !empty($non_standard_product) ){
+							$SpecialServices['SpecialServiceTypes'][] = 'NON_STANDARD_CONTAINER';
+						}
+
+						$dangerous_goods = $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_dangerous_goods' );
+						$hazmat_products = $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_hazmat_products' );
+
+						if( !empty($dangerous_goods) && empty($hazmat_products) ){
+							$dangerous_goods_regulation	= $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_wf_fedex_dg_regulations');
+							$dangerous_goods_accessibility	= $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_wf_fedex_dg_accessibility');
+							$SpecialServices['SpecialServiceTypes'][]	= 'DANGEROUS_GOODS';
+							$SpecialServices['DangerousGoodsDetail']	= array(
+								'Regulation'	=> ( ! empty($dangerous_goods_regulation) && is_array($dangerous_goods_regulation) ) ? array_pop($dangerous_goods_regulation) :'DOT',
+								'Accessibility'	=> ( empty($dangerous_goods_accessibility) || (is_array($dangerous_goods_accessibility) && in_array('INACCESSIBLE', $dangerous_goods_accessibility) ) ) ? 'INACCESSIBLE' :  array_pop($dangerous_goods_accessibility)
+							);
+						}
+
+						if( !empty($hazmat_products) ){
+
+							$hazmat_id_num	= $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_ph_fedex_hp_id_num');
+							$hazmat_packaging_group	= $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_ph_fedex_hp_packaging_group');
+							$hazmat_proper_shipping_name	= $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_ph_fedex_hp_proper_shipping_name');
+							$hazmat_hazard_class	= $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_ph_fedex_hp_hazard_class');
+							$hazmat_subsidairy_class	= $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_ph_fedex_hp_subsidiary_classes');
+							$hazmat_label_text	= $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_ph_fedex_hp_label_text');
+
+							$SpecialServices['SpecialServiceTypes'][]	= 'DANGEROUS_GOODS';
+							$SpecialServices['DangerousGoodsDetail']['Options']	= 'HAZARDOUS_MATERIALS';
+
+							$i = 0;
+
+							foreach ( $hazmat_products as $product_key => $value) {
+
+								$product_weight = 0;
+
+								foreach ($parcel['packed_products'] as $key => $product) {
+									if( $product_key == $product->id || $product_key == $product->variation_id )
+									{
+										$product_weight += $product->get_weight();
+									}
+								}
+
+								$SpecialServices['DangerousGoodsDetail']['Containers'][$i] = array(
+
+									'HazardousCommodities' => array(
+										'Description' => array(
+											'Id' 			=> ( ! empty($hazmat_id_num[$product_key]) ) ? $hazmat_id_num[$product_key] : '',
+											'PackingGroup'	=> ( ! empty($hazmat_packaging_group[$product_key]) ) ? $hazmat_packaging_group[$product_key] : 'DEFAULT',
+											'ProperShippingName' => ( ! empty($hazmat_proper_shipping_name[$product_key]) ) ? $hazmat_proper_shipping_name[$product_key] : '',
+											'HazardClass' 	=> ( ! empty($hazmat_hazard_class[$product_key]) ) ? $hazmat_hazard_class[$product_key] : '',
+											'LabelText' => ( ! empty($hazmat_label_text[$product_key]) ) ? $hazmat_label_text[$product_key] : '',
+
+										),
+										'Quantity' 	=> array(
+											'Amount' 	=> round( Ph_Fedex_Woocommerce_Shipping_Common::ph_get_converted_weight( $product_weight , $this->weight_unit ), 2 ),
+											'Units' 	=> $this->labelapi_weight_unit,
+										),
+									),		
+								);
+
+								if( !empty($hazmat_subsidairy_class[$product_key]))
+								{
+									$subsidairy_class 	= $hazmat_subsidairy_class[$product_key];
+									$sub_classes 		= explode(',', $subsidairy_class);
+
+									if( is_array($sub_classes) && !empty($sub_classes) )
+									{
+										foreach ($sub_classes as $key => $sub_class) {
+											$SpecialServices['DangerousGoodsDetail']['Containers'][$i]['HazardousCommodities']['Description']['SubsidiaryClasses'][] = trim($sub_class," ");
+										}
+									}
+								}
+
+								$i++;
+							}	
 						}
 
 						if( $this->fedex_cod_rate && $this->origin_country == $package['destination']['country'] )
 						{
-							$cart_total = isset($package['cart_subtotal']) ? $package['cart_subtotal'] : 0;
+							$package_total = 0;
+
+							if( isset($parcel['packed_products']) && !empty($parcel['packed_products']) )
+							{
+
+								foreach ($parcel['packed_products'] as $product)
+								{
+									if( is_object($product) && isset($product->obj) && is_a($product->obj, 'WC_Product') )
+									{
+										$package_total += $this->convert_to_fedex_currency($product->get_price());
+									}
+								}
+							}
 
 							$address = array(
 								'Address' => array(
@@ -1981,174 +2235,29 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 								),
 							);
 
-							$request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'][] = 'COD';
+							$SpecialServices['SpecialServiceTypes'][]	= 'COD';
 
-							$request['RequestedShipment']['SpecialServicesRequested']['CodDetail']['CodCollectionAmount'] = array(
+							$SpecialServices['CodDetail']['CodCollectionAmount'] = array(
 								'Currency' 	=> $this->wf_get_fedex_currency(),
-								'Amount' 	=> $cart_total ? $this->convert_to_fedex_currency($cart_total) : $total_value,
+								'Amount' 	=> !empty( $package_total ) ? $package_total : $total_value,
 							);
 
-							$request['RequestedShipment']['SpecialServicesRequested']['CodDetail']['CollectionType'] = 'ANY';
+							$SpecialServices['CodDetail']['CollectionType'] = 'ANY';
 
-							$request['RequestedShipment']['SpecialServicesRequested']['CodDetail']['FinancialInstitutionContactAndAddress'] = $address;
-							
-						}
-					}	
+							$SpecialServices['CodDetail']['FinancialInstitutionContactAndAddress'] = $address;
 
-					if( $request_type == 'saturday_delivery' ) {
-
-						$request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'][] = 'SATURDAY_DELIVERY';
-
-					}				
-
-					// Remove temp elements
-					unset( $parcel_request['freight_class'] );
-					unset( $parcel_request['packed_products'] );
-					unset( $parcel_request['package_id'] );
-
-					if ( ! $this->insure_contents || 'smartpost' === $request_type ) {
-						unset( $parcel_request['InsuredValue'] );
-					}
-
-					$parcel_request = array_merge( array( 'SequenceNumber' => $key + 1 ), $parcel_request );
-					
-					$SpecialServices = array();
-					if(isset($this->signature_option) && !empty($this->signature_option)){
-						$signature = array();
-						$SpecialServices['SpecialServiceTypes'][] = 'SIGNATURE_OPTION';
-						$SpecialServices['SignatureOptionDetail'] = array('OptionType'=>$this->signature_option);
-					}
-					if( $this->is_dry_ice_enabled && $is_dry_ice_shipment ){
-						$SpecialServices['SpecialServiceTypes'][] = 'DRY_ICE';
-						$SpecialServices['DryIceWeight'] = array('Units' => 'KG','Value' => round($dry_ice_total_weight,2) );
-					}
-					
-					$non_standard_product = $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_wf_fedex_non_standard_product' );
-					if( !empty($non_standard_product) ){
-						$SpecialServices['SpecialServiceTypes'][] = 'NON_STANDARD_CONTAINER';
-					}
-					
-					$dangerous_goods = $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_dangerous_goods' );
-					$hazmat_products = $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_hazmat_products' );
-
-					if( !empty($dangerous_goods) && empty($hazmat_products) ){
-						$dangerous_goods_regulation	= $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_wf_fedex_dg_regulations');
-						$dangerous_goods_accessibility	= $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_wf_fedex_dg_accessibility');
-						$SpecialServices['SpecialServiceTypes'][]	= 'DANGEROUS_GOODS';
-						$SpecialServices['DangerousGoodsDetail']	= array(
-							'Regulation'	=> ( ! empty($dangerous_goods_regulation) && is_array($dangerous_goods_regulation) ) ? array_pop($dangerous_goods_regulation) :'DOT',
-							'Accessibility'	=> ( empty($dangerous_goods_accessibility) || (is_array($dangerous_goods_accessibility) && in_array('INACCESSIBLE', $dangerous_goods_accessibility) ) ) ? 'INACCESSIBLE' :  array_pop($dangerous_goods_accessibility)
-						);
-					}
-
-					if( !empty($hazmat_products) ){
-
-						$hazmat_id_num	= $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_ph_fedex_hp_id_num');
-						$hazmat_packaging_group	= $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_ph_fedex_hp_packaging_group');
-						$hazmat_proper_shipping_name	= $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_ph_fedex_hp_proper_shipping_name');
-						$hazmat_hazard_class	= $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_ph_fedex_hp_hazard_class');
-						$hazmat_subsidairy_class	= $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_ph_fedex_hp_subsidiary_classes');
-						$hazmat_label_text	= $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_ph_fedex_hp_label_text');
-
-						$SpecialServices['SpecialServiceTypes'][]	= 'DANGEROUS_GOODS';
-						$SpecialServices['DangerousGoodsDetail']['Options']	= 'HAZARDOUS_MATERIALS';
-						
-						$i = 0;
-
-						foreach ( $hazmat_products as $product_key => $value) {
-
-							$product_weight = 0;
-
-							foreach ($parcel['packed_products'] as $key => $product) {
-								if( $product_key == $product->id || $product_key == $product->variation_id )
-								{
-									$product_weight += $product->get_weight();
-								}
-							}
-
-							$SpecialServices['DangerousGoodsDetail']['Containers'][$i] = array(
-
-								'HazardousCommodities' => array(
-									'Description' => array(
-										'Id' 			=> ( ! empty($hazmat_id_num[$product_key]) ) ? $hazmat_id_num[$product_key] : '',
-										'PackingGroup'	=> ( ! empty($hazmat_packaging_group[$product_key]) ) ? $hazmat_packaging_group[$product_key] : 'DEFAULT',
-										'ProperShippingName' => ( ! empty($hazmat_proper_shipping_name[$product_key]) ) ? $hazmat_proper_shipping_name[$product_key] : '',
-										'HazardClass' 	=> ( ! empty($hazmat_hazard_class[$product_key]) ) ? $hazmat_hazard_class[$product_key] : '',
-										'LabelText' => ( ! empty($hazmat_label_text[$product_key]) ) ? $hazmat_label_text[$product_key] : '',
-
-									),
-									'Quantity' 	=> array(
-										'Amount' 	=> round( Ph_Fedex_Woocommerce_Shipping_Common::ph_get_converted_weight( $product_weight , $this->weight_unit ), 2 ),
-										'Units' 	=> $this->labelapi_weight_unit,
-									),
-								),		
-							);
-
-							if( !empty($hazmat_subsidairy_class[$product_key]))
-							{
-								$subsidairy_class 	= $hazmat_subsidairy_class[$product_key];
-								$sub_classes 		= explode(',', $subsidairy_class);
-
-								if( is_array($sub_classes) && !empty($sub_classes) )
-								{
-									foreach ($sub_classes as $key => $sub_class) {
-										$SpecialServices['DangerousGoodsDetail']['Containers'][$i]['HazardousCommodities']['Description']['SubsidiaryClasses'][] = trim($sub_class," ");
-									}
-								}
-							}
-
-							$i++;
-						}	
-					}
-					
-					if( $this->fedex_cod_rate && $this->origin_country == $package['destination']['country'] )
-					{
-						$package_total = 0;
-
-						if( isset($parcel['packed_products']) && !empty($parcel['packed_products']) )
-						{
-
-							foreach ($parcel['packed_products'] as $product)
-							{
-								if( is_object($product) && isset($product->obj) && is_a($product->obj, 'WC_Product') )
-								{
-									$package_total += $this->convert_to_fedex_currency($product->get_price());
-								}
-							}
 						}
 
-						$address = array(
-							'Address' => array(
-								'StreetLines' 			=> isset( $package['destination']['address1'] ) ? $package['destination']['address1'] : (isset( $package['destination']['address'] ) ? $package['destination']['address'] : '' ),
-								'PostalCode' 			=> str_replace( ' ', '', strtoupper( $package['destination']['postcode'] ) ),
-								'City' 					=> isset($package['destination']['city']) ? strtoupper( $package['destination']['city'] ) : ' ',
-								'StateOrProvinceCode' 	=> strlen( $package['destination']['state'] ) == 2 ? strtoupper( $package['destination']['state'] ) : '',
-								'CountryCode' 			=> $package['destination']['country'],
-							),
-						);
+						if( !empty($SpecialServices) ){
+							$parcel_request = array_merge( array( 'SpecialServicesRequested' => $SpecialServices), $parcel_request );
+						}
 
-						$SpecialServices['SpecialServiceTypes'][]	= 'COD';
-
-						$SpecialServices['CodDetail']['CodCollectionAmount'] = array(
-							'Currency' 	=> $this->wf_get_fedex_currency(),
-							'Amount' 	=> !empty( $package_total ) ? $package_total : $total_value,
-						);
-
-						$SpecialServices['CodDetail']['CollectionType'] = 'ANY';
-
-						$SpecialServices['CodDetail']['FinancialInstitutionContactAndAddress'] = $address;
-
+						//Priority boxed no need dimensions
+						if( $this->packaging_type != 'YOUR_PACKAGING' ){
+							unset( $parcel_request['Dimensions'] );
+						}
+						$request['RequestedShipment']['RequestedPackageLineItems'][] = $parcel_request;
 					}
-
-					if( !empty($SpecialServices) ){
-						$parcel_request = array_merge( array( 'SpecialServicesRequested' => $SpecialServices), $parcel_request );
-					}
-
-					//Priority boxed no need dimensions
-					if( $this->packaging_type != 'YOUR_PACKAGING' ){
-						unset( $parcel_request['Dimensions'] );
-					}
-					$request['RequestedShipment']['RequestedPackageLineItems'][] = $parcel_request;
 				}
 
 				// Size
@@ -2175,7 +2284,7 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 
 					$this->diagnostic_report( 'Only $100 amount will be insured for smartpost.' );
 
-				} elseif ( $this->insure_contents ) {
+				} elseif ( $this->insure_contents && !empty($total_value) ) {
 					$request['RequestedShipment']['TotalInsuredValue'] = array(
 						'Amount'   => $total_value,
 						'Currency' => $this->wf_get_fedex_currency()
@@ -2694,8 +2803,13 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 				if ( empty( $details ) )
 					continue;
 
-				$rate_name = strval( $this->services[ $quote->ServiceType ] );
-				$rate_name_extra = '';
+				if( !isset($this->services[ $quote->ServiceType ]) ) {
+					
+					continue;
+				}
+
+				$rate_name 			= isset( $this->services[ $quote->ServiceType ] ) ? strval( $this->services[ $quote->ServiceType ] ) : '';
+				$rate_name_extra 	= '';
 				
 				if($this->delivery_time) {
 					if( !empty($quote->DeliveryTimestamp) ){
@@ -2740,9 +2854,18 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 				$rate_code = strval( $quote->ServiceType );
 				$rate_id   = $this->id . ':' . $rate_code;
 				
-				if( $this->duties_and_taxes_rate &&  isset($details->ShipmentRateDetail->TotalNetChargeWithDutiesAndTaxes) && isset($details->ShipmentRateDetail->TotalNetChargeWithDutiesAndTaxes->Amount) )
+				if( $this->shipping_charge ==='DUTIES_AND_TAXES'&&  isset($details->ShipmentRateDetail->TotalNetChargeWithDutiesAndTaxes) && isset($details->ShipmentRateDetail->TotalNetChargeWithDutiesAndTaxes->Amount) )
 				{
 					$rate_cost = floatval( $details->ShipmentRateDetail->TotalNetChargeWithDutiesAndTaxes->Amount );
+
+				}elseif( $this->shipping_charge ==='NET_FEDEX_CHARGE'&&  isset($details->ShipmentRateDetail->TotalNetFedExCharge) && isset($details->ShipmentRateDetail->TotalNetFedExCharge->Amount) )
+				{
+					$rate_cost = floatval( $details->ShipmentRateDetail->TotalNetFedExCharge->Amount );
+
+				}elseif( $this->shipping_charge ==='BASE_CHARGE'&&  isset($details->ShipmentRateDetail->TotalBaseCharge) && isset($details->ShipmentRateDetail->TotalBaseCharge->Amount) )
+				{
+					$rate_cost = floatval( $details->ShipmentRateDetail->TotalBaseCharge->Amount );
+
 				}else{
 					$rate_cost = floatval( $details->ShipmentRateDetail->TotalNetCharge->Amount );
 				}
@@ -2841,8 +2964,8 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 		);
 		
 		// For fetching the rates on order page
-		if( $this->found_rates && isset($_GET['wf_fedex_generate_packages_rates']) && !empty($_GET['order_id']) ) {
-			update_post_meta( $_GET['order_id'], 'wf_fedex_generate_packages_rates_response', $this->found_rates );
+		if( $this->found_rates && isset($_GET['wf_fedex_generate_packages_rates']) && !empty($_GET['oid']) ) {
+			update_post_meta( $_GET['oid'], 'wf_fedex_generate_packages_rates_response', $this->found_rates );
 		}
 	}
 

@@ -23,8 +23,6 @@ function pewc_ajax_upload_script( $id, $field, $multiply_price ) {
 			<?php do_action( 'pewc_start_upload_script', $id, $field ); ?>
 
 			var ajaxUrl = pewc_vars.ajaxurl;
-
-			// $( '#dz_<?php echo esc_attr( $id ); ?>' ).dropzone({
 			var dropzone_<?php echo esc_attr( $id ); ?> = new Dropzone( "#dz_<?php echo esc_attr( $id ); ?>", {
 
 	      dictDefaultMessage: "<?php echo apply_filters( 'pewc_filter_dictDefaultMessage_message', __( 'Drop files here to upload', 'pewc' ) ); ?>",
@@ -43,10 +41,11 @@ function pewc_ajax_upload_script( $id, $field, $multiply_price ) {
 				acceptedFiles: "<?php echo esc_attr( $accepted_files ); ?>",
 				maxFiles: <?php echo absint( $max_files ); ?>,
 				maxFilesize: <?php echo esc_attr( $max_file_size ); ?>,
-				thumbnailWidth: <?php echo apply_filters( 'pewc_dropzone_thumbnail_width', 100, $id ); ?>,
-				thumbnailHeight: <?php echo apply_filters( 'pewc_dropzone_thumbnail_height', 100, $id ); ?>,
+				thumbnailWidth: <?php echo apply_filters( 'pewc_dropzone_thumbnail_width', 1000, $id, $field ); ?>,
+				thumbnailHeight: <?php echo apply_filters( 'pewc_dropzone_thumbnail_height', 1000, $id, $field ); ?>,
 				addRemoveLinks: true,
 				uploadMultiple: true,
+				maxThumbnailFilesize: <?php echo apply_filters( 'pewc_dropzone_max_thumbnail_size', 10, $id ); ?>,
 				timeout: <?php echo apply_filters( 'pewc_dropzone_timeout', 30000, $id ); ?>,
 				<?php do_action( 'pewc_end_upload_options', $id, $field ); ?>
 				init: function() {
@@ -62,6 +61,7 @@ function pewc_ajax_upload_script( $id, $field, $multiply_price ) {
 						formData.append( 'file_data', $( '#<?php echo esc_attr( $id ); ?>_file_data' ).val() );
 					});
 					this.on( 'successmultiple', function( file, response ) {
+						return;
 						var received_files = response.data.files;
 
 						// This is an alternative method to filter duplicates, not currently used
@@ -114,7 +114,61 @@ function pewc_ajax_upload_script( $id, $field, $multiply_price ) {
 							$( 'body' ).find( 'form.cart .single_add_to_cart_button' ).attr( 'disabled', false );
 						<?php } ?>
 					});
+					this.on( 'queuecomplete', function() {
+						// We use this method because successmultiple was overwriting some files when used with Advanced Uploads
+						var files = dropzone_<?php echo esc_attr( $id ); ?>.files;
+						var num_files = dropzone_<?php echo esc_attr( $id ); ?>.files.length;
+						var all_files = [];
+						// Ensure we have a list of the currently uploaded files, excluding any that may have been removed
+						if( files ) {
+							for( k in files ) {
+								var file = files[k];
+								var response = JSON.parse( file.xhr.response );
+								var received_files = response.data.files;
+								if( received_files ) {
+									for( f in received_files ) {
+										if( file.name === received_files[f].name ) {
+											// Identify the file from the response data
+											all_files.push( received_files[f] );
+											break;
+										}
+									}
+								}
+							}
+						}
+
+						$( '#<?php echo esc_attr( $id ); ?>_file_data' ).val( JSON.stringify( all_files ) );
+
+						var upload_delay = setTimeout(
+							function() {
+								$( '#<?php echo esc_attr( $id ); ?>_number_uploads' ).val( JSON.stringify( num_files ) ).trigger( 'change' );
+								<?php if( $multiply_price ) { ?>
+									var price = $( '#<?php echo esc_attr( $id ); ?>_base_price' ).val();
+									price = parseFloat( num_files ) * parseFloat( price );
+									$( '#dz_<?php echo esc_attr( $id ); ?>' ).closest( '.pewc-item' ).attr( 'data-price', price );
+									$( 'body' ).trigger( 'pewc_force_update_total_js' );
+								<?php } ?>
+								$( 'body' ).trigger( 'pewc_check_conditions' );
+								$( 'body' ).trigger( 'pewc_trigger_calculations' );
+								$( 'body' ).trigger( 'pewc_image_uploaded', [ '<?php echo esc_attr( $id ); ?>', num_files ] );
+							},
+							500
+						);
+
+						<?php if( pewc_disable_add_to_cart_upload() ) { ?>
+							$( 'body' ).find( 'form.cart .single_add_to_cart_button' ).attr( 'disabled', false );
+						<?php } ?>
+
+					});
 					this.on( 'removedfile', function( file, response ) {
+						$( '.dropzone.dz-clickable' ).block({
+							message: null,
+							overlayCSS:  {
+				        backgroundColor: '#fff',
+				        opacity:         0.6,
+				        cursor:          'wait'
+					    },
+						});
 						$.ajax({
 							type: 'POST',
 							url: pewc_vars.ajaxurl,
@@ -125,26 +179,25 @@ function pewc_ajax_upload_script( $id, $field, $multiply_price ) {
 								file_data: $( '#<?php echo esc_attr( $id ); ?>_file_data' ).val()
 							},
 							success: function( response ) {
+								$( '.dropzone.dz-clickable' ).unblock();
 								$( '#<?php echo esc_attr( $id ); ?>_file_data' ).val( JSON.stringify( response.data.files ) );
 								var num_files = response.data.count;
 								if( num_files === 0 ) {
 									$( '#<?php echo esc_attr( $id ); ?>_file_data' ).val( '' );
-									console.log( 'removed file' );
 								}
-
 								$( '#<?php echo esc_attr( $id ); ?>_number_uploads' ).val( JSON.stringify( num_files ) ).trigger( 'change' );
-								<?php if( $multiply_price ) { ?>
+								<?php // if( $multiply_price ) { ?>
 									var price = $( '#<?php echo esc_attr( $id ); ?>_base_price' ).val();
 									price = parseFloat( num_files ) * parseFloat( price );
 									$( '#dz_<?php echo esc_attr( $id ); ?>' ).closest( '.pewc-item' ).attr( 'data-price', price );
 									$( 'body' ).trigger( 'pewc_force_update_total_js' );
-								<?php } ?>
+								<?php // } ?>
+								$( '#dz_<?php echo esc_attr( $id ); ?>' ).closest( '.pewc-item' ).find( '.aouau-quantity-field' ).trigger( 'wcaouau-update-quantity-field' );
 								$( 'body' ).trigger( 'pewc_check_conditions' );
 								$( 'body' ).trigger( 'pewc_trigger_calculations' );
 							}
 						});
 					});
-
 					this.on( 'error', function( file, response ) {
 						console.log( 'error' );
 					});
@@ -152,7 +205,7 @@ function pewc_ajax_upload_script( $id, $field, $multiply_price ) {
 				},
 
 				<?php do_action( 'pewc_after_upload_script_init', $id, $field ); ?>
-				
+
 			});
 
 			<?php do_action( 'pewc_end_upload_script', $id, $field ); ?>
