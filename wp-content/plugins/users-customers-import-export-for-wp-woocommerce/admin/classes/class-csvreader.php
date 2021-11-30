@@ -29,7 +29,9 @@ class Wt_Import_Export_For_Woo_Basic_Csvreader
 	*/
 	public function get_sample_data($file, $grouping=false)
 	{
-	    $enc = mb_detect_encoding($file, 'UTF-8, ISO-8859-1', true);
+	    $use_mb = function_exists('mb_detect_encoding');
+            // Set locale
+            $enc = ($use_mb) ? mb_detect_encoding( $file, 'UTF-8, ISO-8859-1', true ) : false;
 	    if($enc)
 		{
 		    setlocale(LC_ALL, 'en_US.'.$enc);
@@ -73,8 +75,12 @@ class Wt_Import_Export_For_Woo_Basic_Csvreader
 	            $val=(isset($sample_data_val[$k]) ? $this->format_data_from_csv($sample_data_val[$k], $enc) : '');
 	            
 	            /* removing BOM like non characters */
-	            $key=preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $key);
-                    //$key= wt_removeBomUtf8_basic($key);                    	            
+                    $wt_remove_bom = apply_filters('wt_import_csv_parser_keep_bom', true);
+                    if ($wt_remove_bom) {
+                        $key = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $key);
+                    } else {
+                        $key = wt_removeBomUtf8_basic($key);
+                    }                      	            
 	            if($grouping)
 				{
 					if(strrpos($key, ':')!==false)
@@ -113,8 +119,9 @@ class Wt_Import_Export_For_Woo_Basic_Csvreader
 	*/
 	public function get_data_as_batch($file, $offset, $batch_count, $module_obj, $form_data)
 	{
-		// Set locale
-		$enc = mb_detect_encoding( $file, 'UTF-8, ISO-8859-1', true );
+                $use_mb = function_exists('mb_detect_encoding');
+                // Set locale
+                $enc = ($use_mb) ? mb_detect_encoding( $file, 'UTF-8, ISO-8859-1', true ) : false;
 		if($enc)
 		{
 			setlocale( LC_ALL, 'en_US.' . $enc );
@@ -157,8 +164,12 @@ class Wt_Import_Export_For_Woo_Basic_Csvreader
 	    		}else
 	    		{
 	    			/* removing BOM like non characters */
-	    			$head_arr[$head_key]=preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $head_val);
-                                //$head_arr[$head_key]= wt_removeBomUtf8_basic($head_val); 
+                            $wt_remove_bom = apply_filters('wt_import_csv_parser_keep_bom', true);
+                            if ($wt_remove_bom) {
+                                $head_arr[$head_key]=preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $head_val);
+                            } else {
+                                $head_arr[$head_key]= wt_removeBomUtf8_basic($head_val); 
+                            }   
 	    		}
 	    	}
 

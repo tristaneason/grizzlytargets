@@ -238,7 +238,7 @@ function googleStaticFieldOptions( fieldName ) {
 			break;
 
 		case 'excluded_destination':
-			options = [ 'Shopping', 'ShoppingActions', 'DisplayAds' ];
+			options = [ 'Shopping_ads', 'Buy_on_Google_listings', 'Display_ads', 'Local_inventory_ads', 'Free_listings', 'Free_local_listings' ];
 			break;
 
 		default:

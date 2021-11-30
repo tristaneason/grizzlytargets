@@ -19,8 +19,8 @@ class Porto_Elementor_Section extends Elementor\Element_Section {
 		$settings = $this->get_settings_for_display();
 
 		$items        = isset( $settings['items']['size'] ) ? ( 0 < intval( $settings['items']['size'] ) ? $settings['items']['size'] : 1 ) : 1;
-		$items_tablet = isset( $settings['items_tablet']['size'] ) ? ( 0 < intval( $settings['items_tablet']['size'] ) ? $settings['items_tablet']['size'] : 1 ) : 1;
-		$items_mobile = isset( $settings['items_mobile']['size'] ) ? ( 0 < intval( $settings['items_mobile']['size'] ) ? $settings['items_mobile']['size'] : 1 ) : 1;
+		$items_tablet = isset( $settings['items_tablet'] ) && isset( $settings['items_tablet']['size'] ) ? ( 0 < intval( $settings['items_tablet']['size'] ) ? $settings['items_tablet']['size'] : 1 ) : 1;
+		$items_mobile = isset( $settings['items_mobile'] ) && isset( $settings['items_mobile']['size'] ) ? ( 0 < intval( $settings['items_mobile']['size'] ) ? $settings['items_mobile']['size'] : 1 ) : 1;
 
 		$extra_class    = '';
 		$extra_options  = '';
@@ -139,7 +139,7 @@ class Porto_Elementor_Section extends Elementor\Element_Section {
 		$before_html = '';
 
 		?>
-		<<?php echo esc_html( $this->get_html_tag() ); ?> <?php $this->print_render_attribute_string( '_wrapper' ); ?>>
+		<<?php echo esc_html( $this->porto_html_tag() ); ?> <?php $this->print_render_attribute_string( '_wrapper' ); ?>>
 			<?php
 			if ( 'video' === $settings['background_background'] ) :
 				if ( $settings['background_video_link'] ) :
@@ -373,7 +373,7 @@ class Porto_Elementor_Section extends Elementor\Element_Section {
 			?>
 			</div>
 		<?php endif; ?>
-		</<?php echo esc_html( $this->get_html_tag() ); ?>>
+		</<?php echo esc_html( $this->porto_html_tag() ); ?>>
 		<?php
 	}
 
@@ -497,9 +497,24 @@ class Porto_Elementor_Section extends Elementor\Element_Section {
 		</div>
 		<?php
 	}
+
+	private function porto_html_tag() {
+		if ( is_callable( array( $this, 'get_html_tag' ) ) ) {
+			return $this->get_html_tag();
+		}
+
+		$html_tag = $this->get_settings( 'html_tag' );
+
+		if ( empty( $html_tag ) ) {
+			$html_tag = 'section';
+		}
+
+		return Elementor\Utils::validate_html_tag( $html_tag );
+	}
 }
 
 add_action( 'elementor/element/section/section_layout/after_section_end', 'porto_elementor_section_custom_control', 10, 2 );
+add_action( 'elementor/element/section/section_advanced/after_section_end', 'porto_elementor_mpx_controls', 10, 2 );
 add_action( 'elementor/element/section/section_shape_divider/after_section_end', 'porto_elementor_shape_divider', 10, 2 );
 add_filter( 'elementor/section/print_template', 'porto_elementor_print_section_template', 10, 2 );
 add_action( 'elementor/frontend/section/before_render', 'porto_elementor_section_add_custom_attrs', 10, 1 );
@@ -623,6 +638,18 @@ function porto_elementor_shape_divider( $self, $args ) {
 			'position' => array(
 				'of' => 'shape_divider_bottom',
 			),
+		)
+	);
+
+	$self->update_control(
+		'gap_columns_custom',
+		array(
+			'selectors' => [
+				'{{WRAPPER}} .elementor-column-gap-custom .elementor-column > .elementor-element-populated, {{WRAPPER}} .elementor-column-gap-custom .elementor-column > .pin-wrapper > .elementor-element-populated' => 'padding: {{SIZE}}{{UNIT}};',
+			],
+		),
+		array(
+			'overwrite' => true,
 		)
 	);
 }
@@ -1430,5 +1457,12 @@ function porto_elementor_section_add_custom_attrs( $self ) {
 		$self->add_render_attribute( '_wrapper', 'data-plugin-options', '{"speed": ' . floatval( $settings['parallax_speed']['size'] ) . '}' );
 
 		wp_enqueue_script( 'skrollr' );
+	}
+
+	$mpx_attrs = porto_get_mpx_options( $settings );
+	if ( $mpx_attrs ) {
+		foreach ( $mpx_attrs as $key => $val ) {
+			$self->add_render_attribute( '_wrapper', $key, $val );
+		}
 	}
 }

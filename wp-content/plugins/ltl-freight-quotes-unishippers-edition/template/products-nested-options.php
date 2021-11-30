@@ -116,18 +116,15 @@ if (!class_exists("EnUpdateProductNestedOptions")) {
             $description = "";
             $disable_nested = "";
 
-            $plan_notifi = apply_filters('en_woo_plans_notification_action', array());
-            if (!empty($plan_notifi) && (isset($plan_notifi['nested_material']))) {
-                $enable_plugins = (isset($plan_notifi['nested_material']['enable_plugins'])) ? $plan_notifi['nested_material']['enable_plugins'] : "";
-                $disable_plugins = (isset($plan_notifi['nested_material']['disable_plugins'])) ? $plan_notifi['nested_material']['disable_plugins'] : "";
+            $plan_status = apply_filters('en_app_common_plan_status', []);
 
-                if (strlen($disable_plugins) > 0) {
-                    if (strlen($enable_plugins) > 0) {
-                        $description = apply_filters('en_woo_plans_nested_notification_message_action', $enable_plugins, $disable_plugins, 'nested_material');
-                    } else {
-                        $description = apply_filters('unishippers_freight_plans_notification_link', array(3));
-                        $disable_nested = "disabled_me";
-                    }
+            // Hazardous plan status
+            if (isset($plan_status['nesting'])) {
+                if (!in_array(0, $plan_status['nesting']['plan_required'])) {
+                    $disable_nested = 'disabled_me';
+                    $description = apply_filters("unishippers_freight_plans_notification_link", [3]);
+                } elseif (isset($plan_status['nesting']['status'])) {
+                    $description = implode(" <br>", $plan_status['nesting']['status']);
                 }
             }
 

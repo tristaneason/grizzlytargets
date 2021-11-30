@@ -1,3 +1,14 @@
+= 8.4.344 (2021-11-23) =
+* Replace jQuery .unbind with .off
+* Replace rand with wp_rand
+* Fix Gutenberg block not showing due to a js error
+
+= 8.4.302 (2021-10-21) =
+* Fix for search function in HubSpot Gutenberg block
+
+= 8.4.301 (2021-10-21) =
+* Fix side navigation option highlight for list
+
 = 8.4.90 (2021-08-10) =
 * Add EU prefix to scripts domains for EU portals
 
@@ -387,22 +398,4 @@
 * Fix version flags
 * Add unit tests
 * Add languages
-
-= 7.5.0 (2019-05-21) =
-* Add banner to inform users if the version is outdated
-* Add notification that informs user if something is not working on our servers
-* Reload window when connection happens on a different tab
-* Reduce loading time for non authenticated users
-* Improve performances when navigating between pages
-* Add tests
-
-= 7.4.1 (2019-05-06) =
-* Implement faster navigation
-* Fix signup url
-* Use i18n on PHP
-
-= 7.4.0 (2019-04-29) =
-* Improve performances
-* Remove dependencies from HubSpot's CDN
-* Update license
 

@@ -706,11 +706,14 @@
             var id = e;
             window.location.href = jQuery('.delete_dropship_btn').attr('href');
             jQuery('.cancel_delete').on('click', function () {
+                id = false;
                 window.location.href = jQuery('.cancel_delete').attr('href');
             });
             jQuery('.confirm_delete').on('click', function () {
                 window.location.href = jQuery('.confirm_delete').attr('href');
-                return en_wd_confirm_delete_dropship(id);
+                if (id != false) {
+                    return en_wd_confirm_delete_dropship(id);
+                }
             });
             return false;
         }

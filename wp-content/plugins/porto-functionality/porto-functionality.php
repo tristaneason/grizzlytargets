@@ -3,7 +3,7 @@
 Plugin Name: Porto Theme - Functionality
 Plugin URI: http://themeforest.net/user/p-themes
 Description: Adds functionality such as Shortcodes, Post Types and Widgets to Porto Theme
-Version: 2.1.6
+Version: 2.2.1
 Author: P-Themes
 Author URI: http://themeforest.net/user/p-themes
 License: GPL2
@@ -102,7 +102,9 @@ class Porto_Functionality {
 		add_filter( 'script_loader_tag', array( $this, 'script_add_async_attribute' ), 10, 2 );
 
 		// fix yith woocommerce ajax navigation issue
-		add_filter( 'the_post', array( $this, 'woocommerce_yith_ajax_filter' ), 16, 2 );
+		if ( defined( 'YITH_WCAN' ) ) {
+			add_filter( 'the_post', array( $this, 'woocommerce_yith_ajax_filter' ), 16, 2 );
+		}
 
 		if ( class_exists( 'WC_Vendors' ) ) {
 			global $porto_settings;
@@ -119,9 +121,7 @@ class Porto_Functionality {
 	}
 
 	public function woocommerce_yith_ajax_filter( $posts, $query = false ) {
-		if ( defined( 'YITH_WCAN' ) ) {
-			remove_filter( 'the_posts', array( YITH_WCAN()->frontend, 'the_posts' ), 15 );
-		}
+		remove_filter( 'the_posts', array( YITH_WCAN()->frontend, 'the_posts' ), 15 );
 		return $posts;
 	}
 

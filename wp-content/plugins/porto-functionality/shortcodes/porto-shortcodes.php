@@ -86,6 +86,9 @@ class PortoShortcodesClass {
 		'porto_hotspot',
 		/* 6.0 shortcodes */
 		'porto_svg_floating',
+		'porto_social_icons',
+		'porto_image_comparison',
+		'porto_image_gallery',
 	);
 
 	public static $woo_shortcodes = array( 'porto_recent_products', 'porto_featured_products', 'porto_sale_products', 'porto_best_selling_products', 'porto_top_rated_products', 'porto_products', 'porto_product_category', 'porto_product_attribute', 'porto_product', 'porto_product_categories', 'porto_one_page_category_products', 'porto_product_attribute_filter', 'porto_products_filter', 'porto_widget_woo_products', 'porto_widget_woo_top_rated_products', 'porto_widget_woo_recently_viewed', 'porto_widget_woo_recent_reviews', 'porto_widget_woo_product_tags' );
@@ -121,6 +124,13 @@ class PortoShortcodesClass {
 		'bottom' => '{{BOTTOM}}',
 		'left'   => '{{LEFT}}',
 	);
+
+	/**
+	 * product args to sort by multiple fields
+	 *
+	 * @since 6.2.0
+	 */
+	private $product_mult_sort_args = '';
 
 	public function __construct() {
 
@@ -186,6 +196,8 @@ class PortoShortcodesClass {
 		wp_register_script( 'porto_section_scroll_js', PORTO_SHORTCODES_URL . 'assets/js/porto-section-scroll.min.js', array( 'jquery' ), PORTO_SHORTCODES_VERSION, true );
 		wp_register_script( 'porto_word_rotator', PORTO_SHORTCODES_URL . 'assets/js/porto-word-rotator.min.js', array( 'jquery' ), PORTO_SHORTCODES_VERSION, true );
 		wp_register_script( '360-degrees-product-viewer', PORTO_SHORTCODES_URL . 'assets/js/360-degrees-product-viewer.min.js', array( 'jquery' ), PORTO_SHORTCODES_VERSION, true );
+		wp_register_script( 'jquery-event-move', PORTO_SHORTCODES_URL . 'assets/js/jquery.event.move.min.js', array( 'jquery' ), '2.0.0', true );
+		wp_register_script( 'porto-image-comparison', PORTO_SHORTCODES_URL . 'assets/js/image-comparison.min.js', array( 'jquery' ), PORTO_SHORTCODES_VERSION, true );
 
 		if ( function_exists( 'vc_is_inline' ) && vc_is_inline() ) {
 			wp_register_script( 'porto_shortcodes_frontend-editor', PORTO_SHORTCODES_URL . 'assets/js/porto-shortcodes-frontend-editor.js', array( 'jquery' ), PORTO_SHORTCODES_VERSION, true );
@@ -199,7 +211,7 @@ class PortoShortcodesClass {
 		wp_enqueue_style( 'porto_shortcodes_admin' );
 		wp_register_style( 'simple-line-icons', PORTO_SHORTCODES_URL . 'assets/css/Simple-Line-Icons/Simple-Line-Icons.css' );
 		wp_enqueue_style( 'simple-line-icons' );
-		wp_enqueue_script( 'porto_row_addon', PORTO_SHORTCODES_URL . 'assets/js/porto-row-addon.min.js', array( 'jquery' ), PORTO_SHORTCODES_VERSION, true );
+		wp_enqueue_script( 'porto_wpb_addon', PORTO_SHORTCODES_URL . 'assets/js/porto-wpb-addon.min.js', array( 'jquery' ), PORTO_SHORTCODES_VERSION, true );
 		global $pagenow;
 		if ( in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ) {
 
@@ -276,6 +288,48 @@ class PortoShortcodesClass {
 				'value' => esc_js( $key ),
 			);
 		}
+		$orderby_values = array();
+		foreach ( porto_vc_order_by() as $value => $key ) {
+			if ( empty( $value ) ) {
+				$orderby_values[] = array(
+					'label' => esc_js( __( 'Default', 'porto-functionality' ) ),
+					'value' => '',
+				);
+				continue;
+			}
+			$orderby_values[] = array(
+				'label' => esc_js( $value ),
+				'value' => esc_js( $key ),
+			);
+		}
+		$sortby_values = array();
+		foreach ( porto_vc_order_by() as $value => $key ) {
+			$sortby_values[] = array(
+				'label' => esc_js( $value ),
+				'value' => esc_js( $key ),
+			);
+		}
+		global $porto_settings;
+		$status_values = array(
+			array(
+				'label' => __( 'All', 'porto-functionality' ),
+				'value' => '',
+			),
+			array(
+				'label' => __( 'Featured', 'porto-functionality' ),
+				'value' => 'featured',
+			),
+			array(
+				'label' => __( 'On Sale', 'porto-functionality' ),
+				'value' => 'on_sale',
+			),
+		);
+		if ( ! empty( $porto_settings['woo-pre-order'] ) ) {
+			$status_values[] = array(
+				'label' => __( 'Pre-Order', 'porto-functionality' ),
+				'value' => 'pre_order',
+			);
+		}
 
 		$masonry_layouts  = porto_sh_commons( 'masonry_layouts' );
 		$creative_layouts = array();
@@ -289,7 +343,7 @@ class PortoShortcodesClass {
 			}
 		}
 
-		global $porto_settings, $pagenow;
+		global $pagenow;
 		$js_porto_block_vars = array(
 			'ajax_url'           => esc_url( admin_url( 'admin-ajax.php' ) ),
 			'site_url'           => esc_url( get_site_url( '' ) ),
@@ -306,6 +360,9 @@ class PortoShortcodesClass {
 			'shortcodes_url'     => esc_url( PORTO_SHORTCODES_URL ),
 			'is_rtl'             => esc_js( is_rtl() ),
 			'builder_type'       => 'post.php' == $pagenow && get_the_ID() ? esc_js( get_post_meta( get_the_ID(), PortoBuilders::BUILDER_TAXONOMY_SLUG, true ) ) : '',
+			'orderby_values'     => $orderby_values,
+			'sortby_values'      => $sortby_values,
+			'status_values'      => $status_values,
 		);
 		if ( ! empty( $porto_settings ) ) {
 			$js_porto_block_vars['product_show_cats'] = esc_js( $porto_settings['product-categories'] );
@@ -378,6 +435,7 @@ class PortoShortcodesClass {
 				$template = porto_shortcode_template( $shortcode );
 
 				$internal_css = '';
+
 				if ( $is_wpb ) {
 					// Shortcode class
 					$shortcode_class = '';
@@ -428,6 +486,81 @@ class PortoShortcodesClass {
 			foreach ( $this::$woo_shortcodes as $woo_shortcode ) {
 				require_once( PORTO_SHORTCODES_WOO_PATH . $woo_shortcode . '.php' );
 			}
+			add_filter(
+				'woocommerce_shortcode_products_query',
+				function( $query_args, $attributes, $type ) {
+					if ( 'products' == $type && empty( $_GET['orderby'] ) && ( is_array( $attributes['orderby'] ) || false !== strpos( $attributes['orderby'], '{' ) ) && ! empty( $attributes['orderby'] ) ) {
+						if ( ! is_array( $attributes['orderby'] ) ) {
+							$attributes['orderby'] = json_decode( html_entity_decode( $attributes['orderby'] ), true );
+						}
+						$query_args['orderby'] = $attributes['orderby'];
+						
+						if ( array_key_exists( 'price', $attributes['orderby'] ) || array_key_exists( 'price-desc', $attributes['orderby'] ) || array_key_exists( 'popularity', $attributes['orderby'] ) || array_key_exists( 'rating', $attributes['orderby'] ) ) {
+							$final_args            = array( 'orderby' => '', 'join' => '' );
+							$final_args            = WC()->query->order_by_price_desc_post_clauses( $final_args );
+							$final_args['orderby'] = '';
+
+							global $wpdb;
+
+							foreach ( $attributes['orderby'] as $key => $value ) {
+								if ( empty( $value ) ) {
+									$value = 'DESC';
+								}
+								if ( ! empty( $final_args['orderby'] ) ) {
+									$final_args['orderby'] .= ',';
+								}
+								if ( 'price' == $key ) {
+									$final_args['orderby'] .= ' wc_product_meta_lookup.max_price ' . $value . ' ';
+								} elseif ( 'popularity' == $key ) {
+									$final_args['orderby'] .= ' wc_product_meta_lookup.total_sales ' . $value . ' ';
+								} elseif ( 'rating' == $key ) {
+									$final_args['orderby'] .= ' wc_product_meta_lookup.average_rating ' . $value . ', wc_product_meta_lookup.rating_count ' . $value . ' ';
+								} else {
+									$other_args = WC()->query->get_catalog_ordering_args( $key, $value );
+									$other_args['orderby'] = explode( ' ', $other_args['orderby'] );
+									foreach ( $other_args['orderby'] as $index => $other_orderby ) {
+										if ( 'id' == $other_orderby || 'ID' == $other_orderby ) {
+											$other_orderby = 'wc_product_meta_lookup.product_id';
+										} elseif ( 'menu_order' == $other_orderby ) {
+											$other_orderby = $wpdb->posts . '.menu_order';
+										} elseif ( 'rand' == $other_orderby ) {
+											$other_orderby = 'RAND()';
+										} else {
+											$other_orderby = $wpdb->posts . '.post_' . $other_orderby;
+										}
+										if ( $index ) {
+											$final_args['orderby'] .= ',';
+										}
+										$final_args['orderby'] .= $other_orderby . ' ' . $other_args['order'] . ' ';
+									}
+								}
+							}
+							if ( ! array_key_exists( 'id', $attributes['orderby'] ) && ! array_key_exists( 'rand', $attributes['orderby'] ) ) {
+								$final_args['orderby'] .= ', wc_product_meta_lookup.product_id DESC ';
+							}
+							$this->product_mult_sort_args = $final_args;
+							add_filter( 'posts_clauses', array( $this, 'wc_multi_order' ) );
+						}
+
+					}
+					return $query_args;
+				},
+				10,
+				3
+			);
+
+			add_filter(
+				'the_posts',
+				function( $posts, $query ) {
+					if ( 'product_query' !== $query->get( 'wc_query' ) ) {
+						return $posts;
+					}
+					remove_filter( 'posts_clauses', array( $this, 'wc_multi_order' ) );
+					return $posts;
+				},
+				10,
+				2
+			);
 		}
 	}
 
@@ -856,6 +989,20 @@ class PortoShortcodesClass {
 				wp_enqueue_style( 'porto-vc-editor-iframe', PORTO_SHORTCODES_URL . 'assets/css/porto-vc-editor-iframe.css', false, PORTO_SHORTCODES_VERSION );
 			}
 		);
+	}
+
+	/**
+	 * update product args to sort by multiple fields
+	 *
+	 * @since 6.2.0
+	 */
+	public function wc_multi_order( $args ) {
+		if ( empty( $this->product_mult_sort_args ) ) {
+			return $args;
+		}
+		$final_args                   = $this->product_mult_sort_args;
+		$this->product_mult_sort_args = '';
+		return array_merge( $args, $final_args );
 	}
 }
 

@@ -779,9 +779,14 @@ var wt_iew_basic_import=(function( $ ) {
 				this.to_import_title=$('[name="wt_iew_import_post_type"] option:selected').text();
 			}
 			$('.wt_iew_step_head_post_type_name').html(this.to_import_title);
-                        $('.wt-ier-green-btn').attr("href", wt_iew_basic_params.pro_plugins[this.to_import]);  
+                        $('.wt-ierpro-blue-btn').attr("href", wt_iew_basic_params.pro_plugins[this.to_import]['url']);
+                        $('.wt-ier-product-name').html(wt_iew_basic_params.pro_plugins[this.to_import]['name']);
+                        $('.wt-ierpro-name>img').attr("src", wt_iew_basic_params.pro_plugins[this.to_import]['icon_url']);
 			if(this.to_import_title.includes('User'))
 			$('#user-required-field-message').show();
+                    
+                        $('.wt-ier-gopro-cta').hide();
+                        $('.wt-ier-'+this.to_import).show();                    
 		},
 		page_actions:function(step)
 		{
@@ -1345,6 +1350,7 @@ var wt_iew_dropzone=
 				uploadMultiple:false,
 				parallelUploads:1,
 				maxFiles:1,
+                                timeout:0,
 				maxFilesize:wt_iew_import_basic_params.max_import_file_size,
 				previewTemplate:"<div class=\"dz-preview dz-file-preview\">\n <div class=\"dz-upload-info\"></div> \n <div class=\"dz-details\">\n  <div class=\"dz-filename\"><span data-dz-name></span></div>\n </div>\n  <div class=\"dz-progress\"><span class=\"dz-upload\" data-dz-uploadprogress></span></div>\n </div>",
 			}

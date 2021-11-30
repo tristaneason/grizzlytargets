@@ -47,9 +47,9 @@ $display_data = Hubwoo::get_deals_presenter();
 				</div>					
 			</div>	
 			<div class="hubwoo-general-settings hubwoo-group-wrap__map_deal_stage ecommerce-pipeline-setup hubwoo-deal-wrap-con__store" style="display: <?php echo esc_attr( $display_data['view_mapping'] ); ?>">
-				<button class="hubwoo__btn manage_product_sync" data-action='run-ecomm-setup' style="display: <?php echo isset( $display_data['view_btn_mapping'] ) ? esc_attr( $display_data['view_btn_mapping'] ) : '';  ?>"> <?php esc_html_e( 'Run Setup', 'makewebbetter-hubspot-for-woocommerce' ); ?></button>		
+				<button class="hubwoo__btn manage_product_sync" data-action='run-ecomm-setup' style="display: <?php echo isset( $display_data['view_btn_mapping'] ) ? esc_attr( $display_data['view_btn_mapping'] ) : ''; ?>"> <?php esc_html_e( 'Run Setup', 'makewebbetter-hubspot-for-woocommerce' ); ?></button>		
 				<div class="hubwoo-progress-wrap progress-cover " style="display: <?php echo esc_attr( $display_data['p_run_sync'] ); ?>">
-					<span class="psync_desc sync-desc" data-sync-type = "product" data-sync-eta = "<?php echo isset( $display_data['eta_product_sync'] ) ? esc_attr( $display_data['eta_product_sync'] ) : '' ; ?>">					
+					<span class="psync_desc sync-desc" data-sync-type = "product" data-sync-eta = "<?php echo isset( $display_data['eta_product_sync'] ) ? esc_attr( $display_data['eta_product_sync'] ) : ''; ?>">					
 						<?php
 							echo esc_textarea(
 								'Your products are syncing in the background so you can safely leave this page. It should take ' . isset( $display_data['eta_product_sync'] ) ? $display_data['eta_product_sync'] : '' . ' to complete.',
@@ -191,7 +191,7 @@ $display_data = Hubwoo::get_deals_presenter();
 				</div>						
 				<div data-txn="ocs-form" class="hubwoo-group-wrap__deal_ocs hubwoo-deal-wrap-con__store hubwoo-general-settings" style="display:<?php echo esc_attr( $display_data['message'] ); ?>">
 					<div class="hubwoo-group-wrap__deal_notice deals-par" data-type='pBar' style="display: <?php echo esc_attr( $display_data['message'] ); ?>">
-						<p class="hubwoo_deals_message sync-desc" data-sync-type = "order" data-sync-eta = "<?php echo ( isset( $sync_data['eta_deals_sync'] ) && ! empty( $sync_data['eta_deals_sync'] ) ) ? esc_attr( $sync_data['eta_deals_sync'] ) : '' ; ?>">
+						<p class="hubwoo_deals_message sync-desc" data-sync-type = "order" data-sync-eta = "<?php echo ( isset( $sync_data['eta_deals_sync'] ) && ! empty( $sync_data['eta_deals_sync'] ) ) ? esc_attr( $sync_data['eta_deals_sync'] ) : ''; ?>">
 							<?php
 								echo esc_textarea(
 									'Your orders are syncing as deals in the background so you can safely leave this page. It should take ' . ( isset( $sync_data['eta_deals_sync'] ) && ! empty( $sync_data['eta_deals_sync'] ) ) ? $sync_data['eta_deals_sync'] : '' . ' to complete.',
@@ -203,8 +203,8 @@ $display_data = Hubwoo::get_deals_presenter();
 						<div class="manage-ocs-bar" >						
 							<div class="hubwoo-progress-wrap progress-cover deal-sync_progress" style="display: <?php echo esc_attr( $display_data['message'] ); ?>">
 								<div class="hubwoo-progress">
-									<div class="hubwoo-progress-bar" data-percentage= "<?php echo isset( $sync_data['deals_progress'] ) ? esc_attr( $sync_data['deals_progress'] ) : 0; ?>"  data-sync-type = "order" data-sync-status = "<?php echo esc_attr( $display_data['is_dsync'] ); ?>" role="progressbar" style="width: <?php echo isset( $sync_data['deals_progress'] ) ? esc_attr( $sync_data['deals_progress'] ) : 0 ; ?>%">
-										<?php echo isset( $sync_data['deals_progress'] ) ? esc_textarea( $sync_data['deals_progress'] ) : 0 ; ?>%
+									<div class="hubwoo-progress-bar" data-percentage= "<?php echo isset( $sync_data['deals_progress'] ) ? esc_attr( $sync_data['deals_progress'] ) : 0; ?>"  data-sync-type = "order" data-sync-status = "<?php echo esc_attr( $display_data['is_dsync'] ); ?>" role="progressbar" style="width: <?php echo isset( $sync_data['deals_progress'] ) ? esc_attr( $sync_data['deals_progress'] ) : 0; ?>%">
+										<?php echo isset( $sync_data['deals_progress'] ) ? esc_textarea( $sync_data['deals_progress'] ) : 0; ?>%
 									</div>
 								</div> 
 							</div>						

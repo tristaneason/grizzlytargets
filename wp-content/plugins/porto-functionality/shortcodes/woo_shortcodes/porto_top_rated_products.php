@@ -7,6 +7,9 @@ add_action( 'vc_after_init', 'porto_load_top_rated_products_shortcode' );
 function porto_shortcode_top_rated_products( $atts, $content = null ) {
 	ob_start();
 	if ( $template = porto_shortcode_woo_template( 'porto_products' ) ) {
+		if ( ! is_array( $atts ) ) {
+			$atts = array();
+		}
 		$atts['shortcode'] = 'top_rated_products';
 		include $template;
 	}

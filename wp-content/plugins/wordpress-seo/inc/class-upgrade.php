@@ -73,7 +73,6 @@ class WPSEO_Upgrade {
 			'15.9.1-RC0' => 'upgrade_1591',
 			'16.2-RC0'   => 'upgrade_162',
 			'16.5-RC0'   => 'upgrade_165',
-			'17.1-RC0'   => 'upgrade_171',
 			'17.2-RC0'   => 'upgrade_172',
 		];
 
@@ -846,18 +845,6 @@ class WPSEO_Upgrade {
 	}
 
 	/**
-	 * Performs the 17.1 upgrade. Removes the pipe and tilde separators and replaces them with the dash separator.
-	 *
-	 * @return void
-	 */
-	private function upgrade_171() {
-		$separator = WPSEO_Options::get( 'separator' );
-		if ( $separator === 'sc-pipe' || $separator === 'sc-tilde' ) {
-			WPSEO_Options::set( 'separator', 'sc-dash' );
-		}
-	}
-
-	/**
 	 * Sets the home_url option for the 15.1 upgrade routine.
 	 *
 	 * @return void
@@ -887,7 +874,7 @@ class WPSEO_Upgrade {
 	 * else to `false`.
 	 */
 	public function set_indexation_completed_option_for_145() {
-		WPSEO_Options::set( 'indexables_indexation_completed', YoastSEO()->helpers->indexing->get_unindexed_count() === 0 );
+		WPSEO_Options::set( 'indexables_indexation_completed', YoastSEO()->helpers->indexing->get_limited_filtered_unindexed_count( 1 ) === 0 );
 	}
 
 	/**

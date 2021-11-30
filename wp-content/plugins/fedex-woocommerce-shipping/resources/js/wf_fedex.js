@@ -879,6 +879,21 @@ jQuery( document ).ready( function( $ ) {
 		file_frame.open();
 	});
 
+	$('#ph_track_fedex').on('click', function( event ){
+		
+		order_id = $('#order_id').val();
+
+		var data = {
+			'action': 'ph_fedex_shipment_tracking',
+			'order_id': order_id,
+		};
+
+		//since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
+		jQuery.post(ajaxurl, data, function(response) {
+			location.reload();
+		});
+	});
+
 });
 
 

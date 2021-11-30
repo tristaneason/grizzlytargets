@@ -13,6 +13,7 @@ import {
 import { useCallback, useEffect, useState, useMemo } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import DropdownSelector from '@woocommerce/base-components/dropdown-selector';
+import Label from '@woocommerce/base-components/filter-element-label';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -22,7 +23,6 @@ import { decodeEntities } from '@wordpress/html-entities';
  */
 import { getAttributeFromID } from '../../utils/attributes';
 import { updateAttributeFilter } from '../../utils/attributes-query';
-import Label from './label';
 import { previewAttributeObject, previewOptions } from './preview';
 import './style.scss';
 
@@ -338,9 +338,13 @@ const AttributeFilterBlock = ( {
 	return (
 		<>
 			{ ! isEditor && blockAttributes.heading && (
-				<TagName>{ blockAttributes.heading }</TagName>
+				<TagName className="wc-block-attribute-filter__title">
+					{ blockAttributes.heading }
+				</TagName>
 			) }
-			<div className="wc-block-attribute-filter">
+			<div
+				className={ `wc-block-attribute-filter style-${ blockAttributes.displayStyle }` }
+			>
 				{ blockAttributes.displayStyle === 'dropdown' ? (
 					<DropdownSelector
 						attributeLabel={ attributeObject.label }

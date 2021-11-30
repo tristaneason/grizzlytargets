@@ -33,6 +33,13 @@ if ( ! class_exists( 'Porto_Elementor_Init' ) ) :
 			'portfolios_category',
 			'hotspot',
 			'floating',
+			'page_header',
+			'social_icons',
+			'image_comparison',
+			'image_gallery',
+			'360degree_image_viewer',
+			'steps',
+			'sticky_nav',
 		);
 
 		private $woo_widgets = array(
@@ -62,6 +69,10 @@ if ( ! class_exists( 'Porto_Elementor_Init' ) ) :
 				return;
 			}
 
+			// Include Partials
+			// Mouse parallax
+			include_once 'partials/addon.php';
+
 			// register categories
 			add_action(
 				'elementor/elements/categories_registered',
@@ -80,6 +91,8 @@ if ( ! class_exists( 'Porto_Elementor_Init' ) ) :
 			add_action(
 				'elementor/elements/elements_registered',
 				function() {
+					include_once dirname( PORTO_META_BOXES_PATH ) . '/elementor/tabs/porto-elementor-custom-tabs.php';
+
 					include_once dirname( PORTO_META_BOXES_PATH ) . '/elementor/elements/porto_section.php';
 					Elementor\Plugin::$instance->elements_manager->unregister_element_type( 'section' );
 					Elementor\Plugin::$instance->elements_manager->register_element_type( new Porto_Elementor_Section() );
@@ -104,6 +117,8 @@ if ( ! class_exists( 'Porto_Elementor_Init' ) ) :
 				add_action(
 					'elementor/editor/after_enqueue_scripts',
 					function() {
+						wp_enqueue_style( 'font-awesome', PORTO_CSS . '/font-awesome.min.css', false, PORTO_VERSION, 'all' );
+
 						wp_enqueue_script( 'porto-elementor-admin', plugin_dir_url( __FILE__ ) . 'assets/admin.js', array( 'elementor-editor' ), PORTO_SHORTCODES_VERSION, true );
 					}
 				);
@@ -436,6 +451,16 @@ if ( ! class_exists( 'Porto_Elementor_Init' ) ) :
 
 						// save used blocks
 						if ( ! empty( $data['elements'] ) ) {
+							// check breadcrumbs element
+							$elements_str = json_encode( $data['elements'] );
+							preg_match( '/"breadcrumbs_type":"([^"]*)"/', $elements_str, $matches );
+							if ( ! empty( $matches ) && isset( $matches[1] ) ) {
+								update_post_meta( $post_id, 'porto_page_header_shortcode_type', (int) $matches[1] );
+							} else {
+								delete_post_meta( $post_id, 'porto_page_header_shortcode_type' );
+							}
+							// end check breadcrumbs element
+
 							$block_slugs = $this->get_elementor_object_by_id( $data['elements'] );
 							$used_blocks = get_theme_mod( '_used_blocks', array() );
 							if ( ! isset( $used_blocks['el'] ) ) {
@@ -501,6 +526,11 @@ if ( ! class_exists( 'Porto_Elementor_Init' ) ) :
 
 		// Register Elementor widgets
 		public function register_elementor_widgets( $self ) {
+			include_once dirname( PORTO_META_BOXES_PATH ) . '/elementor/tabs/porto-elementor-custom-tabs.php';
+			$self->unregister_widget_type( 'common' );
+			include_once dirname( PORTO_META_BOXES_PATH ) . '/elementor/widgets/common.php';
+			$self->register_widget_type( new Porto_Elementor_Common_Widget( array(), array( 'widget_name' => 'common' ) ) );
+			
 			foreach ( $this->widgets as $widget ) {
 				include dirname( PORTO_META_BOXES_PATH ) . '/elementor/widgets/' . $widget . '.php';
 				$class_name = 'Porto_Elementor_' . ucfirst( $widget ) . '_Widget';
@@ -517,6 +547,7 @@ if ( ! class_exists( 'Porto_Elementor_Init' ) ) :
 
 		public function load_elementor_widgets_js() {
 			if ( ( isset( $_REQUEST['action'] ) && 'elementor' == $_REQUEST['action'] ) || isset( $_REQUEST['elementor-preview'] ) ) {
+
 				wp_register_script( 'porto-elementor-widgets-js', plugin_dir_url( __FILE__ ) . 'assets/elementor.js', array( 'jquery' ), PORTO_SHORTCODES_VERSION, true );
 
 				$masonry_layouts  = porto_sh_commons( 'masonry_layouts' );
@@ -538,6 +569,7 @@ if ( ! class_exists( 'Porto_Elementor_Init' ) ) :
 				$admin_vars = array(
 					'creative_layouts' => $creative_layouts,
 					'gmt_offset'       => get_option( 'gmt_offset' ),
+					'js_assets_url' => defined( 'PORTO_VERSION' ) ? PORTO_JS : '',
 				);
 				global $porto_settings;
 				if ( ! empty( $porto_settings ) ) {

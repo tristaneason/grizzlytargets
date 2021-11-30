@@ -38,6 +38,7 @@ if ( ! function_exists( 'porto_ultimate_heading_spacer' ) ) {
 				'alignment'                    => 'center',
 				'spacer_margin_bottom'         => '',
 				'enable_typewriter'            => false,
+				'typewriter_animation'         => 'fadeIn',
 				'typewriter_delay'             => 0,
 				'typewriter_width'             => 0,
 				'heading_tag'                  => '',
@@ -70,7 +71,7 @@ if ( ! function_exists( 'porto_ultimate_heading_spacer' ) ) {
 	$type_plugin = '';
 	if ( ! empty( $enable_typewriter ) ) {
 		$typewriter_options = array(
-			'startDelay' => 0,
+			'startDelay'     => 0,
 			'minWindowWidth' => 0,
 		);
 		if ( ! empty( $typewriter_delay ) ) {
@@ -78,6 +79,9 @@ if ( ! function_exists( 'porto_ultimate_heading_spacer' ) ) {
 		}
 		if ( ! empty( $typewriter_width ) ) {
 			$typewriter_options['minWindowWidth'] = (int) $typewriter_width;
+		}
+		if ( ! empty( $typewriter_animation ) ) {
+			$typewriter_options['animationName'] = $typewriter_animation;
 		}
 		$type_plugin .= ' data-plugin-animated-letters data-plugin-options="' . esc_attr( json_encode( $typewriter_options ) ) . '"';
 	}

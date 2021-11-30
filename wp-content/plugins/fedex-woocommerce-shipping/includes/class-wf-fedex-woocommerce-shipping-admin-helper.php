@@ -3232,70 +3232,66 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 		/* try {		 	
 		 */	
 			//$this->tracking_ids = '';
-			$first_package = true;
+			
 			foreach ( $requests as $key => $request ) {
-				if( $first_package ) {
-					if( $this->commercial_invoice && $this->is_international ) {
-						$company_logo = !empty($this->settings['company_logo']) ? true : false;
-						$digital_signature = !empty($this->settings['digital_signature']) ? true : false;
+				
+				if( $this->commercial_invoice && $this->is_international ) {
+					$company_logo = !empty($this->settings['company_logo']) ? true : false;
+					$digital_signature = !empty($this->settings['digital_signature']) ? true : false;
 
-						$special_servicetypes = !empty($request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes']) ? $request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'] : array();
+					$special_servicetypes = !empty($request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes']) ? $request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'] : array();
 
-						$etd_label 	= false;
+					$etd_label 	= false;
 
-						if ( isset($_GET['etd']) ) {
+					if ( isset($_GET['etd']) ) {
 
-							$etd_label = ($_GET['etd'] === 'true') ? true : false;
+						$etd_label = ($_GET['etd'] === 'true') ? true : false;
 
-						}else if( $this->etd_label ) {
+					}else if( $this->etd_label ) {
 
-							$etd_label = true;
-						}
+						$etd_label = true;
+					}
 
-						if( $etd_label ) {
+					if( $etd_label ) {
 
-							array_unshift( $special_servicetypes, 'ELECTRONIC_TRADE_DOCUMENTS' );
+						array_unshift( $special_servicetypes, 'ELECTRONIC_TRADE_DOCUMENTS' );
 
-							$request['RequestedShipment']['SpecialServicesRequested']['EtdDetail']['RequestedDocumentCopies'] = [];
-							$request['RequestedShipment']['SpecialServicesRequested']['EtdDetail']['RequestedDocumentCopies'][] = 'COMMERCIAL_INVOICE';
-
-							if( $this->pro_forma_invoice ){
-
-								$request['RequestedShipment']['SpecialServicesRequested']['EtdDetail']['RequestedDocumentCopies'][] = 'PRO_FORMA_INVOICE';
-							}
-						}
-
-						$request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'] = $special_servicetypes;
-						
-						$request['RequestedShipment']['ShippingDocumentSpecification']['ShippingDocumentTypes'][] = 'COMMERCIAL_INVOICE';
+						$request['RequestedShipment']['SpecialServicesRequested']['EtdDetail']['RequestedDocumentCopies'] = [];
+						$request['RequestedShipment']['SpecialServicesRequested']['EtdDetail']['RequestedDocumentCopies'][] = 'COMMERCIAL_INVOICE';
 
 						if( $this->pro_forma_invoice ){
 
-							$request['RequestedShipment']['ShippingDocumentSpecification']['ShippingDocumentTypes'][] = 'PRO_FORMA_INVOICE';
-						}
-
-						$request['RequestedShipment']['ShippingDocumentSpecification']['CommercialInvoiceDetail']['Format']['ImageType'] = 'PDF';
-						$request['RequestedShipment']['ShippingDocumentSpecification']['CommercialInvoiceDetail']['Format']['StockType'] = 'PAPER_LETTER';
-						
-						if($company_logo){
-							$request['RequestedShipment']['ShippingDocumentSpecification']['CommercialInvoiceDetail']['CustomerImageUsages'][] = array(
-								'Type' 	=> 'LETTER_HEAD', 
-								'Id' 	=> 'IMAGE_1', 
-							);
-						}
-
-						if($digital_signature){
-							$request['RequestedShipment']['ShippingDocumentSpecification']['CommercialInvoiceDetail']['CustomerImageUsages'][] = array(
-								'Type' 	=> 'SIGNATURE',
-								'Id' 	=> 'IMAGE_2',
-							);
+							$request['RequestedShipment']['SpecialServicesRequested']['EtdDetail']['RequestedDocumentCopies'][] = 'PRO_FORMA_INVOICE';
 						}
 					}
-					$this->process_result( $request, $this->get_result( $request ));
-				} else {
-					$this->process_result( $request, $this->get_result( $request ));
+
+					$request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'] = $special_servicetypes;
+
+					$request['RequestedShipment']['ShippingDocumentSpecification']['ShippingDocumentTypes'][] = 'COMMERCIAL_INVOICE';
+
+					if( $this->pro_forma_invoice ){
+
+						$request['RequestedShipment']['ShippingDocumentSpecification']['ShippingDocumentTypes'][] = 'PRO_FORMA_INVOICE';
+					}
+
+					$request['RequestedShipment']['ShippingDocumentSpecification']['CommercialInvoiceDetail']['Format']['ImageType'] = 'PDF';
+					$request['RequestedShipment']['ShippingDocumentSpecification']['CommercialInvoiceDetail']['Format']['StockType'] = 'PAPER_LETTER';
+
+					if($company_logo){
+						$request['RequestedShipment']['ShippingDocumentSpecification']['CommercialInvoiceDetail']['CustomerImageUsages'][] = array(
+							'Type' 	=> 'LETTER_HEAD', 
+							'Id' 	=> 'IMAGE_1', 
+						);
+					}
+
+					if($digital_signature){
+						$request['RequestedShipment']['ShippingDocumentSpecification']['CommercialInvoiceDetail']['CustomerImageUsages'][] = array(
+							'Type' 	=> 'SIGNATURE',
+							'Id' 	=> 'IMAGE_2',
+						);
+					}
 				}
-				$first_package =  false;
+				$this->process_result( $request, $this->get_result( $request ));
 			}
 			if(!empty($this->tracking_ids)){
 				// Auto fill tracking info.
@@ -3705,7 +3701,7 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 					}	
 				}							
 			} 
-			do_action('xa_fedex_label_generated_successfully',$shipmentId,$shippingLabel,$this->order_id);
+			do_action('xa_fedex_label_generated_successfully',$shipmentId,$shippingLabel,$this->order_id,$shippinglabel_type);
 		}else{
 			$this->shipmentErrorMessage .=  $this->result_notifications($result->Notifications, $error_message='', true);
 

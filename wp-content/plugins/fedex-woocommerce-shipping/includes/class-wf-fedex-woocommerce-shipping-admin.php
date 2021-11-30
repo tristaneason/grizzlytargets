@@ -94,6 +94,7 @@ class wf_fedex_woocommerce_shipping_admin{
 		$this->etd_label 			= (isset($this->settings['etd_label']) && ($this->settings['etd_label'] == 'yes')) ? true : false;
 		$this->home_delivery_premium 		= (isset($this->settings['home_delivery_premium']) && ($this->settings['home_delivery_premium'] == 'yes')) ? true : false;
 		$this->home_delivery_premium_type 	=	( isset($this->settings['home_delivery_premium_type']) && !empty($this->settings['home_delivery_premium_type']) ) ? $this->settings['home_delivery_premium_type'] : '';
+		$this->fedex_tracking 		= (isset($this->settings['fedex_tracking']) && ($this->settings['fedex_tracking'] == 'yes')) ? true : false;
 
 		// Hold At Location
 		if( $this->hold_at_location ) {
@@ -1061,7 +1062,12 @@ class wf_fedex_woocommerce_shipping_admin{
 			if (!$order) 
 				return;
 			
-			add_meta_box('wf_fedex_metabox', __('FedEx', 'wf-shipping-fedex'), array($this, 'wf_fedex_metabox_content'), 'shop_order', 'advanced', 'default');
+			add_meta_box('wf_fedex_metabox', __('FedEx Shipment Label', 'wf-shipping-fedex'), array($this, 'wf_fedex_metabox_content'), 'shop_order', 'advanced', 'default');
+
+			if ( $this->fedex_tracking ) {
+				
+				add_meta_box('ph_fedex_tracking_metabox', __('FedEx Tracking', 'wf-shipping-fedex'), array($this, 'ph_fedex_tracking_metabox_content'), 'shop_order', 'advanced', 'default');
+			}
 		}
 	}
 
@@ -1135,6 +1141,82 @@ class wf_fedex_woocommerce_shipping_admin{
 			//For automatic label generation 
 			do_action( 'wf_after_package_generation', $order->get_id(), $package_data );
 		}
+	}
+
+	public function ph_fedex_tracking_metabox_content(){
+
+		global $post;
+		
+		if (!$post) {
+			return;
+		}
+
+		$order = $this->wf_load_order($post->ID);
+		if (!$order) 
+			return;			
+
+		$shipmentIds = get_post_meta($order->id, 'wf_woo_fedex_shipmentId', false);
+		// Some Customers Site wont allow adding duplicate Meta Keys in DB, Adding new meta key with custom build Shipment Id Array
+		$shipment_ids = get_post_meta($order->id, 'ph_woo_fedex_shipmentIds', true);
+
+		if( is_array($shipmentIds) && is_array($shipment_ids) ){
+			$shipmentIds  		= array_unique(array_merge($shipmentIds,$shipment_ids));
+		}
+
+		echo '<input type="hidden" class="order_id" id="order_id" value="'.$order->id.'"/>';
+
+		echo '</br><strong>'.__( 'Click to track your shipments  ', '').'</strong><br>';
+		echo '<span class=" button-primary ph-button-tracking" id="ph_track_fedex" style="margin: 10px 2px 2px 2px;">Start Tracking</span></br></br>';
+		
+		if( ! empty($shipmentIds) ) {
+
+			foreach ( $shipmentIds as $shipmentId ) {
+
+				$tracking_status = get_post_meta( $order->id, '_ph_fedex_tracking_status'.$shipmentId, true );
+				$tracking_error  = get_post_meta( $order->id, '_ph_fedex_tracking_status_error'.$shipmentId, true );
+
+				if ( !empty($tracking_status)) {
+
+					$tracking_link = 'https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber='.$shipmentId;
+					echo "<strong style='margin: 6px 5px 5px 4px;'>".__( 'Tracking ID : ', '')."</strong><a href='".$tracking_link."' target='_blank'>".$shipmentId."</a><br/><br/>";
+					
+					echo "<table class='ph_fedex_tracking_status_history_table'>";
+
+					echo "<tr>";
+					echo "<th>". __( 'Location', 'woocommerce-shipment-tracking'). "</th>";
+					echo "<th>". __( 'Date', 'woocommerce-shipment-tracking') ."</th>";
+					echo "<th>". __( 'Activity', 'woocommerce-shipment-tracking'). "</th>";
+					echo "</tr>";
+
+					foreach( $tracking_status as $key => $tracking_infos ) {
+
+						if ( $key == 'shipment_tracking' ) {
+
+							foreach ( $tracking_infos as $tracking_info ) {
+
+								$address = $tracking_info['location'];
+								$date 	 = $tracking_info['date'];
+								$status  = $tracking_info['status'];
+
+								echo "<tr>";
+								echo "<td>". $address. "</td>";
+								echo "<td>". $date. "</td>";
+								echo "<td>". $status. "</td>";
+								echo "</tr>";
+							}
+						}
+					}
+					echo "</table><br/>";
+
+				} else if( isset($tracking_error) && !empty($tracking_error) ){
+
+					$tracking_link = 'https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber='.$shipmentId;
+					echo "<strong style='margin: 6px 5px 5px 4px;'>".__( 'Tracking ID : ', '')."</strong><a href='".$tracking_link."' target='_blank'>".$shipmentId."</a><br/><br/>";
+
+					echo "<div class='ph_fedex_tracking_error_message'><strong>".$tracking_error."</strong></div></br>";
+				}
+			}
+		} 
 	}
 
 	public function wf_fedex_metabox_content(){
@@ -1266,7 +1348,7 @@ class wf_fedex_woocommerce_shipping_admin{
 			if(empty($stored_packages)	&&	!is_array($stored_packages)){
 				echo '<strong>'.__( 'Auto generate packages.', 'wf-shipping-fedex' ).'</strong></br>';
 				?>
-				<a class="button button-primary tips fedex_generate_packages" href="<?php echo admin_url( '/post.php?wf_fedex_generate_packages='.base64_encode($post->ID) ); ?>" data-tip="<?php _e( 'Regenerate all the packages', 'wf-shipping-fedex' ); ?>"><?php _e( 'Generate Packages', 'wf-shipping-fedex' ); ?></a><hr style="border-color:#0074a2">
+				<a class="button button-primary tips fedex_generate_packages" href="<?php echo admin_url( '/post.php?wf_fedex_generate_packages='.base64_encode($post->ID) ); ?>" data-tip="<?php _e( 'Generate all the packages', 'wf-shipping-fedex' ); ?>"><?php _e( 'Generate Packages', 'wf-shipping-fedex' ); ?></a><hr style="border-color:#0074a2">
 				<?php
 			}else{
 				$generate_url = admin_url('/post.php?wf_fedex_createshipment='.$post->ID);
@@ -1419,7 +1501,7 @@ class wf_fedex_woocommerce_shipping_admin{
 					echo '</table>';
 					echo '<a class="button wf-action-button wf-add-button" style="font-size: 12px; margin-left: 4px; margin-right: 5px; margin-top: 15px;" id="wf_fedex_add_package">Add Package</a>';
 				?>
-				<a style="margin: 4px; margin-right: 5px; margin-top: 15px;" class="button tips fedex_generate_packages" href="<?php echo admin_url( '/post.php?wf_fedex_generate_packages='.base64_encode($post->ID) ); ?>" data-tip="<?php _e( 'Regenerate all the packages', 'wf-shipping-fedex' ); ?>"><?php _e( 'Generate Packages', 'wf-shipping-fedex' ); ?></a><li/>
+				<a style="margin: 4px; margin-right: 5px; margin-top: 15px;" class="button tips fedex_generate_packages" href="<?php echo admin_url( '/post.php?wf_fedex_generate_packages='.base64_encode($post->ID) ); ?>" data-tip="<?php _e( 'Re-generate all the packages', 'wf-shipping-fedex' ); ?>"><?php _e( 'Re-generate Package(s)', 'wf-shipping-fedex' ); ?></a><li/>
 				<script type="text/javascript">
 					jQuery(document).ready(function(){
 						

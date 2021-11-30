@@ -7,6 +7,9 @@ add_action( 'vc_after_init', 'porto_load_product_attribute_shortcode' );
 function porto_shortcode_product_attribute( $atts, $content = null ) {
 	ob_start();
 	if ( $template = porto_shortcode_woo_template( 'porto_products' ) ) {
+		if ( ! is_array( $atts ) ) {
+			$atts = array();
+		}
 		$atts['shortcode'] = 'product_attribute';
 		include $template;
 	}

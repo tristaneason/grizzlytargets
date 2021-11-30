@@ -215,7 +215,7 @@ foreach($form_fields as $key=>$value)
 	                    {
 	                    	$css_class_arr=explode(" ", $css_class);
 	                    }
-	                    if(count($sele_vals)==0 && in_array('wc-product-search', $css_class_arr))
+	                    if(in_array('wc-product-search', $css_class_arr))
 	                    {
 	                    	foreach($vl as $single_vl)
 	                    	{
@@ -225,6 +225,27 @@ foreach($form_fields as $key=>$value)
 	                    			$product=wc_get_product($single_vl);
 	                    			?>
 	                  				<option value="<?php echo $single_vl;?>" selected><?php echo $product->get_title();?></option>
+	                    			<?php
+	                    		}
+	                    	}
+	                    }
+                            if(in_array('wc-customer-search', $css_class_arr)){
+	                    	foreach($vl as $single_vl)
+	                    	{
+	                    		$single_vl=(int) $single_vl;
+	                    		if($single_vl>0)
+	                    		{
+	                    			$user=get_user_by( 'id', $single_vl);
+                                                  if(!is_object($user))
+                                                       continue;
+	                    			?>
+	                  				<option value="<?php echo $single_vl;?>" selected><?php echo sprintf(
+                                               /* translators: $1: user name, $2 user id, $3: user email */
+                                                esc_html__( '%1$s (#%2$s &ndash; %3$s)'),
+                                                $user->first_name . ' ' . $user->last_name,
+                                                $user->ID,
+                                                $user->user_email
+                                                );?></option>
 	                    			<?php
 	                    		}
 	                    	}

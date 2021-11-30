@@ -7,6 +7,9 @@ add_action( 'vc_after_init', 'porto_load_featured_products_shortcode' );
 function porto_shortcode_featured_products( $atts, $content = null ) {
 	ob_start();
 	if ( $template = porto_shortcode_woo_template( 'porto_products' ) ) {
+		if ( ! is_array( $atts ) ) {
+			$atts = array();
+		}
 		$atts['shortcode'] = 'featured_products';
 		include $template;
 	}
@@ -20,6 +23,7 @@ function porto_load_featured_products_shortcode() {
 	$custom_class       = porto_vc_custom_class();
 	$order_by_values    = porto_vc_woo_order_by();
 	$order_way_values   = porto_vc_woo_order_way();
+	$sort_by_values     = porto_woo_sort_by();
 
 	// woocommerce featured products
 	vc_map(
@@ -166,14 +170,8 @@ function porto_load_featured_products_shortcode() {
 						'type'       => 'porto_multiselect',
 						'heading'    => __( 'Show Sort by', 'porto-functionality' ),
 						'param_name' => 'show_sort',
-						'value'      => array(
-							__( 'All', 'porto-functionality' ) => 'all',
-							__( 'Popular', 'porto-functionality' ) => 'popular',
-							__( 'Date', 'porto-functionality' ) => 'date',
-							__( 'Rating', 'porto-functionality' ) => 'rating',
-							__( 'On Sale', 'porto-functionality' ) => 'onsale',
-						),
 						'std'        => '',
+						'value'      => $sort_by_values,
 					),
 					array(
 						'type'       => 'textfield',

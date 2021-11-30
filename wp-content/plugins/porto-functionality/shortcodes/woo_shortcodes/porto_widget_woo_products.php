@@ -21,7 +21,7 @@ if ( function_exists( 'register_block_type' ) ) {
 					'type'    => 'string',
 					'default' => 'date',
 				),
-				'order'    => array(
+				'order'       => array(
 					'type'    => 'string',
 					'default' => 'DESC',
 				),
@@ -65,6 +65,16 @@ function porto_load_widget_woo_products_shortcode() {
 	$animation_delay    = porto_vc_animation_delay();
 	$custom_class       = porto_vc_custom_class();
 
+	global $porto_settings;
+	$status_values = array(
+		__( 'All products', 'woocommerce' )      => '',
+		__( 'Featured products', 'woocommerce' ) => 'featured',
+		__( 'On-sale products', 'woocommerce' )  => 'onsale',
+	);
+	if ( ! empty( $porto_settings['woo-pre-order'] ) ) {
+		$status_values[ __( 'Pre-Order', 'porto-functionality' ) ] = 'pre-order';
+	}
+
 	// woocommerce products widget
 	vc_map(
 		array(
@@ -91,12 +101,7 @@ function porto_load_widget_woo_products_shortcode() {
 					'type'        => 'dropdown',
 					'heading'     => __( 'Show', 'woocommerce' ),
 					'param_name'  => 'show',
-					'value'       => array(
-						__( 'All products', 'woocommerce' )      => '',
-						__( 'Featured products', 'woocommerce' ) => 'featured',
-						__( 'On-sale products', 'woocommerce' )  => 'onsale',
-						__( 'Pre-Order', 'porto-functionality' )  => 'pre-order',
-					),
+					'value'       => $status_values,
 					'admin_label' => true,
 				),
 				array(

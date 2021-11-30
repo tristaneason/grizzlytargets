@@ -5,8 +5,14 @@ function Wppfm_AttributeMeta( key, value ) {
 }
 
 function countSources( mappingData ) {
+	// Changed @since 2.26.0 so it also checks if the last mapping has a property 'c' as this means that there should be one extra source.
+	let counter = mappingData.length > 0 ? mappingData.length : 1;
 
-	return mappingData.length > 0 ? mappingData.length : 1;
+	if ( mappingData[counter-1] && mappingData[counter-1].hasOwnProperty( 'c' ) ) {
+		counter += 1;
+	}
+
+	return counter;
 }
 
 function wppfm_getMappingSourceValue( mapping, sourceCounter ) {

@@ -520,8 +520,9 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
                     }
                 }
             } else {
-                $label_sufex_arr = $this->filter_label_sufex_array_unishippers_freight($result['quotes']);
 
+                return [];
+                $label_sufex_arr = $this->filter_label_sufex_array_unishippers_freight($result['quotes']);
                 $count = 0;
                 $meta_data['accessorials'] = json_encode($accessorials);
                 $meta_data['sender_origin'] = $request_data['sender_origin'];

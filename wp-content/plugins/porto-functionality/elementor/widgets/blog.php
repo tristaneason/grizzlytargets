@@ -317,6 +317,17 @@ class Porto_Elementor_Blog_Widget extends \Elementor\Widget_Base {
 			$this->add_control( $key, $opt );
 		}
 
+		$this->add_control(
+			'margin',
+			array(
+				'type'  => Controls_Manager::NUMBER,
+				'label' => __( 'Spacing between items (px)', 'porto-functionality' ),
+				'condition' => array(
+					'post_layout' => 'slider',
+				),
+			)
+		);
+
 		$this->end_controls_section();
 	}
 

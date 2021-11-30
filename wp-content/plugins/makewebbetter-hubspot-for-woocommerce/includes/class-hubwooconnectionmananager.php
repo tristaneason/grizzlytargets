@@ -92,7 +92,7 @@ class HubWooConnectionMananager {
 	 */
 	public function hubwoo_fetch_access_token_from_code( $hapikey, $hseckey ) {
 
-		if ( isset( $_GET['code'] ) ) {
+		if ( isset( $_GET['type'] ) && 'hs-auth' == $_GET['type'] && isset( $_GET['code'] ) ) {
 			$code     = sanitize_key( $_GET['code'] );
 			$endpoint = '/oauth/v1/token';
 			$data     = array(
@@ -629,7 +629,7 @@ class HubWooConnectionMananager {
 					$hsocssynced += count( $args['ids'] );
 					update_option( 'hubwoo_ocs_contacts_synced', $hsocssynced );
 				}
-				if( isset( $args['ids'] ) && isset($args['type'] ) ) {
+				if ( isset( $args['ids'] ) && isset( $args['type'] ) ) {
 					Hubwoo::hubwoo_marked_sync( $args['ids'], $args['type'] );
 				}
 			} elseif ( 400 === $status_code ) {
@@ -672,7 +672,7 @@ class HubWooConnectionMananager {
 			if ( isset( $list_details['name'] ) ) {
 				$url          = '/contacts/v1/lists';
 				$headers      = $this->get_token_headers();
-				$res_body	  = '';
+				$res_body     = '';
 				$list_details = wp_json_encode( $list_details );
 				$response     = wp_remote_post(
 					$this->base_url . $url,
@@ -1031,7 +1031,7 @@ class HubWooConnectionMananager {
 
 				file_put_contents( $log_dir, $log, FILE_APPEND );
 			}
-		}	
+		}
 	}
 
 	/**
@@ -1624,7 +1624,7 @@ class HubWooConnectionMananager {
 		$url                    = '/extensions/ecomm/v2/sync/messages';
 		$headers                = self::get_token_headers();
 		$messages               = json_encode( $messages );
-		$res_body				= '';
+		$res_body               = '';
 
 		$response = wp_remote_request(
 			$this->base_url . $url,
@@ -1919,7 +1919,7 @@ class HubWooConnectionMananager {
 			'response' => $res_message,
 			'body' => $res_body,
 		);
-		
+
 		if ( 200 == $parsed_response['status_code'] ) {
 			$parsed_response['body'] = json_decode( $parsed_response['body'], true );
 			if ( ! empty( $parsed_response['body'] ) && isset( $parsed_response['body']['vid'] ) ) {

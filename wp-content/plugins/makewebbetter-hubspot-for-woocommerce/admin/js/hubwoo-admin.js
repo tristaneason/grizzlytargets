@@ -443,7 +443,7 @@
 					ajaxUrl,
 					{ action: 'hubwoo_get_current_sync_status', hubwooSecurity, data: { type: 'contact' } },
 					function( response ) {
-						response = jQuery.parseJSON( response );
+						// response = jQuery.parseJSON( response );
 						if ( response === true || response == 1 ) {
 							jQuery( '#hubwoo_customers_role_settings' ).attr( { disabled: 'true' } );
 							jQuery( '#hubwoo_customers_manual_sync' ).attr( { disabled: 'true' } );
@@ -1201,7 +1201,7 @@
 					ajaxUrl,
 					{ action: 'hubwoo_get_current_sync_status', hubwooSecurity, data: { type: 'deal' } },
 					function( response ) {
-						response = jQuery.parseJSON( response );
+						// response = jQuery.parseJSON( response );
 						if ( response != true || response != 1 ) {
 							getDealsUsersToSync();
 						} else {
@@ -1495,9 +1495,9 @@
 				saveUpdates( preparedFormData );
 				jQuery.post(
 					ajaxUrl,
-					{ action: 'hubwoo_get_current_sync_status', hubwooSecurity },
+					{ action: 'hubwoo_get_current_sync_status', hubwooSecurity, data: { type: 'contact' } },
 					function( response ) {
-						response = jQuery.parseJSON( response );
+						// response = jQuery.parseJSON( response );
 						if ( response != true || response != 1 ) {
 							getCurrentUsersToSync();
 						} else {

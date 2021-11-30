@@ -237,7 +237,7 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 		$this->min_amount	  		= isset( $this->settings['min_amount'] ) ? $this->settings['min_amount'] : 0;
 		$this->customs_duties_payer	= isset ( $this->settings['customs_duties_payer'] ) ? $this->settings['customs_duties_payer'] : '';
 		$this->enable_speciality_box	= ( $bool = $this->get_option( 'enable_speciality_box' ) ) && $bool == 'yes' ? true : false;
-		$this->ship_time_adjustment = isset( $this->settings['ship_time_adjustment']) ? $this->settings['ship_time_adjustment'] : 1;
+		$this->ship_time_adjustment 	= isset( $this->settings['ship_time_adjustment']) ? $this->settings['ship_time_adjustment'] : 1;
 		$this->wc_store_currency		= get_woocommerce_currency();
 		$this->fedex_currency			= ! empty($this->settings['fedex_currency']) ? $this->settings['fedex_currency'] : $this->wc_store_currency;
 		$this->fedex_conversion_rate	= ! empty($this->settings['fedex_conversion_rate']) ? (float) $this->settings['fedex_conversion_rate'] : 1;
@@ -568,9 +568,7 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 	}
 
 	public function init_form_fields() {
-		if( is_admin() && ! did_action('wp_enqueue_media') && isset($_GET['section']) &&  $_GET['section'] == 'wf_fedex_woocommerce_shipping'){
-			wp_enqueue_media();
-		}
+		
 		$this->form_fields  = include( 'data-wf-settings.php' );
 	}
 
@@ -1697,14 +1695,14 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 		$request['RequestedShipment']['DropoffType']	   = $this->dropoff_type;
 		$rate_request_time = clone self::$current_wp_time;
 
-		if( ! empty($this->ship_time_adjustment) ) {
+		if( $this->delivery_time && ! empty($this->ship_time_adjustment) ) {
 			$rate_request_time->modify("+$this->ship_time_adjustment days");
 		}
 
 		$request['RequestedShipment']['ShipTimestamp']	 = $rate_request_time->format('c');
 
 		// Check Current Time exceeds Store Cut-off Time, if yes request on next day
-		if( !empty($this->cut_off_time) && $this->cut_off_time != '24:00') {
+		if( $this->delivery_time && !empty($this->cut_off_time) && $this->cut_off_time != '24:00') {
 
 			$this->current_wp_time_hour_minute = current_time('H:i');
 
@@ -1726,8 +1724,11 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 			$request['RequestedShipment']['ShipTimestamp'] = $shipTimeStamp;
 		}
 
-		// Make Saturday Delivery Rate Request only on Friday
-		if( date('l',strtotime($request['RequestedShipment']['ShipTimestamp'])) != 'Friday' ) {
+		$timeStampDate	= new DateTime( $request['RequestedShipment']['ShipTimestamp'] );
+		$timeStamptDay 	= $timeStampDate->format('l');
+
+		// Make Saturday Delivery Rate Request only on Friday and Thursday
+		if( ( $timeStamptDay != 'Friday' ) && ( $timeStamptDay != 'Thursday' ) ) {
 
 			$this->saturday_delivery = false;
 		}
@@ -2831,7 +2832,7 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 							$fedex_service_date 	= date_create_from_format( $date_format, $this->delivery_time_details );
 							$transit_time_as_num 	= abs( (int) ( (double) ( strtotime($fedex_service_date->format('Y-m-d')) - strtotime($today_date->format('Y-m-d')) ) / (60*60*24) ) );
 
-							if( ! empty($this->ship_time_adjustment) ) {
+							if( $this->delivery_time && ! empty($this->ship_time_adjustment) ) {
 								$today_date->modify("+$this->ship_time_adjustment days");
 							}
 

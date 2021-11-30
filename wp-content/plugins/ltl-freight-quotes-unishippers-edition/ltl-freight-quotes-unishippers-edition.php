@@ -5,7 +5,7 @@
   Description: Dynamically retrieves your negotiated LTL freight rates from Unishippers and displays the results in the WooCommerce shopping cart..
   Author: Eniture Technology
   Author URI: http://eniture.com/
-  Version: 2.1.0
+  Version: 2.1.1
   Text Domain: eniture-technology
   License: GPL version 2 or later - http://www.eniture.com/
   WC requires at least: 5.0.0
@@ -132,7 +132,7 @@ if (!function_exists('unishippers_freight_admin_script')) {
         wp_enqueue_style('unishippers_wickedpicker_style');
 
         wp_enqueue_script('unishippers_wickedpicker_script');
-        wp_register_style('unishippers_ltl_style', plugin_dir_url(__FILE__) . '/css/unishippers_ltl_style.css', array(), '1.0.9', 'screen');
+        wp_register_style('unishippers_ltl_style', plugin_dir_url(__FILE__) . '/css/unishippers_ltl_style.css', array(), '1.1.3', 'screen');
         wp_enqueue_style('unishippers_ltl_style');
     }
 
@@ -180,7 +180,7 @@ add_action('admin_enqueue_scripts', 'en_unishippers_freight_script');
 function en_unishippers_freight_script()
 {
     wp_enqueue_script('jquery');
-    wp_enqueue_script('en_unishippers_freight_script', plugin_dir_url(__FILE__) . 'js/en-unishippers-freight.js', array(), '1.0.4');
+    wp_enqueue_script('en_unishippers_freight_script', plugin_dir_url(__FILE__) . 'js/en-unishippers-freight.js', array(), '1.0.5');
     wp_localize_script('en_unishippers_freight_script', 'en_unishippers_freight_admin_script', array(
         'plugins_url' => plugins_url(),
         'allow_proceed_checkout_eniture' => trim(get_option("allow_proceed_checkout_eniture")),
@@ -223,14 +223,10 @@ require_once 'unishipper-ltl-carrier-list.php';
 include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 require_once 'unishippers-ltl-update-change.php';
 require_once 'unishippers-ltl-curl-class.php';
+// Origin terminal address
+add_action('admin_init', 'unishippers_freight_update_warehouse');
 
-// Micro Warehouse
-$all_plugins = apply_filters('active_plugins', get_option('active_plugins'));
-if (!stripos(implode($all_plugins), 'micro-warehouse-shipping.php')) {
-    require_once 'template/unishippers-ltl-product-detail.php';
-    require_once('template/unishippers-ltl-products-options.php');
-}
-
+require_once('product/en-product-detail.php');
 
 /**
  * Unishippers Action And Filters
@@ -357,6 +353,3 @@ if (!defined('EN_UNISHIPPER_LOADER')) {
 
     define('EN_UNISHIPPER_LOADER', plugin_dir_url(__FILE__));
 }
-
-// Origin terminal address
-add_action('admin_init', 'unishippers_freight_update_warehouse');

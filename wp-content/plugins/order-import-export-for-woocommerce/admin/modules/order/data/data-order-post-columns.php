@@ -65,9 +65,17 @@ $base_columns = array(
 if (!function_exists('is_plugin_active'))
     require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 
-if (is_plugin_active('wt-woocommerce-packing-list/wf-woocommerce-packing-list.php')):
+if (is_plugin_active('print-invoices-packing-slip-labels-for-woocommerce/print-invoices-packing-slip-labels-for-woocommerce.php')):
     $base_columns['meta:wf_invoice_number'] = 'WT Invoice number';
     $base_columns['meta:_wf_invoice_date'] = 'WT Invoice date';
+endif;
+
+if (is_plugin_active('yith-woocommerce-order-tracking-premium/init.php')):
+    $base_columns['meta:ywot_tracking_code'] = 'Tracking code';
+    $base_columns['meta:ywot_tracking_postcode'] = 'Tracking postcode';
+    $base_columns['meta:ywot_carrier_id'] = 'Carrier name';
+    $base_columns['meta:ywot_pick_up_date'] = 'Pickup date';
+    $base_columns['meta:ywot_picked_up'] = 'Order picked up?';
 endif;
 
 return apply_filters('hf_csv_order_post_columns', $base_columns);

@@ -94,6 +94,29 @@ function initiate_background_process() {
 add_action( 'wp_loaded', 'initiate_background_process' );
 
 /**
+ * Provides debug information after a failed HTTP request.
+ *
+ * Output in `wp-content\debug.log` file:
+ *
+ * @since 2.25.0.
+ *
+ * @param array|WP_Error $response HTTP response or WP_Error object.
+ * @param string         $context  Context under which the hook is fired.
+ * @param string         $requests    HTTP transport used.
+ * @param array          $r        HTTP request arguments.
+ * @param string         $url      The request URL.
+ */
+function wppfm_debug_wp_remote_post_and_get_request( $response, $context, $requests, $r, $url ) {
+	error_log( $url );
+	error_log( json_encode( $response ) );
+	error_log( $requests );
+	error_log( $context );
+	error_log( json_encode( $r ) );
+}
+
+//add_action( 'http_api_debug', 'wppfm_debug_wp_remote_post_and_get_request', 10, 5 );
+
+/**
  * Makes sure the automatic feed update cron schedule is still installed.
  *
  * @since 2.20.0

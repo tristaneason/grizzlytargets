@@ -422,8 +422,28 @@ class Wt_Import_Export_For_Woo_Basic_Order_Import {
                 if ('meta:_wf_invoice_date' == $column ) {
                     $this->item_data['meta_data'][] = array('key'=>'_wf_invoice_date','value'=> strtotime($value));
                     continue;
-                }                
-                
+                }  
+                if ('meta:ywot_tracking_code' == $column ) {
+                    $this->item_data['meta_data'][] = array('key'=>'ywot_tracking_code', 'value'=> $value);
+                    continue;
+                }
+                if ('meta:ywot_tracking_postcode' == $column ) {
+                    $this->item_data['meta_data'][] = array('key'=>'ywot_tracking_postcode', 'value'=> $value);
+                    continue;
+                }  
+                if ('meta:ywot_carrier_id' == $column ) {
+                    $this->item_data['meta_data'][] = array('key'=>'ywot_carrier_id', 'value'=> $value);
+                    continue;
+                }  
+                if ('meta:ywot_pick_up_date' == $column ) {
+                    $this->item_data['meta_data'][] = array('key'=>'ywot_pick_up_date', 'value'=> $value);
+                    continue;
+                }  
+                if ('meta:ywot_picked_up' == $column ) {
+                    $this->item_data['meta_data'][] = array('key'=>'ywot_picked_up', 'value'=> $value);
+                    continue;
+                }                  
+
                 if(strstr($column, 'line_item_')){
                     $this->item_data['order_items'][] = $this->wt_parse_line_item_field($value,$column);
                     continue;                

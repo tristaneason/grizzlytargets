@@ -5,6 +5,9 @@ add_action( 'vc_after_init', 'porto_load_page_header_shortcode' );
 add_action( 'save_post', 'porto_check_page_header_shortcode', 10, 2 );
 
 function porto_check_page_header_shortcode( $post_id, $post = false ) {
+	if ( isset( $_POST['action'] ) && 'elementor_ajax' == $_POST['action'] ) {
+		return;
+	}
 	$post_content = '';
 	if ( defined( 'VCV_VERSION' ) && wp_doing_ajax() && isset( $_REQUEST['action'] ) && 'vcv-admin-ajax' == $_REQUEST['action'] && isset( $_REQUEST['vcv-admin-ajax'] ) && isset( $_REQUEST['vcv-zip'] ) && false !== $post && $post->post_content ) {
 		$post_content = $post->post_content;
@@ -53,6 +56,7 @@ function porto_load_page_header_shortcode() {
 					'heading'     => __( 'Breadcrumbs Type', 'porto-functionality' ),
 					'param_name'  => 'breadcrumbs_type',
 					'value'       => array(
+						__( 'Theme Options', 'porto-functionality' ) => '',
 						__( 'Type 1', 'porto-functionality' ) => '1',
 						__( 'Type 2', 'porto-functionality' ) => '2',
 						__( 'Type 3', 'porto-functionality' ) => '3',

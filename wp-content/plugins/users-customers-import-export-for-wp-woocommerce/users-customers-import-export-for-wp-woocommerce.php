@@ -5,8 +5,8 @@
   Description: Export and Import User/Customers details From and To your WordPress/WooCommerce.
   Author: WebToffee
   Author URI: https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/
-  Version: 2.2.0
-  WC tested up to: 5.7
+  Version: 2.2.3
+  WC tested up to: 5.9
   Text Domain: users-customers-import-export-for-wp-woocommerce
   License: GPLv3
   License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -45,7 +45,7 @@ if (!defined('WT_IEW_DEBUG_BASIC_TROUBLESHOOT')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('WT_U_IEW_VERSION', '2.2.0');
+define('WT_U_IEW_VERSION', '2.2.3');
 
 /**
  * The code that runs during plugin activation.
@@ -208,3 +208,29 @@ function wt_user_import_basic_help_content() {
         <?php
     }
 }
+
+
+add_action( 'wt_user_addon_basic_gopro_content', 'wt_user_addon_basic_gopro_content' );
+
+function wt_user_addon_basic_gopro_content() {
+	if ( defined( 'WT_IEW_PLUGIN_ID_BASIC' ) ) {
+    ?>
+                <div class="wt-ier-user wt-ier-gopro-cta wt-ierpro-features" style="display: none;">                    
+                    <ul class="ticked-list wt-ierpro-allfeat">
+                        <li><?php _e('Supports CSV/XML file formats.'); ?></li>
+                        <li><?php _e('Import and export custom fields and hidden metadata.'); ?></li> 
+                        <li><?php _e('Export and import guest users.'); ?></li>
+                        <li><?php _e('Run scheduled exports via FTP/SFTP.'); ?></li>
+                        <li><?php _e('Run scheduled imports via URL/FTP/SFTP.'); ?></li>
+                        <li><?php _e('Option to send email notifications to users/customers after import.'); ?></li>
+                        <li><?php _e('Tested compatibility with various third-party plugins.'); ?></li>
+                    </ul>    
+                    <div class="wt-ierpro-btn-wrapper"> 
+                        <a href="<?php echo "https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=User_Import_Export&utm_content=" . WT_U_IEW_VERSION; ?>" target="_blank"  class="wt-ierpro-outline-btn"><?php _e('UPGRADE TO PREMIUM'); ?></a>
+                    </div>
+                    <p style="padding-left:25px;"><b><a href="<?php echo admin_url('admin.php?page=wt_import_export_for_woo_basic#wt-pro-upgrade'); ?>" target="_blank"><?php _e('Get more import export addons >>'); ?></a></b></p>
+                </div>
+    <?php
+	}
+}
+

@@ -394,10 +394,10 @@ function porto_delete_product_extra_attribute_values( $term_id, $tt_id, $taxonom
 /**
  * Adds video for product thumbnail
  *
- * @since 6.1.0
+ * @since 6.1
  */
 if ( ! function_exists( 'porto_product_video_meta_box' ) ) {
-	function porto_product_video_meta_box( $show_metabox = true ) {
+	function porto_product_video_meta_box( $show_box = true ) {
 		$meta_fields = array(
 			'video_post_image' => array(
 				'title'   => esc_html__( 'Video from Library', 'porto-functionality' ),
@@ -406,15 +406,15 @@ if ( ! function_exists( 'porto_product_video_meta_box' ) ) {
 				'default' => false,
 			),
 			'video_url'        => array(
-				'title'   => esc_html__( 'Video Shortcode', 'porto-functionality' ),
+				'title'   => esc_html__( 'Video Source (Video shortcode, Youtube url or Vimeo url)', 'porto-functionality' ),
 				'name'    => 'porto_product_video_thumbnail_shortcode',
 				'type'    => 'textarea',
 				'rows'    => 5,
 				'default' => '',
-				'desc'    => esc_html__( 'ex. [video src="url.mp4" poster="image.jpg"]', 'porto-functionality' ),
+				'desc'    => esc_html__( 'ex. [video src="url.mp4" poster="image.jpg"], https://www.youtube.com/watch?v=MDx7RBlSq1A or https://vimeo.com/75230326', 'porto-functionality' ),
 			),
 		);
-		if ( $show_metabox ) {
+		if ( $show_box ) {
 			porto_show_meta_box( $meta_fields );
 		}
 		return $meta_fields;

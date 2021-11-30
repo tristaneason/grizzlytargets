@@ -1,5 +1,5 @@
 <?php
-if ( empty( $atts['icon_color_bg'] ) && ! isset( $atts['title_google_font_style_font_size_tablet'] ) ) {
+if ( empty( $atts['icon_color_bg'] ) && ! isset( $atts['title_google_font_style_font_size'] ) ) {
 	$atts['icon_color_bg'] = 'transparent';
 }
 
@@ -136,6 +136,11 @@ if ( $pos ) {
 		$classes .= ' flex-wrap';
 	}
 	if ( 'top' == $pos && $h_align && 'center' != $h_align ) {
+		if ( 'left' == $h_align ) {
+			$h_align = 'start';
+		} elseif ( 'right' == $h_align ) {
+			$h_align = 'end';
+		}
 		$classes .= ' text-' . $h_align;
 	}
 }
@@ -145,7 +150,7 @@ if ( $link ) {
 		$url        = $link['url'];
 		$target     = isset( $link['is_external'] ) && 'on' == $link['is_external'] ? ' target="_blank"' : '';
 		$link_title = '';
-		$rel        = isset( $link['nofollow'] ) && 'on' == $link['nofollow'] ? ' rel="nofollow"' : '';
+		$rel        = isset( $link['nofollow'] ) && 'on' == $link['nofollow'] ? ' rel="nofollow' . ( $target ? ' noopener noreferrer' : '' ) . '"' : ( $target ? ' rel="noopener noreferrer"' : '' );
 	} elseif ( defined( 'VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG' ) ) {
 		$href       = vc_build_link( $link );
 		$url        = ( isset( $href['url'] ) && $href['url'] ) ? $href['url'] : '';

@@ -1,11 +1,11 @@
 === Order Export & Order Import for WooCommerce ===
 Contributors: webtoffee
 Donate link: https://www.webtoffee.com/plugins/
-Tags: order export, order import, woocommerce, csv, coupon, woocommerce export orders, woocommerce  import orders, order, export, import, coupon export, coupon import
+Tags: order export, woocommerce, order, export, csv, order import, woocommerce export orders,  woocommerce  import orders, import, coupon export, coupon import, coupon
 Requires at least: 3.0.1
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 2.1.1
+Stable tag: 2.1.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -26,10 +26,11 @@ The following are functionalities offered by the basic version of the plugin.
  &#128312; Export coupons to CSV.
  &#128312; Import coupons from CSV to WooCommerce.
  &#128312; Bulk update WooCommerce orders and coupons.
+ &#128312; Compatible with YITH WooCommerce Order Tracking plugin.
  &#128312; Supports various export filters (order status, product, coupon, customer, date range)
  &#128312; Export Subscription orders to a CSV file(Premium Feature).
  &#128312; Import Subscription orders from a CSV file(Premium Feature).
- &#128312; Tested OK with WooCommerce 5.7
+ &#128312; Tested OK with WooCommerce 5.9
  &#128312; Tested OK with WP 5.8
  &#128312; Tested OK with PHP 8.0
 
@@ -224,6 +225,17 @@ Yes.
 
 == Changelog ==
 
+= 2.1.4 =
+* WC 5.9 Tested OK
+* Compatibility with YITH WooCommerce Order Tracking
+= 2.1.3 =
+* Bug fix: Time zones issue with coupon expiry date when importing coupon.
+= 2.1.2 =
+* WC 5.8 Tested OK
+* Feature: Export order line items to separate row or column.
+* Bug fix: Time zones issue with coupon expiry date when importing coupon.
+* Improvements: Added filter wt_import_csv_parser_keep_bom for escaping cyrillic letters.
+* Fixes: Keeping previously selected options when e-running the export/import and  wp_max_upload_size(), mb_detect_encoding() related issues.
 = 2.1.1 =
 * WC 5.7 tested OK
 = 2.1.0 =
@@ -464,5 +476,6 @@ Yes.
 
 == Upgrade Notice ==
 
-= 2.1.1 =
-* WC 5.7 tested OK
+= 2.1.4 =
+* WC 5.9 Tested OK
+* Compatibility with YITH WooCommerce Order Tracking

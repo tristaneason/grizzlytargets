@@ -88,17 +88,19 @@ function wppfm_editValueSpan( rowId, sourceLevel, valueEditorLevel, displayStyle
 		+ '</p></div>';
 }
 
-function wppfm_requiresForAllOtherProductsField( mapping ) {
-	// Updated code @version 2.18.0 due to a Cannot read property 'hasOwnProperty' of null.
-	return mapping ? mapping.hasOwnProperty( 'c' ) : false;
-}
+// Removed @since 2.26.0
+// function wppfm_requiresForAllOtherProductsField( mapping ) {
+// 	// Updated code @version 2.18.0 due to a Cannot read property 'hasOwnProperty' of null.
+// 	return mapping ? mapping.hasOwnProperty( 'c' ) : false;
+// }
 
 function wppfm_addFeedSourceRow( rowId, sourceLevel, sourceRowsData, channel, removable ) {
 
 	var borderStyleClass      = sourceLevel > 0 ? ' dotted-top-line' : '';
 	var showEditValuesControl = 'initial';
 	var deleteValueControl    = removable ? wppfm_removeOutputCntrl( rowId, sourceRowsData.fieldName ) : '';
-	var requiresForAllOtherProductsField = sourceLevel + 1 === sourceRowsData.mapping.length ? wppfm_requiresForAllOtherProductsField( sourceRowsData.mapping[sourceLevel] ) : false;
+	// Removed @since 2.26.0
+	// var requiresForAllOtherProductsField = sourceLevel + 1 === sourceRowsData.mapping.length ? wppfm_requiresForAllOtherProductsField( sourceRowsData.mapping[sourceLevel] ) : false;
 
 	if ( sourceRowsData.customCondition ) { // no edit value control for the Category item
 		showEditValuesControl = 'none';
@@ -146,9 +148,10 @@ function wppfm_addFeedSourceRow( rowId, sourceLevel, sourceRowsData, channel, re
 	// close the source wrapper
 	htmlCode += '</div>';
 
-	if ( requiresForAllOtherProductsField ) {
-		htmlCode += wppfm_orSelectorRowCode( rowId, sourceLevel + 1, borderStyleClass );
-	}
+	// Removed @since 2.26.0
+	// if ( requiresForAllOtherProductsField ) {
+	// 	htmlCode += wppfm_orSelectorRowCode( rowId, sourceLevel + 1, borderStyleClass );
+	// }
 
 	return htmlCode;
 }

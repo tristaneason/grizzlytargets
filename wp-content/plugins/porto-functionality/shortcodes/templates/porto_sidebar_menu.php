@@ -36,6 +36,11 @@ if ( $title ) {
 
 $nav_menu_html_escaped = '';
 if ( $nav_menu ) {
+	global $porto_settings_optimize;
+	if ( ! empty( $porto_settings_optimize['lazyload_menu'] ) ) {
+		$optimize_backup = $porto_settings_optimize['lazyload_menu'];
+		$porto_settings_optimize['lazyload_menu'] = '';
+	}
 	$args                  = array(
 		'container'   => '',
 		'menu_class'  => 'sidebar-menu',
@@ -49,6 +54,10 @@ if ( $nav_menu ) {
 		'echo'        => false,
 	);
 	$nav_menu_html_escaped = wp_nav_menu( $args );
+
+	if ( isset( $optimize_backup ) ) {
+		$porto_settings_optimize['lazyload_menu'] = $optimize_backup;
+	}
 }
 if ( ! $nav_menu_html_escaped ) {
 	$nav_menu_html_escaped = esc_html__( 'Please select a valid menu to display.', 'porto-functionality' );

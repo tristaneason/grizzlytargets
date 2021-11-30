@@ -72,10 +72,10 @@ class LeadinRestApi {
 	 * @return \WP_REST_Response Response object to return from this endpoint.
 	 */
 	public function proxy_request( $request ) {
-		$api_path = $request->get_params()['path'];
+		$proxy_url = $request->get_params()['proxyUrl'];
 
 		try {
-			$proxy_request = HubSpotApiClient::authenticated_request( $api_path, $request->get_method(), $request->get_body() );
+			$proxy_request = HubSpotApiClient::authenticated_request( $proxy_url, $request->get_method(), $request->get_body() );
 		} catch ( \Exception $e ) {
 			return new \WP_REST_Response( json_decode( $e->getMessage() ), $e->getCode() );
 		}
@@ -126,5 +126,4 @@ class LeadinRestApi {
 
 		return new \WP_REST_Response( $return_body, $response_code );
 	}
-
 }

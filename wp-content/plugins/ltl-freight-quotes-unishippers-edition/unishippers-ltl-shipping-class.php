@@ -277,6 +277,9 @@ if (!function_exists('unishippers_uni_ltl_shipping_method_init')) {
                                 $ltl_products[] = $sPackage;
                                 $web_service_arr = $unishippers_ltl_res_inst->unishippers_ltl_shipping_get_web_service_array($sPackage, $this->package_plugin);
                                 $response = $unishippers_ltl_res_inst->unishippers_ltl_shipping_get_web_quotes($web_service_arr);
+                                if (empty($response)) {
+                                    return [];
+                                }
                                 (!empty($response)) ? $quotes[$key] = $response : "";
                                 continue;
                             } elseif (array_key_exists('small', $sPackage)) {

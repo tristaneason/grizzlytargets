@@ -335,6 +335,7 @@ class HubwooDataSync {
 		// basic data function for user ids.
 		$contacts = array();
 		$role__in = get_option( 'hubwoo-selected-user-roles', array() );
+		$user_role_in = get_option( 'hubwoo_customers_role_settings', array() );
 
 		if ( ! empty( $hubwoo_unique_users ) && count( $hubwoo_unique_users ) ) {
 
@@ -346,7 +347,7 @@ class HubwooDataSync {
 				$user_data = get_user_by( 'email', $email );
 				$role      = $user_data->roles[0];
 
-				if ( in_array( $role, $role__in ) ) {
+				if ( in_array( $role, $role__in ) || in_array( $role, $user_role_in ) ) {
 
 					if ( empty( $email ) ) {
 						delete_user_meta( $id, 'hubwoo_pro_user_data_change' );

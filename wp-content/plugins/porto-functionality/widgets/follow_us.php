@@ -49,9 +49,9 @@ class Porto_Follow_Us_Widget extends WP_Widget {
 		$follow_after    = isset( $instance['follow_after'] ) ? $instance['follow_after'] : '';
 
 		if ( $nofollow ) {
-			$nofollow_escaped = ' rel="nofollow"';
+			$nofollow_escaped = ' rel="nofollow noopener noreferrer"';
 		} else {
-			$nofollow_escaped = '';
+			$nofollow_escaped = ' rel="noopener noreferrer"';
 		}
 
 		echo porto_filter_output( $before_widget );
@@ -69,7 +69,7 @@ class Porto_Follow_Us_Widget extends WP_Widget {
 			$class_escaped .= ' default-skin';
 		}
 		if ( ! $disable_tooltip ) {
-			$tooltip_escaped = 'data-toggle="tooltip" data-placement="bottom" ';
+			$tooltip_escaped = 'data-toggle="tooltip" data-bs-placement="bottom" ';
 		}
 		?>
 		<div class="<?php echo $class_escaped; ?>">

@@ -35,7 +35,7 @@ export default class ThickBoxModal {
     // we unbind previous handlers because a thickbox modal is a single global object.
     // Everytime it is re-opened, it still has old handlers bound
     $(domElements.thickboxModalClose)
-      .unbind('click')
+      .off('click')
       .click(this.close);
 
     e.preventDefault();

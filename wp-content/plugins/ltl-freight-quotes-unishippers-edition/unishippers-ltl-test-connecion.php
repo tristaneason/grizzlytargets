@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Unishippers Test Connection
+ * Unishippers Test connection
  *
  * @package     Unishippers Quotes
  * @author      Eniture-Technology
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Test Connection Function
+ * Test connection Function
  */
 if (!function_exists('unishippers_freight_submit')) {
 

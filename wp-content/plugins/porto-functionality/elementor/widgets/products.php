@@ -60,6 +60,18 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 			}
 		}
 
+		global $porto_settings;
+		$status_values = array(
+			''          => __( 'All', 'porto-functionality' ),
+			'featured'  => __( 'Featured', 'porto-functionality' ),
+			'on_sale'   => __( 'On Sale', 'porto-functionality' ),
+			'pre_order' => __( 'Pre-Order', 'porto-functionality' ),
+			'viewed'    => __( 'Recently Viewed', 'porto-functionality' ),
+		);
+		if ( empty( $porto_settings['woo-pre-order'] ) ) {
+			unset( $status_values['pre_order'] );
+		}
+
 		$this->start_controls_section(
 			'section_products',
 			array(
@@ -83,12 +95,7 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 				'label'   => __( 'Product Status', 'porto-functionality' ),
 				'type'    => Controls_Manager::SELECT,
 				'default' => '',
-				'options' => array(
-					''          => __( 'All', 'porto-functionality' ),
-					'featured'  => __( 'Featured', 'porto-functionality' ),
-					'on_sale'   => __( 'On Sale', 'porto-functionality' ),
-					'pre_order' => __( 'Pre-Order', 'porto-functionality' ),
-				),
+				'options' => $status_values,
 			)
 		);
 
@@ -134,25 +141,135 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'orderby',
 			array(
-				'type'        => Controls_Manager::SELECT,
+				'type'        => 'porto_ajaxselect2',
 				'label'       => __( 'Order by', 'porto-functionality' ),
-				'options'     => array_combine( array_values( $order_by_values ), array_keys( $order_by_values ) ),
+				'options'     => 'orderby',
+				'multiple'    => 'true',
+				'label_block' => true,
 				/* translators: %s: Wordpres codex page */
-				'description' => sprintf( __( 'Select how to sort retrieved posts. More at %s.', 'porto-functionality' ), '<a href="http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters" target="_blank">WordPress codex page</a>' ),
+				'description' => sprintf( __( 'Values: id, date, menu order, title, random, raing, popularity and so on. Select how to sort retrieved posts. More at %s.', 'porto-functionality' ), '<a href="http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters" target="_blank">WordPress codex page</a>' ),
 			)
 		);
 
 		$this->add_control(
-			'order',
+			'order_date',
 			array(
 				'type'        => Controls_Manager::SELECT,
-				'label'       => __( 'Order way', 'porto-functionality' ),
+				'label'       => __( 'Order way for Date', 'porto-functionality' ),
 				'options'     => array_combine( array_values( $order_way_values ), array_keys( $order_way_values ) ),
 				/* translators: %s: Wordpres codex page */
 				'description' => sprintf( __( 'Designates the ascending or descending order. More at %s.', 'porto-functionality' ), '<a href="http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters" target="_blank">WordPress codex page</a>' ),
+				'condition' => array(
+					'orderby' => 'date',
+				),
+				'default' => 'DESC',
 			)
 		);
 
+		$this->add_control(
+			'order_id',
+			array(
+				'type'        => Controls_Manager::SELECT,
+				'label'       => __( 'Order way for ID', 'porto-functionality' ),
+				'options'     => array_combine( array_values( $order_way_values ), array_keys( $order_way_values ) ),
+				/* translators: %s: Wordpres codex page */
+				'description' => sprintf( __( 'Designates the ascending or descending order. More at %s.', 'porto-functionality' ), '<a href="http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters" target="_blank">WordPress codex page</a>' ),
+				'condition' => array(
+					'orderby' => 'id',
+				),
+				'default' => 'DESC',
+			)
+		);
+
+		$this->add_control(
+			'order_title',
+			array(
+				'type'        => Controls_Manager::SELECT,
+				'label'       => __( 'Order way for Title', 'porto-functionality' ),
+				'options'     => array_combine( array_values( $order_way_values ), array_keys( $order_way_values ) ),
+				/* translators: %s: Wordpres codex page */
+				'description' => sprintf( __( 'Designates the ascending or descending order. More at %s.', 'porto-functionality' ), '<a href="http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters" target="_blank">WordPress codex page</a>' ),
+				'condition' => array(
+					'orderby' => 'title',
+				),
+				'default' => 'DESC',
+			)
+		);
+
+		$this->add_control(
+			'order_rand',
+			array(
+				'type'        => Controls_Manager::SELECT,
+				'label'       => __( 'Order way for Random', 'porto-functionality' ),
+				'options'     => array_combine( array_values( $order_way_values ), array_keys( $order_way_values ) ),
+				/* translators: %s: Wordpres codex page */
+				'description' => sprintf( __( 'Designates the ascending or descending order. More at %s.', 'porto-functionality' ), '<a href="http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters" target="_blank">WordPress codex page</a>' ),
+				'condition' => array(
+					'orderby' => 'rand',
+				),
+				'default' => 'DESC',
+			)
+		);
+
+		$this->add_control(
+			'order_menu_order',
+			array(
+				'type'        => Controls_Manager::SELECT,
+				'label'       => __( 'Order way for Menu Order', 'porto-functionality' ),
+				'options'     => array_combine( array_values( $order_way_values ), array_keys( $order_way_values ) ),
+				/* translators: %s: Wordpres codex page */
+				'description' => sprintf( __( 'Designates the ascending or descending order. More at %s.', 'porto-functionality' ), '<a href="http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters" target="_blank">WordPress codex page</a>' ),
+				'condition' => array(
+					'orderby' => 'menu_order',
+				),
+				'default' => 'DESC',
+			)
+		);
+
+		$this->add_control(
+			'order_price',
+			array(
+				'type'        => Controls_Manager::SELECT,
+				'label'       => __( 'Order way for Price', 'porto-functionality' ),
+				'options'     => array_combine( array_values( $order_way_values ), array_keys( $order_way_values ) ),
+				/* translators: %s: Wordpres codex page */
+				'description' => sprintf( __( 'Designates the ascending or descending order. More at %s.', 'porto-functionality' ), '<a href="http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters" target="_blank">WordPress codex page</a>' ),
+				'condition' => array(
+					'orderby' => 'price',
+				),
+				'default' => 'DESC',
+			)
+		);
+
+		$this->add_control(
+			'order_popularity',
+			array(
+				'type'        => Controls_Manager::SELECT,
+				'label'       => __( 'Order way for Popularity', 'porto-functionality' ),
+				'options'     => array_combine( array_values( $order_way_values ), array_keys( $order_way_values ) ),
+				/* translators: %s: Wordpres codex page */
+				'description' => sprintf( __( 'Designates the ascending or descending order. More at %s.', 'porto-functionality' ), '<a href="http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters" target="_blank">WordPress codex page</a>' ),
+				'condition' => array(
+					'orderby' => 'popularity',
+				),
+				'default' => 'DESC',
+			)
+		);
+
+		$this->add_control(
+			'order_rating',
+			array(
+				'type'        => Controls_Manager::SELECT,
+				'label'       => __( 'Order way for Rating', 'porto-functionality' ),
+				'options'     => array_combine( array_values( $order_way_values ), array_keys( $order_way_values ) ),
+				/* translators: %s: Wordpres codex page */
+				'description' => sprintf( __( 'Designates the ascending or descending order. More at %s.', 'porto-functionality' ), '<a href="http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters" target="_blank">WordPress codex page</a>' ),
+				'condition' => array(
+					'orderby' => 'rating',
+				),
+				'default' => 'DESC',
+			)
+		);
 		$this->add_control(
 			'attribute',
 			array(
@@ -330,13 +447,7 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 			array(
 				'type'        => Controls_Manager::SELECT2,
 				'label'       => __( 'Show Sort by', 'porto-functionality' ),
-				'options'     => array(
-					'all'     => __( 'All', 'porto-functionality' ),
-					'popular' => __( 'Popular', 'porto-functionality' ),
-					'date'    => __( 'Date', 'porto-functionality' ),
-					'rating'  => __( 'Rating', 'porto-functionality' ),
-					'onsale'  => __( 'On Sale', 'porto-functionality' ),
-				),
+				'options'     => array_combine( array_values( porto_woo_sort_by() ), array_keys( porto_woo_sort_by() ) ),
 				'multiple'    => true,
 				'label_block' => true,
 			)

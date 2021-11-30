@@ -35,10 +35,10 @@ function init() {
   );
 
   $(domElements.deactivateFeedbackForm)
-    .unbind('submit')
+    .off('submit')
     .submit(submitAndDeactivate);
   $(domElements.deactivateFeedbackSkip)
-    .unbind('click')
+    .off('click')
     .click(deactivatePlugin);
 }
 

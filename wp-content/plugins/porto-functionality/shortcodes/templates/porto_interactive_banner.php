@@ -16,6 +16,7 @@ extract(
 			'banner_desc'            => '',
 			'banner_image'           => '',
 			'banner_video'           => '',
+			'enable_sound'           => '',
 			'banner_effect'          => '',
 			'effect_duration'        => '30',
 			'particle_effect'        => '',
@@ -68,6 +69,17 @@ global $porto_settings_optimize;
 
 $output = $target = $link = $banner_style_inline = $title_bg = $img_style = $target = '';
 
+if ( $banner_video && $banner_image ) {
+	if ( is_numeric( $banner_image ) ) {
+		$img_data = wp_get_attachment_image_src( $banner_image, 'full' );
+		if ( is_array( $img_data ) ) {
+			$poster_image = $img_data[0];
+		}
+	} else {
+		$poster_image = $banner_image;
+	}
+	$banner_image = '';
+}
 
 $img             = '';
 $internal_styles = '';
@@ -81,7 +93,7 @@ if ( $banner_image ) {
 		if ( isset( $porto_carousel_lazyload ) && true === $porto_carousel_lazyload ) {
 			$img_attr['class'] = 'porto-ibanner-img owl-lazy';
 		} else {
-			wp_enqueue_script( 'jquery-lazyload' );
+			wp_enqueue_script( 'lazyload' );
 
 			$img_attr['class'] = 'porto-ibanner-img porto-lazyload';
 		}
@@ -101,6 +113,8 @@ if ( $banner_image ) {
 				$placeholder          = porto_generate_placeholder( $img_data[1] . 'x' . $img_data[2] );
 				$img_attr['src']      = esc_url( $placeholder[0] );
 				$img_attr['data-src'] = esc_url( $img_data[0] );
+			} else {
+				$img_attr['src'] = esc_url( $img_data[0] );
 			}
 
 			// Generate 'srcset' and 'sizes'
@@ -129,7 +143,7 @@ if ( $banner_image ) {
 			foreach ( $img_attr as $key => $val ) {
 				$attr_str_escaped .= ' ' . esc_html( $key ) . '="' . esc_attr( $val ) . '"';
 			}
-			$img = '<img src="' . esc_url( $img_data[0] ) . '" alt="' . esc_attr( trim( get_post_meta( $banner_image, '_wp_attachment_image_alt', true ) ) ) . '" width="' . esc_attr( $img_data[1] ) . '" height="' . esc_attr( $img_data[2] ) . '"' . $attr_str_escaped . '>';
+			$img = '<img alt="' . esc_attr( trim( get_post_meta( $banner_image, '_wp_attachment_image_alt', true ) ) ) . '" width="' . esc_attr( $img_data[1] ) . '" height="' . esc_attr( $img_data[2] ) . '"' . $attr_str_escaped . '>';
 		}
 	} else {
 		if ( $lazyload ) {
@@ -172,7 +186,7 @@ if ( $banner_title_font_size ) {
 	$banner_title_style_inline .= 'font-size: ' . esc_attr( $banner_title_font_size ) . 'px;';
 }
 
-$interactive_banner_id = 'interactive-banner-wrap-' . rand( 1000, 9999 );
+$interactive_banner_id = 'interactive-banner-wrap-' . porto_generate_rand( 4 );
 $classes               = 'porto-ibanner';
 
 if ( $banner_color_bg ) {
@@ -279,20 +293,52 @@ if ( $parallax && $banner_image ) {
 	$classes      .= ' has-parallax-bg';
 }
 
-// video banner
-if ( empty( $banner_image ) && $banner_video && strrpos( $banner_video, '.mp4' ) !== false ) {
-	wp_enqueue_script( 'jquery-vide' );
-	$classes      .= ' section-video';
-	$opacity_attr .= ' data-video-path="' . esc_url( str_replace( '.mp4', '', $banner_video ) ) . '"';
-	$opacity_attr .= ' data-plugin-video-background';
-	$opacity_attr .= ' data-plugin-options="{\'posterType\': \'jpg\', \'position\': \'50% 50%\', \'overlay\': true}"';
-}
-
 $output .= '<div id="' . esc_attr( $interactive_banner_id ) . '" class="' . esc_attr( $classes ) . '" style="' . esc_attr( $banner_style_inline ) . '"' . $opacity_attr . '>';
 if ( $internal_styles ) {
 	$output .= '<style scope="scope">';
 	$output .= $internal_styles;
 	$output .= '</style>';
+}
+
+// video banner
+if ( $banner_video ) {
+	if ( false !== strrpos( $banner_video, '.mp4' ) || false !== strrpos( $banner_video, '.ogg' ) || false !== strrpos( $banner_video, '.webm' ) ) {
+		$output .= '<video class="video-bg" preload playsinline autoplay loop' . ( $enable_sound ? '' : ' muted' ) . ( empty( $poster_image ) ? '' : ' poster="' . esc_url( $poster_image ) . '"' ) . '>';
+		if ( false !== strrpos( $banner_video, '.mp4' ) ) {
+			$output .= '<source src="' . esc_url( $banner_video ) . '" type="video/mp4">';
+		}
+		if ( false !== strrpos( $banner_video, '.ogg' ) ) {
+			$output .= '<source src="' . esc_url( $banner_video ) . '" type="video/ogg">';
+		}
+		if ( false !== strrpos( $banner_video, '.webm' ) ) {
+			$output .= '<source src="' . esc_url( $banner_video ) . '" type="video/webm">';
+		}
+		$output .= '</video>';
+	} else {
+		$youtube_id = preg_match( '/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/', $banner_video, $matches );
+		if ( ! empty( $matches ) && ! empty( $matches[1] ) ) {
+			$youtube_id = $matches[1];
+		} else {
+			$youtube_id = '';
+		}
+		if ( $youtube_id ) {
+			$output .= '<div class="video-wrapper fit-video">';
+			$output .= '<div id="ytplayer_' . porto_generate_rand( 4 ) . '" class="porto-video-social video-youtube" data-video="' . esc_attr( $youtube_id ) . '" data-loop="1" data-audio="' . ( $enable_sound ? '1' : '0' ) . '"></div>';
+			$output .= '</div>';
+		} else {
+			$vimeo_id = preg_match( '/^(?:https?:\/\/)?(?:www|player\.)?(?:vimeo\.com\/)?(?:video\/|external\/)?(\d+)([^.?&#"\'>]?)/', $banner_video, $matches );
+			if ( ! empty( $matches ) && ! empty( $matches[1] ) ) {
+				$vimeo_id = $matches[1];
+			} else {
+				$vimeo_id = '';
+			}
+			if ( $vimeo_id ) {
+				$output .= '<div class="video-wrapper fit-video">';
+				$output .= '<div id="vmplayer_' . porto_generate_rand( 4 ) . '" class="porto-video-social video-vimeo" data-video="' . esc_attr( $vimeo_id ) . '" data-loop="1" data-audio="' . ( $enable_sound ? '1' : '0' ) . '"></div>';
+				$output .= '</div>';
+			}
+		}
+	}
 }
 
 // Banner Effect and Particle effect

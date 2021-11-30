@@ -1307,7 +1307,7 @@ if ('header' === porto_block_vars.builder_type || 'footer' === porto_block_vars.
 						),
 						'medium' === attrs.post_layout && el(
 							'a',
-							{ className: 'btn read-more d-block float-sm-right', href: post.link },
+							{ className: 'btn read-more d-block float-sm-end', href: post.link },
 							el(
 								'span',
 								null,
@@ -1317,7 +1317,7 @@ if ('header' === porto_block_vars.builder_type || 'footer' === porto_block_vars.
 					),
 					'medium' !== attrs.post_layout && 'medium-alt' !== attrs.post_layout && el(
 						'a',
-						{ className: 'btn read-more' + ( attrs.post_layout === 'full' || attrs.post_layout === 'large' || attrs.post_layout === 'large-alt' ? ' float-sm-right' : '' ), href: post.link },
+						{ className: 'btn read-more' + ( attrs.post_layout === 'full' || attrs.post_layout === 'large' || attrs.post_layout === 'large-alt' ? ' float-sm-end' : '' ), href: post.link },
 						el(
 							'span',
 							null,
@@ -4712,7 +4712,7 @@ function _makeConsumableArray( arr ) {
 					el( SelectControl, {
 						label: __( 'Product Status', 'porto-functionality' ),
 						value: attrs.status,
-						options: [ { label: __( 'All', 'porto-functionality' ), value: '' }, { label: __( 'Featured', 'porto-functionality' ), value: 'featured' }, { label: __( 'On Sale', 'porto-functionality' ), value: 'on_sale' }, { label: __( 'Pre-Order', 'porto-functionality' ), value: 'pre_order' } ],
+						options: porto_block_vars.status_values,
 						onChange: function onChange( value ) {
 							return setAttributes( { status: value } );
 						}
@@ -4764,7 +4764,7 @@ function _makeConsumableArray( arr ) {
 					el( SelectControl, {
 						label: __( 'Order by', 'porto-functionality' ),
 						value: attrs.orderby,
-						options: [ { label: __( 'Date', 'porto-functionality' ), value: 'date' }, { label: __( 'Price', 'porto-functionality' ), value: 'price' }, { label: __( 'Rating', 'porto-functionality' ), value: 'rating' }, { label: __( 'Total Sales', 'porto-functionality' ), value: 'total_sales' }, { label: __( 'Popularity', 'porto-functionality' ), value: 'popularity' }, { label: __( 'ID', 'PORTO-FUNCTIONALITY' ), value: 'id' }, { label: __( 'Title', 'porto-functionality' ), value: 'title' }, { label: __( 'Random', 'porto-functionality' ), value: 'rand' }, { label: __( 'Menu order', 'porto-functionality' ), value: 'menu_order' } ],
+						options: porto_block_vars.orderby_values,
 						onChange: ( value ) => { setAttributes( { orderby: value } ); },
 					} ),
 					attrs.orderby != 'rating' && el( SelectControl, {
@@ -5317,6 +5317,11 @@ function _makeConsumableArray( arr ) {
 				onChange: ( value ) => { props.setAttributes( { enable_typewriter: value } ); },
 			} ),
 			attrs.enable_typewriter && el( TextControl, {
+				label: __( 'Animation Name e.g: typeWriter, fadeIn and so on.', 'porto-functionality' ),
+				value: attrs.typewriter_animation,
+				onChange: ( value ) => { props.setAttributes( { typewriter_animation: value } ); },
+			} ),
+			attrs.enable_typewriter && el( TextControl, {
 				label: __( 'Start Delay(ms)', 'porto-functionality' ),
 				value: attrs.typewriter_delay,
 				onChange: ( value ) => { props.setAttributes( { typewriter_delay: value } ); },
@@ -5435,6 +5440,9 @@ function _makeConsumableArray( arr ) {
 			if( attrs.typewriter_width ) {
 				type_plugin['data-plugin-options']['minWindowWidth'] = parseInt( attrs.typewriter_width );	
 			}
+			if( attrs.typewriter_animation ) {
+				type_plugin['data-plugin-options']['animationName'] = parseInt( attrs.typewriter_animation );		
+			}
 		}
 		var renderControls = el(
 			RichText,
@@ -5474,6 +5482,10 @@ function _makeConsumableArray( arr ) {
 			},
 			enable_typewriter: {
 				type: 'boolean',
+			},
+			typewriter_animation: {
+				type: 'string',
+				default: 'fadeIn',
 			},
 			typewriter_delay: {
 				type: 'string',
@@ -7173,7 +7185,7 @@ function _makeConsumableArray( arr ) {
 			el( SelectControl, {
 				label: __( 'Show', 'porto-functionality' ),
 				value: attrs.show,
-				options: [ { label: __( 'All', 'porto-functionality' ), value: '' }, { label: __( 'Featured', 'porto-functionality' ), value: 'featured' }, { label: __( 'On Sale', 'porto-functionality' ), value: 'onsale' }, { label: __( 'Pre-Order', 'porto-functionality' ), value: 'pre_order' }, { label: __( 'Recently Viewed', 'porto-functionality' ), value: 'recent_view' }, { label: __( 'Top Rated', 'porto-functionality' ), value: 'top_rated' } ],
+				options: porto_block_vars.status_values,
 				onChange: ( value ) => { props.setAttributes( { show: value } ); },
 			} ),
 			el( RangeControl, {

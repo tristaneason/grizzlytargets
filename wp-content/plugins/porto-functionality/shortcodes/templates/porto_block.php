@@ -69,8 +69,8 @@ if ( $id || $name ) {
 		// Add edit link for admins.
 		if ( current_user_can( 'edit_pages' ) && ! is_customize_preview() && (
 				( ! function_exists( 'vc_is_inline' ) || ! vc_is_inline() ) &&
-				( ! porto_is_elementor_preview() ) &&
-				( ! porto_is_vc_preview() )
+				( ! function_exists( 'porto_is_elementor_preview' ) || ! porto_is_elementor_preview() ) &&
+				( ! function_exists( 'porto_is_vc_preview' ) || ! porto_is_vc_preview() )
 				) ) {
 			if ( defined( 'VCV_VERSION' ) && 'fe' == get_post_meta( $post_id, 'vcv-be-editor', true ) ) {
 				$edit_link = admin_url( 'post.php?post=' . $post_id . '&action=edit&vcv-action=frontend&vcv-source-id=' . $post_id );
@@ -107,6 +107,7 @@ if ( $id || $name ) {
 				wp_enqueue_style( 'elementor-icons' );
 				wp_enqueue_style( 'elementor-animations' );
 				wp_enqueue_style( 'elementor-frontend' );
+				do_action( 'elementor/frontend/after_enqueue_styles' );
 			}
 			$css_file               = new Elementor\Core\Files\CSS\Post( $post_id );
 			$shortcodes_custom_css .= $css_file->get_content();
@@ -158,6 +159,7 @@ if ( $id || $name ) {
 				wp_enqueue_script( 'googleapis' );
 			}
 			if ( stripos( $post_content, '[porto_concept ' ) ) {
+				wp_enqueue_script( 'modernizr' );
 				wp_enqueue_style( 'jquery-flipshow' );
 			}
 
@@ -526,7 +528,7 @@ if ( $id || $name ) {
 			}
 
 			$shortcodes_custom_css .= get_post_meta( $post_id, '_wpb_shortcodes_custom_css', true );
-			if ( $shortcodes_custom_css ) {
+			if ( $shortcodes_custom_css && defined( 'WPB_VC_VERSION' ) ) {
 				global $porto_settings_optimize;
 				if ( isset( $porto_settings_optimize['lazyload'] ) && $porto_settings_optimize['lazyload'] && ( ! function_exists( 'vc_is_inline' ) || ! vc_is_inline() ) ) {
 					preg_match_all( '/\.vc_custom_([^{]*)[^}]*((background-image):[^}]*|(background):[^}]*url\([^}]*)}/', $shortcodes_custom_css, $matches );
@@ -571,6 +573,9 @@ if ( $id || $name ) {
 			}
 		}
 
+		if ( defined( 'WPB_VC_VERSION' ) ) {
+			$shortcodes_custom_css .= get_post_meta( $post_id, '_wpb_post_custom_css', true );
+		}
 		$shortcodes_custom_css .= get_post_meta( $post_id, 'custom_css', true );
 		if ( $shortcodes_custom_css ) {
 			$output .= '<style>';

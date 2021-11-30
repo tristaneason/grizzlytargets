@@ -1,13 +1,13 @@
-﻿=== HubSpot for WooCommerce - CRM, Abandoned Cart, Email Marketing, Marketing Automation & Analytics ===
+﻿=== MWB HubSpot for WooCommerce - CRM, Abandoned Cart, Email Marketing, Marketing Automation & Analytics ===
 Contributors: MakeWebBetter
 Donate link: https://makewebbetter.com/
 Tags: Abandoned Cart, Email Marketing, Marketing Automation, WooCommerce, HubSpot
 Requires at least: 4.4.0
-Tested up to: 5.8.1
+Tested up to: 5.8.2
 WC requires at least: 3.5.0
-WC tested up to: 5.6.0
+WC tested up to: 5.9.0
 Requires PHP: 5.1
-Stable tag: 1.2.3
+Stable tag: 1.2.5
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
  
@@ -17,9 +17,9 @@ Integrate WooCommerce with HubSpot’s free CRM, abandoned cart tracking, email 
  
 THE MOST POWERFUL & EASY TO USE WOOCOMMERCE INTEGRATION FOR CUSTOMER MANAGEMENT, ABANDONED CART TRACKING AND RECOVERY, EMAIL MARKETING, AUTOMATION WORKFLOWS, ANALYTICS & MORE.
  
-The HubSpot for WooCommerce plugin is the easiest way to integrate your WooCommerce store with HubSpot. HubSpot enables you to grow your business better by turning visitors into leads, nurturing them into customers, and measuring your business growth.
+The MWB HubSpot for WooCommerce plugin is the easiest way to integrate your WooCommerce store with HubSpot. HubSpot enables you to grow your business better by turning visitors into leads, nurturing them into customers, and measuring your business growth.
  
-With the [HubSpot for WooCommerce free plugin](https://www.hubspot.com/partners/wordpress/plugins/woocommerce-by-makewebbetter) you can:
+With the [MWB HubSpot for WooCommerce free plugin](https://www.hubspot.com/partners/wordpress/plugins/woocommerce-by-makewebbetter) you can:
 
 * Sync your WooCommerce store data to HubSpot
 * Manage your customers and their orders in an easy-to-use CRM
@@ -30,10 +30,10 @@ With the [HubSpot for WooCommerce free plugin](https://www.hubspot.com/partners/
 
 == PLUGIN MEETS YOUR REQUIREMENT, SO ==
 [Download Now!!](https://downloads.wordpress.org/plugin/makewebbetter-hubspot-for-woocommerce.zip)
-Visit [HubSpot for WooCommerce documentation guide](https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
+Visit [MWB HubSpot for WooCommerce documentation guide](https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
 
  
-What’s included in the [HubSpot for WooCommerce free WordPress plugin](https://www.hubspot.com/partners/wordpress/plugins/woocommerce-by-makewebbetter):
+What’s included in the [MWB HubSpot for WooCommerce free WordPress plugin](https://www.hubspot.com/partners/wordpress/plugins/woocommerce-by-makewebbetter):
 
 = SYNC WOOCOMMERCE DATA WITH HUBSPOT =
 Get set up in minutes. Easily sync your historical and new WooCommerce store data with HubSpot to better manage your customers and their orders. Once your WooCommerce data is synced to HubSpot, you can easily track customers in HubSpot’s free CRM, segment contacts based upon their actions, automate marketing follow-ups to drive sales, and measure your store’s growth with advanced business analytics.
@@ -61,12 +61,13 @@ Build Facebook, Instagram, LinkedIn, and Google advertising campaigns with preci
 * [HubSpot Field To Field Sync](https://makewebbetter.com/product/hubspot-field-to-field-sync/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
 * [HubSpot Deals for WooCommerce Memberships](https://makewebbetter.com/product/hubspot-deals-for-woocommerce-memberships/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
 * [HubSpot Recommended Products Addon](https://makewebbetter.com/product/hubspot-recommended-products-addon/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
+* [HubSpot Dynamic Coupon Code Generation](https://makewebbetter.com/product/hubspot-dynamic-coupon-code-generation/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
 
 
 = NEED ADDITIONAL HELP OR CUSTOMIZATION? =
-Read the [HubSpot for WooCommerce documentation guides](https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG) for easy-to-understand onboarding tips. If you need additional help with your onboarding or a customized implementation, learn about the [MakeWebBetter HubSpot Onboarding plans.](https://makewebbetter.com/hubspot-woocommerce-onboarding/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
+Read the [MWB HubSpot for WooCommerce documentation guides](https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG) for easy-to-understand onboarding tips. If you need additional help with your onboarding or a customized implementation, learn about the [MakeWebBetter HubSpot Onboarding plans.](https://makewebbetter.com/hubspot-woocommerce-onboarding/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
 
-= WHAT PEOPLE ARE SAYING ABOUT HUBSPOT FOR WOOCOMMERCE - CRM, ABANDONED CART, EMAIL MARKETING, AUTOMATION & ANALYTICS? =
+= WHAT PEOPLE ARE SAYING ABOUT MWB HubSpot for WooCommerce - CRM, ABANDONED CART, EMAIL MARKETING, AUTOMATION & ANALYTICS? =
  
 > Note “Hands-down the BEST support team I’ve ever interacted with. The plugins work great, and if you ever have any issues, the support staff is super responsive and helpful. I’ve recently completed a very complex integration with HubSpot utilizing the plugin... 5 stars and two thumbs up... world-class!” *– Joe Peterson*
  
@@ -80,13 +81,13 @@ If our documentation doesn’t contain the solution to your problem, you can vis
  
 = Automatic installation =
 
-Automatic installation is the easiest option as WordPress handles the file transfers itself and you don't need to leave your web browser. To do an automatic install of HubSpot For WooCommerce, log in to your WordPress dashboard, navigate to the Plugins menu and click Add New.
+Automatic installation is the easiest option as WordPress handles the file transfers itself and you don't need to leave your web browser. To do an automatic install of MWB HubSpot for WooCommerce, log in to your WordPress dashboard, navigate to the Plugins menu and click Add New.
 
-In the search field type "HubSpot For WooCommerce" and click Search Plugins. Once you've found our HubSpot For WooCommerce plugin you can view details about it such as the point release, rating and description. Most importantly, of course, you can install it by simply clicking "Install Now".
+In the search field type "MWB HubSpot for WooCommerce" and click Search Plugins. Once you've found our MWB HubSpot for WooCommerce plugin you can view details about it such as the point release, rating and description. Most importantly, of course, you can install it by simply clicking "Install Now".
 
 = Manual installation =
 
-The manual installation method involves downloading our HubSpot For WooCommerce and uploading it to your webserver via your favorite FTP application. The WordPress codex contains [instructions on how to do this here](http://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
+The manual installation method involves downloading our MWB HubSpot for WooCommerce and uploading it to your webserver via your favorite FTP application. The WordPress codex contains [instructions on how to do this here](http://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
 
 = Updating =
 
@@ -106,16 +107,16 @@ Automatic updates should work like a charm as always though, ensure you backup y
 == Frequently Asked Questions ==
  
 = What does the plugin do? =
-The HubSpot for WooCommerce plugin allows you to sync your WooCommerce data with HubSpot, so you can engage your online store’s visitors with targeted email marketing, automation, and ads. With the combined power of WooCommerce and HubSpot, this plugin gives you all the tools you need to grow your WooCommerce online store and delight your contacts and customers.
+The MWB HubSpot for WooCommerce plugin allows you to sync your WooCommerce data with HubSpot, so you can engage your online store’s visitors with targeted email marketing, automation, and ads. With the combined power of WooCommerce and HubSpot, this plugin gives you all the tools you need to grow your WooCommerce online store and delight your contacts and customers.
  
 = What is HubSpot? =
 [HubSpot](https://hubspot.com/) is an all-in-one growth platform that provides free CRM, marketing, sales, and customer service products to help you grow your business. 100,000+ websites in 100+ countries already use HubSpot to grow their businesses.
  
-= Who should use the HubSpot for WooCommerce plugin? =
+= Who should use the MWB HubSpot for WooCommerce plugin? =
 This plugin is perfect for WooCommerce store owners who want to use a free CRM to track their leads, customers, and abandoned carts, send marketing emails, and access robust analytics to see how their store is performing. 
  
-= Are coding skills needed to use the HubSpot for WooCommerce plugin? =
-Not at all! The HubSpot for WooCommerce plugin is easy to download and starts working seamlessly with your WordPress site right away. 
+= Are coding skills needed to use the MWB HubSpot for WooCommerce plugin? =
+Not at all! The MWB HubSpot for WooCommerce plugin is easy to download and starts working seamlessly with your WordPress site right away. 
  
 = Who is MakeWebBetter? =
 [MakeWebBetter](http://www.makewebbetter.com/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG) is a premier HubSpot partner, experts in WooCommerce, and creator of this free plugin! They build, maintain, and optimize WooCommerce stores to help businesses grow better. To learn more about MakeWebBetter, visit their website. 
@@ -128,6 +129,10 @@ Please visit the MakeWebBetter [knowledge base](https://support.makewebbetter.co
 
 
 == Changelog ==
+= 1.2.5 - Released on 12 Nov 2021 =
+* Fix - Sync message issue.
+= 1.2.4 - Released on 20 Oct 2021 =
+* Fix - Minor Bug Fixes.
 = 1.2.3 - Released on 13 Sep 2021 =
 * Added - Content Part 
 = 1.2.2 - Released on 18 August 2021 =
@@ -158,5 +163,5 @@ Please visit the MakeWebBetter [knowledge base](https://support.makewebbetter.co
  
 == Upgrade Notice ==
  
-= 1.2.3 - Released on 13 Sep 2021 =
-* Added - Content Part 
+= 1.2.5 - Released on 12 Nov 2021 =
+* Fix - Fixed sync message issue.

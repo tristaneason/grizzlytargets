@@ -338,6 +338,9 @@ class Porto_Elementor_Google_Map_Widget extends \Elementor\Widget_Base {
 			if ( ! empty( $atts['width'] ) ) {
 				$atts['width'] .= '%';
 			}
+			if ( is_array( $atts['icon_img'] ) && ! empty( $atts['icon_img']['id'] ) ) {
+				$atts['icon_img']  = (int) $atts['icon_img']['id'];
+			}
 			include $template;
 		}
 	}

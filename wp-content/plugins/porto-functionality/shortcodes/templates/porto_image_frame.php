@@ -133,7 +133,7 @@ if ( $image_url ) {
 				$view_class = 'thumb-info-side-image thumb-info-side-image-right thumb-info-no-zoom thumb-info-centered-icons';
 				break;
 		}
-		$output .= '<span class="thumb-info' . ( $align ? ' align-' . $align : '' ) . ( $hover_bg ? ' thumb-info-' . $hover_bg : '' ) . ( $hover_img ? ' thumb-info-' . $hover_img : '' ) . ( $centered_icons ? ' thumb-info-centered-icons' : '' ) . ( $view_class ? ' ' . $view_class : '' ) . ( $noborders ? ' thumb-info-no-borders' : '' ) . ( $boxshadow ? ' thumb-info-box-shadow' : '' ) . '">';
+		$output .= '<div class="thumb-info' . ( $align ? ' align-' . $align : '' ) . ( $hover_bg ? ' thumb-info-' . $hover_bg : '' ) . ( $hover_img ? ' thumb-info-' . $hover_img : '' ) . ( $centered_icons ? ' thumb-info-centered-icons' : '' ) . ( $view_class ? ' ' . $view_class : '' ) . ( $noborders ? ' thumb-info-no-borders' : '' ) . ( $boxshadow ? ' thumb-info-box-shadow' : '' ) . '">';
 		if ( $use_link && ! $centered_icons ) {
 			$output .= '<a ' . $attributes . '>';
 		}
@@ -304,9 +304,9 @@ if ( $image_url ) {
 				}
 			}
 
-			$output .= '<span class="thumb-info-caption">';
+			$output .= '<div class="thumb-info-caption">';
 			if ( $content || ( 'side-image' === $view_type || 'side-image-right' === $view_type ) && ( $title || $sub_title ) ) {
-				$output .= '<span class="thumb-info-caption-text">';
+				$output .= '<div class="thumb-info-caption-text">';
 				if ( ( 'side-image' === $view_type || 'side-image-right' === $view_type ) && ( $title || $date || $sub_title ) ) {
 					if ( $use_link && $centered_icons ) {
 						$output .= '<a ' . $attributes . '>';
@@ -330,17 +330,17 @@ if ( $image_url ) {
 					$output .= $socials_html;
 					$output .= '</span>';
 				}
-				$output .= '</span>';
+				$output .= '</div>';
 			}
 			if ( $socials_html && ! ( ( 'side-image' === $view_type || 'side-image-right' === $view_type ) && ( $title || $date || $sub_title ) ) ) {
 				$output .= '<span class="thumb-info-social-icons">';
 				$output .= $socials_html;
 				$output .= '</span>';
 			}
-			$output .= '</span>';
+			$output .= '</div>';
 		}
 
-		$output .= '</span>';
+		$output .= '</div>';
 	}
 
 	$output .= '</div>';

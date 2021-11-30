@@ -93,7 +93,7 @@
   width:100%;
   padding: 0.35rem 0.75rem;
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1.5 !important;
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
@@ -159,11 +159,11 @@
 .wt-iew-tab-container .wp-list-table thead th{ font-weight:bold; }
 .wt-iew-exporter-step-btn, .wt-iew-exporter-step-export-btn{ float:right; }
 
-.wt-iew-form-table select.wt_iew_delimiter_preset{ width:70%; float:left; }
-.wt-iew-form-table input[type="text"].wt_iew_custom_delimiter{ width:25%; float:right; }
+.wt-iew-form-table select.wt_iew_delimiter_preset{ width:70% !important; float:left; }
+.wt-iew-form-table input[type="text"].wt_iew_custom_delimiter{ width:25% !important; float:right; }
 
-.wt-iew-form-table select.wt_iew_date_format_preset{ width:70%; float:left; }
-.wt-iew-form-table input[type="text"].wt_iew_custom_date_format{ width:25%; float:right; }
+.wt-iew-form-table select.wt_iew_date_format_preset{ width:70% !important; float:left; }
+.wt-iew-form-table input[type="text"].wt_iew_custom_date_format{ width:25% !important; float:right; }
 
 
 .wt_iew_warn_box{padding:20px; padding-bottom:0px;}
@@ -460,13 +460,205 @@ img.tips {
     margin-top: 0px;
     margin-right: 0px;
 }
-.wt-import-export-upsell-wrapper .ier-premium-upgrade{
-    background: #fff;
-    padding: 5px;  
+.wt-import-export-upsell-wrapper .ier-premium-upgrade {
     margin-top: 30px;
     margin-right: 15px;
-    box-shadow: 2px 2px 4px #ccc;    
 }
+
+ .wt-ierpro-sidebar{
+  background: #FFFFFF;
+  border-radius: 7px;
+  padding: 0;
+}
+.wt-ierpro-header{
+  background: #FFFFFF;
+  box-shadow: 0px 4px 19px rgba(49, 117, 252, 0.2);
+  border-radius: 7px;
+  padding: 8px;
+  margin: 0;
+}
+.wt-ierpro-name{
+  background: linear-gradient(87.57deg, #F4F1FF 3%, rgba(238, 240, 255, 0) 93.18%);
+  border-radius: 3px;
+  margin: 0;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+}
+.wt-ierpro-name img{
+  width: 36px;
+  height: auto;
+  box-shadow: 4px 4px 4px rgba(92, 98, 215, 0.23);
+  border-radius: 7px;
+}
+.wt-ierpro-name h4{
+  font-style: normal;
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 15px;
+  margin: 0 0 0 12px;
+  color: #5D63D9;
+}
+.wt-ierpro-mainfeatures ul{
+  padding: 0;
+  margin: 15px 25px 20px 25px;
+}
+.wt-ierpro-mainfeatures li{
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height:24px;
+  letter-spacing: -0.01em;
+  list-style: none;
+  position: relative;
+  color: #091E80;
+  padding-left: 28px;
+}
+.wt-ierpro-mainfeatures li.money-back:before{
+  content: '';
+  position: absolute;
+  left: 0;
+  height:24px ;
+  width: 16px;
+  background-image: url(../../assets/images/gopro/money-back.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.wt-ierpro-mainfeatures li.support:before{
+  content: '';
+  position: absolute;
+  left: 0;
+  height:24px ;
+  width: 16px;
+  background-image: url(../../assets/images/gopro/support.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.wt-ierpro-btn-wrapper{
+  display: block;
+  margin: 20px auto 20px;
+  text-align: center;
+}
+.wt-ierpro-blue-btn{
+  background: linear-gradient(90.67deg, #2608DF -34.86%, #3284FF 115.74%);
+  box-shadow: 0px 4px 13px rgba(46, 80, 242, 0.39);
+  border-radius: 5px;
+  padding: 10px 15px 10px 38px;
+  display: inline-block;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 18px;
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: all .2s ease;
+  position: relative;
+  border: none;
+}
+.wt-ierpro-blue-btn:before{
+  content: '';
+  position: absolute;
+  height: 15px;
+  width: 18px;
+  background-image: url(../../assets/images/gopro/white-crown.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  left: 15px;
+}
+.wt-ierpro-blue-btn:hover{
+  box-shadow: 0px 4px 13px rgba(46, 80, 242, 0.5);
+  text-decoration: none;
+  transform: translateY(2px);
+  transition: all .2s ease;
+  color: #FFFFFF;
+}
+.wt-ierpro-features{
+  padding: 40px 30px 25px 30px;
+}
+.wt-ierpro-features ul{
+  padding: 0;
+  margin: 0;
+}
+.wt-ierpro-features li{
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 17px;
+  color: #001A69;
+  list-style: none;
+  position: relative;
+  padding-left: 49px;
+  margin: 0 0 15px 0;
+  display: flex;
+  align-items: center;
+}
+.wt-ierpro-newfeat li:before{
+  content: '';
+  position: absolute;
+  height: 39px;
+  width: 39px;
+  background-image: url(../../assets/images/gopro/new-badge.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  left: 0;
+}
+.wt-ierpro-allfeat li:before{
+  content: '';
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  background-image: url(../../assets/images/gopro/tick.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  left: 10px;
+}
+ul.wt-ierpro-newfeat li {
+  margin-bottom: 30px;
+}
+.wt-ierpro-outline-btn{
+  border: 1px solid #007FFF;
+  background: #fff;
+  border-radius: 5px;
+  padding: 10px 15px 10px 38px;
+  display: inline-block;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 18px;
+  color: #007FFF;
+  text-decoration: none;
+  transition: all .2s ease;
+  position: relative;
+  background: transparent;
+}
+.wt-ierpro-outline-btn:before{
+  content: '';
+  position: absolute;
+  height: 15px;
+  width: 18px;
+  background-image: url(../../assets/images/gopro/blue-crown.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  left: 15px;
+}
+.wt-ierpro-outline-btn:hover{
+  text-decoration: none;
+  transform: translateY(2px);
+  transition: all .2s ease;
+  color: #007FFF;
+}
+
+
+
+
+
+
 .wt-ier-sidebar-wrapper{
     background: #FFFFFF;
     border-radius: 5px;
@@ -626,7 +818,7 @@ img.tips {
     margin-bottom: 20px;
 }
 .wt-ier-mt-5{
-    margin-top: 30px;
+    margin-top: 75px;
 }
 .wt-ier-v-center{
     -ms-flex-align: center;

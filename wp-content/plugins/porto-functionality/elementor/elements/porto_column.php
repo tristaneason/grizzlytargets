@@ -55,7 +55,7 @@ class Porto_Elementor_Column extends Elementor\Element_Column {
 				if ( '' !== $settings['banner_effect'] || '' !== $settings['particle_effect'] ) {
 					// Background Effect
 					$background_wrapclass = '';
-					$background_class   = '';
+					$background_class     = '';
 					if ( $settings['banner_effect'] ) {
 						$background_class = ' ' . $settings['banner_effect'];
 					}
@@ -164,6 +164,7 @@ class Porto_Elementor_Column extends Elementor\Element_Column {
 }
 
 add_action( 'elementor/element/column/layout/after_section_end', 'porto_elementor_column_custom_control', 10, 2 );
+add_action( 'elementor/element/column/section_advanced/after_section_end', 'porto_elementor_mpx_controls', 10, 2 );
 add_filter( 'elementor/column/print_template', 'porto_elementor_print_column_template', 10, 2 );
 add_action( 'elementor/frontend/column/before_render', 'porto_elementor_column_add_custom_attrs', 10, 1 );
 add_action( 'elementor/element/column/section_style/before_section_end', 'porto_elementor_element_add_parallax', 10, 2 );
@@ -197,6 +198,8 @@ function porto_elementor_column_custom_control( $self, $args ) {
 				'yes'       => esc_html__( 'Banner Layer', 'porto-functionality' ),
 				'grid_item' => esc_html__( 'Creative Grid Item', 'porto-functionality' ),
 				'banner'    => esc_html__( 'One Layer Banner', 'porto-functionality' ),
+				'is_half'   => esc_html__( 'Half Contanier', 'porto-functionality' ),
+				'sticky'    => esc_html__( 'Sticky Container', 'porto-functionality' ),
 			),
 		)
 	);
@@ -574,7 +577,7 @@ function porto_elementor_column_custom_control( $self, $args ) {
 			),
 			'condition'  => array(
 				'as_banner_layer' => 'banner',
-				'banner_effect!' => '',
+				'banner_effect!'  => '',
 			),
 		)
 	);
@@ -585,9 +588,9 @@ function porto_elementor_column_custom_control( $self, $args ) {
 			'type'      => Controls_Manager::SELECT,
 			'label'     => esc_html__( 'Particle Effects', 'porto-functionality' ),
 			'options'   => array(
-				''                    => esc_html__( 'No', 'porto-functionality' ),
-				'snowfall'        => esc_html__( 'Snowfall', 'porto-functionality' ),
-				'sparkle'         => esc_html__( 'Sparkle', 'porto-functionality' ),
+				''         => esc_html__( 'No', 'porto-functionality' ),
+				'snowfall' => esc_html__( 'Snowfall', 'porto-functionality' ),
+				'sparkle'  => esc_html__( 'Sparkle', 'porto-functionality' ),
 			),
 			'condition' => array(
 				'as_banner_layer' => 'banner',
@@ -847,6 +850,17 @@ function porto_elementor_column_custom_control( $self, $args ) {
 	);
 
 	$self->add_control(
+		'is_half_right',
+		array(
+			'type'      => Controls_Manager::SWITCHER,
+			'label'     => esc_html__( 'Is Right Aligned?', 'porto-functionality' ),
+			'condition' => array(
+				'as_banner_layer' => 'is_half',
+			),
+		)
+	);
+
+	$self->add_control(
 		'porto_el_cls',
 		array(
 			'label'     => esc_html__( 'Extra Class', 'porto-functionality' ),
@@ -856,6 +870,85 @@ function porto_elementor_column_custom_control( $self, $args ) {
 			),
 		)
 	);
+
+	/* start sticky options */
+
+	$self->add_control(
+		'container_selector',
+		array(
+			'label'       => esc_html__( 'Container Selector', 'porto-functionality' ),
+			'description' => esc_html__( 'Closest parent element which contains sticky and background elements.', 'porto-functionality' ),
+			'type'        => Controls_Manager::TEXT,
+			'condition'   => array(
+				'as_banner_layer' => array( 'sticky' ),
+			),
+		)
+	);
+	$self->add_control(
+		'min_width',
+		array(
+			'label'     => esc_html__( 'Min Width (unit: px)', 'porto-functionality' ),
+			'type'      => Controls_Manager::NUMBER,
+			'min'       => 320,
+			'max'       => 1920,
+			'step'      => 1,
+			'default'   => 767,
+			'condition' => array(
+				'as_banner_layer' => array( 'sticky' ),
+			),
+		)
+	);
+	$self->add_control(
+		'offset_top',
+		array(
+			'label'       => esc_html__( 'Top (unit: px)', 'porto-functionality' ),
+			'description' => esc_html__( 'Top position when active', 'porto-functionality' ),
+			'type'        => Controls_Manager::NUMBER,
+			'min'         => 0,
+			'max'         => 500,
+			'step'        => 1,
+			'default'     => 110,
+			'condition'   => array(
+				'as_banner_layer' => array( 'sticky' ),
+			),
+		)
+	);
+	$self->add_control(
+		'offset_bottom',
+		array(
+			'label'       => esc_html__( 'Bottom (unit: px)', 'porto-functionality' ),
+			'description' => __( 'Bottom position when active', 'porto-functionality' ),
+			'type'        => Controls_Manager::NUMBER,
+			'min'         => 0,
+			'max'         => 500,
+			'step'        => 1,
+			'default'     => 0,
+			'condition'   => array(
+				'as_banner_layer' => array( 'sticky' ),
+			),
+		)
+	);
+	$self->add_control(
+		'active_class',
+		array(
+			'label'     => esc_html__( 'Active Class', 'porto-functionality' ),
+			'type'      => Controls_Manager::TEXT,
+			'condition' => array(
+				'as_banner_layer' => array( 'sticky' ),
+			),
+		)
+	);
+	$self->add_control(
+		'autofit',
+		array(
+			'label'     => esc_html__( 'Auto Fit', 'porto-functionality' ),
+			'type'      => Controls_Manager::SWITCHER,
+			'condition' => array(
+				'as_banner_layer' => array( 'sticky' ),
+			),
+		)
+	);
+	/* end sticky options */
 
 	$self->end_controls_section();
 
@@ -1048,6 +1141,27 @@ function porto_elementor_print_column_template( $content, $self ) {
 			}
 
 			extra_attr += ' data-plugin-options=' + JSON.stringify( extra_options );
+		} else if ('is_half' == settings.as_banner_layer) {
+			extra_class += ' col-half-section';
+			if (settings.is_half_right) {
+				extra_class += ' col-half-section-right';
+			}
+			if (100 === Number(settings._inline_size_tablet)) {
+				extra_class += ' col-fullwidth-md';
+			}
+		} else if ( 'sticky' == settings.as_banner_layer ) {
+			let extra_options = {};
+			extra_class += ' porto-sticky';
+			extra_options['containerSelector'] = settings['container_selector'] ? settings['container_selector'] : '';
+			extra_options['minWidth']          = settings['min_width'] ? Number( settings['min_width'] ) : 767;
+			extra_options['padding']           = {};
+			extra_options['padding']['top']    = settings['offset_top'] ? Number( settings['offset_top'] ) : 110;
+			extra_options['padding']['bottom'] = settings['offset_bottom'] ? Number( settings['offset_bottom'] ) : 0;
+			extra_options['activeClass']       = settings['active_class'] ? settings['active_class'] : 'sticky-active';
+			if ( settings['autofit'] ) {
+				extra_options['autoFit'] = true;
+			}
+			extra_style += ' data-plugin-options=' + JSON.stringify( extra_options );
 		}
 		if (settings.parallax_speed.size) {
 			extra_class += ' porto-parallax';
@@ -1144,8 +1258,8 @@ function porto_elementor_column_add_custom_attrs( $self ) {
 		}
 	} elseif ( 'carousel' == $settings['as_banner_layer'] ) {
 		$items        = 0 < intval( $settings['items']['size'] ) ? $settings['items']['size'] : 1;
-		$items_tablet = 0 < intval( $settings['items_tablet']['size'] ) ? $settings['items_tablet']['size'] : 1;
-		$items_mobile = 0 < intval( $settings['items_mobile']['size'] ) ? $settings['items_mobile']['size'] : 1;
+		$items_tablet = isset( $settings['items_tablet'] ) && 0 < intval( $settings['items_tablet']['size'] ) ? $settings['items_tablet']['size'] : 1;
+		$items_mobile = isset( $settings['items_mobile'] ) && 0 < intval( $settings['items_mobile']['size'] ) ? $settings['items_mobile']['size'] : 1;
 
 		$settings['gap'] = 'no';
 		$extra_class     = array( 'porto-carousel', 'owl-carousel', 'has-ccols' );
@@ -1234,6 +1348,38 @@ function porto_elementor_column_add_custom_attrs( $self ) {
 		$self->add_render_attribute( '_widget_wrapper', 'class', $extra_class );
 		$self->add_render_attribute( '_widget_wrapper', 'data-plugin-options', esc_attr( json_encode( $extra_options ) ) );
 
+	} elseif ( 'is_half' == $settings['as_banner_layer'] ) {
+		$extra_class = array( 'col-half-section' );
+		if ( isset( $settings['is_half_right'] ) && 'yes' == $settings['is_half_right'] ) {
+			$extra_class[] = 'col-half-section-right';
+		}
+		if ( isset( $settings['_inline_size_tablet'] ) && 100 === (int) $settings['_inline_size_tablet'] ) {
+			$extra_class[] = 'col-fullwidth-md';
+		}
+		if ( ! empty( $settings['porto_el_cls'] ) ) {
+			$extra_class[] = esc_attr( trim( $settings['porto_el_cls'] ) );
+		}
+		$wrapper_name = $legacy_enabled ? '_inner_wrapper' : '_widget_wrapper';
+		$self->add_render_attribute( $wrapper_name, 'class', $extra_class );
+	} elseif ( 'sticky' == $settings['as_banner_layer'] ) {
+		$options                      = array();
+		$options['containerSelector'] = ! empty( $settings['container_selector'] ) ? $settings['container_selector'] : '';
+		$options['minWidth']          = ! empty( $settings['min_width'] ) ? (int) $settings['min_width'] : 767;
+		$options['padding']           = array();
+		$options['padding']['top']    = ! empty( $settings['offset_top'] ) ? (int) $settings['offset_top'] : 110;
+		$options['padding']['bottom'] = ! empty( $settings['offset_bottom'] ) ? (int) $settings['offset_bottom'] : 0;
+		$options['activeClass']       = ! empty( $settings['active_class'] ) ? esc_attr( $settings['active_class'] ) : 'sticky-active';
+		if ( ! empty( $settings['autofit'] ) ) {
+			$options['autoFit'] = true;
+		}
+		$options      = json_encode( $options );
+		$wrapper_name = $legacy_enabled ? '_inner_wrapper' : '_widget_wrapper';
+		$extra_class  = array( 'porto-sticky' );
+		if ( ! empty( $settings['porto_el_cls'] ) ) {
+			$extra_class[] = esc_attr( trim( $settings['porto_el_cls'] ) );
+		}
+		$self->add_render_attribute( $wrapper_name, 'class', $extra_class );
+		$self->add_render_attribute( $wrapper_name, 'data-plugin-options', $options );
 	} else {
 		global $porto_grid_layout, $porto_item_count, $porto_grid_type;
 		$is_inner = $self->get_data( 'isInner' );
@@ -1271,6 +1417,13 @@ function porto_elementor_column_add_custom_attrs( $self ) {
 	if ( $floating_attrs ) {
 		foreach ( $floating_attrs as $key => $val ) {
 			$self->add_render_attribute( '_widget_wrapper', $key, $val );
+		}
+	}
+
+	$mpx_attrs = porto_get_mpx_options( $settings );
+	if ( $mpx_attrs ) {
+		foreach ( $mpx_attrs as $key => $val ) {
+			$self->add_render_attribute( '_wrapper', $key, $val );
 		}
 	}
 }

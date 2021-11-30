@@ -185,12 +185,13 @@
 	// $shipping_setting['auto_email_label']=='yes' is for older version compatibility can be removed after some time, 4.1.0.6
 	if( isset($shipping_setting['auto_email_label']) && ( $shipping_setting['auto_email_label']=='yes' || is_array($shipping_setting['auto_email_label']) ) )
 	{
-		add_action('xa_fedex_label_generated_successfully','wf_after_label_generation_fedex',3,3);
+		add_action('xa_fedex_label_generated_successfully','wf_after_label_generation_fedex',3,4);
 	}
 
 
-	function wf_after_label_generation_fedex($shipment_id,$encoded_label_image,$order_id)
+	function wf_after_label_generation_fedex($shipment_id,$encoded_label_image,$order_id,$shippinglabel_type)
 	{	
+
 		$shipping_setting2 =get_option('woocommerce_wf_fedex_woocommerce_shipping_settings');
 
 		$subject = ( isset($shipping_setting2['email_subject']) && !empty($shipping_setting2['email_subject']) ) ? $shipping_setting2['email_subject'] : __('Shipment Label For Your Order', 'wf-shipping-fedex').' [ORDER NO]';
@@ -292,15 +293,22 @@
 
 			if( !empty($add_label) ) {
 
-				$emailcontent 			= str_replace("[ADDITIONAL LABELS]",$add_label, $emailcontent);
+				$emailcontent = str_replace("[ADDITIONAL LABELS]",$add_label, $emailcontent);
 			}
 												
 			$img_url		= admin_url('/post.php?wf_fedex_viewlabel='.base64_encode($shipment_id.'|'.$order_id));
 			$body 			= str_replace("[DOWNLOAD LINK]",$img_url, $emailcontent);
 
-			$headers = array('Content-Type: text/html; charset=UTF-8');
+			// Attaching Label with Mail
+			$label 			= base64_decode(chunk_split($encoded_label_image));
+			$file_name 		= WP_CONTENT_DIR."/uploads/fedex_label_$shipment_id.".strtolower($shippinglabel_type);
+			
+			file_put_contents( $file_name, $label);		// Save the label to wp-content/uploads
+			$attachments[] 	= $file_name;	// Attach the label to mail
+
+			$headers 		= array('Content-Type: text/html; charset=UTF-8');
 			foreach($to_emails as $to){
-				wp_mail( $to, $subject, $body, $headers );
+				wp_mail( $to, $subject, $body, $headers, $attachments );
 			}
 		}
 	}

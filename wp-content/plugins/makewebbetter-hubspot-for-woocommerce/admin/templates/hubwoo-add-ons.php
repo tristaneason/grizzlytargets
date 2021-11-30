@@ -55,6 +55,25 @@ global $hubwoo;
 		<div class="hubwoo-box-n-card">
 			<div class="hubwoo-box-n-card__content">
 				<div class="hubwoo-fields-header hubwoo-common-header">
+					<h2><?php esc_html_e( 'HubSpot Dynamic Coupon Code Generation', 'makewebbetter-hubspot-for-woocommerce' ); ?></h2>
+				</div>
+				<div class="hubwoo-box-card__subtitle">
+					<?php
+						esc_html_e( 'Automatically creates single-use coupon codes for your store customers based on their current HubSpot RFM ratings and updates the customers data over HubSpot.', 'makewebbetter-hubspot-for-woocommerce' );
+					?>
+				</div>
+			</div>
+			<div class="hubwoo-box-n-card__btn">
+				<div>
+					<a href="https://makewebbetter.com/product/hubspot-dynamic-coupon-code-generation/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( '$79 Buy Now', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="hubwoo-box-card hubwoo-box-n-card">
+		<div class="hubwoo-box-n-card">
+			<div class="hubwoo-box-n-card__content">
+				<div class="hubwoo-fields-header hubwoo-common-header">
 					<h2><?php esc_html_e( 'HubSpot Deals For WooCommerce Memberships', 'makewebbetter-hubspot-for-woocommerce' ); ?></h2>
 				</div>
 				<div class="hubwoo-box-card__subtitle">

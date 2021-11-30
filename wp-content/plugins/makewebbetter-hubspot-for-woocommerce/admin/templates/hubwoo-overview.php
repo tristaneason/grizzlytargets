@@ -162,7 +162,7 @@ $portal_id = get_option( 'hubwoo_pro_hubspot_id', '' );
 					<div class="hubwoo-db__box-row-content">
 						<p>
 							<?php
-							esc_html_e( 'Modify any of your basic & advanced settings to make sure the HubSpot for WooCommerce integration is set up for your business needs.', 'makewebbetter-hubspot-for-woocommerce' );
+							esc_html_e( 'Modify any of your basic & advanced settings to make sure the MWB HubSpot for WooCommerce integration is set up for your business needs.', 'makewebbetter-hubspot-for-woocommerce' );
 							?>
 						</p>
 					</div>

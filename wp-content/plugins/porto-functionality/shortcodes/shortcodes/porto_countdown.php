@@ -54,6 +54,7 @@ function porto_load_countdown_shortcode() {
 					'type'       => 'porto_multiselect',
 					'heading'    => __( 'Select Time Units To Display In Countdown Timer', 'porto-functionality' ),
 					'param_name' => 'countdown_opts',
+					'std'        => '',
 					'value'      => array(
 						__( 'Years', 'porto-functionality' )  => 'syear',
 						__( 'Months', 'porto-functionality' ) => 'smonth',
@@ -63,7 +64,6 @@ function porto_load_countdown_shortcode() {
 						__( 'Minutes', 'porto-functionality' ) => 'smin',
 						__( 'Seconds', 'porto-functionality' ) => 'ssec',
 					),
-					'std'        => '',
 					'group'      => 'General Settings',
 				),
 				array(

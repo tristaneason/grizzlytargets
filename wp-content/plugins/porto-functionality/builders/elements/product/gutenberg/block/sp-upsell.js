@@ -95,7 +95,7 @@
                             el( SelectControl, {
                                 label: __( 'Product Status', 'porto-functionality' ),
                                 value: attrs.status,
-                                options: [ { label: __( 'All', 'porto-functionality' ), value: '' }, { label: __( 'Featured', 'porto-functionality' ), value: 'featured' }, { label: __( 'On Sale', 'porto-functionality' ), value: 'on_sale' }, { label: __( 'Pre-Order', 'porto-functionality' ), value: 'pre_order' } ],
+                                options: porto_block_vars.status_values,
                                 onChange: function onChange( value ) {
                                     return setAttributes( { status: value } );
                                 }
@@ -110,7 +110,7 @@
                             el( SelectControl, {
                                 label: __( 'Order by', 'porto-functionality' ),
                                 value: attrs.orderby,
-                                options: [ { label: __( 'Date', 'porto-functionality' ), value: 'date' }, { label: __( 'Price', 'porto-functionality' ), value: 'price' }, { label: __( 'Rating', 'porto-functionality' ), value: 'rating' }, { label: __( 'Total Sales', 'porto-functionality' ), value: 'total_sales' }, { label: __( 'Popularity', 'porto-functionality' ), value: 'popularity' }, { label: __( 'ID', 'PORTO-FUNCTIONALITY' ), value: 'id' }, { label: __( 'Title', 'porto-functionality' ), value: 'title' }, { label: __( 'Random', 'porto-functionality' ), value: 'rand' }, { label: __( 'Menu order', 'porto-functionality' ), value: 'menu_order' } ],
+                                options: porto_block_vars.orderby_values,
                                 onChange: ( value ) => { setAttributes( { orderby: value } ); },
                             } ),
                             attrs.orderby != 'rating' && el( SelectControl, {

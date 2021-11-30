@@ -93,3 +93,4 @@
 93	4	canonical_link
 94	4	shopping_ads_excluded_country
 95	4	ships_from_country
+96	4	sell_on_google_quantity

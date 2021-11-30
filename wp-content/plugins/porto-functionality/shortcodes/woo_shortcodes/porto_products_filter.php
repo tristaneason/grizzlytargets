@@ -39,6 +39,7 @@ function porto_load_shortcode_products_filter() {
 					'type'        => 'porto_multiselect',
 					'heading'     => __( 'Filter Areas', 'porto-functionality' ),
 					'param_name'  => 'filter_areas',
+					'std'         => '',
 					'value'       => array_merge(
 						array(
 							__( 'Category', 'porto-functionality' ) => 'category',
@@ -46,7 +47,6 @@ function porto_load_shortcode_products_filter() {
 						),
 						$filter_areas
 					),
-					'std'         => '',
 					'admin_label' => true,
 				),
 				array(
@@ -78,8 +78,8 @@ function porto_load_shortcode_products_filter() {
 					'heading'    => __( 'Display type', 'woocommerce' ),
 					'param_name' => 'display_type',
 					'value'      => array(
-						__( 'Dropdown', 'woocommerce' )   => '',
-						__( 'List', 'woocommerce' )       => 'list',
+						__( 'Dropdown', 'woocommerce' ) => '',
+						__( 'List', 'woocommerce' )     => 'list',
 					),
 				),
 				array(

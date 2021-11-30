@@ -155,12 +155,29 @@ if ( ! class_exists( 'WPPFM_Feed_Queries' ) ) :
 			$thousands_sep = get_option( 'woocommerce_price_thousand_sep' );
 
 			if ( ! preg_match( '/[a-zA-Z]/', $current_value ) ) { // only remove the commas if the current value has no letters
+				if ( $this->already_us_notation( $current_value ) ) {
+					// Some values like the Weight can already be in the us notation, so don't change them.
+					return $current_value;
+				}
+
 				$no_thousands_sep = str_replace( $thousands_sep, '', $current_value );
 
 				return ',' === $decimal_sep ? str_replace( ',', '.', $no_thousands_sep ) : $no_thousands_sep;
 			} else {
 				return $current_value;
 			}
+		}
+
+		/**
+		 * Checks if a numeric value is already in the us notation.
+		 *
+		 * @param $value
+		 * @since 2.25.0
+		 *
+		 * @return bool
+		 */
+		private function already_us_notation( $value ) {
+			return strpos( $value, '.' ) && ! strpos( $value, ',' );
 		}
 	}
 

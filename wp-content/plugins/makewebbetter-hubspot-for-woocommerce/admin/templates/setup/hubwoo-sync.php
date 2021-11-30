@@ -98,7 +98,7 @@ $onboarding_data = Hubwoo::hubwoo_onboarding_questionaire();
 	<div class="hubwoo-box">
 		<div class="mwb-heb-wlcm__title">			
 			<h2>
-				<?php esc_html_e( 'Congrats! You’ve successfully set up the HubSpot for WooCommerce plugin', 'makewebbetter-hubspot-for-woocommerce' ); ?>
+				<?php esc_html_e( 'Congrats! You’ve successfully set up the MWB HubSpot for WooCommerce plugin', 'makewebbetter-hubspot-for-woocommerce' ); ?>
 			</h2>
 		</div>
 		<div class="mwb-heb-wlcm__content">

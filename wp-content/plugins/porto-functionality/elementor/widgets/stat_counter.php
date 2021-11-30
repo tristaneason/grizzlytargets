@@ -543,7 +543,12 @@ class Porto_Elementor_Stat_Counter_Widget extends \Elementor\Widget_Base {
 		$atts = $this->get_settings_for_display();
 
 		if ( isset( $atts['icon_cl'] ) && isset( $atts['icon_cl']['value'] ) ) {
-			$atts['icon'] = $atts['icon_cl']['value'];
+			if ( isset( $atts['icon_cl']['library'] ) && isset( $atts['icon_cl']['value']['id'] ) ) {
+				$atts['icon_type'] = $atts['icon_cl']['library'];
+				$atts['icon']      = $atts['icon_cl']['value']['id'];
+			} else {
+				$atts['icon'] = $atts['icon_cl']['value'];
+			}
 		}
 
 		$atts['img_width']           = '';

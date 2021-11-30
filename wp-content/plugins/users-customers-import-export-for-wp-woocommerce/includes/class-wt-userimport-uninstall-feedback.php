@@ -189,12 +189,17 @@ if (!class_exists('WT_UserImport_Uninstall_Feedback')) :
                             var parent = $(this).parents('li:first');
                             modal.find('.reason-input').remove();
                             var inputType = parent.data('type'),
-                                    inputPlaceholder = parent.data('placeholder');
-                                    
+                                inputPlaceholder = parent.data('placeholder');
+                                var reasonInputHtml = '';                                                                      
                                 if ('reviewhtml' === inputType) {
-                                    var reasonInputHtml = '<div class="reviewlink"><a href="#" target="_blank" class="review-and-deactivate"><?php _e('Deactivate and leave a review', 'users-customers-import-export-for-wp-woocommerce'); ?> <span class="wt-userimport-rating-link"> &#9733;&#9733;&#9733;&#9733;&#9733; </span></a></div>';
+                                    if($('.reviewlink').length == 0){
+                                        reasonInputHtml = '<div class="reviewlink"><a href="#" target="_blank" class="review-and-deactivate"><?php _e('Deactivate and leave a review', 'users-customers-import-export-for-wp-woocommerce'); ?> <span class="wt-userimport-rating-link"> &#9733;&#9733;&#9733;&#9733;&#9733; </span></a></div>';
+                                    }
                                 } else {
-                                    var reasonInputHtml = '<div class="reason-input">' + (('text' === inputType) ? '<input type="text" class="input-text" size="40" />' : '<textarea rows="5" cols="45"></textarea>') + '</div>';
+                                    if($('.reviewlink').length){
+                                       $('.reviewlink'). remove();
+                                    }                                
+                                    reasonInputHtml = '<div class="reason-input">' + (('text' === inputType) ? '<input type="text" class="input-text" size="40" />' : '<textarea rows="5" cols="45"></textarea>') + '</div>';
                                 }
                             if (inputType !== '') {
                                 parent.append($(reasonInputHtml));

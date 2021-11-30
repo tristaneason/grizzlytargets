@@ -16,7 +16,7 @@
       <option name="outputFromStdout" value="false" />
       <option name="program" value="$USER_HOME$/AppData/Roaming/npm/terser" />
       <option name="runOnExternalChanges" value="true" />
-      <option name="scopeName" value="Scope" />
+      <option name="scopeName" value="Plugin" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="" />
       <envs />

@@ -3,11 +3,11 @@
 	Plugin Name: WooCommerce FedEx Shipping Plugin with Print Label
 	Plugin URI: https://www.pluginhive.com/product/woocommerce-fedex-shipping-plugin-with-print-label/
 	Description: This plugin helps you completely automate FedEx shipping. It displays live shipping rates on WooCommerce cart page, helps you pay postage & print labels from within WooCommerce, and track your shipments.
-	Version: 4.9.1
+	Version: 4.9.4
 	Author: PluginHive
 	Author URI: http://pluginhive.com/about/
 	WC requires at least: 3.0.0
-	WC tested up to: 5.7.0
+	WC tested up to: 5.9.0
 	Text Domain : wf-shipping-fedex
 */
 
@@ -22,7 +22,7 @@ if( !defined('WF_FEDEX_ADV_DEBUG_MODE') ){
 // Define PH_FEDEX_PLUGIN_VERSION
 if ( !defined( 'PH_FEDEX_PLUGIN_VERSION' ) )
 {
-	define( 'PH_FEDEX_PLUGIN_VERSION', '4.9.1' );
+	define( 'PH_FEDEX_PLUGIN_VERSION', '4.9.4' );
 }
 
 // Include API Manager
@@ -177,6 +177,7 @@ if ( in_array( 'woocommerce/woocommerce.php', $xa_active_plugins ) ) {
 					include_once ( 'includes/class-wf-fedex-pickup-admin.php' );				
 					
 					include_once ( 'includes/class-xa-fedex-image-upload.php' );
+					include_once ( 'includes/class-ph-fedex-shipment-tracking.php' );
 
 				}
 				// Localisation
@@ -225,6 +226,11 @@ if ( in_array( 'woocommerce/woocommerce.php', $xa_active_plugins ) ) {
 			}
 			
 			public function wf_fedex_scripts() {
+
+				if( is_admin() && ! did_action('wp_enqueue_media') && isset($_GET['section']) &&  $_GET['section'] == 'wf_fedex_woocommerce_shipping'){
+					wp_enqueue_media();
+				}
+
 				wp_enqueue_script( 'jquery-ui-sortable' );
 				wp_enqueue_script( 'wf-fedex-script', plugins_url( '/resources/js/wf_fedex.js', __FILE__ ), array( 'jquery' ) );
 				wp_enqueue_style( 'ph-fedex-common-style', plugins_url( '/resources/css/wf_common_style.css', __FILE__ ));

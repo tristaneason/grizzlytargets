@@ -645,6 +645,13 @@ return array(
 			'EVENING'		=> __( 'Evening', 'wf-shipping-fedex' ),
 		)
 	),
+	'fedex_tracking'	=> array(
+		'title'		  	=> __( 'FedEx Tracking', 'wf-shipping-fedex' ),
+		'type'			=> 'checkbox',
+		'default'	 	=> 'no',
+		'label' 		=> __( 'Enable FedEx Shipment Tracking', 'wf-shipping-fedex' ),
+		'class'			=> 'fedex_special_services_tab'
+	),
 	
 
 	'title_rate'		   => array(

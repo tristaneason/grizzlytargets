@@ -89,7 +89,9 @@ class Porto_Contact_Info_Widget extends WP_Widget {
 		$instance['working']        = $new_instance['working'];
 		$instance['contact_after']  = $new_instance['contact_after'];
 		$instance['view']           = $new_instance['view'];
-		$instance['icon']           = $new_instance['icon'];
+		if ( isset( $new_instance['icon'] ) ) {
+			$instance['icon'] = $new_instance['icon'];
+		}
 
 		return $instance;
 	}

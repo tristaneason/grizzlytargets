@@ -46,9 +46,8 @@ class EnUniShipfreightFdo
     {
         $this->en_fdo_meta_data['items'] = [];
         foreach ($items as $item_key => $item_data) {
-            $productId = $productName = $productQty = $actualProductPrice = $products = $productPrice = $productWeight = $productLength = $productWidth = $productHeight = $ptype = $hazardousMaterial = $productType = $productSku = $productClass = $attributes = $variantId = $nestedMaterial = $nestedPercentage = $nestedDimension = $nestedItems = $stakingProperty = '';
+            $nmfc_number = $productId = $productName = $productQty = $actualProductPrice = $products = $productPrice = $productWeight = $productLength = $productWidth = $productHeight = $ptype = $hazardousMaterial = $productType = $productSku = $productClass = $attributes = $variantId = $nestedMaterial = $nestedPercentage = $nestedDimension = $nestedItems = $stakingProperty = '';
             extract($item_data);
-
             $meta_data = [];
             if (!empty($attributes)) {
                 foreach ($attributes as $attr_key => $attr_value) {
@@ -83,6 +82,7 @@ class EnUniShipfreightFdo
                 'nested_dimension' => $nestedDimension,
                 'nested_items' => $nestedItems,
                 'staking_property' => $stakingProperty,
+                'nmfc_number' => $nmfc_number
             ];
 
             // Hook for flexibility adding to package

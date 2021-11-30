@@ -65,9 +65,17 @@ $base_reserved_columns = array(
 if (!function_exists('is_plugin_active'))
     require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 
-if (is_plugin_active('wt-woocommerce-packing-list/wf-woocommerce-packing-list.php')):
+if (is_plugin_active('print-invoices-packing-slip-labels-for-woocommerce/print-invoices-packing-slip-labels-for-woocommerce.php')):
     $base_reserved_columns['meta:wf_invoice_number'] = array('title' => 'WT Invoice number ', 'description' => 'WebToffee Invoice number');
     $base_reserved_columns['meta:_wf_invoice_date'] = array('title' => 'WT Invoice date ', 'description' => 'WebToffee Invoice date');
+endif;
+
+if (is_plugin_active('yith-woocommerce-order-tracking-premium/init.php')):
+    $base_reserved_columns['meta:ywot_tracking_code'] = array('title' => 'Tracking code', 'description' => 'YITH Tracking code');
+    $base_reserved_columns['meta:ywot_tracking_postcode'] = array('title' => 'Tracking postcode', 'description' => 'YITH Tracking postcode');
+    $base_reserved_columns['meta:ywot_carrier_id'] = array('title' => 'Carrier name', 'description' => 'YITH Tracking carrier');
+    $base_reserved_columns['meta:ywot_pick_up_date'] = array('title' => 'Pickup date', 'description' => 'YITH pickup date');    
+    $base_reserved_columns['meta:ywot_picked_up'] = array('title' => 'Order picked up?', 'description' => 'YITH Is Order picked up?');    
 endif;
 
 // Reserved column names

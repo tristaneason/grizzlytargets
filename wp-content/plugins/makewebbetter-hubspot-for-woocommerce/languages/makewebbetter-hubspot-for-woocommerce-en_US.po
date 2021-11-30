@@ -1,33 +1,23 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: HubSpot for WooCommerce\n"
-"POT-Creation-Date: 2021-09-13 12:40+0530\n"
-"PO-Revision-Date: 2021-09-13 12:40+0530\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2021-11-11 14:53+0530\n"
+"PO-Revision-Date: 2021-11-11 14:53+0530\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
-"X-Poedit-Basepath: ..\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-WPHeader: makewebbetter-hubspot-for-woocommerce.php\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#. translators: %s: decimal
 #: admin/class-hubwoo-admin.php:106
 #, php-format
 msgid "Please enter in decimal (%s) format without thousand separators."
 msgstr ""
 
-#. translators: %s: decimal_separator
 #: admin/class-hubwoo-admin.php:108
 #, php-format
 msgid ""
@@ -117,7 +107,7 @@ msgid " for more details."
 msgstr ""
 
 #: admin/class-hubwoo-admin.php:249
-msgid "HubSpot for WooCommerce"
+msgid "MWB HubSpot for WooCommerce"
 msgstr ""
 
 #: admin/class-hubwoo-admin.php:272
@@ -136,7 +126,7 @@ msgstr ""
 msgid "user-role"
 msgstr ""
 
-#: admin/class-hubwoo-admin.php:291 admin/class-hubwoo-admin.php:1979
+#: admin/class-hubwoo-admin.php:291 admin/class-hubwoo-admin.php:2038
 msgid "Select a time period"
 msgstr ""
 
@@ -160,7 +150,7 @@ msgstr ""
 msgid "Users registered upto date"
 msgstr ""
 
-#: admin/class-hubwoo-admin.php:316 admin/class-hubwoo-admin.php:2002
+#: admin/class-hubwoo-admin.php:316 admin/class-hubwoo-admin.php:2061
 msgid "dd-mm-yyyy"
 msgstr ""
 
@@ -189,7 +179,7 @@ msgstr ""
 msgid "Abandoned Cart Settings"
 msgstr ""
 
-#: admin/class-hubwoo-admin.php:902 admin/class-hubwoo-admin.php:1913
+#: admin/class-hubwoo-admin.php:902 admin/class-hubwoo-admin.php:1972
 msgid "Enable/Disable"
 msgstr ""
 
@@ -329,66 +319,66 @@ msgid ""
 "will be set/changed on each sync. Default Order Status is Completed"
 msgstr ""
 
-#: admin/class-hubwoo-admin.php:1906
+#: admin/class-hubwoo-admin.php:1965
 msgid "Apply your settings for Deals and its stages"
 msgstr ""
 
-#: admin/class-hubwoo-admin.php:1915
+#: admin/class-hubwoo-admin.php:1974
 msgid "Allow to sync new deals"
 msgstr ""
 
-#: admin/class-hubwoo-admin.php:1922
+#: admin/class-hubwoo-admin.php:1981
 msgid "Days required to close a deal"
 msgstr ""
 
-#: admin/class-hubwoo-admin.php:1925
+#: admin/class-hubwoo-admin.php:1984
 msgid ""
 "set the minimum number of days in which the pending/open deals can be closed/"
 "won"
 msgstr ""
 
-#: admin/class-hubwoo-admin.php:1933
+#: admin/class-hubwoo-admin.php:1992
 msgid "Winning Deal Stages"
 msgstr ""
 
-#: admin/class-hubwoo-admin.php:1937
+#: admin/class-hubwoo-admin.php:1996
 msgid ""
 "select the deal stages of ecommerce pipeline which are won according to your "
 "business needs. \"Processing\" and \"Completed\" are default winning stages "
 "for extension as well as HubSpot"
 msgstr ""
 
-#: admin/class-hubwoo-admin.php:1962
+#: admin/class-hubwoo-admin.php:2021
 msgid "Export your old orders as Deals on HubSpot"
 msgstr ""
 
-#: admin/class-hubwoo-admin.php:1969
+#: admin/class-hubwoo-admin.php:2028
 msgid "Select order status"
 msgstr ""
 
-#: admin/class-hubwoo-admin.php:1972
+#: admin/class-hubwoo-admin.php:2031
 msgid ""
 "Select a order status from the dropdown and all orders for the selected "
 "status will be synced as deals"
 msgstr ""
 
-#: admin/class-hubwoo-admin.php:1981
+#: admin/class-hubwoo-admin.php:2040
 msgid " Date range for orders"
 msgstr ""
 
-#: admin/class-hubwoo-admin.php:1987
+#: admin/class-hubwoo-admin.php:2046
 msgid "Orders from date"
 msgstr ""
 
-#: admin/class-hubwoo-admin.php:1992
+#: admin/class-hubwoo-admin.php:2051
 msgid "From which date you want to sync the orders, select that date"
 msgstr ""
 
-#: admin/class-hubwoo-admin.php:1998
+#: admin/class-hubwoo-admin.php:2057
 msgid "Orders up to date"
 msgstr ""
 
-#: admin/class-hubwoo-admin.php:2003
+#: admin/class-hubwoo-admin.php:2062
 msgid "Up to which date you want to sync the orders, select that date"
 msgstr ""
 
@@ -404,7 +394,7 @@ msgid ""
 msgstr ""
 
 #: admin/templates/hubwoo-add-ons.php:30 admin/templates/hubwoo-add-ons.php:49
-#: admin/templates/hubwoo-add-ons.php:68
+#: admin/templates/hubwoo-add-ons.php:68 admin/templates/hubwoo-add-ons.php:87
 msgid "$79 Buy Now"
 msgstr ""
 
@@ -421,25 +411,36 @@ msgid ""
 msgstr ""
 
 #: admin/templates/hubwoo-add-ons.php:58
-msgid "HubSpot Deals For WooCommerce Memberships"
+msgid "HubSpot Dynamic Coupon Code Generation"
 msgstr ""
 
 #: admin/templates/hubwoo-add-ons.php:62
+msgid ""
+"Automatically creates single-use coupon codes for your store customers based "
+"on their current HubSpot RFM ratings and updates the customers data over "
+"HubSpot."
+msgstr ""
+
+#: admin/templates/hubwoo-add-ons.php:77
+msgid "HubSpot Deals For WooCommerce Memberships"
+msgstr ""
+
+#: admin/templates/hubwoo-add-ons.php:81
 msgid ""
 "HubSpot Deals for WooCommerce Memberships enables you to organize your site "
 "members as HubSpot deals with relevant deal stage, plans and the opening and "
 "closing dates."
 msgstr ""
 
-#: admin/templates/hubwoo-add-ons.php:73
+#: admin/templates/hubwoo-add-ons.php:92
 msgid "Additional Services"
 msgstr ""
 
-#: admin/templates/hubwoo-add-ons.php:78
+#: admin/templates/hubwoo-add-ons.php:97
 msgid "HubSpot Onboarding"
 msgstr ""
 
-#: admin/templates/hubwoo-add-ons.php:82
+#: admin/templates/hubwoo-add-ons.php:101
 msgid ""
 "Maximize your HubSpot potential and make the most out of it. With our "
 "HubSpot Onboarding services, you get a complete guidance that makes you "
@@ -447,28 +448,29 @@ msgid ""
 "to get maximum results."
 msgstr ""
 
-#: admin/templates/hubwoo-add-ons.php:88 admin/templates/hubwoo-add-ons.php:107
+#: admin/templates/hubwoo-add-ons.php:107
 #: admin/templates/hubwoo-add-ons.php:126
+#: admin/templates/hubwoo-add-ons.php:145
 #: admin/templates/hubwoo-support.php:132
 msgid "Browse now"
 msgstr ""
 
-#: admin/templates/hubwoo-add-ons.php:97
+#: admin/templates/hubwoo-add-ons.php:116
 msgid "Marketing Email Template Pack"
 msgstr ""
 
-#: admin/templates/hubwoo-add-ons.php:101
+#: admin/templates/hubwoo-add-ons.php:120
 msgid ""
 "Download beautiful, responsive marketing emails to use in HubSpot that are "
 "optimized for WooCommerce."
 msgstr ""
 
-#: admin/templates/hubwoo-add-ons.php:116
+#: admin/templates/hubwoo-add-ons.php:135
 #: admin/templates/hubwoo-support.php:122
 msgid "HubSpot CMS Services"
 msgstr ""
 
-#: admin/templates/hubwoo-add-ons.php:120
+#: admin/templates/hubwoo-add-ons.php:139
 #: admin/templates/hubwoo-support.php:126
 msgid ""
 "Build amazingly beautiful and interactive websites with our easy-to-use "
@@ -815,8 +817,8 @@ msgstr ""
 
 #: admin/templates/hubwoo-overview.php:165
 msgid ""
-"Modify any of your basic & advanced settings to make sure the HubSpot for "
-"WooCommerce integration is set up for your business needs."
+"Modify any of your basic & advanced settings to make sure the MWB HubSpot "
+"for WooCommerce integration is set up for your business needs."
 msgstr ""
 
 #: admin/templates/hubwoo-overview.php:170
@@ -1168,7 +1170,8 @@ msgid ""
 msgstr ""
 
 #: admin/templates/setup/hubwoo-sync.php:101
-msgid "Congrats! You’ve successfully set up the HubSpot for WooCommerce plugin"
+msgid ""
+"Congrats! You’ve successfully set up the MWB HubSpot for WooCommerce plugin"
 msgstr ""
 
 #: admin/templates/setup/hubwoo-sync.php:108
@@ -1299,131 +1302,130 @@ msgstr ""
 msgid "To"
 msgstr ""
 
-#: includes/class-hubwoo.php:428
+#: includes/class-hubwoo.php:432
 msgid "Dashboard"
 msgstr ""
 
-#: includes/class-hubwoo.php:430
+#: includes/class-hubwoo.php:434
 msgid "Integrate your WooCommerce store with HubSpot"
 msgstr ""
 
-#: includes/class-hubwoo.php:434
+#: includes/class-hubwoo.php:438
 msgid "Contacts"
 msgstr ""
 
-#: includes/class-hubwoo.php:436
+#: includes/class-hubwoo.php:440
 msgid "Sync all your woocommerce data to HubSpot"
 msgstr ""
 
-#: includes/class-hubwoo.php:440
+#: includes/class-hubwoo.php:444
 msgid "Deals"
 msgstr ""
 
-#: includes/class-hubwoo.php:442
+#: includes/class-hubwoo.php:446
 msgid "Sync All of your woocommerce orders as HubSpot Deals"
 msgstr ""
 
-#: includes/class-hubwoo.php:446
+#: includes/class-hubwoo.php:450
 msgid "Abandoned Carts"
 msgstr ""
 
-#: includes/class-hubwoo.php:448
+#: includes/class-hubwoo.php:452
 msgid "Sync all of the cart abandoners on your website"
 msgstr ""
 
-#: includes/class-hubwoo.php:452
+#: includes/class-hubwoo.php:456
 msgid "Automation"
 msgstr ""
 
-#: includes/class-hubwoo.php:454
+#: includes/class-hubwoo.php:458
 msgid "Create Workflows to Track ROI and Retrieve Abandoned Carts"
 msgstr ""
 
-#: includes/class-hubwoo.php:458
+#: includes/class-hubwoo.php:462
 msgid "Add Ons"
 msgstr ""
 
-#: includes/class-hubwoo.php:460
+#: includes/class-hubwoo.php:464
 msgid "Add-ons for the HubSpot Integrations"
 msgstr ""
 
-#: includes/class-hubwoo.php:463 makewebbetter-hubspot-for-woocommerce.php:165
+#: includes/class-hubwoo.php:467 makewebbetter-hubspot-for-woocommerce.php:165
 msgid "Settings"
 msgstr ""
 
-#: includes/class-hubwoo.php:465
+#: includes/class-hubwoo.php:469
 msgid "General And Advanced Settings"
 msgstr ""
 
-#: includes/class-hubwoo.php:471 includes/class-hubwoo.php:473
+#: includes/class-hubwoo.php:475 includes/class-hubwoo.php:477
 #: makewebbetter-hubspot-for-woocommerce.php:129
 msgid "Support"
 msgstr ""
 
-#. translators: %s: file path
-#: includes/class-hubwoo.php:638
+#: includes/class-hubwoo.php:642
 #, php-format
 msgid ""
 "Unable to locate file path at location %s some features may not work "
 "properly in HubSpot Integration, please contact us!"
 msgstr ""
 
-#: includes/class-hubwoo.php:1380
+#: includes/class-hubwoo.php:1414
 msgid "New User Registration"
 msgstr ""
 
-#: includes/class-hubwoo.php:1394
+#: includes/class-hubwoo.php:1428
 msgid "When order status changes to Completed"
 msgstr ""
 
-#: includes/class-hubwoo.php:1395
+#: includes/class-hubwoo.php:1429
 msgid "When order status changes to Processing"
 msgstr ""
 
-#: includes/class-hubwoo.php:1396
+#: includes/class-hubwoo.php:1430
 msgid "When order status changes to Failed"
 msgstr ""
 
-#: includes/class-hubwoo.php:1397
+#: includes/class-hubwoo.php:1431
 msgid "When order status changes to On-hold"
 msgstr ""
 
-#: includes/class-hubwoo.php:1398
+#: includes/class-hubwoo.php:1432
 msgid "When order status changes to Refunded"
 msgstr ""
 
-#: includes/class-hubwoo.php:1399
+#: includes/class-hubwoo.php:1433
 msgid "When order status changes to Cancelled"
 msgstr ""
 
-#: includes/class-hubwoo.php:1993
+#: includes/class-hubwoo.php:2027
 msgid "Payment Pending/Failed"
 msgstr ""
 
-#: includes/class-hubwoo.php:2000
+#: includes/class-hubwoo.php:2034
 msgid "On hold"
 msgstr ""
 
-#: includes/class-hubwoo.php:2007
+#: includes/class-hubwoo.php:2041
 msgid "Processing"
 msgstr ""
 
-#: includes/class-hubwoo.php:2014
+#: includes/class-hubwoo.php:2048
 msgid "Completed"
 msgstr ""
 
-#: includes/class-hubwoo.php:2021
+#: includes/class-hubwoo.php:2055
 msgid "Refunded/Cancelled"
 msgstr ""
 
-#: includes/class-hubwoo.php:2095
+#: includes/class-hubwoo.php:2129
 msgid "HubSpot All-In-One Marketing - Forms, Popups, Live Chat"
 msgstr ""
 
-#: includes/class-hubwoo.php:2371
+#: includes/class-hubwoo.php:2405
 msgid ""
-"You are having issues with your HubSpot for WooCommerce sync. Please read "
-"this doc on how to fix your integration."
+"You are having issues with your MWB HubSpot for WooCommerce sync. Please "
+"read this doc on how to fix your integration."
 msgstr ""
 
 #: includes/class-hubwooconnectionmananager.php:159
@@ -2225,13 +2227,13 @@ msgstr ""
 #: makewebbetter-hubspot-for-woocommerce.php:237
 msgid ""
 "WooCommerce is not activated. Please activate WooCommerce first to install "
-"HubSpot for WooCommerce"
+"MWB HubSpot for WooCommerce"
 msgstr ""
 
 #: makewebbetter-hubspot-for-woocommerce.php:257
 msgid ""
-"Oops! You tried activating the HubSpot for WooCommerce without deactivating "
-"the another version of the integration created by MakewebBetter. Kindly "
-"deactivate the other version of HubSpot WooCommerce Integration and then try "
-"again."
+"Oops! You tried activating the MWB HubSpot for WooCommerce without "
+"deactivating the another version of the integration created by "
+"MakewebBetter. Kindly deactivate the other version of HubSpot WooCommerce "
+"Integration and then try again."
 msgstr ""

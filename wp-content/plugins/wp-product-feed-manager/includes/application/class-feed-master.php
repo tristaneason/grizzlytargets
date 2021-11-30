@@ -426,7 +426,7 @@ if ( ! class_exists( 'WPPFM_Feed_Master_Class' ) ) :
 
 			array_filter( $products ); // Just to make sure, remove all empty elements.
 
-			return $products;
+			return apply_filters( 'wppfm_products_in_feed_queue', $products, $this->_feed->feedId );
 		}
 
 		/**

@@ -1,27 +1,28 @@
 <?php
 $atts = shortcode_atts(
 	array(
-		'title'              => '',
-		'font_family'        => '',
-		'font_size'          => '',
-		'font_weight'        => '',
-		'text_transform'     => '',
-		'line_height'        => '',
-		'letter_spacing'     => '',
-		'color'              => '',
-		'tag'                => 'h2',
-		'link'               => '',
-		'alignment'          => '',
-		'show_border'        => '',
-		'border_width'       => '',
-		'border_color'       => '',
-		'enable_typewriter'  => false,
-		'typewriter_delay'   => 0,
-		'typewriter_width'   => 0,
-		'animation_type'     => '',
-		'animation_duration' => 1000,
-		'animation_delay'    => 0,
-		'className'          => '',
+		'title'                => '',
+		'font_family'          => '',
+		'font_size'            => '',
+		'font_weight'          => '',
+		'text_transform'       => '',
+		'line_height'          => '',
+		'letter_spacing'       => '',
+		'color'                => '',
+		'tag'                  => 'h2',
+		'link'                 => '',
+		'alignment'            => '',
+		'show_border'          => '',
+		'border_width'         => '',
+		'border_color'         => '',
+		'enable_typewriter'    => false,
+		'typewriter_animation' => 'fadeIn',
+		'typewriter_delay'     => 0,
+		'typewriter_width'     => 0,
+		'animation_type'       => '',
+		'animation_duration'   => 1000,
+		'animation_delay'      => 0,
+		'className'            => '',
 	),
 	$atts
 );
@@ -91,7 +92,7 @@ if ( $atts['animation_type'] ) {
 $type_plugin = '';
 if ( ! empty( $atts['enable_typewriter'] ) ) {
 	$typewriter_options = array(
-		'startDelay' => 0,
+		'startDelay'     => 0,
 		'minWindowWidth' => 0,
 	);
 	if ( ! empty( $atts['typewriter_delay'] ) ) {
@@ -99,6 +100,9 @@ if ( ! empty( $atts['enable_typewriter'] ) ) {
 	}
 	if ( ! empty( $atts['typewriter_width'] ) ) {
 		$typewriter_options['minWindowWidth'] = (int) $atts['typewriter_width'];
+	}
+	if ( ! empty( $atts['typewriter_animation'] ) ) {
+		$typewriter_options['animationName'] = $atts['typewriter_animation'];
 	}
 	$type_plugin .= ' data-plugin-animated-letters data-plugin-options="' . esc_attr( json_encode( $typewriter_options ) ) . '"';
 }

@@ -2,13 +2,16 @@ import $ from 'jquery';
 
 import Raven from '../lib/Raven';
 import { restNonce, restUrl } from '../constants/leadinConfig';
+import { addQueryObjectToUrl } from '../utils/queryParams';
 
-function makeRequest(method, path, data) {
-  const restApiUrl = `${restUrl}leadin/v1${path}`;
+function makeRequest(method, path, data, queryParams = {}) {
+  // eslint-disable-next-line compat/compat
+  const restApiUrl = new URL(`${restUrl}leadin/v1${path}`);
+  addQueryObjectToUrl(restApiUrl, queryParams);
 
   return new Promise((resolve, reject) => {
     const payload = {
-      url: restApiUrl,
+      url: restApiUrl.toString(),
       method,
       contentType: 'application/json',
       beforeSend: xhr => xhr.setRequestHeader('X-WP-Nonce', restNonce),
@@ -37,10 +40,18 @@ function makeRequest(method, path, data) {
   });
 }
 
-export function makeProxyRequest(method, hubspotApiPath, data) {
-  const proxyApiPath = `/proxy${hubspotApiPath}`;
+export function makeProxyRequest(
+  method,
+  hubspotApiPath,
+  data,
+  queryParamsObject = {}
+) {
+  const proxyApiPath = `/proxy`;
+  // eslint-disable-next-line compat/compat
+  const proxyQueryParams = new URLSearchParams(queryParamsObject).toString();
+  const proxyUrl = `${hubspotApiPath}?${proxyQueryParams}`;
 
-  return makeRequest(method, proxyApiPath, data);
+  return makeRequest(method, proxyApiPath, data, { proxyUrl });
 }
 
 export function fetchOAuthToken() {

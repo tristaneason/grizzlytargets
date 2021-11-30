@@ -1839,26 +1839,27 @@ function wppfm_conditionSelectorCode( id, sourceLevel, level, nrQueries, query )
 	return wppfm_ifConditionSelector( id, sourceLevel, level + 1, nrQueries, queryArray );
 }
 
-function wppfm_orSelectorRowCode( rowId, sourceLevel, borderStyleClass ) {
-	// source wrapper
-	var htmlCode = '<div class="feed-source-row" id="source-' + rowId + '-' + sourceLevel + '">';
-
-	// first column wrapper
-	htmlCode += '<div class="add-to-feed-column colw col20w">&nbsp;</div>';
-
-	// the source data and queries wrapper
-	htmlCode += '<div class="source-data-column colw col80w' + borderStyleClass + '" id="source-data-' + rowId + '-' + sourceLevel + '">';
-
-	htmlCode += '<div class="source-selector colw col30w" id="source-select-' + rowId + '-' + sourceLevel + '"></div>';
-	htmlCode += wppfm_orSelectorCode( rowId, '' );
-	htmlCode += '<div></div>';
-
-	htmlCode += wppfm_endrow( rowId );
-
-	htmlCode += '</div></div>';
-
-	return htmlCode;
-}
+// Removed @since 2.26.0.
+// function wppfm_orSelectorRowCode( rowId, sourceLevel, borderStyleClass ) {
+// 	// source wrapper
+// 	var htmlCode = '<div class="feed-source-row" id="source-' + rowId + '-' + sourceLevel + '">';
+//
+// 	// first column wrapper
+// 	htmlCode += '<div class="add-to-feed-column colw col20w">&nbsp;</div>';
+//
+// 	// the source data and queries wrapper
+// 	htmlCode += '<div class="source-data-column colw col80w' + borderStyleClass + '" id="source-data-' + rowId + '-' + sourceLevel + '">';
+//
+// 	htmlCode += '<div class="source-selector colw col30w" id="source-select-' + rowId + '-' + sourceLevel + '"></div>';
+// 	htmlCode += wppfm_orSelectorCode( rowId, '' );
+// 	htmlCode += '<div></div>';
+//
+// 	htmlCode += wppfm_endrow( rowId );
+//
+// 	htmlCode += '</div></div>';
+//
+// 	return htmlCode;
+// }
 
 function wppfm_orSelectorCode( id, alternativeInputs ) {
 
@@ -2535,7 +2536,7 @@ function wppfm_fixedSourcesList( selectedValue ) {
 
 	for ( var i = 0; i < _inputFields.length; i ++ ) {
 
-		selectStatus = selectedValue === _inputFields[ i ].value ? ' selected' : '';
+		selectStatus = null !== selectedValue && selectedValue === _inputFields[ i ].value ? ' selected' : '';
 
 		htmlCode += '<option value = "' + _inputFields[ i ].value + '" itemprop="' + _inputFields[ i ].prop + '" ' + selectStatus + '>' + _inputFields[ i ].label + '</option>';
 	}

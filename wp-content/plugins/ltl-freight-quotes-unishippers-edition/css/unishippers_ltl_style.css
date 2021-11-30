@@ -1,11 +1,13 @@
-#wpfooter{
+#wpfooter {
     position: static;
     margin-left: 0px !important;
 }
-#footer-left{
+
+#footer-left {
     margin-left: 160px !important
 }
-.unishippers_carrier_section_class table .unishipper_carrier_carrier{
+
+.unishippers_carrier_section_class table .unishipper_carrier_carrier {
     width: 70%;
     font-size: 18px;
     color: #0073aa;
@@ -15,7 +17,8 @@
     border-bottom: 1px solid #e1e1e1;
     padding: 20px 10px 20px;
 }
-.unishippers_carrier_section_class table .unishipper__carrier_logo{
+
+.unishippers_carrier_section_class table .unishipper__carrier_logo {
     width: 10%;
     text-align: center;
     font-size: 18px;
@@ -23,57 +26,66 @@
     font-weight: normal;
     border-bottom: 1px solid #e1e1e1;
 }
-.unishippers_carrier_section_class table .unishipper_carrier_include{
+
+.unishippers_carrier_section_class table .unishipper_carrier_include {
     width: 15%;;
-    padding-left: 10px; 
+    padding-left: 10px;
     text-align: center;
     padding-right: 10px !important;
     border-bottom: 1px solid #e1e1e1;
 }
 
-.unishipper_even_odd_class{
+.unishipper_even_odd_class {
     background-color: #fff !important;
 }
 
-.unishippers_carrier_section_class table .unishipper_carrier_Name_td{
+.unishippers_carrier_section_class table .unishipper_carrier_Name_td {
     text-align: left;
     padding-left: 10px !important;
 }
 
 .unishippers_carrier_section_class table td {
-    text-align: center; 
+    text-align: center;
 }
-.unishippers_carrier_section_class table tr{
+
+.unishippers_carrier_section_class table tr {
     background: #f9f9f9;
 }
-.unishippers_carrier_section_class .form-table tr .titledesc{
-    width: 800px;    
+
+.unishippers_carrier_section_class .form-table tr .titledesc {
+    width: 800px;
     padding: 6px;
 }
+
 .unishippers_carrier_section_class table {
     border-spacing: 0;
 }
+
 .unishippers_carrier_section_class .form-table td {
     width: 200px;
     padding: 0px;
 }
-.unishippers_ltl_connection_section_class a{
+
+.unishippers_ltl_connection_section_class a {
     text-decoration: unset;
 }
-.unishippers_ltl_connection_section_class .form-table tr .titledesc{
-    width: 300px;    
+
+.unishippers_ltl_connection_section_class .form-table tr .titledesc {
+    width: 300px;
 }
 
-.unishippers_ltl_connection_section_class .button-primary{
+.unishippers_ltl_connection_section_class .button-primary {
     font-size: 13px !important;
     margin-left: 24px;
     width: 163px !important;
     height: 40px;
 }
-.unishippers_ltl_setting_section .button-primary, .user_guide p.submit{
+
+.unishippers_ltl_setting_section .button-primary, .user_guide p.submit {
     display: none;
 }
-.unishippers_ltl_connection_section_class .connection_save_button{
+
+.unishippers_ltl_connection_section_class .connection_save_button {
     margin-left: 15px;
     width: 190px !important;
     height: 40px;
@@ -85,31 +97,35 @@
     border: none;
     cursor: pointer;
 }
+
 .unishippers_ltl_connection_section_class input {
     width: 350px;
 }
+
 .unishippers_ltl_connection_section_class label {
     cursor: default;
 }
 
-.class_success_message , .test_connection_success_message{
-    margin             : 5px 0 15px !important;
-    border-left-color  : #46b450 !important;
-    background         : #fff;
-    border-left        : 4px solid #fff;
-    -webkit-box-shadow : 0 1px 1px 0 rgba(0,0,0,.1);
-    box-shadow         : 0 1px 1px 0 rgba(0,0,0,.1);
-    padding            : 9.5px 12px;
+.class_success_message, .test_connection_success_message {
+    margin: 5px 0 15px !important;
+    border-left-color: #46b450 !important;
+    background: #fff;
+    border-left: 4px solid #fff;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+    padding: 9.5px 12px;
 }
-.test_connection_error_message{
-    margin             : 5px 0 15px !important;
-    border-left-color  : #dc3232 !important;
-    background         : #fff;
-    border-left        : 4px solid #fff;
-    -webkit-box-shadow : 0 1px 1px 0 rgba(0,0,0,.1);
-    box-shadow         : 0 1px 1px 0 rgba(0,0,0,.1);
-    padding            : 9.5px 12px;
+
+.test_connection_error_message {
+    margin: 5px 0 15px !important;
+    border-left-color: #dc3232 !important;
+    background: #fff;
+    border-left: 4px solid #fff;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+    padding: 9.5px 12px;
 }
+
 .user_guide {
     margin: 70px auto;
     padding: 20px;
@@ -119,126 +135,144 @@
     position: relative;
     transition: all 5s ease-in-out;
 }
-.user_guide p{
+
+.user_guide p {
     font-size: 14px;
 }
-a:focus{
+
+a:focus {
     box-shadow: none !important;
 }
-.p_ds_location{
+
+.p_ds_location {
     width: 50% !important;
 }
- /*warehouse portion ends*/
 
-label[for=wc_settings_unishippers_freight_delivery_estimate]{
+/*warehouse portion ends*/
+
+label[for=wc_settings_unishippers_freight_delivery_estimate] {
     font-size: 13px;
     font-style: italic;
 }
 
-label[for=wc_settings_unishippers_freight_allow_for_own_arrangment]{
+label[for=wc_settings_unishippers_freight_allow_for_own_arrangment] {
     font-size: 13px;
     font-style: italic;
 }
-label[for="wc_settings_unishippers_freight_account_number"]:after, label[for="wc_settings_unishippers_freight_username"]:after, label[for="wc_settings_unishippers_freight_password"]:after, label[for="wc_settings_unishippers_freight_api_token"]:after, label[for="wc_settings_unishippers_freight_licence_key"]:after, label[for="unishippers_account_id"]:after{
+
+label[for="wc_settings_unishippers_freight_account_number"]:after, label[for="wc_settings_unishippers_freight_username"]:after, label[for="wc_settings_unishippers_freight_password"]:after, label[for="wc_settings_unishippers_freight_api_token"]:after, label[for="wc_settings_unishippers_freight_licence_key"]:after, label[for="unishippers_account_id"]:after {
     content: " *";
     color: red;
 }
+
 label[for="unishippers_ltl_origin_zip"]:after, label[for="unishippers_ltl_origin_city"]:after, label[for="unishippers_ltl_origin_state"]:after, label[for="unishippers_ltl_origin_country"]:after {
     content: " *";
     color: red;
 }
-input[type="checkbox"]{
+
+input[type="checkbox"] {
     cursor: default;
 }
 
-.handeling_fee_err{
+.handeling_fee_err {
     color: #d54e21;
     font-size: 13px;
     display: block;
 }
-.unishippers_ltl_test_connection{
+
+.unishippers_ltl_test_connection {
     font-size: 15px !important;
     width: 167px !important;
     text-align: center;
 }
-.unishippers_ltl_test_connection:hover{
+
+.unishippers_ltl_test_connection:hover {
     background: #008ec2;
     color: #fff;
     border-color: #006799;
 }
-.quote_section_class_unishippers_ltl .description{
+
+.quote_section_class_unishippers_ltl .description {
     font-style: normal !important;
 }
+
 .quote_section_class_unishippers_ltl input[type="text"] {
     width: 250px;
     border-radius: 4px;
 }
+
 .quote_section_class_unishippers_ltl input[type="checkbox"] {
     cursor: default;
 }
-.quote_section_class_unishippers_ltl .form-table tr .titledesc{
-    width: 300px;    
+
+.quote_section_class_unishippers_ltl .form-table tr .titledesc {
+    width: 300px;
 }
-.quote_section_class_unishippers_ltl label{
+
+.quote_section_class_unishippers_ltl label {
     cursor: default;
 }
-.quote_section_class_unishippers_ltl .button-primary{  
+
+.quote_section_class_unishippers_ltl .button-primary {
     margin-left: 336px;
     width: 160px !important;
     height: 40px;
     font-size: 14px;
 }
-.unishippers_carrier_section_class .button-primary{  
+
+.unishippers_carrier_section_class .button-primary {
     width: 160px !important;
     height: 40px;
     font-size: 14px;
 }
+
 .unishippers_ltl_test_connection {
     font-size: 13px !important;
     text-align: center;
     width: 167px !important;
 }
-.unishippers_ltl_test_connection:hover{
+
+.unishippers_ltl_test_connection:hover {
     background: #008ec2;
     color: #fff;
     border-color: #006799;
 }
-.unishippers_ltl_connection_section_class p.submit{
+
+.unishippers_ltl_connection_section_class p.submit {
     float: right;
     text-align: left;
     width: calc(100% - 310px);
 }
+
 .unishippers_ltl_connection_section_class p.submit > * {
     line-height: 2.9 !important;
 }
 
-.woocommerce_variable_attributes div.data select{
+.woocommerce_variable_attributes div.data select {
     width: 100% !important;
 }
-.woocommerce_variable_attributes div.data .checkbox{
+
+.woocommerce_variable_attributes div.data .checkbox {
     margin-left: 0px !important;
     margin-right: 10px !important;
 }
 
-.form-row select{
+.form-row select {
     height: 35px !important;
 }
-.button-primary {
-    text-transform: capitalize !important;
-}
-.warning-msg-unishippers_ltl
-{
-    margin             : 5px 0 15px !important;
-    border-left-color  : #ffb900 !important;
-    background         : #fff;
-    border-left        : 4px solid #fff;
-    -webkit-box-shadow : 0 1px 1px 0 rgba(0,0,0,.1);
-    box-shadow         : 0 1px 1px 0 rgba(0,0,0,.1);
-    padding            : 3px 12px;
+
+.warning-msg-unishippers_ltl {
+    margin: 5px 0 15px !important;
+    border-left-color: #ffb900 !important;
+    background: #fff;
+    border-left: 4px solid #fff;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+    padding: 3px 12px;
 }
 
-.warning-msg-unishippers_ltl p, .test_conn_msg p, .test_err_msg p, .wrng_credential p, .not_allowed p{
-    margin : .5em 0;
+.warning-msg-unishippers_ltl p, .test_conn_msg p, .test_err_msg p, .wrng_credential p, .not_allowed p {
+    margin: .5em 0;
 }
 
 
@@ -248,25 +282,27 @@ input[type="checkbox"]{
 
 /* font size quote setting page */
 .en_woo_addons_liftgate_with_auto_residential_style th,
-.wc_settings_unishipper_residential_delivery  th,
+.wc_settings_unishipper_residential_delivery th,
 .avaibility_lift_gate th,
 .wc_settings_unishippers_freight_lift_gate_delivery th,
 .unishippers_freight_liftgate_delivery_as_option th,
-.avaibility_auto_residential th{
+.avaibility_auto_residential th {
     padding: 0px 0 10px 15px;
     margin-left: 10px !important;
     font-weight: 400;
 }
+
 .en_woo_addons_liftgate_with_auto_residential_style td,
-.wc_settings_unishipper_residential_delivery  td,
+.wc_settings_unishipper_residential_delivery td,
 .avaibility_lift_gate td,
 .wc_settings_unishippers_freight_lift_gate_delivery td,
 .unishippers_freight_liftgate_delivery_as_option td,
-.avaibility_auto_residential td{
+.avaibility_auto_residential td {
     padding: 0px 0 10px 15px;
 }
+
 ._hazardousmaterials span.description {
-    font-size: 12px;
+    font-size: 13px;
 }
 
 ._nestedDimension, ._nestedStakingProperty {
@@ -285,16 +321,18 @@ input[type="checkbox"]{
 
 ._nestedMaterials_tr .description {
     font-style: normal;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .disabled_me._nestedDimension, .disabled_me._nestedStakingProperty {
     color: #000000;
 }
+
 /* Cuttoff Time */
 input#service_unishippers_estimates_title {
     display: none;
 }
+
 tr.unishippers_estimates_title th {
     font-size: 1.2em;
 }
@@ -350,23 +388,27 @@ tr.unishippers_shipment_day_tr th {
     left: -130px;
     top: -2px;
 }
+
 .plan_color {
     text-decoration: none;
     color: red !important;
-    margin: 0 0 0 60px;
-    font-size: 1.3em;
-    font-weight: 600;
+    font-size: 17px;
+    font-weight: bold;
 }
+
 .plan_color:hover {
     color: #ff0000;
 }
+
 .unishippers_freight_shipment_offset_days_tr th {
     padding-left: 23px;
     font-weight: 400;
 }
+
 .unishippers_freight_shipment_offset_days_tr th label {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
+
 .unishippers_freight_cutt_off_time_ship_date_offset th label {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
@@ -375,10 +417,12 @@ tr.unishippers_shipment_day_tr th {
     padding-left: 23px;
     font-weight: 400;
 }
+
 /* Weight threshold for LTL freight */
 tr.hide_en_weight_threshold_lfq {
     display: none;
 }
+
 /*Fix estimate options*/
 .quote_section_class_unishippers_ltl td.forminp.forminp-radio ul li {
     display: block !important;

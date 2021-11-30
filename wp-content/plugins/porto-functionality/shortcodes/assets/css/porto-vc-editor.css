@@ -148,5 +148,4 @@
 .rtl .vc_add-element-container .vc_element-icon { right: auto; left: -18px }
 .rtl .vc_general.vc_ui-tabs-line > li { float: right }
 .rtl .vc_ui-panel-header .vc_ui-panel-header-controls { float: left; margin: 2px 12px 0 0 }
-.rtl.vc_editor #wpcontent { margin-right: 0 !important; padding-right: 0 !important }
-.rtl .composer-inner-switch { margin-right: 0; margin-left: 10px; }
+.rtl.vc_editor #wpcontent { margin-right: 0 !important; padding-right: 0 !important }.rtl .composer-inner-switch { margin-right: 0; margin-left: 10px; }

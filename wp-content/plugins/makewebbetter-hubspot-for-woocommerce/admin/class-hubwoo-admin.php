@@ -209,7 +209,7 @@ class Hubwoo_Admin {
 	 */
 	public function hubwoo_redirect_from_hubspot() {
 
-		if (  isset( $_GET['code'] ) ) {
+		if ( isset( $_GET['code'] ) ) {
 
 			$hapikey = HUBWOO_CLIENT_ID;
 			$hseckey = HUBWOO_SECRET_ID;
@@ -246,7 +246,7 @@ class Hubwoo_Admin {
 
 			if ( $content ) {
 
-				wp_add_privacy_policy_content( esc_html__( 'HubSpot for WooCommerce', 'makewebbetter-hubspot-for-woocommerce' ), $content );
+				wp_add_privacy_policy_content( esc_html__( 'MWB HubSpot for WooCommerce', 'makewebbetter-hubspot-for-woocommerce' ), $content );
 			}
 		}
 	}
@@ -990,7 +990,7 @@ class Hubwoo_Admin {
 					$abncart_properties['abandoned_cart_products_html'] = self::hubwoo_abncart_product_html( $cart_products );
 				}
 				$cart_url .= '?hubwoo-abncart-retrieve=';
-				$cart_prod = [];
+				$cart_prod = array();
 				foreach ( $customer_cart['cart'] as $single_cart_item ) {
 
 					$item_id         = $single_cart_item['product_id'];
@@ -1212,7 +1212,7 @@ class Hubwoo_Admin {
 							$cart_url = apply_filters( 'wpml_permalink', wc_get_cart_url(), $locale, true );
 
 							$cart_url .= '?hubwoo-abncart-retrieve=';
-							$cart_prod = [];
+							$cart_prod = array();
 
 							foreach ( $cart_data as $single_cart_item ) {
 								$item_id         = $single_cart_item['product_id'];
@@ -1695,6 +1695,65 @@ class Hubwoo_Admin {
 	}
 
 	/**
+	 * Background sync to get deal id.
+	 *
+	 * @since 1.2.5
+	 */
+	public function hubwoo_deal_update_schedule() {
+
+		$object_type = 'DEAL';
+		$count = 0;
+		$update_deal_id = get_option( 'mwb_update_deal_ids' );
+
+		if ( count( $update_deal_id ) > 0 ) {
+			foreach ( $update_deal_id as $key => $order_id ) {
+
+				$count++;
+				if ( $count <= 5 ) {
+
+					$hubwoo_ecomm_order = wc_get_order( $order_id );
+					if ( $hubwoo_ecomm_order instanceof WC_Order ) {
+						$customer_id = $hubwoo_ecomm_order->get_customer_id();
+
+						if ( ! empty( $customer_id ) ) {
+							$user_info  = json_decode( wp_json_encode( get_userdata( $customer_id ) ), true );
+							$user_email = $user_info['data']['user_email'];
+							$contact    = $user_email;
+							if ( empty( $contact ) ) {
+								$contact = $customer_id;
+							}
+						} else {
+							$contact = get_post_meta( $order_id, '_billing_email', true );
+						}
+					}
+
+					$contact_vid = HubWooConnectionMananager::get_instance()->get_customer_by_email( $contact );
+
+					$response = HubWooConnectionMananager::get_instance()->ecomm_sync_status( $order_id, $object_type );
+
+					if ( 200 == $response['status_code'] ) {
+
+						$response = json_decode( $response['body'], true );
+						update_post_meta( $order_id, 'hubwoo_ecomm_deal_id', $response['hubspotId'] );
+						if ( ! empty( $contact_vid ) ) {
+							HubWooConnectionMananager::get_instance()->create_deal_associations( $response['hubspotId'], $contact_vid );
+						}
+
+						unset( $update_deal_id[ $key ] );
+						do_action( 'hubwoo_ecomm_deal_created', $order_id );
+					}
+
+					update_option( 'mwb_update_deal_ids', $update_deal_id );
+				} else {
+					break;
+				}
+			}
+		} else {
+			as_unschedule_action( 'hubwoo_deal_update_schedule' );
+		}
+	}
+
+	/**
 	 * Background sync for Deals.
 	 *
 	 * @since 1.0.0
@@ -2171,7 +2230,7 @@ class Hubwoo_Admin {
 	 */
 	public function hubwoo_contacts_sync_background() {
 
-		$user_data          = [];
+		$user_data          = array();
 		$hubwoo_datasync    = new HubwooDataSync();
 		$users_need_syncing = $hubwoo_datasync->hubwoo_get_all_unique_user();
 		if ( ! count( $users_need_syncing ) ) {

@@ -1,6 +1,6 @@
 === FedEx WooCommerce Shipping with Print Label ===
 Contributors: PluginHive
-Version: 4.9.1
+Version: 4.9.4
 
 Tags: FedEx, FedEx Shipping, Shipping rates, Label printing, Auto Tracking, Shipping, WooCommerce, Wordpress
 Requires at least: 3.0.1

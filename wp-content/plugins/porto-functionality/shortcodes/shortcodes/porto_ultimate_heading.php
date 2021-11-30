@@ -32,20 +32,30 @@ function porto_load_ultimate_heading_shortcode() {
 					'value'      => array( __( 'Yes, please', 'js_composer' ) => 'yes' ),
 				),
 				array(
-					'type'        => 'textfield',
-					'heading'     => __( 'Start Delay(ms)', 'porto-functionality' ),
-					'param_name'  => 'typewriter_delay',
-					'value'       => '',
+					'type'       => 'textfield',
+					'heading'    => __( 'Animation Name e.g: typeWriter, fadeIn and so on.', 'porto' ),
+					'param_name' => 'typewriter_animation',
+					'value'      => 'fadeIn',
 					'dependency' => array(
 						'element'   => 'enable_typewriter',
 						'not_empty' => true,
 					),
 				),
 				array(
-					'type'        => 'textfield',
-					'heading'     => __( 'Please input min width that can work. (px)', 'porto-functionality' ),
-					'param_name'  => 'typewriter_width',
-					'value'       => '',
+					'type'       => 'textfield',
+					'heading'    => __( 'Start Delay(ms)', 'porto-functionality' ),
+					'param_name' => 'typewriter_delay',
+					'value'      => '',
+					'dependency' => array(
+						'element'   => 'enable_typewriter',
+						'not_empty' => true,
+					),
+				),
+				array(
+					'type'       => 'textfield',
+					'heading'    => __( 'Please input min width that can work. (px)', 'porto-functionality' ),
+					'param_name' => 'typewriter_width',
+					'value'      => '',
 					'dependency' => array(
 						'element'   => 'enable_typewriter',
 						'not_empty' => true,

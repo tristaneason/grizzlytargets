@@ -146,7 +146,7 @@ if ( 'preset' == $layout ) {
 	ob_start();
 	porto_creative_grid_style( $porto_grid_layout, $grid_height_number, 'grid-' . $rand_escaped, false, false, $unit, $iso_options['itemSelector'] );
 	$output .= ob_get_clean();
-} else {
+} elseif ( ! empty( $max_width ) ) {
 	$output .= '@media (max-width:' . esc_html( $max_width ) . ') {';
 	$output .= '#grid-' . $rand_escaped . ' { height: auto !important }';
 	$output .= '#grid-' . $rand_escaped . ' .porto-grid-item:first-child { margin-top: 0 }';

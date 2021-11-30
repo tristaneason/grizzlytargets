@@ -41,7 +41,7 @@ class Wt_Import_Export_For_Woo_Basic_Import
 		$this->module_id=Wt_Import_Export_For_Woo_Basic::get_module_id($this->module_base);
 		self::$module_id_static=$this->module_id;
 
-		$this->max_import_file_size=wp_max_upload_size()/1000000; //in MB
+		$this->max_import_file_size=(int)wp_max_upload_size()/1000000; //in MB
 		
 		/* allowed file types */
 		$this->allowed_import_file_type=array(

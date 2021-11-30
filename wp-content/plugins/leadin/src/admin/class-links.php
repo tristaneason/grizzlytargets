@@ -41,7 +41,11 @@ class Links {
 				'settings' => "/live-messages-settings/$portal_id",
 			),
 			MenuConstants::CONTACTS   => "/contacts/$portal_id",
-			MenuConstants::LISTS      => "/contacts/$portal_id/lists",
+			MenuConstants::LISTS      => array(
+				''        => "/contacts/$portal_id/objectLists/all",
+				'default' => "/contacts/$portal_id/objectLists",
+				'lists'   => "/contacts/$portal_id/lists",
+			),
 			MenuConstants::FORMS      => "/forms/$portal_id",
 			MenuConstants::EMAIL      => array(
 				''    => "/email/$portal_id",

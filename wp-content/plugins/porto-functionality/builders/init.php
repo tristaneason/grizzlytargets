@@ -106,6 +106,16 @@ class PortoBuilders {
 			add_action( 'admin_action_porto-new-builder', array( $this, 'add_builder_post' ) );
 
 			add_action(
+				'admin_footer',
+				function() {
+					include_once PORTO_BUILDERS_PATH . 'views/popup_content.php';
+					if ( function_exists( 'vc_is_inline' ) && vc_is_inline() ) {
+						include_once PORTO_BUILDERS_PATH . 'views/edit_area.tpl.php';
+					}
+				}
+			);
+
+			add_action(
 				'init',
 				function() {
 					$load_search_lib = false;
@@ -276,27 +286,11 @@ class PortoBuilders {
 	 */
 	public function enqueue() {
 		$screen = get_current_screen();
-		if ( defined( 'PORTO_JS' ) && $screen && ( ( 'edit' == $screen->base && 'edit-porto_builder' == $screen->id ) || ( 'post' == $screen->base && self::BUILDER_SLUG == $screen->id ) ) ) {
+		if ( defined( 'PORTO_JS' ) /*&& $screen && ( ( 'edit' == $screen->base && 'edit-porto_builder' == $screen->id ) || ( 'post' == $screen->base && self::BUILDER_SLUG == $screen->id ) )*/ ) {
 			wp_enqueue_style( 'porto-builder-fonts', '//fonts.googleapis.com/css?family=Poppins%3A400%2C600%2C700' );
 			wp_enqueue_style( 'jquery-magnific-popup', PORTO_CSS . '/magnific-popup.min.css', false, '1.1.0', 'all' );
 			wp_enqueue_script( 'jquery-magnific-popup', PORTO_JS . '/libs/jquery.magnific-popup.min.js', array( 'jquery-core' ), '1.1.0', true );
 			wp_enqueue_script( 'porto-builder-admin', str_replace( '/shortcodes', '/builders', PORTO_SHORTCODES_URL ) . 'assets/admin.js', array( 'jquery-core' ), PORTO_SHORTCODES_VERSION, true );
-
-			add_action(
-				'admin_footer',
-				function() {
-					include_once PORTO_BUILDERS_PATH . 'views/popup_content.php';
-				}
-			);
-		}
-
-		if ( function_exists( 'vc_is_inline' ) && vc_is_inline() ) {
-			add_action(
-				'admin_footer',
-				function() {
-					include_once PORTO_BUILDERS_PATH . 'views/edit_area.tpl.php';
-				}
-			);
 		}
 	}
 
@@ -435,12 +429,85 @@ class PortoBuilders {
 	}
 
 	public function admin_column_header( $defaults ) {
+		$defaults['condition'] = __( 'Applied Conditions', 'porto-functionality' );
 		$defaults['shortcode'] = __( 'Shortcode', 'porto-functionality' );
 		return $defaults;
 	}
 
 	public function admin_column_content( $column_name, $post_id ) {
-		if ( 'shortcode' === $column_name ) {
+		if ( 'condition' === $column_name ) {
+			$conditions = get_post_meta( $post_id, '_porto_builder_conditions', true );
+			if ( ! empty( $conditions ) ) {
+				$names = array(
+					'archive/date'   => __( 'Date Archive', 'porto-functionaltiy' ),
+					'archive/author' => __( 'Author Archive', 'porto-functionaltiy' ),
+					'archive/search' => __( 'Search Results', 'porto-functionaltiy' ),
+					'single/page'    => __( 'Pages', 'porto-functionaltiy' ),
+					'single/404'     => __( '404 Page', 'porto-functionaltiy' ),
+				);
+				$_post_types = get_post_types( array( 'show_in_nav_menus' => true ), 'objects' );
+				$post_types  = array();
+				foreach ( $_post_types as $post_type => $object ) {
+					$post_types[ $post_type ] = $object->labels->singular_name;
+				}
+				$post_types = apply_filters( 'porto_builder_post_types', $post_types );
+
+				foreach ( $conditions as $index => $condition ) {
+					if ( $index ) {
+						echo '<br>';
+					}
+					if ( isset( $condition[0] ) && empty( $condition[0] ) ) {
+						esc_html_e( 'All', 'porto-functionaltiy' );
+						continue;
+					}/* elseif ( ! empty( $condition[0] ) ) {
+						if ( 'single' == $condition[0] ) {
+							esc_html_e( 'Single', 'porto-functionaltiy' );
+						} else {
+							esc_html_e( 'Archive', 'porto-functionaltiy' );
+						}
+					}*/
+
+					if ( ! empty( $condition[1] ) ) {
+						if ( isset( $names[ $condition[1] ] ) ) {
+							echo esc_html( $names[ $condition[1] ] );
+						} elseif ( 0 === strpos( $condition[1], 'archive/' ) ) {
+							$post_type = str_replace( 'archive/', '', $condition[1] );
+							if ( isset( $post_types[ $post_type ] ) ) {
+								printf( esc_html__( '%s Archive', 'porto-functionaltiy' ), esc_html( $post_types[ $post_type ] ) );
+							}
+						} elseif ( 0 === strpos( $condition[1], 'single/' ) ) {
+							$post_type = str_replace( 'single/', '', $condition[1] );
+							if ( isset( $post_types[ $post_type ] ) ) {
+								printf( esc_html__( 'All %s pages', 'porto-functionaltiy' ), esc_html( $post_types[ $post_type ] ) );
+							}
+						} elseif ( 0 === strpos( $condition[1], 'taxonomy/' ) ) {
+							$tax_name = str_replace( 'taxonomy/', '', $condition[1] );
+							$tax      = get_taxonomy( $tax_name );
+							if ( $tax && ! empty( $tax->object_type ) && isset( $tax->label ) ) {
+								if ( isset( $condition[0] ) && 'single' === $condition[0] ) {
+									if ( ! empty( $condition[2] ) && ! empty( $condition[3] ) ) {
+										printf( esc_html__( 'All %s pages of "%s"', 'porto-functionaltiy' ), ucfirst( $tax->object_type[0] ), esc_html( $condition[3] ) );
+									} else {
+										printf( esc_html__( 'All %s pages which have any %s', 'porto-functionaltiy' ), ucfirst( $tax->object_type[0] ), $tax->labels->singular_name );
+									}
+								} elseif ( isset( $condition[0] ) && 'archive' === $condition[0] ) {
+									if ( ! empty( $condition[2] ) && ! empty( $condition[3] ) ) {
+										printf( esc_html__( '"%s" %s', 'porto-functionaltiy' ), esc_html( $condition[3] ), esc_html( $tax->label ) );
+									} else {
+										printf( esc_html__( 'All %s', 'porto-functionaltiy' ), esc_html( $tax->label ) );
+									}
+								}
+							}
+						}
+					}
+
+					/*if ( ! empty( $condition[2] ) && ! empty( $condition[3] ) ) {
+						echo ' -> ';
+						echo $condition[3];
+					}*/
+				}
+			}
+		} elseif ( 'shortcode' === $column_name ) {
 			$shortcode = sprintf( '[porto_block id="%d"]', $post_id );
 			printf( '<input class="porto-input-shortcode" type="text" readonly="readonly" onfocus="this.select()" value="%s" />', esc_attr( $shortcode ) );
 		}

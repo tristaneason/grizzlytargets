@@ -1,4 +1,10 @@
- *** HubSpot for WooCommerce Changelog ***
+ *** MWB HubSpot for WooCommerce Changelog ***
+2021-11-12 - version 1.2.5
+* Fix - Sync message issue.
+
+2021-10-20 - version 1.2.4
+* Fix - Minor Bug Fixes.
+
 2021-09-13 - version 1.2.3
 * Add - Content Part
 

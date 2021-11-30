@@ -536,7 +536,7 @@ if ( ! function_exists( 'porto_sh_commons' ) ) {
 }
 
 function porto_vc_woo_order_by() {
-	return array(
+	$result = array(
 		'',
 		esc_html__( 'Date', 'porto-functionality' )       => 'date',
 		esc_html__( 'ID', 'porto-functionality' )         => 'id',
@@ -545,8 +545,24 @@ function porto_vc_woo_order_by() {
 		esc_html__( 'Random', 'porto-functionality' )     => 'rand',
 		esc_html__( 'Price', 'porto-functionality' )      => 'price',
 		esc_html__( 'Popularity', 'porto-functionality' ) => 'popularity',
-		esc_html__( 'Rating', 'porto-functionality' )     => 'rating',
 	);
+	if ( wc_review_ratings_enabled() ) {
+		$result[ esc_html__( 'Rating', 'porto-functionality' ) ] = 'rating';
+	}
+	return $result;
+}
+
+function porto_woo_sort_by() {
+	$result = array(
+		__( 'All', 'porto-functionality' )     => 'all',
+		__( 'Popular', 'porto-functionality' ) => 'popular',
+		__( 'Date', 'porto-functionality' )    => 'date',
+		__( 'On Sale', 'porto-functionality' ) => 'onsale',
+	);
+	if ( wc_review_ratings_enabled() ) {
+		$result[ __( 'Rating', 'porto-functionality' ) ] = 'rating';
+	}
+	return $result;
 }
 
 function porto_vc_order_by() {
@@ -1721,8 +1737,8 @@ if ( ! function_exists( 'vc_iconpicker_type_porto' ) ) {
 			array( 'porto-icon-map-location' => 'Map Location (pin)' ),
 			array( 'porto-icon-phone-call' => 'Calling Phone' ),
 			array( 'porto-icon-tablet' => 'Tablet' ),
-			array( 'porto-icon-callin' => 'Calling Phone 2' ),
-			array( 'porto-icon-atmark' => 'Mail, Atmark' ),
+			array( 'porto-icon-callin' => 'Phone, Call in' ),
+			array( 'porto-icon-atmark' => 'Email, Address, At' ),
 		);
 
 		return array_merge( $icons, $porto_icons );
@@ -4989,7 +5005,7 @@ function porto_button_group_callback( $settings, $value ) {
 	}
 
 	$output .= '</div>';
-	$output .= '<input type="hidden" name="' . esc_attr( $param_name ) . '" class="wpb_vc_param_value ' . esc_attr( $settings['param_name'] ) . ' ' . esc_attr( $type ) . '_field" value=' . ( is_array( $value ) ? json_encode( $value ) : $value ) . ' />';
+	$output .= '<input type="hidden" name="' . esc_attr( $param_name ) . '" class="wpb_vc_param_value ' . esc_attr( $settings['param_name'] ) . ' ' . esc_attr( $type ) . '_field" value="' . ( is_array( $value ) ? json_encode( $value ) : $value ) . '" />';
 	return $output;
 }
 
@@ -6183,7 +6199,7 @@ if ( ! function_exists( 'porto_creative_grid_style' ) ) :
 				$width_number = (int) $width_arr[0];
 			}
 			$max_width = floor( $width_number * 1000000 ) / 10000;
-			echo esc_html( $selector ) . ' .grid-col-' . esc_html( $width ) . '{ flex: 0 0 ' . $max_width . '%; width: ' . $max_width . '%; }';
+			echo esc_html( $selector ) . ' .grid-col-' . esc_html( $width ) . '{ flex: 0 0 auto; width: ' . $max_width . '%; }';
 		}
 		echo esc_html( $selector ) . ' .grid-col-sizer { flex: 0 0 ' . ( floor( 1000000 / $max_col ) / 10000 ) . '%; width: ' . ( floor( 1000000 / $max_col ) / 10000 ) . '% }';
 		foreach ( $heights as $height ) {
@@ -6211,7 +6227,7 @@ if ( ! function_exists( 'porto_creative_grid_style' ) ) :
 						$width_number = (int) $width_arr[0];
 					}
 					$max_width = floor( $width_number * 1000000 ) / 10000;
-					echo esc_html( $selector ) . ' .grid-col-lg-' . esc_html( $grid['width_lg'] ) . '{ flex: 0 0 ' . $max_width . '%; width: ' . $max_width . '%; }';
+					echo esc_html( $selector ) . ' .grid-col-lg-' . esc_html( $grid['width_lg'] ) . '{ flex: 0 0 auto; width: ' . $max_width . '%; }';
 					$widths_lg[] = $grid['width_lg'];
 				}
 			}
@@ -6232,7 +6248,7 @@ if ( ! function_exists( 'porto_creative_grid_style' ) ) :
 				$width_number = (int) $width_arr[0];
 			}
 			$max_width = floor( $width_number * 1000000 ) / 10000;
-			echo esc_html( $selector ) . ' .grid-col-md-' . esc_html( $width[1] ) . '{ flex: 0 0 ' . $max_width . '%; width: ' . $max_width . '%; }';
+			echo esc_html( $selector ) . ' .grid-col-md-' . esc_html( $width[1] ) . '{ flex: 0 0 auto; width: ' . $max_width . '%; }';
 		}
 		echo esc_html( $selector ) . ' .grid-col-sizer { flex: 0 0 ' . ( floor( 1000000 / $max_col ) / 10000 ) . '%; width: ' . ( floor( 1000000 / $max_col ) / 10000 ) . '% }';
 		foreach ( $heights as $index => $height ) {
@@ -6261,7 +6277,7 @@ if ( ! function_exists( 'porto_creative_grid_style' ) ) :
 			echo '}';
 		}
 		echo '@media (max-width: 480px) {';
-			echo esc_html( $selector ) . ' ' . $item_selector . ' { flex: 0 0 100%; width: 100%; }';
+			echo esc_html( $selector ) . ' ' . $item_selector . ' { flex: 0 0 auto; width: 100%; }';
 		echo '}';
 		if ( false !== $spacing && '' !== $spacing ) {
 			echo esc_html( $selector ) . ' .grid-creative { margin-left: -' . ( (int) $spacing / 2 ) . 'px; margin-right: -' . ( (int) $spacing / 2 ) . 'px; width: calc(100% + ' . intval( $spacing ) . esc_html( $unit ) . ') }';
@@ -6494,5 +6510,30 @@ if ( ! function_exists( 'porto_elementor_if_dom_optimization' ) ) :
 			return ( ! \Elementor\Plugin::instance()->get_legacy_mode( 'elementWrappers' ) );
 		}
 		return false;
+	}
+endif;
+
+if ( ! function_exists( 'porto_get_mpx_options' ) ) :
+	function porto_get_mpx_options( $atts ) {
+		$mpx_opts      = array();
+		$mpx_attr_html = '';
+		if ( 'yes' == $atts['mouse_parallax'] ) {
+			if ( 'yes' == $atts['mouse_parallax_inverse'] ) {
+				$mpx_opts['invertX'] = true;
+				$mpx_opts['invertY'] = true;
+			} else {
+				$mpx_opts['invertX'] = false;
+				$mpx_opts['invertY'] = false;
+			}
+
+			wp_enqueue_script( 'jquery-parallax' );
+			$mpx_opts = array(
+				'data-plugin'         => 'mouse-parallax',
+				'data-options'        => json_encode( $mpx_opts ),
+				'data-floating-depth' => empty( $atts['mouse_parallax_speed']['size'] ) ? 0.5 : floatval( $atts['mouse_parallax_speed']['size'] ),
+			);
+		}
+
+		return $mpx_opts;
 	}
 endif;

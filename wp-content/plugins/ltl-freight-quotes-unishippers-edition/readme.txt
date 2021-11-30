@@ -3,7 +3,7 @@ Contributors: Eniture Technology
 Tags: Unishippers,Unishippers freight,freight,shipping,shipping rates,shipping calculator,shipping estimate,estimator,carriers, woocommerce,woocommerce shipping,eniture,eniture technology,small package,shipping quotes,eniture unishippers_ltl freight quotes
 Requires at least: 5.7
 Tested up to: 5.8
-Stable tag: 2.0.0
+Stable tag: 2.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -165,6 +165,12 @@ then you have one or more of the following licensing issues:
 3. Quotes displayed in cart
 
 == Changelog ==
+
+= 2.1.1 =
+* Update: Relocation of NMFC Number field along with freight class.
+
+= 2.1.0 =
+* Update: Updated compatibility with the Pallet Packaging plugin and analytics.
 
 = 2.0.0 =
 * Update: Compatibility with PHP version 8.0.

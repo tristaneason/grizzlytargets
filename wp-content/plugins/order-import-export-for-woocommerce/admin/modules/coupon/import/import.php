@@ -186,8 +186,11 @@ class Wt_Import_Export_For_Woo_Basic_Coupon_Import {
                     $item_data['date_created'] = ($value);
                     continue;
                 } 
-                if ('date_expires' == $column ) {
-                    $item_data['date_expires'] = (isset($value) && !empty($value) ? strtotime($value) : '');
+                if ('date_expires' == $column ) {    
+                    $offset_base = get_option('gmt_offset', 0);
+                    $offset_extra = ($offset_base <= 0) ? " 12:00:00" : " 00:00:00";
+                    $coupon_expiry_date = (isset($value) && !empty($value) ? strtotime($value.$offset_extra) : ''); //https://stackoverflow.com/a/23659849/1117368
+                    $item_data['date_expires'] = $coupon_expiry_date;
                     continue;
                 }
                 if ('discount_type' == $column ) {

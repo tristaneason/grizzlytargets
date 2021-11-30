@@ -23,10 +23,11 @@ function porto_load_sticky_shortcode() {
 			'js_view'         => 'VcColumnView',
 			'params'          => array(
 				array(
-					'type'       => 'textfield',
-					'heading'    => __( 'Container Selector', 'porto-functionality' ),
-					'param_name' => 'container_selector',
-					'value'      => '',
+					'type'        => 'textfield',
+					'heading'     => __( 'Container Selector', 'porto-functionality' ),
+					'description' => esc_html__( 'Closest parent element which contains sticky and background elements.', 'porto-functionality' ),
+					'param_name'  => 'container_selector',
+					'value'       => '',
 				),
 				array(
 					'type'        => 'textfield',

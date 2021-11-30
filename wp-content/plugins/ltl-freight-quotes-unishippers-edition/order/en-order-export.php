@@ -55,14 +55,9 @@ if (!class_exists('EnOrderExport')) {
                             }
                         }
 
-                        if (!empty($en_orders)) {
-                            $response = $this->en_orders_sending($en_orders, $en_orders_ids);
-                            $response = isset($response) && strlen($response) > 0 ? json_decode($response, true) : [];
-                            if (isset($response['severity']) && $response['severity'] == 'SUCCESS') {
-                                $en_remain_orders_id = array_slice($en_orders_id, $this->en_orders_per_step);
-                                update_option('en_orders_ids', json_encode($en_remain_orders_id));
-                            }
-                        }
+                        $this->en_orders_sending($en_orders, $en_orders_ids);
+                        $en_remain_orders_id = array_slice($en_orders_id, $this->en_orders_per_step);
+                        update_option('en_orders_ids', json_encode($en_remain_orders_id));
                     } else {
                         $en_orders_ids = ['completed'];
                         update_option('en_async_orders_exporting_process', 'completed');
@@ -132,6 +127,9 @@ if (!class_exists('EnOrderExport')) {
         public function en_order_details_by_id($order, $order_id, $current_date = '')
         {
             $en_widget_details_data = [];
+            if (empty($order)) {
+                return $en_widget_details_data;
+            }
             // Get an instance of the WC_Order object
             $order_created_date = isset($current_date) && strlen($current_date) > 0 ? $current_date : $order->order_date;
             $shipping_details = $order->get_items('shipping');

@@ -124,15 +124,43 @@ class Wt_Import_Export_For_Woo_Admin_Basic {
 				'cancel'=>__('Cancel'),
 			),
                         'pro_plugins' => array(
-                                'order' => "https://www.webtoffee.com/product/order-import-export-plugin-for-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Order_Import_Export&utm_content=".WT_O_IEW_VERSION,
-                                'coupon' => "https://www.webtoffee.com/product/order-import-export-plugin-for-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Order_Import_Export&utm_content=".WT_O_IEW_VERSION,
-                                'product' => "https://www.webtoffee.com/product/product-import-export-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Product_Import_Export&utm_content=".WT_O_IEW_VERSION,
-                                'product_review' => "https://www.webtoffee.com/product/product-import-export-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Product_Import_Export&utm_content=".WT_O_IEW_VERSION,
-                                'product_categories' => "https://www.webtoffee.com/product/product-import-export-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Product_Import_Export&utm_content=".WT_O_IEW_VERSION,
-                                'product_tags' => "https://www.webtoffee.com/product/product-import-export-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Product_Import_Export&utm_content=".WT_O_IEW_VERSION,
-                                'user' => "https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=User_Import_Export&utm_content=".WT_O_IEW_VERSION,
+                            'order' => array(
+                                'url' => "https://www.webtoffee.com/product/order-import-export-plugin-for-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Order_Import_Export&utm_content=" . WT_O_IEW_VERSION,
+                                'name' => __('Order, Coupon, Subscription Export Import for WooCommerce'),
+                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/order-ie.svg'
+                            ),
+                            'coupon' => array(
+                                'url' => "https://www.webtoffee.com/product/order-import-export-plugin-for-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Order_Import_Export&utm_content=" . WT_O_IEW_VERSION,
+                                'name' => __('Order, Coupon, Subscription Export Import for WooCommerce'),
+                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/order-ie.svg'                                
+                            ),
+                            'product' => array(
+                                'url' => "https://www.webtoffee.com/product/product-import-export-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Product_Import_Export&utm_content=" . WT_O_IEW_VERSION,
+                                'name' => __('Product Import Export Plugin For WooCommerce'),
+                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/product-ie.svg'                                
+                            ),
+                            'product_review' => array(
+                                'url' => "https://www.webtoffee.com/product/product-import-export-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Product_Import_Export&utm_content=" . WT_O_IEW_VERSION,
+                                'name' => __('Product Import Export Plugin For WooCommerce'),
+                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/product-ie.svg'
+                            ),
+                            'product_categories' => array(
+                                'url' => "https://www.webtoffee.com/product/product-import-export-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Product_Import_Export&utm_content=" . WT_O_IEW_VERSION,
+                                'name' => __('Product Import Export Plugin For WooCommerce'),
+                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/product-ie.svg'
+                            ),
+                            'product_tags' => array(
+                                'url' => "https://www.webtoffee.com/product/product-import-export-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Product_Import_Export&utm_content=" . WT_O_IEW_VERSION,
+                                'name' => __('Product Import Export Plugin For WooCommerce'),
+                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/product-ie.svg'
+                            ),
+                            'user' => array(
+                                'url' => "https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=User_Import_Export&utm_content=" . WT_O_IEW_VERSION,
+                                'name' => __('WordPress Users & WooCommerce Customers Import Export'),
+                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/user-ie.svg'
+                            )
                     )
-		);
+                );
 		wp_localize_script($this->plugin_name, 'wt_iew_basic_params', $params);
             }
 

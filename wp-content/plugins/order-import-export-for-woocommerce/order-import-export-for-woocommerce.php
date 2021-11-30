@@ -6,9 +6,9 @@ Plugin URI: https://wordpress.org/plugins/order-import-export-for-woocommerce/
 Description: Export and Import Order detail including line items, From and To your WooCommerce Store.
 Author: WebToffee
 Author URI: https://www.webtoffee.com/product/woocommerce-order-coupon-subscription-export-import/
-Version: 2.1.1
+Version: 2.1.4
 Text Domain: order-import-export-for-woocommerce
-WC tested up to: 5.7
+WC tested up to: 5.9
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 */
@@ -45,7 +45,7 @@ if ( !defined( 'WT_IEW_DEBUG_BASIC_TROUBLESHOOT' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'WT_O_IEW_VERSION', '2.1.1' );
+define( 'WT_O_IEW_VERSION', '2.1.4' );
 
 /**
  * The code that runs during plugin activation.
@@ -262,3 +262,25 @@ function wt_coupon_import_export_basic_help_content() {
 	}
 }
 
+add_action( 'wt_order_addon_basic_gopro_content', 'wt_order_addon_basic_gopro_content' );
+
+function wt_order_addon_basic_gopro_content() {
+	if ( defined( 'WT_IEW_PLUGIN_ID_BASIC' ) ) {
+    ?>
+                <div class="wt-ier-coupon wt-ier-order wt-ier-gopro-cta wt-ierpro-features" style="display: none;">
+                    <ul class="ticked-list wt-ierpro-allfeat">
+                        <li><?php _e('Supports CSV/XML file formats.'); ?></li>
+                        <li><?php _e('Export and import subscription orders'); ?></li>
+                        <li><?php _e('Import and export custom fields and hidden metadata.'); ?></li>                         
+                        <li><?php _e('Run scheduled exports via FTP/SFTP.'); ?></li>
+                        <li><?php _e('Run scheduled imports via URL/FTP/SFTP.'); ?></li>
+                        <li><?php _e('Tested compatibility with various third-party plugins.'); ?></li>
+                    </ul>    
+                    <div class="wt-ierpro-btn-wrapper"> 
+                        <a href="<?php echo "https://www.webtoffee.com/product/order-import-export-plugin-for-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Order_Import_Export&utm_content=".WT_O_IEW_VERSION; ?>" target="_blank"  class="wt-ierpro-outline-btn"><?php _e('UPGRADE TO PREMIUM'); ?></a>
+                    </div>
+                    <p style="padding-left:25px;"><b><a href="<?php echo admin_url('admin.php?page=wt_import_export_for_woo_basic#wt-pro-upgrade'); ?>" target="_blank"><?php _e('Get more import export addons >>'); ?></a></b></p>
+                </div>
+    <?php
+	}
+}

@@ -475,7 +475,7 @@ if ( ! class_exists( 'WPPFM_Data' ) ) :
 		}
 
 		/**
-		 * Verifies if the categories that are stored in the feeds category mapping selections, are still active Shop Categories.
+		 * Verifies if the categories that are stored in the feeds' category mapping selections, are still active Shop Categories.
 		 * Removes categories that are no longer registered in the Shop.
 		 *
 		 * @param string $category_mapping The currently stored category mapping.
@@ -483,11 +483,15 @@ if ( ! class_exists( 'WPPFM_Data' ) ) :
 		 * @return string Verified category mapping.
 		 * @since 2.21.0.
 		 * @since 2.21.1. Added a conversion of the $categories variable to an array to prevent a PHP Fatal error on line 485 when the $category_mapping contains an empty object.
+		 * @since 2.26.0. Updated the get_terms() call to include empty categories.
 		 */
 		public function verify_categories_in_mapping( $category_mapping ) {
 			$categories        = (array)json_decode( $category_mapping );
 			$categories_length = count( $categories );
-			$shop_categories   = get_terms('product_cat');
+			$shop_categories = get_terms( array(
+				'taxonomy' => 'product_cat',
+				'hide_empty' => false,
+			) );
 
 			for ( $i = 0; $i < $categories_length; $i++ ) {
 				$cat_mapping_id = $categories[$i]->shopCategoryId;
@@ -496,8 +500,6 @@ if ( ! class_exists( 'WPPFM_Data' ) ) :
 
 				foreach ( $shop_categories as $shop_category ) {
 
-					$shop_id = $shop_category->term_id;
-
 					if ( $cat_mapping_id === (string)$shop_category->term_id ) {
 						$cat_exists = true;
 						break;
@@ -505,7 +507,7 @@ if ( ! class_exists( 'WPPFM_Data' ) ) :
 				}
 
 				if ( ! $cat_exists ) {
-					// Remove the non existing category.
+					// Remove the non-existing category.
 					unset( $categories[$i] );
 					// Resort the categories object.
 					$categories = array_values($categories);

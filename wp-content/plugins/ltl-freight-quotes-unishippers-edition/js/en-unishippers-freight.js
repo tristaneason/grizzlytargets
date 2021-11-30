@@ -204,7 +204,7 @@ jQuery(document).ready(function () {
             return false;
         }
     });
-    jQuery(".unishippers_ltl_connection_section_class .woocommerce-save-button").before('<a href="javascript:void(0)" class="button-primary unishippers_ltl_test_connection">Test Connection</a>');
+    jQuery(".unishippers_ltl_connection_section_class .woocommerce-save-button").before('<a href="javascript:void(0)" class="button-primary unishippers_ltl_test_connection">Test connection</a>');
     jQuery('.unishippers_ltl_test_connection').click(function (e) {
         var input = validateInput('.unishippers_ltl_connection_section_class');
 

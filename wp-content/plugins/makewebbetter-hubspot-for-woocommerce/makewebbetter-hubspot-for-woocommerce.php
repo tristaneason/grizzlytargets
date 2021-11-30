@@ -12,20 +12,20 @@
  * @package           makewebbetter-hubspot-for-woocommerce
  *
  * @wordpress-plugin
- * Plugin Name:          HubSpot for WooCommerce
+ * Plugin Name:          MWB HubSpot for WooCommerce
  * Plugin URI:           https://wordpress.org/plugins/makewebbetter-hubspot-for-woocommerce
  * Description:          Integrate WooCommerce with HubSpot’s free CRM, abandoned cart tracking, email marketing, marketing automation, analytics & more.
- * Version:              1.2.3
+ * Version:              1.2.5
  * Requires at least:    4.4.0
- * Tested up to:         5.8.1
+ * Tested up to:         5.8.2
  * WC requires at least: 3.5.0
- * WC tested up to:      5.6.0
+ * WC tested up to:      5.9.0
  * Author:               MakeWebBetter
  * Author URI:           http://www.makewebbetter.com/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend
  * License: GPLv3 or later
  * License URI:          http://www.gnu.org/licenses/gpl-3.0.txt
  * Text Domain:          makewebbetter-hubspot-for-woocommerce
- * Domain Path:  		 /languages
+ * Domain Path:          /languages
  */
 
 // If this file is called directly, abort.
@@ -109,7 +109,7 @@ if ( $hubwoo_pro_activated && $hubwoo_pro_flag ) {
 	function hubwoo_pro_define_constants() {
 		hubwoo_pro_define( 'HUBWOO_ABSPATH', dirname( __FILE__ ) . '/' );
 		hubwoo_pro_define( 'HUBWOO_URL', plugin_dir_url( __FILE__ ) );
-		hubwoo_pro_define( 'HUBWOO_VERSION', '1.2.3' );
+		hubwoo_pro_define( 'HUBWOO_VERSION', '1.2.5' );
 		hubwoo_pro_define( 'HUBWOO_PLUGINS_PATH', plugin_dir_path( __DIR__ ) );
 		hubwoo_pro_define( 'HUBWOO_CLIENT_ID', '769fa3e6-79b1-412d-b69c-6b8242b2c62a' );
 		hubwoo_pro_define( 'HUBWOO_SECRET_ID', '2893dd41-017e-4208-962b-12f7495d16b0' );
@@ -234,7 +234,7 @@ if ( $hubwoo_pro_activated && $hubwoo_pro_flag ) {
 	 */
 	function hubwoo_pro_plugin_error_notice() {         ?>
 		<div class="error notice is-dismissible">
-		<p><?php esc_html_e( 'WooCommerce is not activated. Please activate WooCommerce first to install HubSpot for WooCommerce', 'makewebbetter-hubspot-for-woocommerce' ); ?></p>
+		<p><?php esc_html_e( 'WooCommerce is not activated. Please activate WooCommerce first to install MWB HubSpot for WooCommerce', 'makewebbetter-hubspot-for-woocommerce' ); ?></p>
 		</div>
 		<style>
 		#message{
@@ -254,7 +254,7 @@ if ( $hubwoo_pro_activated && $hubwoo_pro_flag ) {
 	function hubwoo_pro_plugin_basic_error_notice() {
 		?>
 		<div class="error notice is-dismissible">
-		<p><?php esc_html_e( 'Oops! You tried activating the HubSpot for WooCommerce without deactivating the another version of the integration created by MakewebBetter. Kindly deactivate the other version of HubSpot WooCommerce Integration and then try again.', 'makewebbetter-hubspot-for-woocommerce' ); ?></p>
+		<p><?php esc_html_e( 'Oops! You tried activating the MWB HubSpot for WooCommerce without deactivating the another version of the integration created by MakewebBetter. Kindly deactivate the other version of HubSpot WooCommerce Integration and then try again.', 'makewebbetter-hubspot-for-woocommerce' ); ?></p>
 		</div>
 		<style>
 		#message{display:none;}

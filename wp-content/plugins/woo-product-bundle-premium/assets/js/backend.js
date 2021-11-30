@@ -4,7 +4,6 @@
   var woosb_timeout = null;
 
   $(function() {
-    // ready
     // options page
     woosb_active_options();
 
@@ -255,55 +254,57 @@
   }
 
   function woosb_change_price() {
-    var total = 0;
-    var total_max = 0;
-    var sale = 0;
+    if ($('#product-type').val() == 'woosb') {
+      var total = 0;
+      var total_max = 0;
+      var sale = 0;
 
-    $('#woosb_selected li').each(function() {
-      total += $(this).data('price') * $(this).find('input').val();
-      total_max += $(this).data('price-max') * $(this).find('input').val();
-    });
+      $('#woosb_selected li').each(function() {
+        total += $(this).data('price') * $(this).find('input').val();
+        total_max += $(this).data('price-max') * $(this).find('input').val();
+      });
 
-    if (total == total_max) {
-      $('#woosb_regular_price').
-          html(woosb_format_money(total, woosb_vars.price_decimals, '',
-              woosb_vars.price_thousand_separator,
-              woosb_vars.price_decimal_separator));
-    } else {
-      $('#woosb_regular_price').
-          html(woosb_format_money(total, woosb_vars.price_decimals, '',
-                  woosb_vars.price_thousand_separator,
-                  woosb_vars.price_decimal_separator) + ' - ' +
-              woosb_format_money(total_max, woosb_vars.price_decimals, '',
-                  woosb_vars.price_thousand_separator,
-                  woosb_vars.price_decimal_separator));
-    }
-
-    if (!$('#woosb_disable_auto_price').is(':checked')) {
-      if ($('#woosb_discount_amount').val()) {
-        sale = parseFloat(total) -
-            parseFloat($('#woosb_discount_amount').val());
-      } else if ($('#woosb_discount').val()) {
-        sale = parseFloat(total) *
-            (100 - parseFloat($('#woosb_discount').val())) / 100;
+      if (total == total_max) {
+        $('#woosb_regular_price').
+            html(woosb_format_money(total, woosb_vars.price_decimals, '',
+                woosb_vars.price_thousand_separator,
+                woosb_vars.price_decimal_separator));
+      } else {
+        $('#woosb_regular_price').
+            html(woosb_format_money(total, woosb_vars.price_decimals, '',
+                    woosb_vars.price_thousand_separator,
+                    woosb_vars.price_decimal_separator) + ' - ' +
+                woosb_format_money(total_max, woosb_vars.price_decimals, '',
+                    woosb_vars.price_thousand_separator,
+                    woosb_vars.price_decimal_separator));
       }
 
-      $('#_regular_price').
-          prop('readonly', true).
-          val(woosb_format_money(total, woosb_vars.price_decimals, '',
-              woosb_vars.price_thousand_separator,
-              woosb_vars.price_decimal_separator)).
-          trigger('change');
+      if (!$('#woosb_disable_auto_price').is(':checked')) {
+        if ($('#woosb_discount_amount').val()) {
+          sale = parseFloat(total) -
+              parseFloat($('#woosb_discount_amount').val());
+        } else if ($('#woosb_discount').val()) {
+          sale = parseFloat(total) *
+              (100 - parseFloat($('#woosb_discount').val())) / 100;
+        }
 
-      if (sale > 0) {
-        $('#_sale_price').
+        $('#_regular_price').
             prop('readonly', true).
-            val(woosb_format_money(sale, woosb_vars.price_decimals, '',
+            val(woosb_format_money(total, woosb_vars.price_decimals, '',
                 woosb_vars.price_thousand_separator,
                 woosb_vars.price_decimal_separator)).
             trigger('change');
-      } else {
-        $('#_sale_price').prop('readonly', true).val('').trigger('change');
+
+        if (sale > 0) {
+          $('#_sale_price').
+              prop('readonly', true).
+              val(woosb_format_money(sale, woosb_vars.price_decimals, '',
+                  woosb_vars.price_thousand_separator,
+                  woosb_vars.price_decimal_separator)).
+              trigger('change');
+        } else {
+          $('#_sale_price').prop('readonly', true).val('').trigger('change');
+        }
       }
     }
   }

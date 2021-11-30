@@ -19,6 +19,25 @@ function porto_load_container_shortcode() {
 			'is_container' => true,
 			'js_view'      => 'VcColumnView',
 			'params'       => array(
+				array(
+					'type'        => 'checkbox',
+					'heading'     => __( 'Is half container?', 'porto-functionality' ),
+					'param_name'  => 'is_half',
+					'std'         => '',
+					'admin_label' => true,
+				),
+				array(
+					'type'        => 'checkbox',
+					'heading'     => __( 'Is full width under 992px?', 'porto-functionality' ),
+					'param_name'  => 'is_full_md',
+					'description' => __( 'If unchecked, this container becomes full width under 768px.', 'porto-functionality' ),
+					'std'         => '',
+					'admin_label' => true,
+					'dependency'  => array(
+						'element'   => 'is_half',
+						'not_empty' => true,
+					),
+				),
 				$custom_class,
 				$animation_type,
 				$animation_duration,

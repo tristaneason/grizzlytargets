@@ -68,6 +68,39 @@ table.ph-order-edit-options-table td{
 	width:20%;
 }
 
+table.ph_fedex_tracking_status_history_table {
+	border-collapse: collapse;
+	width: 100%;
+	margin: 5px;
+}
+
+table.ph_fedex_tracking_status_history_table td {
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+
+table.ph_fedex_tracking_status_history_table th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+	background-color:#f9f9f9;
+	color: black;
+}
+
+table.ph_fedex_tracking_status_history_table tr:nth-child(odd){ 
+	background-color: #f2f2f2; 
+}
+
+.ph_fedex_tracking_error_message {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  text-align: center;
+  background: #ddd; /* Not necessary just to see the result clearly */
+}
+
 .wf-action-button{
 	display: inline-block;
 	background: #eeeeee; /* Old browsers */

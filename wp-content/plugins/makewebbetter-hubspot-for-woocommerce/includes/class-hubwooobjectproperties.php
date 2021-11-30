@@ -212,27 +212,25 @@ class HubwooObjectProperties {
 
 				$response = HubWooConnectionMananager::get_instance()->ecomm_sync_messages( $deal_updates, $object_type );
 
-				$attempts = 0;
+				$update_deal_id = get_option( 'mwb_update_deal_ids' );
 
-				sleep(1);
-
-				if ( 204 == $response['status_code'] ) {
-					do {
-						$response = HubWooConnectionMananager::get_instance()->ecomm_sync_status( $order_id, $object_type );
-						$attempts++;
-					} while ( 200 != $response['status_code'] && ( $attempts <= 10 ) );
+				if ( empty( $update_deal_id ) ) {
+					$update_deal_id = array();
 				}
-				if ( 200 == $response['status_code'] ) {
-					$response = json_decode( $response['body'], true );
-					update_post_meta( $order_id, 'hubwoo_ecomm_deal_id', $response['hubspotId'] );
-					if( ! empty( $contact_vid ) ) {
-						HubWooConnectionMananager::get_instance()->create_deal_associations( $response['hubspotId'], $contact_vid );
-					}
 
-					do_action( 'hubwoo_ecomm_deal_created', $order_id );
-					$response = self::hubwoo_ecomm_sync_line_items( $order_id );
+				$update_deal_id[] = $order_id;
+
+				$update_deal_id = array_unique( $update_deal_id );
+
+				update_option( 'mwb_update_deal_ids', $update_deal_id );
+
+				if ( ! as_next_scheduled_action( 'hubwoo_deal_update_schedule' ) ) {
+
+					as_schedule_recurring_action( time(), 300, 'hubwoo_deal_update_schedule' );
 				}
-				
+
+				$response = self::hubwoo_ecomm_sync_line_items( $order_id );
+
 				return $response;
 			}
 		}

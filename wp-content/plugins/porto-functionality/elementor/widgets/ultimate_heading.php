@@ -64,6 +64,18 @@ class Porto_Elementor_Ultimate_Heading_Widget extends \Elementor\Widget_Base {
 			)
 		);
 		$this->add_control(
+			'typewriter_animation',
+			array(
+				'type'        => Controls_Manager::TEXT,
+				'label'       => __( 'Animation Name', 'porto-functionality' ),
+				'description' => __( 'e.g: typeWriter, fadeIn and so on.', 'porto-functionality' ),
+				'default'     => 'fadeIn',
+				'condition'   => array(
+					'enable_typewriter' => 'yes',
+				),
+			)
+		);
+		$this->add_control(
 			'typewriter_delay',
 			array(
 				'type'      => Controls_Manager::NUMBER,
@@ -82,7 +94,7 @@ class Porto_Elementor_Ultimate_Heading_Widget extends \Elementor\Widget_Base {
 					'enable_typewriter' => 'yes',
 				),
 			)
-		);				
+		);
 		$this->add_control(
 			'content',
 			array(
@@ -131,8 +143,8 @@ class Porto_Elementor_Ultimate_Heading_Widget extends \Elementor\Widget_Base {
 				'type'        => Controls_Manager::SELECT,
 				'label'       => __( 'Separator', 'porto-functionality' ),
 				'options'     => array(
-					'no_spacer'  => __( 'No Separator', 'porto-functionality' ),
-					'line_only'  => __( 'Line', 'porto-functionality' ),
+					'no_spacer' => __( 'No Separator', 'porto-functionality' ),
+					'line_only' => __( 'Line', 'porto-functionality' ),
 				),
 				'default'     => 'no_spacer',
 				'description' => __( 'Horizontal line, icon or image to divide sections', 'porto-functionality' ),
@@ -359,6 +371,9 @@ class Porto_Elementor_Ultimate_Heading_Widget extends \Elementor\Widget_Base {
 				}
 				if( settings.typewriter_width ) {
 					typewriter[ 'minWindowWidth' ] = parseInt( settings.typewriter_width, 10 );
+				}
+				if( settings.typewriter_animation ) {
+					typewriter[ 'animationName' ] = settings.typewriter_animation;
 				}
 				view.addRenderAttribute( 'main_heading', 'data-plugin-animated-letters', '' );
 				view.addRenderAttribute( 'main_heading', 'data-plugin-options', JSON.stringify( typewriter ) );

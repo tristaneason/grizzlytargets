@@ -207,7 +207,8 @@ if (!class_exists('group_unishippers_ltl_shipments')) {
 
                         // Hook for flexibility adding to package
                         $en_items = apply_filters('en_group_package', $en_items, $values, $_product);
-
+                        // NMFC Number things
+                        $en_items = $this->en_group_package($en_items, $values, $_product);
                         // Micro Warehouse
                         $items[$post_id] = $en_items;
 
@@ -383,9 +384,7 @@ if (!class_exists('group_unishippers_ltl_shipments')) {
         function unishippers_freight_get_origin($_product, $values, $unishippers_ltl_res_inst, $unishippers_ltl_zipcode)
         {
             global $wpdb;
-            // UPDATE QUERY In-store pick up
-            $en_wd_update_query_string = apply_filters("en_wd_update_query_string", "");
-
+            $locations_list = [];
             (isset($values['variation_id']) && $values['variation_id'] > 0) ? $post_id = $values['variation_id'] : $post_id = $_product->get_id();
             $enable_dropship = get_post_meta($post_id, '_enable_dropship', true);
             if ($enable_dropship == 'yes') {
@@ -414,8 +413,8 @@ if (!class_exists('group_unishippers_ltl_shipments')) {
                 // Micro Warehouse
                 $this->multiple_dropship_of_prod($locations_list, $post_id);
                 $eniture_debug_name = "Dropships";
-            } else {
-
+            }
+            if (empty($locations_list)) {
                 //          Multi Warehouse
                 $multi_warehouse = apply_filters('unishippers_freight_quotes_plans_suscription_and_features', 'multi_warehouse');
                 if (is_array($multi_warehouse)) {
@@ -539,6 +538,24 @@ if (!class_exists('group_unishippers_ltl_shipments')) {
             }
 
             return $unishippers_ltl_enable;
+        }
+        /**
+         * Get the product nmfc number
+         */
+        public function en_group_package($item, $product_object, $product_detail)
+        {
+            $en_nmfc_number = $this->en_nmfc_number($product_object, $product_detail);
+            $item['nmfc_number'] = $en_nmfc_number;
+            return $item;
+        }
+
+        /**
+         * Get product shippable unit enabled
+         */
+        public function en_nmfc_number($product_object, $product_detail)
+        {
+            $post_id = (isset($product_object['variation_id']) && $product_object['variation_id'] > 0) ? $product_object['variation_id'] : $product_detail->get_id();
+            return get_post_meta($post_id, '_nmfc_number', true);
         }
 
     }

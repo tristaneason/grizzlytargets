@@ -285,6 +285,7 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 					$this->loader->add_action( 'hubwoo_deals_sync_background', $plugin_admin, 'hubwoo_deals_sync_background', 10, 2 );
 					$this->loader->add_action( 'hubwoo_products_sync_background', $plugin_admin, 'hubwoo_products_sync_background' );
 					$this->loader->add_action( 'hubwoo_products_status_background', $plugin_admin, 'hubwoo_products_status_background' );
+					$this->loader->add_action( 'hubwoo_deal_update_schedule', $plugin_admin, 'hubwoo_deal_update_schedule' );
 				}
 
 				$this->loader->add_action( 'hubwoo_contacts_sync_background', $plugin_admin, 'hubwoo_contacts_sync_background' );
@@ -346,6 +347,9 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 						$this->loader->add_action( 'woocommerce_update_order', $plugin_public, 'hubwoo_ecomm_deal_on_new_order' );
 					}
 				}
+
+				// Update existing order on admin.
+				$this->loader->add_action( 'woocommerce_update_order', $plugin_public, 'hubwoo_ecomm_deal_update_order' );
 
 				// HubSpot Abandon Carts.
 				if ( get_option( 'hubwoo_abncart_enable_addon', 'yes' ) == 'yes' ) {
@@ -863,6 +867,34 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 			}
 
 			return $final_groups;
+		}
+
+		/**
+		 * Verify if the hubspot subscription group setup is completed.
+		 *
+		 * @since 1.0.0
+		 * @return boolean true/false
+		 */
+		public static function is_subs_group_setup_completed() {
+
+			$last_version = self::hubwoo_pro_last_version();
+
+			if ( HUBWOO_VERSION != $last_version ) {
+
+				if ( get_option( 'hubwoo_subs_setup_completed', false ) ) {
+
+					return true;
+				} else {
+
+					if ( in_array( 'subscriptions_details', get_option( 'hubwoo-groups-created', array() ) ) ) {
+
+						return true;
+					} else {
+
+						return false;
+					}
+				}
+			}
 		}
 
 		/**
@@ -1455,8 +1487,6 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 			$exiting_user_roles = array();
 
 			$user_roles = ! empty( $wp_roles->role_names ) ? $wp_roles->role_names : array();
-
-
 
 			if ( is_array( $user_roles ) && count( $user_roles ) ) {
 
@@ -2291,7 +2321,7 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 
 				if ( empty( $unsynced_ids ) && 'user' == $type ) {
 					foreach ( $ids as $id ) {
-						$method_calls[ $type ]['update']($id, $method_calls[ $type ]['update_key'], 'synced');
+						$method_calls[ $type ]['update']( $id, $method_calls[ $type ]['update_key'], 'synced' );
 					}
 					return;
 				}
@@ -2310,7 +2340,7 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 						break;
 					case 'order':
 						foreach ( $unsynced_ids as $id ) {
-							$usr_email = $method_calls[ $type ]['get']($id, $method_calls[ $type ]['get_key'], true);
+							$usr_email = $method_calls[ $type ]['get']( $id, $method_calls[ $type ]['get_key'], true );
 							if ( ! empty( $usr_email ) ) {
 								$usr_email               = strtolower( $usr_email );
 								$user_data[ $usr_email ] = $id;
@@ -2332,8 +2362,8 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 					foreach ( $users as $vid => $data ) {
 						if ( ! empty( $data['properties']['email'] ) ) {
 							if ( array_key_exists( $data['properties']['email']['value'], $user_data ) ) {
-								$method_calls[ $type ]['update']($user_data[ $data['properties']['email']['value'] ], 'hubwoo_user_vid', $vid);
-								$method_calls[ $type ]['update']($user_data[ $data['properties']['email']['value'] ], $method_calls[ $type ]['update_key'], 'synced');
+								$method_calls[ $type ]['update']( $user_data[ $data['properties']['email']['value'] ], 'hubwoo_user_vid', $vid );
+								$method_calls[ $type ]['update']( $user_data[ $data['properties']['email']['value'] ], $method_calls[ $type ]['update_key'], 'synced' );
 							}
 						}
 					}
@@ -2368,7 +2398,7 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 
 			if ( ! as_next_scheduled_action( 'hubwoo_cron_schedule' ) || ! as_next_scheduled_action( 'hubwoo_deals_sync_check' ) ) {
 				$cron_status['status'] = false;
-				$cron_status['type']   = esc_html__( 'You are having issues with your HubSpot for WooCommerce sync. Please read this doc on how to fix your integration.', 'makewebbetter-hubspot-for-woocommerce' );
+				$cron_status['type']   = esc_html__( 'You are having issues with your MWB HubSpot for WooCommerce sync. Please read this doc on how to fix your integration.', 'makewebbetter-hubspot-for-woocommerce' );
 			}
 
 			return $cron_status;

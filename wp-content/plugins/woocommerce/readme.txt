@@ -4,7 +4,7 @@ Tags: e-commerce, store, sales, sell, woo, shop, cart, checkout, downloadable, d
 Requires at least: 5.6
 Tested up to: 5.8
 Requires PHP: 7.0
-Stable tag: 5.7.1
+Stable tag: 5.9.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -25,7 +25,7 @@ Whether you’re launching a business, taking brick-and-mortar retail online, or
 
 Built-in tools and popular integrations help you efficiently manage your business operations. Many services are free to add with a single click via the optional [Setup Wizard](https://docs.woocommerce.com/document/woocommerce-setup-wizard/?utm_medium=referral&utm_source=wordpress.org&utm_campaign=wp_org_repo_listing).
 
-- **Choose how you want to get paid**. Conveniently manage payments from the comfort of your store with [WooCommerce Payments](https://woocommerce.com/payments/?utm_medium=referral&utm_source=wordpress.org&utm_campaign=wp_org_repo_listing) (U.S.-only). Securely accept cards, mobile wallets, bank transfers, and cash thanks to [100+ payment gateways](https://woocommerce.com/product-category/woocommerce-extensions/payment-gateways/?utm_medium=referral&utm_source=wordpress.org&utm_campaign=wp_org_repo_listing) – including [Stripe](https://woocommerce.com/products/stripe/?utm_medium=referral&utm_source=wordpress.org&utm_campaign=wp_org_repo_listing), [PayPal](https://woocommerce.com/products/woocommerce-gateway-paypal-checkout/?utm_medium=referral&utm_source=wordpress.org&utm_campaign=wp_org_repo_listing), and [Square](https://woocommerce.com/products/square/?utm_medium=referral&utm_source=wordpress.org&utm_campaign=wp_org_repo_listing).
+- **Choose how you want to get paid**. Conveniently manage payments from the comfort of your store with [WooCommerce Payments](https://woocommerce.com/payments/?utm_medium=referral&utm_source=wordpress.org&utm_campaign=wp_org_repo_listing) (Available in the U.S., U.K., Ireland, Australia, New Zealand, Canada, and now: Spain, France, Germany, and Italy). Securely accept cards, mobile wallets, bank transfers, and cash thanks to [100+ payment gateways](https://woocommerce.com/product-category/woocommerce-extensions/payment-gateways/?utm_medium=referral&utm_source=wordpress.org&utm_campaign=wp_org_repo_listing) – including [Stripe](https://woocommerce.com/products/stripe/?utm_medium=referral&utm_source=wordpress.org&utm_campaign=wp_org_repo_listing), [PayPal](https://woocommerce.com/products/woocommerce-gateway-paypal-checkout/?utm_medium=referral&utm_source=wordpress.org&utm_campaign=wp_org_repo_listing), and [Square](https://woocommerce.com/products/square/?utm_medium=referral&utm_source=wordpress.org&utm_campaign=wp_org_repo_listing).
 - **Configure your shipping options**. Print USPS labels right from your dashboard and even schedule a pickup with [WooCommerce Shipping](https://woocommerce.com/products/shipping/?utm_medium=referral&utm_source=wordpress.org&utm_campaign=wp_org_repo_listing) (U.S.-only). Connect with [well-known carriers](https://woocommerce.com/product-category/woocommerce-extensions/shipping-methods/?utm_medium=referral&utm_source=wordpress.org&utm_campaign=wp_org_repo_listing) such as UPS, FedEx, and ShipStation – plus a wide variety of delivery, inventory, and fulfillment solutions for your locale.
 - **Simplify sales tax**. Add [WooCommerce Tax](https://woocommerce.com/products/tax/?utm_medium=referral&utm_source=wordpress.org&utm_campaign=wp_org_repo_listing) or [similar integrated services](https://woocommerce.com/product-category/woocommerce-extensions/tax?utm_medium=referral&utm_source=wordpress.org&utm_campaign=wp_org_repo_listing) to make automated calculations a reality.
 
@@ -160,111 +160,61 @@ WooCommerce comes with some sample data you can use to see how products look; im
 
 == Changelog ==
 
-= 5.7.1 2021-09-23 =
-
-**WooCommerce - 5.7.1**
-
-* Dev - Revert Download filepaths changes.
-
-**WooCommerce Admin - 2.6.5**
-
-- Fix: Add filters to get new hidden options #7698
-
-**WooCommerce Blocks - 5.7.2**
-
-- Fix - Infinite recursion when removing an attribute filter from the Active filters block. #4816
-- Fix - Fix Product Search block displaying incorrectly. #4740
-
-= 5.7.0 2021-09-21 =
+= 5.9.0 2021-11-09 =
 
 **WooCommerce**
 
-* Fix - WC default pages are being re-created during db migration in some cases. #30540
-* Fix - Use type casts to reduce the risk of type errors in some unusual conditions. #30493
-* Fix - Restores Select2 4.0.3 for backwards compatibility reasons. #30473
-* Fix - product attribute permalinks not working for non-ASCII characters. #30443
-* Fix - Variations menu order not applying correctly when manually set in some cases. #30423
-* Fix - Users with capabilities such as the admin are not able to the see downloadable file images after uploading. #30385
-* Fix - Products quick edit was not showing the correct value for visibility setting. #30374
-* Fix - Fixed inability to set payment token as non-default. #30176
-* Dev - Add payment method title for the option "Other". #30256
-* Dev - Remove tracking of admin user agent. #30514
-* Dev - Added a new Tracks event when the user views the My Subscriptions page. #30488
-* Dev - Added new woocommerce_product_options_external hook. #30448
-* Dev - Update countries with no states to be consistent in codebase. #30435
-* Dev - Split the Extensions page in WP Admin and add respective menu items. #30380
-* Dev - Set 'WC_Customer::$object_type' to 'customer'. #30325
-* Dev - Added new woocommerce_product_options_external hook. #30229
-* Enhancement - Add mobile section menu to marketplace. #30499
-* Enhancement - Track the state and postcode of the store location. #30483
-* Enhancement - Split the "Extensions" page into two pages, "Marketplace" and "My Subscriptions". Apply new design to Marketplace. #30391
-* Enhancement - Added new Ukrainian states. #30230
-* Enhancement - Update locale-info.php to contain all the countries, currency specs and locale information. #30216
-* Tweak - Update product card on mobile devices so that content doesn't overflow. #30498
-* Tweak - Change top bar menu to a dropdown menu. #30498
-* Tweak - Add top margin above .addons-button in promos, to ensure there's a proper gap above it on smaller viewports. #30497
-* Tweak - Slightly change the wording and styling of the Search results for label at the top of extensions search results. #30497
-* Tweak - Display notices properly in Marketplace page. #30478
-* Tweak - Update the Marketplace page menu styles to match the current design. #30464
-* Tweak - Update product cards on the WooCommerce > Extensions page in WP Admin to match current designs. #30410
-* Tweak - Update the Marketplace/Addons header to match new designs. #30389
-* Tweak - Renamed "ZIP" to "ZIP Code" and "Pin code" to "PIN" for US & India, respectively. #30204
-* Tweak - Download filepaths.
+* Fix - Bug in the handling of remote file names for downloadable files.
+* Fix - Remove the absolute path to the currency-info.php from within locale-info.php. #31036
+* Fix - wc_get_price_excluding_tax when an order with no customer is passed. #31015
+* Fix - Rename transient used to cache data for Featured page of In-App Marketplace. #31002
+* Fix - Variable product price caching bug with VAT exemption. #30889
+* Fix - Allow to pass null as the email for billing addresses in REST API. #30850
+* Fix - Ensure woocommerce_cancel_unpaid_orders event is always re-scheduled. #30830
+* Fix - Use a more standard way to check if the product attributes lookup table exists. #30745
+* Fix - Undefined variable notice when trying to add product in orders without specifying a product. #30739
+* Fix - Use proper location for taxes when adding products via admin. #30692
+* Dev - Add mobile data to WCTracker. #30415
+* Tweak - Remove hardcode category banners in Settings > Marketplace and use the WooCommerce.com API instead. #30938
+* Tweak - Show a search again message when marketplace results are empty. #30642
+* Tweak - Add promoted cards styling to marketplace section. #30861
+* Enhancement - Add ratings, reviews and icons into Marketplace's Product Cards. #30840
+* Enhancement - Update Storefront banner width and track links in the marketplace page. #30882
+* Enhancement - Revamp the WooCommerce Marketplace page. #30900
 
-**WooCommerce Admin - 2.6.0 & 2.6.1 & 2.6.2 & 2.6.3 & 2.6.4**
+**WooCommerce Admin - 2.8.0 **
 
-- Fix: Fixes action button mis-alignment within card footer. #7412
-- Fix: Fixing issues with ReportTable component data not populating correctly #7355
-- Fix: Fix tracks events for payment gateway suggestions #7304
-- Fix: Update status values in CSV download to match the table #7284
-- Fix: Allow super admins all capabilities within WooCommerce Admin #7489
-- Fix: Fix blank screen by setting a default value #7506
-- Fix: Fix analytics overview re-arrangement on initial load. #7475
-- Fix: Fix up onboarding profiler not working when opted out of tracking #7490
-- Fix: Fix blank screen on analytics screens when searching #7482
-- Fix: Fix all links with hash to behind query parameters #7483
-- Fix: Fix Stats module CSS issue introduced by Gutenberg #7488
-- Fix: Fix marketing task visibility #7580
-- Fix: Fix stats-overview card padding issue #7594
-- Fix: Fix layout issue on the marketing task #7598
-- Fix Update task-item logic to only display content when expanded is true. #7611
-- Fix: Use installable extensions for local state versus free extensions. #7585
-- Fix: Fix unsecured reports
-- Fix: Fix fatal error and unrelated results in analytics. #7682
-- Add: Add boolean isReverseTrend prop to SummaryNumber to show "positive" delta for negative numbers. #7357
-- Add: Adding links to help panel for marketing task #7384
-- Add: Add installed marketing extensions card to extensions task #7419
-- Add: Add marketing extensions task to task list #7383
-- Add: Add tracks to marketing manage button click #7467
-- Add: Add default marketing extensions as fallbacks #7466
-- Add: Add marketing task completion check and tests #7451
-- Add navigation items for the Marketplace menu. #7529
-- Update: Add locale param as part of free extensions request #7391
-- Update: Increase per_page value for search results on the Analytics pages. #7385
-- Update: Removing grow section from local free extensions in OBW #7386
-- Update: Don't show the marketing task if no marketing tasks exist #7460
-- Update: Delete free extensions transient on WCA update #7454
-- Update: Update business details to use extensions data store #7452
-- Update: Split Extensions page into Marketplace and My Subscriptions. #7471
-- Update: Update marketing task completion logic. #7586
-- Dev: Added utm_medium=product to woocommerce.com links. #7408
-- Dev: Update Jest to version 27. #7430
-- Tweak: Refactor on payment settings recommendations eligibility component for reuse. #7447
-- Tweak: Register wc-admin page for all users and handle authorization in client #7285
+* Fix - Issue where stock activity panel was not rendering correctly. #7817
+* Fix - Increase CSS specificity to avoid conflicts and broken panel styling. #7813
+* Fix - Updated link to WooCommerce Developers Blog in readme.txt. #7824
+* Fix - Fixed navigation menu text color after Gutenberg 11.6.0. #7771
+* Fix - Add status param to notes/delete/all REST endpoint, to correctly delete all notes. #7743
+* Fix - Allow already installed marketing extensions to be activated. #7740
+* Fix - Add missing title text for marketing task. #7640
+* Fix - Assign parent order status as children order status if refund order. #7253
+* Fix - Fix category lookup logic to update children correctly. #7709
+* Fix - Fixing an unwanted page refresh when using Woo Navigation. #7615
+* Fix - Fix naming of event names and properties. #7677
+* Fix - Fix white screen for variation analytic data without a name. #7686
+* Add - Store Profiler and Product task - include Subscriptions. #7734
+* Update - Update WC pay supported country list for the default free extensions. #7873
+* Update - Update back up copy of free extension for Google Listing & Ads plugin. #7798
+* Update - Update Eway payment gateway capitalization (was eWAY). #7678
+* Update - Enable Square in France. #7679
+* Enhancement - Only load tasks during rest api requests. #7856
+* Enhancement - Add experiment for promoting WooCommerce Payments in payment methods table. #7666
 
-**WooCommerce Blocks - 5.6.0 & 5.7.0 & 5.7.1**
+**WooCommerce Blocks - 6.0.0 & 6.0.1 & 6.0.2 & 6.1.0**
 
-- Enhancement - Featured Category Block: Allow user to re-select categories using the edit icon. #4559
-- Enhancement - Update pagination arrows to match core. #4364
-- Fix - Adjusted store notice class names so that error notices show the correct icons. #4568
-- Fix - Reviews by Category: Show review count instead of product count. #4552
-- Fix - Add server side rendering to search block so the block can be used by non-admins. #4551
-- Fix - Twenty Twenty: Fix broken sale badge left alignment. #4549
-- Fix - Twenty Twenty-One: Adjust removable chip background color. #4547
-- Fix - Fix handpicked product selections when a store has over 100 products. #4534
-- Fix - Replace .screen-reader-text with .hidden for elements that are not relevant to screen readers. #4530
-- Fix - Fixed the SKU search on the /wc/store/products endpoint. #4469
-- Fix - Fix memory leak when previewing transform options for the All reviews block. #4428
-- Fix - Disable Cart, Checkout, All Products & filters blocks from the widgets screen. #4646
+* Fix - Infinite recursion when removing an attribute filter from the Active filters block. #4816
+* Fix - Update All Reviews block so it honors 'ratings enabled' and 'show avatars' preferences. #4764
+* Fix - Products by Category: Moved renderEmptyResponsePlaceholder to separate method to prevent unnecessary rerender. #4751
+* Fix - Calculation of number of reviews in the Reviews by Category block. #4729
+* Fix - Dropdown list in Product Category List Block for nested categories #4920
+* Fix - String translations within the All Products Block. #4897
+* Fix - Filter By Price: Update aria values to be more representative of the actual values presented. #4839
+* Fix - Filter button from Filter Products by Attribute block is not aligned with the input field. #4814
+* Fix - Remove IntersectionObserver shim in favor of dropping IE11 support. #4808
+* Enhancement - Added global styles to All Reviews, Reviews by Category and Reviews by Product blocks. Now it's possible to change the text color and font size of those blocks. #4323
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/woocommerce/trunk/changelog.txt).

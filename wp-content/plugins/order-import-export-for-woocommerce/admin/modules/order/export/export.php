@@ -10,8 +10,10 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
     public $parent_module = null;
     private $line_items_max_count = 0;
     private $export_to_separate_columns = false;
+    private $export_to_separate_rows = false;     
     private $line_item_meta;
     private $is_wt_invoice_active = false;
+    private $is_yith_tracking_active = false;
 
     public function __construct($parent_object) {
 
@@ -23,9 +25,12 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
         $export_columns = $this->parent_module->get_selected_column_names();
 
         $this->line_item_meta = self::get_all_line_item_metakeys();
-        if (is_plugin_active('wt-woocommerce-packing-list/wf-woocommerce-packing-list.php')):
+        if (is_plugin_active('print-invoices-packing-slip-labels-for-woocommerce/print-invoices-packing-slip-labels-for-woocommerce.php')):
             $this->is_wt_invoice_active = true;
         endif;
+        if (is_plugin_active('yith-woocommerce-order-tracking-premium/init.php')):
+            $this->is_yith_tracking_active = true;
+        endif;        
 		
         $max_line_items = $this->line_items_max_count;
 
@@ -50,10 +55,92 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
                     }
                 }
             }
-        }                
+        }
+        if ($this->export_to_separate_rows) {
+            $export_columns = $this->wt_line_item_separate_row_csv_header($export_columns);
+        }
         return apply_filters('hf_alter_csv_header', $export_columns);
     }
 
+    
+        public function wt_line_item_separate_row_csv_header($export_columns) {
+
+
+        foreach ($export_columns as $s_key => $value) {
+            if (strstr($s_key, 'line_item_')) {
+                unset($export_columns[$s_key]);
+            }
+        }
+
+        $export_columns["line_item_product_id"] = "item_product_id";
+        $export_columns["line_item_name"] = "item_name";
+        $export_columns["line_item_sku"] = "item_sku";
+        $export_columns["line_item_quantity"] = "item_quantity";
+        $export_columns["line_item_subtotal"] = "item_subtotal";
+        $export_columns["line_item_subtotal_tax"] = "item_subtotal_tax";
+        $export_columns["line_item_total"] = "item_total";
+        $export_columns["line_item_total_tax"] = "item_total_tax";
+        $export_columns["item_refunded"] = "item_refunded";
+        $export_columns["item_refunded_qty"] = "item_refunded_qty";
+        $export_columns["item_meta"] = "item_meta";
+        return $export_columns;
+    }
+    
+    public function wt_line_item_separate_row_csv_data($order_export_data, $order_data_filter_args) {
+
+        $order_id = $order_export_data['order_id'];
+        $order = wc_get_order($order_id);
+        $row = array();
+        if ($order) {
+            foreach ($order->get_items() as $item_key => $item) {
+                foreach ($order_export_data as $key => $value) {
+                    if (strpos($key, 'line_item_') !== false) {
+                        continue;
+                    } else {
+                        $data1[$key] = $value;
+                    }
+                }
+                $item_data = $item->get_data();
+                $product = $item->get_product();
+
+                $data1["line_item_product_id"] = !empty($item_data['product_id']) ? $item_data['product_id'] : '';
+                $data1["line_item_name"] = !empty($item_data['name']) ? $item_data['name'] : '';
+                $data1["line_item_sku"] = !empty($product) ? $product->get_sku() : '';
+                $data1["line_item_quantity"] = !empty($item_data['quantity']) ? $item_data['quantity'] : '';
+                $data1["line_item_subtotal"] = !empty($item_data['subtotal']) ? $item_data['subtotal'] : 0;
+                $data1["line_item_subtotal_tax"] = !empty($item_data['subtotal_tax']) ? $item_data['subtotal_tax'] : 0;
+                $data1["line_item_total"] = !empty($item_data['total']) ? $item_data['total'] : 0;
+                $data1["line_item_total_tax"] = !empty($item_data['total_tax']) ? $item_data['total_tax'] : 0;
+
+                $data1["item_refunded"] = !empty($order->get_total_refunded_for_item($item_key)) ? $order->get_total_refunded_for_item($item_key) : '';
+                $data1["item_refunded_qty"] = !empty($order->get_qty_refunded_for_item($item_key)) ? absint($order->get_qty_refunded_for_item($item_key)) : '';
+                $data1["item_meta"] = !empty($item_data['meta_data']) ? json_encode($item_data['meta_data']) : '';
+
+
+                $row[] = $data1;
+
+            }
+           return $row;
+        }
+   
+    }
+        
+    public function wt_ier_alter_order_data_before_export_for_separate_row($data_array) {
+        $new_data_array = array();
+        foreach ($data_array as $key => $avalue) {
+            if (is_array($avalue)) {
+                if (count($avalue) == 1) {
+                    $new_data_array[] = $avalue[0];
+                } elseif (count($avalue) > 1) {
+                    foreach ($avalue as $arrkey => $arrvalue) {
+                        $new_data_array[] = $arrvalue;
+                    }
+                }
+            }
+        }
+        return $new_data_array;
+    }
+    
     /**
      * Prepare data that will be exported.
      */
@@ -73,8 +160,10 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
         $batch_count = !empty($form_data['advanced_form_data']['wt_iew_batch_count']) ? $form_data['advanced_form_data']['wt_iew_batch_count'] : Wt_Import_Export_For_Woo_Basic_Common_Helper::get_advanced_settings('default_export_batch');
 
         $exclude_already_exported = (!empty($form_data['advanced_form_data']['wt_iew_exclude_already_exported']) && $form_data['advanced_form_data']['wt_iew_exclude_already_exported'] == 'Yes') ? true : false;
+                       
+        $this->export_to_separate_columns = (!empty($form_data['advanced_form_data']['wt_iew_export_to_separate']) && $form_data['advanced_form_data']['wt_iew_export_to_separate'] == 'column') ? true : false;                       
+        $this->export_to_separate_rows = (!empty($form_data['advanced_form_data']['wt_iew_export_to_separate']) && $form_data['advanced_form_data']['wt_iew_export_to_separate'] == 'row') ? true : false;               
 
-        $this->export_to_separate_columns = (!empty($form_data['advanced_form_data']['wt_iew_export_to_separate_columns']) && $form_data['advanced_form_data']['wt_iew_export_to_separate_columns'] == 'Yes') ? true : false;               
         
         $real_offset = ($current_offset + $batch_offset);
 
@@ -358,7 +447,14 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
                 // updating records with expoted status 
                 update_post_meta($order_id, 'wf_order_exported_status', TRUE);
             }
-                                                
+
+            if($this->export_to_separate_rows){
+                $data_array = $this->wt_ier_alter_order_data_before_export_for_separate_row($data_array);
+            }
+            
+            $data_array = apply_filters('wt_ier_alter_order_data_before_export', $data_array);  
+              
+            
             $return['total'] = $total_records;
             $return['data'] = $data_array;
             return $return;
@@ -655,6 +751,18 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
             $order_data['meta:wf_invoice_number'] = empty($invoice_number) ? '' : $invoice_number;
             $order_data['meta:_wf_invoice_date'] = empty($invoice_date) ? '' : date_i18n(get_option( 'date_format' ), $invoice_date);
         endif;
+        if ($this->is_yith_tracking_active):
+            $ywot_tracking_code = get_post_meta($order_data['order_id'], 'ywot_tracking_code', true);
+            $ywot_tracking_postcode = get_post_meta($order_data['order_id'], 'ywot_tracking_postcode', true);
+            $ywot_carrier_id = get_post_meta($order_data['order_id'], 'ywot_carrier_id', true);
+            $ywot_pick_up_date = get_post_meta($order_data['order_id'], 'ywot_pick_up_date', true);
+            $ywot_picked_up = get_post_meta($order_data['order_id'], 'ywot_picked_up', true);            
+            $order_data['meta:ywot_tracking_code'] = empty($ywot_tracking_code) ? '' : $ywot_tracking_code;
+            $order_data['meta:ywot_tracking_postcode'] = empty($ywot_tracking_postcode) ? '' : $ywot_tracking_postcode;
+            $order_data['meta:ywot_carrier_id'] = empty($ywot_carrier_id) ? '' : $ywot_carrier_id;
+            $order_data['meta:ywot_pick_up_date'] = empty($ywot_pick_up_date) ? '' : $ywot_pick_up_date;
+            $order_data['meta:ywot_picked_up'] = empty($ywot_picked_up) ? '' : $ywot_picked_up;            
+        endif;        
 
         $order_export_data = array();
         foreach ($csv_columns as $key => $value) {
@@ -700,7 +808,11 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
             }
         }      
         $order_data_filter_args = array('max_line_items' => $max_line_items);
-
+        
+        if ($this->export_to_separate_rows) {
+            $order_export_data = $this->wt_line_item_separate_row_csv_data($order_export_data, $order_data_filter_args);
+        } 
+        
         return apply_filters('hf_alter_csv_order_data', $order_export_data, $order_data_filter_args);
     }
 
@@ -843,6 +955,7 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
 
     public static function get_all_metakeys_and_values($order = null) {
         $in = 1;
+        $line_item_values = array();
         foreach ($order->get_items() as $item_id => $item) {
             //$item_meta = function_exists('wc_get_order_item_meta') ? wc_get_order_item_meta($item_id, '', false) : $order->get_item_meta($item_id);
             $item_meta = self::get_order_line_item_meta($item_id);

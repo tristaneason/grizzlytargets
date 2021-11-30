@@ -274,6 +274,7 @@ class Wt_Import_Export_For_Woo_Basic_Export
 			'batch_count'=>array(
 				'label'=>__("Export in batches of"),
 				'type'=>'text',
+                                'merge_right'=>true,
 				'value'=>$this->default_batch_count,
 				'field_name'=>'batch_count',
 				'help_text'=>sprintf(__('The number of records that the server will process for every iteration within the configured timeout interval. If the export fails due to timeout you can lower this number accordingly and try again. Defaulted to %d records.'), 30),

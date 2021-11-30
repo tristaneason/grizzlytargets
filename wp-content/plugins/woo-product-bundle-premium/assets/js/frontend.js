@@ -4,7 +4,6 @@
   var woosb_timeout = null;
 
   $(function() {
-    // ready
     if (!$('.woosb-wrap').length) {
       return;
     }
@@ -21,9 +20,6 @@
 
   $(document).on('woovr_selected', function(e, selected, variations) {
     var $wrap = variations.closest('.woosb-wrap');
-    var wrap_id = $wrap.attr('data-id');
-    var container = woosb_container(wrap_id);
-    var $container = $wrap.closest(container);
     var $products = variations.closest('.woosb-products');
     var $product = variations.closest('.woosb-product');
 
@@ -80,8 +76,7 @@
       }
 
       // reset sku
-      $container.find('.product_meta .sku').
-          text($products.attr('data-product-sku'));
+      $('.product_meta .sku').text($products.attr('data-product-sku'));
     }
 
     woosb_init($wrap);
@@ -89,25 +84,28 @@
 
   $(document).on('found_variation', function(e, t) {
     var $wrap = $(e['target']).closest('.woosb-wrap');
-    var wrap_id = $wrap.attr('data-id');
-    var container = woosb_container(wrap_id);
-    var $container = $wrap.closest(container);
     var $products = $(e['target']).closest('.woosb-products');
     var $product = $(e['target']).closest('.woosb-product');
 
     if ($product.length) {
       if (t['image']['url'] && t['image']['url'] !== '') {
+        var image_src = t['image']['url'];
+
+        if (t['image']['thumb_src'] && t['image']['thumb_src'] !== '') {
+          image_src = t['image']['thumb_src'];
+        }
+
         // change image
         $product.find('.woosb-thumb-ori').hide();
 
         if (t['image']['srcset'] && t['image']['srcset'] !== '') {
           $product.find('.woosb-thumb-new').
-              html('<img src="' + t['image']['url'] + '" srcset="' +
+              html('<img src="' + image_src + '" srcset="' +
                   t['image']['srcset'] + '"/>').
               show();
         } else {
           $product.find('.woosb-thumb-new').
-              html('<img src="' + t['image']['url'] + '"/>').
+              html('<img src="' + image_src + '"/>').
               show();
         }
       } else {
@@ -174,8 +172,7 @@
       }
 
       // reset sku
-      $container.find('.product_meta .sku').
-          text($products.attr('data-product-sku'));
+      $('.product_meta .sku').text($products.attr('data-product-sku'));
 
       $(document).trigger('woosb_found_variation', [$product, t]);
 
@@ -185,9 +182,6 @@
 
   $(document).on('reset_data', function(e) {
     var $wrap = $(e['target']).closest('.woosb-wrap');
-    var wrap_id = $wrap.attr('data-id');
-    var container = woosb_container(wrap_id);
-    var $container = $wrap.closest(container);
     var $products = $(e['target']).closest('.woosb-products');
     var $product = $(e['target']).closest('.woosb-product');
 
@@ -212,8 +206,7 @@
       $product.attr('data-attrs', '');
 
       // reset sku
-      $container.find('.product_meta .sku').
-          text($products.attr('data-product-sku'));
+      $('.product_meta .sku').text($products.attr('data-product-sku'));
 
       $(document).trigger('woosb_reset_data', [$product]);
 
@@ -297,27 +290,25 @@
 })(jQuery);
 
 function woosb_init($wrap) {
-  var wrap_id = $wrap.attr('data-id');
-  var container = woosb_container(wrap_id);
-  var $container = $wrap.closest(container);
+  woosb_check_ready($wrap);
+  woosb_calc_price($wrap);
+  woosb_save_ids($wrap);
 
-  woosb_check_ready($container);
-  woosb_calc_price($container);
-  woosb_save_ids($container);
-
-  jQuery(document).trigger('woosb_init', [$wrap, $container]);
+  jQuery(document).trigger('woosb_init', [$wrap]);
 }
 
-function woosb_check_ready($container) {
+function woosb_check_ready($wrap) {
   var total = 0;
   var selection_name = '';
   var is_selection = false;
   var is_empty = true;
   var is_min = false;
   var is_max = false;
-  var $products = $container.find('.woosb-products');
-  var $alert = $container.find('.woosb-alert');
-  var $btn = $container.find('.single_add_to_cart_button');
+  var wid = $wrap.attr('data-id');
+  var $products = $wrap.find('.woosb-products');
+  var $alert = $wrap.find('.woosb-alert');
+  var $ids = jQuery('.woosb-ids-' + wid);
+  var $btn = $ids.closest('form.cart').find('.single_add_to_cart_button');
 
   // remove ajax add to cart
   $btn.removeClass('ajax_add_to_cart');
@@ -399,15 +390,15 @@ function woosb_check_ready($container) {
   }
 }
 
-function woosb_calc_price($container) {
+function woosb_calc_price($wrap) {
   var total = 0;
   var total_sale = 0;
-  var $wrap = $container.find('.woosb-wrap');
-  var wrap_id = $wrap.attr('data-id');
-  var $products = $container.find('.woosb-products');
+  var wid = $wrap.attr('data-id');
+  var $products = $wrap.find('.woosb-products');
   var price_suffix = $products.attr('data-price-suffix');
-  var $total = $container.find('.woosb-total');
-  var $woobt = jQuery('.woobt-wrap-' + wrap_id);
+  var $total = $wrap.find('.woosb-total');
+  var $price = jQuery('.woosb-price-' + wid);
+  var $woobt = jQuery('.woobt-wrap-' + wid);
   var total_woobt = parseFloat($woobt.length ? $woobt.attr('data-total') : 0);
   var discount = parseFloat($products.attr('data-discount'));
   var discount_amount = parseFloat($products.attr('data-discount-amount'));
@@ -456,14 +447,6 @@ function woosb_calc_price($container) {
         woosb_vars.saved_text.replace('[d]', saved) + '</small>';
   }
 
-  var price_selector = '.summary > .price';
-
-  if ((woosb_vars.change_price === 'yes_custom') &&
-      (woosb_vars.price_selector != null) &&
-      (woosb_vars.price_selector !== '')) {
-    price_selector = woosb_vars.price_selector;
-  }
-
   // change the bundle total
   $total.html(woosb_vars.price_text + ' ' + total_html + price_suffix).
       slideDown();
@@ -479,17 +462,23 @@ function woosb_calc_price($container) {
           $products.attr('data-optional') === 'yes'
       )
   )) {
+    if ((woosb_vars.change_price === 'yes_custom') &&
+        (woosb_vars.price_selector != null) &&
+        (woosb_vars.price_selector !== '')) {
+      $price = jQuery(woosb_vars.price_selector);
+    }
+
     // change the main price
     if ($woobt.length) {
-      // check if has woobt
-      $container.find(price_selector).html(total_all_html + price_suffix);
+      // woobt
+      $price.html(total_all_html + price_suffix);
     } else {
-      $container.find(price_selector).html(total_html + price_suffix);
+      $price.html(total_html + price_suffix);
     }
   }
 
   if ($woobt.length) {
-    // check if has woobt
+    // woobt
     $woobt.find('.woobt-product-this').attr('data-price', total_sale);
     $woobt.find('.woobt-product-this').attr('data-regular-price', total);
 
@@ -503,7 +492,8 @@ function woosb_calc_price($container) {
 
 function woosb_save_ids($wrap) {
   var ids = Array();
-  var $ids = $wrap.find('.woosb-ids');
+  var wid = $wrap.attr('data-id');
+  var $ids = jQuery('.woosb-ids-' + wid);
   var $products = $wrap.find('.woosb-products');
 
   $products.find('.woosb-product').each(function() {
@@ -735,31 +725,3 @@ function woosb_decimal_places(num) {
       - (match[2] ? +match[2] : 0));
 }
 
-function woosb_container(id) {
-  if ((woosb_vars.container_selector != '') &&
-      jQuery(woosb_vars.container_selector).length) {
-    return woosb_vars.container_selector;
-  }
-
-  if (jQuery('.woosb-wrap-' + id).closest('.woosb-container').length) {
-    return '.woosb-container';
-  }
-
-  if (jQuery('.woosb-wrap-' + id).closest('#product-' + id).length) {
-    return '#product-' + id;
-  }
-
-  if (jQuery('.woosb-wrap-' + id).closest('.product.post-' + id).length) {
-    return '.product.post-' + id;
-  }
-
-  if (jQuery('.woosb-wrap-' + id).closest('div.product-type-woosb').length) {
-    return 'div.product-type-woosb';
-  }
-
-  if (jQuery('.woosb-wrap-' + id).closest('.elementor-product-woosb').length) {
-    return '.elementor-product-woosb';
-  }
-
-  return 'body.single-product';
-}

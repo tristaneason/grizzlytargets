@@ -45,13 +45,21 @@ function porto_load_interactive_banner_shortcode() {
 				),
 				array(
 					'type'        => 'textfield',
-					'heading'     => __( 'Video Banner Url', 'porto-functionality' ),
+					'heading'     => __( 'Video Banner Url (mp4, ogg, webm, Youtube or Vimeo url)', 'porto-functionality' ),
 					'param_name'  => 'banner_video',
-					'dependency'  => array(
-						'element' => 'banner_image',
-						'value'   => array( '' ),
+					'description' => __( 'Banner Image is used as a poster.', 'porto-functionality' ),
+				),
+				array(
+					'type'       => 'checkbox',
+					'param_name' => 'enable_sound',
+					'heading'    => __( 'Enable Sound?', 'porto-functionality' ),
+					'value'      => array(
+						__( 'Enable Sound?', 'porto-functionality' ) => 'yes',
 					),
-					'description' => __( 'Please input mp4 video url.', 'porto-functionality' ),
+					'dependency'  => array(
+						'element'   => 'banner_video',
+						'not_empty' => true,
+					),
 				),
 				array(
 					'type'       => 'colorpicker',

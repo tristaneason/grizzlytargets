@@ -56,8 +56,9 @@ class Wt_Import_Export_For_Woo_Basic_Order {
         add_filter('wt_iew_exporter_alter_mapping_fields_basic', array($this, 'exporter_alter_mapping_fields'), 10, 3);        
         add_filter('wt_iew_importer_alter_mapping_fields_basic', array($this, 'get_importer_post_columns'), 10, 3);  
         
-		add_filter('wt_iew_exporter_alter_filter_fields_basic', array($this, 'exporter_alter_filter_fields'), 10, 3);
+	add_filter('wt_iew_exporter_alter_filter_fields_basic', array($this, 'exporter_alter_filter_fields'), 10, 3);
 		
+        add_filter('wt_iew_exporter_alter_advanced_fields_basic', array($this, 'exporter_alter_advanced_fields'), 10, 3);        
         add_filter('wt_iew_importer_alter_advanced_fields_basic', array($this, 'importer_alter_advanced_fields'), 10, 3);
         
         add_filter('wt_iew_exporter_alter_meta_mapping_fields_basic', array($this, 'exporter_alter_meta_mapping_fields'), 10, 3);
@@ -367,8 +368,7 @@ class Wt_Import_Export_For_Woo_Basic_Order {
     public function exporter_alter_advanced_fields($fields, $base, $advanced_form_data) {
         if ($this->module_base != $base) {
             return $fields;
-        }
-                
+        }      
         unset($fields['export_shortcode_tohtml']);
         
         $out = array();
@@ -384,17 +384,40 @@ class Wt_Import_Export_For_Woo_Basic_Order {
             'help_text' => __("Option 'Yes' excludes the previously exported orders."),
         );
         
-        $out['export_to_separate_columns'] = array(
-            'label' => __("Export line items into separate columns"),
+        $out['export_to_separate'] = array(
+            'label' => __("Export line items in"),
             'type' => 'radio',
             'radio_fields' => array(
-                'Yes' => __('Yes'),
-                'No' => __('No')
+                'default' => __('Default mode'),
+                'column' => __('Separate columns'),
+                'row' => __('Separate rows')    
             ),
-            'value' => 'No',
-            'field_name' => 'export_to_separate_columns',
-            'help_text' => __("Option 'Yes' exports the line items within the order into separate columns in the exported file."),
+            'value' => 'default',
+            'merge_right'=>true,
+            'field_name' => 'export_to_separate',
+            //'help_text' => __("Option 'Yes' exports the line items within the order into separate columns in the exported file."),
+            'help_text_conditional'=>array(
+                array(
+                    'help_text'=> __('The default option will export each line item details into a single column. This option is mainly used for the order migration purpose.'),
+                    'condition'=>array(
+                        array('field'=>'wt_iew_export_to_separate', 'value'=>'default')
+                    )
+                ),
+                array(
+                    'help_text'=> __('This option will export each line item details into a separate column.'),
+                    'condition'=>array(
+                        array('field'=>'wt_iew_export_to_separate', 'value'=>'column')
+                    )
+                ),
+                array(
+                    'help_text'=> __('This option will export each line item details into a separate row.'),
+                    'condition'=>array(
+                        array('field'=>'wt_iew_export_to_separate', 'value'=>'row')
+                    )
+                )
+            )
         );
+
         foreach ($fields as $fieldk => $fieldv) {
             $out[$fieldk] = $fieldv;
         }
