@@ -387,6 +387,16 @@ class HubWooPropertyCallbacks {
 			$optin = 'no';
 		}
 
+		$property_updated = get_option( 'hubwoo_newsletter_property_update' );
+
+		if ( ! empty( $property_updated ) && 'yes' == $property_updated ) {
+			if ( 'yes' == $optin ) {
+				$optin = true;
+			} else {
+				$optin = false;
+			}
+		}
+
 		if ( ! empty( $reg_optin ) && 'yes' == $reg_optin ) {
 			$optin_sources[] = 'registration';
 		}

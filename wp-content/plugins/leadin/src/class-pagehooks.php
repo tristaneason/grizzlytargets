@@ -191,7 +191,7 @@ class PageHooks {
 						} else {
 							hbspt._wpFormsQueue.push(formDef);
 						}
-					}
+					};
 					if (!window.hbspt.forms.create) {
 						Object.defineProperty(window.hbspt.forms, 'create', {
 							configurable: true,

@@ -4,7 +4,7 @@ Plugin Name: Duplicate Page
 Plugin URI: https://wordpress.org/plugins/duplicate-page/
 Description: Duplicate Posts, Pages and Custom Posts using single click.
 Author: mndpsingh287
-Version: 4.4.5
+Version: 4.4.6
 Author URI: https://profiles.wordpress.org/mndpsingh287/
 License: GPLv2
 Text Domain: duplicate-page
@@ -13,7 +13,7 @@ if (!defined('DUPLICATE_PAGE_PLUGIN_DIRNAME')) {
     define('DUPLICATE_PAGE_PLUGIN_DIRNAME', plugin_basename(dirname(__FILE__)));
 }
 if (!defined('DUPLICATE_PAGE_PLUGIN_VERSION')) {
-    define('DUPLICATE_PAGE_PLUGIN_VERSION', '4.4.5');
+    define('DUPLICATE_PAGE_PLUGIN_VERSION', '4.4.6');
 }
 if (!class_exists('duplicate_page')):
     class duplicate_page
@@ -28,6 +28,7 @@ if (!class_exists('duplicate_page')):
             add_action('admin_menu', array(&$this, 'duplicate_page_options_page'));
             add_filter('plugin_action_links', array(&$this, 'duplicate_page_plugin_action_links'), 10, 2);
             add_action('admin_action_dt_duplicate_post_as_draft', array(&$this, 'dt_duplicate_post_as_draft'));
+            
             add_filter('post_row_actions', array(&$this, 'dt_duplicate_post_link'), 10, 2);
             add_filter('page_row_actions', array(&$this, 'dt_duplicate_post_link'), 10, 2);
             if (isset($opt['duplicate_post_editor']) && $opt['duplicate_post_editor'] == 'gutenberg') {
@@ -112,10 +113,32 @@ if (!class_exists('duplicate_page')):
             /*
             * get the original post id
             */
+           
            $post_id = (isset($_GET['post']) ? intval($_GET['post']) : intval($_POST['post']));
+           $post = get_post($post_id);
+           $current_user_id = get_current_user_id();
+           if(wp_verify_nonce( $nonce, 'dt-duplicate-page-'.$post_id)) {
+            if (current_user_can('manage_options')){
+              $this->duplicate_edit_post($post_id);
+            }
+            elseif (current_user_can('edit_posts') && $current_user_id == $post->post_author ){
+              $this->duplicate_edit_post($post_id);
+            }
+            else {
+                wp_die(__('Unauthorized Access.','duplicate-page'));
+    
+              } 
+          } 
+          else {
+            wp_die(__('Security check issue, Please try again.','duplicate-page'));
 
-           if(wp_verify_nonce( $nonce, 'dt-duplicate-page-'.$post_id) && current_user_can('edit_posts')) {
-           // verify Nonce  
+          } 
+          
+        }
+        /**
+         * Duplicate edit post
+         */
+        public function duplicate_edit_post($post_id){
             global $wpdb;
             $opt = get_option('duplicate_page_options');
             $suffix = isset($opt['duplicate_post_suffix']) && !empty($opt['duplicate_post_suffix']) ? ' -- '.esc_attr($opt['duplicate_post_suffix']) : '';
@@ -196,13 +219,11 @@ if (!class_exists('duplicate_page')):
                         wp_redirect(esc_url_raw(admin_url('edit.php'.$returnpage)));
                 endif;
                 exit;
-            } else {
+            } 
+            else {
                 wp_die(__('Error! Post creation failed, could not find original post: ','duplicate-page').$post_id);
             }
-          } else {
-            wp_die(__('Security check issue, Please try again.','duplicate-page'));
           }
-        }
 
         /*
          * Add the duplicate link to action list for post_row_actions

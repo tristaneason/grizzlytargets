@@ -1,4 +1,7 @@
  *** MWB HubSpot for WooCommerce Changelog ***
+2021-12-06 - version 1.2.6
+* Fix - Newsletter Subscription Property issue.
+
 2021-11-12 - version 1.2.5
 * Fix - Sync message issue.
 

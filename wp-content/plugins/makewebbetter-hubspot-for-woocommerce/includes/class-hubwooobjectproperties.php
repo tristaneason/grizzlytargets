@@ -183,8 +183,6 @@ class HubwooObjectProperties {
 			$contact = get_post_meta( $order_id, '_billing_email', true );
 		}
 
-		$contact_vid = HubWooConnectionMananager::get_instance()->get_customer_by_email( $contact );
-
 		$deal_updates[] = array(
 			'action'           => 'UPSERT',
 			'changedAt'        => strtotime( gmdate( 'Y-m-d H:i:s ', time() ) ) . '000',

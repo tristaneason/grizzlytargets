@@ -556,6 +556,7 @@ class HubWooConnectionMananager {
 			$url      = '/contacts/v1/contact';
 			$headers  = $this->get_token_headers();
 			$contact  = wp_json_encode( $contact );
+			$res_body = '';
 			$response = wp_remote_post(
 				$this->base_url . $url,
 				array(
@@ -570,11 +571,13 @@ class HubWooConnectionMananager {
 			} else {
 				$status_code = wp_remote_retrieve_response_code( $response );
 				$res_message = wp_remote_retrieve_response_message( $response );
+				$res_body    = wp_remote_retrieve_body( $response );
 			}
 
 			$parsed_response = array(
 				'status_code' => $status_code,
 				'response'    => $res_message,
+				'body'        => $res_body,
 			);
 			$this->create_log( $message, $url, $parsed_response );
 			return $parsed_response;
@@ -654,6 +657,52 @@ class HubWooConnectionMananager {
 			if ( ! empty( $savedinvalidemails ) ) {
 				update_option( 'hubwoo_pro_invalid_emails', $savedinvalidemails );
 			}
+			$this->create_log( $message, $url, $parsed_response );
+			return $parsed_response;
+		}
+	}
+
+	/**
+	 * Create or update contacts.
+	 *
+	 * @param  array  $contacts hubspot acceptable contact properties array.
+	 * @param  string $email email of contact.
+	 * @since 1.2.6
+	 * @return array $parsed_response formatted array with status/message
+	 */
+	public function create_or_update_single_contact( $contacts, $email ) {
+
+		if ( is_array( $contacts ) ) {
+
+			$url      = '/contacts/v1/contact/createOrUpdate/email/' . $email . '/';
+			$headers  = $this->get_token_headers();
+			$res_body = '';
+
+			$contacts = wp_json_encode( $contacts );
+			$response = wp_remote_post(
+				$this->base_url . $url,
+				array(
+					'body'    => $contacts,
+					'headers' => $headers,
+				)
+			);
+			$message  = esc_html__( 'Updating or Creating single users data', 'makewebbetter-hubspot-for-woocommerce' );
+
+			if ( is_wp_error( $response ) ) {
+				$status_code = $response->get_error_code();
+				$res_message = $response->get_error_message();
+			} else {
+				$status_code = wp_remote_retrieve_response_code( $response );
+				$res_message = wp_remote_retrieve_response_message( $response );
+				$res_body    = wp_remote_retrieve_body( $response );
+			}
+
+			$parsed_response = array(
+				'status_code' => $status_code,
+				'response'    => $res_message,
+				'body'        => $res_body,
+			);
+
 			$this->create_log( $message, $url, $parsed_response );
 			return $parsed_response;
 		}

@@ -47,7 +47,7 @@ class PluginActionsManager {
 		if ( Connection::is_connected() ) {
 			$portal_id              = AccountOptions::get_portal_id();
 			$url                    = LeadinFilters::get_leadin_base_url() . '/pricing/' . $portal_id . '/marketing?' . Links::get_query_params();
-			$advanced_features_link = '<a class="hubspot-menu-pricing" target="_blank" href="' . esc_attr( $url ) . '">' . esc_html( __( 'Upgrade', 'leadin' ) ) . '</a>';
+			$advanced_features_link = '<a class="hubspot-menu-pricing" target="_blank" rel="noopener" href="' . esc_attr( $url ) . '">' . esc_html( __( 'Upgrade', 'leadin' ) ) . '</a>';
 			array_push( $links, $advanced_features_link );
 		}
 		return $links;

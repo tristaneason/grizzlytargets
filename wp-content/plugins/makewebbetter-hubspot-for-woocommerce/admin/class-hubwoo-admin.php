@@ -983,6 +983,16 @@ class Hubwoo_Admin {
 
 				$abncart_properties['current_abandoned_cart'] = 'yes';
 
+				$abandoned_property_updated = get_option( 'hubwoo_abandoned_property_update' );
+
+				if ( ! empty( $abandoned_property_updated ) && 'yes' == $abandoned_property_updated ) {
+					if ( 'yes' == $abncart_properties['current_abandoned_cart'] ) {
+						$abncart_properties['current_abandoned_cart'] = true;
+					} else {
+						$abncart_properties['current_abandoned_cart'] = false;
+					}
+				}
+
 				$cart_products = self::hubwoo_return_abncart_values( $customer_cart['cart'] );
 
 				if ( count( $cart_products ) ) {
@@ -1041,7 +1051,7 @@ class Hubwoo_Admin {
 						$abncart_properties['abandoned_cart_subtotal'] += $product_obj->get_price() * $single_cart_item['quantity'];
 					}
 
-					$abncart_properties['abandoned_cart_tax_value'] += $single_cart_item['line_tax'];
+					$abncart_properties['abandoned_cart_tax_value'] += isset( $single_cart_item['line_tax'] ) ? $single_cart_item['line_tax'] : 0;
 				}
 
 				$cart_url .= implode( ',', $cart_prod );
@@ -1300,6 +1310,16 @@ class Hubwoo_Admin {
 						'property' => 'abandoned_cart_date',
 						'value'    => '',
 					);
+				}
+
+				$abandoned_property_updated = get_option( 'hubwoo_abandoned_property_update' );
+
+				if ( ! empty( $abandoned_property_updated ) && 'yes' == $abandoned_property_updated ) {
+					if ( 'yes' == $cart_status ) {
+						$cart_status = true;
+					} else {
+						$cart_status = false;
+					}
 				}
 
 				$properties[] = array(
@@ -1711,6 +1731,8 @@ class Hubwoo_Admin {
 				$count++;
 				if ( $count <= 5 ) {
 
+					$contact = '';
+
 					$hubwoo_ecomm_order = wc_get_order( $order_id );
 					if ( $hubwoo_ecomm_order instanceof WC_Order ) {
 						$customer_id = $hubwoo_ecomm_order->get_customer_id();
@@ -1727,23 +1749,44 @@ class Hubwoo_Admin {
 						}
 					}
 
-					$contact_vid = HubWooConnectionMananager::get_instance()->get_customer_by_email( $contact );
+					$flag = true;
+					if ( Hubwoo::is_access_token_expired() ) {
 
-					$response = HubWooConnectionMananager::get_instance()->ecomm_sync_status( $order_id, $object_type );
+						$hapikey = HUBWOO_CLIENT_ID;
+						$hseckey = HUBWOO_SECRET_ID;
+						$status  = HubWooConnectionMananager::get_instance()->hubwoo_refresh_token( $hapikey, $hseckey );
 
-					if ( 200 == $response['status_code'] ) {
+						if ( ! $status ) {
 
-						$response = json_decode( $response['body'], true );
-						update_post_meta( $order_id, 'hubwoo_ecomm_deal_id', $response['hubspotId'] );
-						if ( ! empty( $contact_vid ) ) {
-							HubWooConnectionMananager::get_instance()->create_deal_associations( $response['hubspotId'], $contact_vid );
+							$flag = false;
 						}
-
-						unset( $update_deal_id[ $key ] );
-						do_action( 'hubwoo_ecomm_deal_created', $order_id );
 					}
 
-					update_option( 'mwb_update_deal_ids', $update_deal_id );
+					if ( $flag ) {
+
+						$contact_vid = '';
+
+						if ( ! empty( $contact ) ) {
+
+							$contact_vid = HubWooConnectionMananager::get_instance()->get_customer_by_email( $contact );
+						}
+
+						$response = HubWooConnectionMananager::get_instance()->ecomm_sync_status( $order_id, $object_type );
+
+						if ( 200 == $response['status_code'] ) {
+
+							$response = json_decode( $response['body'], true );
+							update_post_meta( $order_id, 'hubwoo_ecomm_deal_id', $response['hubspotId'] );
+							if ( ! empty( $contact_vid ) ) {
+								HubWooConnectionMananager::get_instance()->create_deal_associations( $response['hubspotId'], $contact_vid );
+							}
+
+							unset( $update_deal_id[ $key ] );
+							do_action( 'hubwoo_ecomm_deal_created', $order_id );
+						}
+
+						update_option( 'mwb_update_deal_ids', $update_deal_id );
+					}
 				} else {
 					break;
 				}
@@ -2442,6 +2485,94 @@ class Hubwoo_Admin {
 			'context' => $context,
 		);
 		return $context;
+	}
+
+	/**
+	 * Fetching property value.
+	 *
+	 * @since    1.2.6
+	 */
+	public function hubwoo_check_property_value() {
+
+		if ( isset( $_GET['hubwoo_tab'] ) && 'hubwoo-overview' == $_GET['hubwoo_tab'] ) {
+
+			$property_updated = get_option( 'hubwoo_newsletter_property_update' );
+			$abandoned_property_updated = get_option( 'hubwoo_abandoned_property_update' );
+
+			if ( empty( $property_updated ) ) {
+
+				$flag = true;
+				$object_type = 'contacts';
+				$property_name = 'newsletter_subscription';
+				$property_changed = 'no';
+
+				if ( Hubwoo::is_access_token_expired() ) {
+
+					$hapikey = HUBWOO_CLIENT_ID;
+					$hseckey = HUBWOO_SECRET_ID;
+					$status  = HubWooConnectionMananager::get_instance()->hubwoo_refresh_token( $hapikey, $hseckey );
+
+					if ( ! $status ) {
+
+						$flag = false;
+					}
+				}
+
+				if ( $flag ) {
+					$response = HubWooConnectionMananager::get_instance()->hubwoo_read_object_property( $object_type, $property_name );
+					$results = json_decode( $response['body'] );
+
+					if ( isset( $results->options ) ) {
+						$options = $results->options;
+					}
+
+					if ( 'no' == $options[0]->value || 'yes' == $options[0]->value ) {
+						$property_changed = 'no';
+					} else {
+						$property_changed = 'yes';
+					}
+				}
+
+				update_option( 'hubwoo_newsletter_property_update', $property_changed );
+			}
+
+			if ( empty( $abandoned_property_updated ) ) {
+
+				$flag = true;
+				$object_type = 'contacts';
+				$property_name = 'current_abandoned_cart';
+				$abandoned_property_changed = 'no';
+
+				if ( Hubwoo::is_access_token_expired() ) {
+
+					$hapikey = HUBWOO_CLIENT_ID;
+					$hseckey = HUBWOO_SECRET_ID;
+					$status  = HubWooConnectionMananager::get_instance()->hubwoo_refresh_token( $hapikey, $hseckey );
+
+					if ( ! $status ) {
+
+						$flag = false;
+					}
+				}
+
+				if ( $flag ) {
+					$response = HubWooConnectionMananager::get_instance()->hubwoo_read_object_property( $object_type, $property_name );
+					$results = json_decode( $response['body'] );
+
+					if ( isset( $results->options ) ) {
+						$options = $results->options;
+					}
+
+					if ( 'no' == $options[0]->value || 'yes' == $options[0]->value ) {
+						$abandoned_property_changed = 'no';
+					} else {
+						$abandoned_property_changed = 'yes';
+					}
+				}
+
+				update_option( 'hubwoo_abandoned_property_update', $abandoned_property_changed );
+			}
+		}
 	}
 
 }

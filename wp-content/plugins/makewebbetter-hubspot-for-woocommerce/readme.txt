@@ -7,7 +7,7 @@ Tested up to: 5.8.2
 WC requires at least: 3.5.0
 WC tested up to: 5.9.0
 Requires PHP: 5.1
-Stable tag: 1.2.5
+Stable tag: 1.2.6
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
  
@@ -125,10 +125,11 @@ Not at all! The MWB HubSpot for WooCommerce plugin is easy to download and start
 If you have over a 1000+ contacts, synchronization may take a while. You can [connect with us](https://makewebbetter.com/hubspot-ecommerce-agency/?utm_source=MWB-hubspot-org&utm_medium=MWB-org-page&utm_campaign=MWB-hubspot-org) for faster syncing.
 
 = My question is not listed =
-Please visit the MakeWebBetter [knowledge base](https://support.makewebbetter.com/hubspot-knowledge-base/https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG) for more detailed [documentation and support.](https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
-
+Please visit the MakeWebBetter [knowledge base](https://support.makewebbetter.com/hubspot-knowledge-base/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG) for more detailed [documentation and support.](https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
 
 == Changelog ==
+= 1.2.6 - Released on 06 Dec 2021 =
+* Fix - Newsletter Subscription Property issue.
 = 1.2.5 - Released on 12 Nov 2021 =
 * Fix - Sync message issue.
 = 1.2.4 - Released on 20 Oct 2021 =
@@ -163,5 +164,5 @@ Please visit the MakeWebBetter [knowledge base](https://support.makewebbetter.co
  
 == Upgrade Notice ==
  
-= 1.2.5 - Released on 12 Nov 2021 =
-* Fix - Fixed sync message issue.
+= 1.2.6 - Released on 06 Dec 2021 =
+* Fix - Newsletter Subscription Property issue.

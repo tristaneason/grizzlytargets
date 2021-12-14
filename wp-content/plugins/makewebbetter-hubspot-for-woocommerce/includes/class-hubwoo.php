@@ -234,6 +234,7 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 			$this->loader->add_action( 'admin_init', $plugin_admin, 'hubwoo_redirect_from_hubspot' );
 			$this->loader->add_action( 'admin_init', $plugin_admin, 'hubwoo_pro_add_privacy_message' );
 			$this->loader->add_action( 'admin_init', $plugin_admin, 'hubwoo_get_plugin_log' );
+			$this->loader->add_action( 'admin_init', $plugin_admin, 'hubwoo_check_property_value' );
 			$this->loader->add_action( 'admin_notices', $plugin_admin, 'hubwoo_cron_notification' );
 			// hubspot deal hooks.
 			if ( 'yes' == get_option( 'hubwoo_ecomm_deal_enable', 'yes' ) ) {
@@ -2105,15 +2106,30 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 
 			if ( 'no' == get_option( 'hubwoo_checkout_form_created', 'no' ) ) {
 				$form_data = self::form_data_model( HubwooConst::CHECKOUTFORM );
-				$res       = HubWooConnectionMananager::get_instance()->create_form_data( $form_data );
-				if ( 200 == $res['status_code'] ) {
-					update_option( 'hubwoo_checkout_form_created', 'yes' );
-					$res = json_decode( $res['body'], true );
-					if ( isset( $res['guid'] ) ) {
-						update_option( 'hubwoo_checkout_form_id', $res['guid'] );
+				$flag = true;
+				if ( Hubwoo::is_access_token_expired() ) {
+
+					$hapikey = HUBWOO_CLIENT_ID;
+					$hseckey = HUBWOO_SECRET_ID;
+					$status  = HubWooConnectionMananager::get_instance()->hubwoo_refresh_token( $hapikey, $hseckey );
+
+					if ( ! $status ) {
+
+						$flag = false;
 					}
-				} else {
-					HubwooErrorHandling::get_instance()->hubwoo_handle_response( $res, HubwooConst::CHECKOUTFORM );
+				}
+
+				if ( $flag ) {
+					$res       = HubWooConnectionMananager::get_instance()->create_form_data( $form_data );
+					if ( 200 == $res['status_code'] ) {
+						update_option( 'hubwoo_checkout_form_created', 'yes' );
+						$res = json_decode( $res['body'], true );
+						if ( isset( $res['guid'] ) ) {
+							update_option( 'hubwoo_checkout_form_id', $res['guid'] );
+						}
+					} else {
+						HubwooErrorHandling::get_instance()->hubwoo_handle_response( $res, HubwooConst::CHECKOUTFORM );
+					}
 				}
 			}
 

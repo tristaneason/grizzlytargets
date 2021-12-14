@@ -846,7 +846,7 @@
 												manageSpinText( job, 'remove' );
 											} else if ( proresponseCode == 409 ) {
 												manageSpinText( job, 'remove' );
-											} else if ( proresponseCode == 402 ) {
+											} else if ( proresponseCode == 400 ) {
 												jQuery( '.hubwoo_pop_up_wrap' ).slideDown( 'slow' );
 												manageSpinText( job, 'remove', 'failed' );
 											} else {

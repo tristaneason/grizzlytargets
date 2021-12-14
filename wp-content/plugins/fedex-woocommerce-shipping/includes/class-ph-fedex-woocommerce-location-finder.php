@@ -336,8 +336,17 @@ if( ! class_exists('Ph_Fedex_Woocommerce_Location_Finder') ) {
             {
                 $selected_fedex_hold_at_location = $_POST['ph_fedex_hold_at_locations'];
             }
-            
-            if( ! empty($selected_fedex_hold_at_location) && !empty($selected_fedex_hold_at_location=$this->get_fedex_hold_at_location_details($selected_fedex_hold_at_location)) ) {
+            else // 133908 - Order Edit Page - Rate Request
+            {
+                $order_id = isset($_REQUEST['oid']) ? $_REQUEST['oid'] : '';
+                $order = !empty($order_id) ? wc_get_order($order_id) : '';
+                if(!empty($order) && is_object($order))
+                {
+                    $selected_fedex_hold_at_location = $order->get_meta( 'ph_fedex_hold_at_location', true );
+                }
+            }
+
+            if( is_object($selected_fedex_hold_at_location) || (! empty($selected_fedex_hold_at_location) && !empty($selected_fedex_hold_at_location=$this->get_fedex_hold_at_location_details($selected_fedex_hold_at_location))) ) {
                 $contact=array('CompanyName'=>isset($selected_fedex_hold_at_location->LocationDetail->LocationContactAndAddress->Contact->CompanyName)?$selected_fedex_hold_at_location->LocationDetail->LocationContactAndAddress->Contact->CompanyName:'',
                     'PhoneNumber'=>isset($selected_fedex_hold_at_location->LocationDetail->LocationContactAndAddress->Contact->PhoneNumber)?$selected_fedex_hold_at_location->LocationDetail->LocationContactAndAddress->Contact->PhoneNumber:'',
                     'FaxNumber'=>isset($selected_fedex_hold_at_location->LocationDetail->LocationContactAndAddress->Contact->FaxNumber)?$selected_fedex_hold_at_location->LocationDetail->LocationContactAndAddress->Contact->FaxNumber:'',

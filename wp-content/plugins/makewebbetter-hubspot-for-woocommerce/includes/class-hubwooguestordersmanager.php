@@ -207,6 +207,17 @@ class HubwooGuestOrdersManager {
 		} else {
 			$optin = 'no';
 		}
+
+		$property_updated = get_option( 'hubwoo_newsletter_property_update' );
+
+		if ( ! empty( $property_updated ) && 'yes' == $property_updated ) {
+			if ( 'yes' == $optin ) {
+				$optin = true;
+			} else {
+				$optin = false;
+			}
+		}
+
 		$guest_user_properties[] = array(
 			'property' => 'newsletter_subscription',
 			'value'    => $optin,

@@ -60,7 +60,7 @@ global $hubwoo;
 				</div>
 			</div>
 			<div class="hubwoo-box-n-card__btn">
-				<a href="https://makewebbetter.com/product/hubspot-for-woocommerce/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'Submit', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+				<a href="https://makewebbetter.com/submit-query/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'Submit', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 			</div>
 		</div>
 	</div>	

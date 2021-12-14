@@ -1228,38 +1228,9 @@ if ( ! class_exists( 'HubWooAjaxHandler' ) ) {
 				$order_ids = $query->query( $order_args );
 			}
 
-			$update_user_vids = get_option( 'mwb_get_user_vid', true );
-
-			if ( ! empty( $update_user_vids ) ) {
-
-				foreach ( $update_user_vids as $user_id ) {
-					$attempts = 0;
-					$updated_response = '';
-
-					do {
-						$user_info        = json_decode( json_encode( get_userdata( $user_id ) ), true );
-						$user_email       = $user_info['data']['user_email'];
-						$updated_response = HubWooConnectionMananager::get_instance()->get_customer_vid_historical( $user_email );
-						$attempts++;
-					} while ( 200 !== $updated_response['status_code'] && ( $attempts <= 10 ) );
-
-					if ( 200 == $updated_response['status_code'] ) {
-
-						$updated_response = json_decode( $updated_response['body'], true );
-						update_user_meta( $user_id, 'hubwoo_user_vid', $updated_response['vid'] );
-						update_user_meta( $user_id, 'hubwoo_pro_user_data_change', 'synced' );
-
-					}
-				}
-
-				update_option( 'mwb_get_user_vid', '' );
-			}
-
 			$hubwoo_datasync    = new HubwooDataSync();
 			$user_ids           = $hubwoo_datasync->hubwoo_get_all_unique_user( false, 'customer', $max_item );
 
-			$object_type        = 'CONTACT';
-			$updates            = array();
 			$response           = '';
 
 			if ( empty( $user_ids ) ) {
@@ -1281,31 +1252,16 @@ if ( ! class_exists( 'HubWooAjaxHandler' ) ) {
 
 				$user_info             = json_decode( json_encode( get_userdata( $user_id ) ), true );
 				$user_email            = $user_info['data']['user_email'];
-				$hubwoo_ecomm_customer = new HubwooEcommObject( $user_id, $object_type );
-				$contact_properties    = $hubwoo_ecomm_customer->get_object_properties();
-				$contact_properties    = apply_filters( 'hubwoo_map_ecomm_' . $object_type . '_properties', $contact_properties, $user_id );
 
 				$hubwoo_customer = new HubWooCustomer( $user_id );
 				$properties      = $hubwoo_customer->get_contact_properties();
 				$user_properties = $hubwoo_customer->get_user_data_properties( $properties );
-				foreach ( $user_properties as $key => $value ) {
 
-					$contact_properties[ $value['property'] ] = $value['value'];
-				}
-
-				$updates[]             = array(
-					'action'           => 'UPSERT',
-					'changedAt'        => strtotime( gmdate( 'Y-m-d H:i:s ', time() ) ) . '000',
-					'externalObjectId' => $user_email,
-					'properties'       => $contact_properties,
+				$contact = array(
+					'properties' => $user_properties,
 				);
 
-			}
-
-			if ( count( $updates ) ) {
-
 				$flag = true;
-
 				if ( Hubwoo::is_access_token_expired() ) {
 
 					$hapikey = HUBWOO_CLIENT_ID;
@@ -1320,64 +1276,27 @@ if ( ! class_exists( 'HubWooAjaxHandler' ) ) {
 
 				if ( $flag ) {
 
-					$response = HubWooConnectionMananager::get_instance()->ecomm_sync_messages( $updates, $object_type );
-					unset( $updates );
+					$response = HubWooConnectionMananager::get_instance()->create_or_update_single_contact( $contact, $user_email );
 
-					if ( 'final_request' == $con_get_vid ) {
+					if ( 200 == $response['status_code'] ) {
+						$contact_vid = json_decode( $response['body'] );
+						update_user_meta( $user_id, 'hubwoo_user_vid', $contact_vid->vid );
+						update_user_meta( $user_id, 'hubwoo_pro_user_data_change', 'synced' );
 
-						sleep( 1 );
-
-						foreach ( $user_ids as $user_id ) {
-							$attempts = 0;
-							$updated_response = '';
-
-							if ( 204 == $response['status_code'] ) {
-
-								do {
-									$user_info        = json_decode( json_encode( get_userdata( $user_id ) ), true );
-									$user_email       = $user_info['data']['user_email'];
-									$updated_response = HubWooConnectionMananager::get_instance()->get_customer_vid_historical( $user_email );
-									$attempts++;
-								} while ( 200 !== $updated_response['status_code'] && ( $attempts <= 10 ) );
-							}
-
-							if ( 200 == $updated_response['status_code'] ) {
-
-								$updated_response = json_decode( $updated_response['body'], true );
-								update_user_meta( $user_id, 'hubwoo_user_vid', $updated_response['vid'] );
-								update_user_meta( $user_id, 'hubwoo_pro_user_data_change', 'synced' );
-
-							}
-						}
-					} else {
-						update_option( 'mwb_get_user_vid', $user_ids );
 					}
-
-					echo wp_json_encode(
-						array(
-							'step'        => $step + 1,
-							'status'      => true,
-							'total_prod'  => empty( $total_products ) ? '' : count( $total_products ),
-							'total_deals' => empty( $order_ids ) ? '' : count( $order_ids ),
-							'response'    => 'Historical contacts synced successfully.',
-						)
-					);
-					wp_die();
-
 				}
-			} else {
-
-				$percentage_done = 100;
-				echo wp_json_encode(
-					array(
-						'step'     => $step + 1,
-						'progress' => $percentage_done,
-						'status'   => false,
-						'response' => 'Error syncing historical contacts.',
-					)
-				);
-				wp_die();
 			}
+
+			echo wp_json_encode(
+				array(
+					'step'        => $step + 1,
+					'status'      => true,
+					'total_prod'  => empty( $total_products ) ? '' : count( $total_products ),
+					'total_deals' => empty( $order_ids ) ? '' : count( $order_ids ),
+					'response'    => 'Historical contacts synced successfully.',
+				)
+			);
+			wp_die();
 
 		}
 
@@ -1634,6 +1553,7 @@ if ( ! class_exists( 'HubWooAjaxHandler' ) ) {
 					} else {
 						$source = 'guest';
 						$guest_object_type = 'CONTACT';
+						$customer_orders = array();
 
 						HubwooObjectProperties::hubwoo_ecomm_guest_user( $order_id );
 
@@ -1647,6 +1567,7 @@ if ( ! class_exists( 'HubWooAjaxHandler' ) ) {
 
 						$mark = array();
 						$customer_orders[] = $order_id;
+						$contacts = array();
 						if ( ! empty( $customer_orders ) ) {
 
 							$mark['type'] = 'order';

@@ -1349,6 +1349,23 @@ class HubWooContactProperties {
 
 		$lists = array();
 
+		$optin = 'yes';
+		$abandoned_status = 'yes';
+		$property_updated = get_option( 'hubwoo_newsletter_property_update' );
+		$abandoned_property_updated = get_option( 'hubwoo_abandoned_property_update' );
+
+		if ( ! empty( $property_updated ) && 'yes' == $property_updated ) {
+			if ( 'yes' == $optin ) {
+				$optin = true;
+			}
+		}
+
+		if ( ! empty( $abandoned_property_updated ) && 'yes' == $abandoned_property_updated ) {
+			if ( 'yes' == $cart_status ) {
+				$abandoned_status = true;
+			}
+		}
+
 		$lists[] = array(
 
 			'name'    => __( 'Customers', 'makewebbetter-hubspot-for-woocommerce' ),
@@ -1389,7 +1406,7 @@ class HubWooContactProperties {
 				array(
 					array(
 						'operator' => 'EQ',
-						'value'    => 'yes',
+						'value'    => $abandoned_status,
 						'property' => 'current_abandoned_cart',
 						'type'     => 'enumeration',
 					),
@@ -1637,7 +1654,7 @@ class HubWooContactProperties {
 				array(
 					array(
 						'operator' => 'EQ',
-						'value'    => 'yes',
+						'value'    => $optin,
 						'property' => 'newsletter_subscription',
 						'type'     => 'enumeration',
 					),
@@ -1804,6 +1821,15 @@ class HubWooContactProperties {
 	private function get_all_workflows() {
 
 		$workflows = array();
+
+		$abandoned_status = 'yes';
+		$abandoned_property_updated = get_option( 'hubwoo_abandoned_property_update' );
+
+		if ( ! empty( $abandoned_property_updated ) && 'yes' == $abandoned_property_updated ) {
+			if ( 'yes' == $cart_status ) {
+				$abandoned_status = true;
+			}
+		}
 
 		$workflows[] = array(
 			'type'         => 'DRIP_DELAY',
@@ -2485,7 +2511,7 @@ class HubWooContactProperties {
 							'filterFamily'   => 'PropertyValue',
 							'type'           => 'enumeration',
 							'property'       => 'current_abandoned_cart',
-							'value'          => 'yes',
+							'value'          => $abandoned_status,
 							'operator'       => 'SET_ANY',
 						),
 					),
@@ -2508,7 +2534,7 @@ class HubWooContactProperties {
 						),
 						array(
 							'type' => 'CONTACT_PROPERTY_VALUE',
-							'id'   => 'yes',
+							'id'   => $abandoned_status,
 						),
 					),
 				),

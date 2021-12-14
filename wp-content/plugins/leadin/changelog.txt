@@ -1,3 +1,6 @@
+= 8.4.353 (2021-11-29) =
+* Add rel='noopener' to target _blank link
+
 = 8.4.344 (2021-11-23) =
 * Replace jQuery .unbind with .off
 * Replace rand with wp_rand
@@ -393,9 +396,4 @@
 * Enable non-HubSpot forms by default
 * Add forms tab in settings
 * Add form builder to WordPress
-
-= 7.5.1 (2019-05-28) =
-* Fix version flags
-* Add unit tests
-* Add languages
 
