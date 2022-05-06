@@ -6,6 +6,7 @@ use Leadin\AssetsManager;
 use Leadin\wp\User;
 use Leadin\admin\Connection;
 use Leadin\admin\AdminFilters;
+use Leadin\admin\AdminUserMetaData;
 use Leadin\admin\MenuConstants;
 use Leadin\admin\Gutenberg;
 use Leadin\admin\NoticeManager;
@@ -14,7 +15,12 @@ use Leadin\admin\DeactivationForm;
 use Leadin\auth\OAuth;
 use Leadin\admin\api\RegistrationApi;
 use Leadin\admin\api\DisconnectApi;
+use Leadin\admin\api\SkipReviewApi;
+use Leadin\admin\api\UpdateHubletApi;
+use Leadin\admin\api\GetPortalHubletApi;
+use Leadin\admin\api\TrackConsentApi;
 use Leadin\admin\api\SearchHubSpotFormsApi;
+use Leadin\admin\api\DisableInternalTrackingApi;
 use Leadin\admin\utils\Background;
 use Leadin\utils\QueryParameters;
 use Leadin\utils\Versions;
@@ -32,7 +38,9 @@ class LeadinAdmin {
 	public function __construct() {
 		add_action( 'plugins_loaded', array( $this, 'load_languages' ), 14 );
 		add_action( 'admin_init', array( $this, 'redirect_after_activation' ) );
+		add_action( 'admin_init', array( $this, 'store_activation_time' ) );
 		add_action( 'admin_init', array( $this, 'authorize' ) );
+		add_action( 'admin_init', array( $this, 'check_review_requested' ) );
 		add_action( 'admin_menu', array( $this, 'build_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		register_activation_hook( LEADIN_BASE_PATH, array( $this, 'do_activate_action' ) );
@@ -45,13 +53,16 @@ class LeadinAdmin {
 
 		new RegistrationApi();
 		new DisconnectApi();
+		new SkipReviewApi();
+		new UpdateHubletApi();
+		new GetPortalHubletApi();
+		new TrackConsentApi();
+		new DisableInternalTrackingApi();
 		new PluginActionsManager();
 		new DeactivationForm();
 		new NoticeManager();
 		new AdminFilters();
-		if ( Connection::is_connected() ) {
-			new Gutenberg();
-		}
+		new Gutenberg();
 	}
 
 	/**
@@ -107,6 +118,30 @@ class LeadinAdmin {
 		} elseif ( Connection::is_disconnection_requested() ) {
 			Connection::disconnect();
 			Routing::redirect( MenuConstants::ROOT );
+		}
+	}
+
+	/**
+	 * Check if query parameter for review is present on the request
+	 * then add user metadata to persist review time
+	 * Redirects if value is equal to true
+	 */
+	public function check_review_requested() {
+		if ( Connection::is_connected() && Routing::has_review_request() ) {
+			AdminUserMetaData::set_skip_review( time() );
+			if ( Routing::is_review_request() ) {
+				header( 'Location: https://wordpress.org/support/plugin/leadin/reviews/?filter=5#new-post' );
+				exit();
+			}
+		}
+	}
+
+	/**
+	 * Store activation time in a WP option.
+	 */
+	public function store_activation_time() {
+		if ( empty( get_option( 'leadin_activation_time' ) ) ) {
+			update_option( 'leadin_activation_time', time() );
 		}
 	}
 

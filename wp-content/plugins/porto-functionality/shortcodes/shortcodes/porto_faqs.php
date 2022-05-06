@@ -38,7 +38,7 @@ function porto_load_faqs_shortcode() {
 				),
 				array(
 					'type'       => 'textfield',
-					'heading'    => __( 'FAQs Count', 'porto-functionality' ),
+					'heading'    => __( 'FAQs Count (per page)', 'porto-functionality' ),
 					'param_name' => 'number',
 					'value'      => '8',
 				),
@@ -59,15 +59,35 @@ function porto_load_faqs_shortcode() {
 				),
 				array(
 					'type'       => 'checkbox',
-					'heading'    => __( 'Show Filter', 'porto-functionality' ),
+					'heading'    => __( 'Show Category Filter', 'porto-functionality' ),
 					'param_name' => 'filter',
 					'value'      => array( __( 'Yes', 'js_composer' ) => 'yes' ),
 				),
 				array(
-					'type'       => 'checkbox',
-					'heading'    => __( 'Show Pagination', 'porto-functionality' ),
+					'type'       => 'dropdown',
+					'heading'    => __( 'Filter Type', 'porto-functionality' ),
+					'param_name' => 'filter_type',
+					'std'        => '',
+					'value'      => array(
+						__( 'Filter using Javascript/CSS', 'porto-functionality' ) => '',
+						__( 'Ajax Loading', 'porto-functionality' ) => 'ajax',
+					),
+					'dependency' => array(
+						'element'   => 'filter',
+						'not_empty' => true,
+					),
+				),
+				array(
+					'type'       => 'dropdown',
+					'heading'    => __( 'Pagination Style', 'porto-functionality' ),
 					'param_name' => 'pagination',
-					'value'      => array( __( 'Yes', 'js_composer' ) => 'yes' ),
+					'std'        => '',
+					'value'      => array(
+						__( 'None', 'porto-functionality' ) => '',
+						__( 'Ajax Pagination', 'porto-functionality' ) => 'yes',
+						__( 'Infinite Scroll', 'porto-functionality' ) => 'infinite',
+						__( 'Load More (Button)', 'porto-functionality' ) => 'load_more',
+					),
 				),
 				$custom_class,
 				$animation_type,

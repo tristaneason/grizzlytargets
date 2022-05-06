@@ -40,6 +40,10 @@ if( ! function_exists( 'pewc_set_upload_dir' ) ) {
 }
 
 function pewc_get_upload_subdirs() {
+	if ( isset(WC()->session) && ! WC()->session->has_session() && ! is_user_logged_in()) {
+		// we need to initiate session now because if user is not signed in, the session keeps changing it looks like
+		WC()->session->set_customer_session_cookie( true );
+	}
 
 	$subdirs = '/' . md5( WC()->session->get_customer_id() );
 
@@ -492,6 +496,10 @@ function pewc_rename_uploaded_file( $filename ) {
 		return $filename;
 	}
 
+	if( $filename == 'wc-aelia-foundation-classes' ) {
+		return $filename;
+	}
+
 	// Now get the updated file name
 	$product_id = isset( $_POST['pewc_product_id'] ) ? absint( $_POST['pewc_product_id'] ) : '';
 	$new_name = pewc_get_renamed_uploaded_file( $filename, $product_id );
@@ -508,7 +516,7 @@ add_filter( 'sanitize_file_name', 'pewc_rename_uploaded_file' );
 function pewc_get_renamed_uploaded_file( $filename, $product_id ) {
 
 	// Just check this filter isn't getting called some other way, before WooCommerce is ready
-	if( did_action( 'woocommerce_init' ) < 1 ) {
+	if( did_action( 'woocommerce_after_register_taxonomy' ) < 1 ) {
 		return $filename;
 	}
 

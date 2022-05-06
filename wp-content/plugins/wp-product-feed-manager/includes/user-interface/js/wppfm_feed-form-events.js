@@ -65,6 +65,13 @@ jQuery(
 			}
 		);
 
+		$( '#wppfm-feed-currency-selector' ).on(
+			'change',
+			function() {
+				wppfm_setGoogleFeedCurrency( jQuery( '#wppfm-feed-currency-selector' ).val() );
+			}
+		);
+
 		$( '#google-feed-title-selector' ).on(
 			'change',
 			function() {

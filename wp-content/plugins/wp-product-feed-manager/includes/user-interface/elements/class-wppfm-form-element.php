@@ -49,10 +49,11 @@ if ( ! class_exists( 'WPPFM_Form_Element' ) ) :
 		 *
 		 * @param   array $feed_data_to_store   An array with the feed data.
 		 *
-		 * @return  string  An html string that contains the json encoded feed data.
+		 * @since 2.27.0    Added htmlEntities() before the json_encode to prevent incorrect entities to enter the feed data json string and cause issues opening the Edit Feed page.
+		 * @return  string  A html string that contains the json encoded feed data.
 		 */
 		public static function feed_data_holder( $feed_data_to_store ) {
-			return '<var id="wppfm-ajax-feed-data-array" style="display:none;">' . wp_json_encode( $feed_data_to_store ) . '</var>';
+			return '<var id="wppfm-ajax-feed-data-array" style="display:none;">' . htmlentities( wp_json_encode( $feed_data_to_store ), ENT_QUOTES ) . '</var>';
 		}
 
 		/**
@@ -138,6 +139,7 @@ if ( ! class_exists( 'WPPFM_Form_Element' ) ) :
 					(object) [ 'feed' => 'feedId', 'db' => 'product_feed_id', 'type' => '%d' ],
 					(object) [ 'feed' => 'channel', 'db' => 'channel_id', 'type' => '%d' ],
 					(object) [ 'feed' => 'language', 'db' => 'language', 'type' => '%s' ],
+					(object) [ 'feed' => 'currency', 'db' => 'currency', 'type' => '%s' ],
 					(object) [ 'feed' => 'includeVariations', 'db' => 'include_variations', 'type' => '%d' ],
 					(object) [ 'feed' => 'isAggregator', 'db' => 'is_aggregator', 'type' => '%d' ],
 					(object) [ 'feed' => 'country', 'db' => 'country_id', 'type' => '%s' ],

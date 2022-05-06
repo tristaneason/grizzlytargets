@@ -1,5 +1,12 @@
 *** WooCommerce Authorize.Net Gateway Changelog ***
 
+2022.04.25 - version 3.7.0
+ * Misc - Compliance with COF (card on file) and MIT (merchant initiated transactions) mandates
+
+2022.02.08 - version 3.6.3
+ * Fix - Replace deprecated `is_ajax()` calls with `wp_doing_ajax()`
+ * Misc - Require WooCommerce 3.9.4 or greater
+
 2021.07.15 - version 3.6.2
  * Fix - Ensure stored payment methods are removed from customer account when a customer profile is removed from Authorize.Net CIM
 

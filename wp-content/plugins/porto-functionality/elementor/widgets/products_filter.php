@@ -35,7 +35,7 @@ class Porto_Elementor_Products_Filter_Widget extends \Elementor\Widget_Base {
 		return 'eicon-filter';
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		$filter_areas         = array();
 		$attribute_taxonomies = wc_get_attribute_taxonomies();

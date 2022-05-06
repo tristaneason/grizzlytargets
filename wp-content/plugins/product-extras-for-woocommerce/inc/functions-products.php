@@ -277,6 +277,8 @@ function pewc_add_on_product( $child_product_ids, $original_quantity, $product_i
 				$quantity = $quantity * $original_quantity;
 			}
 
+			$cart_item['product_extras'] = apply_filters( 'pewc_cart_item_extras_child_product', $cart_item['product_extras'] );
+
 			WC()->cart->add_to_cart( $child_product_id, $quantity, 0, array(), $cart_item );
 
 		}
@@ -635,7 +637,7 @@ function pewc_child_product_independent_quantity_field( $quantity_field_values, 
 
 	// Add a quantity field for the child product
 	printf(
-		'<input type="number" min="0" step="1" class="pewc-form-field pewc-child-quantity-field" name="%s" value="%s">',
+		'<input type="number" min="0" step="1" class="pewc-form-field pewc-child-quantity-field pewc-independent-quantity-field" name="%s" value="%s">',
 		esc_attr( $id ) . '_child_quantity',
 		$quantity_field_value
 	);
@@ -900,3 +902,19 @@ function pewc_check_cart_items() {
 
 };
 add_action( 'woocommerce_check_cart_items', 'pewc_check_cart_items', 10 );
+
+/**
+ * Schedule the data purge for product-categories field type add ons
+ * @since 3.9.7
+ *
+ * @param int $product_id
+ * @param WC_Product object $product
+ */
+function pewc_purge_product_categories_addons_products( $product_id, $product ){
+
+	global $wpdb;
+
+	$wpdb->query('DELETE FROM ' . $wpdb->options . ' WHERE option_name LIKE "%pewc_product_categories_products%"');
+
+}
+add_action( 'woocommerce_update_product', 'pewc_purge_product_categories_addons_products', 10, 2 );

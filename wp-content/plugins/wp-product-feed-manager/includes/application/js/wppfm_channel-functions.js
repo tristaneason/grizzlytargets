@@ -509,9 +509,11 @@ function wppfm_setChannelRelatedPresets( outputsField, channel ) {
 	// WPPFM_CHANNEL_RELATED
 	switch ( channel ) {
 
+		// @since 2.27.0 added sale_price-effective_date.
 		case '1': // Google
 			if ( outputsField[ 'field_label' ] === 'condition' || outputsField[ 'field_label' ] === 'availability' || outputsField[ 'field_label' ] === 'identifier_exists'
-				|| outputsField[ 'field_label' ] === 'adult' || outputsField[ 'field_label' ] === 'price' || outputsField[ 'field_label' ] === 'sale_price' ) {
+				|| outputsField[ 'field_label' ] === 'adult' || outputsField[ 'field_label' ] === 'price' || outputsField[ 'field_label' ] === 'sale_price'
+				|| outputsField[ 'field_label'] === 'sale_price_effective_date' ) {
 
 				// only switch to the 'preset' value if no user value is set
 				if ( ! outputsField[ 'value' ] ) {
@@ -566,8 +568,11 @@ function wppfm_setChannelRelatedPresets( outputsField, channel ) {
 			}
 			break;
 
+		// @since 2.27.0 Updated to the same settings as for Google.
 		case '16': // Facebook
-			if ( outputsField[ 'field_label' ] === 'condition' || outputsField[ 'field_label' ] === 'availability' || outputsField[ 'field_label' ] === 'price' ) {
+			if ( outputsField[ 'field_label' ] === 'condition' || outputsField[ 'field_label' ] === 'availability' || outputsField[ 'field_label' ] === 'identifier_exists'
+				|| outputsField[ 'field_label' ] === 'adult' || outputsField[ 'field_label' ] === 'price' || outputsField[ 'field_label' ] === 'sale_price'
+				|| outputsField[ 'field_label'] === 'sale_price_effective_date' ) {
 
 				// only switch to the 'preset' value if no user value is set
 				if ( ! outputsField[ 'value' ] ) {

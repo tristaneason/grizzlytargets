@@ -15,11 +15,11 @@
  * Plugin Name:          MWB HubSpot for WooCommerce
  * Plugin URI:           https://wordpress.org/plugins/makewebbetter-hubspot-for-woocommerce
  * Description:          Integrate WooCommerce with HubSpot’s free CRM, abandoned cart tracking, email marketing, marketing automation, analytics & more.
- * Version:              1.2.6
+ * Version:              1.3.0
  * Requires at least:    4.4.0
- * Tested up to:         5.8.2
+ * Tested up to:         5.9.3
  * WC requires at least: 3.5.0
- * WC tested up to:      5.9.0
+ * WC tested up to:      6.4.0
  * Author:               MakeWebBetter
  * Author URI:           http://www.makewebbetter.com/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend
  * License: GPLv3 or later
@@ -109,7 +109,7 @@ if ( $hubwoo_pro_activated && $hubwoo_pro_flag ) {
 	function hubwoo_pro_define_constants() {
 		hubwoo_pro_define( 'HUBWOO_ABSPATH', dirname( __FILE__ ) . '/' );
 		hubwoo_pro_define( 'HUBWOO_URL', plugin_dir_url( __FILE__ ) );
-		hubwoo_pro_define( 'HUBWOO_VERSION', '1.2.6' );
+		hubwoo_pro_define( 'HUBWOO_VERSION', '1.3.0' );
 		hubwoo_pro_define( 'HUBWOO_PLUGINS_PATH', plugin_dir_path( __DIR__ ) );
 		hubwoo_pro_define( 'HUBWOO_CLIENT_ID', '769fa3e6-79b1-412d-b69c-6b8242b2c62a' );
 		hubwoo_pro_define( 'HUBWOO_SECRET_ID', '2893dd41-017e-4208-962b-12f7495d16b0' );
@@ -124,9 +124,9 @@ if ( $hubwoo_pro_activated && $hubwoo_pro_flag ) {
 	 */
 	function hubwoo_custom_settings_at_plugin_tab( $links_array, $plugin_file_name ) {
 		if ( strpos( $plugin_file_name, basename( __FILE__ ) ) ) {
-			$links_array[] = '<a href="https://makewebbetter.com/hubspot-woocommerce-onboarding/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank"><img src="' . HUBWOO_URL . 'admin/images/Demo.svg" style="vertical-align: middle;display: inline-block;width: 15px;max-width: 100%;margin: 0 5px;"></i>' . esc_html__( 'On-Board with Us', 'makewebbetter-hubspot-for-woocommerce' ) . '</a>';
+			$links_array[] = '<a href="https://makewebbetter.com/hubspot-onboarding-services/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank"><img src="' . HUBWOO_URL . 'admin/images/Demo.svg" style="vertical-align: middle;display: inline-block;width: 15px;max-width: 100%;margin: 0 5px;"></i>' . esc_html__( 'On-Board with Us', 'makewebbetter-hubspot-for-woocommerce' ) . '</a>';
 			$links_array[] = '<a href="https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank"><img src="' . HUBWOO_URL . 'admin/images/Documentation.svg" style="vertical-align: middle;display: inline-block;width: 15px;max-width: 100%;margin: 0 5px;"></i>' . esc_html__( 'Documentation', 'makewebbetter-hubspot-for-woocommerce' ) . '</a>';
-			$links_array[] = '<a href="https://support.makewebbetter.com/hubspot-knowledge-base/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank"><img src="' . HUBWOO_URL . 'admin/images/Support.svg" style="vertical-align: middle;display: inline-block;width: 15px;max-width: 100%;margin: 0 5px;"></i>' . esc_html__( 'Support', 'makewebbetter-hubspot-for-woocommerce' ) . '</a>';
+			$links_array[] = '<a href="https://makewebbetter.com/contact-us/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank"><img src="' . HUBWOO_URL . 'admin/images/Support.svg" style="vertical-align: middle;display: inline-block;width: 15px;max-width: 100%;margin: 0 5px;"></i>' . esc_html__( 'Support', 'makewebbetter-hubspot-for-woocommerce' ) . '</a>';
 		}
 		return $links_array;
 	}

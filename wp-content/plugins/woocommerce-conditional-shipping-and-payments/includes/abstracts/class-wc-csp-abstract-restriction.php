@@ -2,7 +2,6 @@
 /**
  * WC_CSP_Restriction class
  *
- * @author   SomewhereWarm <info@somewherewarm.com>
  * @package  WooCommerce Conditional Shipping and Payments
  * @since    1.0.0
  */
@@ -16,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Abstract Restriction class.
  *
  * @class    WC_CSP_Restriction
- * @version  1.9.0
+ * @version  1.13.0
  */
 class WC_CSP_Restriction extends WC_Settings_API {
 
@@ -461,14 +460,6 @@ class WC_CSP_Restriction extends WC_Settings_API {
 	}
 
 	/**
-	 * If the restriction supports multiple rule definitions.
-	 * @return bool
-	 */
-	public function supports_multiple() {
-		return $this->supports_multiple;
-	}
-
-	/**
 	 * Retrieves product restriction data.
 	 *
 	 * @param  int|WC_Product  $product
@@ -671,7 +662,6 @@ class WC_CSP_Restriction extends WC_Settings_API {
 		 * @param  array   $args
 		 */
 		return apply_filters( 'woocommerce_csp_' . $this->id . '_resolution_message', $this->get_resolution_message_content( $restriction, $context, $args ), $restriction, $context, $args );
-		return '';
 	}
 
 	/**
@@ -705,7 +695,7 @@ class WC_CSP_Restriction extends WC_Settings_API {
 	 * @return bool
 	 */
 	protected function show_excluded_notices( $restriction_data ) {
-		return $this->show_excluded( $restriction_data ) && ! empty( $restriction_data[ 'show_excluded_notices' ] ) && 'yes' === $restriction_data[ 'show_excluded_notices' ];
+		return $this->show_excluded( $restriction_data ) && ! empty( $restriction_data[ 'show_excluded_notices' ] ) && 'yes' === $restriction_data[ 'show_excluded_notices' ] && ! is_cart();
 	}
 
 	/**
@@ -760,6 +750,11 @@ class WC_CSP_Restriction extends WC_Settings_API {
 
 		$active_rules_map = array();
 
+		// Bail out early and not run if we're on wp-admin.
+		if ( is_admin() ) {
+			return array();
+		}
+
 		if ( ! empty( $restriction_data ) ) {
 
 			foreach ( $restriction_data as $i => $restriction ) {
@@ -798,6 +793,33 @@ class WC_CSP_Restriction extends WC_Settings_API {
 		}
 
 		return $active_rules_map;
+	}
+
+	/**
+	 * If the restriction supports multiple rule definitions.
+	 * @return bool
+	 */
+	public function supports_multiple() {
+		return $this->supports_multiple;
+	}
+
+	/**
+	 * Checks if a feature is supported.
+	 *
+	 * @since  1.13.0
+	 *
+	 * @param  string  $feature
+	 * @return boolean
+	 */
+	public function supports( $feature ) {
+
+		if ( 'static-notices' === $feature ) {
+			return ! WC_CSP_Core_Compatibility::is_block_based_checkout();
+		} elseif ( 'multiple' === $feature ) {
+			return $this->supports_multiple();
+		}
+
+		return true;
 	}
 
 	/**

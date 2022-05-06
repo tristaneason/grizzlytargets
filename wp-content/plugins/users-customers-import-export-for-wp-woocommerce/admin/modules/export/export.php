@@ -30,6 +30,7 @@ class Wt_Import_Export_For_Woo_Basic_Export
 	public $default_batch_count=0; /* configure this value in `advanced_setting_fields` method */
 	public $selected_template_data=array();
 	public $default_export_method='';  /* configure this value in `advanced_setting_fields` method */
+	public $use_bom = true;
 	public $form_data=array();
 
 	public function __construct()
@@ -48,7 +49,7 @@ class Wt_Import_Export_For_Woo_Basic_Export
 		(
 			'post_type'=>array(
 				'title'=>__('Select a post type'),
-				'description'=>__('Export and download the respective post type into a CSV. This file can also be used to import data related to the specific post type back into your WordPress/WooCommerce site. As a first step you need to choose the post type to start the export.'),
+				'description'=>__('Export and download the data for the respective post type into a CSV file. As per the selected post type, we can use this exported CSV file to import data to your site.'),
 			),
 			'method_export'=>array(
 				'title'=>__('Select an export method'),
@@ -81,8 +82,8 @@ class Wt_Import_Export_For_Woo_Basic_Export
 
 		$this->export_methods=array(
 			'quick'=>array('title'=>__('Quick export'), 'description'=> __('Exports all the basic fields.')),
-			'template'=>array('title'=>__('Pre-saved template'), 'description'=> __('Exports data as per the specifications(filters,selective column,mapping etc) from the previously saved file.')),
-			'new'=>array('title'=>__('Advanced export'), 'description'=> __('Exports data after a detailed process of data filtering/column selection/advanced options that may be required for your export. You can also save this selection for future use.')),
+			'template'=>array('title'=>__('Pre-saved template'), 'description'=> __('Exports data as per the specifications(filters, selective column,mapping etc) of the template saved during the previous Advanced exports. To change the settings, move to filter data.')),
+			'new'=>array('title'=>__('Advanced export'), 'description'=> __('Exports data after a detailed process of filtration, column selection and advanced options. The configured settings can be saved as a template for future exports.')),
 		);
 
 		/* advanced plugin settings */
@@ -105,6 +106,7 @@ class Wt_Import_Export_For_Woo_Basic_Export
 	{	
 		$this->default_export_method= Wt_Import_Export_For_Woo_Basic_Common_Helper::get_advanced_settings('default_export_method');
 		$this->default_batch_count=Wt_Import_Export_For_Woo_Basic_Common_Helper::get_advanced_settings('default_export_batch');
+		$this->use_bom = (bool)Wt_Import_Export_For_Woo_Basic_Common_Helper::get_advanced_settings('include_bom');
 	}
 
 	/**
@@ -123,6 +125,17 @@ class Wt_Import_Export_For_Woo_Basic_Export
 			'field_group'=>'advanced_field',
 			'help_text'=>__('Select the default method of export.'),
 		);
+		
+		$fields['include_bom'] = array(
+			'label'=>__( "Include BOM in export file" ),
+			'value'=>1,
+			'checkbox_fields' => array( 1 => __( 'Enable' ) ),
+			'type'=>'checkbox',
+			'field_name'=>'include_bom',
+			'field_group'=>'advanced_field',
+			'help_text'=>__( "The BOM will help some programs like Microsoft Excel read your export file if it includes non-English characters." ),
+		);
+		
 		$fields['default_export_batch']=array(
 			'label'=>__("Default Export batch count"),
 			'type'=>'number',
@@ -243,7 +256,7 @@ class Wt_Import_Export_For_Woo_Basic_Export
                     'value' => '',
                     'field_name' => 'offset',
                     'placeholder' => __('0'),
-                    'help_text' => __('Specify the number of records that should be skipped from the beginning. e.g. An offset of 10 skips the first 10 records.'),
+                    'help_text' => __('Specify the number of records that should be skipped from the beginning of the database. e.g. An offset of 10 skips the first 10 records.'),
                     'type' => 'number',
                     'attr' => array('step' => 1, 'min' => 0),
                     'validation_rule' => array('type' => 'absint')
@@ -629,7 +642,7 @@ class Wt_Import_Export_For_Woo_Basic_Export
 		{
 
 				include_once WT_U_IEW_PLUGIN_PATH.'admin/classes/class-csvwriter.php';
-				$writer=new Wt_Import_Export_For_Woo_Basic_Csvwriter($file_path, $offset, $csv_delimiter);
+				$writer=new Wt_Import_Export_For_Woo_Basic_Csvwriter($file_path, $offset, $csv_delimiter, $this->use_bom);
 
                                                 
                         /**
@@ -686,7 +699,11 @@ class Wt_Import_Export_For_Woo_Basic_Export
                                 }
                                 
                                 $msg.='<a class="button button-secondary" style="margin-top:10px;" onclick="wt_iew_basic_export.hide_export_info_box();" target="_blank" href="'.$out['file_url'].'" >'.__('Download file').'</a></span>';
-
+				if( 0 == $total_records && isset( $export_data['no_post'] ) ){
+					
+					$out['no_post'] = true;
+					$msg = $export_data['no_post'];                    
+				}
 				$out['msg']=$msg;
 				
 				/* updating finished status */

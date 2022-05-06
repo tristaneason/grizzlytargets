@@ -31,10 +31,12 @@
 import PortoImageChoose from './controls/image-choose';
 import PortoTypographyControl from './controls/typography';
 import PortoAjaxSelect2Control from './controls/ajaxselect2';
+import PortoDynamicContentControl from './controls/dynamic-content';
 
 window.portoImageControl = PortoImageChoose;
 window.portoTypographyControl = PortoTypographyControl;
 window.portoAjaxSelect2Control = PortoAjaxSelect2Control;
+window.portoDynamicContentControl = PortoDynamicContentControl;
 
 const portoDestroyCarousel = function ( $slider ) {
 	$slider.find( '.owl-stage' ).css( { 'transform': '', 'width': '', 'height': '', 'max-height': '' } ).off( '.owl.core' )
@@ -1873,7 +1875,7 @@ if ('header' === porto_block_vars.builder_type || 'footer' === porto_block_vars.
 				el( SelectControl, {
 					label: __( 'Heading Tag', 'porto-functionality' ),
 					value: attrs.heading_tag,
-					options: [ { label: __( 'H1', 'PORTO-FUNCTIONALITY' ), value: 'h1' }, { label: __( 'H2', 'PORTO-FUNCTIONALITY' ), value: 'h2' }, { label: __( 'H3', 'PORTO-FUNCTIONALITY' ), value: 'h3' }, { label: __( 'H4', 'PORTO-FUNCTIONALITY' ), value: 'h4' }, { label: __( 'H5', 'PORTO-FUNCTIONALITY' ), value: 'h5' }, { label: __( 'H6', 'PORTO-FUNCTIONALITY' ), value: 'h6' } ],
+					options: [ { label: __( 'H1', 'porto-functionality' ), value: 'h1' }, { label: __( 'H2', 'porto-functionality' ), value: 'h2' }, { label: __( 'H3', 'porto-functionality' ), value: 'h3' }, { label: __( 'H4', 'porto-functionality' ), value: 'h4' }, { label: __( 'H5', 'porto-functionality' ), value: 'h5' }, { label: __( 'H6', 'porto-functionality' ), value: 'h6' } ],
 					onChange: ( value ) => { props.setAttributes( { heading_tag: value } ); },
 				} ),
 				el( SelectControl, {
@@ -2508,7 +2510,7 @@ if ('header' === porto_block_vars.builder_type || 'footer' === porto_block_vars.
 				el( SelectControl, {
 					label: __( 'Tag', 'porto-functionality' ),
 					value: attrs.heading_tag,
-					options: [ { label: __( 'H1', 'PORTO-FUNCTIONALITY' ), value: 'h1' }, { label: __( 'H2', 'PORTO-FUNCTIONALITY' ), value: 'h2' }, { label: __( 'H3', 'PORTO-FUNCTIONALITY' ), value: 'h3' }, { label: __( 'H4', 'PORTO-FUNCTIONALITY' ), value: 'h4' }, { label: __( 'H5', 'PORTO-FUNCTIONALITY' ), value: 'h5' }, { label: __( 'H6', 'PORTO-FUNCTIONALITY' ), value: 'h6' }, { label: __( 'div', 'porto-functionality' ), value: 'div' }, { label: __( 'p', 'porto-functionality' ), value: 'p' } ],
+					options: [ { label: __( 'H1', 'porto-functionality' ), value: 'h1' }, { label: __( 'H2', 'porto-functionality' ), value: 'h2' }, { label: __( 'H3', 'porto-functionality' ), value: 'h3' }, { label: __( 'H4', 'porto-functionality' ), value: 'h4' }, { label: __( 'H5', 'porto-functionality' ), value: 'h5' }, { label: __( 'H6', 'porto-functionality' ), value: 'h6' }, { label: __( 'div', 'porto-functionality' ), value: 'div' }, { label: __( 'p', 'porto-functionality' ), value: 'p' } ],
 					onChange: ( value ) => { props.setAttributes( { heading_tag: value } ); },
 				} ),
 			),
@@ -3943,6 +3945,8 @@ if ('header' === porto_block_vars.builder_type || 'footer' === porto_block_vars.
 		MediaUpload = wpBlockEditor.MediaUpload,
 		el = wpElement.createElement,
 		Component = wpElement.Component,
+		useEffect = wpElement.useEffect,
+		useState = wpElement.useState,
 		SelectControl = wpComponents.SelectControl,
 		TextControl = wpComponents.TextControl,
 		TextareaControl = wpComponents.TextareaControl,
@@ -3954,6 +3958,55 @@ if ('header' === porto_block_vars.builder_type || 'footer' === porto_block_vars.
 	const PortoInteractiveBanner = function ( props ) {
 		var attrs = props.attributes,
 			clientId = props.clientId;
+
+		let content_type = document.getElementById( 'content_type' );
+		if ( typeof content_type == 'undefined' ) {
+			content_type = false;
+		} else if ( content_type ) {
+			content_type = content_type.value;
+		}
+
+		let content_type_value = '';
+		if ( content_type ) {
+			content_type_value = document.getElementById( 'content_type_' + content_type );
+			if ( content_type_value ) {
+				content_type_value = content_type_value.value;
+			}
+		}
+
+		useEffect(
+			() => {
+				let field_name = '';
+				if ( attrs.dynamic_content && attrs.dynamic_content.source ) {
+					if ( 'post' == attrs.dynamic_content.source ) {
+						field_name = attrs.dynamic_content.post_info;
+					} else {
+						field_name = attrs.dynamic_content[ attrs.dynamic_content.source ];
+					}
+					jQuery.ajax( {
+						url: porto_block_vars.ajax_url,
+						data: {
+							action: 'porto_dynamic_tags_get_value',
+							nonce: porto_block_vars.nonce,
+							content_type: content_type ? content_type : 'post',
+							content_type_value: content_type_value ? content_type_value : porto_block_vars.edit_post_id,
+							source: attrs.dynamic_content.source,
+							field_name: field_name 
+						},
+						type: 'post',
+						dataType: 'json',
+						success: function ( res ) {
+							if ( res && res.success ) {
+								props.setAttributes( { banner_image: res.data, banner_image_url: res.data } );
+							}
+						}
+					} );
+				}
+			},
+			[ attrs.img_source, attrs.dynamic_content && attrs.dynamic_content.source, attrs.dynamic_content && attrs.dynamic_content.post_info, attrs.dynamic_content && attrs.dynamic_content.metabox, attrs.dynamic_content && attrs.dynamic_content.acf, attrs.dynamic_content && attrs.dynamic_content.meta, attrs.dynamic_content && attrs.dynamic_content.tax ],
+		);
+
+		let dynamic_content = Object.assign( {}, attrs.dynamic_content );
 
 		var inspectorControls = el( InspectorControls, null,
 			el( PanelBody, {
@@ -3978,12 +4031,24 @@ if ('header' === porto_block_vars.builder_type || 'footer' === porto_block_vars.
 				el(
 					'div',
 					{ className: 'components-base-control' },
-					el(
+					el( SelectControl, {
+						label: __( 'Image Source', 'porto-functionality' ),
+						value: attrs.img_source,
+						options: [ { label: __( 'Custom Image', 'porto-functionality' ), value: '' }, { label: __( 'Dymamic Content', 'porto-functionality' ), value: 'dynamic' } ],
+						onChange: ( value ) => { props.setAttributes( { img_source: value } ); },
+					} ),
+					'dynamic' == attrs.img_source && el( PortoDynamicContentControl, {
+						label: __( 'Dynamic Content', 'porto-functionality' ),
+						value: dynamic_content,
+						options: { field_type: 'image', content_type: content_type, content_type_value: content_type_value },
+						onChange: ( value ) => { props.setAttributes( { dynamic_content: value } ); },
+					} ),
+					! attrs.img_source && el(
 						'p',
 						{ className: 'mb-0' },
 						__( 'Banner Image', 'porto-functionality' )
 					),
-					el( MediaUpload, {
+					! attrs.img_source && el( MediaUpload, {
 						allowedTypes: [ 'image' ],
 						label: 'Banner Image',
 						value: attrs.banner_image,
@@ -4000,7 +4065,7 @@ if ('header' === porto_block_vars.builder_type || 'footer' === porto_block_vars.
 							} );
 						}
 					} ),
-					el( IconButton, {
+					! attrs.img_source && el( IconButton, {
 						className: 'components-toolbar__control',
 						label: __( 'Remove image', 'porto-functionality' ),
 						icon: 'no',
@@ -4216,6 +4281,12 @@ if ('header' === porto_block_vars.builder_type || 'footer' === porto_block_vars.
 		attributes: {
 			banner_title: { type: 'string' },
 			banner_desc: { type: 'string' },
+			img_source: {
+				type: 'string',
+			},
+			dynamic_content: {
+				type: 'object',
+			},
 			banner_image: { type: 'int' },
 			banner_image_url: { type: 'string' },
 			lazyload: { type: 'boolean' },
@@ -5295,21 +5366,99 @@ function _makeConsumableArray( arr ) {
 		BlockAlignmentToolbar = wpBlockEditor.BlockAlignmentToolbar,
 		el = wpElement.createElement,
 		Component = wpElement.Component,
+		useEffect = wpElement.useEffect,
+		useState = wpElement.useState,
 		TextControl = wpComponents.TextControl,
 		TextareaControl = wpComponents.TextareaControl,
 		RangeControl = wpComponents.RangeControl,
 		ToggleControl = wpComponents.ToggleControl,
 		SelectControl = wpComponents.SelectControl;
 
+	let content_type = document.getElementById( 'content_type' );
+	if ( typeof content_type == 'undefined' ) {
+		content_type = false;
+	} else if ( content_type ) {
+		content_type = content_type.value;
+	}
+
+	let content_type_value = '';
+	if ( content_type ) {
+		content_type_value = document.getElementById( 'content_type_' + content_type );
+		if ( content_type_value ) {
+			content_type_value = content_type_value.value;
+		}
+	}
+
 	const PortoHeading = function ( props ) {
 		var attrs = props.attributes,
 			clientId = props.clientId;
 
+		const [ headingText, setHeadingText ] = useState( attrs.title );
+
+		useEffect(
+			() => {
+				let field_name = '';
+				if ( attrs.dynamic_content && attrs.dynamic_content.source ) {
+					if ( 'post' == attrs.dynamic_content.source ) {
+						field_name = attrs.dynamic_content.post_info;
+					} else {
+						field_name = attrs.dynamic_content[ attrs.dynamic_content.source ];
+					}
+					jQuery.ajax( {
+						url: porto_block_vars.ajax_url,
+						data: {
+							action: 'porto_dynamic_tags_get_value',
+							nonce: porto_block_vars.nonce,
+							content_type: content_type ? content_type : 'post',
+							content_type_value: content_type_value ? content_type_value : porto_block_vars.edit_post_id,
+							source: attrs.dynamic_content.source,
+							field_name: field_name 
+						},
+						type: 'post',
+						dataType: 'json',
+						success: function ( res ) {
+							let text;
+							if ( res && res.success ) {
+								text = '' + res.data;
+							} else {
+								text = attrs.dynamic_content.fallback;
+							}
+							setHeadingText( text );
+						}
+					} );
+				}
+			},
+			[ attrs.text_source, attrs.dynamic_content && attrs.dynamic_content.source, attrs.dynamic_content && attrs.dynamic_content.post_info, attrs.dynamic_content && attrs.dynamic_content.metabox, attrs.dynamic_content && attrs.dynamic_content.acf, attrs.dynamic_content && attrs.dynamic_content.meta, attrs.dynamic_content && attrs.dynamic_content.tax ],
+		);
+
+		let font_settings;
+
+		if ( typeof attrs.font_settings != 'undefined' ) {
+			font_settings = Object.assign( {}, attrs.font_settings );
+			if ( ! attrs.tb_cls ) {
+				props.setAttributes( { tb_cls: 'tb-heading-' + Math.ceil( Math.random() * 10000 ) } );
+			}
+		}
+
+		let dynamic_content = Object.assign( {}, attrs.dynamic_content );
+
 		var inspectorControls = el( InspectorControls, {},
-			el( TextareaControl, {
+			el( SelectControl, {
+				label: __( 'Text Source', 'porto-functionality' ),
+				value: attrs.text_source,
+				options: [ { label: __( 'Custom Text', 'porto-functionality' ), value: '' }, { label: __( 'Dymamic Content', 'porto-functionality' ), value: 'dynamic' } ],
+				onChange: ( value ) => { props.setAttributes( { text_source: value } ); },
+			} ),
+			! attrs.text_source && el( TextareaControl, {
 				label: __( 'Title', 'porto-functionality' ),
 				value: attrs.title,
 				onChange: ( value ) => { props.setAttributes( { title: value } ); },
+			} ),
+			'dynamic' == attrs.text_source && el( PortoDynamicContentControl, {
+				label: __( 'Dynamic Content', 'porto-functionality' ),
+				value: dynamic_content,
+				options: { field_type: 'field', content_type: content_type, content_type_value: content_type_value },
+				onChange: ( value ) => { props.setAttributes( { dynamic_content: value } ); },
 			} ),
 			el( ToggleControl, {
 				label: __( 'Enable typewriter effect', 'porto-functionality' ),
@@ -5334,7 +5483,7 @@ function _makeConsumableArray( arr ) {
 			el( SelectControl, {
 				label: __( 'Tag', 'porto-functionality' ),
 				value: attrs.tag,
-				options: [ { label: __( 'H1', 'PORTO-FUNCTIONALITY' ), value: 'h1' }, { label: __( 'H2', 'PORTO-FUNCTIONALITY' ), value: 'h2' }, { label: __( 'H3', 'PORTO-FUNCTIONALITY' ), value: 'h3' }, { label: __( 'H4', 'PORTO-FUNCTIONALITY' ), value: 'h4' }, { label: __( 'H5', 'PORTO-FUNCTIONALITY' ), value: 'h5' }, { label: __( 'H6', 'PORTO-FUNCTIONALITY' ), value: 'h6' }, { label: __( 'div', 'porto-functionality' ), value: 'div' }, { label: __( 'p', 'porto-functionality' ), value: 'p' }, { label: __( 'span', 'porto-functionality' ), value: 'span' } ],
+				options: [ { label: __( 'H1', 'porto-functionality' ), value: 'h1' }, { label: __( 'H2', 'porto-functionality' ), value: 'h2' }, { label: __( 'H3', 'porto-functionality' ), value: 'h3' }, { label: __( 'H4', 'porto-functionality' ), value: 'h4' }, { label: __( 'H5', 'porto-functionality' ), value: 'h5' }, { label: __( 'H6', 'porto-functionality' ), value: 'h6' }, { label: __( 'div', 'porto-functionality' ), value: 'div' }, { label: __( 'p', 'porto-functionality' ), value: 'p' }, { label: __( 'span', 'porto-functionality' ), value: 'span' } ],
 				onChange: ( value ) => { props.setAttributes( { tag: value } ); },
 			} ),
 			el( TextControl, {
@@ -5344,31 +5493,35 @@ function _makeConsumableArray( arr ) {
 			} ),
 			el( PortoTypographyControl, {
 				label: __( 'Typography', 'porto-functionality' ),
-				value: { fontFamily: attrs.font_family, fontSize: attrs.font_size, fontWeight: attrs.font_weight, textTransform: attrs.text_transform, lineHeight: attrs.line_height, letterSpacing: attrs.letter_spacing, color: attrs.color },
+				value: ( content_type || '' === content_type ) ? font_settings : { fontFamily: attrs.font_family, fontSize: attrs.font_size, fontWeight: attrs.font_weight, textTransform: attrs.text_transform, lineHeight: attrs.line_height, letterSpacing: attrs.letter_spacing, color: attrs.color },
 				options: {},
 				onChange: ( value ) => {
-					if ( typeof value.fontFamily != 'undefined' ) {
-						props.setAttributes( { font_family: value.fontFamily } );
-					}
-					if ( typeof value.fontSize != 'undefined' ) {
-						props.setAttributes( { font_size: value.fontSize } );
-					}
-					if ( typeof value.fontWeight != 'undefined' ) {
-						props.setAttributes( { font_weight: value.fontWeight } );
-					}
-					if ( typeof value.textTransform != 'undefined' ) {
-						props.setAttributes( { text_transform: value.textTransform } );
-					}
-					if ( typeof value.lineHeight != 'undefined' ) {
-						props.setAttributes( { line_height: value.lineHeight } );
-					}
-					if ( typeof value.letterSpacing != 'undefined' ) {
-						props.setAttributes( { letter_spacing: value.letterSpacing } );
-					}
-					if ( typeof value.color != 'undefined' ) {
-						props.setAttributes( { color: value.color } );
+					if ( content_type || '' === content_type ) {
+						props.setAttributes( { font_settings: value } );
 					} else {
-						props.setAttributes( { color: '' } );
+						if ( typeof value.fontFamily != 'undefined' ) {
+							props.setAttributes( { font_family: value.fontFamily } );
+						}
+						if ( typeof value.fontSize != 'undefined' ) {
+							props.setAttributes( { font_size: value.fontSize } );
+						}
+						if ( typeof value.fontWeight != 'undefined' ) {
+							props.setAttributes( { font_weight: value.fontWeight } );
+						}
+						if ( typeof value.textTransform != 'undefined' ) {
+							props.setAttributes( { text_transform: value.textTransform } );
+						}
+						if ( typeof value.lineHeight != 'undefined' ) {
+							props.setAttributes( { line_height: value.lineHeight } );
+						}
+						if ( typeof value.letterSpacing != 'undefined' ) {
+							props.setAttributes( { letter_spacing: value.letterSpacing } );
+						}
+						if ( typeof value.color != 'undefined' ) {
+							props.setAttributes( { color: value.color } );
+						} else {
+							props.setAttributes( { color: '' } );
+						}
 					}
 				},
 			} ),
@@ -5401,36 +5554,74 @@ function _makeConsumableArray( arr ) {
 
 		let wrapper_style = {}, style_inline = {};
 
-		if ( attrs.font_family ) {
-			style_inline.fontFamily = attrs.font_family;
-		}
-		if ( attrs.font_size ) {
-			let unit = attrs.font_size.replace( /[0-9.]/g, '' );
-			if ( !unit ) {
-				attrs.font_size += 'px';
+		if ( font_settings ) { // in mini type builder
+			if ( font_settings.fontFamily ) {
+				style_inline.fontFamily = font_settings.fontFamily;
 			}
-			style_inline.fontSize = attrs.font_size;
-		}
-		if ( attrs.font_weight ) {
-			style_inline.fontWeight = Number( attrs.font_weight );
-		}
-		if ( attrs.text_transform ) {
-			style_inline.textTransform = attrs.text_transform;
-		}
-		if ( attrs.line_height ) {
-			let unit = attrs.line_height.replace( /[0-9.]/g, '' );
-			if ( !unit && attrs.line_height > 3 ) {
-				attrs.line_height += 'px';
+			if ( font_settings.fontSize ) {
+				let unitVal = font_settings.fontSize,
+					unit = unitVal.replace( /[0-9.]/g, '' );
+				if ( ! unit ) {
+					unitVal += 'px';
+				}
+				style_inline.fontSize = unitVal;
 			}
-			style_inline.lineHeight = attrs.line_height;
+			if ( font_settings.fontWeight ) {
+				style_inline.fontWeight = Number( font_settings.fontWeight );
+			}
+			if ( font_settings.textTransform ) {
+				style_inline.textTransform = font_settings.textTransform;
+			}
+			if ( font_settings.lineHeight ) {
+				let unitVal = font_settings.lineHeight,
+					unit = unitVal.replace( /[0-9.]/g, '' );
+				if ( ! unit && unitVal > 3 ) {
+					unitVal += 'px';
+				}
+				style_inline.lineHeight = unitVal;
+			}
+			if ( font_settings.letterSpacing ) {
+				style_inline.letterSpacing = font_settings.letterSpacing;
+			}
+			if ( font_settings.color ) {
+				style_inline.color = font_settings.color;
+			}
+			if ( font_settings.alignment ) {
+				style_inline.textAlign = font_settings.alignment;
+			}
+		} else {
+			if ( attrs.font_family ) {
+				style_inline.fontFamily = attrs.font_family;
+			}
+			if ( attrs.font_size ) {
+				let unit = attrs.font_size.replace( /[0-9.]/g, '' );
+				if ( !unit ) {
+					attrs.font_size += 'px';
+				}
+				style_inline.fontSize = attrs.font_size;
+			}
+			if ( attrs.font_weight ) {
+				style_inline.fontWeight = Number( attrs.font_weight );
+			}
+			if ( attrs.text_transform ) {
+				style_inline.textTransform = attrs.text_transform;
+			}
+			if ( attrs.line_height ) {
+				let unit = attrs.line_height.replace( /[0-9.]/g, '' );
+				if ( !unit && attrs.line_height > 3 ) {
+					attrs.line_height += 'px';
+				}
+				style_inline.lineHeight = attrs.line_height;
+			}
+			if ( attrs.letter_spacing ) {
+				style_inline.letterSpacing = attrs.letter_spacing;
+			}
+			if ( attrs.color ) {
+				style_inline.color = attrs.color;
+			}
+			style_inline.textAlign = attrs.alignment;
 		}
-		if ( attrs.letter_spacing ) {
-			style_inline.letterSpacing = attrs.letter_spacing;
-		}
-		if ( attrs.color ) {
-			style_inline.color = attrs.color;
-		}
-		style_inline.textAlign = attrs.alignment;
+
 		var type_plugin = {};
 		if( attrs.enable_typewriter ) {
 			type_plugin = { 'data-plugin-animated-letters': '', 'data-plugin-options': { startDelay: 0, minWindowWidth: 0 } };
@@ -5438,11 +5629,26 @@ function _makeConsumableArray( arr ) {
 				type_plugin['data-plugin-options']['startDelay'] = parseInt( attrs.typewriter_delay );
 			}
 			if( attrs.typewriter_width ) {
-				type_plugin['data-plugin-options']['minWindowWidth'] = parseInt( attrs.typewriter_width );	
+				type_plugin['data-plugin-options']['minWindowWidth'] = parseInt( attrs.typewriter_width );
 			}
 			if( attrs.typewriter_animation ) {
-				type_plugin['data-plugin-options']['animationName'] = parseInt( attrs.typewriter_animation );		
+				type_plugin['data-plugin-options']['animationName'] = parseInt( attrs.typewriter_animation );
 			}
+		}
+
+		let realHeadingText = headingText;
+		if ( attrs.text_source ) {
+			if ( ! realHeadingText ) {
+				realHeadingText = '';
+			}
+			if ( attrs.dynamic_content && attrs.dynamic_content.before ) {
+				realHeadingText = attrs.dynamic_content.before + realHeadingText;
+			}
+			if ( attrs.dynamic_content && attrs.dynamic_content.after ) {
+				realHeadingText += attrs.dynamic_content.after;
+			}
+		} else {
+			realHeadingText = attrs.title;
 		}
 		var renderControls = el(
 			RichText,
@@ -5455,7 +5661,7 @@ function _makeConsumableArray( arr ) {
 				onChange: function ( value ) {
 					return props.setAttributes( { title: value } );
 				},
-				value: attrs.title,
+				value: realHeadingText,
 			}
 		);
 
@@ -5472,70 +5678,83 @@ function _makeConsumableArray( arr ) {
 		];
 	};
 
+	let registerAttrs = {
+		text_source: {
+			type: 'string',
+		},
+		title: {
+			type: 'string',
+		},
+		dynamic_content: {
+			type: 'object',
+		},
+		enable_typewriter: {
+			type: 'boolean',
+		},
+		typewriter_animation: {
+			type: 'string',
+			default: 'fadeIn',
+		},
+		typewriter_delay: {
+			type: 'string',
+		},
+		typewriter_width: {
+			type: 'string',
+		},
+		font_family: {
+			type: 'string',
+		},
+		font_size: {
+			type: 'string',
+		},
+		font_weight: {
+			type: 'int',
+		},
+		text_transform: {
+			type: 'string',
+		},
+		line_height: {
+			type: 'string',
+		},
+		letter_spacing: {
+			type: 'string',
+		},
+		color: {
+			type: 'string',
+		},
+		tag: {
+			type: 'string',
+			default: 'h2',
+		},
+		link: {
+			type: 'string',
+		},
+		alignment: {
+			type: 'string',
+		},
+		animation_type: {
+			type: 'string',
+		},
+		animation_duration: {
+			type: 'int',
+			default: 1000,
+		},
+		animation_delay: {
+			type: 'int',
+			default: 0,
+		}
+	};
+
+	if ( content_type || '' === content_type ) {
+		registerAttrs.font_settings = { type: 'object' };
+		registerAttrs.tb_cls = { type: 'string' };
+	}
+
 	registerBlockType( 'porto/porto-heading', {
 		title: 'Porto Heading',
 		icon: 'porto',
 		category: 'porto',
-		attributes: {
-			title: {
-				type: 'string',
-			},
-			enable_typewriter: {
-				type: 'boolean',
-			},
-			typewriter_animation: {
-				type: 'string',
-				default: 'fadeIn',
-			},
-			typewriter_delay: {
-				type: 'string',
-			},
-			typewriter_width: {
-				type: 'string',
-			},
-			font_family: {
-				type: 'string',
-			},
-			font_size: {
-				type: 'string',
-			},
-			font_weight: {
-				type: 'int',
-			},
-			text_transform: {
-				type: 'string',
-			},
-			line_height: {
-				type: 'string',
-			},
-			letter_spacing: {
-				type: 'string',
-			},
-			color: {
-				type: 'string',
-			},
-			tag: {
-				type: 'string',
-				default: 'h2',
-			},
-			link: {
-				type: 'string',
-			},
-			alignment: {
-				type: 'string',
-			},
-			animation_type: {
-				type: 'string',
-			},
-			animation_duration: {
-				type: 'int',
-				default: 1000,
-			},
-			animation_delay: {
-				type: 'int',
-				default: 0,
-			}
-		},
+		attributes: registerAttrs,
 		edit: PortoHeading,
 		save: function () {
 			return null;
@@ -5558,12 +5777,69 @@ function _makeConsumableArray( arr ) {
 		BlockAlignmentToolbar = wpBlockEditor.BlockAlignmentToolbar,
 		el = wpElement.createElement,
 		Component = wpElement.Component,
+		useState = wpElement.useState,
+		useEffect = wpElement.useEffect,
 		TextControl = wpComponents.TextControl,
 		ToggleControl = wpComponents.ToggleControl,
 		SelectControl = wpComponents.SelectControl;
 
+	let content_type = document.getElementById( 'content_type' );
+	if ( typeof content_type == 'undefined' ) {
+		content_type = false;
+	} else if ( content_type ) {
+		content_type = content_type.value;
+	}
+
+	let content_type_value = '';
+	if ( content_type ) {
+		content_type_value = document.getElementById( 'content_type_' + content_type );
+		if ( content_type_value ) {
+			content_type_value = content_type_value.value;
+		}
+	}
+
 	const PortoButton = function ( props ) {
 		var attrs = props.attributes;
+
+		const [ buttonUrl, setButtonUrl ] = useState( attrs.link );
+
+		useEffect(
+			() => {
+				let field_name = '';
+				if ( attrs.dynamic_content && attrs.dynamic_content.source ) {
+					if ( 'post' == attrs.dynamic_content.source ) {
+						field_name = attrs.dynamic_content.post_info;
+					} else {
+						field_name = attrs.dynamic_content[ attrs.dynamic_content.source ];
+					}
+					jQuery.ajax( {
+						url: porto_block_vars.ajax_url,
+						data: {
+							action: 'porto_dynamic_tags_get_value',
+							nonce: porto_block_vars.nonce,
+							content_type: content_type ? content_type : 'post',
+							content_type_value: content_type_value ? content_type_value : porto_block_vars.edit_post_id,
+							source: attrs.dynamic_content.source,
+							field_name: field_name
+						},
+						type: 'post',
+						dataType: 'json',
+						success: function ( res ) {
+							if ( res && res.success ) {
+								if ( res.data ) {
+									setButtonUrl( res.data );
+								} else if ( attrs.dynamic_content && attrs.dynamic_content.fallback ) {
+									setButtonUrl( attrs.dynamic_content.fallback );
+								}
+							}
+						}
+					} );
+				}
+			},
+			[ attrs.link_source, attrs.dynamic_content && attrs.dynamic_content.source, attrs.dynamic_content && attrs.dynamic_content.post_info, attrs.dynamic_content && attrs.dynamic_content.metabox, attrs.dynamic_content && attrs.dynamic_content.acf, attrs.dynamic_content && attrs.dynamic_content.meta, attrs.dynamic_content && attrs.dynamic_content.tax ],
+		);
+
+		let dynamic_content = Object.assign( {}, attrs.dynamic_content );
 
 		var inspectorControls = el( InspectorControls, {},
 			el( TextControl, {
@@ -5571,10 +5847,22 @@ function _makeConsumableArray( arr ) {
 				value: attrs.title,
 				onChange: ( value ) => { props.setAttributes( { title: value } ); },
 			} ),
-			el( TextControl, {
+			el( SelectControl, {
+				label: __( 'Link Source', 'porto-functionality' ),
+				value: attrs.link_source,
+				options: [ { label: __( 'Custom Link', 'porto-functionality' ), value: '' }, { label: __( 'Dymamic Link', 'porto-functionality' ), value: 'dynamic' } ],
+				onChange: ( value ) => { props.setAttributes( { link_source: value } ); },
+			} ),
+			'dynamic' == attrs.link_source && el( PortoDynamicContentControl, {
+				label: __( 'Dynamic Content', 'porto-functionality' ),
+				value: dynamic_content,
+				options: { field_type: 'link', content_type: content_type, content_type_value: content_type_value },
+				onChange: ( value ) => { props.setAttributes( { dynamic_content: value } ); },
+			} ),
+			! attrs.link_source && el( TextControl, {
 				label: __( 'Link', 'porto-functionality' ),
-				value: attrs.link,
-				onChange: ( value ) => { props.setAttributes( { link: value } ); },
+				value: buttonUrl,
+				onChange: ( value ) => { props.setAttributes( { link: value } ); setButtonUrl( value ); },
 			} ),
 			el( SelectControl, {
 				label: __( 'Layout', 'porto-functionality' ),
@@ -5698,6 +5986,12 @@ function _makeConsumableArray( arr ) {
 			title: {
 				type: 'string',
 				default: 'Click Here',
+			},
+			link_source: {
+				type: 'string',
+			},
+			dynamic_content: {
+				type: 'object',
 			},
 			link: {
 				type: 'string',
@@ -6408,7 +6702,7 @@ function _makeConsumableArray( arr ) {
 					el( SelectControl, {
 						label: __( 'Order by', 'porto-functionality' ),
 						value: attrs.orderby,
-						options: [ { label: __( 'Title', 'porto-functionality' ), value: 'name' }, { label: __( 'ID', 'PORTO-FUNCTIONALITY' ), value: 'id' }, { label: __( 'Product Count', 'porto-functionality' ), value: 'count' }, { label: __( 'Description', 'porto-functionality' ), value: 'description' }, { label: __( 'Term Group', 'porto-functionality' ), value: 'term_group' } ],
+						options: [ { label: __( 'Title', 'porto-functionality' ), value: 'name' }, { label: __( 'ID', 'porto-functionality' ), value: 'id' }, { label: __( 'Product Count', 'porto-functionality' ), value: 'count' }, { label: __( 'Description', 'porto-functionality' ), value: 'description' }, { label: __( 'Term Group', 'porto-functionality' ), value: 'term_group' } ],
 						onChange: ( value ) => { setAttributes( { orderby: value } ); },
 					} ),
 					attrs.orderby != 'rating' && el( SelectControl, {
@@ -8965,7 +9259,7 @@ function _makeConsumableArray( arr ) {
 						min="0"
 						max="99999"
 						onChange={ ( value ) => { props.setAttributes( { float_duration: value } ); } }
-					/>			
+					/>
 					<SelectControl
 						label={ __( 'Easing Method', 'porto-functionality' ) }
 						value={ attrs.float_easing }
@@ -8978,14 +9272,14 @@ function _makeConsumableArray( arr ) {
 						min="0"
 						max="10000"
 						onChange={ ( value ) => { props.setAttributes( { float_repeat: value } ); } }
-					/>	
+					/>
 					<RangeControl
 						label={ __( 'Repeat Delay', 'porto-functionality' ) }
 						value={ attrs.float_repeat_delay }
 						min="0"
 						max="100000"
 						onChange={ ( value ) => { props.setAttributes( { float_repeat_delay: value } ); } }
-					/>											
+					/>
 					<ToggleControl
 						label={ __( 'yoyo', 'porto-functionality' ) }
 						checked={ attrs.float_yoyo }

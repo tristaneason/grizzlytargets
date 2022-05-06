@@ -1,3 +1,59 @@
+= 8.11.0 (2022-04-27) =
+* Add option to disable HS analytics tracking for internal WP users
+
+= 8.10.25 (2022-04-25) =
+* Fix Gutenberg block breaking after user disconnects plugin
+
+= 8.10.0 (2022-04-21) =
+* Add templates options to gutenberg form
+
+= 8.9.22 (2022-04-13) =
+* Prevent script to be loaded while Elementor Edit mode is on/or admin
+
+= 8.9.20 (2022-04-13) =
+* Fix security issue related to sanitizing inputs
+
+= 8.9.14 (2022-04-12) =
+* Fix security issue related to form inputs
+
+= 8.9.0 (2022-04-11) =
+* Add api that gets the correct hublet
+
+= 8.8.15 (2022-04-07) =
+* Fix security issue related to proxy URL
+
+= 8.8.13 (2022-04-07) =
+* Whitelist proxy paths
+
+= 8.8.0 (2022-04-06) =
+* Add api that updates hublet
+* Add api to track user consent
+
+= 8.7.5 (2022-03-14) =
+* Always add utm params to iframe
+
+= 8.7.0 (2022-03-11) =
+* Validations to when show the review banner
+* Add banner to ask the user to leave a review
+
+= 8.6.0 (2022-03-09) =
+* Add banner to ask the user to leave a review
+
+= 8.5.50 (2022-02-22) =
+* Increase WP tested up to version
+
+= 8.5.0 (2022-02-11) =
+* Add api to hide review banner
+
+= 8.4.662 (2022-02-04) =
+* Remove "shortcode" property from form definition as it was not used anywhere
+
+= 8.4.598 (2022-01-25) =
+* Add sandbox attribute to iframe
+
+= 8.4.463 (2021-12-16) =
+* Store activation time in the database. This will be needed to show contextual suggestions at the right time in the future.
+
 = 8.4.353 (2021-11-29) =
 * Add rel='noopener' to target _blank link
 
@@ -290,110 +346,4 @@
 * Create new settings page
 * Improve connection flow and fix known bugs
 * Refactor code into classes
-
-= 7.18.81 (2020-01-15) =
-* Make the usage of the plugin API consistent from the UI and setup CORS
-* Setup Autoloader on the PHP code
-* Refactor the PHP section of the plugin and use of namespaces
-* Refactor and update the inteframe communication library
-
-= 7.16.1 (2019-11-13) =
-* Update version of loaded iframe
-
-= 7.17.2 (2019-11-13) =
-* Fix missing disconnect button
-
-= 7.15.11 (2019-10-23) =
-* Prevent wordpress notices flash when navigating through the plugin menu
-* Improve UI of reminder notice on the WP dashboard
-* Redirects to login page when the user is not authenticated
-* Add Contacts and Lists to the plugin
-
-= 7.14.1 (2019-10-09) =
-* Verify email on signup
-* Remove version from tracking code
-* Redirect from top level menu to dashboard
-* Add HubSpot dashboard
-* Fix navbar showing on the form pag
-
-= 7.13.11 (2019-10-09) =
-* Automatic connection when only one portal is available
-
-= 7.12.14 (2019-09-25) =
-* Add new forms dashboard
-* Add "Advanced Features" link in menu
-
-= 7.11.0 (2019-09-15) =
-* Create new connection banner
-* Refactor iframe communication
-* Change minimum role from "Subscriber" to "Contributor"
-* Fix spinner position
-* Ask for feedback before deactivating
-
-= 7.10.0 (2019-08-28) =
-* Fix duplicate tracking code
-* Fix layout with Update WordPress banner
-* Redirect after plugin activation
-* Add information to the login screen
-* Update connection banner
-
-= 7.9.2 (2019-08-19) =
-* Fix infinite loading in pages editor for Gutenberg Forms block
-* Updated translations
-
-= 7.9.1 (2019-08-14) =
-* Fix register_block_type does not exist error.
-
-= 7.9.0 (2019-08-13) =
-* Add HubSpot Form Gutenberg Block
-
-= 7.8.0 (2019-08-07) =
-* Replace activate_plugins with manage_options
-* Upgrade wordpress-scripts
-* Remove tracking code from login page
-* Added Logo svg for banner
-
-= 7.6.0 (2019-07-18) =
-* Remove echo from enqueue_scripts hooks
-* Update url on forms dashboard
-* Add nonce checks on connect/disconnect APIs
-* Sanitize portal id on connect APIs
-* Remove queries to DB
-* Update plugin permissions
-* Update `leadin_route` query parameter
-* Remove HTML from translations
-* Remove notice for outdated plugin
-* Remove unused options
-* Escape variables
-* Avoid phpcs errors on file_get_contents
-* Fix mispelled WordPress
-
-= 7.5.5 (2019-07-15) =
-* Fix comment escaping
-* Remove unused cookie (fix error message on activation)
-* Lock iframe to plugin version
-* Add unit tests for JS
-* Update readme.txt
-* Sanitize inputs
-* Sync route with plugin
-
-= 7.5.3 (2019-06-25) =
-* Rename "chatflow" to "live chat"
-* Update readme.txt
-* Update banners
-* Fix themes colors
-* Refactor code style
-
-= 7.5.4 (2019-06-25) =
-* Hotfix
-
-= 7.5.2 (2019-06-13) =
-* Add webpack and use ES6
-* Show "complete your signup" banner for WPEngine themes
-* Auto-generate assets and update styles for WPEngine themes
-* Handle messages timeout errors
-* Fix navigation in single page app
-* Enable non-HubSpot forms by default
-* Add forms tab in settings
-* Add form builder to WordPress
 

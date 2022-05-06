@@ -13,7 +13,6 @@ function woocommerceToGoogleFields() {
 		'image_link': 'attachment_url',
 		'additional_image_link': '_wp_attachement_metadata',
 		'price': '_regular_price',
-		'sale_price_effective_date': '_sale_price_dates_from',
 		'item_group_id': 'item_group_id',
 		'mpn': 'ID',
 		'tax': 'Use the settings in the Merchant Center',
@@ -141,7 +140,7 @@ function setGooglePresets( field ) {
 			return '{"m":[{"s":{"static":"new"}}]}';
 
 		case 'availability':
-			return '{"m":[{"s":{"static":"in stock"},"c":[{"1":"0#_stock_status#0#instock"}]},{"s":{"static":"out of stock"}}]}';
+			return '{"m":[{"s":{"static":"in_stock"},"c":[{"1":"0#_stock_status#0#instock"}]},{"s":{"static":"out_of_stock"}}]}';
 
 		case 'identifier_exists':
 			return '{"m":[{"s":{"static":"yes"}}]}';
@@ -154,6 +153,9 @@ function setGooglePresets( field ) {
 
 		case 'sale_price':
 			return '{"m":[{"s":{"source":"combined","f":"_sale_price|1#wc_currency"}}]}';
+
+		case 'sale_price_effective_date':
+			return '{"m":[{"s":{"source":"combined","f":"_sale_price_dates_from|7#_sale_price_dates_to"},"c":[{"1":"0#_sale_price#5"}]},{"s":{"source":"empty"}}]}';
 
 		default:
 			break;
@@ -204,7 +206,7 @@ function googleStaticFieldOptions( fieldName ) {
 			break;
 
 		case 'availability':
-			options = [ 'in stock', 'out of stock', 'preorder', 'backorder' ];
+			options = [ 'in_stock', 'out_of_stock', 'preorder', 'backorder' ];
 			break;
 
 		case 'identifier_exists':

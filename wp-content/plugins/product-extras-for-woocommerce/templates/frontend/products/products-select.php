@@ -10,6 +10,10 @@ if( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if( ! pewc_is_pro() ) {
+	return;
+}
+
 $child_product_wrapper_class = array( 'child-product-wrapper' );
 if( ! empty( $item['products_quantities'] ) ) {
 	$products_quantities = ! empty( $item['products_quantities'] ) ? $item['products_quantities'] : '';
@@ -66,7 +70,7 @@ if( ! empty( $item['products_quantities'] ) ) {
 			// $option_cost = pewc_maybe_include_tax( $child_product, $child_product->get_price() );
 			printf(
 				'<option data-option-cost="%s" %s %s data-field-value="%s" value="%s" data-stock="%s">%s</option>',
-				esc_attr( $option_cost ),
+				apply_filters( 'pewc_option_price', esc_attr( $option_cost ), $item ),
 				$disabled,
 				$selected,
 				esc_attr( get_the_title( $child_product_id ) ),

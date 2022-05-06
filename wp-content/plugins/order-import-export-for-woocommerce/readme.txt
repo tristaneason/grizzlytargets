@@ -3,9 +3,9 @@ Contributors: webtoffee
 Donate link: https://www.webtoffee.com/plugins/
 Tags: order export, woocommerce, order, export, csv, order import, woocommerce export orders,  woocommerce  import orders, import, coupon export, coupon import, coupon
 Requires at least: 3.0.1
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.1.4
+Stable tag: 2.2.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -28,10 +28,8 @@ The following are functionalities offered by the basic version of the plugin.
  &#128312; Bulk update WooCommerce orders and coupons.
  &#128312; Compatible with YITH WooCommerce Order Tracking plugin.
  &#128312; Supports various export filters (order status, product, coupon, customer, date range)
- &#128312; Export Subscription orders to a CSV file(Premium Feature).
- &#128312; Import Subscription orders from a CSV file(Premium Feature).
- &#128312; Tested OK with WooCommerce 5.9
- &#128312; Tested OK with WP 5.8
+ &#128312; Tested OK with WooCommerce 6.3
+ &#128312; Tested OK with WP 5.9
  &#128312; Tested OK with PHP 8.0
 
 Additional features that will help you in the CSV export and import process:
@@ -43,6 +41,9 @@ Additional features that will help you in the CSV export and import process:
  &#128312; Skip or update existing orders/coupons while importing.
  &#128312; Create and maintain import and export history with options to re-run, view logs, and delete an entry
  &#128312; Log of the import and export will help in identifying what went wrong for debugging purposes.
+ &#128312; Auto-suggestion of coupon codes making coupon-based filtering easier.
+ &#128312; Export Subscription orders to a CSV file.
+ &#128312; Import Subscription orders from a CSV file.
 
 More information about the setup of the plugin and a sample CSV that is taken as input by the plugin are given in the <a rel="nofollow" href="https://www.webtoffee.com/order-coupon-subscription-export-import-plugin-woocommerce-user-guide/">free order export import plugin</a> setup guide.
 
@@ -50,6 +51,8 @@ More information about the setup of the plugin and a sample CSV that is taken as
  
 * [Sequential Order Number for WooCommerce by WebToffee](https://wordpress.org/plugins/wt-woocommerce-sequential-order-numbers/)
 * [WooCommerce PDF Invoices, Packing Slips, Delivery Notes & Shipping Labels by WebToffee](https://wordpress.org/plugins/print-invoices-packing-slip-labels-for-woocommerce/)
+* [Advanced Shipment Tracking for WooCommerce](https://wordpress.org/plugins/woo-advanced-shipment-tracking/)
+* [WooCommerce Shipment Tracking](https://woocommerce.com/products/shipment-tracking/)
 
 <blockquote>
 
@@ -225,6 +228,26 @@ Yes.
 
 == Changelog ==
 
+= 2.2.2 2022-04-05 =
+* Enhancement: Option to - Update stock status and sales count of products upon order import.
+* Enhancement: Compatibility with WooCommerce shipment tracking and Advanced Shipment Tracking for WooCommerce.
+= 2.2.1 =
+* Bugfix: Download link in imported orders not working.
+= 2.2.0 =
+* Bugfix: Coupon import without status.
+* Enhancement: Performance and UI improvements, text corrections.
+= 2.1.9 =
+* Bugfix: CSV mapping issues.
+= 2.1.8 =
+* WP 5.9 Tested OK
+* Bugfix: WP custom plugins folder support.
+= 2.1.7 =
+* Enhancement: Auto-suggestion of coupon codes making coupon-based filtering easier.
+= 2.1.6 =
+* WC 6.1 Tested OK
+* Help text updated.
+= 2.1.5 =
+* WC 6.0 Tested OK
 = 2.1.4 =
 * WC 5.9 Tested OK
 * Compatibility with YITH WooCommerce Order Tracking
@@ -476,6 +499,6 @@ Yes.
 
 == Upgrade Notice ==
 
-= 2.1.4 =
-* WC 5.9 Tested OK
-* Compatibility with YITH WooCommerce Order Tracking
+= 2.2.2 =
+* Enhancement: Option to - Update stock status and sales count of products upon order import.
+* Enhancement: Compatibility with WooCommerce shipment tracking and Advanced Shipment Tracking for WooCommerce.

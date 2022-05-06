@@ -25,5 +25,5 @@ export default function useForm(id, name) {
     }
   }, [id, name]);
 
-  return { loading, form };
+  return { loading, form, setLoading };
 }

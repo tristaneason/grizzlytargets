@@ -2,9 +2,8 @@
 /**
  * WC_CSP_Restrict_Payment_Gateways class
  *
- * @author   SomewhereWarm <info@somewherewarm.com>
  * @package  WooCommerce Conditional Shipping and Payments
- * @since    1.0.0
+ * @since    1.13.0
  */
 
 // Exit if accessed directly.
@@ -16,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Restrict Payment Gateways.
  *
  * @class    WC_CSP_Restrict_Payment_Gateways
- * @version  1.11.0
+ * @version  1.12.1
  */
 class WC_CSP_Restrict_Payment_Gateways extends WC_CSP_Restriction implements WC_CSP_Checkout_Restriction {
 
@@ -166,7 +165,7 @@ class WC_CSP_Restrict_Payment_Gateways extends WC_CSP_Restriction implements WC_
 				</label>
 				<div class="sw-form-content">
 					<input type="checkbox" class="checkbox show_excluded_in_checkout" name="restriction[<?php echo $index; ?>][show_excluded]" <?php echo $show_excluded ? 'checked="checked"' : ''; ?>>
-					<?php echo WC_CSP_Core_Compatibility::wc_help_tip( __( 'By default, excluded payment gateways are removed from the list of gateways available during checkout. Select this option if you prefer to show excluded gateways in the checkout options and display a restriction notice when customers attempt to complete an order using an excluded gateway.', 'woocommerce-conditional-shipping-and-payments' ) ); ?>
+					<?php echo WC_CSP_Core_Compatibility::wc_help_tip( __( 'By default, excluded payment gateways are hidden in the <strong>Checkout</strong> and <strong>Order > Pay</strong> pages. Select this option if you prefer to show excluded gateways in the <strong>Checkout</strong> page and display a restriction notice when customers attempt to complete an order using an excluded gateway. In the <strong>Order > Pay</strong> page, excluded payment gateways will remain hidden.', 'woocommerce-conditional-shipping-and-payments' ) ); ?>
 				</div>
 			</div>
 			<div class="sw-form-field show-excluded-checked" style="<?php echo false === $show_excluded ? 'display:none;' : ''; ?>">
@@ -195,7 +194,7 @@ class WC_CSP_Restrict_Payment_Gateways extends WC_CSP_Restriction implements WC_
 					?>
 				</div>
 			</div>
-			<div class="sw-form-field sw-form-field--checkbox show-excluded-checked" style="<?php echo false === $show_excluded ? 'display:none;' : ''; ?>">
+			<div class="sw-form-field sw-form-field--checkbox show-excluded-checked" style="<?php echo false === $show_excluded || false === $this->supports( 'static-notices' ) ? 'display:none;' : ''; ?>">
 				<label>
 					<?php _e( 'Show Static Notices', 'woocommerce-conditional-shipping-and-payments' ); ?>
 				</label>
@@ -683,6 +682,15 @@ class WC_CSP_Restrict_Payment_Gateways extends WC_CSP_Restriction implements WC_
 		$chosen_gateway     = isset( $args[ 'check_gateway' ] ) ? $args[ 'check_gateway' ] : WC()->session->get( 'chosen_payment_method' );
 		$available_gateways = isset( $args[ 'available_gateways' ] ) ? $args[ 'available_gateways' ] : WC()->payment_gateways->get_available_payment_gateways();
 		$message_context    = isset( $args[ 'context' ] ) && 'check' === $args[ 'context' ] ? 'check' : 'validation';
+
+		/*
+		 * Override the context and set it to validation.
+		 * This is needed as in StoreAPI, temporarily, we validate the gateways as static,
+		 * but display the resolution messages as non-static, on top of the checkout block.
+		 */
+		if ( WC_CSP_Core_Compatibility::is_store_api_request( 'checkout', 'POST' ) ) {
+			$message_context = 'validation';
+		}
 
 		/**
 		 * Filter title.

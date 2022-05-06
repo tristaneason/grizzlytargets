@@ -3,9 +3,22 @@ import { registerBlockType } from '@wordpress/blocks';
 import SprocketIcon from '../Common/SprocketIcon';
 import FormBlockEdit from './FormBlockEdit';
 import FormBlockSave from './FormBlockSave';
-import { i18n } from '../../constants/leadinConfig';
+import { connectionStatus, i18n } from '../../constants/leadinConfig';
+import FormErrorHandler from './FormBlockEdit/FormErrorHandler';
+
+const ConnectionStatus = {
+  Connected: 'Connected',
+  NotConnected: 'NotConnected',
+};
 
 export default function registerFormBlock() {
+  const editComponent = props =>
+    connectionStatus === ConnectionStatus.Connected ? (
+      <FormBlockEdit {...props} />
+    ) : (
+      <FormErrorHandler status={401} />
+    );
+
   registerBlockType('leadin/hubspot-form-block', {
     title: i18n.formBlockTitle,
     description: i18n.formBlockDescription,
@@ -22,7 +35,7 @@ export default function registerFormBlock() {
         type: 'string',
       },
     },
-    edit: props => <FormBlockEdit {...props} />,
+    edit: editComponent,
     save: props => <FormBlockSave {...props} />,
   });
 }

@@ -1023,7 +1023,7 @@
 				},
 			);
 
-			jQuery( '#hubwoo-order-statuses , #hubwoo_ecomm_order_ocs_status' ).select2(
+			jQuery( '#hubwoo_ecomm_order_ocs_status' ).select2(
 				{
 					placeholder: 'Processing, Completed etc.',
 					ajax: {
@@ -1167,7 +1167,6 @@
 						{ key: 'hubwoo_subs_settings_enable', status: 'no' },						
 					];
 					const multiSelectKeys  = [
-						{ key: 'hubwoo-order-statuses', status: 'EMPTY_ARRAY' },
 						{ key: 'hubwoo-selected-user-roles', status: 'EMPTY_ARRAY' },
 					];
 					const preparedFormData = prepareFormData( data, enableKeys, true );
@@ -1218,7 +1217,7 @@
 				debounce(
 					() => {
 	                    const data            = jQuery( '#hubwoo_real_time_deal_settings' ).serializeArray();
-	                    const enableKeys      = [ { key: 'hubwoo_ecomm_deal_enable', status: 'no' } ];
+	                    const enableKeys      = [ { key: 'hubwoo_ecomm_deal_enable', status: 'no' }, { key: 'hubwoo_assoc_deal_cmpy_enable', status: 'no' } ];
 	                    const multiSelectKeys = [ { key: 'hubwoo_ecomm_won_stages', status: 'EMPTY_ARRAY' } ];
 	                    const formData        = prepareFormData( data, enableKeys, true );
 	                    multiSelectKeys.map(
@@ -1972,7 +1971,7 @@
 				return response;
 			}
 
-			const bulkDealsSync = async( step, progress, max_item, deal_get_vid ) => {
+			const bulkDealsSync = async( step, progress, max_item ) => {
 				
 				const response = await jQuery.ajax(
 					{
@@ -1983,7 +1982,6 @@
 							step,
 							hubwooSecurity,
 							max_item,
-							deal_get_vid,
 						},
 						dataType : 'json',
 					}
@@ -2023,7 +2021,6 @@
 				deal_bar_update  = parseFloat( deal_bar_update.toFixed(2) );
 				var deal_progress_bar  = parseFloat( 0 );
 				var bulk_deal_response = '';
-				var deal_get_vid = 'process_request';
 
 				while ( deal_batch_count <= deal_batches ) {
 					
@@ -2032,11 +2029,10 @@
 
 					if ( deal_batch_count == deal_batches ) {
 						deal_progress_bar = 100;
-						deal_get_vid = 'final_request';
 
 					}
 
-					bulk_deal_response = await bulkDealsSync( 1, deal_progress_bar, max_item, deal_get_vid );
+					bulk_deal_response = await bulkDealsSync( 1, deal_progress_bar, max_item );
 					deal_batch_count++;
 
 					if ( 100 == deal_progress_bar ) {
@@ -2045,11 +2041,8 @@
 						await saveUpdates( { 'hubwoo_greeting_displayed_setup': 'yes' } );
 						location.reload();
 					}
-
 				}
-				
 			}
-
 		},
 	);
 }( jQuery ) );

@@ -240,7 +240,7 @@ if ( ! class_exists( 'WPPFM_Ajax_Data' ) ) :
 
 		public function myajax_update_feed_data() {
 			if ( $this->safe_ajax_call( filter_input( INPUT_POST, 'updateFeedDataNonce' ), 'myajax-update-feed-data-nonce' ) ) {
-				// Gget the posted feed data.
+				// Get the posted feed data.
 				$ajax_feed_data = json_decode( filter_input( INPUT_POST, 'feed' ) );
 				$feed_filter    = filter_input( INPUT_POST, 'feedFilter' );
 				$m_data         = filter_input( INPUT_POST, 'metaData' );

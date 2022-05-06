@@ -31,7 +31,7 @@ class Porto_Elementor_CP_Price_Widget extends \Elementor\Widget_Base {
 		return array( 'product', 'price', 'cost' );
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		$this->start_controls_section(
 			'section_cp_price',

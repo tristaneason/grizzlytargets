@@ -136,14 +136,23 @@ if( ! empty( $item['condition_field'] ) ) {
 				<?php } else if( $condition_field_type == 'select' || $condition_field_type == 'select-box' || $condition_field_type == 'radio' || $condition_field_type == 'image_swatch' || $condition_field_type == 'products' || $condition_field_type == 'checkbox_group' ) { ?>
 					<select class="pewc-condition-value pewc-condition-set-value" name="_product_extra_groups_<?php echo esc_attr( $group_id ); ?>_<?php echo esc_attr( $item_key ); ?>[condition_value][<?php echo esc_attr( $condition_count ); ?>]" id="condition_value_<?php echo esc_attr( $group_id ); ?>_<?php echo esc_attr( $item_key ); ?>_<?php echo esc_attr( $condition_count ); ?>" data-group-id="<?php echo esc_attr( $group_id ); ?>" data-item-id="<?php echo esc_attr( $item_key ); ?>" data-condition-id="<?php echo esc_attr( $condition_count ); ?>">
 						<?php // Populate the select field
-						if( $condition_field_type == 'products' ) {
+						if( $condition_field_type == 'products' || $condition_field_type == 'product-categories' ) {
+							
 							$field_options = false;
-							if( ! pewc_has_migrated() && ! empty( $groups[$cond_group_id]['items'][$cond_field_id]['child_products'] ) ) {
-								// Pre 3.0
-								$field_options = $groups[$cond_group_id]['items'][$cond_field_id]['child_products'];
-							} else {
-								// 3.0+
-								$field_options = get_post_meta( $cond_field_id, 'child_products', true );
+
+							if( $condition_field_type == 'products' ){
+								
+								if( ! pewc_has_migrated() && ! empty( $groups[$cond_group_id]['items'][$cond_field_id]['child_products'] ) ) {
+									// Pre 3.0
+									$field_options = $groups[$cond_group_id]['items'][$cond_field_id]['child_products'];
+								} else {
+									// 3.0+
+									$field_options = get_post_meta( $cond_field_id, 'child_products', true );
+								}
+							}
+							else{
+								// 3.9.7+
+								$field_options = get_post_meta( $cond_field_id, 'child_categories', true );
 							}
 
 							if( $field_options ) {

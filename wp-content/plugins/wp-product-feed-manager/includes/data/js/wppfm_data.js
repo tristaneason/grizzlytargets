@@ -88,6 +88,14 @@ function wppfm_woocommerceSourceOptions() {
 		{value: '_product_parent_id', label: 'Product Parent Id', prop: 'meta'},
 		{value: '_max_group_price', label: 'Highest Grouped Price', prop: 'meta'},
 		{value: '_min_group_price', label: 'Lowest Grouped Price', prop: 'meta'},
+		// @since 2.26.0
+		{value: '_regular_price_with_tax', label: 'Regular Price With Tax', prop: 'meta'},
+		{value: '_regular_price_without_tax', label: 'Regular Price Without Tax', prop: 'meta'},
+		{value: '_sale_price_with_tax', label: 'Sale Price With Tax', prop: 'meta'},
+		{value: '_sale_price_without_tax', label: 'Sale Price Without Tax', prop: 'meta'},
+		// @since 2.28.0
+		{value: '_product_parent_description', label: 'Product Parent Description', prop: 'meta'},
+		{value: '_woocs_currency', label: 'WOOCS Currency', prop: 'meta'},
 	];
 }
 

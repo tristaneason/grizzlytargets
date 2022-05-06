@@ -118,6 +118,15 @@ if ( $id || $name ) {
 				$post_content .= '<div class="container-fluid">';
 			}
 			ob_start();
+
+			$document = Elementor\Plugin::$instance->documents->get_doc_for_frontend( $post_id );
+			$switch_flag = false;
+
+			if ( ! empty( $document ) && $document->is_built_with_elementor() ) {
+				Elementor\Plugin::$instance->documents->switch_to_document( $document );
+				$switch_flag = true;
+			}
+
 			foreach ( $elements_data as $element_data ) {
 
 				$element = Elementor\Plugin::$instance->elements_manager->create_element_instance( $element_data );
@@ -128,6 +137,11 @@ if ( $id || $name ) {
 
 				$element->print_element();
 			}
+
+			if ( $switch_flag ) {
+				Elementor\Plugin::$instance->documents->restore_document();
+			}
+
 			$post_content .= ob_get_clean();
 			if ( 'fluid' == $inner_container ) {
 				$post_content .= '</div>';

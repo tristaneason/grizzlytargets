@@ -2,7 +2,6 @@
 /**
  * WC_CSP_Conditions class
  *
- * @author   SomewhereWarm <info@somewherewarm.com>
  * @package  WooCommerce Conditional Shipping and Payments
  * @since    1.0.0
  */

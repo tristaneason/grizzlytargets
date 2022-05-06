@@ -1,7 +1,9 @@
 <?php
 $atts = shortcode_atts(
 	array(
+		'text_source'          => '',
 		'title'                => '',
+		'dynamic_content'      => '',
 		'font_family'          => '',
 		'font_size'            => '',
 		'font_weight'          => '',
@@ -109,11 +111,29 @@ if ( ! empty( $atts['enable_typewriter'] ) ) {
 
 $result = '';
 
-$result .= '<' . esc_html( $atts['tag'] ) . ' class="porto-heading' . ( $atts['show_border'] ? ' has-border border-' . esc_attr( $atts['show_border'] ) : '' ) . ( $atts['className'] ? ' ' . esc_attr( trim( $atts['className'] ) ) : '' ) . '" style="' . esc_attr( $style_inline ) . '"' . $animation_attrs . $type_plugin . '>';
+$result .= '<' . esc_html( $atts['tag'] ) . ' class="porto-heading' . ( $atts['show_border'] ? ' has-border border-' . esc_attr( $atts['show_border'] ) : '' ) . ( ! empty( $atts['tb_cls'] ) ? ' ' . esc_attr( trim( $atts['tb_cls'] ) ) : '' ) . ( $atts['className'] ? ' ' . esc_attr( trim( $atts['className'] ) ) : '' ) . '" style="' . esc_attr( $style_inline ) . '"' . $animation_attrs . $type_plugin . '>';
 if ( $atts['link'] ) {
 	$result .= '<a href="' . esc_url( $atts['link'] ) . '">';
 }
-$result .= wp_kses_post( $atts['title'] );
+
+if ( empty( $atts['text_source'] ) ) {
+	$result .= wp_kses_post( $atts['title'] );
+} elseif ( $atts['dynamic_content'] && $atts['dynamic_content']['source'] ) {
+	$field_name = '';
+	if ( 'post' == $atts['dynamic_content']['source'] ) {
+		if ( isset( $atts['dynamic_content']['post_info'] ) ) {
+			$field_name = $atts['dynamic_content']['post_info'];
+		}
+	} else {
+		if ( isset( $atts['dynamic_content'][ $atts['dynamic_content']['source'] ] ) ) {
+			$field_name = $atts['dynamic_content'][ $atts['dynamic_content']['source'] ];
+		}
+	}
+	if ( $field_name ) {
+		$result .= apply_filters( 'porto_dynamic_tags_content', '', null, $atts['dynamic_content']['source'], $field_name );
+	}
+}
+
 if ( $atts['link'] ) {
 	$result .= '</a>';
 }

@@ -31,6 +31,10 @@ export function postAjax(action, payload) {
   return makeAjaxRequest(action, 'post', payload);
 }
 
+export function getAjax(action) {
+  return makeAjaxRequest(action, 'get');
+}
+
 export function leadinConnectPortal(portalInfo) {
   return postAjax('leadin_registration_ajax', portalInfo);
 }
@@ -41,4 +45,28 @@ export function leadinDisconnectPortal() {
 
 export function skipSignup(defaultApp) {
   return postAjax('leadin_skip_signup', { defaultApp });
+}
+
+export function skipReview() {
+  return postAjax('leadin_skip_review');
+}
+
+export function updateHublet(hublet) {
+  return postAjax('leadin_update_hublet', { hublet });
+}
+
+export function getPortalHublet(hublet) {
+  return postAjax('leadin_get_portal_hublet', { hublet });
+}
+
+export function trackConsent(canTrack) {
+  return postAjax('leadin_track_consent', { canTrack });
+}
+
+export function disableInternalTracking(value) {
+  return postAjax('leadin_disable_internal_tracking', value ? '1' : '0');
+}
+
+export function fetchDisableInternalTracking() {
+  return getAjax('leadin_disable_internal_tracking');
 }

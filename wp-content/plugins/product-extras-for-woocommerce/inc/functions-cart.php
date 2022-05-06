@@ -27,9 +27,10 @@ function pewc_wc_calculate_total( $cart_obj ) {
 	foreach( $cart_obj->get_cart() as $key=>$value ) {
 
 		// Set the price to include extras
-		if( isset( $value['product_extras']['price_with_extras'] ) ) {
-
-			$new_price = pewc_get_adjusted_product_addon_price( $value, $key );
+		if( isset( $value['product_extras']['price_with_extras'] ) ) { // ensure we don't override a price set by Bookings
+			// No need to adjust here, because tax is adjusted by WC later if needed
+			// Filtered by Bookings
+			$new_price = apply_filters( 'pewc_price_with_extras_before_calc_totals', $value['product_extras']['price_with_extras'], $value );
 			$value['data']->set_price( floatval( $new_price ) );
 
 		}
@@ -38,6 +39,102 @@ function pewc_wc_calculate_total( $cart_obj ) {
 
 }
 add_action( 'woocommerce_before_calculate_totals', 'pewc_wc_calculate_total', 10, 1 );
+
+/*
+ * Checks the cart for parent products with child products. This is only run if Hide child products is enabled
+ * This is run after Fees and Discounts
+ * @since 3.9.8
+ */
+function pewc_prepare_parent_products( $cart_obj ) {
+
+	if( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+		return;
+	}
+
+	if ( 'yes' === get_option( 'pewc_hide_child_products_cart', 'no' ) ) {
+
+		// we use the arrays below later if hide == yes, so that we can get the totals of the child products and add it to the parent's
+		$child_products_totals = array();
+		$parent_products_keys = array();
+
+		foreach( $cart_obj->get_cart() as $key=>$value ) {
+			if ( isset( $value['product_extras']['products'] ) ) {
+
+				$product = wc_get_product( $value['product_id'] );
+				$item_price = $value['data']->get_price();
+
+				if ( isset( $value['product_extras']['products']['child_field'] ) ) {
+
+					// this is a child product
+					$parent_field_id = $value['product_extras']['products']['parent_field_id'];
+					if ( ! isset( $child_products_totals[$parent_field_id] ) )
+						$child_products_totals[$parent_field_id] = 0;
+					// add this child product's price to the parent's total
+					$child_products_totals[$parent_field_id] += $value['quantity'] * wc_format_decimal( pewc_maybe_include_tax( $product, $item_price, true ), '');
+
+				} else if ( isset( $value['product_extras']['child_fields'] )) {
+
+					// this is a parent product, save some things for later
+					if ( ! isset( $parent_products_keys[$key] ) ) {
+						$parent_products_keys[$key] = array(
+							'parent_field_id' => $value['product_extras']['products']['parent_field_id'],
+							'parent_price' => pewc_maybe_include_tax( $product, $item_price, true )
+						);
+					}
+
+				}
+			}
+		}
+
+		if ( ! empty( $child_products_totals ) && ! empty( $parent_products_keys ) ) {
+			// let's save this in a session for later use
+			WC()->session->set( 'child_products_totals', $child_products_totals );
+			WC()->session->set( 'parent_products_keys', $parent_products_keys );
+		}
+	}
+}
+add_action( 'woocommerce_before_calculate_totals', 'pewc_prepare_parent_products', 100, 1 );
+
+/*
+ * Filters the cart item's line price and subtotal if Hide child products is enabled
+ * @since 3.9.8
+ */
+function pewc_cart_item_price_parent_products( $subtotal, $cart_item, $cart_item_key ) {
+
+	if ( 'yes' === get_option( 'pewc_hide_child_products_cart', 'no' ) && isset( $cart_item['product_extras']['products'] ) ) {
+		// get from session, generated from pewc_prepare_parent_products()
+		$child_products_totals = WC()->session->get( 'child_products_totals');
+		$parent_products_keys = WC()->session->get( 'parent_products_keys');
+
+		if ( ! empty( $parent_products_keys[$cart_item_key]['parent_field_id'] ) && ! empty( $child_products_totals[$parent_products_keys[$cart_item_key]['parent_field_id']] ) ) {
+			// this is a parent product that needs price display adjustment
+
+			// get the total for this parent product's children
+			$child_products_total = $child_products_totals[$parent_products_keys[$cart_item_key]['parent_field_id']];
+
+			// get this parent product's price
+			$parent_price = $parent_products_keys[$cart_item_key]['parent_price'];
+
+			// this is for the line subtotal, so no need to divide by quantity
+			$new_price = ($parent_price * $cart_item['quantity']) + $child_products_total;
+			$old_price = $parent_price * $cart_item['quantity'];
+
+			if ( doing_filter( 'woocommerce_cart_item_price' ) && $cart_item['quantity'] > 0 ) {
+				// some child products do not get multiplied based on the parent quantity, so we need to consider that
+				$new_price = $new_price / $cart_item['quantity'];
+				$old_price = $parent_price;
+			}
+
+			//return wc_price($new_price); // this does not have the suffix
+			$subtotal = str_replace( wc_price( $old_price ), wc_price( $new_price ), $subtotal); // this keeps the suffix
+		}
+	}
+
+	return $subtotal;
+}
+add_filter( 'woocommerce_cart_item_price', 'pewc_cart_item_price_parent_products', 100, 3 );
+add_filter( 'woocommerce_cart_item_subtotal', 'pewc_cart_item_price_parent_products', 100, 3 );
+
 
 function pewc_minicart_item_price( $price, $cart_item, $cart_item_key ) {
 
@@ -138,8 +235,8 @@ function pewc_after_add_to_cart( $cart_item_key, $product_id, $quantity, $variat
 		$product_price = isset( $cart_item_data['product_extras']['original_price'] ) ? $cart_item_data['product_extras']['original_price'] : 0;
 		$product_price = isset( $cart_item_data['product_extras']['price_with_extras'] ) ? $cart_item_data['product_extras']['price_with_extras'] : $product_price;
 
+		$product = wc_get_product( $product_id ); // this is moved outside of the condition below because this is needed later when we adjust minimum price for tax
 		if( ! $product_price ) {
-			$product = wc_get_product( $product_id );
 			$product_price = $product->get_price();
 		}
 		$product_price = $product_price * $quantity;
@@ -159,7 +256,7 @@ function pewc_after_add_to_cart( $cart_item_key, $product_id, $quantity, $variat
 						__( 'This product has not been added to your cart. The product has a minimum price of', 'pewc' ),
 						$product_id
 					),
-					wc_price( $minimum_price )
+					wc_price( pewc_maybe_include_tax( $product, $minimum_price ) )
 				),
 				'error'
 			);
@@ -179,7 +276,7 @@ function pewc_after_add_to_cart( $cart_item_key, $product_id, $quantity, $variat
 						__( 'The price has been set to the minimum price of', 'pewc' ),
 						$product_id
 					),
-					wc_price( $minimum_price )
+					wc_price( pewc_maybe_include_tax( $product, $minimum_price ) )
 				),
 				'notice'
 			);
@@ -288,7 +385,7 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 					$field_id = $item['field_id'];
 					$field_type = $item['field_type'];
 
-					if( isset( $item['field_type'] ) && $item['field_type'] != 'upload' && $item['field_type'] != 'products' ) {
+					if( isset( $item['field_type'] ) && $item['field_type'] != 'upload' && $item['field_type'] != 'products' && $item['field_type'] != 'product-categories' ) {
 
 						$id = $item['id'];
 						$price = 0;
@@ -315,7 +412,7 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 						 */
 						if( ! empty( $_POST[$id] ) && $is_visible ) {
 
-							$field_price = pewc_get_field_price( $item, $product );
+							$field_price = pewc_get_field_price( $item, $product, true ); // pass true for cart price (inc or exc tax)
 
 							// Add the value of the field (not including the value of options)
 							if( ! $is_flat_rate ) {
@@ -463,7 +560,8 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 
 										if( ! empty( $option['price'] ) && in_array( $option['value'], $option_value ) ) {
 
-											$option_price = pewc_get_option_price( $option, $item, $product );
+											// third argument $cart_price added on 3.9.5. Return price as to be displayed on the cart (inc or exc tax)
+											$option_price = pewc_get_option_price( $option, $item, $product, true );
 
 											if( $is_percentage ) {
 												$option_price = pewc_calculate_percentage_price( $option_price, $product );
@@ -494,7 +592,8 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 
 									} else if( ! empty( $option['price'] ) && $option['value'] == stripslashes( $option_value ) ) {
 
-										$option_price = pewc_get_option_price( $option, $item, $product );
+										// third argument $cart_price added on 3.9.5. Return price as to be displayed on the cart (inc or exc tax)
+										$option_price = pewc_get_option_price( $option, $item, $product, true );
 
 										// $option_price = pewc_maybe_include_tax( $product, $option_price );
 
@@ -597,10 +696,28 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 						if( ! $is_visible ) {
 
 							unset( $cart_item_data['product_extras']['groups'][$group_id][$field_id] );
-							// unset( $cart_item_data['product_extras']['price_with_extras'] );
-							// unset( $cart_item_data['product_extras']['original_price'] );
 
 						} else {
+
+							// used in totals
+							// I think this is needed to put back the original product price, especially if "prices entered with" and "display prices during cart" are different
+							if( apply_filters( 'pewc_maybe_adjust_tax_price_with_extras', true ) ) {
+								if ( $price > 0 ) {
+									$price = pewc_get_adjusted_product_addon_field_price( $price, $product );
+									// also adjust cart item price for totals
+									if( isset( $cart_item_data['product_extras']['groups'][$group_id][$field_id]['price'] ) ) {
+										$cart_item_data['product_extras']['groups'][$group_id][$field_id]['price'] = $price;
+									}
+								} else if ( $is_flat_rate && isset($cart_item_data['product_extras']['groups'][$group_id][$field_id]['flat_rate']) ) {
+									// Flat rates have 0 prices, so we catch them here instead
+									$flat_rate_price = $cart_item_data['product_extras']['groups'][$group_id][$field_id]['flat_rate'][$field_id]['price'];
+									// Adjust flat rate prices as well. Since by default tax is added on flat fees, we need to remove tax if setting is "display incl tax in cart"
+									if ( $flat_rate_price > 0 && get_option( 'woocommerce_tax_display_cart' ) == 'incl') {
+										$flat_rate_price = pewc_get_price_without_tax( $flat_rate_price, $product );
+										$cart_item_data['product_extras']['groups'][$group_id][$field_id]['flat_rate'][$field_id]['price'] = $flat_rate_price;
+									}
+								}
+							}
 
 							$extra_price += floatval( $price );
 
@@ -613,6 +730,20 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 
 								$new_price = isset( $_POST['pewc_calc_set_price'] ) ? $_POST['pewc_calc_set_price'] : 0;
 								$cart_item_data['product_extras']['use_calc_set_price'] = true;
+
+								// for improvement later: maybe change pewc_adjust_tax() a bit and add these conditions there
+								if ( 'incl' == get_option( 'woocommerce_tax_display_shop' ) && ! wc_prices_include_tax() ) {
+									// remove tax from price if prices display on shop is tax-inclusive, to avoid double taxing
+									$new_price = pewc_get_price_without_tax( $new_price, $product );
+								}
+								else if ( 'excl' == get_option( 'woocommerce_tax_display_shop' ) && wc_prices_include_tax() ) {
+									// add tax to price if prices display on shop is tax-exclusive
+									$tmp_cart_item = array(
+										'data' => $product
+									); // we need cart_item below, but it's not available, so create a tmp one
+									$tax_rate = pewc_get_tax_rate( $tmp_cart_item );
+									$new_price = $new_price * $tax_rate;
+								}
 
 							} else {
 
@@ -630,7 +761,7 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 
 						}
 
-					} else if( ( isset( $item['field_type'] ) && $item['field_type'] == 'products' ) && pewc_is_pro() ) {
+					} else if( ( isset( $item['field_type'] ) && ( $item['field_type'] == 'products' || $item['field_type'] == 'product-categories' ) ) && pewc_is_pro() ) {
 
 						$field_id = $item['id'];
 
@@ -650,21 +781,25 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 
 							// Check if one or more child products has been selected and confirm that the main product is not in the array of child products
 							$parent_product_hash = $_POST['pewc_product_hash'];
-							$cart_item_data['product_extras']['products']['field_id'] = $field_id;
+
 							if( ! isset( $cart_item_data['product_extras']['products']['child_products'] ) ) {
+								$cart_item_data['product_extras']['products']['field_id'] = $field_id;
 								$cart_item_data['product_extras']['products']['child_products'] = array();
 							}
 
 							// Add child product data to the main product
 							if( ! is_array( $child_product_id ) ) {
 
-								$cart_item_data['product_extras']['products']['child_products'][$child_product_id] = array(
-									'child_product_id' 	=> $child_product_id,
-									'field_id' 					=> $field_id,
-									'quantities'				=> $_POST[$field_id . '_quantities'],
-									'quantity'					=> isset( $_POST[$field_id . '_child_quantity_' . $child_product_id] ) ? $_POST[$field_id . '_child_quantity_' . $child_product_id] : 1,
-									'allow_none'				=> $_POST[$field_id . '_allow_none']
-								);
+								if( $item['field_type'] == 'products' || $item['field_type'] == 'product-categories' ){
+
+									$cart_item_data['product_extras']['products']['child_products'][$child_product_id] = array(
+										'child_product_id' 	=> $child_product_id,
+										'field_id' 					=> $field_id,
+										'quantities'				=> $_POST[$field_id . '_quantities'],
+										'quantity'					=> isset( $_POST[$field_id . '_child_quantity_' . $child_product_id] ) ? $_POST[$field_id . '_child_quantity_' . $child_product_id] : 1,
+										'allow_none'				=> $_POST[$field_id . '_allow_none']
+									);
+								}
 
 								$value = $child_product_id;
 
@@ -676,15 +811,18 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 								// Adding multiple child products from checkboxes
 								foreach( $child_product_id as $each_id ) {
 
-									$cart_item_data['product_extras']['products']['child_products'][$each_id] = array(
-										'child_product_id' 	=> $child_product_id,
-										'field_id' 					=> $field_id,
-										'quantities'				=> $_POST[$field_id . '_quantities'],
-										'quantity'					=> isset( $_POST[$field_id . '_child_quantity_' . $each_id] ) ? $_POST[$field_id . '_child_quantity_' . $each_id] : 1,
-										'allow_none'				=> $_POST[$field_id . '_allow_none']
-									);
+									if( $item['field_type'] == 'products' || $item['field_type'] == 'product-categories' ) {
 
-									$value[] = $each_id;
+										$cart_item_data['product_extras']['products']['child_products'][$each_id] = array(
+											'child_product_id' 	=> $child_product_id,
+											'field_id' 					=> $field_id,
+											'quantities'				=> $_POST[$field_id . '_quantities'],
+											'quantity'					=> isset( $_POST[$field_id . '_child_quantity_' . $each_id] ) ? $_POST[$field_id . '_child_quantity_' . $each_id] : 1,
+											'allow_none'				=> $_POST[$field_id . '_allow_none']
+										);
+
+										$value[] = $each_id;
+									}
 
 								}
 
@@ -694,8 +832,14 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 
 							// $cart_item_data['product_extras']['products'][$parent_product_hash]['child_products'] = $_POST['_pewc_child_products'];
 							// If we've added a child product to this item, let's link them in the cart
-							$cart_item_data['product_extras']['products']['pewc_parent_product'] = $product_id;
-							$cart_item_data['product_extras']['products']['parent_field_id'] = $parent_product_hash;
+							if( $item['field_type'] == 'products' || $item['field_type'] == 'product-categories' ){
+								$cart_item_data['product_extras']['products']['pewc_parent_product'] = $product_id;
+								$cart_item_data['product_extras']['products']['parent_field_id'] = $parent_product_hash;
+							}
+							// elseif( $item['field_type'] == 'product-categories' ){
+							// 	$cart_item_data['product_extras']['product-categories']['pewc_parent_product'] = $product_id;
+							// 	$cart_item_data['product_extras']['product-categories']['parent_field_id'] = $parent_product_hash;
+							// }
 
 							// Still add some data in case we want to be able to specify what child products belong to a parent product
 							$cart_item_data['product_extras']['groups'][$group_id][$field_id] = array(
@@ -792,7 +936,7 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 
 				$item = $product_extra_groups[$group_id]['items'][$field_id];
 				$label = isset( $item['field_label'] ) ? $item['field_label'] : '';
-				$price = pewc_get_field_price( $item, $product );
+				$price = pewc_get_field_price( $item, $product, true ); // pass true for cart-dependent price (inc or exc tax)
 
 				// Calculate multiple upload price
 				if( ! empty( $_POST[$item['id'] . '_number_uploads'] ) && ! empty( $_POST[$item['id'] . '_multiply_price'] ) ) {
@@ -873,6 +1017,14 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 
 					if( ! empty( $uploads ) ) {
 
+						// tax adjustment is done here
+						if( apply_filters( 'pewc_maybe_adjust_tax_price_with_extras', true ) && $price > 0 ) {
+							$price = pewc_get_adjusted_product_addon_field_price($price, $product);
+							// also adjust cart item price for totals
+							if (isset($cart_item_data['product_extras']['groups'][$group_id][$field_id]['price']))
+								$cart_item_data['product_extras']['groups'][$group_id][$field_id]['price'] = $price;
+						}
+
 						$cart_item_data['product_extras']['groups'][$group_id][$field_id] = apply_filters(
 							'pewc_filter_cart_item_data',
 								array(
@@ -910,6 +1062,9 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 							$cart_item_data['product_extras']['original_price'] = floatval( $product_price );
 						}
 
+						// 3.9.7: Files have been added to the cart, so maybe remove them from session now. Passing a blank value should do it
+						pewc_save_uploaded_files_to_session( '', $field_id );
+
 					}
 
 				}
@@ -928,10 +1083,9 @@ function pewc_add_cart_item_data( $cart_item_data, $product_id, $variation_id, $
 		$cart_item_data['product_extras']['price_with_extras'] = floatval( $cart_item_data['product_extras']['price_with_extras_discounted'] );
 	}
 
-	return $cart_item_data;
+	return apply_filters( 'pewc_after_add_cart_item_data', $cart_item_data );
 
 }
-// Add item data to the cart.
 add_filter( 'woocommerce_add_cart_item_data', 'pewc_add_cart_item_data', 10, 4 );
 
 /**
@@ -1140,6 +1294,8 @@ function pewc_validate_cart_item_data( $passed, $product_id, $quantity, $variati
 
 							// Required field
 							wc_add_notice( apply_filters( 'pewc_filter_validation_notice', esc_html( $label ) . __( ' is a required upload field.', 'pewc' ), $label, $item ), 'error' );
+							// Delete the uploaded session in case he added something before
+							pewc_save_uploaded_files_to_session( '', $item['field_id'] );
 							return false;
 
 						}
@@ -1169,6 +1325,35 @@ function pewc_validate_cart_item_data( $passed, $product_id, $quantity, $variati
 
 						}
 
+
+						// We have passed validation for files, save now. If empty $files is passed into pewc_save_uploaded_files_to_session, saved data is removed
+						if( pewc_enable_ajax_upload() == 'yes' ) {
+							// AJAX upload, perhaps save $_POST['pewc_file_data'][$item['field_id']]
+							$pewc_file_data = stripslashes( $_POST['pewc_file_data'][$item['field_id']] );
+
+							if ( isset($_POST[$id . '_extra_fields']) && is_array( $_POST[$id . '_extra_fields'] ) && ! empty( $pewc_file_data ) ) {
+								// quantity is set for Advanced Uploads, save it as well
+								$pfd_arr = json_decode( $pewc_file_data, true);
+								if ( is_array($pfd_arr) && count($pfd_arr) > 0 ) {
+									foreach ( $pfd_arr as $key => $value ) {
+										// add quantity from Advanced Uploads
+										$quantity = isset( $_POST[$id . '_extra_fields'][$key] ) ? $_POST[$id . '_extra_fields'][$key] : false;
+										if ( false !== $quantity ) {
+											$pfd_arr[$key]['quantity'] = $quantity;
+										}
+									}
+									$pewc_file_data = json_encode($pfd_arr);
+								}
+							}
+
+							// save the uploaded data into a WooCommerce session
+							pewc_save_uploaded_files_to_session( $pewc_file_data, $item['field_id'] );
+						}
+						else {
+							// standard
+						}
+
+
 					} else if( isset( $item['field_type'] ) && ( $item['field_type'] == 'radio' || $item['field_type'] == 'select' ) ) {
 
 						if( empty( $_POST[$id] ) && $is_required ) {
@@ -1177,11 +1362,11 @@ function pewc_validate_cart_item_data( $passed, $product_id, $quantity, $variati
 							$passed = false;
 						}
 
-					} else if( isset( $item['field_type'] ) && $item['field_type'] == 'products' ) {
+					} else if( isset( $item['field_type'] ) && ( $item['field_type'] == 'products' || $item['field_type'] == 'product-categories' ) ) {
 
 						// Validate minimum / maximum
 						if( $item['products_quantities'] == 'independent' &&
-						 	( $item['products_layout'] == 'column' || $item['products_layout'] == 'checkboxes' ) &&
+						 	( $item['products_layout'] == 'column' || $item['products_layout'] == 'checkboxes' || $item['products_layout'] == 'checkboxes-list' ) &&
 							( ! empty( $item['min_products'] ) || ! empty( $item['max_products'] ) ) ) {
 
 							$min_products = ! empty( $item['min_products'] ) ? $item['min_products'] : 0;
@@ -1393,7 +1578,7 @@ function pewc_get_item_data( $other_data, $cart_item ) {
 
 					if( isset( $item['type'] ) ) {
 
-						if( $item['type'] == 'products' && ! $display_product_meta ) {
+						if( ( $item['type'] == 'products' || $item['type'] == 'product-categories' ) && ! $display_product_meta ) {
 							continue;
 						}
 
@@ -1417,7 +1602,15 @@ function pewc_get_item_data( $other_data, $cart_item ) {
 								// $product_id = $cart_item['data']->get_id();
 								// $product = wc_get_product( $product_id );
 								// $price = pewc_maybe_include_tax( $product, $item['price'] );
-								$price = ' ' . wc_price( $item['price'] );
+
+								// 3.9.5 do tax adjustments here as well so that add-on prices are displayed properly in cart
+								$price = $item['price'];
+
+								// version 2
+								$product = $cart_item['data'];
+								$price = pewc_maybe_include_tax( $product, $price, true ); // price for cart
+
+								$price = ' ' . wc_price( $price );
 
 							}
 

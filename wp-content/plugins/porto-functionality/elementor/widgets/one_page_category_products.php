@@ -43,7 +43,7 @@ class Porto_Elementor_One_Page_Category_Products_Widget extends \Elementor\Widge
 		}
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 		$order_by_values  = array_slice( porto_vc_woo_order_by(), 1 );
 		$order_way_values = array_slice( porto_vc_woo_order_way(), 1 );
 		$order_by_values  = array_combine( array_values( $order_by_values ), array_keys( $order_by_values ) );

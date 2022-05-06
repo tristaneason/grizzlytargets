@@ -143,9 +143,10 @@ function pewc_lightbox() {
 				var type = $( field ).attr( 'data-field-type' );
 				var original_id = $( this ).attr( 'name' );
 				original_id += '_clone';
+
 				if( type == 'checkbox' ) {
 					$( '#' + original_id ).prop( 'checked', $( this ).prop( 'checked' ) );
-				} else if( type == 'checkbox_group' ) {
+				} else if( type == 'checkbox_group' || type == 'radio' ) {
 					original_id = $( this ).attr( 'id' );
 					original_id += '_clone';
 					$( '#' + original_id ).prop( 'checked', $( this ).prop( 'checked' ) );
@@ -174,6 +175,21 @@ function pewc_lightbox() {
 					}
 				} else if( type == 'name_price' || type == 'number' || type == 'text' || type == 'textarea' ) {
 					$( '#' + original_id ).val( $( this ).val() );
+				} else if (type == 'image_swatch') {
+					// somehow checkboxes inside lightboxes end up here instead?
+					original_id = $( this ).attr( 'id' );
+					var clone_id = original_id+'_clone';
+
+					if ($( '#' + original_id ).prop('checked')) {
+						// original is checked, so check also clone
+						$( '#' + clone_id).closest( '.pewc-radio-image-wrapper' ).addClass( 'checked' );
+						$( '#' + clone_id).prop('checked', true);
+					}
+					else {
+						// original is not checked, so uncheck clone as well
+						$( '#' + clone_id).closest( '.pewc-radio-image-wrapper' ).removeClass( 'checked' );
+						$( '#' + clone_id).prop('checked', false);
+					}
 				}
 			});
 
@@ -181,9 +197,10 @@ function pewc_lightbox() {
 				var field = $( this ).closest( '.pewc-item' );
 				var type = $( field ).attr( 'data-field-type' );
 				var original_id = $( this ).attr( 'name' );
-				if( type == 'checkbox' ) {
+
+				if( type == 'checkbox') {
 					$( '#' + original_id ).prop( 'checked', $( this ).prop( 'checked' ) );
-				} else if( type == 'checkbox_group' ) {
+				} else if( type == 'checkbox_group' || type == 'radio' ) {
 					original_id = $( this ).attr( 'id' );
 					original_id = original_id.replace( '_clone', '' );
 					$( '#' + original_id ).prop( 'checked', $( this ).prop( 'checked' ) );
@@ -217,6 +234,21 @@ function pewc_lightbox() {
 					$( '#' + original_id ).trigger( 'change' );
 				} else if( type == 'name_price' || type == 'number' || type == 'text' || type == 'textarea' ) {
 					$( '#' + original_id ).val( $( this ).val() );
+				} else if (type == 'image_swatch') {
+					// radio box image_swatch ends up here
+					var clone_id = $( this ).attr( 'id' );
+					original_id = clone_id.replace( '_clone', '' );
+
+					if ($( '#' + clone_id ).prop('checked')) {
+						// clone is checked, so check also original
+						$( '#' + original_id).closest( '.pewc-radio-image-wrapper' ).addClass( 'checked' );
+						$( '#' + original_id).prop('checked', true);
+					}
+					else {
+						// clone is not checked, so uncheck original as well
+						$( '#' + original_id).closest( '.pewc-radio-image-wrapper' ).removeClass( 'checked' );
+						$( '#' + original_id).prop('checked', false);
+					}
 				}
 			});
 

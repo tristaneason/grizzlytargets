@@ -125,6 +125,7 @@ if ( ! class_exists( 'WPPFM_Product_Feed_Page' ) ) :
 				'feed_file_name'     => $feed_data ? $feed_data['title'] : '',
 				'channel_id'         => $feed_data ? $feed_data['channel'] : '',
 				'language'           => $feed_data ? $feed_data['language'] : '',
+				'currency'           => $feed_data ? $feed_data['currency'] : '',
 				'target_country'     => $feed_data ? $feed_data['country'] : '',
 				'category_mapping'   => $feed_data ? $feed_data['category_mapping'] : '',
 				'main_category'      => $feed_data ? $feed_data['main_category'] : '',

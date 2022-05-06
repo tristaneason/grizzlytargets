@@ -107,7 +107,7 @@ function pewc_add_order_itemmeta_admin( $item_id, $item, $product ) {
 
 							$output .= '<li class="' . join( ' ', $classes ) . '">' . $group['label'] . ' ' . $price . '</li>';
 
-						} else {
+						}  else if( $group['type'] !== 'products' && $group['type'] !== 'product-categories' ) {
 
 							// $output .= '<li class="' . join( ' ', $classes ) . '">' . $group['label'] . ': ' . $group['value'] . ' ' . $price . '</li>';
 							$list_item = apply_filters(

@@ -39,6 +39,10 @@ function createIframeElement(iframeSrc) {
   iframe.id = 'leadin-iframe';
   iframe.src = iframeSrc;
   iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+  iframe.setAttribute(
+    'sandbox',
+    'allow-scripts allow-forms allow-popups allow-top-navigation allow-same-origin'
+  );
   iframe.style.minHeight = `${getIframeHeight()}px`;
   addIframeResizeEvent(iframe);
   return iframe;

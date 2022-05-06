@@ -57,7 +57,7 @@ class Wt_Import_Export_For_Woo_Basic_Import
 		$this->steps=array(
 			'post_type'=>array(
 				'title'=>__('Select a post type'),
-				'description'=>__('Import the respective post type from a CSV. As a first step you need to choose the post type to start the import.'),
+				'description'=>__('Use a CSV file to import data. As a first step, select the post type.'),
 			),
 			'method_import'=>array(
 				'title'=>__('Select import method'),
@@ -74,9 +74,9 @@ class Wt_Import_Export_For_Woo_Basic_Import
 		);
 
 		$this->import_methods=array(
-			'quick'=>array('title'=>__('Quick import'), 'description'=> __('Use this option primarily when your input file was exported using the same plugin.')),
-			'template'=>array('title'=>__('Pre-saved template'), 'description'=> __('Using a pre-saved template retains the previous filter criteria and other column specifications as per the chosen file and imports data accordingly')),
-			'new'=>array('title'=>__('Advanced Import'), 'description'=> __('This option will take you through the entire process of filtering/column selection/advanced options that may be required for your import. You can also save your selections as a template for future use.')),
+			'quick'=>array('title'=>__('Quick import'), 'description'=> __('Use this option primarily if you exported the input file using the same plugin.')),
+			'template'=>array('title'=>__('Pre-saved template'), 'description'=> __('Retains the filter parameters and column specifications as per the chosen template and imports data accordingly.')),
+			'new'=>array('title'=>__('Advanced Import'), 'description'=> __('Imports data after a detailed process of filtration, column selection and advanced options. The configured settings can be saved as a template for future imports.')),
 		);
 
 		$this->step_need_validation_filter=array('method_import', 'mapping', 'advanced');
@@ -118,18 +118,16 @@ class Wt_Import_Export_For_Woo_Basic_Import
                         'validation_rule' => array('type' => 'int'),
                 );                        
                 $fields['enable_import_log']=array(
-			'label'=>__("Generate Import log"),
-			'type'=>'radio',
-			'radio_fields'=>array(
-				1=>__('Yes'),
-				0=>__('No')
-			),
-                        'value' =>1,
-			'field_name'=>'enable_import_log',
-			'field_group'=>'advanced_field',
-			'help_text'=>__('Generate import log as text file and make it available in the history section for debugging purposes.'),
-			'validation_rule'=>array('type'=>'absint'),
-		);
+						'label'=>__("Generate Import log"),
+						'type' => 'checkbox',
+						'checkbox_fields' => array( 1 => __( 'Enable' ) ),
+						'value' =>1,
+						'field_name'=>'enable_import_log',
+						'field_group'=>'advanced_field',			
+						'help_text'=>__("You can view the logs in the <a href=" . admin_url('admin.php?page=wt_import_export_for_woo_basic_history_log') . "><b>Import Logs</b></a> section or in History > View logs."),
+						'validation_rule'=>array('type'=>'absint'),
+				);
+
 		$import_methods=array_map(function($vl){ return $vl['title']; }, $this->import_methods);
 		$fields['default_import_method']=array(
 			'label'=>__("Default Import method"),
@@ -198,7 +196,7 @@ class Wt_Import_Export_For_Woo_Basic_Import
 
 		//prepare file from field type based on remote type adapters
 		$file_from_field_arr=array(
-			'label'=>__("Choose file for Import"),
+			'label'=>__("Choose file for Import").' [<a href"#" target="_blank" id="sample-csv-file">'. __('Sample CSV').'</a>]',
 			'type'=>'select',
 			'tr_class'=>'wt-iew-import-method-options wt-iew-import-method-options-quick wt-iew-import-method-options-new wt-iew-import-method-options-template',
 			'sele_vals'=>$file_from_arr,
@@ -244,7 +242,7 @@ class Wt_Import_Export_For_Woo_Basic_Import
 			'tr_class'=>$file_from_field_arr['tr_class'], //add tr class from parent.Because we need to toggle the tr when parent tr toggles.
 			'field_name'=>'delimiter_preset',
 			'sele_vals'=>Wt_Iew_IE_Basic_Helper::_get_csv_delimiters(),
-			'help_text'=>__('Only applicable for CSV imports in order to separate the columns in the CSV file. Takes comma(,) by default.'),
+			'help_text'=>__('The character used to separate columns in the CSV file. Takes comma (,) by default.'),
 			'validation_rule'=>array('type'=>'skip'),
                         'after_form_field'=>'<input type="text" class="wt_iew_custom_delimiter" name="wt_iew_delimiter" value="'.(!empty($method_import_form_data['wt_iew_delimiter']) ? $method_import_form_data['wt_iew_delimiter'] : ",").'" />',
 

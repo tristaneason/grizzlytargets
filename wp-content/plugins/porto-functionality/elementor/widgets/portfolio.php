@@ -43,7 +43,7 @@ class Porto_Elementor_Portfolio_Widget extends \Elementor\Widget_Base {
 		}
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 		$order_by_values  = array_slice( porto_vc_order_by(), 1 );
 		$order_way_values = array_slice( porto_vc_woo_order_way(), 1 );
 
@@ -356,7 +356,12 @@ class Porto_Elementor_Portfolio_Widget extends \Elementor\Widget_Base {
 			array(
 				'type'        => Controls_Manager::SELECT,
 				'label'       => __( 'Order by', 'porto-functionality' ),
-				'options'     => array_combine( array_values( $order_by_values ), array_keys( $order_by_values ) ),
+				'options'     => array_merge(
+					array(
+						'' => __( 'Default', 'porto-functionality' ),
+					),
+					array_flip( $order_by_values )
+				),
 				/* translators: %s: Wordpres codex page */
 				'description' => sprintf( __( 'Select how to sort retrieved portfolios. More at %s.', 'porto-functionality' ), '<a href="http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters" target="_blank">WordPress codex page</a>' ),
 			)
@@ -367,7 +372,12 @@ class Porto_Elementor_Portfolio_Widget extends \Elementor\Widget_Base {
 			array(
 				'type'        => Controls_Manager::SELECT,
 				'label'       => __( 'Order way', 'porto-functionality' ),
-				'options'     => array_combine( array_values( $order_way_values ), array_keys( $order_way_values ) ),
+				'options'     => array_merge(
+					array(
+						'' => __( 'Default', 'porto-functionality' ),
+					),
+					array_flip( $order_way_values )
+				),
 				/* translators: %s: Wordpres codex page */
 				'description' => sprintf( __( 'Designates the ascending or descending order. More at %s.', 'porto-functionality' ), '<a href="http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters" target="_blank">WordPress codex page</a>' ),
 			)
@@ -386,7 +396,7 @@ class Porto_Elementor_Portfolio_Widget extends \Elementor\Widget_Base {
 			'number',
 			array(
 				'type'    => Controls_Manager::SLIDER,
-				'label'   => __( 'Posts Count', 'porto-functionality' ),
+				'label'   => __( 'Posts Count (per page)', 'porto-functionality' ),
 				'default' => array(
 					'size' => 8,
 				),
@@ -415,7 +425,8 @@ class Porto_Elementor_Portfolio_Widget extends \Elementor\Widget_Base {
 				'label'   => __( 'Load More Posts', 'porto-functionality' ),
 				'options' => array(
 					''              => __( 'Select', 'porto-functionality' ),
-					'pagination'    => __( 'Pagination', 'porto-functionality' ),
+					'pagination'    => __( 'Ajax Pagination', 'porto-functionality' ),
+					'infinite'      => __( 'Infinite Scroll', 'porto-functionality' ),
 					'load-more-btn' => __( 'Load More (Button)', 'porto-functionality' ),
 				),
 				'default' => '',
@@ -445,7 +456,7 @@ class Porto_Elementor_Portfolio_Widget extends \Elementor\Widget_Base {
 			'filter',
 			array(
 				'type'  => Controls_Manager::SWITCHER,
-				'label' => __( 'Show Filter', 'porto-functionality' ),
+				'label' => __( 'Show Category Filter', 'porto-functionality' ),
 			)
 		);
 
@@ -467,10 +478,27 @@ class Porto_Elementor_Portfolio_Widget extends \Elementor\Widget_Base {
 		);
 
 		$this->add_control(
+			'filter_type',
+			array(
+				'type'      => Controls_Manager::SELECT,
+				'label'     => __( 'Filter Type', 'porto-functionality' ),
+				'options'   => array(
+					''     => __( 'Filter using Javascript/CSS', 'porto-functionality' ),
+					'ajax' => __( 'Ajax Loading', 'porto-functionality' ),
+				),
+				'default'   => '',
+				'condition' => array(
+					'filter' => 'yes',
+				),
+			)
+		);
+
+		$this->add_control(
 			'ajax_load',
 			array(
-				'type'  => Controls_Manager::SWITCHER,
-				'label' => __( 'Enable Ajax Load', 'porto-functionality' ),
+				'type'        => Controls_Manager::SWITCHER,
+				'label'       => __( 'Enable Ajax Load', 'porto-functionality' ),
+				'description' => __( 'If enabled, portfolio content should be displayed at the top of portfolios or on modal when you click portfolio item in the list.', 'porto-functionality' ),
 			)
 		);
 

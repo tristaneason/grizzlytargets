@@ -100,6 +100,7 @@ if ( 'custom' == $icon_type ) {
 	if ( $icon_img ) {
 		if ( is_numeric( $icon_img ) ) {
 			$attachment = wp_get_attachment_image_src( (int) $icon_img, 'full' );
+			$alt        = get_post_meta( (int) $icon_img, '_wp_attachment_image_alt', true );
 		}
 		if ( isset( $attachment ) && is_array( $attachment ) ) {
 			$img = $attachment[0];

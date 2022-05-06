@@ -1,0 +1,5 @@
+.porto-tb-featured-image img { display: block }
+.tb-image-type-hover { position: relative; }
+.tb-image-type-hover .hover-image { position: absolute; left: 0; top: 0; height: 100%; right: 0; object-fit: cover; transition: opacity .3s; opacity: 0; }
+.tb-image-type-hover:hover .hover-image { opacity: 1 }
+

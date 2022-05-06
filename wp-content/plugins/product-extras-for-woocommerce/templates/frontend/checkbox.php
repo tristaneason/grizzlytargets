@@ -10,13 +10,20 @@ if( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+$label = apply_filters( 'prefix_filter_field_option_name', wp_kses_post( $item['field_label'] ), $id, $item, $product );
+$label .= '<span class="required"> &#42;</span>';
+if( ! empty( $item['field_price'] ) && pewc_display_option_prices_product_page( $item ) ) {
+	$label .= apply_filters( 'pewc_option_price_separator', '+', $item ) . pewc_get_semi_formatted_raw_price( $item['field_price'] );
+	$label = apply_filters( 'pewc_option_name', $label, $item, $product, $item['field_price'] );
+}
+
 printf(
-	'%s<input type="checkbox" class="pewc-form-field" id="%s" name="%s" %s value="__checked__">%s',
+	'%s<label for="%s"><input type="checkbox" class="pewc-form-field" id="%s" name="%s" %s value="__checked__">&nbsp;<span>%s</span><span class="pewc-theme-element"></span></label>%s',
 	$open_td, // Set in functions-single-product.php
 	esc_attr( $id ),
 	esc_attr( $id ),
+	esc_attr( $id ),
 	checked( 1, $value, false ),
+	$label,
 	$close_td
-);
-
-// echo pewc_field_label( $item, $id, $group_layout ); ?>
+); ?>

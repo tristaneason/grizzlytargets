@@ -112,7 +112,7 @@ function porto_load_blog_shortcode() {
 						'param_name' => 'meta_type',
 						'dependency' => array(
 							'element' => 'post_style',
-							'value'   => array( 'list', 'hover_info', 'hover_info2' ),
+							'value'   => array( 'hover_info', 'hover_info2' ),
 						),
 						'std'        => '',
 						'value'      => array(

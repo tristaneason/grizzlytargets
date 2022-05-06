@@ -17,7 +17,7 @@
  * needs please refer to http://docs.woocommerce.com/document/authorize-net-cim/
  *
  * @author    SkyVerge
- * @copyright Copyright (c) 2013-2021, SkyVerge, Inc.
+ * @copyright Copyright (c) 2013-2022, SkyVerge, Inc.
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
@@ -25,7 +25,7 @@ namespace SkyVerge\WooCommerce\Authorize_Net;
 
 defined( 'ABSPATH' ) or exit;
 
-use SkyVerge\WooCommerce\PluginFramework\v5_10_8 as Framework;
+use SkyVerge\WooCommerce\PluginFramework\v5_10_12 as Framework;
 
 /**
  * The My Payment Methods handler.
@@ -47,7 +47,7 @@ class My_Payment_Methods extends Framework\SV_WC_Payment_Gateway_My_Payment_Meth
 		parent::maybe_enqueue_styles_scripts();
 
 		if ( $this->has_tokens ) {
-			wp_enqueue_script( 'wc-authorize-net-my-payment-methods', $this->get_plugin()->get_plugin_url() . '/assets/js/frontend/wc-authorize-net-my-payment-methods.min.js', [ 'sv-wc-payment-gateway-my-payment-methods-v5_10_8' ], $this->get_plugin()->get_version() );
+			wp_enqueue_script( 'wc-authorize-net-my-payment-methods', $this->get_plugin()->get_plugin_url() . '/assets/js/frontend/wc-authorize-net-my-payment-methods.min.js', [ 'sv-wc-payment-gateway-my-payment-methods-v5_10_12' ], $this->get_plugin()->get_version() );
 		}
 	}
 

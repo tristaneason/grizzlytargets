@@ -2,13 +2,13 @@
 /*
 Plugin Name: WooCommerce Product Add-Ons Ultimate
 Description: Add extra fields to WooCommerce products
-Version: 3.9.4
+Version: 3.10.3
 Author: Plugin Republic
 Author URI: https://pluginrepublic.com/
 Plugin URI: https://pluginrepublic.com/wordpress-plugins/woocommerce-product-add-ons-ultimate/
 Text Domain: pewc
 WC requires at least: 3.2
-WC tested up to: 5.5
+WC tested up to: 6.3
 Domain Path: /languages
 */
 
@@ -24,7 +24,7 @@ if ( ! defined( 'PEWC_FILE' ) ) {
 	define( 'PEWC_FILE', __FILE__ );
 }
 if ( ! defined( 'PEWC_PLUGIN_VERSION' ) ) {
-	define( 'PEWC_PLUGIN_VERSION', '3.9.4' );
+	define( 'PEWC_PLUGIN_VERSION', '3.10.3' );
 }
 if ( ! defined( 'PEWC_DIRNAME' ) ) {
 	define( 'PEWC_DIRNAME', dirname( __FILE__ ) );
@@ -133,12 +133,11 @@ require_once dirname( __FILE__ ) . '/inc/functions-tooltips.php';
 require_once dirname( __FILE__ ) . '/inc/functions-variations.php';
 require_once dirname( __FILE__ ) . '/inc/functions-uploads.php';
 require_once dirname( __FILE__ ) . '/inc/functions-updater.php';
+require_once dirname( __FILE__ ) . '/inc/functions-weight.php';
 require_once dirname( __FILE__ ) . '/inc/functions-pro-helpers.php';
 
-if( pewc_is_pro() ) {
-	require_once dirname( __FILE__ ) . '/inc/functions-percentages.php';
-	require_once dirname( __FILE__ ) . '/inc/functions-products.php';
-}
+require_once dirname( __FILE__ ) . '/inc/functions-percentages.php';
+require_once dirname( __FILE__ ) . '/inc/functions-products.php';
 
 /**
  * Load our files

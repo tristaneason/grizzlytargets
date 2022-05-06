@@ -385,7 +385,7 @@ function pewc_print_condition_script() {
 											echo "field_value_{$rule_count} = $('.{$condition['field']} input:radio:checked').val();\n";
 										echo "}\n";
 										// And checkboxes for child products work even more differently
-										echo "if($('.{$condition['field']}').hasClass('pewc-item-products-checkboxes')){\n";
+										echo "if($('.{$condition['field']}').hasClass('pewc-item-products-checkboxes') || $('.{$condition['field']}').hasClass('pewc-item-products-column')){\n";
 											echo "var field_value_{$rule_count} = [];\n";
 											echo "$.each( $(\"input[name='" . $condition['field'] . "_child_product[]']:checked\"), function(){\n
 												field_value_{$rule_count}.push($(this).val());\n
@@ -445,10 +445,10 @@ function pewc_print_condition_script() {
 											// Standard Is / Is not
 											echo "
 											if( field_value_{$rule_count} == '__checked__' ) {\n
-												// It's a checkbox\n
+												/* It's a checkbox */\n
 												var checked = $('#{$condition['field']}').prop('checked');\n
 												if( checked {$operator} true ) {\n
-													// This condition is met\n
+													/* This condition is met */\n
 													conditions_met_{$id}[{$rule_count}] = 1;\n
 												} else {\n
 													conditions_met_{$id}[{$rule_count}] = 0;\n
@@ -472,7 +472,7 @@ function pewc_print_condition_script() {
 										// Don't bother to check subsequent conditions
 										echo "if( conditions_met_{$id}[{$rule_count}] == 0 && match_{$id} == 'all' ) {\n
 											conditions_met_{$id}[{$rule_count}] = 0;\n
-											// return conditions_met_{$id};\n
+											/* return conditions_met_{$id}; */\n
 										}\n";
 
 										// This checks for every conditional row
@@ -604,7 +604,7 @@ function pewc_print_condition_script() {
 				if( pewc_vars.reset_fields == 'yes' ) {
 					// Reset the field value
 					var field = '.' + id;
-					var inputs = ['date', 'name_price', 'number', 'text', 'textarea'];
+					var inputs = ['date', 'name_price', 'number', 'text', 'textarea', 'advanced-preview'];
 					var checks = ['checkbox', 'checkbox_group', 'radio'];
 					var field_type = $( field ).attr( 'data-field-type' );
 					if( inputs.includes( field_type ) ) {
@@ -1420,6 +1420,8 @@ function pewc_is_group_visible( $group_id, $group, $posted ) {
 
 		$field_id = $condition['field'];
 		$field_value = isset( $posted[$field_id] ) ? $posted[$field_id] : false;
+		if ( false === $field_value && isset( $posted[$field_id.'_child_product'] ) )
+			$field_value = $posted[$field_id.'_child_product']; // this is for conditions based on child products
 		$meets_condition = pewc_is_field_visible( $field_value, $condition['rule'], $condition['value'] );
 
 		// Reverse the visibility for groups that are hidden

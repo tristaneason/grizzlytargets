@@ -497,8 +497,8 @@ function pewc_get_products_settings() {
 			'desc_tip'	=> true,
 			'desc'		=> __( 'Enable this to include variations as child products.', 'pewc' ),
 			'id'			=> 'pewc_child_variations',
-			'default'	=> 'no',
-			'std'			=> 'no'
+			'default'	=> 'yes',
+			'std'			=> 'yes'
 		),
 		'pewc_exclude_skus' => array(
 			'name'		=> __( 'Exclude SKUs from child variants', 'pewc' ),

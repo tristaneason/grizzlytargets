@@ -44,9 +44,9 @@ function wppfm_staticInputSelect( rowId, level, combinationLevel, options, selec
 		var value = typeof options[ i ] !== 'object' ? options[ i ] : options[ i ][ 'value' ];
 
 		if ( key !== selected ) {
-			htmlCode += '<option value="' + key + '">' + value.replace( '_', ' ' ) + '</option>';
+			htmlCode += '<option value="' + key + '">' + value.replaceAll( '_', ' ' ) + '</option>';
 		} else {
-			htmlCode += '<option value="' + key + '" selected>' + value.replace( '_', ' ' ) + '</option>';
+			htmlCode += '<option value="' + key + '" selected>' + value.replaceAll( '_', ' ' ) + '</option>';
 		}
 	}
 

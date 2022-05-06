@@ -56,7 +56,7 @@ class Wt_Import_Export_For_Woo_Basic_Order {
         add_filter('wt_iew_exporter_alter_mapping_fields_basic', array($this, 'exporter_alter_mapping_fields'), 10, 3);        
         add_filter('wt_iew_importer_alter_mapping_fields_basic', array($this, 'get_importer_post_columns'), 10, 3);  
         
-	add_filter('wt_iew_exporter_alter_filter_fields_basic', array($this, 'exporter_alter_filter_fields'), 10, 3);
+		add_filter('wt_iew_exporter_alter_filter_fields_basic', array($this, 'exporter_alter_filter_fields'), 10, 3);
 		
         add_filter('wt_iew_exporter_alter_advanced_fields_basic', array($this, 'exporter_alter_advanced_fields'), 10, 3);        
         add_filter('wt_iew_importer_alter_advanced_fields_basic', array($this, 'importer_alter_advanced_fields'), 10, 3);
@@ -149,6 +149,12 @@ class Wt_Import_Export_For_Woo_Basic_Order {
      */
     public function wt_iew_exporter_post_types_basic($arr) {
         $arr['order'] = __('Order');
+		$arr['coupon'] = __('Coupon');
+		$arr['product'] = __('Product');
+		$arr['product_review'] = __('Product Review');
+		$arr['product_categories'] = __('Product Categories');
+		$arr['product_tags'] = __('Product Tags');
+		$arr['user'] = __('User/Customer');
         return $arr;
     }
 
@@ -372,16 +378,17 @@ class Wt_Import_Export_For_Woo_Basic_Order {
         unset($fields['export_shortcode_tohtml']);
         
         $out = array();
+				
+		$out['header_empty_row'] = array(
+			'tr_html' => '<tr id="header_empty_row"><th></th><td></td></tr>'
+		);
         $out['exclude_already_exported'] = array(
             'label' => __("Exclude already exported"),
-            'type' => 'radio',
-            'radio_fields' => array(
-                'Yes' => __('Yes'),
-                'No' => __('No')
-            ),
-            'value' => 'No',
+            'type' => 'checkbox',
+			'checkbox_fields' => array( 1 => __( 'Enable' ) ),
+            'value' => 0,
             'field_name' => 'exclude_already_exported',
-            'help_text' => __("Option 'Yes' excludes the previously exported orders."),
+            'help_text' => __('Enable this to exclude the previously exported orders.'),
         );
         
         $out['export_to_separate'] = array(
@@ -431,7 +438,9 @@ class Wt_Import_Export_For_Woo_Basic_Order {
         $out = array();
         
 
-
+		$out['header_empty_row'] = array(
+			'tr_html' => '<tr id="header_empty_row"><th></th><td></td></tr>'
+		);
         $out['found_action_merge'] = array(
             'label' => __("If order exists in the store"),
             'type' => 'radio',
@@ -444,13 +453,13 @@ class Wt_Import_Export_For_Woo_Basic_Order {
             'help_text' => __('Orders are matched by their order IDs.'),
             'help_text_conditional'=>array(
                 array(
-                    'help_text'=> __('Retains the order in the store as is and skips the matching order from the input file.'),
+                    'help_text'=> __('This option will not update the existing orders and keeps the order as is.'),
                     'condition'=>array(
                         array('field'=>'wt_iew_found_action', 'value'=>'skip')
                     )
                 ),
                 array(
-                    'help_text'=> __('Update order as per data from the input file'),
+                    'help_text'=> __('This option will update the existing orders as per the data from the input file.'),
                     'condition'=>array(
                         array('field'=>'wt_iew_found_action', 'value'=>'update')
                     )
@@ -462,31 +471,47 @@ class Wt_Import_Export_For_Woo_Basic_Order {
             )
         );       
         
-         $out['ord_link_using_sku'] = array(
-            'label' => __("Link products using SKU instead of Product ID"),
+        $out['ord_link_using_sku'] = array(
+            'label' => __('Link order items using'),
             'type' => 'radio',
             'radio_fields' => array(
-                '1' => __('Yes'),
-                '0' => __('No')
+                '0' => __('Product ID'),				
+                '1' => __('Product SKU')
             ),
             'value' => '0',
             'field_name' => 'ord_link_using_sku',
+			'merge_right' => true,
             'help_text_conditional'=>array(
                 array(
-                    'help_text'=> __('Link the products associated with the imported orders by their SKU.'),
+                    'help_text'=> __('Links the products of the imported orders by SKU.'),
                     'condition'=>array(
                         array('field'=>'wt_iew_ord_link_using_sku', 'value'=>1)
                     )
                 ),
                 array(
-                    'help_text'=> sprintf(__('Link the products associated with the imported orders by their Product ID. In case of a conflict with %sIDs of other existing post types%s the link cannot be established.'), '<b>', '</b>'),
+                    'help_text'=> __('Links the products of the imported orders by Product ID. However, the products will not get linked if the Product ID conflicts with the IDs of an existing post type.'),
                     'condition'=>array(
                         array('field'=>'wt_iew_ord_link_using_sku', 'value'=>0)
                     )
                 )
             ),
         );
-                  
+		if( !is_plugin_active( 'product-import-export-for-woo/product-import-export-for-woo.php' ) ){
+					$out['ord_link_using_sku']['help_text'] = sprintf(
+						/* translators: %s: Product Import Export for WooCommerce plugin  URL */
+						__( 'If you do not already have corresponding products added in your store, we recommend that you import them first using <a href="%s" target="_blank">Product Import Export for WooCommerce</a>.' ),
+						admin_url('plugin-install.php?s=product import export for woocommerce by webtoffee&tab=search&type=term')
+					);
+		 }
+        
+		$out['update_stock_details'] = array(
+            'label' => __("Update stock details"),
+            'type' => 'checkbox',
+			'checkbox_fields' => array( 1 => __( 'Enable' ) ),
+            'value' => 0,
+            'field_name' => 'update_stock_details',
+            'help_text' => __('Select to update the sale count and stock quantity of a product associated with the order.<br/>Note: Ensure the manage stock option is enabled. This feature is not meant to work for the refunded, cancelled or failed order statuses.'),
+        );
         
         foreach ($fields as $fieldk => $fieldv) {
             $out[$fieldk] = $fieldv;
@@ -503,9 +528,9 @@ class Wt_Import_Export_For_Woo_Basic_Order {
         {
             /* altering help text of default fields */
             $fields['limit']['label']=__('Total number of orders to export'); 
-            $fields['limit']['help_text']=__('Exports specified number of orders. e.g. Entering 500 with a skip count of 10 will export orders from 11th to 510th position.');
+            $fields['limit']['help_text']=__( 'Provide the number of orders you want to export. e.g. Entering 500 with a skip count of 10 will export orders from 11th to 510th position.' );
             $fields['offset']['label']=__('Skip first <i>n</i> orders');
-            $fields['offset']['help_text']=__('Skips specified number of orders from the beginning. e.g. Enter 10 to skip first 10 orders from export.');
+            $fields['offset']['help_text']=__('Skips specified number of orders from the beginning of the database. e.g. Enter 10 to skip first 10 orders from export.');
 
             $fields['orders'] = array(
                 'label' => __('Order IDs'),
@@ -522,7 +547,7 @@ class Wt_Import_Export_For_Woo_Basic_Order {
                 'placeholder' => __('Any status'),
                 'field_name' => 'order_status',
                 'sele_vals' => self::get_order_statuses(),
-                'help_text' => __(' Filter orders by their status type. You can specify more than one type for export.'),
+                'help_text' => __( 'Filter orders on the basis of status. Multiple statuses can be selected.' ),
                 'type' => 'multi_select',
                 'css_class' => 'wc-enhanced-select',
                 'validation_rule' => array('type'=>'text_arr')
@@ -532,7 +557,7 @@ class Wt_Import_Export_For_Woo_Basic_Order {
                 'placeholder' => __('Search for a product&hellip;'),
                 'field_name' => 'products',
                 'sele_vals' => array(),
-                'help_text' => __('Export orders containing specific products. Enter the product name or SKU or ID to export orders containing specified products.'),
+                'help_text' => __( 'Export orders containing specific products. Input name, ID or SKU of the products contained in the orders you want to export.' ),
                 'type' => 'multi_select',
                 'css_class' => 'wc-product-search',
                 'validation_rule' => array('type'=>'text_arr')
@@ -542,19 +567,20 @@ class Wt_Import_Export_For_Woo_Basic_Order {
                 'placeholder' => __('Search for a customer&hellip;'),
                 'field_name' => 'email',
                 'sele_vals' => array(),
-                'help_text' => __('Input the customer name or email to export orders pertaining to only these customers.'),
+                'help_text' => __( 'Export orders of specific customers. Input the customer name or email to specify the customers.' ),
                 'type' => 'multi_select',
                 'css_class' => 'wc-customer-search',
                 'validation_rule' => array('type'=>'text_arr')
             );
             $fields['coupons'] = array(
                 'label' => __('Coupons'),
-                'placeholder' => __('Enter coupon codes separated by ,'),
+                'placeholder' => __('Search for a coupon&hellip;'),
                 'field_name' => 'coupons',
-                'sele_vals' => '',
-                'help_text' => __('Enter coupons codes separated by comma to export orders on which these coupons have been applied.'),
-                'type' => 'text',
-                'css_class' => '',
+                'sele_vals' => array(),
+                'help_text' => __( 'Exports orders redeemed with specific coupon codes. Multiple coupon codes can be selected.' ),
+                'type' => 'multi_select',
+                'css_class' => 'wt-coupon-search',
+				'validation_rule' => array('type'=>'text_arr')
             );
 
             $fields['date_from'] = array(
@@ -562,7 +588,7 @@ class Wt_Import_Export_For_Woo_Basic_Order {
                 'placeholder' => __('Date from'),
                 'field_name' => 'date_from',
                 'sele_vals' => '',
-                'help_text' => __('Date on which the order was placed. Export orders placed on and after the specified date.'),
+                'help_text' => __( 'Export orders placed on and after the specified date.' ),
                 'type' => 'text',
                 'css_class' => 'wt_iew_datepicker',
 //                'type' => 'field_html',
@@ -574,7 +600,7 @@ class Wt_Import_Export_For_Woo_Basic_Order {
                 'placeholder' => __('Date to'),
                 'field_name' => 'date_to',
                 'sele_vals' => '',
-                'help_text' => __('Date on which the order was placed. Export orders placed upto the specified date.'),
+                'help_text' => __( 'Export orders placed upto the specified date.' ),
                 'type' => 'text',
                 'css_class' => 'wt_iew_datepicker',
 //                'type' => 'field_html',

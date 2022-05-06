@@ -35,7 +35,7 @@ class Porto_Elementor_Pricing_Table_Widget extends \Elementor\Widget_Base {
 		return 'eicon-price-table';
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		$this->start_controls_section(
 			'section_pricing_table',

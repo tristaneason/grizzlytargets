@@ -151,7 +151,7 @@ if ( ! class_exists( 'WPPFM_Feed_Support' ) ) :
 			return $result;
 		}
 
-		public function edit_value( $current_value, $edit_string, $combination_string, $combined_data_elements, $feed_language ) {
+		public function edit_value( $current_value, $edit_string, $combination_string, $combined_data_elements, $feed_language, $feed_currency ) {
 			$value_editors = new WPPFM_Feed_Value_Editors;
 
 			$query_split = explode( '#', $edit_string );
@@ -182,7 +182,7 @@ if ( ! class_exists( 'WPPFM_Feed_Support' ) ) :
 					break;
 
 				case 'recalculate':
-					$result = $value_editors->recalculate_value( $query_split, $current_value, $combination_string, $combined_data_elements, $feed_language );
+					$result = $value_editors->recalculate_value( $query_split, $current_value, $combination_string, $combined_data_elements, $feed_language, $feed_currency );
 					break;
 
 				case 'convert to child-element':

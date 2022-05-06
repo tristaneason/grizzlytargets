@@ -150,17 +150,17 @@ if ( ! class_exists( 'Hubwoo_RFM_Configuration' ) ) {
 
 					$new_data = array(
 						'score'     => '<h2>' . $single_setting . '</h2>',
-						'recency'   => '<p><span>' . __( 'Less than', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" name="hubwoo_rfm_5[]" value = "' . $hubwoo_rfm_at_5[0] . '"></p>',
-						'frequency' => '<p><span>' . __( 'More than', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" name="hubwoo_rfm_5[]" value = "' . $hubwoo_rfm_at_5[1] . '"></p>',
-						'monetary'  => '<p><span>' . __( 'More than', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" name="hubwoo_rfm_5[]" value = "' . $hubwoo_rfm_at_5[2] . '"></p>',
+						'recency'   => '<p><span>' . __( 'Less than', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" min="1" name="hubwoo_rfm_5[]" value = "' . $hubwoo_rfm_at_5[0] . '"></p>',
+						'frequency' => '<p><span>' . __( 'More than', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" min="1" name="hubwoo_rfm_5[]" value = "' . $hubwoo_rfm_at_5[1] . '"></p>',
+						'monetary'  => '<p><span>' . __( 'More than', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" min="1" name="hubwoo_rfm_5[]" value = "' . $hubwoo_rfm_at_5[2] . '"></p>',
 					);
 				} elseif ( 1 == $single_setting ) {
 
 					$new_data = array(
 						'score'     => '<h2>' . $single_setting . '</h2>',
-						'recency'   => '<p><span>' . __( 'More than', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" name="hubwoo_rfm_1[]" value="' . $hubwoo_rfm_at_1[0] . '"></p>',
-						'frequency' => '<p><span>' . __( 'Less than', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" name="hubwoo_rfm_1[]" value="' . $hubwoo_rfm_at_1[1] . '"></p>',
-						'monetary'  => '<p><span>' . __( 'Less than', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" name="hubwoo_rfm_1[]" value="' . $hubwoo_rfm_at_1[2] . '"></p>',
+						'recency'   => '<p><span>' . __( 'More than', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" min="1" name="hubwoo_rfm_1[]" value="' . $hubwoo_rfm_at_1[0] . '"></p>',
+						'frequency' => '<p><span>' . __( 'Less than', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" min="1" name="hubwoo_rfm_1[]" value="' . $hubwoo_rfm_at_1[1] . '"></p>',
+						'monetary'  => '<p><span>' . __( 'Less than', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" min="1" name="hubwoo_rfm_1[]" value="' . $hubwoo_rfm_at_1[2] . '"></p>',
 					);
 				} else {
 
@@ -192,9 +192,9 @@ if ( ! class_exists( 'Hubwoo_RFM_Configuration' ) ) {
 
 					$new_data = array(
 						'score'     => '<h2>' . $single_setting . '</h2>',
-						'recency'   => '<p><span>' . __( 'From', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" name="hubwoo_from_rfm_' . $single_setting . '[]" value="' . $rfm_from_0 . '"></p><p><span>' . __( 'To', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" name="hubwoo_to_rfm_' . $single_setting . '[]" value="' . $rfm_to_0 . '"></p>',
-						'frequency' => '<p><span>' . __( 'From', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" name="hubwoo_from_rfm_' . $single_setting . '[]" value="' . $rfm_from_1 . '"></p><p><span>' . __( 'To', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" name="hubwoo_to_rfm_' . $single_setting . '[]" value="' . $rfm_to_1 . '"></p>',
-						'monetary'  => '<p><span>' . __( 'From', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" name="hubwoo_from_rfm_' . $single_setting . '[]" value="' . $rfm_from_2 . '"></p><p><span>' . __( 'To', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" name="hubwoo_to_rfm_' . $single_setting . '[]" value="' . $rfm_to_2 . '"></p>',
+						'recency'   => '<p><span>' . __( 'From', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" min="1" name="hubwoo_from_rfm_' . $single_setting . '[]" value="' . $rfm_from_0 . '"></p><p><span>' . __( 'To', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" min="1" name="hubwoo_to_rfm_' . $single_setting . '[]" value="' . $rfm_to_0 . '"></p>',
+						'frequency' => '<p><span>' . __( 'From', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" min="1" name="hubwoo_from_rfm_' . $single_setting . '[]" value="' . $rfm_from_1 . '"></p><p><span>' . __( 'To', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" min="1" name="hubwoo_to_rfm_' . $single_setting . '[]" value="' . $rfm_to_1 . '"></p>',
+						'monetary'  => '<p><span>' . __( 'From', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" min="1" name="hubwoo_from_rfm_' . $single_setting . '[]" value="' . $rfm_from_2 . '"></p><p><span>' . __( 'To', 'makewebbetter-hubspot-for-woocommerce' ) . '</span><input size="5" type="number" class="hubwoo_rfm_data_fields" min="1" name="hubwoo_to_rfm_' . $single_setting . '[]" value="' . $rfm_to_2 . '"></p>',
 					);
 				}
 

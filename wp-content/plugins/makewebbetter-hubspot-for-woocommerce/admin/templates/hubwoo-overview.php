@@ -212,5 +212,21 @@ $portal_id = get_option( 'hubwoo_pro_hubspot_id', '' );
 				</div>
 			</div>
 		</div>
+		<div class="hubwoo_single_strip_row">
+			<div class="hubwoo-db__strip hubwoo-db__strip--info">
+				<div class="hubwoo-db__strip--infoCon">
+					<div class="hubwoo-db__strip-row-content">
+						<p>
+							<?php
+								esc_html_e( 'Our HubSpot Onboarding Services offer a personalized strategy to streamline HubSpot implementations, migrations, integrations, and training.', 'makewebbetter-hubspot-for-woocommerce' );
+							?>
+						</p>
+					</div>
+					<div class="mwb-heb-wlcm__btn-wrap">
+						<a target="_blank" href="https://makewebbetter.com/hubspot-onboarding-services/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" class="hubwoo-btn--primary hubwoo-btn--dashboard">View HubSpot Onboarding Services</a>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>

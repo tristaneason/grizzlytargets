@@ -2,8 +2,8 @@
 Contributors: Gareth Harris
 Tags: add-ons, ecommerce
 Requires at least: 4.7
-Tested up to: 5.8
-Stable tag: 3.9.4
+Tested up to: 5.9
+Stable tag: 3.10.3
 Allow your users to customise products through additional fields
 
 == Description ==
@@ -29,7 +29,6 @@ WooCommerce Product Add Ons Ultimate allows your users to customise products thr
 * allow add-ons at cart and checkout
 * importing fields via CSV
 * include product ID in child product ID attr
-* filter child products (e.g. by tag)
 * user role specific groups?
 * Save Extras button so you don't need to update the product to save
 * tidy up validation
@@ -38,7 +37,86 @@ WooCommerce Product Add Ons Ultimate allows your users to customise products thr
 
 == Changelog ==
 
+= 3.10.3, 2 May 2022 =
+* Fixed: fatal error in Customizer
+
+= 3.10.2, 29 April 2022 =
+* Fixed: error in updating an order when Hide child products in the order is enabled
+
+= 3.10.1, 26 April 2022 =
+* Fixed: ensure child products in Product Categories fields link to parent products in cart
+* Fixed: Product Categories fields with independent quantities
+* Fixed: missing param in pewc_field
+* Fixed: missing required element in checkbox template
+* Fixed: validation issue for Product / Product Categories fields
+
+= 3.10.0, 20 April 2022 =
+* Added: new Products Categories field type
+* Added: Checkboxes List and Radio List product field layouts
+* Added: calculated_booking_cost and num_units_int params for calculations (for Bookings for WooCommerce)
+* Fixed: look up table issue if header has decimals
+* Fixed: parse error on products templates if licence not pro
+* Fixed: parse error for weight fields with empty value
+* Fixed: tax issues on column layout for child products
+* Fixed: character settings do not appear for Text Preview in Global Add-Ons
+* Fixed: group conditions not firing correctly when field is hidden
+* Fixed: currency converted multiple times when add-ons in more than one group
+* Fixed: bug in editing child products when the parent product uses a column layout
+* Fixed: bug in field condition when using Select products layout and when Optimise conditions is enabled
+* Fixed: tax issues in price display suffix
+* Fixed: image swatch field price does not reset to zero if there is no option selected
+* Fixed: child product independent quantities on the product page do not get multiplied if Multiply independent quantities is enabled
+* Updated: set calculation price to 0 if look up table returns null
+* Updated: get field parent in conditions.js for improved compatibility with Product Table Ultimate
+* Updated: allow editing of upload fields
+* Updated: use wp_get_attachment_image_url to get child product images
+* Updated: check if quantity field does not exist for Bookings for WooCommerce
+* Updated: markup for products-radio.php
+* Updated: markup for checkbox.php
+* Updated: markup for radio.php
+* Updated: add child products prices to parent product price if Hide child products setting is enabled
+* Updated: set Include variations as child products default to yes
+
+= 3.9.7, 15 March 2022 =
+* Added: save AJAX uploads if validation fails
+* Added: pewc_cart_item_extras_child_product filter
+* Fixed: PHP notice if default value is an array
+* Fixed: enabling QuickView allows child products' attributes to override the parent product's
+* Fixed: character settings do not appear for Text Preview in Global Add-Ons
+* Fixed: tax issues on calculation fields
+* Fixed: tax issues on column layout for child products
+* Fixed: ensure scroll on pewc-steps-wrapper doesn't throw error
+* Fixed: tax issue on minimum price field
+* Fixed: minimum price gets rounded down if a currency's decimal separator is a comma
+* Updated: removed wpo_wcpdf_after_item_meta
+
+= 3.9.6, 25 January 2022 =
+* Added: pewc_price_with_extras_before_calc_totals filter
+* Added: pewc_after_add_cart_item_data filter
+* Fixed: Aelia CS doubling conversion
+* Fixed: parse error from Aelia CS integration
+
+= 3.9.5, 17 January 2022 =
+* Added: support for Aelia Currency Switcher
+* Added: option to add to product weight on calculation fields
+* Added: pewc_filter_quantity_field filter
+* Added: pewc_maybe_adjust_tax_price_with_extras filter
+* Added: pewc_export_orders_capability filter
+* Fixed: global rules not displaying for Dutch sites
+* Fixed: subdirectory changes for uploaded files when user is not logged in
+* Fixed: variation specific fields with conditions not displaying correctly
+* Fixed: conditions not loading on global add-ons page for Dutch language
+* Fixed: apply pewc_before_update_field_all_params to global calculation fields on front end
+* Fixed: look up tables on Global Add-ons
+* Fixed: QuickView issue if product is used in more than one product fields
+* Fixed: "contains" condition not working for product field column layout
+* Fixed: calculations displayed as cost with negative value subtracting 1 from value
+* Fixed: image swatch not working inside lightboxes
+* Fixed: tooltip not working in mobile
+* Updated: pewc_enable_numeric_options
+
 = 3.9.4, 22 September 2021 =
+* Added: Danish translation
 * Fixed: parse error in functions-pro-helpers.php
 
 = 3.9.3, 21 September 2021 =

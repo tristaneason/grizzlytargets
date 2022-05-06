@@ -268,8 +268,12 @@ var wt_iew_basic_export=(function( $ ) {
 						{
 							if(data.finished==1)
 							{
+                                                            if(data.no_post==1){
+                                                                alert(data.msg);
+                                                            }else{
 								wt_iew_basic_export.set_export_progress_info(data.msg);
 								wt_iew_notify_msg.success(wt_iew_basic_params.msgs.success);
+                                                            }
 			
 							}
 							else if(data.finished==2) /* Remote export */
@@ -610,6 +614,9 @@ var wt_iew_basic_export=(function( $ ) {
 			if(this.current_step=='filter')
 			{
 				this.load_meta_mapping_fields();
+                                if($('.wt-coupon-search').length>0){
+                                    wt_iew_basic_export.initiate_coupon_search();
+                                }  
 			}else if(this.current_step=='advanced')
 			{
 				wt_field_group.Set();
@@ -628,13 +635,26 @@ var wt_iew_basic_export=(function( $ ) {
                         $('.wt-ierpro-name>img').attr("src", wt_iew_basic_params.pro_plugins[this.to_export]['icon_url']);
                         $('.wt-ier-gopro-cta').hide();
                         $('.wt-ier-'+this.to_export).show();
+                        $('.wt_iew_free_addon').hide();
+                        $('.wt_iew_export_action_btn').prop('disabled', false);
+                        if(!wt_iew_basic_params.pro_plugins[this.to_export]['is_active']){
+                            $('.wt_iew_type_'+this.to_export).show();
+                            $('.wt_iew_export_action_btn').prop('disabled', true);
+                        }
 		},
 		page_actions:function(step)
 		{
 			if(step=='post_type') /* post type page */
 			{
 				$('[name="wt_iew_export_post_type"]').unbind('change').change(function(){					
-					wt_iew_basic_export.to_export=$(this).val();
+					
+                                        if (!wt_iew_basic_params.pro_plugins[$(this).val()]['is_active']) {
+                                            $('.wt_iew_export_action_btn').prop('disabled', true);
+                                            $('.wt_iew_type_' + this.to_export).show();
+                                        }
+                                    
+                                    
+                                        wt_iew_basic_export.to_export=$(this).val();
 					wt_iew_basic_export.to_export_title='';
 					wt_iew_basic_export.reset_form_data();
 					$('.wt_iew_post_type_name').html('');
@@ -902,6 +922,40 @@ var wt_iew_basic_export=(function( $ ) {
                     {
                         return confirm("Changes that you made may not be saved.");
                     };
+                },
+                initiate_coupon_search: function(){
+
+            jQuery('.wt-coupon-search').selectWoo({
+                        minimumInputLength: 2,
+                        multiple: true,
+                        noResults: wt_iew_basic_params.msgs.no_results_found,
+                        ajax: {
+                            url: wt_iew_basic_params.ajax_url,
+                            dataType: 'json',
+                            type: "POST",
+                            quietMillis: 50,
+
+                            data: function (terms) {
+                                return {
+                                    term: terms.term,
+                                    _wpnonce: wt_iew_basic_params.nonces.main,
+                                    action: 'wt_iew_ajax_coupon_search',
+                                };
+                            },
+                            processResults: function (data) {
+                                return {
+                                    results: jQuery.map(data, function (item) {
+                                        return {
+                                            id: item.id,
+                                            text: item.text
+                                        }
+                                    })
+                                };
+                            }
+                        }
+                    });
+
+
                 }
 	}
 	return wt_iew_basic_export;

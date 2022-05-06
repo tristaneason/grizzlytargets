@@ -6,39 +6,26 @@
  * Description: Adds the Authorize.Net Payment Gateway to your WooCommerce site, allowing customers to securely save their credit card or bank account to their account for use with single purchases, pre-orders, subscriptions, and more!
  * Author: SkyVerge
  * Author URI: http://www.woocommerce.com/
- * Version: 3.6.2
+ * Version: 3.7.0
  * Text Domain: woocommerce-gateway-authorize-net-cim
  * Domain Path: /i18n/languages/
  *
- * Copyright: (c) 2013-2021, SkyVerge, Inc. (info@skyverge.com)
+ * Copyright: (c) 2013-2022, SkyVerge, Inc. (info@skyverge.com)
  *
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  *
  * @author      SkyVerge
  * @category    Payment-Gateways
- * @copyright   Copyright (c) 2013-2021, SkyVerge, Inc.
+ * @copyright   Copyright (c) 2013-2022, SkyVerge, Inc.
  * @license     http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  *
  * Woo: 178481:8b61524fe53add7fdd1a8d1b00b9327d
- * WC requires at least: 3.5
- * WC tested up to: 5.5.1
+ * WC requires at least: 3.9.4
+ * WC tested up to: 6.4.1
  */
 
 defined( 'ABSPATH' ) or exit;
-
-// Required functions
-if ( ! function_exists( 'woothemes_queue_update' ) ) {
-	require_once( plugin_dir_path( __FILE__ ) . 'woo-includes/woo-functions.php' );
-}
-
-// Plugin updates
-woothemes_queue_update( plugin_basename( __FILE__ ), '8b61524fe53add7fdd1a8d1b00b9327d', '178481' );
-
-// WC active check
-if ( ! is_woocommerce_active() ) {
-	return;
-}
 
 /**
  * The plugin loader class.
@@ -55,10 +42,10 @@ class WC_Authorize_Net_CIM_Loader {
 	const MINIMUM_WP_VERSION = '5.2';
 
 	/** minimum WooCommerce version required by this plugin */
-	const MINIMUM_WC_VERSION = '3.5';
+	const MINIMUM_WC_VERSION = '3.9.4';
 
 	/** SkyVerge plugin framework version */
-	const FRAMEWORK_VERSION = '5.10.8';
+	const FRAMEWORK_VERSION = '5.10.12';
 
 	/** the plugin name, for displaying notices */
 	const PLUGIN_NAME = 'WooCommerce Authorize.Net Gateway';

@@ -10,7 +10,7 @@ if( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if( isset( $group_id ) ) {
+if( isset( $group_id ) && isset( $item_key ) ) {
 
 	$field_name = '_product_extra_groups_' . esc_attr( $group_id ) . '_' . esc_attr( $item_key ) . '[price_visibility]';
 	$field_id = 'price_visibility_' . esc_attr( $group_id ) . '_' . esc_attr( $item_key );

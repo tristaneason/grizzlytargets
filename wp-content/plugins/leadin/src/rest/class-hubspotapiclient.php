@@ -35,13 +35,14 @@ class HubSpotApiClient {
 	 * @param string $method The type of HTTP request to make, GET/POST etc.
 	 * @param array  $headers Any headers that should be added to the default array of headers sent with the request.
 	 * @param string $body string for the http request body.
+	 * @param string $cross_hublet if true the request will be not be hublet specific.
 	 *
 	 * @return array The response from HubSpot API's.
 	 *
 	 * @throws \Exception For any errors in making the API request and for any errors returned from the HubSpot API.
 	 */
-	public static function make_request( $api_path, $method, $headers = array(), $body = '' ) {
-		$api_root = LeadinFilters::get_leadin_base_api_url();
+	public static function make_request( $api_path, $method, $headers = array(), $body = '', $cross_hublet = false ) {
+		$api_root = LeadinFilters::get_leadin_base_api_url( $cross_hublet );
 		$url      = $api_root . $api_path;
 
 		$headers = array_merge(
@@ -76,17 +77,19 @@ class HubSpotApiClient {
 	 * @param string $api_path API path to hit on api.hubspot.com.
 	 * @param string $method Type of HTTP request to make, GET/POST etc.
 	 * @param string $body Http request string body.
+	 * @param string $cross_hublet if true the request will be not be hublet specific.
 	 *
 	 * @return array The response from HubSpot's api.
 	 *
 	 * @throws \Exception On failed HTTP requests.
 	 */
-	public static function authenticated_request( $api_path, $method, $body = '' ) {
+	public static function authenticated_request( $api_path, $method, $body = '', $cross_hublet = false ) {
 		return self::make_request(
 			$api_path,
 			$method,
 			self::get_oauth_headers(),
-			$body
+			$body,
+			$cross_hublet
 		);
 	}
 
@@ -106,4 +109,64 @@ class HubSpotApiClient {
 
 		return json_decode( wp_remote_retrieve_body( $refresh_request ) );
 	}
+
+	/**
+	 * Query contacts created after a particular timestamp.
+	 *
+	 * @param integer $timestamp timestamp to filter create date property.
+	 *
+	 * @param integer $limit max number of results.
+	 */
+	public static function get_contacts_from_timestamp( $timestamp, $limit = 10 ) {
+		$path = '/crm/v3/objects/contacts/search';
+
+		$js_timestamp = $timestamp * 1000;
+
+		$payload = array(
+			'filterGroups' => array(
+				array(
+					'filters' => array(
+						array(
+							'propertyName' => 'createdate',
+							'operator'     => 'GTE',
+							'value'        => $js_timestamp,
+						),
+					),
+				),
+			),
+			'sort'         => array( 'createdate' ),
+			'properties'   => array( 'createdate' ),
+			'limit'        => $limit,
+			'after'        => 0,
+		);
+
+		$contacts_request = self::authenticated_request(
+			$path,
+			'POST',
+			json_encode( $payload )
+		);
+
+		return json_decode( wp_remote_retrieve_body( $contacts_request ) );
+	}
+
+	/**
+	 * Make an API request to get the portal's details including the hublet it's in.
+	 *
+	 * @param integer $portal_id portal id.
+	 */
+	public function get_portal_details( $portal_id ) {
+		$api_path     = "/account-info/v3/details?portalId=$portal_id";
+		$cross_hublet = true;
+
+		$response      = self::authenticated_request(
+			$api_path,
+			'GET',
+			'',
+			$cross_hublet
+		);
+		$response_body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+		return $response_body;
+	}
+
 }

@@ -18,6 +18,12 @@ if ( 'yes' == get_option( 'hubwoo_connection_complete', 'no' ) ) {
 	$connect['will_connect']  = 'block';
 	$connect['did_connected'] = 'none';
 }
+
+if ( 'yes' == get_option( 'hubwoo_connection_issue', 'no' ) ) {
+	$notice = esc_html( 'Failed to connect to HubSpot, Try to reconnect or please contact us!', 'makewebbetter-hubspot-for-woocommerce' );
+	global $hubwoo;
+	$hubwoo->hubwoo_notice( $notice, 'hubwoo-notice' );
+}
 ?>
 
 <div class="mwb-heb-welcome" style="display: <?php echo esc_attr( $connect['will_connect'] ); ?>";>

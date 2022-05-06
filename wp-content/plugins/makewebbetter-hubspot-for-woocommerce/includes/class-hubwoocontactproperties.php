@@ -1361,9 +1361,8 @@ class HubWooContactProperties {
 		}
 
 		if ( ! empty( $abandoned_property_updated ) && 'yes' == $abandoned_property_updated ) {
-			if ( 'yes' == $cart_status ) {
-				$abandoned_status = true;
-			}
+
+			$abandoned_status = true;
 		}
 
 		$lists[] = array(
@@ -1826,9 +1825,8 @@ class HubWooContactProperties {
 		$abandoned_property_updated = get_option( 'hubwoo_abandoned_property_update' );
 
 		if ( ! empty( $abandoned_property_updated ) && 'yes' == $abandoned_property_updated ) {
-			if ( 'yes' == $cart_status ) {
-				$abandoned_status = true;
-			}
+
+			$abandoned_status = true;
 		}
 
 		$workflows[] = array(
@@ -3240,6 +3238,7 @@ class HubWooContactProperties {
 							$last_order_products[ $key ]['url']   = get_permalink( $item_id );
 							$last_order_products[ $key ]['price'] = $product->get_price();
 							$last_order_products[ $key ]['qty']   = $wc_order_item_product->get_quantity();
+							$last_order_products[ $key ]['disc']  = $wc_order_item_product->get_total();
 							$key++;
 						}
 					}
@@ -3248,12 +3247,13 @@ class HubWooContactProperties {
 
 			if ( count( $last_order_products ) ) {
 
-				$products_html = '<div><hr></div><!--[if mso]><center><table width="100%" style="width:600px;"><![endif]--><table style="font-size: 14px; font-family: Arial, sans-serif; line-height: 20px; text-align: left; table-layout: fixed;" width="100%"><thead><tr><th style="text-align: center;word-wrap: unset;">' . __( 'Image', 'makewebbetter-hubspot-for-woocommerce' ) . '</th><th style="text-align: center;word-wrap: unset;">' . __( 'Item', 'makewebbetter-hubspot-for-woocommerce' ) . '</th><th style="text-align: center;word-wrap: unset;">' . __( 'Qty', 'makewebbetter-hubspot-for-woocommerce' ) . '</th><th style="text-align: center;word-wrap: unset;">' . __( 'Price', 'huwboo' ) . '</th><th style="text-align: center;word-wrap: unset;">' . __( 'Total', 'makewebbetter-hubspot-for-woocommerce' ) . '</th></tr></thead><tbody>';
+				$products_html = '<div><hr></div><!--[if mso]><center><table width="100%" style="width:600px;"><![endif]--><table style="font-size: 14px; font-family: Arial, sans-serif; line-height: 20px; text-align: left; table-layout: fixed;" width="100%"><thead><tr><th style="text-align: center;word-wrap: unset;">' . __( 'Image', 'makewebbetter-hubspot-for-woocommerce' ) . '</th><th style="text-align: center;word-wrap: unset;">' . __( 'Item', 'makewebbetter-hubspot-for-woocommerce' ) . '</th><th style="text-align: center;word-wrap: unset;">' . __( 'Qty', 'makewebbetter-hubspot-for-woocommerce' ) . '</th><th style="text-align: center;word-wrap: unset;">' . __( 'Price', 'huwboo' ) . '</th><th style="text-align: center;word-wrap: unset;">' . __( 'Discount', 'makewebbetter-hubspot-for-woocommerce' ) . '</th><th style="text-align: center;word-wrap: unset;">' . __( 'Total', 'makewebbetter-hubspot-for-woocommerce' ) . '</th></tr></thead><tbody>';
 
 				foreach ( $last_order_products as $single_product ) {
 
-					$total          = $single_product['price'] * $single_product['qty'];
-					$products_html .= '<tr><td style="max-width: 20%;width: 100%; text-align: center;"><img height="50" width="50" src="' . $single_product['image'] . '"></td><td style="max-width: 50%;width: 100%; text-align: center; font-weight: normal;font-size: 12px;word-wrap: unset;"><a style="display: inline-block;" target="_blank" href="' . $single_product['url'] . '"><strong>' . $single_product['name'] . '</strong></a></td><td style="max-width: 10%;width: 100%;text-align: center;">' . $single_product['qty'] . '</td><td style="max-width: 10%;width: 100%;text-align: center; font-size: 10px;">' . wc_price( $single_product['price'], array( 'currency' => get_post_meta( $last_order_id, '_order_currency', true ) ) ) . '</td><td style="max-width: 10%;width: 100%;text-align: center; font-size: 10px;">' . wc_price( $total, array( 'currency' => get_post_meta( $last_order_id, '_order_currency', true ) ) ) . '</td></tr>';
+					$total = $single_product['disc'];
+					$disc  = ( (int) $single_product['price'] * $single_product['qty'] ) - $total;
+					$products_html .= '<tr><td style="max-width: 20%;width: 100%; text-align: center;"><img height="50" width="50" src="' . $single_product['image'] . '"></td><td style="max-width: 50%;width: 100%; text-align: center; font-weight: normal;font-size: 12px;word-wrap: unset;"><a style="display: inline-block;" target="_blank" href="' . $single_product['url'] . '"><strong>' . $single_product['name'] . '</strong></a></td><td style="max-width: 10%;width: 100%;text-align: center;">' . $single_product['qty'] . '</td><td style="max-width: 10%;width: 100%;text-align: center; font-size: 10px;">' . wc_price( $single_product['price'], array( 'currency' => get_post_meta( $last_order_id, '_order_currency', true ) ) ) . '</td><td style="max-width: 10%;width: 100%;text-align: center; font-size: 10px;">' . wc_price( $disc, array( 'currency' => get_post_meta( $last_order_id, '_order_currency', true ) ) ) . '</td><td style="max-width: 10%;width: 100%;text-align: center; font-size: 10px;">' . wc_price( $total, array( 'currency' => get_post_meta( $last_order_id, '_order_currency', true ) ) ) . '</td></tr>';
 				}
 
 				$products_html .= '</tbody></table><!--[if mso]></table></center><![endif]--><div><hr></div>';

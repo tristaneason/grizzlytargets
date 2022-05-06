@@ -89,6 +89,7 @@ class PortoShortcodesClass {
 		'porto_social_icons',
 		'porto_image_comparison',
 		'porto_image_gallery',
+		//'porto_scroll_progress',
 	);
 
 	public static $woo_shortcodes = array( 'porto_recent_products', 'porto_featured_products', 'porto_sale_products', 'porto_best_selling_products', 'porto_top_rated_products', 'porto_products', 'porto_product_category', 'porto_product_attribute', 'porto_product', 'porto_product_categories', 'porto_one_page_category_products', 'porto_product_attribute_filter', 'porto_products_filter', 'porto_widget_woo_products', 'porto_widget_woo_top_rated_products', 'porto_widget_woo_recently_viewed', 'porto_widget_woo_recent_reviews', 'porto_widget_woo_product_tags' );
@@ -372,10 +373,14 @@ class PortoShortcodesClass {
 		if ( ! empty( $fonts ) ) {
 			$js_porto_block_vars['googlefonts'] = array_map( 'esc_js', $fonts );
 		}
+		if ( 'post.php' == $pagenow && get_the_ID() ) {
+			$js_porto_block_vars['edit_post_id'] = (int) get_the_ID();
+		}
+
 		wp_localize_script(
 			'porto_blocks',
 			'porto_block_vars',
-			$js_porto_block_vars
+			apply_filters( 'porto_gutenberg_editor_vars', $js_porto_block_vars )
 		);
 
 		porto_google_map_script();
@@ -429,6 +434,9 @@ class PortoShortcodesClass {
 			require_once( dirname( PORTO_META_BOXES_PATH ) . '/elementor/restapi/ajaxselect2.php' );
 		//}
 		require_once( PORTO_SHORTCODES_LIB . 'functions.php' );
+
+		require_once( PORTO_SHORTCODES_LIB . 'dynamic_tags/dynamic-tags.php' );
+
 		foreach ( $this::$shortcodes as $shortcode ) {
 			$callback = function( $atts, $content = null ) use ( $shortcode, $is_wpb ) {
 				ob_start();
@@ -494,9 +502,12 @@ class PortoShortcodesClass {
 							$attributes['orderby'] = json_decode( html_entity_decode( $attributes['orderby'] ), true );
 						}
 						$query_args['orderby'] = $attributes['orderby'];
-						
+
 						if ( array_key_exists( 'price', $attributes['orderby'] ) || array_key_exists( 'price-desc', $attributes['orderby'] ) || array_key_exists( 'popularity', $attributes['orderby'] ) || array_key_exists( 'rating', $attributes['orderby'] ) ) {
-							$final_args            = array( 'orderby' => '', 'join' => '' );
+							$final_args            = array(
+								'orderby' => '',
+								'join'    => '',
+							);
 							$final_args            = WC()->query->order_by_price_desc_post_clauses( $final_args );
 							$final_args['orderby'] = '';
 
@@ -516,7 +527,7 @@ class PortoShortcodesClass {
 								} elseif ( 'rating' == $key ) {
 									$final_args['orderby'] .= ' wc_product_meta_lookup.average_rating ' . $value . ', wc_product_meta_lookup.rating_count ' . $value . ' ';
 								} else {
-									$other_args = WC()->query->get_catalog_ordering_args( $key, $value );
+									$other_args            = WC()->query->get_catalog_ordering_args( $key, $value );
 									$other_args['orderby'] = explode( ' ', $other_args['orderby'] );
 									foreach ( $other_args['orderby'] as $index => $other_orderby ) {
 										if ( 'id' == $other_orderby || 'ID' == $other_orderby ) {
@@ -541,7 +552,6 @@ class PortoShortcodesClass {
 							$this->product_mult_sort_args = $final_args;
 							add_filter( 'posts_clauses', array( $this, 'wc_multi_order' ) );
 						}
-
 					}
 					return $query_args;
 				},

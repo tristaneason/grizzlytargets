@@ -8,10 +8,11 @@ use Leadin\options\LeadinOptions;
  * Class that wraps the functions to access options related to the HubSpot account.
  */
 class AccountOptions extends LeadinOptions {
-	const PORTAL_ID     = 'portalId';
-	const PORTAL_DOMAIN = 'portal_domain';
-	const ACCOUNT_NAME  = 'account_name';
-	const HUBLET        = 'hublet';
+	const PORTAL_ID                 = 'portalId';
+	const PORTAL_DOMAIN             = 'portal_domain';
+	const ACCOUNT_NAME              = 'account_name';
+	const HUBLET                    = 'hublet';
+	const DISABLE_INTERNAL_TRACKING = 'disable_internal_tracking';
 
 	/**
 	 * Return portal id.
@@ -78,6 +79,15 @@ class AccountOptions extends LeadinOptions {
 	}
 
 	/**
+	 * Update the hublet
+	 *
+	 * @param String $hublet hublet.
+	 */
+	public static function update_hublet( $hublet ) {
+		return self::update( self::HUBLET, $hublet );
+	}
+
+	/**
 	 * Delete portal id.
 	 */
 	public static function delete_portal_id() {
@@ -104,4 +114,35 @@ class AccountOptions extends LeadinOptions {
 	public static function delete_hublet() {
 		return self::delete( self::HUBLET );
 	}
+
+	/**
+	 * Return option flag for disabling internal users to appear at HS analytics.
+	 */
+	public static function get_disable_internal_tracking() {
+		return self::get( self::DISABLE_INTERNAL_TRACKING );
+	}
+
+	/**
+	 * Set option containing flag for disabling internal users to appear at HS analytics.
+	 */
+	public static function add_disable_internal_tracking() {
+		return self::add( self::DISABLE_INTERNAL_TRACKING, 0 );
+	}
+
+	/**
+	 * Delete option flag for disabling internal tracking
+	 */
+	public static function delete_disable_internal_tracking() {
+		return self::delete( self::DISABLE_INTERNAL_TRACKING );
+	}
+
+	/**
+	 * Update option flag for disabling internal tracking
+	 *
+	 * @param int $value boolean flag.
+	 */
+	public static function update_disable_internal_tracking( $value ) {
+		return self::update( self::DISABLE_INTERNAL_TRACKING, $value );
+	}
+
 }

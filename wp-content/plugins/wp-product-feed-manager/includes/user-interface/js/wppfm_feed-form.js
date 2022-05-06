@@ -87,6 +87,7 @@ function wppfm_constructNewFeed() {
 	var aggregator        = jQuery( '#aggregator' ).is( ':checked' ) ? 1 : 0;
 	var country           = jQuery( '#wppfm-countries-selector' ).val();
 	var language          = document.getElementById( 'language' ) === null ? '' : jQuery( '#wppfm-feed-language-selector' ).val();
+	var currency          = document.getElementById( 'currency' ) === null ? '' : jQuery( '#wppfm-feed-currency-selector' ).val();
 	var feedTitle         = jQuery( '#google-feed-title-selector' ).val();
 	var feedDescription   = jQuery( '#google-feed-description-selector' ).val();
 	var daysInterval      = daysIntervalElement.val() !== '' ? daysIntervalElement.val() : '1';
@@ -105,7 +106,7 @@ function wppfm_constructNewFeed() {
 	wppfm_setScheduleSelector( daysInterval, frequency );
 
 	// make a new feed object
-	_feedHolder = new Feed( - 1, fileName, variations, aggregator, parseInt( channel ), mainCategory, categoryMapping, url, source, country, language, feedTitle, feedDescription,
+	_feedHolder = new Feed( - 1, fileName, variations, aggregator, parseInt( channel ), mainCategory, categoryMapping, url, source, country, language, currency, feedTitle, feedDescription,
 		updates, feedFilter, status, feedType );
 }
 
@@ -170,6 +171,7 @@ function wppfm_finishOrUpdateFeedPage( categoryChanged ) {
 	_feedHolder[ 'feedTitle' ]         = jQuery( '#google-feed-title-selector' ).val();
 	_feedHolder[ 'feedDescription' ]   = jQuery( '#google-feed-description-selector' ).val();
 	_feedHolder[ 'language' ]          = document.getElementById( 'language' ) === null ? '' : jQuery( '#wppfm-feed-language-selector' ).val();
+	_feedHolder[ 'currency' ]          = document.getElementById( 'currency' ) === null ? '' : jQuery( '#wppfm-feed-currency-selector' ).val();
 
 	// get the output fields that can be used with the selected channel
 	wppfm_getFeedAttributes(	- 1,	selectedChannelValue,	function( outputs ) {
@@ -186,6 +188,7 @@ function wppfm_finishOrUpdateFeedPage( categoryChanged ) {
 
 			_feedHolder[ 'country' ]  = jQuery( '#wppfm-countries-selector' ).val();
 			_feedHolder[ 'language' ] = jQuery( '#wppfm-feed-language-selector' ).val();
+			_feedHolder[ 'currency' ] = jQuery( '#wppfm-feed-currency-selector' ).val();
 
 			wppfm_fillSourcesList( customFields );
 
@@ -285,6 +288,7 @@ function wppfm_initiateFeed() {
 			feedData['source'],
 			feedData['target_country'],
 			feedData['language'],
+			feedData['currency'],
 			feedData['feed_title'],
 			feedData['feed_description'],
 			feedData['schedule'],
@@ -488,6 +492,11 @@ function wppfm_setGoogleFeedDescription( value ) {
 
 function wppfm_setGoogleFeedLanguage( value ) {
 	_feedHolder[ 'language' ] = value;
+}
+
+// @since 2.28.0
+function wppfm_setGoogleFeedCurrency( value ) {
+	_feedHolder[ 'currency' ] = value;
 }
 
 function wppfm_setCategoryMap( mapping, mode ) {
@@ -892,6 +901,7 @@ function wppfm_getCategorySelectorValue( selectorId ) {
 
 function wppfm_fillFeedFields( isNew, categoryChanged ) {
 	var langElem                 = document.getElementById( 'wppfm-feed-language-selector' );
+	var currencyElem             = document.getElementById( 'wppfm-feed-currency-selector' );
 	var merchantsSelectorElement = jQuery( '#wppfm-merchants-selector' );
 
 	// if the category attribute has a value
@@ -932,6 +942,11 @@ function wppfm_fillFeedFields( isNew, categoryChanged ) {
 	if ( langElem !== null ) {
 		var langVal = _feedHolder[ 'language' ] !== '' ? _feedHolder[ 'language' ] : '0';
 		jQuery( '#wppfm-feed-language-selector' ).val( langVal );
+	}
+
+	if ( currencyElem !== null ) {
+		var currencyVal = _feedHolder[ 'currency' ] ? _feedHolder[ 'currency' ] : '0';
+		jQuery( '#wppfm-feed-currency-selector' ).val( currencyVal );
 	}
 
 	// get the link to the update schedule selectors

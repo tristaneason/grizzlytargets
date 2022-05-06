@@ -256,11 +256,12 @@ trait WPPFM_Processing_Support {
 	 * @param string $main_category_feed_title
 	 * @param string $row_category
 	 * @param string $feed_language
+	 * @param string $feed_currency
 	 * @param array $relation_table
 	 *
 	 * @return array Returns an key=>value array of a specific product field where the key contains the field name and the value the field value
 	 */
-	protected function process_product_field( $product_data, $field_meta_data, $main_category_feed_title, $row_category, $feed_language, $relation_table ) {
+	protected function process_product_field( $product_data, $field_meta_data, $main_category_feed_title, $row_category, $feed_language, $feed_currency, $relation_table ) {
 
 		$product_object[ $field_meta_data->fieldName ] = $this->get_correct_field_value(
 			$field_meta_data,
@@ -268,6 +269,7 @@ trait WPPFM_Processing_Support {
 			$main_category_feed_title,
 			$row_category,
 			$feed_language,
+			$feed_currency,
 			$relation_table
 		);
 
@@ -282,11 +284,12 @@ trait WPPFM_Processing_Support {
 	 * @param string $main_category_feed_title main category title
 	 * @param string $row_category complete category string
 	 * @param string $feed_language language of the feed
+	 * @param string $feed_currency currency of the feed
 	 * @param array $relation_table table with the shop and merchant category relations
 	 *
 	 * @return string
 	 */
-	protected function get_correct_field_value( $field_meta_data, $product_data, $main_category_feed_title, $row_category, $feed_language, $relation_table ) {
+	protected function get_correct_field_value( $field_meta_data, $product_data, $main_category_feed_title, $row_category, $feed_language, $feed_currency, $relation_table ) {
 		$this->_selected_number = 0;
 
 		// do not process category strings, but only fields that are requested
@@ -326,8 +329,8 @@ trait WPPFM_Processing_Support {
 					$is_money           = false;
 				}
 
-				$row_value     = ! $is_money ? $end_row_value : wppfm_prep_money_values( $end_row_value . $feed_language );
-				$end_row_value = $this->get_edited_end_row_value( $value_object->v, $row_value, $product_data, $combination_string, $feed_language );
+				$row_value     = ! $is_money ? $end_row_value : wppfm_prep_money_values( $end_row_value . $feed_language, $feed_currency );
+				$end_row_value = $this->get_edited_end_row_value( $value_object->v, $row_value, $product_data, $combination_string, $feed_language, $feed_currency );
 			}
 		} else {
 			$end_row_value = $row_category;
@@ -387,7 +390,7 @@ trait WPPFM_Processing_Support {
 	}
 
 	protected function get_filter_status( $filter, $product_data ) {
-		if ( property_exists( $filter, 'c' ) ) {
+		if ( ! empty( $filter ) && property_exists( $filter, 'c' ) ) {
 			// check if the query is true for this field
 			return $this->filter_result( $filter->c, $product_data );
 		} else {
@@ -475,7 +478,7 @@ trait WPPFM_Processing_Support {
 	protected function get_row_source_data( $filter, $product_data, $advised_source ) {
 		$row_source_data = '';
 
-		if ( property_exists( $filter, 's' ) ) {
+		if ( ! empty( $filter ) && property_exists( $filter, 's' ) ) {
 			if ( property_exists( $filter->s, 'static' ) ) {
 				$row_source_data = $filter->s->static;
 			} elseif ( property_exists( $filter->s, 'source' ) ) {
@@ -555,7 +558,7 @@ trait WPPFM_Processing_Support {
 		return property_exists( $meta_obj, 't' ) ? true : false;
 	}
 
-	protected function get_edited_end_row_value( $change_parameters, $original_output, $product_data, $combination_string, $feed_language ) {
+	protected function get_edited_end_row_value( $change_parameters, $original_output, $product_data, $combination_string, $feed_language, $feed_currency ) {
 		$result_is_filtered = false;
 		$support_class      = new WPPFM_Feed_Support();
 		$y                  = 0;
@@ -572,7 +575,8 @@ trait WPPFM_Processing_Support {
 						$change_parameters[ $i ]->{$i + 1},
 						$combination_string,
 						$combined_data_elements,
-						$feed_language
+						$feed_language,
+						$feed_currency
 					);
 
 					$result_is_filtered = true;
@@ -589,7 +593,8 @@ trait WPPFM_Processing_Support {
 				$change_parameters[ $y ]->{$y + 1},
 				$combination_string,
 				$combined_data_elements,
-				$feed_language
+				$feed_language,
+				$feed_currency
 			);
 		}
 
@@ -766,7 +771,9 @@ trait WPPFM_Processing_Support {
 		if ( ! empty( $value_string ) ) {
 			$value_object = json_decode( $value_string );
 
-			if ( property_exists( $value_object, 'm' ) && property_exists( $value_object->m[0], 's' ) ) {
+			if ( property_exists( $value_object, 'm' )
+			     && ! empty( $value_object->m[0] )
+			     && property_exists( $value_object->m[0], 's' ) ) {
 				$source_string = wp_json_encode( $value_object->m[0]->s );
 			}
 		}
@@ -1291,11 +1298,12 @@ trait WPPFM_Processing_Support {
 	 * @param object $product
 	 * @param array $active_field_names
 	 * @param string $selected_language
+	 * @param string $selected_currency
 	 * @param string $feed_id
 	 *
 	 * @return bool
 	 */
-	protected function add_procedural_data( &$product, $active_field_names, $selected_language, $feed_id ) {
+	protected function add_procedural_data( &$product, $active_field_names, $selected_language, $selected_currency, $feed_id ) {
 		$woocommerce_product = wc_get_product( $product->ID );
 
 		if ( false === $woocommerce_product ) {
@@ -1331,20 +1339,26 @@ trait WPPFM_Processing_Support {
 			}
 
 			// WPML support
-			$product->permalink = has_filter( 'wppfm_get_wpml_permalink' )
+			$permalink = has_filter( 'wppfm_get_wpml_permalink' )
 				? apply_filters( 'wppfm_get_wpml_permalink', $permalink, $selected_language ) : $permalink;
+
+			// WOOCS support since @2.29.0
+			$permalink = has_filter( 'wppfm_get_woocs_currency' )
+				? apply_filters( 'wppfm_woocs_product_permalink', $permalink, $selected_currency ) : $permalink;
+
+			$product->permalink = $permalink;
 		}
 
 		if ( in_array( 'attachment_url', $active_field_names ) ) {
 			// WPML support -> Returns an elements ID in the selected language.
 			$object_id      = has_filter( 'wpml_object_id' ) ? apply_filters( 'wpml_object_id', $product->ID, 'attachment', true ) : $product->ID;
-			$attachment_url = wp_get_attachment_url( get_post_thumbnail_id( $object_id ) );
+			$attachment_url = wp_get_attachment_image_url( get_post_thumbnail_id( $object_id ), '' );
 
 			// If the attachment url is empty and the product has a parent try getting the attachment url of the parent.
 			if ( false === $attachment_url && 0 !== $woocommerce_parent_id ) {
 				// WPML support -> Returns an elements ID in the selected language.
 				$parent_object_id = has_filter( 'wpml_object_id' ) ? apply_filters( 'wpml_object_id', $woocommerce_parent_id, 'attachment', true ) : $woocommerce_parent_id;
-				$attachment_url   = wp_get_attachment_url( get_post_thumbnail_id( $parent_object_id ) );
+				$attachment_url   = wp_get_attachment_image_url( get_post_thumbnail_id( $parent_object_id ), '' );
 			}
 
 			// WPML support -> Filter the permalink and convert it to a language-specific permalink.
@@ -1387,27 +1401,27 @@ trait WPPFM_Processing_Support {
 
 		if ( $woocommerce_product_parent && ( $woocommerce_product_parent->is_type( 'variable' ) || $woocommerce_product_parent->is_type( 'variation' ) ) ) {
 			if ( in_array( '_min_variation_price', $active_field_names ) ) {
-				$product->_min_variation_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_price(), $selected_language );
+				$product->_min_variation_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_price(), $selected_language, $selected_currency );
 			}
 
 			if ( in_array( '_max_variation_price', $active_field_names ) ) {
-				$product->_max_variation_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_price( 'max' ), $selected_language );
+				$product->_max_variation_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_price( 'max' ), $selected_language, $selected_currency );
 			}
 
 			if ( in_array( '_min_variation_regular_price', $active_field_names ) ) {
-				$product->_min_variation_regular_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_regular_price(), $selected_language );
+				$product->_min_variation_regular_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_regular_price(), $selected_language, $selected_currency );
 			}
 
 			if ( in_array( '_max_variation_regular_price', $active_field_names ) ) {
-				$product->_max_variation_regular_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_regular_price( 'max' ), $selected_language );
+				$product->_max_variation_regular_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_regular_price( 'max' ), $selected_language, $selected_currency );
 			}
 
 			if ( in_array( '_min_variation_sale_price', $active_field_names ) ) {
-				$product->_min_variation_sale_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_sale_price(), $selected_language );
+				$product->_min_variation_sale_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_sale_price(), $selected_language, $selected_currency );
 			}
 
 			if ( in_array( '_max_variation_sale_price', $active_field_names ) ) {
-				$product->_max_variation_sale_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_sale_price( 'max' ), $selected_language );
+				$product->_max_variation_sale_price = wppfm_prep_money_values( $woocommerce_product_parent->get_variation_sale_price( 'max' ), $selected_language, $selected_currency );
 			}
 
 			if ( in_array( 'item_group_id', $active_field_names ) ) {
@@ -1478,6 +1492,42 @@ trait WPPFM_Processing_Support {
 		// @since 2.21.0
 		if ( in_array( '_min_group_price', $active_field_names ) && $woocommerce_product_parent->is_type( 'grouped' ) ) {
 			$product->_min_group_price = $this->get_group_price( $woocommerce_product_parent );
+		}
+
+		// @since 2.26.0
+		if ( in_array( '_regular_price_with_tax', $active_field_names )  ) {
+			$price = wc_get_price_including_tax( $woocommerce_product, array( 'price' => $woocommerce_product->get_regular_price( 'feed' ) ) );
+			$product->_regular_price_with_tax = wppfm_prep_money_values( $price, $selected_language, $selected_currency );
+		}
+
+		// @since 2.26.0
+		if ( in_array( '_regular_price_without_tax', $active_field_names )  ) {
+			$price = wc_get_price_excluding_tax( $woocommerce_product, array( 'price' => $woocommerce_product->get_regular_price( 'feed' ) ) );
+			$product->_regular_price_without_tax = wppfm_prep_money_values( $price, $selected_language, $selected_currency );
+		}
+
+		// @since 2.26.0
+		if ( in_array( '_sale_price_with_tax', $active_field_names )  ) {
+			$price = wc_get_price_including_tax( $woocommerce_product, array( 'price' => $woocommerce_product->get_sale_price( 'feed' ) ) );
+			$product->_sale_price_with_tax = wppfm_prep_money_values( $price, $selected_language, $selected_currency );
+		}
+
+		// @since 2.26.0
+		if ( in_array( '_sale_price_without_tax', $active_field_names )  ) {
+			$price = wc_get_price_excluding_tax( $woocommerce_product, array( 'price' => $woocommerce_product->get_sale_price( 'feed' ) ) );
+			$product->_sale_price_without_tax = wppfm_prep_money_values( $price, $selected_language, $selected_currency );
+		}
+
+		// @since 2.28.0
+		if ( in_array( '_product_parent_description', $active_field_names )  ) {
+			$product->_product_parent_description = $woocommerce_product_parent->get_description( 'feed' );
+		}
+
+		// @since 2.28.0
+		if ( in_array( '_woocs_currency', $active_field_names )  ) {
+			// WOOCS support
+			$product->_woocs_currency = has_filter( 'wppfm_get_woocs_currency' )
+				? apply_filters( 'wppfm_get_woocs_currency', $selected_currency ) : get_woocommerce_currency();
 		}
 
 		$woocommerce_product = null;

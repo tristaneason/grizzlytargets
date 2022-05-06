@@ -1,4 +1,8 @@
 <?php
+global $porto_settings;
+$singular_name = ! empty( $porto_settings['portfolio-singular-name'] ) ? $porto_settings['portfolio-singular-name'] : __( 'Portfolio', 'porto-functionality' );
+$plural_name   = ! empty( $porto_settings['portfolio-name'] ) ? $porto_settings['portfolio-name'] : __( 'Portfolios', 'porto-functionality' );
+
 $output      = $title = $category_layout = $info_view = $thumb_image = $portfolios_counter = $cat_in = $number = $el_class = $hover_image_class = '';
 $classes_arr = $cat_ids_arr = array();
 
@@ -63,6 +67,9 @@ switch ( $info_view ) {
 		break;
 	default:
 		$classes_arr[] = 'thumb-info-basic-info';
+}
+if ( $porto_settings['portfolio-archive-thumb-bg'] ) {
+	$classes_arr[] = 'thumb-info-' . esc_attr( $porto_settings['portfolio-archive-thumb-bg'] );
 }
 
 $classes = implode( ' ', $classes_arr );
@@ -162,7 +169,7 @@ switch ( $category_layout ) {
 					$output .= '<span class="thumb-info-inner">' . $cat_title . '</span>';
 				if ( 'show' == $portfolios_counter ) {
 					/* translators: %s: Portfolio count */
-					$output .= '<span class="thumb-info-type">' . sprintf( _n( '%d Portfolio', '%d Portfolios', $term_count, 'porto-functionality' ), number_format_i18n( $term_count ) ) . '</span>';
+					$output .= '<span class="thumb-info-type">' . esc_html( sprintf( __( '%d %s', 'porto-functionality' ), number_format_i18n( $term_count ), $term_count > 1 ? $plural_name : $singular_name ) ) . '</span>';
 				}
 					$output .= '</span>';
 			}
@@ -222,7 +229,7 @@ switch ( $category_layout ) {
 					$output .= '<span class="thumb-info-inner">' . $cat_title . '</span>';
 				if ( 'show' == $portfolios_counter ) {
 					/* translators: %s: Portfolio count */
-					$output .= '<span class="thumb-info-type">' . sprintf( _n( '%d Portfolio', '%d Portfolios', $term_count, 'porto-functionality' ), number_format_i18n( $term_count ) ) . '</span>';
+					$output .= '<span class="thumb-info-type">' . esc_html( sprintf( __( '%d %s', 'porto-functionality' ), number_format_i18n( $term_count ), $term_count > 1 ? $plural_name : $singular_name ) ) . '</span>';
 				}
 					$output .= '</span>';
 

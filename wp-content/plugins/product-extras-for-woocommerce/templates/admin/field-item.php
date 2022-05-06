@@ -170,6 +170,37 @@ if( ! empty( $item['products_quantities'] ) ) {
 									} ?>
 								</select>
 							<?php } ?>
+					</div>
+				</div>
+			</div>
+
+			<?php } ?>
+
+			<?php if( apply_filters( 'pewc_show_products_params', true, $item, $post_id ) ) { ?>
+
+				<div class="pewc-fields-wrapper pewc-product-categories-extras">
+					<div class="product-extra-field-full">
+						<div class="product-extra-field-third">
+							<label>
+								<?php _e( 'Product Categories', 'pewc' ); ?>
+								<?php echo wc_help_tip( 'Select which product categories you\'d like to autopopulate this field', 'pewc' ); ?>
+							</label>
+						</div>
+						<div class="product-extra-field-two-thirds-right">
+							<?php $product_categories = pewc_get_product_categories(); ?>
+							<select class="pewc-field-item wc-category-search pewc-field-child_categories pewc-data-options" data-options="" multiple="multiple" style="width: 100%;" name="_product_extra_groups_<?php echo esc_attr( $group_id ); ?>_<?php echo esc_attr( $item_key ); ?>[child_categories][]" data-sortable="true" data-placeholder="<?php esc_attr_e( 'Select product categories', 'pewc' ); ?>" data-action="json_search_categories" data-include="" data-exclude="">
+								<?php
+								if( ! empty( $item['child_categories'] ) ) {
+									$child_categories = $item['child_categories'];
+									foreach( $child_categories as $category_name ) {
+										$term = get_term_by('slug', $category_name, 'product_cat');
+										$cat_id = is_object($term) && $term->term_id ? $term->term_id : false;
+										if( $cat_id && $category_name && $category_name !== '' ) {
+											echo '<option value="' . esc_attr( $category_name ) . '"' . selected( true, true, true ) . '>' . esc_html( $term->name ) . '</option>';
+										}
+									}
+								} ?>
+							</select>
 						</div>
 					</div>
 				</div>
@@ -178,18 +209,20 @@ if( ! empty( $item['products_quantities'] ) ) {
 
 			<?php if( apply_filters( 'pewc_show_products_params', true, $item, $post_id ) ) { ?>
 
-				<div class="pewc-fields-wrapper pewc-products-extras">
+				<div class="pewc-fields-wrapper pewc-products-extras pewc-product-categories-extras">
 
 					<div class="pewc-products-layout product-extra-field-third">
 						<label>
 							<?php _e( 'Products Layout', 'pewc' ); ?>
 							<?php echo wc_help_tip( 'Choose how child products will be displayed.', 'pewc' ); ?>
 						</label>
-						<?php $products_layout = isset( $item['products_layout'] ) ? $item['products_layout'] : ''; ?>
+						<?php	$products_layout = isset( $item['products_layout'] ) ? $item['products_layout'] : ''; ?>
 						<select class="pewc-field-item pewc-field-products_layout" name="_product_extra_groups_<?php echo esc_attr( $group_id ); ?>_<?php echo esc_attr( $item_key ); ?>[products_layout]">
-							<option value="checkboxes" <?php selected( $products_layout, 'checkboxes', true ); ?>><?php _e( 'Checkboxes', 'pewc' ); ?></option>
+							<option value="checkboxes" <?php selected( $products_layout, 'checkboxes', true ); ?>><?php _e( 'Checkboxes Images', 'pewc' ); ?></option>
+							<option value="checkboxes-list" <?php selected( $products_layout, 'checkboxes-list', true ); ?>><?php _e( 'Checkboxes List', 'pewc' ); ?></option>
 							<option value="column" <?php selected( $products_layout, 'column', true ); ?>><?php _e( 'Column', 'pewc' ); ?></option>
-							<option value="radio" <?php selected( $products_layout, 'radio', true ); ?>><?php _e( 'Radio', 'pewc' ); ?></option>
+							<option value="radio" <?php selected( $products_layout, 'radio', true ); ?>><?php _e( 'Radio Images', 'pewc' ); ?></option>
+							<option value="radio-list" <?php selected( $products_layout, 'radio-list', true ); ?>><?php _e( 'Radio List', 'pewc' ); ?></option>
 							<option value="select" <?php selected( $products_layout, 'select', true ); ?>><?php _e( 'Select', 'pewc' ); ?></option>
 							<option value="swatches" <?php selected( $products_layout, 'swatches', true ); ?>><?php _e( 'Swatches', 'pewc' ); ?></option>
 							<option value="grid" <?php selected( $products_layout, 'grid', true ); ?>><?php _e( 'Variations Grid', 'pewc' ); ?></option>
@@ -220,7 +253,7 @@ if( ! empty( $item['products_quantities'] ) ) {
 
 					<div class="pewc-allow-none product-extra-field-third product-extra-field-last">
 						<?php $checked = ! empty( $item['allow_none'] ); ?>
-						<?php $disabled = ( isset( $item['products_layout'] ) && ( $item['products_layout'] == 'checkboxes' || $item['products_layout'] == 'column' ) ) ? 'disabled' : '';
+						<?php $disabled = ( isset( $item['products_layout'] ) && ( $item['products_layout'] == 'checkboxes' || $item['products_layout'] == 'checkboxes-list' || $item['products_layout'] == 'column' ) ) ? 'disabled' : '';
 						if( $disabled ) $checked = 0; ?>
 						<label class="pewc-checkbox-field-label">
 							<?php _e( 'Child Product Not Required', 'pewc' ); ?>
@@ -231,6 +264,8 @@ if( ! empty( $item['products_quantities'] ) ) {
 
 				</div>
 			<?php } ?>
+
+
 
 			<?php if( apply_filters( 'pewc_show_image_swatch_params', true, $item, $post_id ) ) { ?>
 				<div class="pewc-fields-wrapper pewc-radio-image-extras">

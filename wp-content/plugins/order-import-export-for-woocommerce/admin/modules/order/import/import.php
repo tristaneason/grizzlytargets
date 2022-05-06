@@ -16,6 +16,7 @@ class Wt_Import_Export_For_Woo_Basic_Order_Import {
     public $merge_empty_cells;
     public $delete_existing;
     public $ord_link_using_sku;
+	public $update_stock_details;
     public $create_user;
     public $status_mail;
     public $new_order_status;    
@@ -45,6 +46,7 @@ class Wt_Import_Export_For_Woo_Basic_Order_Import {
         $this->delete_existing = !empty($form_data['advanced_form_data']['wt_iew_delete_existing']) ? 1 : 0;
 
         $this->ord_link_using_sku = !empty($form_data['advanced_form_data']['wt_iew_ord_link_using_sku']) ? 1 : 0;
+		$this->update_stock_details = !empty($form_data['advanced_form_data']['wt_iew_update_stock_details']) ? 1 : 0;
         $this->create_user = !empty($form_data['advanced_form_data']['wt_iew_create_user']) ? 1 : 0;
         $this->notify_customer = !empty($form_data['advanced_form_data']['wt_iew_notify_customer']) ? 1 : 0;        
         $this->status_mail = !empty($form_data['advanced_form_data']['wt_iew_status_mail']) ? 1 : 0;
@@ -159,6 +161,7 @@ class Wt_Import_Export_For_Woo_Basic_Order_Import {
 
             $this->item_data = array(); // resetting WC default data before parsing new item to avoid merging last parsed item wp_parse_args
             
+			$this->order_id = 0;
             if(isset($mapping_fields['order_id']) && !empty($mapping_fields['order_id'])){
                 $this->item_data['order_id'] = $this->wt_order_existance_check($mapping_fields['order_id']);  // to determine wether merge or import
             }
@@ -269,6 +272,10 @@ class Wt_Import_Export_For_Woo_Basic_Order_Import {
                     $this->item_data['total_tax'] = wc_format_decimal($value);
                     continue;
                 }
+                if ('order_key' == $column ) {
+                    $this->item_data['order_key'] = ($value);
+                    continue;
+                }				
                 if ('order_currency' == $column ) {
                     $this->item_data['currency'] = ($value) ? $value : get_woocommerce_currency();
                     continue;
@@ -442,7 +449,13 @@ class Wt_Import_Export_For_Woo_Basic_Order_Import {
                 if ('meta:ywot_picked_up' == $column ) {
                     $this->item_data['meta_data'][] = array('key'=>'ywot_picked_up', 'value'=> $value);
                     continue;
-                }                  
+                }
+                if ('meta:_wc_shipment_tracking_items' == $column ) {
+					if(!empty($value)){
+						$this->item_data['meta_data'][] = array('key'=>'_wc_shipment_tracking_items', 'value'=> json_decode($value, true) );
+					}
+                    continue;
+                }   				
 
                 if(strstr($column, 'line_item_')){
                     $this->item_data['order_items'][] = $this->wt_parse_line_item_field($value,$column);
@@ -1448,7 +1461,7 @@ class Wt_Import_Export_For_Woo_Basic_Order_Import {
             // woocommerce/includes/class-wc-order.php:218 -> parent::save();  woocommerce/includes/abstracts/abstract_wc_order.php:168 -> $this->data_store->create( $this );  woocommerce/includes/data-store/abstract-wc-order-data-store-cpt.php:58
 
             add_action( 'woocommerce_email', array($this, 'wt_iew_order_import_unhook_woocommerce_email') );  // disabled all order related email sending. Need to implimet a way to send status change email based on $this->status_mail flag
-
+			remove_all_actions('woocommerce_email_attachments');
             
             remove_all_actions('woocommerce_order_status_refunded_notification');
             remove_all_actions('woocommerce_order_partially_refunded_notification');
@@ -1566,6 +1579,9 @@ class Wt_Import_Export_For_Woo_Basic_Order_Import {
                     $order_item_id = wc_add_order_item($order_id, $order_item);
                     if ($order_item_id) {
                         foreach ($order_item_meta[$key] as $meta_key => $meta_value) {
+							if( '_reduced_stock' === $meta_key && $this->update_stock_details ){
+								continue;
+							}
                             wc_add_order_item_meta($order_item_id, $meta_key, maybe_unserialize($meta_value));
                         }
                     }
@@ -1800,16 +1816,31 @@ class Wt_Import_Export_For_Woo_Basic_Order_Import {
             
             $order = apply_filters('wt_woocommerce_import_pre_insert_order_object', $order, $data);  
             
-            
-            
             $order->save();
-                                    
-            do_action('wt_woocommerce_order_import_inserted_object', $order, $data);
-            
+			
+			if ($this->update_stock_details) {
+				$donot_reduce_statuses = apply_filters( 'wt_iew_order_import_donot_reduce_statuses', array( 'refunded', 'cancelled', 'failed' ) );
+				if (!in_array($order->get_status(), $donot_reduce_statuses)) {
+					wc_reduce_stock_levels($order->get_id());
+					if (count($order->get_items()) > 0) {
+						foreach ($order->get_items() as $item) {
+							$product_id = $item->get_product_id();
+							if ($product_id) {
+								$data_store = WC_Data_Store::load('product');
+								$data_store->update_product_sales($product_id, absint($item->get_quantity()), 'increase');
+							}
+						}
+					}
+				}
+			}
+
+			do_action('wt_woocommerce_order_import_inserted_object', $order, $data);
+
             $result = array(
                 'id' => $order->get_id(),
                 'updated' => $this->merge,
-            );            
+            );  
+
             return $result;
         } catch (Exception $e) {
             return new WP_Error('woocommerce_product_importer_error', $e->getMessage(), array('status' => $e->getCode()));
@@ -2017,6 +2048,8 @@ class Wt_Import_Export_For_Woo_Basic_Order_Import {
             remove_action( 'woocommerce_order_status_cancelled_to_completed_notification', array( $email_class->emails['WC_Email_New_Order'], 'trigger' ) );
             remove_action( 'woocommerce_order_status_cancelled_to_processing_notification', array( $email_class->emails['WC_Email_New_Order'], 'trigger' ) );
             
+			remove_action( 'woocommerce_order_status_pending_to_processing', array( 'WC_Emails', 'queue_transactional_email' ) );
+			
             // Processing  emails
             remove_action( 'woocommerce_order_status_pending_to_processing_notification', array( $email_class->emails['WC_Email_Customer_Processing_Order'], 'trigger' ) );
             remove_action( 'woocommerce_order_status_pending_to_on-hold_notification', array( $email_class->emails['WC_Email_Customer_Processing_Order'], 'trigger' ) );

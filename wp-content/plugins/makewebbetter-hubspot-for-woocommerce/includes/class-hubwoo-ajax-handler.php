@@ -95,6 +95,8 @@ if ( ! class_exists( 'HubWooAjaxHandler' ) ) {
 
 			// Import historical deals data.
 			add_action( 'wp_ajax_hubwoo_historical_deals_sync', array( $this, 'hubwoo_historical_deals_sync' ) );
+			// Hide review notice
+			add_action( 'wp_ajax_hubwoo_hide_rev_notice', array( $this, 'hubwoo_hide_rev_notice' ) );
 		}
 
 		/**
@@ -926,6 +928,9 @@ if ( ! class_exists( 'HubWooAjaxHandler' ) ) {
 			check_ajax_referer( 'hubwoo_security', 'hubwooSecurity' );
 
 			$ocs_order_count = Hubwoo_Admin::hubwoo_orders_count_for_deal();
+			if ( 1 != get_option( 'hubwoo_deals_sync_running', 0 ) ) {
+				update_option( 'hubwoo_deals_current_sync_total', $ocs_order_count );
+			}
 			echo wp_json_encode( $ocs_order_count );
 			wp_die();
 		}
@@ -950,10 +955,18 @@ if ( ! class_exists( 'HubWooAjaxHandler' ) ) {
 						case 'contact':
 							if ( get_option( 'hubwoo_background_process_running', false ) ) {
 
-								$users_to_sync          = get_option( 'hubwoo_total_ocs_need_sync', 0 );
+								$unique_users = Hubwoo::hubwoo_get_total_contact_need_sync();
+								update_option( 'hubwoo_total_ocs_contact_need_sync', $unique_users );
+
+								$users_to_sync          = get_option( 'hubwoo_total_ocs_contact_need_sync', 0 );
 								$current_user_sync      = get_option( 'hubwoo_ocs_contacts_synced', 0 );
-								$response['percentage'] = round( $current_user_sync * 100 / $users_to_sync );
+								$perc                   = round( $current_user_sync * 100 / $users_to_sync );
+								$response['percentage'] = $perc > 100 ? 100 : $perc;
 								$response['is_running'] = 'yes';
+
+								if ( 100 == $response['percentage'] ) {
+									update_option( 'hubwoo_background_process_running', false );
+								}
 							}
 
 							break;
@@ -1021,7 +1034,7 @@ if ( ! class_exists( 'HubWooAjaxHandler' ) ) {
 									if ( ! empty( $updates ) ) {
 										foreach ( $updates as $key => $value ) {
 											if ( array_key_exists( $key, $deal_stage_data ) ) {
-													$deal_stage_data[ $key ] = $value;
+												$deal_stage_data[ $key ] = $value;
 											}
 										}
 									}
@@ -1368,6 +1381,9 @@ if ( ! class_exists( 'HubWooAjaxHandler' ) ) {
 						if ( $updated_response['externalObjectId'] == $product_id ) {
 							update_post_meta( $product_id, 'hubwoo_ecomm_pro_id', $updated_response['hubspotId'] );
 							delete_post_meta( $product_id, 'hubwoo_product_synced' );
+							if ( 'yes' !== get_option( 'hubwoo_stop_product_update', 'no' ) ) {
+								Hubwoo_Admin::update_product_image( $product_id, $updated_response['hubspotId'] );
+							}
 						}
 					}
 				}
@@ -1390,15 +1406,30 @@ if ( ! class_exists( 'HubWooAjaxHandler' ) ) {
 			if ( ! empty( $product_data ) && is_array( $product_data ) ) {
 				$product_ids = array_column( $product_data, 'externalObjectId' );
 
-				$response = HubWooConnectionMananager::get_instance()->ecomm_sync_messages( $product_data, 'PRODUCT' );
+				$flag = true;
+				if ( Hubwoo::is_access_token_expired() ) {
 
-				if ( 204 == $response['status_code'] ) {
+					$hapikey = HUBWOO_CLIENT_ID;
+					$hseckey = HUBWOO_SECRET_ID;
+					$status  = HubWooConnectionMananager::get_instance()->hubwoo_refresh_token( $hapikey, $hseckey );
 
-					if ( ! empty( $product_ids ) ) {
+					if ( ! $status ) {
 
-						foreach ( $product_ids as $product_id ) {
+						$flag = false;
+					}
+				}
 
-							update_post_meta( $product_id, 'hubwoo_product_synced', true );
+				if ( $flag ) {
+					$response = HubWooConnectionMananager::get_instance()->ecomm_sync_messages( $product_data, 'PRODUCT' );
+
+					if ( 204 == $response['status_code'] ) {
+
+						if ( ! empty( $product_ids ) ) {
+
+							foreach ( $product_ids as $product_id ) {
+
+								update_post_meta( $product_id, 'hubwoo_product_synced', true );
+							}
 						}
 					}
 				}
@@ -1435,10 +1466,15 @@ if ( ! class_exists( 'HubWooAjaxHandler' ) ) {
 								if ( $updated_response['externalObjectId'] == $product_id ) {
 									update_post_meta( $product_id, 'hubwoo_ecomm_pro_id', $updated_response['hubspotId'] );
 									delete_post_meta( $product_id, 'hubwoo_product_synced' );
+									if ( 'yes' !== get_option( 'hubwoo_stop_product_update', 'no' ) ) {
+										Hubwoo_Admin::update_product_image( $product_id, $updated_response['hubspotId'] );
+									}
 								}
 							}
 						}
 					}
+
+					update_option( 'hubwoo_ecomm_setup_completed', 'yes' );
 				}
 
 				echo wp_json_encode(
@@ -1466,42 +1502,10 @@ if ( ! class_exists( 'HubWooAjaxHandler' ) ) {
 
 			$step = ! empty( $_POST['step'] ) ? sanitize_text_field( wp_unslash( $_POST['step'] ) ) : '';
 
-			$deal_get_vid = ! empty( $_POST['deal_get_vid'] ) ? sanitize_text_field( wp_unslash( $_POST['deal_get_vid'] ) ) : 'final_request';
-
 			if ( ! empty( $_POST['max_item'] ) ) {
 				$max_item = sanitize_text_field( wp_unslash( $_POST['max_item'] ) );
 			} else {
 				$max_item = 15;
-			}
-
-			$update_orders_status = get_option( 'mwb_get_orders_id', true );
-
-			if ( ! empty( $update_orders_status ) ) {
-
-				foreach ( $update_orders_status as $order_id ) {
-
-					$update_deal_id = get_option( 'mwb_update_deal_ids' );
-
-					if ( empty( $update_deal_id ) ) {
-						$update_deal_id = array();
-					}
-
-					$update_deal_id[] = $order_id;
-
-					$update_deal_id = array_unique( $update_deal_id );
-
-					update_option( 'mwb_update_deal_ids', $update_deal_id );
-
-					if ( ! as_next_scheduled_action( 'hubwoo_deal_update_schedule' ) ) {
-
-						as_schedule_recurring_action( time(), 300, 'hubwoo_deal_update_schedule' );
-					}
-
-					$this->bulk_line_item_link( $order_id );
-
-				}
-
-				update_option( 'mwb_get_orders_id', '' );
 			}
 
 			$query = new WP_Query();
@@ -1664,33 +1668,14 @@ if ( ! class_exists( 'HubWooAjaxHandler' ) ) {
 
 					$response = HubWooConnectionMananager::get_instance()->ecomm_sync_messages( $deal_updates, $object_type );
 
-					if ( 'final_request' == $deal_get_vid ) {
+					if ( ! as_next_scheduled_action( 'hubwoo_deal_update_schedule' ) ) {
 
-						sleep( 1 );
+						as_schedule_recurring_action( time(), 300, 'hubwoo_deal_update_schedule' );
+					}
 
-						foreach ( $order_ids as $order_id ) {
+					foreach ( $order_ids as $order_id ) {
 
-							$update_deal_id = get_option( 'mwb_update_deal_ids' );
-
-							if ( empty( $update_deal_id ) ) {
-								$update_deal_id = array();
-							}
-
-							$update_deal_id[] = $order_id;
-
-							$update_deal_id = array_unique( $update_deal_id );
-
-							update_option( 'mwb_update_deal_ids', $update_deal_id );
-
-							if ( ! as_next_scheduled_action( 'hubwoo_deal_update_schedule' ) ) {
-
-								as_schedule_recurring_action( time(), 300, 'hubwoo_deal_update_schedule' );
-							}
-
-							$this->bulk_line_item_link( $order_id );
-						}
-					} else {
-						update_option( 'mwb_get_orders_id', $order_ids );
+						$this->bulk_line_item_link( $order_id );
 					}
 				}
 			}
@@ -1704,6 +1689,25 @@ if ( ! class_exists( 'HubWooAjaxHandler' ) ) {
 			);
 			wp_die();
 
+		}
+
+		/**
+		 * Hide review notice.
+		 */
+		public function hubwoo_hide_rev_notice() {
+
+			// Nonce verification.
+			check_ajax_referer( 'hubwoo_security', 'hubwooSecurity' );
+
+			update_option( 'hubwoo_hide_rev_notice', 'yes' );
+
+			echo wp_json_encode(
+				array(
+					'status'   => true,
+					'response' => 'Notice hide succesfully',
+				)
+			);
+			wp_die();
 		}
 
 		/**
@@ -1864,7 +1868,7 @@ if ( ! class_exists( 'HubWooAjaxHandler' ) ) {
 						if ( empty( $item_sku ) ) {
 							$item_sku = $product_id;
 						}
-						$quantity        = $single_item->get_quantity();
+						$quantity        = ! empty( $single_item->get_quantity() ) ? $single_item->get_quantity() : 0;
 						$item_total      = ! empty( $single_item->get_total() ) ? $single_item->get_total() : 0;
 						$item_sub_total  = ! empty( $single_item->get_subtotal() ) ? $single_item->get_subtotal() : 0;
 						$product         = $single_item->get_product();
@@ -1874,19 +1878,23 @@ if ( ! class_exists( 'HubWooAjaxHandler' ) ) {
 						$item_sub_total  = $item_sub_total / $quantity;
 						$object_ids[]    = $item_key;
 
+						$properties = array(
+							'quantity'        => $quantity,
+							'price'           => $item_sub_total,
+							'amount'          => $item_total,
+							'name'            => $name,
+							'discount_amount' => $discount_amount,
+							'sku'             => $item_sku,
+							'tax_amount'      => $single_item->get_total_tax(),
+						);
+
+						$properties = apply_filters( 'hubwoo_line_item_properties', $properties, $product_id );
+
 						$line_updates[] = array(
 							'externalObjectId' => $item_key,
 							'action'           => 'UPSERT',
 							'changedAt'        => strtotime( gmdate( 'Y-m-d H:i:s ', time() ) ) . '000',
-							'properties'       => array(
-								'quantity'        => $quantity,
-								'price'           => $item_sub_total,
-								'amount'          => $item_total,
-								'name'            => $name,
-								'discount_amount' => $discount_amount,
-								'sku'             => $item_sku,
-								'tax_amount'      => $single_item->get_total_tax(),
-							),
+							'properties'       => $properties,
 							'associations'     => array(
 								'DEAL'    => array( $order_id ),
 								'PRODUCT' => array( $product_id ),

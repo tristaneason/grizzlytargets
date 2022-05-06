@@ -12,6 +12,9 @@
 				$( '.pewc-condition-trigger input' ).on( 'change input keyup paste', this.trigger_condition_check );
 				$( 'body' ).on( 'change', '.pewc-condition-trigger select', this.trigger_condition_check );
 				$( '.pewc-calculation-trigger input' ).on( 'change input keyup paste', this.trigger_calculation );
+        $( document ).on( 'ptuwc_opened_config_row', function ( event, instance, active_row ) {
+          pewc_conditions.initial_check();
+        });
 
 				if( pewc_vars.conditions_timer > 0 ) {
 					$( '.pewc-field-triggers-condition' ).on( 'pewc_update_select_box', this.trigger_field_condition_check );
@@ -37,15 +40,17 @@
 				if( pewc_vars.conditions_timer > 0 ) {
 
 					$( '.pewc-field-triggers-condition' ).each( function() {
-						var field = $( this ).closest( '.pewc-item' );
-						var field_value = pewc_conditions.get_field_value( $( field ).attr( 'data-field-id' ), $( field ).attr( 'data-field-type' ) );
-						var triggers_for = JSON.parse( $( field ).attr( 'data-triggers-for' ) );
-						// Iterate through each field that is conditional on the updated field
 
+						var field = $( this ).closest( '.pewc-item' );
+            var parent = pewc_conditions.get_field_parent( field );
+						var field_value = pewc_conditions.get_field_value( $( field ).attr( 'data-field-id' ), $( field ).attr( 'data-field-type' ), parent );
+						var triggers_for = JSON.parse( $( field ).attr( 'data-triggers-for' ) );
+
+						// Iterate through each field that is conditional on the updated field
 						for( var g in triggers_for ) {
 							conditions_obtain = pewc_conditions.check_field_conditions( triggers_for[g], field_value );
 							var action = $( '.pewc-field-' + triggers_for[g] ).attr( 'data-field-conditions-action' );
-							pewc_conditions.assign_field_classes( conditions_obtain, action, triggers_for[g] );
+							pewc_conditions.assign_field_classes( conditions_obtain, action, triggers_for[g], parent );
 						}
 
 					});
@@ -81,11 +86,7 @@
 
 				var field = $( this ).closest( '.pewc-item' );
 				var groups = JSON.parse( $( field ).attr( 'data-trigger-groups' ) );
-				for( var g in groups ) {
-					conditions_obtain = pewc_conditions.check_group_conditions( groups[g] );
-					var action = $( '#pewc-group-' + groups[g] ).attr( 'data-condition-action' );
-					pewc_conditions.assign_group_classes( conditions_obtain, action, groups[g] );
-				}
+				pewc_conditions.trigger_group_conditions( groups );
 
 				if( pewc_vars.reset_fields == 'yes' ) {
 					pewc_conditions.reset_fields();
@@ -93,17 +94,44 @@
 
 			},
 
+			trigger_group_conditions: function( groups ) {
+				for( var g in groups ) {
+					conditions_obtain = pewc_conditions.check_group_conditions( groups[g] );
+					var action = $( '#pewc-group-' + groups[g] ).attr( 'data-condition-action' );
+					pewc_conditions.assign_group_classes( conditions_obtain, action, groups[g] );
+				}
+			},
+
+      get_field_parent: function( field ) {
+
+        var parent = $( field ).closest( '.product' );
+				if( $( parent ).length < 1 ) {
+					parent = $( field ).closest( '.ptuwc-product-config-row' );
+				}
+
+        return parent;
+
+      },
+
 			trigger_field_condition_check: function() {
 
 				var field = $( this ).closest( '.pewc-item' );
-				var field_value = pewc_conditions.get_field_value( $( field ).attr( 'data-field-id' ), $( field ).attr( 'data-field-type' ) );
+				var parent = pewc_conditions.get_field_parent( field );
+
+				var field_value = pewc_conditions.get_field_value( $( field ).attr( 'data-field-id' ), $( field ).attr( 'data-field-type' ), parent );
 				var triggers_for = JSON.parse( $( field ).attr( 'data-triggers-for' ) );
 
 				// Iterate through each field that is conditional on the updated field
 				for( var g in triggers_for ) {
-					conditions_obtain = pewc_conditions.check_field_conditions( triggers_for[g], field_value );
+					conditions_obtain = pewc_conditions.check_field_conditions( triggers_for[g], field_value, parent );
+					var group = $( '.pewc-field-' + triggers_for[g] ).closest( '.pewc-group-wrap' );
 					var action = $( '.pewc-field-' + triggers_for[g] ).attr( 'data-field-conditions-action' );
-					pewc_conditions.assign_field_classes( conditions_obtain, action, triggers_for[g] );
+					// if( $( group ).hasClass( 'pewc-group-hidden' ) ) {
+					// 	// Ensure that any fields in a hidden group trigger their conditions
+					// 	conditions_obtain = false;
+					// 	action = 'show';
+					// }
+					pewc_conditions.assign_field_classes( conditions_obtain, action, triggers_for[g], parent );
 				}
 
 				if( pewc_vars.reset_fields == 'yes' ) {
@@ -116,23 +144,27 @@
 			// Ensures fields with dependent conditions will also get reset correctly
 			trigger_field_reset_condition_check: function() {
 
+				console.log( 'trigger_field_reset_condition_check' );
+
 				// Use a timer to allow complex pages to catch up
 				var reset_timer = setTimeout(
 					function() {
 						$( '.pewc-reset' ).each( function() {
 							$( this ).removeClass( 'pewc-reset' );
 							var field = $( this );
-							var field_value = pewc_conditions.get_field_value( $( field ).attr( 'data-field-id' ), $( field ).attr( 'data-field-type' ) );
+							console.log( 'field', field );
+              var parent = pewc_conditions.get_field_parent( field );
+							var field_value = pewc_conditions.get_field_value( $( field ).attr( 'data-field-id' ), $( field ).attr( 'data-field-type' ), parent );
 							var triggers_for = $( field ).attr( 'data-triggers-for' );
+							console.log( 'triggers_for', triggers_for );
 							if( triggers_for != undefined ) {
 
 								var triggers_for = JSON.parse( $( field ).attr( 'data-triggers-for' ) );
 								// Iterate through each field that is conditional on the updated field
-
 								for( var g in triggers_for ) {
 									conditions_obtain = pewc_conditions.check_field_conditions( triggers_for[g], field_value );
 									var action = $( '.pewc-field-' + triggers_for[g] ).attr( 'data-field-conditions-action' );
-									pewc_conditions.assign_field_classes( conditions_obtain, action, triggers_for[g] );
+									pewc_conditions.assign_field_classes( conditions_obtain, action, triggers_for[g], parent );
 								}
 							}
 
@@ -173,6 +205,7 @@
 			check_group_conditions: function( group_id ) {
 
 				var conditions = JSON.parse( $( '#pewc-group-' + group_id ).attr( 'data-conditions' ) );
+				console.log( conditions );
 				var match = $( '#pewc-group-' + group_id ).attr( 'data-condition-match' );
 				var is_visible = false;
 				if( match == 'all' ) {
@@ -183,11 +216,20 @@
 					if( ! condition.field_type ) {
 						condition.field_type = $( '.' + condition.field ).attr( 'data-field-type' );
 					}
-					var value = pewc_conditions.get_field_value( $( '.' + condition.field ).attr( 'data-field-id' ), condition.field_type );
+
+					var field = $( '.pewc-field-' + $( '.' + condition.field ).attr( 'data-field-id' ) );
+					console.log( field );
+					console.log( $( '.' + condition.field ).attr( 'data-field-id' ) );
+					var parent = pewc_conditions.get_field_parent( field );
+					console.log( parent );
+					var value = pewc_conditions.get_field_value( $( '.' + condition.field ).attr( 'data-field-id' ), condition.field_type, parent );
+					console.log( 'val', value );
 					var meets_condition = this.field_meets_condition( value, condition.rule, condition.value );
+					console.log( 'meets_condition', meets_condition );
 					if( meets_condition && match =='any' ) {
 						return true;
 					} else if( ! meets_condition && match =='all' ) {
+						console.log( 'returning false ' );
 						return false;
 					}
 				}
@@ -196,17 +238,22 @@
 
 			},
 
-			check_field_conditions: function( field_id, field_value ) {
+			check_field_conditions: function( field_id, field_value, parent ) {
 
-				var conditions = JSON.parse( $( '.pewc-field-' + field_id ).attr( 'data-field-conditions' ) );
-				var match = $( '.pewc-field-' + field_id ).attr( 'data-field-conditions-match' );
+				var field = $( parent ).find( '.pewc-field-' + field_id );
+				if( $( field ).length < 1 ) {
+					return false;
+				}
+
+				var conditions = JSON.parse( $( field ).attr( 'data-field-conditions' ) );
+				var match = $( field ).attr( 'data-field-conditions-match' );
 				var is_visible = false;
 				if( match == 'all' ) {
 					is_visible = true;
 				}
 				for( var i in conditions ) {
 					var condition = conditions[i];
-					var field_value = this.get_field_value( $( '.' + condition.field ).attr( 'data-field-id' ), condition.field_type );
+					var field_value = this.get_field_value( $( '.' + condition.field ).attr( 'data-field-id' ), condition.field_type, parent );
 					var meets_condition = this.field_meets_condition( field_value, condition.rule, condition.value );
 					if( meets_condition && match == 'any' ) {
 						return true;
@@ -220,52 +267,64 @@
 			},
 
 			// Get the value of the specified field
-			get_field_value: function( field_id, field_type ) {
+			get_field_value: function( field_id, field_type, parent ) {
 
-				var field_wrapper = $( '.' + field_id.replace( 'field', 'group' ) );
+				if( typeof field_id == 'undefined' ) {
+					return;
+				}
+
+				// var field_wrapper = $( '.' + field_id.replace( 'field', 'group' ) );
 				var input_fields = ['text','number'];
+
+				var field = $( parent ).find( '.pewc-field-' + field_id );
+
 				if( input_fields.includes( field_type ) ) {
-					return $( '.pewc-field-' + field_id + ' input' ).val();
+					return $( field ).find( 'input' ).val();
 				} else if( field_type == 'select' || field_type == 'select-box' ) {
-					return $( '.pewc-field-' + field_id + ' select' ).val();
+					return $( field ).find( 'select' ).val();
 				} else if( field_type == 'checkbox_group' ) {
 					var field_value = [];
-					$( '.pewc-field-' + field_id ).find( 'input:checked' ).each( function() {
+					$( field ).find( 'input:checked' ).each( function() {
 						field_value.push( $( this ).val() );
 					});
 					return field_value;
 				} else if( field_type == 'products' ) {
 					var field_value = [];
-					$( '.pewc-field-' + field_id ).find( 'input:checked' ).each( function() {
-						field_value.push( Number( $( this ).val() ) );
-					});
+					if ( field.hasClass( 'pewc-item-products-select' ) ) {
+						return $( field ).find( 'select' ).val();
+					}
+					else {
+						$( field ).find( 'input:checked' ).each( function() {
+							field_value.push( Number( $( this ).val() ) );
+						});
+					}
 					return field_value;
 				} else if( field_type == 'image_swatch' ) {
-					if( $( '.pewc-field-' + field_id ).hasClass( 'pewc-item-image-swatch-checkbox' ) ) {
+					if( $( field ).hasClass( 'pewc-item-image-swatch-checkbox' ) ) {
 						// Array
 						var field_value = [];
-						$( '.pewc-field-' + field_id ).find( 'input:checked' ).each( function() {
+						$( field ).find( 'input:checked' ).each( function() {
 							field_value.push( $( this ).val() );
 						});
 						return field_value;
 					} else {
-						return $( '.pewc-field-' + field_id + ' input:radio:checked' ).val();
+						return $( field ).find( 'input:radio:checked' ).val();
 					}
 				} else if( field_type == 'checkbox' ) {
-					if( $( '.pewc-field-' + field_id ).find( 'input' ).prop( 'checked' ) ) {
+					if( $( field ).find( 'input' ).prop( 'checked' ) ) {
 						return '__checked__';
 					}
 					return false;
 				} else if( field_type == 'radio' ) {
-					return $( '.pewc-field-' + field_id  + ' input:radio:checked' ).val();
+					return $( field ).find( 'input:radio:checked' ).val();
 				} else if( field_type == 'quantity' ) {
 					return $( '.quantity input.qty' ).val();
 				} else if( field_type == 'cost' ) {
 					return $( '#pewc_total_calc_price' ).val();
 				} else if( field_type == 'upload' ) {
-					return $( '.pewc-field-' + field_id ).find( '.pewc-number-uploads' ).val();
+					return $( field ).find( '.pewc-number-uploads' ).val();
 				} else if( field_type == 'calculation' ) {
-					return $( '.pewc-field-' + field_id + ' .pewc-calculation-value' ).val();
+					return $( field ).find( '.pewc-calculation-value' ).val();
 				}
 
 			},
@@ -305,11 +364,23 @@
 					} else {
 						$( '#pewc-group-' + group_id ).addClass( 'pewc-group-hidden pewc-reset-group' );
 						$( '#pewc-tab-' + group_id ).addClass( 'pewc-group-hidden pewc-reset-group' );
+
+						pewc_conditions.trigger_fields_within_hidden_groups( group_id );
+
 					}
 				} else {
 					if( action == 'show' ) {
 						$( '#pewc-group-' + group_id ).addClass( 'pewc-group-hidden pewc-reset-group' );
 						$( '#pewc-tab-' + group_id ).addClass( 'pewc-group-hidden pewc-reset-group' );
+
+						// $( '#pewc-group-' + group_id ).find( '.pewc-field-triggers-condition' ).each( function() {
+							// Check each field in this group, in case of conditions on the fields
+							// $( this ).find( 'input' ).trigger( 'change' );
+							// pewc_conditions.trigger_field_condition_check_by_id( $( this ).attr( 'data-field-id' ) );
+						// });
+
+						pewc_conditions.trigger_fields_within_hidden_groups( group_id );
+
 					} else {
 						$( '#pewc-group-' + group_id ).removeClass( 'pewc-group-hidden' );
 						$( '#pewc-tab-' + group_id ).removeClass( 'pewc-group-hidden' );
@@ -320,29 +391,69 @@
 
 			},
 
-			assign_field_classes: function( conditions_obtain, action, field_id ) {
+			trigger_fields_within_hidden_groups: function( group_id ) {
+
+				$( '#pewc-group-' + group_id ).find( '.pewc-field-triggers-condition' ).each( function() {
+					// Check each field in this group, in case of conditions on the fields
+					var field = $( '.pewc-field-' + $( this ).attr( 'data-field-id' ) );
+          var parent = pewc_conditions.get_field_parent( field );
+					var field_value = pewc_conditions.get_field_value( $( field ).attr( 'data-field-id' ), $( field ).attr( 'data-field-type' ), parent );
+					var triggers_for = JSON.parse( $( field ).attr( 'data-triggers-for' ) );
+
+					// Iterate through each field that is conditional on the updated field
+					for( var g in triggers_for ) {
+						conditions_obtain = pewc_conditions.check_field_conditions( triggers_for[g], field_value );
+						var group = $( '.pewc-field-' + triggers_for[g] ).closest( '.pewc-group-wrap' );
+						var action = $( '.pewc-field-' + triggers_for[g] ).attr( 'data-field-conditions-action' );
+						// if( $( group ).hasClass( 'pewc-group-hidden' ) ) {
+						// 	// Ensure that any fields in a hidden group trigger their conditions
+						// 	conditions_obtain = false;
+						// 	action = 'show';
+						// }
+						pewc_conditions.assign_field_classes( conditions_obtain, action, triggers_for[g], parent );
+					}
+
+				});
+
+				if( pewc_vars.reset_fields == 'yes' ) {
+					// pewc_conditions.reset_fields();
+				}
+
+			},
+
+			assign_field_classes: function( conditions_obtain, action, field_id, parent ) {
+
+				var field = $( parent ).find( '.pewc-field-' + field_id );
 
 				if( conditions_obtain ) {
 					if( action == 'show' ) {
-						$( '.pewc-field-' + field_id ).removeClass( 'pewc-hidden-field' );
+						$( field ).removeClass( 'pewc-hidden-field' );
+						$( parent ).removeClass( 'pewc-hidden-field-' + $( '.pewc-field-' + field_id ).attr( 'data-field-id' ) );
 					} else {
 						if( ! $( '.pewc-field-' + field_id ).hasClass( 'pewc-hidden-field' ) ) {
-							$( '.pewc-field-' + field_id ).addClass( 'pewc-hidden-field pewc-reset-me' );
+							$( field ).addClass( 'pewc-hidden-field pewc-reset-me' );
+							$( parent ).addClass( 'pewc-hidden-field-' + $( '.pewc-field-' + field_id ).attr( 'data-field-id' ) );
 						}
 					}
 				} else {
 					if( action == 'show' ) {
-						if( ! $( '.pewc-field-' + field_id ).hasClass( 'pewc-hidden-field' ) ) {
-							$( '.pewc-field-' + field_id ).addClass( 'pewc-hidden-field pewc-reset-me' );
+						if( $( field).hasClass( 'pewc-item-advanced-preview' ) ) {
+							$( parent ).addClass( 'pewc-hidden-field-' + $( '.pewc-field-' + field_id ).attr( 'data-field-id' ) );
+						}
+						if( ! $( field).hasClass( 'pewc-hidden-field' ) ) {
+							$( field ).addClass( 'pewc-hidden-field pewc-reset-me' );
 						}
 					} else {
-						$( '.pewc-field-' + field_id ).removeClass( 'pewc-hidden-field' );
+						$( field).removeClass( 'pewc-hidden-field' );
+						$( parent ).removeClass( 'pewc-hidden-field-' + $( '.pewc-field-' + field_id ).attr( 'data-field-id' ) );
 					}
 				}
 
 			},
 
 			reset_fields: function() {
+
+				console.log( 'reset fields' );
 
 				if( $( '.pewc-reset-me' ).length < 1 && $( '.pewc-reset-group' ).length < 1 ) {
 					return;
@@ -358,6 +469,8 @@
 
 				$( '.pewc-reset-group' ).each( function() {
 
+					console.log( 'reset group', $( this ) );
+
 					$( this ).find( '.pewc-item' ).each( function() {
 
 						var field = $( this );
@@ -371,11 +484,15 @@
 
 			reset_field_value: function( field ) {
 
+				console.log( 'reset_field_value', field );
+
 				// Iterate through all fields with pewc-reset-me class
 				var inputs = ['date', 'name_price', 'number', 'text', 'textarea'];
 				var checks = ['checkbox', 'checkbox_group', 'radio'];
 				var field_type = $( field ).attr( 'data-field-type' );
 				var new_value = $( field ).attr( 'data-default-value' );
+				console.log( new_value );
+				$( field ).attr( 'data-field-value', new_value );
 				if( inputs.includes( field_type ) ) {
 					$( field ).find( '.pewc-form-field' ).val( new_value );
 				} else if( field_type == 'image_swatch' ) {
@@ -395,7 +512,6 @@
 						$( field ).find( '.pewc-form-field' ).prop( 'selectedIndex', 0 );
 					}
 				} else if( field_type == 'calculation' ) {
-
 					$( field ).attr( 'data-price', 0 ).attr( 'data-field-price', 0 );
 					var action = $( field ).find( '.pewc-action' ).val();
 					if( pewc_vars.conditions_timer > 0 ) {
@@ -413,6 +529,12 @@
 						}
 					}
 
+				}
+
+				// Does this trigger a group?
+				if( $( field ).attr( 'data-trigger-groups' ) ) {
+					var groups = JSON.parse( $( field ).attr( 'data-trigger-groups' ) );
+					pewc_conditions.trigger_group_conditions( groups );
 				}
 
 				$( 'body' ).trigger( 'pewc_reset_field_condition' );

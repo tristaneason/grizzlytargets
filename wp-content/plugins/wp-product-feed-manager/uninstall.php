@@ -73,13 +73,14 @@ function unregister_plugin() {
 	delete_option( 'wppfm_background_process_time_limit' ); // @since 2.2.0 (deprecated)
 	delete_option( 'wppfm_notice_mailaddress' ); // @since 2.3.0
 	delete_option( 'wppfm_batch_counter' ); // @since 2.11.0
+	delete_option( 'wppfm_show_product_identifiers' ); // @since 2.28.0
 
 	if ( $license ) { // If the plugin is a licensed version then deactivate it on the license server.
 		// Data to send in our API request.
 		$api_params = array(
 			'edd_action' => 'deactivate_license',
 			'license'    => $license,
-			'item_name'  => rawurlencode( 'Woocommerce Google Feed Manager' ), // the name of the plugin in EDD.
+			'item_name'  => rawurlencode( 'Woocommerce Google Feed Manager' ), // the name of the plugin in EDD
 			'url'        => home_url(),
 		);
 

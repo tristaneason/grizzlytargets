@@ -51,12 +51,12 @@ if ( ! class_exists( 'WPPFM_Feed_Value_Editors' ) ) :
 			return substr( $current_value, 0, $condition[2] );
 		}
 
-		public function recalculate_value( $condition, $current_value, $combination_string, $combined_data_elements, $feed_language ) {
+		public function recalculate_value( $condition, $current_value, $combination_string, $combined_data_elements, $feed_language, $feed_currency ) {
 			if ( ! $combination_string ) {
 				$values           = $this->make_recalculate_inputs( $current_value, $condition[3] );
 				$calculated_value = $this->recalculate( $condition[2], floatval( $values['main_val'] ), floatval( $values['sub_val'] ) );
 
-				return $this->is_money_value( $current_value ) ? wppfm_prep_money_values( $calculated_value, $feed_language ) : $calculated_value;
+				return $this->is_money_value( $current_value ) ? wppfm_prep_money_values( $calculated_value, $feed_language, $feed_currency ) : $calculated_value;
 
 			} else {
 				if ( count( $combined_data_elements ) > 1 ) {
@@ -70,7 +70,7 @@ if ( ! class_exists( 'WPPFM_Feed_Value_Editors' ) ) :
 						$calculated_value = preg_match( $reg_match, $values['main_val'] ) && preg_match( $reg_match, $values['sub_val'] ) ?
 							$this->recalculate( $condition[2], floatval( $values['main_val'] ), floatval( $values['sub_val'] ) ) : $values['main_val'];
 
-						$end_value = $this->is_money_value( $element ) ? wppfm_prep_money_values( $calculated_value, $feed_language ) : $calculated_value;
+						$end_value = $this->is_money_value( $element ) ? wppfm_prep_money_values( $calculated_value, $feed_language, $feed_currency ) : $calculated_value;
 
 						array_push( $combined_string_values, $end_value );
 					}
@@ -128,11 +128,11 @@ if ( ! class_exists( 'WPPFM_Feed_Value_Editors' ) ) :
 			);
 		}
 
-		public function prep_meta_values( $meta_data, $feed_language ) {
+		public function prep_meta_values( $meta_data, $feed_language, $feed_currency ) {
 			$result = $meta_data->meta_value;
 
 			if ( wppfm_meta_key_is_money( $meta_data->meta_key ) ) {
-				$result = wppfm_prep_money_values( $result, $feed_language );
+				$result = wppfm_prep_money_values( $result, $feed_language, $feed_currency );
 			}
 
 			return is_string( $result ) ? trim( $result ) : $result;
@@ -142,6 +142,8 @@ if ( ! class_exists( 'WPPFM_Feed_Value_Editors' ) ) :
 		 * Checks is a certain value could be a money value or not.
 		 *
 		 * @param int or string $value.
+		 *
+		 * @since 2.28.0 Switched to the formal wc functions to get the separator and number of decimals values.
 		 *
 		 * @return boolean true if it is a money value.
 		 */
@@ -154,7 +156,7 @@ if ( ! class_exists( 'WPPFM_Feed_Value_Editors' ) ) :
 				return false;
 			}
 
-			$last_pos     = strrpos( (string) $value, get_option( 'woocommerce_price_decimal_sep' ) );
+			$last_pos     = strrpos( (string) $value, wc_get_price_decimal_separator() );
 
 			if ( ! $last_pos ) { // Has no decimal separator.
 				return false;
@@ -164,7 +166,7 @@ if ( ! class_exists( 'WPPFM_Feed_Value_Editors' ) ) :
 
 			$actual_decimals = $value_length - $last_pos - 1;
 
-			return absint( get_option( 'woocommerce_price_num_decimals', 2 ) ) === $actual_decimals;
+			return wc_get_price_decimals() === $actual_decimals;
 		}
 
 		private function recalculate( $math, $main_value, $sub_value ) {

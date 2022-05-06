@@ -20,6 +20,9 @@ if (!defined('ABSPATH')) {
 			<td colspan="2" style="width:75%;">
                 <div class="wt_iew_radio_block">
                     <?php
+					if(empty($this->mapping_templates)){
+						unset($this->export_obj->export_methods['template']);
+					}					
                     foreach($this->export_obj->export_methods as $key => $value) 
                     {
                         ?>
@@ -34,8 +37,8 @@ if (!defined('ABSPATH')) {
 
 			</td>
 		</tr>
-
-<!--        <tr class="wt-iew-export-method-options wt-iew-export-method-options-quick">
+		<?php if(!empty($this->mapping_enabled_fields)):?>
+        <tr class="wt-iew-export-method-options wt-iew-export-method-options-quick">
             <th style="width:150px; text-align:left; vertical-align:top;"><label><?php _e('Include fields from the respective groups');?></label></th>
             <td colspan="2" style="width:75%;">
                 <?php
@@ -63,8 +66,8 @@ if (!defined('ABSPATH')) {
                 ?>
                 <span class="wt-iew_form_help"><?php _e('Enabling any of these ensures that all the fields from the respective groups are included in your export.');?></span>
             </td>
-        </tr>-->
-
+        </tr>
+		<?php endif; ?>
 
 		<tr class="wt-iew-export-method-options wt-iew-export-method-options-template" style="display:none;">
     		<th><label><?php _e('Export template');?></label></th>

@@ -33,7 +33,7 @@ class Porto_Elementor_HB_Switcher_Widget extends \Elementor\Widget_Base {
 		return 'porto-icon-us-dollar';
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		$this->start_controls_section(
 			'section_hb_switcher',

@@ -25,10 +25,11 @@ if ( ! class_exists( 'WPPFM_Variations' ) ) :
 		 * @param WC_Product_Variation $woocommerce_variation_data
 		 * @param array $wpmr_variation_data
 		 * @param string $feed_language
+		 * @param string $feed_currency
 		 */
-		public static function fill_product_data_with_variation_data( &$product_data, $woocommerce_variation_data, $wpmr_variation_data, $feed_language ) {
+		public static function fill_product_data_with_variation_data( &$product_data, $woocommerce_variation_data, $wpmr_variation_data, $feed_language, $feed_currency ) {
 			$permalink   = array_key_exists( 'permalink', $product_data ) ? $product_data['permalink'] : ''; // some channels don't require permalinks
-			$conversions = self::variation_conversion_table( $woocommerce_variation_data, $permalink, $feed_language );
+			$conversions = self::variation_conversion_table( $woocommerce_variation_data, $permalink, $feed_language, $feed_currency );
 			$variation_attributes = $woocommerce_variation_data->get_variation_attributes();
 
 			foreach ( $product_data as $key => $field_value ) {
@@ -58,7 +59,9 @@ if ( ! class_exists( 'WPPFM_Variations' ) ) :
 			}
 		}
 
-		private static function variation_conversion_table( $variation_data, $main_permalink, $feed_language ) {
+		private static function variation_conversion_table( $variation_data, $main_permalink, $feed_language, $feed_currency ) {
+			$attachment_url = wp_get_attachment_url( get_post_thumbnail_id( $variation_data->get_id() ) );
+
 			return array(
 				'ID'                     => (string) $variation_data->get_id(),
 				'_downloadable'          => $variation_data->get_downloadable( 'feed' ),
@@ -73,11 +76,11 @@ if ( ! class_exists( 'WPPFM_Variations' ) ) :
 				'_width'                 => $variation_data->get_width( 'feed' ),
 				'_height'                => $variation_data->get_height( 'feed' ),
 				'post_content'           => $variation_data->get_description( 'feed' ),
-				'_regular_price'         => wppfm_prep_money_values( $variation_data->get_regular_price( 'feed' ), $feed_language ),
-				'_sale_price'            => wppfm_prep_money_values( $variation_data->get_sale_price( 'feed' ), $feed_language ),
+				'_regular_price'         => wppfm_prep_money_values( $variation_data->get_regular_price( 'feed' ), $feed_language, $feed_currency ),
+				'_sale_price'            => wppfm_prep_money_values( $variation_data->get_sale_price( 'feed' ), $feed_language, $feed_currency ),
 				'_sale_price_dates_from' => $variation_data->get_date_on_sale_from( 'feed' ) && ( $date = $variation_data->get_date_on_sale_from( 'feed' )->getTimestamp() ) ? wppfm_convert_price_date_to_feed_format( $date ) : '',
 				'_sale_price_dates_to'   => $variation_data->get_date_on_sale_to( 'feed' ) && ( $date = $variation_data->get_date_on_sale_to( 'feed' )->getTimestamp() ) ? wppfm_convert_price_date_to_feed_format( $date ) : '',
-				'attachment_url'         => wp_get_attachment_url( get_post_thumbnail_id( $variation_data->get_id() ) ),
+				'attachment_url'         => has_filter( 'wppfm_get_wpml_permalink' ) ? apply_filters( 'wppfm_get_wpml_permalink', $attachment_url, $feed_language ) : $attachment_url,
 				'permalink'              => $main_permalink,
 			);
 		}

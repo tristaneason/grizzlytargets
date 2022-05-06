@@ -50,6 +50,7 @@ function pewc_ajax_upload_script( $id, $field, $multiply_price ) {
 				<?php do_action( 'pewc_end_upload_options', $id, $field ); ?>
 				init: function() {
 					<?php do_action( 'pewc_start_upload_script_init', $id, $field ); ?>
+
 					this.on( 'sendingmultiple', function( file, xhr, formData ) {
 						<?php if( pewc_disable_add_to_cart_upload() ) { ?>
 							$( 'body' ).find( 'form.cart .single_add_to_cart_button' ).attr( 'disabled', true );
@@ -119,10 +120,24 @@ function pewc_ajax_upload_script( $id, $field, $multiply_price ) {
 						var files = dropzone_<?php echo esc_attr( $id ); ?>.files;
 						var num_files = dropzone_<?php echo esc_attr( $id ); ?>.files.length;
 						var all_files = [];
+						var uploaded_files = [];
+
+						if ( num_files > 0 && $( '#<?php echo esc_attr( $id ); ?>_file_data' ).val() != '' ) {
+							// on 3.9.7, we regenerate the dropzone area if files were previously uploaded
+							uploaded_files = JSON.parse( $( '#<?php echo esc_attr( $id ); ?>_file_data' ).val() );
+						}
+
 						// Ensure we have a list of the currently uploaded files, excluding any that may have been removed
 						if( files ) {
 							for( k in files ) {
 								var file = files[k];
+								if (file.xhr === undefined) {
+									if ( uploaded_files.length > 0 ) {
+										// use the already uploaded files instead
+										all_files.push( uploaded_files[k ]) ;
+									}
+									continue; // if we're regenerating the dropzone, this is undefined, so skip the rest of the loop
+								}
 								var response = JSON.parse( file.xhr.response );
 								var received_files = response.data.files;
 								if( received_files ) {
@@ -208,6 +223,42 @@ function pewc_ajax_upload_script( $id, $field, $multiply_price ) {
 
 			});
 
+
+			// if the product page has been submitted but there's an error, we'll try to re-build the dropzone area with previously uploaded files, so that they won't have to re-upload again
+			var pewc_file_data = $( '#<?php echo esc_attr( $id ); ?>_file_data' ).val();
+			if ( pewc_file_data != '') {
+				// convert to JSON
+				var pewc_file_data_json = JSON.parse( pewc_file_data );
+				// loop through each file
+				$.each(pewc_file_data_json, function(key, value){
+					var existingFile = value;
+					
+					// add other elements needed by Advanced Uploads
+					var new_uuid = Dropzone.uuidv4();
+					existingFile.upload = { uuid : new_uuid };
+					existingFile.accepted = true;
+
+					dropzone_<?php echo esc_attr( $id ); ?>.files.push( existingFile );
+					
+					dropzone_<?php echo esc_attr( $id ); ?>.emit( 'addedfile', existingFile );
+					dropzone_<?php echo esc_attr( $id ); ?>.options.thumbnail.call(dropzone_<?php echo esc_attr( $id ); ?>, existingFile, '<?php echo site_url() ?>' + existingFile.url );
+					//dropzone_<?php echo esc_attr( $id ); ?>.createThumbnailFromUrl( existingFile, existingFile.url );
+					dropzone_<?php echo esc_attr( $id ); ?>.emit( 'success', existingFile ); // shows the "Uploaded" text
+					dropzone_<?php echo esc_attr( $id ); ?>.emit( 'complete', existingFile ); // this needs to be called, or the upload bar will appear
+					dropzone_<?php echo esc_attr( $id ); ?>._updateMaxFilesReachedClass();
+
+					<?php if ( ! empty( $field['quantity_per_upload'] ) ) { ?>
+						// adjust quantity per field for Advanced Uploads
+						if (typeof existingFile.quantity !== 'undefined') {
+							$( 'input[name="<?php echo esc_attr( $id ); ?>_extra_fields\['+key+'\]"]' ).val( existingFile.quantity );
+						}
+					<?php } ?>
+				});
+				
+			}
+
+
+
 			<?php do_action( 'pewc_end_upload_script', $id, $field ); ?>
 
 		});
@@ -255,9 +306,11 @@ function pewc_get_files_array( $pewc_file_data, $id, $product_id ) {
 
 		foreach( $pewc_file_data as $upload ) {
 
+			if ( ! is_object( $upload ) )
+				continue;
 			$files[$id]['file'][$index] = $upload->file;
 			$files[$id]['name'][$index] = $upload->name;
-			$files[$id]['type'][$index] = $upload->filetype->type;
+			$files[$id]['type'][$index] = isset( $upload->filetype->type ) ? $upload->filetype->type : $upload->type;
 			$files[$id]['error'][$index] = $upload->error;
 			$files[$id]['size'][$index] = $upload->size;
 			$files[$id]['url'][$index] = $upload->url;
@@ -275,4 +328,61 @@ function pewc_get_files_array( $pewc_file_data, $id, $product_id ) {
 function pewc_disable_add_to_cart_upload() {
 	$disable = get_option( 'pewc_disable_add_to_cart', 'no' );
 	return $disable == 'yes' ? true : false;
+}
+
+/*
+ * Save uploaded files to session, so that they are not lost if there was an error in validation
+ * @since 3.9.7
+ */
+function pewc_save_uploaded_files_to_session( $uploaded_files, $field_id ) {
+	// Make sure WooCommerce session is already set
+	if ( isset(WC()->session) && WC()->session->has_session() ) {
+		$field_id = @floor( $field_id ); // integer only
+		if ( ! empty( $uploaded_files ) ) {
+			// save
+			// if AJAX upload is enabled, $uploaded_files is a JSON string (pewc_file_data). Else, $uploaded_files is an array of $_FILES
+			WC()->session->set( 'uploaded_files_'.$field_id, $uploaded_files );
+		}
+		else {
+			// remove from session
+			WC()->session->__unset( 'uploaded_files_'.$field_id );
+		}
+	}
+}
+
+/*
+ * Get uploaded files from session
+ * @since 3.9.7
+ */
+function pewc_get_uploaded_files_from_session( $field_id, $item, $cart_item ) {
+	if( pewc_enable_ajax_upload() == 'yes' ) {
+		// AJAX upload, JSON string
+		$files = '';
+	}
+	else {
+		// standard
+		$files = array();
+	}
+
+	$files = WC()->session->get( 'uploaded_files_'.$field_id, $files );
+
+	if ( empty( $files ) && ! empty( $_GET[ 'pewc_key' ]) && pewc_user_can_edit_products() ) {
+		// retrieve from cart instead
+		if ( ! empty( $cart_item['product_extras']['groups'][$item['group_id']][$field_id]['files'] ) ) {
+			$uploaded_files = $cart_item['product_extras']['groups'][$item['group_id']][$field_id]['files'];
+			if ( is_array( $uploaded_files ) ) {
+				$tmp = array();
+				foreach ( $uploaded_files as $uf ) {
+					if ( isset( $uf['url'] ) ) {
+						// fix URL for displaying in Dropzone
+						$uf['url'] = str_replace( site_url().'/', '/', $uf['url'] );
+					}
+					$tmp[] = $uf;
+				}
+				$files = json_encode( $tmp );
+			}
+		}
+	}
+
+	return $files;
 }

@@ -46,7 +46,14 @@ $country_list   = $wc_countries->get_countries();
 global $woocommerce;
 array_unshift( $country_list, "" );
 
-$services = include('data-wf-service-codes.php');
+// Show services based on origin country
+$services 				= include('data-wf-service-codes.php');
+$countryServiceMapper	= include('data-wf-country-service-mapper.php');
+$originCountry			= ( isset( $settings['origin_country'] ) && !empty( $settings['origin_country'] ) ) ? $settings['origin_country'] : '';
+$originCountry			= current( explode(':', $originCountry ) );
+$mappedCountry			= array_key_exists( $originCountry, $countryServiceMapper ) ? $countryServiceMapper[$originCountry] : '';
+$services				= array_key_exists( $mappedCountry, $services ) ? $services[$mappedCountry] : $services['US'];
+
 $int_services = array();
 $dom_services = array();
 foreach ($services as $key => $value) {
@@ -382,6 +389,24 @@ return array(
 		'default'		=>	'no',
 		'class'			=> 'fedex_general_tab',
 	),
+	'alt_return_person_name'	=> array(
+		'title'			=> __( 'Alternate Return Person Name', 'wf-shipping-fedex' ),
+		'type'			=> 'text',
+		'default'		=> '',
+		'class' 		=> 'fedex_general_tab ph_fedex_alt_return_address'
+	),
+	'alt_return_company_name'	=> array(
+		'title'			=> __( 'Alternate Return Company Name', 'wf-shipping-fedex' ),
+		'type'			=> 'text',
+		'default'		=> '',
+		'class' 		=> 'fedex_general_tab ph_fedex_alt_return_address'
+	),
+	'alt_return_phone_number'	=> array(
+		'title'			=> __( 'Alternate Return Phone Number', 'wf-shipping-fedex' ),
+		'type'			=> 'text',
+		'default'		=> '',
+		'class' 		=> 'fedex_general_tab ph_fedex_alt_return_address'
+	),
 	'alt_return_streetline'  => array(
 		'title' 		=> __( 'Alternate Return Address Line', 'wf-shipping-fedex' ),
 		'type' 			=> 'text',
@@ -611,6 +636,12 @@ return array(
 	// 	'desc_tip'	=> true,
 	// 	'description' => __( 'If enabled, FedEx will charge additional amount and the pickup will be requested for Saturdays too. Otherwise, the pickups will not happen on Saturdays and will be re-scheduled for Mondays instead.', 'wf-shipping-fedex' ),
 	// ),
+	'thirdparty_consignee' => array(
+		'title' 		=> __('Third Party Consignee', 'wf-shipping-fedex'),
+		'type' 			=> 'checkbox',
+		'class'			=>'fedex_special_services_tab',
+		'desc_tip' 		=> true
+	),
 	'dry_ice_enabled'	  => array(
 		'title'		   => __( 'Ship Dry Ice', 'wf-shipping-fedex' ),
 		'description'	 => __( 'Enable this to activate dry ice option to product level', 'wf-shipping-fedex' ),
@@ -916,10 +947,17 @@ return array(
 		'default'		=> '',
 		'options'	 	=> array(
 			'CUSTOMS_VALUE'									=> __( 'Custom Value', 'wf-shipping-fedex' ),
+			'DIMENSIONS'									=> __( 'Dimensions', 'wf-shipping-fedex' ),
 			'DUTIES_AND_TAXES_PAYOR_ACCOUNT_NUMBER'			=> __( 'Duties And Taxes Payor Account Number', 'wf-shipping-fedex' ),
+			'FREIGHT_PAYOR_ACCOUNT_NUMBER'					=> __( 'Freight payer Account Number', 'wf-shipping-fedex' ),
+			'INSURED_VALUE'									=> __( 'Insured Value', 'wf-shipping-fedex' ),
+			'PACKAGE_SEQUENCE_AND_COUNT'					=> __( 'Package Sequence And Count', 'wf-shipping-fedex' ),
 			'SECONDARY_BARCODE'								=> __( 'Secondary Barcode', 'wf-shipping-fedex' ),
 			'SHIPPER_ACCOUNT_NUMBER'						=> __( 'Shipper Account Number', 'wf-shipping-fedex' ),
+			'SHIPPER_INFORMATION'							=> __( 'Shipper Information', 'wf-shipping-fedex' ),
+			'SUPPLEMENTAL_LABEL_DOC_TAB'					=> __( 'Supplemental Label Doc Tab', 'wf-shipping-fedex' ),
 			'TERMS_AND_CONDITIONS'							=> __( 'Terms And Conditions', 'wf-shipping-fedex' ),
+			'TOTAL_WEIGHT'									=> __( 'Total Weight', 'wf-shipping-fedex' ),
 			'TRANSPORTATION_CHARGES_PAYOR_ACCOUNT_NUMBER'	=> __( 'Transportation Charges Payor Account Number', 'wf-shipping-fedex' ),
 		)
 	),
@@ -1534,6 +1572,16 @@ return array(
 		),
 		'desc_tip'	=> true,
 		'description'	 => __( 'Determine how items are packed before being sent to FedEx.', 'wf-shipping-fedex' ),
+	),
+	'packing_algorithm'  	 => array(
+		'title'		   		=> __( 'Packing Algorithm', 'wf-shipping-fedex' ),
+		'type'				=> 'select',
+		'default'		 	=> 'volume_based',
+		'class'		   		=> 'fedex_packaging_tab wc-enhanced-select box_packing_algorithm',
+		'options'		 	=> array(
+			'volume_based'	=> __( 'Default: Volume Based Packing', 'wf-shipping-fedex' ),
+			'new_algorithm'	=> __( 'Based on Volume Used * Item Count', 'wf-shipping-fedex' ),	
+		),
 	),
 
 	'volumetric_weight'	=> array(

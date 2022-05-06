@@ -463,7 +463,7 @@ jQuery( function( $ ) {
           			.attr( 'name' , '_product_extra_groups_' + group_id + '_' + new_item_id + '[' + fields_object[k] + ']' );
             }
 
-        		var replace_fields = [ 'child_products', 'products_layout', 'products_quantities', 'select_placeholder', 'allow_none', 'min_date_today' ];
+        		var replace_fields = [ 'child_products', 'child_categories', 'products_layout', 'products_quantities', 'select_placeholder', 'allow_none', 'min_date_today' ];
         		$(replace_fields).each( function(i,v) {
         			$( clone_item ).find( '.pewc-field-' + v).attr( 'name','_product_extra_groups_' + group_id + '_' + new_item_id + '[' + v + ']' );
         		});
@@ -1048,14 +1048,14 @@ jQuery( function( $ ) {
       $(wrapper).addClass('products-layout-'+layout);
       // Set allow_none to enabled if layout is checkboxes
       $(wrapper).find('.pewc-field-allow_none').attr('disabled',false);
-      if( layout=='checkboxes' || layout=='column' ) {
+      if( layout=='checkboxes' || layout=='checkboxes-list' || layout=='column' ) {
         // $(wrapper).find('.pewc-field-allow_none').attr('checked',true);
         $(wrapper).find('.pewc-field-allow_none').attr('disabled',true);
       }
 
       var allow_multiple;
 
-      if( layout == 'checkboxes' || layout == 'column' ) {
+      if( layout == 'checkboxes' || layout=='checkboxes-list' || layout == 'column' ) {
         // Toggle the hidden allow_multiple field, which is used in setting conditions
         $( wrapper ).find( '.pewc-allow-multiple' ).prop( 'checked', true );
         allow_multiple = true;
@@ -1148,7 +1148,7 @@ jQuery( function( $ ) {
 
     update_field_names_object: function() {
 
-      if( $( 'body' ).hasClass( 'post-type-product' ) || $( 'body' ).hasClass( 'post-type-pewc_group' ) || $( 'body' ).hasClass( 'pewc_product_extra_page_global' ) || $( 'body' ).hasClass( 'product-add-ons_page_global' ) ) {
+      if( $( 'body' ).hasClass( 'post-type-product' ) || $( 'body' ).hasClass( 'post-type-pewc_group' ) || $( 'body' ).hasClass( 'pewc_product_extra_page_global' ) || $( 'body' ).hasClass( 'product-add-ons_page_global' ) || $( 'body' ).attr( 'class' ).indexOf('_page_global') > -1 ) {
   			var all_fields = {};
   			$( 'body' ).find( '.field-item' ).not( '.new-field-item' ).find( '.pewc-field-label' ).each(function(){
   				var group_id = $( this ).closest( '.group-row' ).attr( 'data-group-id' );
@@ -1178,7 +1178,14 @@ jQuery( function( $ ) {
   					$( this ).closest( 'li.field-item' ).find( '.pewc-data-options' ).attr( 'data-options',JSON.stringify(selected_products));
   					// Get all possible values for the select field
   					all_fields[group_id][field_id] = {'label': label, 'type': type, 'options': selected_products};
+  				} else if( type=='product-categories' ) {
+  					// Update data-options
+  					var selected_categories = $( this ).closest( 'li.field-item' ).find( '.pewc-field-child_categories' ).val();
+  					$( this ).closest( 'li.field-item' ).find( '.pewc-data-options' ).attr( 'data-options',JSON.stringify(selected_categories));
+  					// Get all possible values for the select field
+  					all_fields[group_id][field_id] = {'label': label, 'type': type, 'options': selected_categories};
   				}
+				
   			});
   			$( '.product-extra-group-data' ).attr( 'data-fields', JSON.stringify( all_fields ) );
         update_conditional_fields();
@@ -1432,7 +1439,7 @@ jQuery( function( $ ) {
 			return 'pewc-input-number';
 		} else if( field_type == 'text' ) {
 			return 'pewc-input-text';
-		} else if( field_type == 'select' || field_type == 'select-box' || field_type == 'radio' || field_type == 'image_swatch' || field_type == 'products' || field_type == 'checkbox_group' ) {
+		} else if( field_type == 'select' || field_type == 'select-box' || field_type == 'radio' || field_type == 'image_swatch' || field_type == 'products' || field_type == 'product-categories' || field_type == 'checkbox_group' ) {
 			return 'pewc-value-select';
 		} else if( field_type == 'checkbox' ) {
 			return 'pewc-value-checkbox';
@@ -1473,7 +1480,7 @@ jQuery( function( $ ) {
   			.val(val);
     }
 
-		if( field_type == 'select' || field_type == 'select-box' || field_type == 'radio' || field_type == 'image_swatch' || field_type == 'products' || field_type == 'checkbox_group' ) {
+		if( field_type == 'select' || field_type == 'select-box' || field_type == 'radio' || field_type == 'image_swatch' || field_type == 'products' || field_type == 'product-categories' || field_type == 'checkbox_group' ) {
 			var options = pewc_populate_select_value_field( $(field).val() );
 			for(var i=0; i < options.length; i++ ) {
 				$(clone_value).append($('<option>', {
@@ -1519,12 +1526,13 @@ jQuery( function( $ ) {
       $( field ).closest( '.product-extra-conditional-row' ).find( '.pewc-hidden-field-type' ).val( field_type );
 
       var is_number_field = false;
-      if( is_cost.indexOf( 'cost' ) > -1 || is_cost.indexOf( 'quantity' ) > -1 || field_type == 'calculation' || field_type == 'number' || field_type == 'upload' ) {
-        is_number_field = true;
+      if( is_cost.indexOf( 'cost' ) > -1 || is_cost.indexOf( 'quantity' ) > -1 || field_type == 'calculation' || field_type == 'number' || field_type == 'upload' || field_type == 'quantity' ) {
+		is_number_field = true;
       }
 
-      if( pewc_obj.enable_numeric_options ) {
-        is_number_field = true;
+      if( pewc_obj.enable_numeric_options && (field_type == 'radio' || field_type == 'select') ) {
+		// let's limit this option to radio and select field types for now...
+    	is_number_field = true;
       }
 
   		$(field).find('option[value="is"]').attr('disabled', has_multiple);
@@ -1534,7 +1542,7 @@ jQuery( function( $ ) {
   		$(field).find('option[value="cost-equals"]').attr('disabled', ! is_number_field );
   		$(field).find('option[value="cost-greater"]').attr('disabled', ! is_number_field );
   		$(field).find('option[value="cost-less"]').attr('disabled', ! is_number_field );
-      $(field).find('option[value="greater-than-equals"]').attr('disabled', ! is_number_field );
+    	$(field).find('option[value="greater-than-equals"]').attr('disabled', ! is_number_field );
   		$(field).find('option[value="less-than-equals"]').attr('disabled', ! is_number_field );
 
   		// Ensure an enabled option is selected
@@ -1548,14 +1556,17 @@ jQuery( function( $ ) {
   			$(field).val( 'is' );
   			$(field).removeClass('pewc-has-multiple');
   		} else if( is_number_field ) {
-  			$(field).find('option[value="is"]').attr( 'disabled', true );
-  			$(field).find('option[value="is-not"]').attr( 'disabled', true );
-  			$(field).find('option[value="contains"]').attr( 'disabled', true );
-  			$(field).find('option[value="does-not-contain"]').attr( 'disabled', true );
+			if( !pewc_obj.enable_numeric_options ) {
+				// disable only for real number fields
+  				$(field).find('option[value="is"]').attr( 'disabled', true );
+  				$(field).find('option[value="is-not"]').attr( 'disabled', true );
+  				$(field).find('option[value="contains"]').attr( 'disabled', true );
+  				$(field).find('option[value="does-not-contain"]').attr( 'disabled', true );
+			}
   			$(field).find('option[value="cost-equals"]').attr( 'disabled', false );
   			$(field).find('option[value="cost-greater"]').attr('disabled', false );
-        $(field).find('option[value="cost-less"]').attr('disabled', false );
-        $(field).find('option[value="cost-greater-equals"]').attr('disabled', false );
+        	$(field).find('option[value="cost-less"]').attr('disabled', false );
+        	$(field).find('option[value="cost-greater-equals"]').attr('disabled', false );
   			$(field).find('option[value="cost-less-equals"]').attr('disabled', false );
   			if( ! $(field).val() ) {
   				$(field).val( 'cost-equals' ); // cost-equals etc is also used for quantity
@@ -1575,7 +1586,7 @@ jQuery( function( $ ) {
 	function pewc_has_multiple( field ) {
 		var parent_field_id = $(field).val(); // The id of the field that we are dependent on
 		var parent_field_type = $('#' + parent_field_id).find('.pewc-field-type').val();
-		if( parent_field_type == 'products' || parent_field_type == 'checkbox_group' ) {
+		if( parent_field_type == 'products' || parent_field_type == 'product-categories' || parent_field_type == 'checkbox_group' ) {
 			return true;
 		} else if( parent_field_type == 'image_swatch' ) {
 			if( $('#' + parent_field_id).find('.pewc-allow-multiple').attr('checked') ) {

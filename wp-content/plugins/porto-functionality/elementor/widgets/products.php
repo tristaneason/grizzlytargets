@@ -43,7 +43,7 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 		}
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 		$order_by_values  = array_slice( porto_vc_woo_order_by(), 1 );
 		$order_way_values = array_slice( porto_vc_woo_order_way(), 1 );
 		$slider_options   = porto_update_vc_options_to_elementor( porto_vc_product_slider_fields() );
@@ -156,7 +156,7 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 			array(
 				'type'        => Controls_Manager::SELECT,
 				'label'       => __( 'Order way for Date', 'porto-functionality' ),
-				'options'     => array_combine( array_values( $order_way_values ), array_keys( $order_way_values ) ),
+				'options'     => array_flip( $order_way_values ),
 				/* translators: %s: Wordpres codex page */
 				'description' => sprintf( __( 'Designates the ascending or descending order. More at %s.', 'porto-functionality' ), '<a href="http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters" target="_blank">WordPress codex page</a>' ),
 				'condition' => array(
@@ -171,7 +171,7 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 			array(
 				'type'        => Controls_Manager::SELECT,
 				'label'       => __( 'Order way for ID', 'porto-functionality' ),
-				'options'     => array_combine( array_values( $order_way_values ), array_keys( $order_way_values ) ),
+				'options'     => array_flip( $order_way_values ),
 				/* translators: %s: Wordpres codex page */
 				'description' => sprintf( __( 'Designates the ascending or descending order. More at %s.', 'porto-functionality' ), '<a href="http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters" target="_blank">WordPress codex page</a>' ),
 				'condition' => array(
@@ -501,7 +501,7 @@ class Porto_Elementor_Products_Widget extends \Elementor\Widget_Base {
 			'category_filter',
 			array(
 				'type'  => Controls_Manager::SWITCHER,
-				'label' => __( 'Show category filter', 'porto-functionality' ),
+				'label' => __( 'Show Category filter', 'porto-functionality' ),
 			)
 		);
 

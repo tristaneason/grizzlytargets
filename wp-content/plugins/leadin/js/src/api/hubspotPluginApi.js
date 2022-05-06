@@ -21,3 +21,11 @@ export function getForm(formId) {
 export function monitorFormPreviewRender() {
   return callInterframeMethod('monitorFormPreviewRender');
 }
+
+export function monitorFormCreatedFromTemplate(type) {
+  return callInterframeMethod('monitorFormCreatedFromTemplate', type);
+}
+
+export function monitorFormCreationFailed() {
+  return callInterframeMethod('monitorFormCreationFailed');
+}

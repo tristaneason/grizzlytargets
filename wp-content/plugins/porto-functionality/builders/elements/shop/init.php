@@ -131,6 +131,8 @@ if ( ! class_exists( 'PortoBuildersShop' ) ) :
 				} elseif ( wp_doing_ajax() && isset( $_REQUEST['action'] ) && 'elementor_ajax' == $_REQUEST['action'] && ! empty( $_POST['editor_post_id'] ) ) {
 					$load_widgets = true;
 				}
+			} elseif ( function_exists( 'porto_check_builder_condition' ) && porto_check_builder_condition( 'shop' ) ) {
+				$load_widgets = true;
 			}
 			if ( $load_widgets ) {
 				foreach ( $this->elements as $element ) {

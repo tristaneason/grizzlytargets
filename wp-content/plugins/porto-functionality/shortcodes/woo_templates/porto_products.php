@@ -93,9 +93,9 @@ if ( ! empty( $orderby ) && is_array( $orderby ) ) {
 			$value = 'popularity';
 		}
 		if ( 'onsale' == $value ) {
-			$status = 'on_sale';
-			$value  = '';
-			$order  = '';
+			$status  = 'on_sale';
+			$value = '';
+			$order   = '';
 		}
 		if ( 'date' == $value ) {
 			$order = $order_date;

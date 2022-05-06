@@ -41,7 +41,7 @@ class Porto_Elementor_Image_Gallery_Widget extends \Elementor\Widget_Base {
 		}
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		$slider_options = porto_update_vc_options_to_elementor( porto_vc_product_slider_fields() );
 
@@ -168,6 +168,7 @@ class Porto_Elementor_Image_Gallery_Widget extends \Elementor\Widget_Base {
 					'6' => 6,
 					'7' => 7,
 					'8' => 8,
+					'9' => 9,
 				),
 				'default'     => '4',
 				'description' => esc_html__( 'Select number of columns to display.', 'porto-functionality' ),
@@ -222,6 +223,47 @@ class Porto_Elementor_Image_Gallery_Widget extends \Elementor\Widget_Base {
 				'description' => esc_html__( 'Choose from top, middle, bottom and stretch in grid layout.', 'porto-functionality' ),
 				'condition'   => array(
 					'view' => array( 'grid', 'slider' ),
+				),
+			)
+		);
+
+		$this->add_control(
+			'click_action',
+			array(
+				'type'        => Controls_Manager::SELECT,
+				'label'       => __( 'On click image', 'porto-functionality' ),
+				'description' => __( 'Select action for click on image.', 'porto-functionality' ),
+				'options'     => array(
+					''         => __( 'None', 'porto-functionality' ),
+					'imgurl'   => __( 'Link to large image', 'porto-functionality' ),
+					'lightbox' => __( 'Open Lightbox', 'porto-functionality' ),
+				),
+				'default'     => '',
+				'condition'   => array(
+					'images!' => '',
+				),
+			)
+		);
+
+		$this->add_control(
+			'hover_effect',
+			array(
+				'type'      => Controls_Manager::SELECT,
+				'label'     => esc_html__( 'Hover Effect', 'porto-functionality' ),
+				'options'   => array(
+					''          => esc_html__( 'None', 'porto-functionality' ),
+					'zoom'      => esc_html__( 'Zoom', 'porto-functionality' ),
+					'fadein'    => esc_html__( 'Fade In', 'porto-functionality' ),
+					'overlay'   => esc_html__( 'Add Overlay', 'porto-functionality' ),
+					'boxshadow' => esc_html__( 'Add Box Shadow', 'porto-functionality' ),
+					'effect-1'  => esc_html__( 'Effect 1', 'porto-functionality' ),
+					'effect-2'  => esc_html__( 'Effect 2', 'porto-functionality' ),
+					'effect-3'  => esc_html__( 'Effect 3', 'porto-functionality' ),
+					'effect-4'  => esc_html__( 'Effect 4', 'porto-functionality' ),
+				),
+				'default'   => '',
+				'condition' => array(
+					'images!' => '',
 				),
 			)
 		);

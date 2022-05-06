@@ -126,6 +126,11 @@ $formula = ( isset( $item['formula'] ) ) ? $item['formula'] : array(); ?>
 				'<option %s value="qty">%s</option>',
 				selected( $action, 'qty', false ),
 				__( 'Update Quantity', 'pewc' )
+			);
+			printf(
+				'<option %s value="weight">%s</option>',
+				selected( $action, 'weight', false ),
+				__( 'Add to Product Weight', 'pewc' )
 			); ?>
 		</select>
 

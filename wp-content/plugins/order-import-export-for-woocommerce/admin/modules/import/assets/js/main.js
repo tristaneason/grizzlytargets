@@ -781,18 +781,30 @@ var wt_iew_basic_import=(function( $ ) {
 			$('.wt_iew_step_head_post_type_name').html(this.to_import_title);
                         $('.wt-ierpro-blue-btn').attr("href", wt_iew_basic_params.pro_plugins[this.to_import]['url']);
                         $('.wt-ier-product-name').html(wt_iew_basic_params.pro_plugins[this.to_import]['name']);
-                        $('.wt-ierpro-name>img').attr("src", wt_iew_basic_params.pro_plugins[this.to_import]['icon_url']);                        
+                        $('.wt-ierpro-name>img').attr("src", wt_iew_basic_params.pro_plugins[this.to_import]['icon_url']); 
+                        $('#sample-csv-file').attr("href", wt_iew_basic_params.pro_plugins[this.to_import]['sample_csv_url']); 
 			if(this.to_import_title.includes('User'))
 			$('#user-required-field-message').show();
                     
                         $('.wt-ier-gopro-cta').hide();
-                        $('.wt-ier-'+this.to_import).show();                    
+                        $('.wt-ier-'+this.to_import).show();
+                        
+                        $('.wt_iew_free_addon').hide();
+                        $('.wt_iew_import_action_btn').prop('disabled', false);
+                        if(!wt_iew_basic_params.pro_plugins[this.to_import]['is_active']){
+                            $('.wt_iew_type_'+this.to_import).show();
+                            $('.wt_iew_import_action_btn').prop('disabled', true);
+                        }
 		},
 		page_actions:function(step)
 		{
 			if(step=='post_type') /* post type page */
 			{
-				$('[name="wt_iew_import_post_type"]').unbind('change').change(function(){					
+				$('[name="wt_iew_import_post_type"]').unbind('change').change(function(){
+                                        if (!wt_iew_basic_params.pro_plugins[$(this).val()]['is_active']) {
+                                            $('.wt_iew_import_action_btn').prop('disabled', true);
+                                            $('.wt_iew_type_' + this.to_import).show();
+                                        }
 					wt_iew_basic_import.to_import=$(this).val();
 					wt_iew_basic_import.to_import_title='';
 					wt_iew_basic_import.reset_form_data();

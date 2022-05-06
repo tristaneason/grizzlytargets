@@ -10,6 +10,10 @@ if( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if( ! pewc_is_pro() ) {
+	return;
+}
+
 /**
  * @hooked pewc_enqueue_variations_scripts
  */
@@ -24,7 +28,68 @@ $manage_stock = false;
 if( ! empty( $item['products_quantities'] ) ) {
 	$products_quantities = ! empty( $item['products_quantities'] ) ? $item['products_quantities'] : '';
 	$checkboxes_wrapper_classes[] = 'products-quantities-' . $item['products_quantities'];
-} ?>
+}
+
+/*
+ * This fixes a specific bug when editing a product using the Column layout
+ * The function "pewc_product_extra_fields" in functions-single-product.php has a similar process, but it does not consider the parent field ID,
+ * and $quantity_field_values does not seem to get passed down to the pewc_field function, which is where this file is loaded
+ */
+if ( ! empty( $_GET['pewc_key'] ) && pewc_user_can_edit_products() ) {
+	// we are editing an item in the cart, we need to loop through the cart to get the child product's quantity
+	// check first if maybe we have saved this in a session already
+	$cart_key = $_GET['pewc_key'];
+	$session_key = 'pewc_child_products_products_column_'.$cart_key;
+	$child_product_values = WC()->session->get( $session_key );
+
+	if ( ! $child_product_values ) {
+		// session doesn't exist yet, so this must be the first add-on field. retrieve the cart now
+		$tmp_cart = WC()->cart->get_cart();
+		if ( isset( $tmp_cart[$cart_key] ) ) {
+			// this exists in the cart, so continue
+			// get parent field ID so that we only get the correct children
+			if ( isset( $tmp_cart[$cart_key]['product_extras']['products']['parent_field_id'] ) )
+				$parent_field_id = $tmp_cart[$cart_key]['product_extras']['products']['parent_field_id'];
+
+			if ( isset( $parent_field_id ) ) {
+				// now loop through the cart to find the child products
+				$child_product_values = array();
+
+				foreach( $tmp_cart as $tmp_key => $tmp_item ) {
+					if ( isset( $tmp_item['product_extras']['products']['child_field'] ) &&
+						$tmp_item['product_extras']['products']['child_field'] &&
+						isset( $tmp_item['product_extras']['products']['parent_field_id'] ) &&
+						$tmp_item['product_extras']['products']['parent_field_id'] == $parent_field_id ) {
+
+						// this is a child field, save the quantity and selected variation_id to be used later
+						$child_product_values[ $tmp_item['product_extras']['products']['field_id'] ][ $tmp_item['product_id'] ] = array(
+							'quantity' => $tmp_item['quantity'],
+							'variation_id' => isset( $tmp_item['variation_id'] ) ? $tmp_item['variation_id'] : 0
+						);
+					}
+				}
+
+				WC()->session->set( $session_key, $child_product_values );
+			}
+		}
+	}
+
+	$quantity_field_values = array();
+	$selected_variations = array();
+
+	if ( ! empty( $child_product_values ) ) {
+		if ( isset( $child_product_values[$id] ) && is_array( $child_product_values[$id] )  ) {
+			// set the quantity field values and selected vars
+			foreach ( $child_product_values[$id] as $cid => $arr ) {
+				$quantity_field_values[$cid] = $arr['quantity'];
+				if ( isset( $arr['variation_id'] ) )
+					$selected_variations[$cid] = $arr['variation_id'];
+			}
+		}
+	}
+}
+
+?>
 
 <div class="<?php echo join( ' ', $checkboxes_wrapper_classes ); ?>" data-products-quantities="<?php echo esc_attr( $item['products_quantities'] ); ?>">
 
@@ -32,7 +97,8 @@ if( ! empty( $item['products_quantities'] ) ) {
 	foreach( $item['child_products'] as $child_product_id ) {
 
 		$wrapper_classes = array(
-			'pewc-checkbox-image-wrapper'
+			'pewc-checkbox-image-wrapper',
+			'pewc-checkbox-wrapper'
 		);
 
 		$value = apply_filters( 'pewc_default_product_column_value_before_checked', $value, $id, $item, $child_product_id );
@@ -107,13 +173,19 @@ if( ! empty( $item['products_quantities'] ) ) {
 						}
 					}
 
+					$selected = '';
+					if ( isset( $selected_variations[$child_product_id] ) && $selected_variations[$child_product_id] == $variant_id ) {
+						$selected = 'selected="selected"';
+					}
+
 					// Write the option
 					$variant_wrapper .= sprintf(
-						'<option data-option-cost="%s" data-stock="%s" value="%s" %s>%s</option>',
+						'<option data-option-cost="%s" data-stock="%s" value="%s" %s %s>%s</option>',
 						esc_attr( floatval( $variant_price ) ),
 						esc_attr( $available_stock ),
 						$variant_id,
 						$disabled,
+						$selected,
 						apply_filters( 'pewc_variation_name_variable_child_select', $variant->get_formatted_name(), $variant )
 					);
 				}
@@ -131,9 +203,8 @@ if( ! empty( $item['products_quantities'] ) ) {
 			$description = '';
 		}
 
-		// $price = pewc_maybe_include_tax( $child_product, $child_product->get_price() );
-		// $price = wc_price( $price );
-		$child_price = $child_product->get_price();
+		$child_price = pewc_maybe_include_tax( $child_product, $child_product->get_price() ); // 3.9.7
+
 		if( ! empty( $item['child_discount'] ) && ! empty( $item['discount_type'] ) ) {
 			$discounted_price = pewc_get_discounted_child_price( $child_price, $item['child_discount'], $item['discount_type'] );
 			$price = wc_format_sale_price( $child_price, $discounted_price );
@@ -157,7 +228,7 @@ if( ! empty( $item['products_quantities'] ) ) {
 			$available_stock = $child_product->get_stock_quantity();
 		}
 
-		$image_url = ( get_post_thumbnail_id( $child_product_id ) ) ? wp_get_attachment_url( get_post_thumbnail_id( $child_product_id ) ) : wc_placeholder_img_src();
+		$image_url = ( get_post_thumbnail_id( $child_product_id ) ) ? wp_get_attachment_image_url( get_post_thumbnail_id( $child_product_id ), apply_filters( 'pewc_child_product_image_size', 'full', $child_product_id ) ) : wc_placeholder_img_src();
 		$image = '<img src="' . esc_url( $image_url ) . '">';
 
 	  $name = sprintf(
@@ -169,7 +240,7 @@ if( ! empty( $item['products_quantities'] ) ) {
 
 		$price = sprintf(
 			'<p class="pewc-column-price-wrapper">%s</p>',
-			$price
+			apply_filters( 'pewc_option_price', $price, $item )
 		);
 
 		$field_name = $id . '_child_product';
@@ -186,10 +257,6 @@ if( ! empty( $item['products_quantities'] ) ) {
 		$quantity_field_value = 0;
 
 		// Look for child quantity when we're editing a product
-		//if( ! empty( $cart_item['product_extras']['products']['child_products'][$child_product_id]['quantities'] ) ) {
-			// If we're editing a product, this sets the quantity
-			//$quantity_field_value = $cart_item['product_extras']['products']['child_products'][$child_product_id]['quantities'];
-		//}
 		if ( ! empty($quantity_field_values[$child_product_id]) )
 			$quantity_field_value = $quantity_field_values[$child_product_id];
 		$quantity_field_value = apply_filters( 'pewc_child_product_independent_quantity', $quantity_field_value, $child_product_id, $item );

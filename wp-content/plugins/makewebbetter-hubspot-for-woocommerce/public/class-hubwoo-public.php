@@ -278,44 +278,6 @@ class Hubwoo_Public {
 	}
 
 	/**
-	 * Create a new ecomm deal.
-	 *
-	 * @since 1.0.0
-	 * @param int $order_id order id to be updated.
-	 */
-	public function hubwoo_ecomm_deal_on_new_order( $order_id ) {
-
-		if ( ! empty( $order_id ) ) {
-
-			$post_type = get_post_type( $order_id );
-
-			if ( 'shop_subscription' == $post_type ) {
-				return;
-			}
-			as_schedule_single_action( time() + 10, 'hubwoo_ecomm_deal_upsert', array( $order_id ) );
-		}
-	}
-
-	/**
-	 * Update a ecomm deal.
-	 *
-	 * @since 1.0.0
-	 * @param int $order_id order id to be updated.
-	 */
-	public function hubwoo_ecomm_deal_update_order( $order_id ) {
-
-		if ( ! empty( $order_id ) ) {
-
-			$post_type = get_post_type( $order_id );
-
-			if ( 'shop_subscription' == $post_type ) {
-				return;
-			}
-			as_schedule_single_action( time() + 10, 'hubwoo_ecomm_deal_upsert', array( $order_id ) );
-		}
-	}
-
-	/**
 	 * Start session for abandonec carts.
 	 *
 	 * @since 1.0.0

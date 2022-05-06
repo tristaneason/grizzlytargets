@@ -4,7 +4,7 @@ Plugin Name: Duplicate Page
 Plugin URI: https://wordpress.org/plugins/duplicate-page/
 Description: Duplicate Posts, Pages and Custom Posts using single click.
 Author: mndpsingh287
-Version: 4.4.6
+Version: 4.4.8
 Author URI: https://profiles.wordpress.org/mndpsingh287/
 License: GPLv2
 Text Domain: duplicate-page
@@ -13,7 +13,7 @@ if (!defined('DUPLICATE_PAGE_PLUGIN_DIRNAME')) {
     define('DUPLICATE_PAGE_PLUGIN_DIRNAME', plugin_basename(dirname(__FILE__)));
 }
 if (!defined('DUPLICATE_PAGE_PLUGIN_VERSION')) {
-    define('DUPLICATE_PAGE_PLUGIN_VERSION', '4.4.6');
+    define('DUPLICATE_PAGE_PLUGIN_VERSION', '4.4.8');
 }
 if (!class_exists('duplicate_page')):
     class duplicate_page
@@ -118,17 +118,22 @@ if (!class_exists('duplicate_page')):
            $post = get_post($post_id);
            $current_user_id = get_current_user_id();
            if(wp_verify_nonce( $nonce, 'dt-duplicate-page-'.$post_id)) {
-            if (current_user_can('manage_options')){
+            if (current_user_can('manage_options') || current_user_can('edit_others_posts')){
               $this->duplicate_edit_post($post_id);
             }
-            elseif (current_user_can('edit_posts') && $current_user_id == $post->post_author ){
+            else if (current_user_can('contributor') && $current_user_id == $post->post_author){
+                $this->duplicate_edit_post($post_id, 'pending');
+            }
+            else if (current_user_can('edit_posts') && $current_user_id == $post->post_author ){
               $this->duplicate_edit_post($post_id);
             }
+          
             else {
                 wp_die(__('Unauthorized Access.','duplicate-page'));
     
               } 
-          } 
+          }
+         
           else {
             wp_die(__('Security check issue, Please try again.','duplicate-page'));
 
@@ -138,11 +143,15 @@ if (!class_exists('duplicate_page')):
         /**
          * Duplicate edit post
          */
-        public function duplicate_edit_post($post_id){
+        public function duplicate_edit_post($post_id,$post_status_update=''){
             global $wpdb;
             $opt = get_option('duplicate_page_options');
             $suffix = isset($opt['duplicate_post_suffix']) && !empty($opt['duplicate_post_suffix']) ? ' -- '.esc_attr($opt['duplicate_post_suffix']) : '';
-            $post_status = !empty($opt['duplicate_post_status']) ? esc_attr($opt['duplicate_post_status']) : 'draft';
+                if($post_status_update == ''){
+                    $post_status = !empty($opt['duplicate_post_status']) ? esc_attr($opt['duplicate_post_status']) : 'draft';
+                }else{
+                    $post_status =  $post_status_update;
+                }
             $redirectit = !empty($opt['duplicate_post_redirect']) ? esc_attr($opt['duplicate_post_redirect']) : 'to_list';
             if (!(isset($_GET['post']) || isset($_POST['post']) || (isset($_REQUEST['action']) && 'dt_duplicate_post_as_draft' == sanitize_text_field($_REQUEST['action'])))) {
                 wp_die(__('No post to duplicate has been supplied!','duplicate-page'));
@@ -322,8 +331,7 @@ if (!class_exists('duplicate_page')):
         /*
          Load Help Desk
         */
-        public function load_help_desk()
-        {
+        public function load_help_desk() {
             $mkcontent = '';
             $mkcontent .= '<div class="dpmrs" style="display:none;">';
             $mkcontent .= '<div class="l_dpmrs">';
@@ -339,8 +347,7 @@ if (!class_exists('duplicate_page')):
         /*
          Close Help
         */
-        public function mk_dp_close_dp_help()
-        {
+        public function mk_dp_close_dp_help() {
             $nonce = sanitize_text_field($_REQUEST['nonce']);
             if (wp_verify_nonce($nonce, 'nc_help_desk')) {
             if (false === ($mk_fm_close_fm_help_c = get_option('mk_fm_close_fm_help_c'))) {

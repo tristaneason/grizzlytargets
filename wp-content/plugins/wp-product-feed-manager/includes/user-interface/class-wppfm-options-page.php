@@ -134,7 +134,7 @@ if ( ! class_exists( 'WPPFM_Options_Page' ) ) :
 			$html_code .= '<fieldset>';
 			$html_code .= '<input name="wppfm_notice_mailaddress" id="wppfm_notice_mailaddress" type="text" class="" value="' . $notice_mailaddress . '"> ';
 			$html_code .= '<label for="wppfm_notice_mailaddress">';
-			$html_code .= esc_html__( 'Enter the email address of the person you want to be notified when a feed fails during an automatic feed update.', 'wp-product-feed-manager' ) . '</label></fieldset>';
+			$html_code .= esc_html__( 'Enter the email address of the person you want to be notified when a feed fails during an automatic feed update (requires an SMTP server for WordPress).', 'wp-product-feed-manager' ) . '</label></fieldset>';
 			$html_code .= '</td></tr>';
 
 			$html_code .= '<tr valign="top" class="">';

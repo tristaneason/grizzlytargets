@@ -60,6 +60,12 @@ if (!class_exists("EnWooAddonsAjaxReqIncludes")) {
             $options = array();
             $always_include_residential_ind = ( isset($_POST['always_include_residential_ind']) ) ? sanitize_text_field($_POST['always_include_residential_ind']) : '';
             $always_include_residential_val = ( isset($_POST['always_include_residential_val']) ) ? sanitize_text_field($_POST['always_include_residential_val']) : '';
+            // White Glove
+            $rad_include_inside_ind = ( isset($_POST['rad_include_inside_ind']) ) ? sanitize_text_field($_POST['rad_include_inside_ind']) : '';
+            $rad_include_inside_val = ( isset($_POST['rad_include_inside_val']) ) ? sanitize_text_field($_POST['rad_include_inside_val']) : '';
+            (isset($rad_include_inside_ind) && (!empty($rad_include_inside_ind))) &&
+            (isset($rad_include_inside_val) && (!empty($rad_include_inside_val))) ?
+                $options[$rad_include_inside_ind] = $rad_include_inside_val : "";
             $suspend_automatic_detection_of_residential_addresses = ( isset($_POST['suspend_automatic_detection_of_residential_addresses']) ) ? sanitize_text_field($_POST['suspend_automatic_detection_of_residential_addresses']) : '';
             $en_woo_addons_liftgate_with_auto_residential = ( isset($_POST['en_woo_addons_liftgate_with_auto_residential']) ) ? sanitize_text_field($_POST['en_woo_addons_liftgate_with_auto_residential']) : '';
 

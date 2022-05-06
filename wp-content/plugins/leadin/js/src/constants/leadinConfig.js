@@ -16,6 +16,7 @@ const {
   pluginPath,
   ajaxNonce,
   restNonce,
+  routeNonce,
   redirectNonce,
   plugins,
   phpVersion,
@@ -24,11 +25,14 @@ const {
   iframeUrl,
   accountName,
   routes,
+  reviewSkippedDate,
   theme,
   wpVersion,
   portalDomain,
   leadinQueryParamsKeys,
   oauth,
+  trackConsent,
+  connectionStatus,
 } = window.leadinConfig;
 
 const i18n = window.leadinI18n;
@@ -52,7 +56,9 @@ export {
   pluginPath,
   ajaxNonce,
   restNonce,
+  routeNonce,
   redirectNonce,
+  reviewSkippedDate,
   plugins,
   phpVersion,
   portalId,
@@ -65,4 +71,6 @@ export {
   portalDomain,
   leadinQueryParamsKeys,
   oauth,
+  trackConsent,
+  connectionStatus,
 };

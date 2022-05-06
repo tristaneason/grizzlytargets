@@ -56,7 +56,7 @@ function pewc_filter_label_price_for_percentages( $price, $product, $item ) {
 		$product_price = $product->get_price();
 		$field_price = pewc_get_field_price( $item, $product );
 		$price = ( floatval( $field_price ) / 100 ) * $product_price;
-		
+
 	}
 
 	return $price;
@@ -70,6 +70,9 @@ add_filter( 'pewc_filter_display_price_for_percentages', 'pewc_filter_label_pric
  * @param $product 		The product object
  */
 function pewc_calculate_percentage_price( $percentage, $product ) {
+	if( ! pewc_is_pro() ) {
+		return $percentage;
+	}
 	$product_price = $product->get_price();
 	$price = ( floatval( $percentage ) / 100 ) * $product_price;
 	return $price;

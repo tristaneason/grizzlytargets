@@ -17,13 +17,13 @@
  * needs please refer to http://docs.woocommerce.com/document/authorize-net-cim/
  *
  * @author    SkyVerge
- * @copyright Copyright (c) 2013-2021, SkyVerge, Inc.
+ * @copyright Copyright (c) 2013-2022, SkyVerge, Inc.
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
 defined( 'ABSPATH' ) or exit;
 
-use SkyVerge\WooCommerce\PluginFramework\v5_10_8 as Framework;
+use SkyVerge\WooCommerce\PluginFramework\v5_10_12 as Framework;
 
 /**
  * Authorize.Net Payment Gateway
@@ -278,13 +278,13 @@ class WC_Gateway_Authorize_Net_CIM_Credit_Card extends WC_Gateway_Authorize_Net_
 		$order->add_order_note( $message );
 	}
 
+
 	/**
 	 * Add Authorize.Net specific data to the order for performing a refund/void,
 	 * all transactions require transaction ID and amount.
 	 *
-	 * Profile transactions require the customer profile ID and payment profile ID
 	 *
-	 * Non-Profile transactions require the last 4 digits and expiration date of
+	 * Refund transactions require the last 4 digits and expiration date of
 	 * the card used for the original transaction
 	 *
 	 * @since 2.0.0
@@ -299,55 +299,42 @@ class WC_Gateway_Authorize_Net_CIM_Credit_Card extends WC_Gateway_Authorize_Net_
 		// set defaults
 		$order = parent::get_order_for_refund( $order_id, $amount, $reason );
 
-		if ( $this->get_order_meta( $order, 'payment_token' ) ) {
+		try {
 
-			// profile refund/void
-			$order->refund->customer_profile_id = $this->get_order_meta( $order, 'customer_id' );
-			$order->refund->customer_payment_profile_id = $this->get_order_meta( $order, 'payment_token' );
+			// try and get the transaction's details
+			$response = $this->get_api()->get_transaction_details( $order->refund->trans_id, $order->get_id() );
 
-			if ( empty( $order->refund->customer_profile_id ) ) {
-				$error_message = __( 'Order is missing customer profile ID.', 'woocommerce-gateway-authorize-net-cim' );
-			}
+			$order->refund->last_four = $response->get_last_four();
 
-		} else {
+			// if this is a partial refund, find out if the transaction has settled before continuing
+			if ( $order->refund->amount != $order->get_total() ) {
 
-			try {
-
-				// try and get the transaction's details
-				$response = $this->get_api()->get_transaction_details( $order->refund->trans_id, $order->get_id() );
-
-				$order->refund->last_four = $response->get_last_four();
-
-				// if this is a partial refund, find out if the transaction has settled before continuing
-				if ( $order->refund->amount != $order->get_total() ) {
-
-					if ( $response->is_captured() && ! $response->is_settled() ) {
-						$error_message = __( 'The transaction cannot be partially refunded until it has settled. You can either wait for settlement to process or use the full order total to void the transaction.', 'woocommerce-gateway-authorize-net-cim' );
-					} elseif ( $response->is_authorized() ) {
-						$error_message = __( 'The transaction cannot be partially refunded until it has been captured and settled. Please capture the order or use the full order total to void the transaction.', 'woocommerce-gateway-authorize-net-cim' );
-					}
+				if ( $response->is_captured() && ! $response->is_settled() ) {
+					$error_message = __( 'The transaction cannot be partially refunded until it has settled. You can either wait for settlement to process or use the full order total to void the transaction.', 'woocommerce-gateway-authorize-net-cim' );
+				} elseif ( $response->is_authorized() ) {
+					$error_message = __( 'The transaction cannot be partially refunded until it has been captured and settled. Please capture the order or use the full order total to void the transaction.', 'woocommerce-gateway-authorize-net-cim' );
 				}
-
-			} catch ( Framework\SV_WC_Plugin_Exception $exception ) {
-
-				$this->add_debug_message( $exception->getMessage() );
 			}
 
-			// if the transaction details API request above fails, fall back to the order meta if it exists
-			if ( empty( $order->refund->last_four ) ) {
-				$order->refund->last_four = $this->get_order_meta( $order, 'account_four' );
-			}
+		} catch ( Framework\SV_WC_Plugin_Exception $exception ) {
 
-			if ( $expiry_date = $this->get_order_meta( $order, 'card_expiry_date' ) ) {
-				$order->refund->expiry_date = date( 'm-Y', strtotime( '20' . $expiry_date ) );
-			} else {
-				$order->refund->expiry_date = 'XXXX';
-			}
+			$this->add_debug_message( $exception->getMessage() );
+		}
 
-			// we must error out if all above attempts at retrieving the card last four fail
-			if ( empty( $order->refund->last_four ) || empty( $order->refund->expiry_date ) ) {
-				$error_message = __( 'Order is missing the last four digits or expiration date of the credit card used.', 'woocommerce-gateway-authorize-net-cim' );
-			}
+		// if the transaction details API request above fails, fall back to the order meta if it exists
+		if ( empty( $order->refund->last_four ) ) {
+			$order->refund->last_four = $this->get_order_meta( $order, 'account_four' );
+		}
+
+		if ( $expiry_date = $this->get_order_meta( $order, 'card_expiry_date' ) ) {
+			$order->refund->expiry_date = date( 'm-Y', strtotime( '20' . $expiry_date ) );
+		} else {
+			$order->refund->expiry_date = 'XXXX';
+		}
+
+		// we must error out if all above attempts at retrieving the card last four fail
+		if ( empty( $order->refund->last_four ) || empty( $order->refund->expiry_date ) ) {
+			$error_message = __( 'Order is missing the last four digits or expiration date of the credit card used.', 'woocommerce-gateway-authorize-net-cim' );
 		}
 
 		if ( ! empty( $error_message ) ) {

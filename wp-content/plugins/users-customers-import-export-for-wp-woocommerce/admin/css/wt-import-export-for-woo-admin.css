@@ -159,6 +159,19 @@
 .wt-iew-tab-container .wp-list-table thead th{ font-weight:bold; }
 .wt-iew-exporter-step-btn, .wt-iew-exporter-step-export-btn{ float:right; }
 
+.wt_iew_export_main .wt-iew-mapping-tb tr td{position: relative;}
+.wt_iew_export_main .wt-iew-mapping-tb tr td:last-child:after {
+    content: "\f464";
+    font-family: 'dashicons';
+    font-size: 18px;
+    width: 20px;
+    height: 20px;
+    color: gray;      
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
 .wt-iew-form-table select.wt_iew_delimiter_preset{ width:70% !important; float:left; }
 .wt-iew-form-table input[type="text"].wt_iew_custom_delimiter{ width:25% !important; float:right; }
 
@@ -168,6 +181,7 @@
 
 .wt_iew_warn_box{padding:20px; padding-bottom:0px;}
 .wt_iew_warn{ display:inline-block; width:100%; box-sizing:border-box; padding:10px; background-color:#fff8e5; border-left:solid 2px #ffb900; color:#333; }
+.wt_iew_free_addon_warn{ display:inline-block; width:100%; box-sizing:border-box; padding:10px; background-color:#fff8e5; border:solid 1px #ffb900; color:#333; text-align: center; }
 .wt_iew_rerun_warn{ width:95%; margin:30px 2.5%; }
 
 .wt_iew_info_box{padding:20px; padding-bottom:0px;}
@@ -198,6 +212,17 @@
 .wt_iew_sort_handle img{ margin-top:5px; color:#ccc; height:15px; opacity:.8; }
 .wt_iew_checkbox{ display:inline-block; padding:0px 15px; }
 .wt_iew_mapping_field_val{ width:100%; min-height:32px; display:inline-block; background:#fff; padding:5px 5px; box-sizing:border-box; border:solid 1px #ced4da; border-radius:0.25rem; cursor:text; }
+span.wt_iew_mapping_field_val::after {
+    content: "\f464";
+    font-family: 'dashicons';
+    font-size: 18px;
+    width: 20px;
+    height: 20px;
+    color: gray;    
+    float: right;
+    top: 10px;
+    right: 10px;
+}
 
 .wt-iew-sortable-placeholder td{ height:30px; background:#fff; border-top:dashed 1px #ccc; border-bottom:dashed 1px #ccc; }
 .wt-iew-sortable-placeholder td:first-child{ border:dashed 1px #ccc; border-right:none; }
@@ -541,7 +566,7 @@ img.tips {
   margin: 20px auto 20px;
   text-align: center;
 }
-.wt-ierpro-blue-btn{
+.wt-ierpro-blue-btn, .wt-ierpro-blue-btn:visited{
   background: linear-gradient(90.67deg, #2608DF -34.86%, #3284FF 115.74%);
   box-shadow: 0px 4px 13px rgba(46, 80, 242, 0.39);
   border-radius: 5px;
@@ -620,9 +645,9 @@ img.tips {
 ul.wt-ierpro-newfeat li {
   margin-bottom: 30px;
 }
-.wt-ierpro-outline-btn{
-  border: 1px solid #007FFF;
-  background: #fff;
+.wt-ierpro-outline-btn, .wt-ierpro-outline-btn:visited{
+  background: linear-gradient(90.67deg, #2608DF -34.86%, #3284FF 115.74%);
+  box-shadow: 0px 4px 13px rgba(46, 80, 242, 0.39);
   border-radius: 5px;
   padding: 10px 15px 10px 38px;
   display: inline-block;
@@ -630,28 +655,29 @@ ul.wt-ierpro-newfeat li {
   font-weight: bold;
   font-size: 14px;
   line-height: 18px;
-  color: #007FFF;
+  color: #FFFFFF;
   text-decoration: none;
   transition: all .2s ease;
   position: relative;
-  background: transparent;
+  border: none;
 }
 .wt-ierpro-outline-btn:before{
   content: '';
   position: absolute;
   height: 15px;
   width: 18px;
-  background-image: url(../../assets/images/gopro/blue-crown.svg);
+  background-image: url(../../assets/images/gopro/white-crown.svg);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   left: 15px;
 }
 .wt-ierpro-outline-btn:hover{
+  box-shadow: 0px 4px 13px rgba(46, 80, 242, 0.5);
   text-decoration: none;
   transform: translateY(2px);
   transition: all .2s ease;
-  color: #007FFF;
+  color: #FFFFFF;
 }
 
 

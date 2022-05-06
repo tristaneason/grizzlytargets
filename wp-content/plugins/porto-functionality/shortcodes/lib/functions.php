@@ -6201,7 +6201,7 @@ if ( ! function_exists( 'porto_creative_grid_style' ) ) :
 			$max_width = floor( $width_number * 1000000 ) / 10000;
 			echo esc_html( $selector ) . ' .grid-col-' . esc_html( $width ) . '{ flex: 0 0 auto; width: ' . $max_width . '%; }';
 		}
-		echo esc_html( $selector ) . ' .grid-col-sizer { flex: 0 0 ' . ( floor( 1000000 / $max_col ) / 10000 ) . '%; width: ' . ( floor( 1000000 / $max_col ) / 10000 ) . '% }';
+		echo esc_html( $selector ) . ' .grid-col-sizer { flex: 0 0 auto; width: ' . ( floor( 1000000 / $max_col ) / 10000 ) . '% }';
 		foreach ( $heights as $height ) {
 			$height_arr = explode( '-', $height );
 			if ( count( $height_arr ) > 1 ) {

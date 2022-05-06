@@ -559,7 +559,7 @@ var wt_iew_popover=
 
 			wt_iew_popover.set_active_row(cr_elm);
 			pp_elm.css({'display':'block','opacity':0, 'top':cr_elm_pos_t,'left':cr_elm_pos_l}).stop(true,true).animate({'left':cr_elm_pos_l+20,'opacity':1}, 500, function(){
-				jQuery('.wt_iew_mapping_field_editor_expression').focus();
+				jQuery('.wt_iew_mapping_field_editor_column_search').focus();
 			});
 			
 			jQuery('[name="wt_iew_popover_do_action"]').data('click-elm', cr_elm);

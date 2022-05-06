@@ -1,11 +1,11 @@
-﻿=== Woocommerce Google Feed Manager ===
+=== Woocommerce Google Feed Manager ===
 
 Contributors: WPMarketingRobot, Michel Jongbloed, AukeJomm
 Tags: Google Merchant Export, Product feed, woocommerce, Google product feed export, google, shopping, Google Adwords, Google Merchant, wooCommerce export, woocommerce variations, e-commerce, google merchant product feed, product variations, variations export, wp-e-commerce export, wp marketing robot
 Requires at least: 5.4
 Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 1.36.0
+Stable tag: 1.39.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -96,6 +96,23 @@ In case it does please do submit your feed in your Google Merchant center and ch
 3. Save and generate your feed
 
 == Changelog ==
+= 1.39.0 - 14/03/2022 =
+* Added some extra test code to prevent a fatal PHP error when the feed attribute data contains some invalid code.
+* Changed the way the WooCommerce Google Product Review Feed Manager is initiated to prevent a PHP Fatal error in a specific setting.
+* Tested on WooCommerce 6.2 and 6.3
+
+= 1.38.0 - 23/01/2022 =
+* Fixed an issue that could cause incorrect price values when using specific third party plugins. 
+* Added the "Product Parent Description" source.
+* Fixed an issue where in some situations the image url's would not load.
+* Added support for the WooCommerce Currency Switcher plugin.
+* Tested on WooCommerce 6.1.
+
+= 1.37.0 - 20/12/2021 =
+* Added the "Regular Price With Tax", "Regular Price Without Tax", "Sale Price With Tax" and "Sale Price Without Tax" sources.
+* Fixed an issue that would cause a type error when opening the Edit Feed page.
+* Tested on WooCommerce 6.0.
+
 = 1.36.0 - 10/11/2021 =
 * Fixed an issue where if there is a source with the name "null" it would be selected as WooCommerce source by default.
 * Fixed an issue where selected categories in the Category Mapping table would automatically deselect if they had zero products assigned to them.

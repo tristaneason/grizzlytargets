@@ -785,6 +785,7 @@ class Wt_Import_Export_For_Woo_Basic_Coupon_Import {
 //                'id' => 0,
 		'code'                        => '',
 		'amount'                      => 0,
+		'status'                      => 'draft',			
 		'date_created'                => null,
 		'date_modified'               => null,
 		'date_expires'                => null,
@@ -816,24 +817,22 @@ class Wt_Import_Export_For_Woo_Basic_Coupon_Import {
             $data = apply_filters('wt_woocommerce_coupon_import_process_item', $data);  
      
             $post_id = $data['id'];
-            $object = new WC_Coupon($post_id);
- 
-//            $object = $this->get_object($data);
+            $coupon_object = new WC_Coupon($post_id);
 
-            if (is_wp_error($object)) {
-                return $object;
+            if (is_wp_error($coupon_object)) {
+                return $coupon_object;
             }
             
-            Wt_Import_Export_For_Woo_Basic_Logwriter::write_log($this->parent_module->module_base, 'import', "Found coupon object. ID:".$object->get_id());            
+            Wt_Import_Export_For_Woo_Basic_Logwriter::write_log($this->parent_module->module_base, 'import', "Found coupon object. ID:".$coupon_object->get_id());            
 
-            $boolean_keys = apply_filters('wt_ier_coupon_boolean_keys', array('exclude_sale_items', 'individual_use', 'free_shipping'));
+            $boolean_keys = apply_filters( 'wt_ier_coupon_boolean_keys', array( 'exclude_sale_items', 'individual_use', 'free_shipping', 'date_expires' ) );
             
             foreach ($data as $key => $value) {
                 
                 if(in_array($key, $boolean_keys)){
                     $fn ='set_'.$key;
-                    if(method_exists($object,'set_'.$key)){
-                        $object->$fn($value);
+                    if(method_exists($coupon_object,'set_'.$key)){
+                        $coupon_object->$fn($value);
 //                        unset($data[$key]);
                     }
                     continue;
@@ -841,14 +840,14 @@ class Wt_Import_Export_For_Woo_Basic_Coupon_Import {
                 
                 if(!empty($value)){
                     $fn ='set_'.$key;
-                    if(method_exists($object,'set_'.$key)){
-                        $object->$fn($value);
+                    if(method_exists($coupon_object,'set_'.$key)){
+                        $coupon_object->$fn($value);
 //                        unset($data[$key]);
                     }
                 }            
             }
                         
-            $this->set_meta_data($object, $data);            
+            $this->set_meta_data($coupon_object, $data);            
             
             $update_post = array(
                 'ID' => $post_id,
@@ -861,14 +860,14 @@ class Wt_Import_Export_For_Woo_Basic_Coupon_Import {
             if($this->delete_existing){
                 update_post_meta($post_id, '_wt_delete_existing', 1);
             }
-            
-            $object = apply_filters('wt_woocommerce_import_pre_insert_coupon_object', $object, $data);
-            $object->save();
-            
-            do_action('wt_woocommerce_import_inserted_coupon_object', $object, $data);
+
+            $coupon_object = apply_filters('wt_woocommerce_import_pre_insert_coupon_object', $coupon_object, $data);
+            $coupon_object->save();
+
+            do_action('wt_woocommerce_import_inserted_coupon_object', $coupon_object, $data);
 
             $result = array(
-                'id' => $object->get_id(),
+                'id' => $coupon_object->get_id(),
                 'updated' => $this->merge,
             );
             return $result;

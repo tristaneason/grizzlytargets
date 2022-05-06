@@ -178,6 +178,7 @@ jQuery(document).ready(function () {
      * @returns null
      */
     var suspend_automatic_detection = function (params = "", response = "") {
+        var insi_with_auto_residential = jQuery("#en_woo_addons_inside_with_auto_residential").length ? true : false;
         var selected_plan = jQuery("#auto_residential_delivery_plan_auto_renew").val();
         window.existing_plan = selected_plan;
         var suspend_automatic = jQuery("#suspend_automatic_detection_of_residential_addresses").prop("checked");
@@ -187,16 +188,28 @@ jQuery(document).ready(function () {
             if (suspend_automatic) {
                 jQuery(".en_woo_addons_always_include_residential_fee").prop('disabled', false);
                 jQuery("#en_woo_addons_liftgate_with_auto_residential").prop({checked: false, disabled: true});
+                // White Glove
+                if (insi_with_auto_residential == true) {
+                    jQuery("#en_woo_addons_inside_with_auto_residential").prop({checked: false, disabled: true});
+                }
             } else {
                 jQuery(".en_woo_addons_always_include_residential_fee").prop({checked: false, disabled: true});
                 if (subscription_status == "yes") {
                     jQuery("#en_woo_addons_liftgate_with_auto_residential").prop('disabled', false);
+                    // White Glove
+                    if (insi_with_auto_residential == true) {
+                        jQuery("#en_woo_addons_inside_with_auto_residential").prop('disabled', false);
+                    }
                 }
             }
         } else {
             jQuery(".residential_delivery_options_plans_style th label").text("Select a plan");
             jQuery("#suspend_automatic_detection_of_residential_addresses").prop({checked: false, disabled: true});
             jQuery("#en_woo_addons_liftgate_with_auto_residential").prop({checked: false, disabled: true});
+            // White Glove
+            if (insi_with_auto_residential == true) {
+                jQuery("#en_woo_addons_inside_with_auto_residential").prop({checked: false, disabled: true});
+            }
         }
     };
 
@@ -280,6 +293,9 @@ jQuery(document).ready(function () {
         return {
             always_include_residential_ind: always_include_residential_ind,
             always_include_residential_val: "no",
+            // White Glove
+            rad_include_inside_ind: 'en_woo_addons_inside_with_auto_residential',
+            rad_include_inside_val: "no",
             suspend_automatic_detection_of_residential_addresses: "no",
             action: "suspend_automatic_detection"
         };

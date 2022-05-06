@@ -37,7 +37,7 @@ function pewc_add_custom_data_to_order( $item, $cart_item_key, $values, $order )
 
 							if( isset( $field['type'] ) ) {
 
-								if( $field['type'] == 'products' && ! $display_product_meta ) {
+								if( ( $field['type'] == 'products' || $field['type'] == 'product-categories' ) && ! $display_product_meta ) {
 									continue;
 								}
 
@@ -166,7 +166,7 @@ function pewc_order_item_name( $product_name, $item ) {
 							continue;
 						}
 
-						if( $field['type'] == 'products' && ! $display_product_meta ) {
+						if( ( $field['type'] == 'products' || $field['type'] == 'product-categories' ) && ! $display_product_meta ) {
 							continue;
 						}
 
@@ -333,7 +333,7 @@ function pewc_create_product_extra( $order_id ) {
 
 			$product_extras = $order_item->get_meta( 'product_extras' );
 
-			if( ! empty( $product_extras['groups'] ) || ! empty( $product_extras['products'] ) ) {
+			if( ! empty( $product_extras['groups'] ) || ! empty( $product_extras['products'] ) || ! empty( $product_extras['product-categories'] ) ) {
 
 				// Save the product_extra data
 				$product_extra_id = wp_insert_post( array(
@@ -513,7 +513,6 @@ function pewc_rename_uploaded_files_item_meta( $item ) {
 
 									}
 
-									error_log( $file['file'] );
 									// Move / rename the file
 									if( file_exists( $file['file'] ) ) {
 										// Don't rename twice
@@ -659,3 +658,102 @@ function pewc_is_order_item_child_product( $item ) {
 	return false;
 
 }
+
+/*
+ * Checks the order for parent products with child products. This is only run if 'Hide child products in the order' is enabled
+ * @since 3.9.8
+ */
+function pewc_prepare_parent_products_order( $order ) {
+
+	if ( 'yes' === get_option( 'pewc_hide_child_products_order', 'no' ) ) {
+
+		$order_id = $order->get_id();
+
+		// we use the arrays below later if hide == yes, so that we can get the totals of the child products and add it to the parent's
+		$child_products_totals = array();
+		$parent_products_keys = array();
+
+		$order_items = $order->get_items( apply_filters( 'woocommerce_purchase_order_item_types', 'line_item' ) );
+		foreach ( $order_items as $item_id => $item ) {
+
+			if ( isset( $item['product_extras']['products'] ) ) {
+
+				$item_price = $item->get_subtotal();
+				if ( 'incl' === get_option( 'woocommerce_tax_display_cart' ) ) {
+					$item_price += $item->get_subtotal_tax();
+				}
+
+				if ( isset( $item['product_extras']['products']['child_field'] ) ) {
+
+					// this is a child product
+					$parent_field_id = $item['product_extras']['products']['parent_field_id'];
+					if ( ! isset( $child_products_totals[$parent_field_id] ) )
+						$child_products_totals[$parent_field_id] = 0;
+					// add this child product's price to the parent's total later
+					$child_products_totals[$parent_field_id] += wc_format_decimal( $item_price, '' );
+
+				} else if ( isset( $item['product_extras']['child_fields'] )) {
+
+					// this is a parent product, save some things for later
+					if ( ! isset( $parent_products_keys[$item_id] ) ) {
+						$parent_products_keys[$item_id] = array(
+							'parent_field_id' => $item['product_extras']['products']['parent_field_id'],
+							'parent_price' => wc_format_decimal( $item_price, '' )
+						);
+					}
+
+				}
+			}
+		}
+
+		if ( ! empty( $child_products_totals ) && ! empty( $parent_products_keys ) ) {
+			// let's save this in a session for later use
+			WC()->session->set( 'child_products_totals_'.$order_id, $child_products_totals );
+			WC()->session->set( 'parent_products_keys_'.$order_id, $parent_products_keys );
+		}
+	}
+
+}
+add_action( 'woocommerce_order_details_before_order_table_items', 'pewc_prepare_parent_products_order', 100, 1);
+
+/*
+ * Filters the order item's line subtotal if 'Hide child products in the order' is enabled
+ * @since 3.9.10
+ */
+function pewc_line_subtotal_parent_product( $subtotal, $item, $order ) {
+
+	// only do this on the front end
+	if ( 'yes' === get_option( 'pewc_hide_child_products_order', 'no' ) && ( ! is_admin() || wp_doing_ajax() ) ) {
+		$order_id = $order->get_id();
+		$item_id = $item->get_id();
+
+		// get from session, generated from pewc_prepare_parent_products()
+		$child_products_totals = WC()->session->get( 'child_products_totals_'.$order_id );
+		$parent_products_keys = WC()->session->get( 'parent_products_keys_'.$order_id );
+
+		if ( ! empty( $parent_products_keys[$item_id]['parent_field_id'] ) && ! empty( $child_products_totals[$parent_products_keys[$item_id]['parent_field_id']] ) ) {
+			// this is a parent product that needs price display adjustment
+
+			// get the total for this parent product's children
+			$child_products_total = $child_products_totals[$parent_products_keys[$item_id]['parent_field_id']];
+
+			// get this parent product's price
+			$parent_price = $parent_products_keys[$item_id]['parent_price'];
+
+			// this is for the line subtotal, so no need to divide by quantity
+			$old_price = $parent_price;
+			$new_price = $old_price + $child_products_total;
+
+			// we need this for older orders, in case the shop changed currency
+			$args = array(
+				'currency' => $order->get_currency()
+			);
+
+			//return wc_price($new_price); // this does not have the suffix
+			$subtotal = str_replace( wc_price( $old_price, $args ), wc_price( $new_price, $args ), $subtotal); // this keeps the suffix
+		}
+	}
+	return $subtotal;
+
+}
+add_filter( 'woocommerce_order_formatted_line_subtotal', 'pewc_line_subtotal_parent_product', 100, 3);

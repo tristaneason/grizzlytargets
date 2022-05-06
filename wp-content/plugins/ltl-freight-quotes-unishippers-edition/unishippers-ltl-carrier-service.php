@@ -439,8 +439,8 @@ if (!class_exists('unishippers_ltl_shipping_get_quotes')) {
                             in_array('R', $label_sufex_arr) ? $allServices[$count]['meta_data']['en_fdo_meta_data']['accessorials']['residential'] = true : '';
                             ($this->quote_settings['liftgate_resid_delivery'] == "yes") && (in_array("R", $label_sufex)) && in_array('L', $label_sufex_arr) ? $allServices[$count]['meta_data']['en_fdo_meta_data']['accessorials']['liftgate'] = true : '';
 
-                            if (($this->quote_settings['liftgate_delivery_option'] == "yes") &&
-                                ((($this->quote_settings['liftgate_resid_delivery'] == "yes") && (!in_array("R", $label_sufex))) ||
+                            if ((($this->quote_settings['liftgate_delivery_option'] == "yes") && (!isset($result['quotes']->liftgateExcluded)))
+                                && ((($this->quote_settings['liftgate_resid_delivery'] == "yes") && (!in_array("R", $label_sufex))) ||
                                     ($this->quote_settings['liftgate_resid_delivery'] != "yes"))) {
                                 (isset($allServices[$count]['label_sufex']) &&
                                     (!empty($allServices[$count]['label_sufex']))) ?

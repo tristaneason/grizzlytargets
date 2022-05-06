@@ -413,7 +413,7 @@ function porto_load_portfolios_shortcode() {
 				),
 				array(
 					'type'       => 'textfield',
-					'heading'    => __( 'Portfolios Count', 'porto-functionality' ),
+					'heading'    => __( 'Portfolios Count (per page)', 'porto-functionality' ),
 					'param_name' => 'number',
 					'value'      => '8',
 				),
@@ -428,8 +428,9 @@ function porto_load_portfolios_shortcode() {
 					'param_name' => 'load_more_posts',
 					'std'        => '',
 					'value'      => array(
-						__( 'Select', 'porto-functionality' ) => '',
-						__( 'Pagination', 'porto-functionality' ) => 'pagination',
+						__( 'None', 'porto-functionality' ) => '',
+						__( 'Ajax Pagination', 'porto-functionality' ) => 'pagination',
+						__( 'Infinite Scroll', 'porto-functionality' ) => 'infinite',
 						__( 'Load More (Button)', 'porto-functionality' ) => 'load-more-btn',
 					),
 				),
@@ -450,7 +451,7 @@ function porto_load_portfolios_shortcode() {
 				),
 				array(
 					'type'       => 'checkbox',
-					'heading'    => __( 'Show Filter', 'porto-functionality' ),
+					'heading'    => __( 'Show Category Filter', 'porto-functionality' ),
 					'param_name' => 'filter',
 					'value'      => array( __( 'Yes', 'js_composer' ) => 'yes' ),
 				),
@@ -470,10 +471,25 @@ function porto_load_portfolios_shortcode() {
 					),
 				),
 				array(
-					'type'       => 'checkbox',
-					'heading'    => __( 'Enable Ajax Load', 'porto-functionality' ),
-					'param_name' => 'ajax_load',
-					'value'      => array( __( 'Yes', 'js_composer' ) => 'yes' ),
+					'type'       => 'dropdown',
+					'heading'    => __( 'Filter Type', 'porto-functionality' ),
+					'param_name' => 'filter_type',
+					'std'        => '',
+					'value'      => array(
+						__( 'Filter using Javascript/CSS', 'porto-functionality' ) => '',
+						__( 'Ajax Loading', 'porto-functionality' ) => 'ajax',
+					),
+					'dependency' => array(
+						'element'   => 'filter',
+						'not_empty' => true,
+					),
+				),
+				array(
+					'type'        => 'checkbox',
+					'heading'     => __( 'Enable Ajax Load', 'porto-functionality' ),
+					'description' => __( 'If enabled, portfolio content should be displayed at the top of portfolios or on modal when you click portfolio item in the list.', 'porto-functionality' ),
+					'param_name'  => 'ajax_load',
+					'value'       => array( __( 'Yes', 'js_composer' ) => 'yes' ),
 				),
 
 				array(

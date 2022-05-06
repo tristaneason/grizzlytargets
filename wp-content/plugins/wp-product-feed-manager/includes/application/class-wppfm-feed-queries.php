@@ -151,12 +151,13 @@ if ( ! class_exists( 'WPPFM_Feed_Queries' ) ) :
 		}
 
 		private function convert_to_us_notation( $current_value ) {
-			$decimal_sep   = get_option( 'woocommerce_price_decimal_sep' );
-			$thousands_sep = get_option( 'woocommerce_price_thousand_sep' );
+			// @since 2.28.0 Switched to the formal wc functions to get the separator and number of decimals values.
+			$decimal_sep   = wc_get_price_decimal_separator();
+			$thousands_sep = wc_get_price_thousand_separator();
 
 			if ( ! preg_match( '/[a-zA-Z]/', $current_value ) ) { // only remove the commas if the current value has no letters
 				if ( $this->already_us_notation( $current_value ) ) {
-					// Some values like the Weight can already be in the us notation, so don't change them.
+					// Some values like the Weight can already be in the US notation, so don't change them.
 					return $current_value;
 				}
 

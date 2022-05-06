@@ -17,11 +17,11 @@ global $hubwoo;
 		<div class="hubwoo-box-n-card">
 			<div class="hubwoo-box-n-card__content">
 				<div class="hubwoo-fields-header hubwoo-common-header">
-					<h2><?php esc_html_e( 'User guide and documentation', 'makewebbetter-hubspot-for-woocommerce' ); ?></h2>
+					<h2><?php esc_html_e( 'User Guide and Documentation', 'makewebbetter-hubspot-for-woocommerce' ); ?></h2>
 				</div>
 				<div class="hubwoo-box-card__subtitle">
 					<?php
-						esc_html_e( 'View the detailed guides and documentation to set up your integration.', 'makewebbetter-hubspot-for-woocommerce' );
+						esc_html_e( 'Follow through the steps and directions mentioned in our documentation for hands-on experience.', 'makewebbetter-hubspot-for-woocommerce' );
 					?>
 				</div>
 			</div>
@@ -34,16 +34,16 @@ global $hubwoo;
 		<div class="hubwoo-box-n-card">
 			<div class="hubwoo-box-n-card__content">
 				<div class="hubwoo-fields-header hubwoo-common-header">
-					<h2><?php esc_html_e( 'Knowledgebase for HubSpot plugin', 'makewebbetter-hubspot-for-woocommerce' ); ?></h2>
+					<h2><?php esc_html_e( 'Knowledgebase of HubSpot Plugins', 'makewebbetter-hubspot-for-woocommerce' ); ?></h2>
 				</div>
 				<div class="hubwoo-box-card__subtitle">
 					<?php
-						esc_html_e( 'Learn more about the Integration from our knowledgebase and video guides.', 'makewebbetter-hubspot-for-woocommerce' );
+						esc_html_e( 'Learn more about your HubSpot integration and get your basic queries resolved with our detailed Q/A guides.', 'makewebbetter-hubspot-for-woocommerce' );
 					?>
 				</div>
 			</div>
 			<div class="hubwoo-box-n-card__btn">
-				<a href="https://support.makewebbetter.com/hubspot-knowledge-base/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'View', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+				<a href="https://support.makewebbetter.com/hubspot-knowledge-base/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'Learn More', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 			</div>
 		</div>
 	</div>	
@@ -51,16 +51,16 @@ global $hubwoo;
 		<div class="hubwoo-box-n-card">
 			<div class="hubwoo-box-n-card__content">
 				<div class="hubwoo-fields-header hubwoo-common-header">
-					<h2><?php esc_html_e( 'Free support', 'makewebbetter-hubspot-for-woocommerce' ); ?></h2>
+					<h2><?php esc_html_e( 'Free Support', 'makewebbetter-hubspot-for-woocommerce' ); ?></h2>
 				</div>
 				<div class="hubwoo-box-card__subtitle">
 					<?php
-						esc_html_e( 'Please submit a ticket, our team will respond within 24 hours.', 'makewebbetter-hubspot-for-woocommerce' );
+						esc_html_e( 'We’re available 24/7 at your service. Get connected with our skilled and experienced experts to get your queries resolved in no time.', 'makewebbetter-hubspot-for-woocommerce' );
 					?>
 				</div>
 			</div>
 			<div class="hubwoo-box-n-card__btn">
-				<a href="https://makewebbetter.com/submit-query/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'Submit', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+				<a href="https://makewebbetter.com/contact-us/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'Connect Us', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 			</div>
 		</div>
 	</div>	
@@ -68,16 +68,16 @@ global $hubwoo;
 		<div class="hubwoo-box-n-card">
 			<div class="hubwoo-box-n-card__content">
 				<div class="hubwoo-fields-header hubwoo-common-header">
-					<h2><?php esc_html_e( 'Priority support', 'makewebbetter-hubspot-for-woocommerce' ); ?></h2>
+					<h2><?php esc_html_e( 'Custom Development Service', 'makewebbetter-hubspot-for-woocommerce' ); ?></h2>
 				</div>
 				<div class="hubwoo-box-card__subtitle">
 					<?php
-						esc_html_e( 'Get priority support for white-glove immediate help via phone, chat, and email.', 'makewebbetter-hubspot-for-woocommerce' );
+						esc_html_e( 'Explore our custom development services if you need to get any specific feature for your business process to function more smoothly.', 'makewebbetter-hubspot-for-woocommerce' );
 					?>
 				</div>
 			</div>
 			<div class="hubwoo-box-n-card__btn">
-				<a href="https://makewebbetter.com/product/hubspot-for-woocommerce/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'View plans', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+				<a href="https://makewebbetter.com/hubspot-development-services/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'Get Started', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 			</div>
 		</div>
 	</div>
@@ -85,16 +85,16 @@ global $hubwoo;
 		<div class="hubwoo-box-n-card">
 			<div class="hubwoo-box-n-card__content">
 				<div class="hubwoo-fields-header hubwoo-common-header">
-					<h2><?php esc_html_e( 'Custom onboarding & services', 'makewebbetter-hubspot-for-woocommerce' ); ?></h2>
+					<h2><?php esc_html_e( 'Book a Meeting', 'makewebbetter-hubspot-for-woocommerce' ); ?></h2>
 				</div>
 				<div class="hubwoo-box-card__subtitle">
 					<?php
-						esc_html_e( 'Get help with a custom integration, WooCommerce maintenance, or anything else to help you grow better.', 'makewebbetter-hubspot-for-woocommerce' );
+						esc_html_e( 'Need personalized and dedicated assistance from our skilled experts? Schedule a 15-minutes meeting and get your business started with HubSpot.', 'makewebbetter-hubspot-for-woocommerce' );
 					?>
 				</div>
 			</div>
 			<div class="hubwoo-box-n-card__btn">
-				<a href="https://makewebbetter.com/hubspot-woocommerce-onboarding?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'View Plans', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+				<a href="https://meetings.hubspot.com/makewebbetter/free-hubspot-consultation?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'Book Now', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 			</div>
 		</div>
 	</div>
@@ -102,11 +102,11 @@ global $hubwoo;
 		<div class="hubwoo-box-n-card">
 			<div class="hubwoo-box-n-card__content">
 				<div class="hubwoo-fields-header hubwoo-common-header">
-					<h2><?php esc_html_e( 'Download the log file of the plugin', 'makewebbetter-hubspot-for-woocommerce' ); ?></h2>
+					<h2><?php esc_html_e( 'Download Plugin Log File', 'makewebbetter-hubspot-for-woocommerce' ); ?></h2>
 				</div>
 				<div class="hubwoo-box-card__subtitle">
 					<?php
-						esc_html_e( 'Share the log file if you are having any trouble with the plugin.', 'makewebbetter-hubspot-for-woocommerce' );
+						esc_html_e( 'Share your log files, if you face troubles working with the plugin, with our tech team.', 'makewebbetter-hubspot-for-woocommerce' );
 					?>
 				</div>
 			</div>
@@ -123,13 +123,13 @@ global $hubwoo;
 				</div>
 				<div class="hubwoo-box-card__subtitle">
 					<?php
-						esc_html_e( 'Build amazingly beautiful and interactive websites with our easy-to-use HubSpot themes. Using our themes, you can create websites that will engage, convert visitors and delight your visitors.', 'makewebbetter-hubspot-for-woocommerce' );
+						esc_html_e( 'Build amazingly beautiful and interactive websites with our easy-to-use HubSpot themes.', 'makewebbetter-hubspot-for-woocommerce' );
 					?>
 				</div>
 			</div>
 			<div class="hubwoo-box-n-card__btn">
 				<div>
-					<a href="https://makewebbetter.com/hubspot-themes/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'Browse now', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+					<a href="https://makewebbetter.com/hubspot-themes/?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend" target="_blank" class="hubwoo__btn "><?php esc_html_e( 'Get Started', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 				</div>
 			</div>
 		</div>

@@ -442,13 +442,16 @@ function xa_fedex_packing_method_options(){
 	pack_method	=	jQuery('.packing_method').val();
 	if( pack_method != 'box_packing'){
 		jQuery('.speciality_box').closest('tr').hide();
+		jQuery('.box_packing_algorithm').closest('tr').hide();
 	}
 
 	jQuery('.packing_method').change(function(){
 		if( pack_method == 'box_packing'){
 			jQuery('.speciality_box').closest('tr').show();
+			jQuery('.box_packing_algorithm').closest('tr').show();
 		}else{
 			jQuery('.speciality_box').closest('tr').hide();
+			jQuery('.box_packing_algorithm').closest('tr').hide();
 		}
 	});
 }

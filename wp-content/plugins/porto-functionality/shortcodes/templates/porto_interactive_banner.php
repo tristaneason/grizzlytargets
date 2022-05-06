@@ -14,6 +14,8 @@ extract(
 		array(
 			'banner_title'           => '',
 			'banner_desc'            => '',
+			'img_source'             => '',
+			'dynamic_content'        => '',
 			'banner_image'           => '',
 			'banner_video'           => '',
 			'enable_sound'           => '',
@@ -46,6 +48,22 @@ extract(
 		$atts
 	)
 );
+
+if ( 'dynamic' == $img_source && $dynamic_content && $dynamic_content['source'] ) {
+	$field_name = '';
+	if ( 'post' == $dynamic_content['source'] ) {
+		if ( isset( $dynamic_content['post_info'] ) ) {
+			$field_name = $dynamic_content['post_info'];
+		}
+	} else {
+		if ( isset( $dynamic_content[ $dynamic_content['source'] ] ) ) {
+			$field_name = $dynamic_content[ $dynamic_content['source'] ];
+		}
+	}
+	if ( $field_name ) {
+		$banner_image = apply_filters( 'porto_dynamic_tags_content', '', null, $dynamic_content['source'], $field_name );
+	}
+}
 
 if ( 'none' == $banner_effect ) {
 	$banner_effect = '';

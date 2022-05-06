@@ -180,6 +180,9 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 		$this->alternate_return_address 	= ( isset( $this->settings['alternate_return_address'] ) && !empty( $this->settings['alternate_return_address'] ) && $this->settings['alternate_return_address'] == 'yes' ) ? true : false;
 		$this->billing_as_alternate_return_address 	= ( isset( $this->settings['billing_as_alternate_return_address'] ) && !empty( $this->settings['billing_as_alternate_return_address'] ) && $this->settings['billing_as_alternate_return_address'] == 'yes' ) ? true : false;
 
+		$this->alt_return_person_name	= ( isset($this->settings['alt_return_person_name']) && !empty($this->settings['alt_return_person_name']) ) ? $this->settings['alt_return_person_name'] : '';
+		$this->alt_return_company_name	= ( isset($this->settings['alt_return_company_name']) && !empty($this->settings['alt_return_company_name']) ) ? $this->settings['alt_return_company_name'] : '';
+		$this->alt_return_phone_number	= ( isset($this->settings['alt_return_phone_number']) && !empty($this->settings['alt_return_phone_number']) ) ? $this->settings['alt_return_phone_number'] : '';
 		$this->alt_return_streetline 	= ( isset($this->settings['alt_return_streetline']) && !empty($this->settings['alt_return_streetline']) ) ?  $this->settings['alt_return_streetline'] : '';
 		$this->alt_return_city 			= ( isset($this->settings['alt_return_city']) && !empty($this->settings['alt_return_city']) ) ?  $this->settings['alt_return_city'] : '';
 		$this->alt_return_postcode 		= ( isset($this->settings['alt_return_postcode']) && !empty($this->settings['alt_return_postcode']) ) ?  $this->settings['alt_return_postcode'] : '';
@@ -219,15 +222,17 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 		$this->csb_termsofsale 	= ( isset($this->settings['csb_termsofsale']) && !empty($this->settings['csb_termsofsale']) ) ? $this->settings['csb_termsofsale'] : 'FOB';
 		$this->under_bond 		= ( isset($this->settings['under_bond']) && !empty($this->settings['under_bond']) ) ? $this->settings['under_bond'] : 'U';
 		$this->meis_shipment 	= ( isset($this->settings['meis_shipment']) && !empty($this->settings['meis_shipment']) ) ? $this->settings['meis_shipment'] : 'M';
-		$this->saturday_delivery_label 	= ( isset($this->settings['saturday_delivery_label']) && !empty($this->settings['saturday_delivery_label']) && $this->settings['saturday_delivery_label'] == 'yes' ) ? true : false;
+		$this->saturday_delivery_label = ( isset($this->settings['saturday_delivery_label']) && !empty($this->settings['saturday_delivery_label']) && $this->settings['saturday_delivery_label'] == 'yes' ) ? true : false;
 		$this->pro_forma_invoice 	= ( isset($this->settings['ph_pro_forma_invoice']) && !empty($this->settings['ph_pro_forma_invoice']) && $this->settings['ph_pro_forma_invoice'] == 'yes' ) ? true : false;
 		$this->document_content 	= ( isset($this->settings['document_content']) && !empty($this->settings['document_content']) ? $this->settings['document_content'] : '');
 		$this->third_party_acc_no 	= ( isset($this->settings['third_party_acc_no']) && !empty($this->settings['third_party_acc_no']) ? $this->settings['third_party_acc_no'] : '');
 		$this->shipment_comments 	= ( isset($this->settings['shipment_comments']) && !empty($this->settings['shipment_comments']) ? $this->settings['shipment_comments'] : '');
 		$this->label_maskable_type 	= ( isset($this->settings['label_maskable_type'	]) && !empty($this->settings['label_maskable_type'	]) ) ? $this->settings['label_maskable_type'	] : array();
-		$this->home_delivery_premium    	= (isset($this->settings['home_delivery_premium']) && ($this->settings['home_delivery_premium'] == 'yes')) ? true : false;
-		$this->home_delivery_premium_type 	=	( isset($this->settings['home_delivery_premium_type']) && !empty($this->settings['home_delivery_premium_type']) ) ? $this->settings['home_delivery_premium_type'] : '';
-		$this->default_dom_service 			=	( isset($this->settings['default_dom_service']) && !empty($this->settings['default_dom_service']) ) ? $this->settings['default_dom_service'] : '';
+		$this->home_delivery_premium = (isset($this->settings['home_delivery_premium']) && ($this->settings['home_delivery_premium'] == 'yes')) ? true : false;
+		$this->home_delivery_premium_type =	( isset($this->settings['home_delivery_premium_type']) && !empty($this->settings['home_delivery_premium_type']) ) ? $this->settings['home_delivery_premium_type'] : '';
+		$this->default_dom_service 	=	( isset($this->settings['default_dom_service']) && !empty($this->settings['default_dom_service']) ) ? $this->settings['default_dom_service'] : '';
+		$this->thirdpartyConsignee  = (isset($this->settings['thirdparty_consignee']) && ($this->settings['thirdparty_consignee'] == 'yes')) ? true : false;
+		$this->mode 				= isset( $this->settings['packing_algorithm'] ) ? $this->settings['packing_algorithm'] : 'volume_based';
 
 		if( $this->saturday_pickup ) {
 
@@ -546,7 +551,7 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 			include_once 'class-wf-packing.php';
 		}
 
-		$boxpack = new PH_FedEx_Boxpack();
+		$boxpack = new PH_FedEx_Boxpack($this->mode);
 
 		// Merge default boxes for Backward Compatibility
 		foreach ( $this->default_boxes as $key => $box ) {
@@ -1426,9 +1431,9 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 
 				$request['RequestedShipment']['LabelSpecification']['PrintedLabelOrigin'] = array(
 					'Contact'	=> array(
-						'PersonName' 	=> $this->ph_replace_special_characters($this->freight_shipper_person_name),
-						'CompanyName' 	=> $this->freight_shipper_company_name,
-						'PhoneNumber'	=> $this->freight_shipper_phone_number,
+						'PersonName' 	=> $this->ph_replace_special_characters( !empty( $this->alt_return_person_name ) ? $this->alt_return_person_name : $this->freight_shipper_person_name ),
+						'CompanyName' 	=> !empty( $this->alt_return_company_name ) ? $this->alt_return_company_name : $this->freight_shipper_company_name,
+						'PhoneNumber'	=> !empty( $this->alt_return_phone_number ) ? $this->alt_return_phone_number : $this->freight_shipper_phone_number,
 					),
 
 					'Address'	=> array(
@@ -2035,6 +2040,11 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 						if ( isset($_GET['home_delivery_date']) && !empty($_GET['home_delivery_date']) && $this->home_delivery_premium_type == 'DATE_CERTAIN' ) {
 							$request['RequestedShipment']['SpecialServicesRequested']['HomeDeliveryPremiumDetail']['Date'] = $_GET['home_delivery_date'];
 						}
+					}
+
+					if ( $this->is_international && $this->thirdpartyConsignee ) {
+						
+						$special_servicetypes[] = 'THIRD_PARTY_CONSIGNEE';
 					}
 
 					if(!empty($special_servicetypes)){
@@ -2867,6 +2877,10 @@ class wf_fedex_woocommerce_shipping_admin_helper  {
 
 			if( $special_service == 'ELECTRONIC_TRADE_DOCUMENTS' ) {
 				unset($request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'][$key]);	// Unset ELECTRONIC_TRADE_DOCUMENTS in return request
+			}
+
+			if( $special_service == 'FEDEX_ONE_RATE' ) {
+				unset($request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes'][$key]);	// Unset FEDEX_ONE_RATE in return request
 			}
 		}
 		$request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes']=array_values($request['RequestedShipment']['SpecialServicesRequested']['SpecialServiceTypes']);

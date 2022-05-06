@@ -3,9 +3,9 @@ Contributors: webtoffee
 Donate link: https://www.webtoffee.com/plugins/
 Tags: user import, user export, csv, woocommerce, customers, export import users, export customers, import customers, import, export, export users to csv, import users from csv 
 Requires at least: 3.0.1
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.2.3
+Stable tag: 2.2.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -25,8 +25,10 @@ WordPress User Import Export plugin allows the import and export of WordPress us
  &#128312; Retain user passwords (optional)
  &#128312; Map and Transform fields while importing customers/users
  &#128312; Change values (bulk modify) while importing customers/users using Evaluation Fields
- &#128312; Tested OK with WordPress 5.8
- &#128312; Tested OK with WooCommerce 5.9
+ &#128312; Export Guest users - Include data of WooCommerce guest customers(users who bought products from site without creating an account).
+ &#128312; Export specific users based on username/email - Suggests email addresses and names in export data filter fields while you type in.
+ &#128312; Tested OK with WordPress 5.9
+ &#128312; Tested OK with WooCommerce 6.3
  &#128312; Tested OK with PHP 8.0
 
 Highlights: WordPress Users Export, WordPress Users CSV Import Suite, Export WordPress Users to CSV. Pro Version supports export and import of all additional user meta like WooCommerce details.
@@ -214,6 +216,20 @@ Please refer the article on how to <a href="https://www.webtoffee.com/refresh-wo
 
 == Changelog ==
 
+= 2.2.9   2022-04-15 =
+* WC 6.3 Tested OK.
+= 2.2.8 =
+* Enhancement: Performance and UI improvements, text corrections.
+= 2.2.7 =
+* WP 5.9 Tested OK.
+= 2.2.6 =
+* Improvements: Optimise user email search filter to work without WooCommerce
+= 2.2.5 =
+* WC 6.1 Tested OK
+* Add - Export guest users option.
+* Fix - user_status column value export.
+= 2.2.4 =
+* WC 6.0 Tested OK
 = 2.2.3 =
 * WC 5.9 Tested OK
 = 2.2.2 =
@@ -403,5 +419,5 @@ Please refer the article on how to <a href="https://www.webtoffee.com/refresh-wo
 
 == Upgrade Notice ==
 
-= 2.2.3 =
-* WC 5.9 Tested OK
+= 2.2.9 =
+* WC 6.3 Tested OK.

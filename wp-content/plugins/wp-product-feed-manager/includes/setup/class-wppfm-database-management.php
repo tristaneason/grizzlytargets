@@ -21,7 +21,7 @@ if ( ! class_exists( 'WPPFM_Database_Management' ) ) :
 		 * Attributes
 		 * -------------------------------------------------------------------------------------------------- */
 
-		private $_version = '1.8.0'; // as of plugin version 2.10.0
+		private $_version = '1.9.0'; // as of plugin version 2.28.0
 		private $_wpdb;
 		private $_charset_collate = '';
 		private $_image_folder;
@@ -73,7 +73,7 @@ if ( ! class_exists( 'WPPFM_Database_Management' ) ) :
 				$this->make_or_update_the_tables();
 
 				// update table as of version 1.7.0
-				if ( $this->_version <= '1.7.0' ) {
+				if ( $this->_version <= '1.9.0' ) {
 					$this->update_status_table();
 				}
 			}
@@ -145,6 +145,7 @@ if ( ! class_exists( 'WPPFM_Database_Management' ) ) :
 				product_feed_id int NOT NULL AUTO_INCREMENT,
 				channel_id smallint NOT NULL,
 				language varchar(7),
+				currency varchar(7),
 				is_aggregator smallint NOT NULL DEFAULT 0,
 				include_variations smallint NOT NULL DEFAULT 0,
 				country_id smallint NOT NULL DEFAULT 233,

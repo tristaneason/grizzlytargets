@@ -31,7 +31,7 @@ class Porto_Elementor_CP_Title_Widget extends \Elementor\Widget_Base {
 		return array( 'product', 'title' );
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		$this->start_controls_section(
 			'section_cp_title',

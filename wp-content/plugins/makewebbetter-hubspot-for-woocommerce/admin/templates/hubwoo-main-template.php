@@ -78,7 +78,7 @@ if ( 1 == get_option( 'hubwoo_connection_setup_established', 0 ) ) {
 				$active_tab = 'hubwoo-overview';
 			}
 
-			$users_to_sync = get_option( 'hubwoo_total_ocs_need_sync', 0 );
+			$users_to_sync = get_option( 'hubwoo_total_ocs_contact_need_sync', 1 );
 
 			$is_last_process_completed = get_option( 'hubwoo_ocs_data_synced', false );
 
@@ -94,7 +94,8 @@ if ( 1 == get_option( 'hubwoo_connection_setup_established', 0 ) ) {
 						<?php
 							$current_user_sync = get_option( 'hubwoo_ocs_contacts_synced', 0 );
 							esc_html_e( 'Your contacts are syncing in the background so you can safely leave this page.', 'makewebbetter-hubspot-for-woocommerce' );
-							$total_synced = round( $current_user_sync * 100 / $users_to_sync );
+							$perc         = round( $current_user_sync * 100 / $users_to_sync );
+							$total_synced = $perc > 100 ? 100 : $perc;
 
 						?>
 					</div>

@@ -10,7 +10,7 @@ function setSelectedMenuItem(url) {
   selectedElement.parent().addClass('current');
 }
 
-// Given a route like "/settings/forms", parse it into "?page=leadin_settings&leadin_route[0]=forms"
+// Given a route like "/settings/forms", parse it into "?page=leadin_settings&leadin_route[]=forms"
 export function syncRoute(path = '', searchQuery = '') {
   const baseUrls = Object.keys(urlsMap).sort((a, b) =>
     a.length < b.length ? 1 : -1
@@ -36,10 +36,7 @@ export function syncRoute(path = '', searchQuery = '') {
   const leadinRouteParam = route
     ? `&${route
         .split('/')
-        .map(
-          (subRoute, index) =>
-            `${encodeURIComponent(`leadin_route[${index}]`)}=${subRoute}`
-        )
+        .map(subRoute => `${encodeURIComponent(`leadin_route[]`)}=${subRoute}`)
         .join('&')}`
     : '';
 
@@ -47,7 +44,11 @@ export function syncRoute(path = '', searchQuery = '') {
     ? `&leadin_search=${encodeURIComponent(searchQuery)}`
     : '';
 
-  const newUrl = `?page=${wpPage}${leadinRouteParam}${leadinSearchParam}`;
+  const nonce = window.leadinConfig
+    ? `&_wpnonce=${window.leadinConfig.routeNonce}`
+    : '';
+
+  const newUrl = `?page=${wpPage}${leadinRouteParam}${leadinSearchParam}${nonce}`;
 
   setSelectedMenuItem(newUrl);
   window.history.replaceState(null, null, newUrl);

@@ -13,6 +13,7 @@ use Leadin\options\AccountOptions;
 use Leadin\options\HubspotOptions;
 use Leadin\admin\Connection;
 use Leadin\admin\Impact;
+use Leadin\admin\AdminUserMetaData;
 
 /**
  * Class containing all the constants used for admin script localization.
@@ -83,10 +84,10 @@ class AdminConstants {
 		$signup_params                         = array();
 		$signup_params['enableCollectedForms'] = 'true';
 		$signup_params['leadinPluginVersion']  = constant( 'LEADIN_PLUGIN_VERSION' );
+		$signup_params['trackConsent']         = AdminUserMetaData::get_track_consent();
 		$user_prefill_params                   = self::get_signup_prefill_params_array();
 		$signup_params                         = array_merge( $signup_params, $user_prefill_params );
-		$utm_params                            = self::get_utm_query_params_array();
-		return array_merge( $signup_params, $utm_params );
+		return $signup_params;
 	}
 
 	/**
@@ -107,9 +108,12 @@ class AdminConstants {
 			'ajaxUrl'      => Website::get_ajax_url(),
 			'nonce'        => self::get_connection_nonce(),
 			'accountName'  => AccountOptions::get_account_name(),
-			'portalDomain' => AccountOptions::get_portal_domain(),
 			'hsdio'        => DeviceId::get(),
+			'portalDomain' => AccountOptions::get_portal_domain(),
 		);
+
+		$utm_params     = self::get_utm_query_params_array();
+		$hubspot_config = array_merge( $hubspot_config, $utm_params );
 
 		if ( User::is_admin() ) {
 			$hubspot_config['admin'] = '1';
@@ -165,6 +169,7 @@ class AdminConstants {
 			'locale'                => get_locale(),
 			'ajaxNonce'             => wp_create_nonce( 'hubspot-ajax' ),
 			'restNonce'             => wp_create_nonce( 'wp_rest' ),
+			'routeNonce'            => wp_create_nonce( 'hubspot-route' ),
 			'hubspotNonce'          => self::get_connection_nonce(),
 			'redirectNonce'         => wp_create_nonce( Routing::REDIRECT_NONCE ),
 			'phpVersion'            => Versions::get_wp_version(),
@@ -174,11 +179,13 @@ class AdminConstants {
 			'accountName'           => AccountOptions::get_account_name(),
 			'portalDomain'          => AccountOptions::get_portal_domain(),
 			'portalEmail'           => get_user_meta( $wp_user_id, 'leadin_email', true ),
+			'reviewSkippedDate'     => AdminUserMetaData::get_skip_review(),
 			'loginUrl'              => Links::get_login_url(),
 			'routes'                => Links::get_routes_mapping(),
 			'theme'                 => get_option( 'stylesheet' ),
 			'wpVersion'             => Versions::get_wp_version(),
 			'leadinQueryParamsKeys' => array_keys( self::get_hubspot_query_params_array() ),
+			'connectionStatus'      => Connection::is_connected() ? 'Connected' : 'NotConnected',
 		);
 
 		if ( OAuth::is_enabled() ) {
@@ -218,7 +225,7 @@ class AdminConstants {
 	public static function get_leadin_i18n() {
 		return array(
 			'chatflows'            => __( 'Live Chat', 'leadin' ),
-			'selectExistingForm'   => __( 'Select an existing form', 'leadin' ),
+			'selectExistingForm'   => __( 'Select an existing form or create a new one from a template', 'leadin' ),
 			'goToPlugin'           => __( 'Go to plugin', 'leadin' ),
 			'refreshForms'         => __( 'Refresh forms', 'leadin' ),
 			'unauthorizedHeader'   => __( 'Your plugin isn\'t authorized', 'leadin' ),
@@ -228,6 +235,12 @@ class AdminConstants {
 			'selectForm'           => __( 'Select a form', 'leadin' ),
 			'formBlockTitle'       => __( 'HubSpot Form', 'leadin' ),
 			'formBlockDescription' => __( 'Select and embed a HubSpot form', 'leadin' ),
+			'registrationForm'     => __( 'Registration Form', 'leadin' ),
+			'contactUsForm'        => __( 'Contact us Form', 'leadin' ),
+			'newsletterForm'       => __( 'Newsletter sign-up Form', 'leadin' ),
+			'supportForm'          => __( 'Support Form', 'leadin' ),
+			'eventForm'            => __( 'Event Registration Form', 'leadin' ),
+			'templateForms'        => __( 'Templates', 'leadin' ),
 		);
 	}
 }

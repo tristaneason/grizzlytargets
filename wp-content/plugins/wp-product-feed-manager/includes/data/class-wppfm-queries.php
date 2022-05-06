@@ -151,7 +151,7 @@ if ( ! class_exists( 'WPPFM_Queries' ) ) :
 			$result = $this->_wpdb->get_results(
 				"SELECT p.product_feed_id, p.source_id AS source, p.title, p.feed_title, p.feed_description, p.main_category, "
 				. "p.url, p.include_variations, p.is_aggregator, p.status_id, p.base_status_id, p.updated, p.products, p.feed_type_id, p.schedule, c.name_short "
-				. "AS country, m.channel_id AS channel, p.language "
+				. "AS country, m.channel_id AS channel, p.language, p.currency "
 				. "FROM {$this->_table_prefix}feedmanager_product_feed AS p "
 				. "INNER JOIN {$this->_table_prefix}feedmanager_country AS c ON p.country_id = c.country_id "
 				. "INNER JOIN {$this->_table_prefix}feedmanager_channel AS m ON p.channel_id = m.channel_id "
@@ -446,6 +446,9 @@ if ( ! class_exists( 'WPPFM_Queries' ) ) :
 				if ( '_sale_price_dates_from' === $row->meta_key || '_sale_price_dates_to' === $row->meta_key ) {
 					$row->meta_value = wppfm_convert_price_date_to_feed_format( $row->meta_value );
 				}
+
+				// @since 2.29.0.
+				$row->meta_value = apply_filters( "wppfm{$row->meta_key}_value", $row->meta_value, $main_post_id );
 			}
 		}
 

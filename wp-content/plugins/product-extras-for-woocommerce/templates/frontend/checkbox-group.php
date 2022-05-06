@@ -56,7 +56,7 @@ if( isset( $item['field_options'] ) ) {
 			$checked = ( is_array( $value ) && in_array( $option_value['value'], $value ) ) ? 'checked="checked"' : '';
 
 	    $radio = sprintf(
-	      '<li><label class="pewc-checkbox-form-label" for="%s"><input data-option-cost="%s" data-option-percentage="%s" type="checkbox" name="%s[]" id="%s" class="%s" value="%s" %s>&nbsp;%s</label></li>',
+	      '<li><label class="pewc-checkbox-form-label" for="%s"><input data-option-cost="%s" data-option-percentage="%s" type="checkbox" name="%s[]" id="%s" class="%s" value="%s" %s>&nbsp;%s<span class="pewc-theme-element"></span></label></li>',
 	      esc_attr( $radio_id ),
 				esc_attr( $option_price ),
 	      esc_attr( $option_percentage ),

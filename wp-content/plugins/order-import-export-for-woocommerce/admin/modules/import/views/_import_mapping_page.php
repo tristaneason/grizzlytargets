@@ -67,9 +67,11 @@ if (!defined('ABSPATH')) {
 	<p><?php echo $this->step_description;?></p>
 
 	<p class="wt_iew_info_box wt_iew_info">
-		<?php _e('Columns are mapped automatically only if a matching header name is found in the input file. If not the value is left blank.');?>
+		-- <?php _e('The first row from your input file is considered as a header for mapping columns and hence will NOT BE imported.');?>
 		<br />
-		<?php _e('If your input file header does not have exact names or if you need to edit the existing mapping you can simply click on the respective value fields corresponding to each row. Furthermore you can also assign expressions based on the existing input file columns.');?>
+		-- <?php _e('Columns are mapped automatically only if a matching header name is found in the input file.');?>
+		<br/>
+		-- <?php _e('In the case of empty fields, you can simply click on the respective field and map the corresponding column from your input file.');?>
 	</p>
 
 	<div class="meta_mapping_box">
@@ -142,8 +144,8 @@ if (!defined('ABSPATH')) {
 
 				if(count($mapping_fields)>0)
 				{                                           
-                                        $array_keys_file_heading_default_fields = array_keys($file_heading_default_fields);    
-					$allowed_field_types=array('start_with', 'end_with', 'contain');
+                    $array_keys_file_heading_default_fields = array_keys($file_heading_default_fields);    
+					$allowed_field_types=array('start_with', 'end_with', 'contains', 'alternates');
 					foreach($mapping_fields as $key=>$val_arr)
 					{	
 						$label=(isset($val_arr['title']) ? $val_arr['title'] : '');
@@ -152,7 +154,7 @@ if (!defined('ABSPATH')) {
 						$val='';
 						$checked=0; /* import this column? */
 //						if(isset($file_heading_default_fields[$key]))                                                
-                                                if($case_key = preg_grep("/^$key$/i", $array_keys_file_heading_default_fields))   //preg_grep used escape from case sensitive check.
+                        if($case_key = preg_grep("/^$key$/i", $array_keys_file_heading_default_fields))   //preg_grep used escape from case sensitive check.
 						{       
 							$checked=1; /* import this column? */
 //                                                        $val='{'.$key.'}';
@@ -175,9 +177,11 @@ if (!defined('ABSPATH')) {
 							$field_type=(isset($val_arr['field_type']) ? $val_arr['field_type'] : '');
 							if($field_type!="" && in_array($field_type, $allowed_field_types)) // it may be a different field type 
 							{
+								$is_checked_inside = 0;
 								foreach ($file_heading_default_fields as $def_key => $def_val) 
 								{
 									$matched=false;
+									$alternate_set = false;
 									if($field_type=='start_with' && strpos($def_key, $key)===0)
 									{
 										$matched=true;
@@ -189,9 +193,23 @@ if (!defined('ABSPATH')) {
 									elseif($field_type=='contains' && strpos($def_key, $key)!==false)
 									{
 										$matched=true;
-									}
-									if($matched)
+									}elseif($field_type=='alternates' && in_array($def_key, $val_arr['similar_fields']))
 									{
+										$alternate_set = true;
+										$matched = true;
+									}
+
+									if($matched && $alternate_set)
+									{
+										$is_checked_inside = 1;
+										$checked=1; // import this column? 
+										$val='{'.$def_key.'}';
+										unset($file_heading_default_fields[$def_key]); //remove the field from file heading list
+										include "_import_mapping_tr_html.php";
+										$tr_count++;
+									}elseif($matched)
+									{
+										$is_checked_inside = 1;
 										$checked=1; // import this column? 
 										$val='{'.$def_key.'}';
 										$label=$def_key;
@@ -203,6 +221,12 @@ if (!defined('ABSPATH')) {
 										$key=$key_backup;
 									}
 								}
+								if(!$is_checked_inside){
+									$checked=0; /* import this column? */
+									$val='';
+									include "_import_mapping_tr_html.php";
+									$tr_count++;
+								}								
 							}else /* unmatched keys */
 							{
 								$checked=0; /* import this column? */

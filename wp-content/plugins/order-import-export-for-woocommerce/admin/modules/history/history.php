@@ -77,8 +77,8 @@ class Wt_Import_Export_For_Woo_Basic_History
 		$menus[$this->module_base.'_log']=array(
 			'submenu',
 			WT_IEW_PLUGIN_ID_BASIC,
-			__('Logs'),
-			__('Logs'),
+			__('Import Logs'),
+			__('Import Logs'),
 			apply_filters('wt_import_export_allowed_capability', 'import'),
 			$this->module_id.'_log',
 			array($this, 'admin_log_page')
@@ -208,15 +208,12 @@ class Wt_Import_Export_For_Woo_Basic_History
 			);
 		$fields['enable_history_auto_delete']=array(
 			'label'=>__("Auto delete history"),
-			'type'=>'radio',
-			'radio_fields'=>array(
-				1=>__('Yes'),
-				0=>__('No')
-			),
+			'type'=>'checkbox',
+            'checkbox_fields' => array( 1 => __( 'Enable' ) ),
             'value' =>1,
 			'field_name'=>'enable_history_auto_delete',
 			'field_group'=>'advanced_field',
-			'help_text'=>__('Enable auto delete for records within the history section.'),
+			'help_text'=>__('Enabling this option will delete records from the history section upon reaching the count mentioned in Maximum entries.'),
 			'validation_rule'=>array('type'=>'absint'),
 			'form_toggler'=>array(
 				'type'=>'parent',
@@ -239,6 +236,7 @@ class Wt_Import_Export_For_Woo_Basic_History
 				'type'=>'child',
 				'id'=>'wt_iew_enable_history_auto_delete',
 				'val'=>1,
+				'chk' => 'true'
 			),
 		);
 

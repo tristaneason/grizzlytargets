@@ -10,6 +10,10 @@ if( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if( ! pewc_is_pro() ) {
+	return;
+}
+
 /**
  * @hooked pewc_enqueue_variations_scripts
  */
@@ -42,6 +46,7 @@ if( ! empty( $item['products_quantities'] ) ) {
 
 			$wrapper_classes = array(
 				'pewc-checkbox-image-wrapper',
+				'pewc-checkbox-wrapper',
 				'pewc-child-variation-main',
 				'pewc-swatches-' . $product_type
 			);
@@ -56,7 +61,7 @@ if( ! empty( $item['products_quantities'] ) ) {
 				$default_variation_title = str_replace( $child_product_title . ' &#8211; ', '', get_the_title( $default_variation_id ) );
 				$main_sku = $default_variation->get_sku();
 
-				$main_image_url = ( get_post_thumbnail_id( $default_variation_id ) ) ? wp_get_attachment_url( get_post_thumbnail_id( $default_variation_id, apply_filters( 'pewc_child_product_image_size', 'thumb' ) ) ) : wc_placeholder_img_src();
+				$main_image_url = ( get_post_thumbnail_id( $default_variation_id ) ) ? wp_get_attachment_image_url( get_post_thumbnail_id( $default_variation_id, apply_filters( 'pewc_child_product_image_size', 'thumbnail' ) ) ) : wc_placeholder_img_src();
 				$main_image = '<img src="' . esc_url( $main_image_url ) . '">';
 
 				if( $variants ) {
@@ -92,7 +97,7 @@ if( ! empty( $item['products_quantities'] ) ) {
 						if( ! $image ) $image = wc_placeholder_img( apply_filters( 'pewc_variation_swatch_image_size', array( 50, 50, true ) ) );
 						$sku = $variant->get_sku();
 
-						$viewer_image_url = ( get_post_thumbnail_id( $variant_id ) ) ? wp_get_attachment_url( get_post_thumbnail_id( $variant_id, apply_filters( 'pewc_child_product_image_size', 'thumb' ) ) ) : wc_placeholder_img_src();
+						$viewer_image_url = ( get_post_thumbnail_id( $variant_id ) ) ? wp_get_attachment_image_url( get_post_thumbnail_id( $variant_id, apply_filters( 'pewc_child_product_image_size', 'thumbnail' ) ) ) : wc_placeholder_img_src();
 
 						$variation_title = str_replace( $child_product_title . apply_filters( 'pewc_option_price_separator', '+', $item ), '', $variant->get_name() );
 
@@ -156,7 +161,7 @@ if( ! empty( $item['products_quantities'] ) ) {
 					'<h4 class="pewc-swatches-main-title"><span class="pewc-variation-name">%s</span> <span class="pewc-variation-sku">%s</span> <span class="pewc-variation-price">%s</span></h4>',
 					$variation_title,
 					$sku,
-					$price
+					apply_filters( 'pewc_option_price', $price, $item )
 				);
 
 				if( ! $option_cost ) $option_cost = 0;
@@ -200,7 +205,7 @@ if( ! empty( $item['products_quantities'] ) ) {
 				$checkbox_label = sprintf(
 			    '<label for="%s"><input data-option-cost="%s" type="checkbox" name="%s[]" id="%s" class="pewc-checkbox-form-field pewc-swatch-form-field pewc-column-form-field" value="%s" %s %s>%s</label>',
 			    esc_attr( $checkbox_id ),
-			    esc_attr( number_format( $option_cost, get_option( 'woocommerce_price_num_decimals', 2 ) ) ),
+			    esc_attr( number_format( apply_filters( 'pewc_option_price', $option_cost, $item ), get_option( 'woocommerce_price_num_decimals', 2 ) ) ),
 			    esc_attr( $parent_name ),
 			    esc_attr( $checkbox_id ),
 			    esc_attr( $child_product_id ),

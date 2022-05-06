@@ -35,7 +35,7 @@ class Porto_Elementor_Info_Box_Widget extends \Elementor\Widget_Base {
 		return 'eicon-info-box';
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		$this->start_controls_section(
 			'section_info_box',

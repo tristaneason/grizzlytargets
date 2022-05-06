@@ -62,9 +62,11 @@ class LeadinFilters {
 
 	/**
 	 * Apply filter to get the base url for the HubSpot api.
+	 *
+	 * @param String $cross_hublet if true it's use non-hublet specific prefix. For example, "api" instead of "api-eu1".
 	 */
-	public static function get_leadin_base_api_url() {
-		$prefix = self::get_leadin_api_prefix();
+	public static function get_leadin_base_api_url( $cross_hublet = false ) {
+		$prefix = $cross_hublet ? 'api' : self::get_leadin_api_prefix();
 		$domain = self::get_leadin_domain();
 		return apply_filters( 'leadin_base_api_url', "https://$prefix.$domain" );
 	}
@@ -98,5 +100,20 @@ class LeadinFilters {
 	 */
 	public static function get_leadin_forms_payload() {
 		return apply_filters( 'leadin_forms_payload', '' );
+	}
+
+	/**
+	 * Apply leadin_forms_payload_url filter.
+	 */
+	public static function get_page_content_type() {
+		if ( is_single() ) {
+			$content_type = 'blog-post';
+		} elseif ( is_archive() || is_search() ) {
+			$content_type = 'listing-page';
+		} else {
+			$content_type = 'standard-page';
+		}
+
+		return apply_filters( 'leadin_page_content_type', $content_type );
 	}
 }

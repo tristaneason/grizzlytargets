@@ -33,7 +33,7 @@ class Porto_Elementor_HB_Menu_Icon_Widget extends \Elementor\Widget_Base {
 		return 'porto-icon-bars';
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		$this->start_controls_section(
 			'section_hb_menu_icon',

@@ -43,7 +43,7 @@ class Porto_Elementor_Members_Widget extends \Elementor\Widget_Base {
 		}
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		$this->start_controls_section(
 			'section_members',
@@ -179,7 +179,7 @@ class Porto_Elementor_Members_Widget extends \Elementor\Widget_Base {
 			'number',
 			array(
 				'type'    => Controls_Manager::NUMBER,
-				'label'   => __( 'Members Count', 'porto-functionality' ),
+				'label'   => __( 'Members Count (per page)', 'porto-functionality' ),
 				'default' => 8,
 				'min'     => 1,
 				'max'     => 100,
@@ -208,8 +208,15 @@ class Porto_Elementor_Members_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'pagination',
 			array(
-				'type'  => Controls_Manager::SWITCHER,
-				'label' => __( 'Show Pagination', 'porto-functionality' ),
+				'type'    => Controls_Manager::SELECT,
+				'label'   => __( 'Pagination Style', 'porto-functionality' ),
+				'options' => array(
+					''          => __( 'None', 'porto-functionality' ),
+					'yes'       => __( 'Ajax Pagination', 'porto-functionality' ),
+					'infinite'  => __( 'Infinite Scroll', 'porto-functionality' ),
+					'load_more' => __( 'Load More (Button)', 'porto-functionality' ),
+				),
+				'default' => '',
 			)
 		);
 
@@ -217,15 +224,32 @@ class Porto_Elementor_Members_Widget extends \Elementor\Widget_Base {
 			'filter',
 			array(
 				'type'  => Controls_Manager::SWITCHER,
-				'label' => __( 'Show Filter', 'porto-functionality' ),
+				'label' => __( 'Show Category Filter', 'porto-functionality' ),
+			)
+		);
+
+		$this->add_control(
+			'filter_type',
+			array(
+				'type'      => Controls_Manager::SELECT,
+				'label'     => __( 'Filter Type', 'porto-functionality' ),
+				'options'   => array(
+					''     => __( 'Filter using Javascript/CSS', 'porto-functionality' ),
+					'ajax' => __( 'Ajax Loading', 'porto-functionality' ),
+				),
+				'default'   => '',
+				'condition' => array(
+					'filter' => 'yes',
+				),
 			)
 		);
 
 		$this->add_control(
 			'ajax_load',
 			array(
-				'type'  => Controls_Manager::SWITCHER,
-				'label' => __( 'Enable Ajax Load', 'porto-functionality' ),
+				'type'        => Controls_Manager::SWITCHER,
+				'label'       => __( 'Enable Ajax Load', 'porto-functionality' ),
+				'description' => __( 'If enabled, member content should be displayed at the top of members or on modal when you click member item in the list.', 'porto-functionality' ),
 			)
 		);
 

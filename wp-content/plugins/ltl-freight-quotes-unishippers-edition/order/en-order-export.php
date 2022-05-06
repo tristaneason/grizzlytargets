@@ -18,7 +18,7 @@ if (!class_exists('EnOrderExport')) {
         }
 
         // Async cron schedule.
-        public function en_async_cron_schedule()
+        public function en_async_cron_schedule($schedules)
         {
             $schedules['en_async_cron_every_5_minute'] = array(
                 'interval' => 60 * 5,

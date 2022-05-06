@@ -1,16 +1,16 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WooCommerce Product Feed Manager\n"
-"POT-Creation-Date: 2021-08-18 09:21+0200\n"
+"POT-Creation-Date: 2022-03-06 09:16+0100\n"
 "PO-Revision-Date: 2018-08-20 20:39+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Poedit 3.0.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: wp-product-feed-manager.php\n"
@@ -140,7 +140,11 @@ msgstr ""
 
 #: includes/data/class-wppfm-channel.php:196
 #, php-format
-msgid "2141 - Please open a support ticket at %s for support on this issue."
+msgid ""
+"2141 - Your WP Product Feed Manager plugin is unable to check for channel "
+"updates. This could be due to a temporary problem with our server. If this "
+"message does not clear in 15 minutes, please open a support ticket at %s for "
+"support on this issue."
 msgstr ""
 
 #. translators: %s: Name of a channel
@@ -251,8 +255,13 @@ msgid ""
 "Manager Logger\" plugin from your Plugins page."
 msgstr ""
 
+#: includes/packages/pll/includes/wppfm-pll-functions.php:16
 #: includes/packages/wpml/includes/wppfm-wpml-functions.php:23
 msgid "-- Select the language of the feed --"
+msgstr ""
+
+#: includes/packages/woocs/includes/wppfm-woocs-functions.php:18
+msgid "-- Select the WOOCS currency for the feed --"
 msgstr ""
 
 #: includes/packages/wpml/includes/wppfm-wpml-functions.php:136
@@ -1075,7 +1084,8 @@ msgstr ""
 #: includes/user-interface/class-wppfm-options-page.php:137
 msgid ""
 "Enter the email address of the person you want to be notified when a feed "
-"fails during an automatic feed update."
+"fails during an automatic feed update (requires an SMTP server for "
+"WordPress)."
 msgstr ""
 
 #: includes/user-interface/class-wppfm-options-page.php:141
@@ -1192,19 +1202,19 @@ msgstr ""
 msgid "Shop Category"
 msgstr ""
 
-#: includes/user-interface/elements/class-wppfm-form-element.php:105
+#: includes/user-interface/elements/class-wppfm-form-element.php:106
 msgid "Save & Generate Feed"
 msgstr ""
 
-#: includes/user-interface/elements/class-wppfm-form-element.php:108
+#: includes/user-interface/elements/class-wppfm-form-element.php:109
 msgid "Save Feed"
 msgstr ""
 
-#: includes/user-interface/elements/class-wppfm-form-element.php:111
+#: includes/user-interface/elements/class-wppfm-form-element.php:112
 msgid "View Feed"
 msgstr ""
 
-#: includes/user-interface/elements/class-wppfm-form-element.php:124
+#: includes/user-interface/elements/class-wppfm-form-element.php:125
 msgid "Open Feed List"
 msgstr ""
 
@@ -1279,20 +1289,20 @@ msgstr ""
 
 #: includes/user-interface/wppfm-admin-actions.php:85
 msgid ""
-"Due to the latest update your Feed Manager backups are no longer valid! "
-"Please open the Feed Manager Settings page, remove all your backups in and "
-"make a new one."
+"Due to an update of your Feed Manager plugin, your feed backups are no "
+"longer valid! Please open the Feed Manager Settings page, remove all current "
+"backups, and make a new one."
 msgstr ""
 
 #. translators: %s: link to the support page
-#: includes/user-interface/wppfm-admin-actions.php:186
+#: includes/user-interface/wppfm-admin-actions.php:212
 #, php-format
 msgid ""
 "2121 - Activating your license failed. Please open a support ticket at %s "
 "for support on this issue."
 msgstr ""
 
-#: includes/user-interface/wppfm-admin-actions.php:205
+#: includes/user-interface/wppfm-admin-actions.php:231
 #, php-format
 msgid ""
 "An error has occurred. It is possible that the wpmarketingrobot website is "
@@ -1302,7 +1312,7 @@ msgid ""
 "\t\t\t\t\t\tauke@wpmarketingrobot.com. Error Message: %s"
 msgstr ""
 
-#: includes/user-interface/wppfm-admin-actions.php:255
+#: includes/user-interface/wppfm-admin-actions.php:281
 #, php-format
 msgid ""
 "You have an invalid or expired license key for your %1$s plugin.\n"
@@ -1313,7 +1323,7 @@ msgid ""
 "working and your product feeds valid."
 msgstr ""
 
-#: includes/user-interface/wppfm-admin-actions.php:272
+#: includes/user-interface/wppfm-admin-actions.php:298
 #, php-format
 msgid ""
 "The license key for your %1$s plugin is expiring soon. If you wish you can "
@@ -1359,7 +1369,7 @@ msgid ""
 "huge thanks in advance!"
 msgstr ""
 
-#: includes/user-interface/wppfm-admin-menu-functions.php:256
+#: includes/user-interface/wppfm-admin-menu-functions.php:261
 #, php-format
 msgid ""
 "2122 - Checking your license failed. Please open a support ticket at %s for "
@@ -1417,7 +1427,7 @@ msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
-"An easy to use WordPress plugin that generates and submits your product "
+"An easy-to-use WordPress plugin that generates and submits your product "
 "feeds to merchant centres."
 msgstr ""
 

@@ -200,8 +200,56 @@ jQuery(document).ready(function($) {
 				}
 			});
 		});
-	}
+	};
 	init_live_search();
+
+	// ajax select2 used in meta box
+	var init_ajax_select2 = function( $el ) {
+		var option = $el.data( 'option' ),
+			ids = $el.val(),
+			is_multiple = (typeof $el.attr('multiple') != 'undefined'),
+			path = porto_block_vars.site_url + '/wp-json/ajaxselect2/v1/' + option + '/';
+		$el.select2({
+			ajax: {
+				url: path,
+				dataType: 'json',
+				data: function (params) {
+					var args = {
+						s: params.term
+					};
+					if (!is_multiple) {
+						args['add_default'] = '1';
+					}
+					return args;
+				}
+			},
+			cache: true
+		});
+
+		$.ajax({
+			url: path,
+			dataType: 'json',
+			data: {
+				ids: ids ? ids : ''
+			}
+		}).then(function (res) {
+
+			if (null !== res && res.results.length > 0) {
+				res.results.map((v, i) => {
+					$el.append(new Option(v.text, v.id, true, true)).trigger('change');
+				});
+				$el.trigger({
+					type: 'select2:select',
+					params: {
+						data: res
+					}
+				});
+			}
+		});
+	};
+	$( '.porto-ajaxselect2' ).each( function() {
+		init_ajax_select2( $(this) );
+	} );
 });
 
 jQuery(window).on('load', function() {
@@ -211,6 +259,23 @@ jQuery(window).on('load', function() {
 			jQuery('<span class="vcv-ui-navbar-control porto-builder-back-to-list" title="' + porto_builder_condition.i18n.back_to_list + '" data-href="' + porto_builder_condition.list_url + '"><span class="vcv-ui-navbar-control-content">' + porto_builder_condition.i18n.back_to_list + '</span></span>').insertBefore(jQuery('.vcv-ui-navbar-sandwich .vcv-ui-navbar-control').last()).on('click', function() {
 				window.location.href = jQuery(this).data('href');
 			});
+		}
+
+		// init post type builder js
+		var preview_width_trigger = null;
+		if ( jQuery( '#preview_width' ).length ) {
+			var $preview_width_obj = jQuery( '#preview_width' );
+			jQuery( '.editor-styles-wrapper' ).css( 'width', $preview_width_obj.val() ? Number( $preview_width_obj.val() ) + '%' : '' ).css( 'margin', '0 auto' );
+
+			$preview_width_obj.on( 'change', function( e ) {
+				if ( preview_width_trigger ) {
+					clearTimeout( preview_width_trigger );
+				}
+				var val = this.value;
+				preview_width_trigger = setTimeout( function() {
+					jQuery( '.editor-styles-wrapper' ).css( 'width', val ? Number( val ) + '%' : '' ).css( 'margin', '0 auto' );
+				}, 300 );
+			} );
 		}
 	}, 200);
 });

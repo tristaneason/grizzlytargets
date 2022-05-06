@@ -20,7 +20,7 @@ if ( ! class_exists( 'WPPFM_Email' ) ) :
 	class WPPFM_Email {
 
 		public static function send_feed_failed_message() {
-			$to = get_option( 'wppfm_notice_mailaddress' ) ? get_option( 'wppfm_notice_mailaddress' ) : get_bloginfo( 'admin_email' );
+			$to = get_option( 'wppfm_notice_mailaddress', get_bloginfo( 'admin_email' ) );
 
 			if ( ! $to ) {
 				return false;
@@ -37,15 +37,13 @@ if ( ! class_exists( 'WPPFM_Email' ) ) :
 		}
 
 		private static function feed_failed_message() {
-			$message = sprintf(
+			return sprintf(
 				'This is an automatic message from your %s plugin. One or more product feeds on your %s shop failed to generate. Please check the status of your feeds and try to manually regenerate them again.
 
 Should this problem persist, please open a support ticket.',
 				WPPFM_EDD_SL_ITEM_NAME,
 				get_bloginfo( 'name' )
 			);
-
-			return $message;
 		}
 
 		/**
@@ -55,7 +53,7 @@ Should this problem persist, please open a support ticket.',
 		 * @param string $subject the subject
 		 * @param string $message the message
 		 *
-		 * @return bool whether the mail contents was send successfully
+		 * @return bool whether the mail contents was sent successfully.
 		 */
 		private static function send( $to, $subject, $message ) {
 			if ( is_email( $to ) ) {

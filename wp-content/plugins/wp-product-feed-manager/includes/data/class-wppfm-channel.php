@@ -193,7 +193,7 @@ if ( ! class_exists( 'WPPFM_Channel' ) ) :
 						sprintf(
 							/* translators: %s: url to the support page */
 							__(
-								'2141 - Please open a support ticket at %s for support on this issue.',
+								'2141 - Your WP Product Feed Manager plugin is unable to check for channel updates. This could be due to a temporary problem with our server. If this message does not clear in 15 minutes, please open a support ticket at %s for support on this issue.',
 								'wp-product-feed-manager'
 							),
 							WPPFM_SUPPORT_PAGE_URL

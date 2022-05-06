@@ -3,7 +3,7 @@
  * WP Product Feed Manager Google Feed Class.
  *
  * @package WP Product Feed Manager/Channels
- * @version 19.1
+ * @version 22.0
  */
 
 // Prevent direct access
@@ -18,7 +18,7 @@ if ( ! class_exists( 'WPPFM_Google_Feed_Class' ) ) :
 	 */
 	class WPPFM_Google_Feed_Class extends WPPFM_Feed_Master_Class {
 
-		private $_version = '19.1';
+		private $_version = '22.0';
 
 		public function __construct() {
 			parent::__construct();
@@ -45,7 +45,6 @@ if ( ! class_exists( 'WPPFM_Google_Feed_Class' ) ) :
 			$fields->additional_image_link     = '_wp_attachement_metadata';
 			$fields->price                     = '_regular_price';
 			$fields->identifier_exists         = 'Fill with a static value';
-			$fields->sale_price_effective_date = '_sale_price_dates_from';
 			$fields->item_group_id             = 'item_group_id';
 			$fields->mpn                       = 'ID';
 			$fields->tax                       = 'Use the settings in the Merchant Center';

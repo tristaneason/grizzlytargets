@@ -6,6 +6,8 @@
 			'skin'                => 'primary',
 			'layout'              => '',
 			'is_block'            => false,
+			'link_source'         => '',
+			'dynamic_content'     => '',
 			'link'                => '',
 			'shape'               => '',
 			'icon_pos'            => 'left',
@@ -27,6 +29,22 @@
 	);
 
 	if ( $settings['title'] ) {
+		if ( 'dynamic' == $settings['link_source'] && $settings['dynamic_content'] && $settings['dynamic_content']['source'] ) {
+			$field_name = '';
+			if ( 'post' == $settings['dynamic_content']['source'] ) {
+				if ( isset( $settings['dynamic_content']['post_info'] ) ) {
+					$field_name = $settings['dynamic_content']['post_info'];
+				}
+			} else {
+				if ( isset( $settings['dynamic_content'][ $settings['dynamic_content']['source'] ] ) ) {
+					$field_name = $settings['dynamic_content'][ $settings['dynamic_content']['source'] ];
+				}
+			}
+			if ( $field_name ) {
+				$settings['link'] = apply_filters( 'porto_dynamic_tags_content', '', null, $settings['dynamic_content']['source'], $field_name );
+			}
+		}
+
 		$btn_classes = 'btn btn-' . $settings['size'];
 		if ( 'custom' != $settings['skin'] ) {
 			$btn_classes .= ' btn-' . $settings['skin'];

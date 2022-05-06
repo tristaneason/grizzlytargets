@@ -31,11 +31,13 @@ if( ! $can_upload ) {
 	$multiply_price = ! empty( $item['multiply_price' ] ) ? '1' : '0';
 	$allow_multiples = apply_filters( 'pewc_allow_multiple_file_upload', $allow_multiples, $post_id, $id );
 
-	if( pewc_enable_ajax_upload() == 'yes' ) { ?>
+	if( pewc_enable_ajax_upload() == 'yes' ) { 
+		$pewc_file_data = pewc_get_uploaded_files_from_session( $item['field_id'], $item, $cart_item );
+		?>
 
 		<div class="dropzone" id="dz_<?php echo esc_attr( $id ); ?>"></div>
 		<input type="hidden" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $id ); ?>[]" value="<?php echo esc_attr( $id ); ?>">
-		<input type="hidden" class="pewc_file_data" name="pewc_file_data[<?php echo $item['field_id']; ?>]" id="<?php echo esc_attr( $id ); ?>_file_data" value="">
+		<input type="hidden" class="pewc_file_data" name="pewc_file_data[<?php echo $item['field_id']; ?>]" id="<?php echo esc_attr( $id ); ?>_file_data" value="<?php echo esc_attr( $pewc_file_data ); ?>">
 		<input type="hidden" class="pewc-form-field pewc-number-uploads" name="<?php echo esc_attr( $id ); ?>_number_uploads" id="<?php echo esc_attr( $id ); ?>_number_uploads" value="">
 		<input type="hidden" name="<?php echo esc_attr( $id ); ?>_multiply_price" id="<?php echo esc_attr( $id ); ?>_multiply_price" value="<?php echo esc_attr( $multiply_price ); ?>">
 		<input type="hidden" name="<?php echo esc_attr( $id ); ?>_base_price" id="<?php echo esc_attr( $id ); ?>_base_price" value="<?php echo esc_attr( $field_price ); ?>">

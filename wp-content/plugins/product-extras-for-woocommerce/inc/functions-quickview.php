@@ -53,7 +53,7 @@ add_filter( 'pewc_filter_single_product_classes', 'pewc_add_quickview_field_clas
  * Build the QuickView template
  * @since 3.8.6
  */
-function pewc_display_quickview_template( $child_product, $child_product_id ) {
+function pewc_display_quickview_template( $field_id, $child_product, $child_product_id ) {
 
 	if( pewc_child_product_quickview() != 'yes' ) {
 		return;
@@ -62,7 +62,7 @@ function pewc_display_quickview_template( $child_product, $child_product_id ) {
 	$original_post = $GLOBALS['post'];
 
 	$GLOBALS['post'] = get_post( $child_product_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-	setup_postdata( $GLOBALS['post'] );
+	setup_postdata( $GLOBALS['post'] ); // this also overrides the global $product object
 
 	/**
 	 * Hook: woocommerce_before_single_product.
@@ -96,7 +96,7 @@ function pewc_display_quickview_template( $child_product, $child_product_id ) {
  	remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20 );
 
 	?>
-	<div id="pewc-quickview-<?php echo $child_product_id; ?>" class="pewc-quickview-product-wrapper">
+	<div id="pewc-quickview-<?php echo $field_id.'_'.$child_product_id; ?>" class="pewc-quickview-product-wrapper">
 		<?php wc_get_template_part( 'content', 'single-product' );
 		printf(
 			'<a href="#" class="pewc-close-quickview"><span>%s</span></a>',
@@ -106,6 +106,8 @@ function pewc_display_quickview_template( $child_product, $child_product_id ) {
 
 	<?php
 	$GLOBALS['post'] = $original_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+	setup_postdata( $GLOBALS['post'] ); // we need to do this again to put back the original $product object (parent product)
+
 	add_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
 	add_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_meta', 40 );
 
@@ -114,7 +116,7 @@ function pewc_display_quickview_template( $child_product, $child_product_id ) {
  	add_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20 );
 
 }
-add_action( 'pewc_after_child_product_item', 'pewc_display_quickview_template', 10, 2 );
+add_action( 'pewc_after_child_product_item', 'pewc_display_quickview_template', 10, 3 );
 
 /**
  * Add the background

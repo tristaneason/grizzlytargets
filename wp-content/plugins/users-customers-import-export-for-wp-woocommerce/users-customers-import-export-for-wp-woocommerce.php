@@ -5,9 +5,12 @@
   Description: Export and Import User/Customers details From and To your WordPress/WooCommerce.
   Author: WebToffee
   Author URI: https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/
-  Version: 2.2.3
-  WC tested up to: 5.9
+  Version: 2.2.9
+  WC tested up to: 6.3
   Text Domain: users-customers-import-export-for-wp-woocommerce
+  Domain Path: /languages
+  Requires at least: 3.0
+  Requires PHP: 5.6
   License: GPLv3
   License URI: https://www.gnu.org/licenses/gpl-3.0.html
  */
@@ -45,7 +48,7 @@ if (!defined('WT_IEW_DEBUG_BASIC_TROUBLESHOOT')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('WT_U_IEW_VERSION', '2.2.3');
+define('WT_U_IEW_VERSION', '2.2.9');
 
 /**
  * The code that runs during plugin activation.
@@ -109,7 +112,6 @@ function run_wt_import_export_for_woo_basic_user() {
 
 /** this added for a temporary when a plugin update with the option upload zip file. need to remove this after some version release */
 if (!get_option('wt_u_iew_is_active')) {
-    update_option('wt_user_show_legecy_menu', 1);
     activate_wt_import_export_for_woo_basic_user();
 }
 
@@ -123,7 +125,8 @@ add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'wt_uiew_plugin_a
 function wt_uiew_plugin_action_links_basic_user($links) {
 
     $plugin_links = array(
-        '<a href="' . admin_url('admin.php?page=wt_import_export_for_woo_basic') . '">' . __('Settings') . '</a>',
+        '<a href="' . admin_url('admin.php?page=wt_import_export_for_woo_basic_export') . '">' . __('Export') . '</a>',
+		'<a href="' . admin_url('admin.php?page=wt_import_export_for_woo_basic_import') . '">' . __('Import') . '</a>',
         '<a href="https://www.webtoffee.com/user-import-export-plugin-wordpress-user-guide/" target="_blank">' . __('Documentation') . '</a>',
         '<a target="_blank" href="https://wordpress.org/support/plugin/users-customers-import-export-for-wp-woocommerce/">' . __('Support') . '</a>',
         '<a target="_blank" href="https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/?utm_source=free_plugin_listing&utm_medium=user_imp_exp_basic&utm_campaign=User_Import_Export&utm_content=' . WT_U_IEW_VERSION . '" style="color:#3db634;">' . __('Premium Upgrade') . '</a>'
@@ -173,16 +176,6 @@ if (!function_exists('wt_users_customers_imex_plugin_screen_update_js')) {
 }
 // uninstall feedback catch
 include_once plugin_dir_path(__FILE__) . 'includes/class-wt-userimport-uninstall-feedback.php';
-
-// add dismissble banner for legecy menu
-include_once plugin_dir_path(__FILE__) . 'includes/class-wt-legecy-menu-moved.php';
-$user_legacy_menu = new wt_legecy_menu_moved('user');
-$user_legacy_menu->plugin_title = "User Import Export";
-$user_legacy_menu->old_menu = "Users > User Import Export";
-$user_legacy_menu->banner_message = sprintf(__("We have introduced a new main menu %sWebToffee Import Export(basic)%s for the %s plugin. Click the button below or dismiss this banner to remove the old menu from %s."), '<b>', '</b>', $user_legacy_menu->plugin_title, $user_legacy_menu->old_menu);
-$user_legacy_menu->old_menu_params = array(array('parent_slug' => 'users.php', 'menu_title' => 'User Import Export', 'capability' => 'list_users'),
-    array('parent_slug' => 'woocommerce', 'menu_title' => 'Customer Import Export', 'capability' => 'import')
-);
 
 include_once 'user_import_export_review_request.php';
 

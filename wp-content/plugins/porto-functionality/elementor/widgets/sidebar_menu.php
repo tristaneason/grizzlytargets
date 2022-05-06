@@ -35,7 +35,7 @@ class Porto_Elementor_Sidebar_Menu_Widget extends \Elementor\Widget_Base {
 		return 'eicon-navigation-vertical';
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		$custom_menus = array();
 		$menus        = get_terms( array( 'taxonomy' => 'nav_menu', 'hide_empty' => false ) );

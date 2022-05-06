@@ -2,7 +2,6 @@
 /**
  * WC_CSP_Condition_Cart_Shipping_Class class
  *
- * @author   SomewhereWarm <info@somewherewarm.com>
  * @package  WooCommerce Conditional Shipping and Payments
  * @since    1.0.0
  */

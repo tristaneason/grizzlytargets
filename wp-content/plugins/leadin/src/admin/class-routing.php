@@ -13,6 +13,7 @@ class Routing {
 	const JUST_CONNECTED = 'leadin_just_connected';
 	const IS_NEW_PORTAL  = 'is_new_portal';
 	const REDIRECT_NONCE = 'leadin_redirect';
+	const REVIEW         = 'leadin_review';
 
 	/**
 	 * Redirect to the root of the leadin plugin with optional query parameters.
@@ -85,4 +86,32 @@ class Routing {
 
 		return null !== $is_expired;
 	}
+
+	/**
+	 * Reads query param to see if request has review request query params
+	 *
+	 * @return bool True if the `leadin_review` query parameter is not empty
+	 */
+	public static function has_review_request() {
+		$is_review_request = QueryParameters::get_param(
+			self::REVIEW,
+			'leadin-review'
+		);
+		return ! empty( $is_review_request );
+	}
+
+	/**
+	 * Reads query param to see if request has review request query params set to true
+	 *
+	 * @return bool True if the `leadin_review` query parameter is true
+	 */
+	public static function is_review_request() {
+		$is_review_request = QueryParameters::get_param(
+			self::REVIEW,
+			'leadin-review'
+		);
+		return 'true' === $is_review_request;
+	}
+
+
 }

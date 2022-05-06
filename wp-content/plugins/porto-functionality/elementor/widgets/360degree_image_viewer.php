@@ -41,7 +41,7 @@ class Porto_Elementor_360degree_Image_Viewer_Widget extends \Elementor\Widget_Ba
 		}
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		$this->start_controls_section(
 			'section_360_degree_image_viewer',

@@ -49,7 +49,7 @@ class Gutenberg {
 	public function register_gutenberg_block() {
 		AssetsManager::localize_gutenberg();
 		register_block_type(
-			'leadin/leadin-forms',
+			'leadin/hubspot-form-block',
 			array(
 				'editor_script' => AssetsManager::GUTENBERG,
 			)

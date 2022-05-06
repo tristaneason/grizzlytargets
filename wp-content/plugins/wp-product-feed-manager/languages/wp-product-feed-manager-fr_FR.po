@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Product Feed Manager\n"
-"POT-Creation-Date: 2021-04-13 11:40+0200\n"
-"PO-Revision-Date: 2021-06-09 13:51+0200\n"
+"POT-Creation-Date: 2022-03-06 09:12+0100\n"
+"PO-Revision-Date: 2022-03-06 09:17+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: wp-product-feed-manager.php\n"
@@ -133,7 +133,7 @@ msgstr ""
 "Erreur de suppression du flux. Vous n'avez pas les autorisations nécessaires "
 "pour supprimer le fichier."
 
-#: includes/data/class-wppfm-ajax-file.php:200
+#: includes/data/class-wppfm-ajax-file.php:201
 #: includes/user-interface/class-wppfm-i18n-scripts.php:37
 msgid ""
 "Error writing the feed. You do not have the correct authorities to write the "
@@ -142,12 +142,12 @@ msgstr ""
 "Erreur dans l'écriture du flux. Vous n'avez pas les autorisations "
 "nécessaires pour écrire le fichier."
 
-#: includes/data/class-wppfm-ajax-file.php:385
+#: includes/data/class-wppfm-ajax-file.php:386
 msgid "Feed processing data cleared"
 msgstr "Données de traitement des aliments pour animaux effacées"
 
 #. translators: clearing the feed data failed
-#: includes/data/class-wppfm-ajax-file.php:389
+#: includes/data/class-wppfm-ajax-file.php:390
 msgid "Clearing failed!"
 msgstr "Le nettoyage a échoué !"
 
@@ -175,10 +175,16 @@ msgstr ""
 
 #: includes/data/class-wppfm-channel.php:196
 #, php-format
-msgid "2141 - Please open a support ticket at %s for support on this issue."
+msgid ""
+"2141 - Your WP Product Feed Manager plugin is unable to check for channel "
+"updates. This could be due to a temporary problem with our server. If this "
+"message does not clear in 15 minutes, please open a support ticket at %s for "
+"support on this issue."
 msgstr ""
-"2141 - Veuillez ouvrir un ticket d'assistance sur %s pour obtenir une "
-"assistance sur ce problème."
+"2141 - Votre plug-in WP Product Feed Manager ne peut pas vérifier les mises "
+"à jour de canal. Cela pourrait être dû à un problème temporaire avec notre "
+"serveur. Si ce message ne s’efface pas dans les 15 minutes, veuillez ouvrir "
+"un ticket d’assistance à %s pour obtenir de l’aide sur ce problème."
 
 #. translators: %s: Name of a channel
 #: includes/data/class-wppfm-channel.php:276
@@ -316,9 +322,14 @@ msgstr ""
 "in \"Enregistreur du gestionnaire de flux de produits WooCommerce\" de votre "
 "page Plugins."
 
+#: includes/packages/pll/includes/wppfm-pll-functions.php:16
 #: includes/packages/wpml/includes/wppfm-wpml-functions.php:23
 msgid "-- Select the language of the feed --"
 msgstr "-- Sélectionnez la langue du flux --"
+
+#: includes/packages/woocs/includes/wppfm-woocs-functions.php:18
+msgid "-- Select the WOOCS currency for the feed --"
+msgstr "-- Sélectionnez la devise WOOCS pour le flux --"
 
 #: includes/packages/wpml/includes/wppfm-wpml-functions.php:136
 msgid ""
@@ -1002,7 +1013,7 @@ msgid "Status"
 msgstr "Statut"
 
 #: includes/user-interface/class-wppfm-main-admin-page.php:87
-#: includes/user-interface/class-wppfm-options-page.php:166
+#: includes/user-interface/class-wppfm-options-page.php:167
 msgid "Actions"
 msgstr "Actions"
 
@@ -1218,24 +1229,38 @@ msgstr ""
 "Entrez des mots-clés et des caractères génériques séparés par des virgules "
 "pour utiliser des attributs tiers."
 
-#: includes/user-interface/class-wppfm-options-page.php:131
+#: includes/user-interface/class-wppfm-options-page.php:128
+msgid ""
+"Use specific wildcards. Do not use to broad wildcards like %_% because that "
+"will include default WooCommerce attributes and can sometimes result in "
+"incorrect feed outputs."
+msgstr ""
+"Utilisez des caractères génériques spécifiques. N’utilisez pas de caractères "
+"génériques généraux comme %_% car cela inclura les attributs WooCommerce par "
+"défaut et peut parfois entraîner des sorties de flux incorrectes."
+
+#: includes/user-interface/class-wppfm-options-page.php:132
 msgid "Notice recipient"
 msgstr "Destinataire de l'avis"
 
-#: includes/user-interface/class-wppfm-options-page.php:136
+#: includes/user-interface/class-wppfm-options-page.php:137
+#, fuzzy
+#| msgid ""
+#| "Enter the email address of the person you want to be notified when a feed "
+#| "fails during an automatic feed update."
 msgid ""
 "Enter the email address of the person you want to be notified when a feed "
-"fails during an automatic feed update."
+"fails during an automatic feed update (requires PHP mail to be enabled)."
 msgstr ""
 "Saisissez l'adresse e-mail de la personne que vous souhaitez notifier "
 "lorsqu'un flux échoue lors d'une mise à jour automatique des flux."
 
-#: includes/user-interface/class-wppfm-options-page.php:140
-#: includes/user-interface/class-wppfm-options-page.php:143
+#: includes/user-interface/class-wppfm-options-page.php:141
+#: includes/user-interface/class-wppfm-options-page.php:144
 msgid "Clear feed process"
 msgstr "Purger le processus d'alimentation"
 
-#: includes/user-interface/class-wppfm-options-page.php:145
+#: includes/user-interface/class-wppfm-options-page.php:146
 msgid ""
 "Use this option when feeds get stuck processing - does not delete your "
 "current feeds or settings."
@@ -1243,15 +1268,15 @@ msgstr ""
 "Utilisez cette option lorsque le traitement des flux est bloqué - ne "
 "supprime pas vos flux ou paramètres actuels."
 
-#: includes/user-interface/class-wppfm-options-page.php:149
+#: includes/user-interface/class-wppfm-options-page.php:150
 msgid "Re-initialize"
 msgstr "Réinitialiser"
 
-#: includes/user-interface/class-wppfm-options-page.php:152
+#: includes/user-interface/class-wppfm-options-page.php:153
 msgid "Re-initiate plugin"
 msgstr "Réinitialiser le plugin"
 
-#: includes/user-interface/class-wppfm-options-page.php:154
+#: includes/user-interface/class-wppfm-options-page.php:155
 msgid ""
 "Updates the tables if required, re-initiates the cron events and resets the "
 "stored license - does not delete your current feeds or settings."
@@ -1260,27 +1285,27 @@ msgstr ""
 "réinitialise la licence stockée - ne supprime pas vos flux ou paramètres "
 "actuels."
 
-#: includes/user-interface/class-wppfm-options-page.php:158
+#: includes/user-interface/class-wppfm-options-page.php:159
 msgid "Backups"
 msgstr "Sauvegardes"
 
-#: includes/user-interface/class-wppfm-options-page.php:164
+#: includes/user-interface/class-wppfm-options-page.php:165
 msgid "File name"
 msgstr "Nom de fichier"
 
-#: includes/user-interface/class-wppfm-options-page.php:165
+#: includes/user-interface/class-wppfm-options-page.php:166
 msgid "Backup date"
 msgstr "Date de sauvegarde"
 
-#: includes/user-interface/class-wppfm-options-page.php:171
+#: includes/user-interface/class-wppfm-options-page.php:172
 msgid "Add new backup"
 msgstr "Ajouter une nouvelle sauvegarde"
 
-#: includes/user-interface/class-wppfm-options-page.php:176
+#: includes/user-interface/class-wppfm-options-page.php:177
 msgid "Backup current feeds"
 msgstr "Flux actuels de sauvegarde"
 
-#: includes/user-interface/class-wppfm-options-page.php:177
+#: includes/user-interface/class-wppfm-options-page.php:178
 msgid "Cancel backup"
 msgstr "Annuler la sauvegarde"
 
@@ -1354,19 +1379,19 @@ msgstr "Description"
 msgid "Shop Category"
 msgstr "Catégorie Boutique"
 
-#: includes/user-interface/elements/class-wppfm-form-element.php:105
+#: includes/user-interface/elements/class-wppfm-form-element.php:106
 msgid "Save & Generate Feed"
 msgstr "Enregistrer et générer des flux"
 
-#: includes/user-interface/elements/class-wppfm-form-element.php:108
+#: includes/user-interface/elements/class-wppfm-form-element.php:109
 msgid "Save Feed"
 msgstr "Enregistrer les flux"
 
-#: includes/user-interface/elements/class-wppfm-form-element.php:111
+#: includes/user-interface/elements/class-wppfm-form-element.php:112
 msgid "View Feed"
 msgstr "Enegistrer afficher"
 
-#: includes/user-interface/elements/class-wppfm-form-element.php:124
+#: includes/user-interface/elements/class-wppfm-form-element.php:125
 msgid "Open Feed List"
 msgstr "Ouvrir la liste des flux"
 
@@ -1440,17 +1465,22 @@ msgid "Settings"
 msgstr "Réglages"
 
 #: includes/user-interface/wppfm-admin-actions.php:85
+#, fuzzy
+#| msgid ""
+#| "Due to the latest update your Feed Manager backups are no longer valid! "
+#| "Please open the Feed Manager Settings page, remove all your backups in "
+#| "and make a new one."
 msgid ""
-"Due to the latest update your Feed Manager backups are no longer valid! "
-"Please open the Feed Manager Settings page, remove all your backups in and "
-"make a new one."
+"Due to an update of your Feed Manager plugin, your feed backups are no "
+"longer valid! Please open the Feed Manager Settings page, remove all current "
+"backups, and make a new one."
 msgstr ""
 "En raison de la dernière mise à jour, vos sauvegardes de gestion de flux ne "
 "sont plus valides ! Veuillez ouvrir la page Paramètres du gestionnaire de "
 "flux, supprimer toutes vos sauvegardes et en créer une nouvelle."
 
 #. translators: %s: link to the support page
-#: includes/user-interface/wppfm-admin-actions.php:186
+#: includes/user-interface/wppfm-admin-actions.php:212
 #, php-format
 msgid ""
 "2121 - Activating your license failed. Please open a support ticket at %s "
@@ -1459,7 +1489,7 @@ msgstr ""
 "2121 - L'activation de votre licence a échoué. Veuillez ouvrir un ticket "
 "d'assistance sur %s pour obtenir de l'aide à ce sujet."
 
-#: includes/user-interface/wppfm-admin-actions.php:205
+#: includes/user-interface/wppfm-admin-actions.php:231
 #, php-format
 msgid ""
 "An error has occurred. It is possible that the wpmarketingrobot website is "
@@ -1474,7 +1504,7 @@ msgstr ""
 "n'est pas le cas, ou si cette erreur se produit, veuillez contacter \n"
 "\t\t\t\tauke@wpmarketingrobot.com. Message d'erreur : %s"
 
-#: includes/user-interface/wppfm-admin-actions.php:255
+#: includes/user-interface/wppfm-admin-actions.php:281
 #, php-format
 msgid ""
 "You have an invalid or expired license key for your %1$s plugin.\n"
@@ -1492,7 +1522,7 @@ msgstr ""
 "pour que le plugin continue à fonctionner et que les flux de votre produit "
 "soient valides."
 
-#: includes/user-interface/wppfm-admin-actions.php:272
+#: includes/user-interface/wppfm-admin-actions.php:298
 #, php-format
 msgid ""
 "The license key for your %1$s plugin is expiring soon. If you wish you can "
@@ -1546,7 +1576,7 @@ msgstr ""
 "Si vous aimez travailler avec notre gestionnaire d’alimentation s’il vous "
 "plaît laissez-nous une note de %s. Un grand merci d’avance!"
 
-#: includes/user-interface/wppfm-admin-menu-functions.php:256
+#: includes/user-interface/wppfm-admin-menu-functions.php:261
 #, php-format
 msgid ""
 "2122 - Checking your license failed. Please open a support ticket at %s for "
@@ -1616,8 +1646,12 @@ msgid "https://www.wpmarketingrobot.com"
 msgstr "https://www.wpmarketingrobot.com"
 
 #. Description of the plugin/theme
+#, fuzzy
+#| msgid ""
+#| "An easy to use WordPress plugin that generates and submits your product "
+#| "feeds to merchant centres."
 msgid ""
-"An easy to use WordPress plugin that generates and submits your product "
+"An easy-to-use WordPress plugin that generates and submits your product "
 "feeds to merchant centres."
 msgstr ""
 "Un plugin WordPress facile à utiliser qui génère et soumet vos flux de "
@@ -1626,6 +1660,12 @@ msgstr ""
 #. Author of the plugin/theme
 msgid "Michel Jongbloed"
 msgstr "Michel Jongbloed"
+
+#, php-format
+#~ msgid "2141 - Please open a support ticket at %s for support on this issue."
+#~ msgstr ""
+#~ "2141 - Veuillez ouvrir un ticket d'assistance sur %s pour obtenir une "
+#~ "assistance sur ce problème."
 
 #~ msgid ""
 #~ "Could not identify the channel. \n"

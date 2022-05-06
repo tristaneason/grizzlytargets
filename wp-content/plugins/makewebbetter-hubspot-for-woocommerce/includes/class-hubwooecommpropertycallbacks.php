@@ -344,7 +344,6 @@ class HubwooEcommPropertyCallbacks {
 		return $value;
 	}
 
-
 	/**
 	 * Format an array in hubspot accepted enumeration value.
 	 *

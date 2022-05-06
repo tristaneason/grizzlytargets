@@ -1,31 +1,36 @@
 <?php
 $output = $title = $columns = $view = $hover_image_effect = $overview = $socials = $cat = $cats = $post_in = $number = $role = $view_more = $view_more_class = $filter = $pagination = $ajax_load = $ajax_modal = $animation_type = $animation_duration = $animation_delay = $el_class = '';
+
+$default_atts = array(
+	'title'              => '',
+	'style'              => '',
+	'columns'            => 4,
+	'view'               => 'classic',
+	'hover_image_effect' => 'zoom',
+	'overview'           => true,
+	'socials'            => true,
+	'cats'               => '',
+	'cat'                => '',
+	'post_in'            => '',
+	'number'             => 8,
+	'role'               => false,
+	'view_more'          => false,
+	'view_more_class'    => '',
+	'filter'             => false,
+	'filter_type'        => '',
+	'pagination'         => false,
+	'ajax_load'          => false,
+	'ajax_modal'         => false,
+	'animation_type'     => '',
+	'animation_duration' => 1000,
+	'animation_delay'    => 0,
+	'el_class'           => '',
+	'posts_wrap_cls'     => '',
+);
+
 extract(
 	shortcode_atts(
-		array(
-			'title'              => '',
-			'style'              => '',
-			'columns'            => 4,
-			'view'               => 'classic',
-			'hover_image_effect' => 'zoom',
-			'overview'           => true,
-			'socials'            => true,
-			'cats'               => '',
-			'cat'                => '',
-			'post_in'            => '',
-			'number'             => 8,
-			'role'               => false,
-			'view_more'          => false,
-			'view_more_class'    => '',
-			'filter'             => false,
-			'pagination'         => false,
-			'ajax_load'          => false,
-			'ajax_modal'         => false,
-			'animation_type'     => '',
-			'animation_duration' => 1000,
-			'animation_delay'    => 0,
-			'el_class'           => '',
-		),
+		$default_atts,
 		$atts
 	)
 );
@@ -46,7 +51,7 @@ if ( $cats ) {
 	$args['tax_query'] = array(
 		array(
 			'taxonomy' => 'member_cat',
-			'field'    => 'term_id',
+			'field'    => is_numeric( $cat[0] ) ? 'term_id' : 'slug',
 			'terms'    => $cat,
 		),
 	);
@@ -68,30 +73,33 @@ $member_taxs = array();
 if ( $filter ) {
 	global $porto_settings;
 
-	$taxs = get_categories(
-		array(
-			'taxonomy' => 'member_cat',
-			'orderby'  => isset( $porto_settings['member-cat-orderby'] ) ? $porto_settings['member-cat-orderby'] : 'name',
-			'order'    => isset( $porto_settings['member-cat-order'] ) ? $porto_settings['member-cat-order'] : 'asc',
-		)
+	$tax_args = array(
+		'taxonomy'   => 'member_cat',
+		'hide_empty' => true,
+		'orderby'    => isset( $porto_settings['member-cat-orderby'] ) ? $porto_settings['member-cat-orderby'] : 'name',
+		'order'      => isset( $porto_settings['member-cat-order'] ) ? $porto_settings['member-cat-order'] : 'asc',
 	);
+	if ( ! empty( $cats ) && is_numeric( $cat[0] ) ) {
+		$tax_args['include'] = sanitize_text_field( $cats );
+	}
+	$taxs = get_terms( $tax_args );
 
 	foreach ( $taxs as $tax ) {
 		$member_taxs[ urldecode( $tax->slug ) ] = $tax->name;
 	}
 
-	if ( is_array( $posts->posts ) && ! empty( $posts->posts ) ) {
+	if ( empty( $filter_type ) && 'infinite' != $pagination && 'load_more' != $pagination && is_array( $posts->posts ) && ! empty( $posts->posts ) ) {
 		$posts_member_taxs = array();
 		foreach ( $posts->posts as $post ) {
-			$post_taxs = wp_get_post_terms( $post->ID, 'member_cat', array( 'fields' => 'all' ) );
+			$post_taxs = wp_get_post_terms( $post->ID, 'member_cat', array( 'fields' => 'id=>slug' ) );
 			if ( is_array( $post_taxs ) && ! empty( $post_taxs ) ) {
-				foreach ( $post_taxs as $post_tax ) {
-					if ( is_array( $cat ) && ! empty( $cat ) && in_array( $post_tax->term_id, $cat ) ) {
-						$posts_member_taxs[ urldecode( $post_tax->slug ) ] = $post_tax->name;
+				foreach ( $post_taxs as $post_tax_id => $post_tax_slug ) {
+					if ( is_array( $cat ) && ! empty( $cat ) && in_array( $post_tax_id, $cat ) ) {
+						$posts_member_taxs[ urldecode( $post_tax_slug ) ] = 1;
 					}
 
 					if ( empty( $cat ) || ! isset( $cat ) ) {
-						$posts_member_taxs[ urldecode( $post_tax->slug ) ] = $post_tax->name;
+						$posts_member_taxs[ urldecode( $post_tax_slug ) ] = 1;
 					}
 				}
 			}
@@ -140,9 +148,42 @@ if ( $posts->have_posts() ) {
 	$porto_member_ajax_load  = $ajax_load ? 'yes' : 'no';
 	$porto_member_ajax_modal = $ajax_modal ? 'yes' : 'no';
 
+	$wrap_cls   = 'page-members clearfix';
+	$wrap_attrs = ' id="porto_members_' . porto_generate_rand( 4 ) . '"';
+
+	if ( ! empty( $title ) ) {
+		$wrap_cls .= ' m-t-lg';
+	}
+
+	if ( $pagination ) {
+		$wrap_cls   .= ' porto-ajax-load';
+		$wrap_attrs .= ' data-post_type="member"';
+		if ( 'infinite' == $pagination ) {
+			$wrap_cls .= ' load-infinite';
+			wp_enqueue_script( 'jquery-infinite-scroll' );
+		} elseif ( 'load_more' == $pagination ) {
+			$wrap_cls .= ' load-more';
+			wp_enqueue_script( 'jquery-infinite-scroll' );
+		} else {
+			$wrap_cls .= ' load-ajax';
+		}
+	}
+	if ( 'ajax' == $filter_type || $pagination ) {
+		// extra options
+		$options = array();
+		foreach ( $default_atts as $key => $val ) {
+			if ( ! empty( $atts[ $key ] ) ) {
+				$options[ $key ] = $atts[ $key ];
+			}
+		}
+		$wrap_attrs .= ' data-ajax_load_options="' . esc_attr( json_encode( $options ) ) . '"';
+
+		wp_enqueue_script( 'porto-infinite-scroll' );
+	}
+
 	ob_start(); ?>
 
-	<div class="page-members clearfix <?php echo ! empty( $title ) ? 'm-t-lg' : ''; ?>">
+	<div class="<?php echo esc_attr( $wrap_cls ); ?>"<?php echo porto_filter_output( $wrap_attrs ); ?>>
 
 		<?php if ( $ajax_load && ! $ajax_modal ) : ?>
 			<div id="memberAjaxBox" class="ajax-box">
@@ -162,7 +203,7 @@ if ( $posts->have_posts() ) {
 		<?php
 		if ( is_array( $member_taxs ) && ! empty( $member_taxs ) ) :
 			?>
-			<ul class="member-filter nav nav-pills sort-source">
+			<ul class="member-filter nav nav-pills sort-source<?php echo 'ajax' == $filter_type ? ' porto-ajax-filter' : ''; ?>">
 				<li class="active" data-filter="*"><a><?php esc_html_e( 'Show All', 'porto-functionality' ); ?></a></li>
 				<?php foreach ( $member_taxs as $member_tax_slug => $member_tax_name ) : ?>
 					<li data-filter="<?php echo esc_attr( $member_tax_slug ); ?>"><a><?php echo esc_html( $member_tax_name ); ?></a></li>
@@ -171,8 +212,16 @@ if ( $posts->have_posts() ) {
 			<hr>
 		<?php endif; ?>
 
+		<?php
+			// infinite scrolling
+			$container_attrs = '';
+			if ( ( 'infinite' == $pagination || 'load_more' == $pagination ) && $posts->max_num_pages ) {
+				$container_attrs .= ' data-cur_page="' . ( $paged ? (int) $paged : 1 ) . '" data-max_page="' . intval( $posts->max_num_pages ) . '"';
+			}
+		?>
+
 		<?php if ( $style ) : ?>
-			<div class="member-row member-row-advanced">
+			<div class="members-container member-row member-row-advanced<?php echo ! $posts_wrap_cls ? '' : ' ' . esc_attr( $posts_wrap_cls ); ?>"<?php echo porto_filter_output( $container_attrs ); ?>>
 			<?php
 				$counter = 0;
 			while ( $posts->have_posts() ) {
@@ -189,7 +238,7 @@ if ( $posts->have_posts() ) {
 			?>
 			</div>
 		<?php else : ?>
-			<div class="member-row row <?php echo function_exists( 'porto_generate_column_classes' ) ? 'ccols-wrap ' . porto_generate_column_classes( $columns ) : ''; ?>">
+			<div class="members-container member-row row<?php echo function_exists( 'porto_generate_column_classes' ) ? ' ccols-wrap ' . porto_generate_column_classes( $columns ) : '', ! $posts_wrap_cls ? '' : ' ' . esc_attr( $posts_wrap_cls ); ?>"<?php echo porto_filter_output( $container_attrs ); ?>>
 			<?php
 			while ( $posts->have_posts() ) {
 				$posts->the_post();
@@ -201,7 +250,7 @@ if ( $posts->have_posts() ) {
 
 		<?php if ( $pagination && function_exists( 'porto_pagination' ) ) : ?>
 			<input type="hidden" class="shortcode-id" value="<?php echo esc_attr( $shortcode_id ); ?>"/>
-			<?php porto_pagination( $posts->max_num_pages ); ?>
+			<?php porto_pagination( $posts->max_num_pages, 'load_more' == $pagination, $posts ); ?>
 		<?php endif; ?>
 
 	</div>

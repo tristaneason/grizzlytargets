@@ -210,17 +210,12 @@ class HubwooObjectProperties {
 
 				$response = HubWooConnectionMananager::get_instance()->ecomm_sync_messages( $deal_updates, $object_type );
 
-				$update_deal_id = get_option( 'mwb_update_deal_ids' );
-
-				if ( empty( $update_deal_id ) ) {
-					$update_deal_id = array();
+				if ( 204 == $response['status_code'] ) {
+					$hubwoo_ecomm_deal_id = get_post_meta( $order_id, 'hubwoo_ecomm_deal_id', true );
+					if ( ! empty( $hubwoo_ecomm_deal_id ) ) {
+						do_action( 'hubwoo_ecomm_deal_created', $order_id );
+					}
 				}
-
-				$update_deal_id[] = $order_id;
-
-				$update_deal_id = array_unique( $update_deal_id );
-
-				update_option( 'mwb_update_deal_ids', $update_deal_id );
 
 				if ( ! as_next_scheduled_action( 'hubwoo_deal_update_schedule' ) ) {
 
@@ -273,7 +268,7 @@ class HubwooObjectProperties {
 					if ( empty( $item_sku ) ) {
 						$item_sku = $product_id;
 					}
-					$quantity        = $single_item->get_quantity();
+					$quantity        = ! empty( $single_item->get_quantity() ) ? $single_item->get_quantity() : 0;
 					$item_total      = ! empty( $single_item->get_total() ) ? $single_item->get_total() : 0;
 					$item_sub_total  = ! empty( $single_item->get_subtotal() ) ? $single_item->get_subtotal() : 0;
 					$product         = $single_item->get_product();
@@ -283,19 +278,23 @@ class HubwooObjectProperties {
 					$item_sub_total  = $item_sub_total / $quantity;
 					$object_ids[]    = $item_key;
 
+					$properties = array(
+						'quantity'        => $quantity,
+						'price'           => $item_sub_total,
+						'amount'          => $item_total,
+						'name'            => $name,
+						'discount_amount' => $discount_amount,
+						'sku'             => $item_sku,
+						'tax_amount'      => $single_item->get_total_tax(),
+					);
+
+					$properties = apply_filters( 'hubwoo_line_item_properties', $properties, $product_id );
+
 					$line_updates[] = array(
 						'externalObjectId' => $item_key,
 						'action'           => 'UPSERT',
 						'changedAt'        => strtotime( gmdate( 'Y-m-d H:i:s ', time() ) ) . '000',
-						'properties'       => array(
-							'quantity'        => $quantity,
-							'price'           => $item_sub_total,
-							'amount'          => $item_total,
-							'name'            => $name,
-							'discount_amount' => $discount_amount,
-							'sku'             => $item_sku,
-							'tax_amount'      => $single_item->get_total_tax(),
-						),
+						'properties'       => $properties,
 						'associations'     => array(
 							'DEAL'    => array( $order_id ),
 							'PRODUCT' => array( $product_id ),

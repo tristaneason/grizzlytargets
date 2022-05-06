@@ -33,7 +33,7 @@ class Porto_Elementor_HB_Myaccount_Widget extends \Elementor\Widget_Base {
 		return 'porto-icon-user-2';
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		$this->start_controls_section(
 			'section_hb_myaccount',
@@ -109,7 +109,11 @@ class Porto_Elementor_HB_Myaccount_Widget extends \Elementor\Widget_Base {
 					$icon_cl = $settings['icon_cl']['value'];
 				}
 			}
-			echo '<a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '"' . ' title="' . esc_attr__( 'My Account', 'porto' ) . '" class="my-account"><i class="' . esc_attr( $icon_cl ) . '"></i></a>';
+			if ( function_exists( 'porto_account_menu' ) ) {
+				porto_account_menu( '', $icon_cl );
+			} else {
+				echo '<a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '"' . ' title="' . esc_attr__( 'My Account', 'porto' ) . '" class="my-account"><i class="' . esc_attr( $icon_cl ) . '"></i></a>';
+			}
 		}
 	}
 }

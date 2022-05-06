@@ -11,6 +11,30 @@ use Leadin\rest\HubSpotApiClient;
  * Basic rest endpoint to proxy json requests to and from the HubSpot API's
  */
 class LeadinRestApi {
+
+	const WHITELISTED_URLS = array(
+		'/leadin/v1/settings?',
+		'/contacts/v1/lists?',
+		'/crm/v3/objects/contacts?',
+		'/crm/v3/objects/contacts/1?',
+		'/forms/v2/forms?',
+		'/forms/v2/forms?formTypes=CAPTURED?',
+		'/forms/v2/forms?offset=0&limit=10&formTypes=HUBSPOT',
+		'/forms/v2/forms?formTypes=HUBSPOT&offset=0&limit=100&order=-updatedAt?',
+		array( 'regex' => '/^\/forms\/v2\/forms\?offset=0&limit=10&formTypes=HUBSPOT&name__contains=/i' ),
+		'/cosemail/v1/emails/listing?',
+		'/wordpress/v1/proxy/live-chat-status?',
+		'/usercontext/v1/external/actions?',
+		'/usercontext-app/v1/external/onboarding/tasks/wordpress_plugin_inexperienced?',
+		'/usercontext-app/v1/external/onboarding/progress/wordpress_plugin_inexperienced?',
+		'/usercontext-app/v1/external/onboarding/tasks/wp-connect-website-mocked/skip?',
+		'/usercontext-app/v1/external/onboarding/tasks/wordpress-marketing-demo/skip?',
+		'/usercontext-app/v1/external/onboarding/tasks/wordpress-academy-lesson/skip?',
+		'/usercontext-app/v1/external/onboarding/tasks/import-contacts/skip?',
+		'/usercontext-app/v1/external/onboarding/tasks/invite-your-team/skip?',
+		'/usercontext-app/v1/external/onboarding/tasks/visit-hubspot-marketplace/skip?',
+	);
+
 	/**
 	 * Class constructor, registering rest endpoints.
 	 */
@@ -73,17 +97,27 @@ class LeadinRestApi {
 	 */
 	public function proxy_request( $request ) {
 		$proxy_url = $request->get_params()['proxyUrl'];
+		if ( $proxy_url ) {
+			$regex = array_filter(
+				self::WHITELISTED_URLS,
+				function( $value ) use ( $proxy_url ) {
+					return is_array( $value ) && preg_match( $value['regex'], $proxy_url );
+				}
+			);
+			if ( ! in_array( $proxy_url, self::WHITELISTED_URLS, true ) && empty( $regex ) ) {
+				return new \WP_REST_Response( $proxy_url . ' not found.', 404 );
+			}
+			try {
+				$proxy_request = HubSpotApiClient::authenticated_request( $proxy_url, $request->get_method(), $request->get_body() );
+			} catch ( \Exception $e ) {
+				return new \WP_REST_Response( json_decode( $e->getMessage() ), $e->getCode() );
+			}
 
-		try {
-			$proxy_request = HubSpotApiClient::authenticated_request( $proxy_url, $request->get_method(), $request->get_body() );
-		} catch ( \Exception $e ) {
-			return new \WP_REST_Response( json_decode( $e->getMessage() ), $e->getCode() );
+			$response_code = wp_remote_retrieve_response_code( $proxy_request );
+			$response_body = wp_remote_retrieve_body( $proxy_request );
+
+			return new \WP_REST_Response( json_decode( $response_body ), $response_code );
 		}
-
-		$response_code = wp_remote_retrieve_response_code( $proxy_request );
-		$response_body = wp_remote_retrieve_body( $proxy_request );
-
-		return new \WP_REST_Response( json_decode( $response_body ), $response_code );
 	}
 
 	/**

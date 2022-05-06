@@ -13,7 +13,7 @@ if(isset($_GET['wt_iew_delete_log']))
 }
 ?>
 <div class="wt_iew_history_page">
-	<h2 class="wp-heading-inline"><?php _e('Logs');?></h2>
+	<h2 class="wp-heading-inline"><?php _e('Import Logs');?></h2>
 	<p>
 		<?php _e('Lists developer logs mostly required for debugging purposes. Options to view detailed logs are available along with delete and download(that can be shared with the support team in case of issues).');?>
 	</p>

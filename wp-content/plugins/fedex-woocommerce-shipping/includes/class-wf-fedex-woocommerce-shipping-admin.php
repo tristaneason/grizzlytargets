@@ -1473,7 +1473,12 @@ class wf_fedex_woocommerce_shipping_admin{
 											echo '<select class="fedex_manual_service select">';
 											if($this->xa_show_all_shipping_methods==true)
 											{
-												$services = include('data-wf-service-codes.php');
+												// Show services based on origin country
+												$services 				= include('data-wf-service-codes.php');
+												$countryServiceMapper	= include('data-wf-country-service-mapper.php');
+												$mappedCountry			= array_key_exists( $this->origin_country, $countryServiceMapper ) ? $countryServiceMapper[$this->origin_country] : '';
+												$services				= array_key_exists( $mappedCountry, $services ) ? $services[$mappedCountry] : $services['US'];
+
 												foreach($services as $service_code => $service)
 												{
 													echo '<option value="'.$service_code.'" ' . selected($selected_sevice,$service_code) . ' >'.$service.'</option>';
@@ -1559,7 +1564,11 @@ class wf_fedex_woocommerce_shipping_admin{
 								<?php
 								if($this->xa_show_all_shipping_methods==true)
 											{
-												$services = include('data-wf-service-codes.php');
+												// Show services based on origin country
+												$services 				= include('data-wf-service-codes.php');
+												$countryServiceMapper	= include('data-wf-country-service-mapper.php');
+												$mappedCountry			= array_key_exists( $this->origin_country, $countryServiceMapper ) ? $countryServiceMapper[$this->origin_country] : '';
+												$services				= array_key_exists( $mappedCountry, $services ) ? $services[$mappedCountry] : $services['US'];
 												foreach($services as $service_code => $service)
 												{?>
 												new_row	+=  '<option value="<?php echo $service_code ?>"><?php echo $service ?></option>';

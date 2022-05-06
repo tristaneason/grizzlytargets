@@ -20,6 +20,7 @@ $base_reserved_columns = array(
     'discount_total' => array('title' => 'Discount total', 'description' => 'Discount Total'),
     'order_total' => array('title' => 'Order total', 'description' => 'Order Total'),
     //'refunded_total' => array('title'=>'refunded_total','description'=>'refunded_total'),
+	'order_key' => array('title' => 'order_key', 'description' => 'Order key'),
     'order_currency' => array('title' => 'Order currency', 'description' => 'Order Currency'),
     'payment_method' => array('title' => 'Payment method', 'description' => 'Payment Method'),
     'payment_method_title' => array('title' => 'Payment method title', 'description' => 'Payment Method Title'),
@@ -75,7 +76,11 @@ if (is_plugin_active('yith-woocommerce-order-tracking-premium/init.php')):
     $base_reserved_columns['meta:ywot_tracking_postcode'] = array('title' => 'Tracking postcode', 'description' => 'YITH Tracking postcode');
     $base_reserved_columns['meta:ywot_carrier_id'] = array('title' => 'Carrier name', 'description' => 'YITH Tracking carrier');
     $base_reserved_columns['meta:ywot_pick_up_date'] = array('title' => 'Pickup date', 'description' => 'YITH pickup date');    
-    $base_reserved_columns['meta:ywot_picked_up'] = array('title' => 'Order picked up?', 'description' => 'YITH Is Order picked up?');    
+    $base_reserved_columns['meta:ywot_picked_up'] = array('title' => 'Order picked up?', 'description' => 'YITH Is Order picked up?');
+endif;
+
+if (class_exists('Zorem_Woocommerce_Advanced_Shipment_Tracking') || class_exists('WC_Shipment_Tracking')):
+    $base_reserved_columns['meta:_wc_shipment_tracking_items'] = array('title' => 'Shipment Tracking', 'description' => 'Shipment tracking');
 endif;
 
 // Reserved column names

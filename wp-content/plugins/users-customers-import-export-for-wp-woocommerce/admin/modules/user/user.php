@@ -47,6 +47,7 @@ class Wt_Import_Export_For_Woo_basic_User {
         add_filter('wt_iew_exporter_alter_mapping_fields_basic', array($this, 'exporter_alter_mapping_fields'), 10, 3);        
         add_filter('wt_iew_importer_alter_mapping_fields_basic', array($this, 'get_importer_post_columns'), 10, 3);  
         
+		add_filter('wt_iew_exporter_alter_advanced_fields_basic', array($this, 'exporter_alter_advanced_fields'), 10, 3);		
         add_filter('wt_iew_importer_alter_advanced_fields_basic', array($this, 'importer_alter_advanced_fields'), 10, 3);
 
         add_filter('wt_iew_exporter_alter_meta_mapping_fields_basic', array($this, 'exporter_alter_meta_mapping_fields'), 10, 3);
@@ -161,8 +162,18 @@ class Wt_Import_Export_For_Woo_basic_User {
      *
      */
     public function wt_iew_exporter_post_types($arr) {
-        $arr['user'] = __('User/Customer');
-        return $arr;
+		
+		$arr['user'] = __('Users');
+		if (class_exists('woocommerce')) {
+			$arr['order'] = __('Order');
+			$arr['coupon'] = __('Coupon');
+			$arr['product'] = __('Product');
+			$arr['product_review'] = __('Product Review');
+			$arr['product_categories'] = __('Product Categories');
+			$arr['product_tags'] = __('Product Tags');
+			$arr['user'] = __('User/Customer');
+		}
+		return $arr;
     }
     
     public static function get_user_sort_columns() {
@@ -359,7 +370,7 @@ class Wt_Import_Export_For_Woo_basic_User {
 	$fields['limit']['label']=__('Total number of users to export'); 
 	$fields['limit']['help_text']=__('Exports specified number of users. e.g. Entering 500 with a skip count of 10 will export users from 11th to 510th position.');
 	$fields['offset']['label']=__('Skip first <i>n</i> users');
-	$fields['offset']['help_text']=__('Skips specified number of users from the beginning. e.g. Enter 10 to skip first 10 users from export.');
+	$fields['offset']['help_text']=__('Skips specified number of users from the beginning of the database. e.g. Enter 10 to skip first 10 users from export.');
 
         
         $fields['email'] = array(
@@ -367,13 +378,14 @@ class Wt_Import_Export_For_Woo_basic_User {
             'placeholder' => __('All users'),
             'field_name' => 'email',
             'sele_vals' => '',
-            'help_text' => __('Input the user emails separated by comma to export information pertaining to only these users.'),            
+			'type' => 'multi_select',			
+            'help_text' => __('Input the user name or email to specify the users.'),   
+			'css_class' => 'wc-enhanced-select wt-user-search',
             'validation_rule' => array('type'=>'text_arr')
         );        
         if(is_plugin_active('woocommerce/woocommerce.php'))
         {
-            $fields['email']['help_text']=__('Input the customer email to export information pertaining to only these customers.');
-            $fields['email']['type']='multi_select';
+            $fields['email']['help_text']=__('Input the customer name or email to specify the customers.');
             $fields['email']['css_class']='wc-customer-search';
         }
         
@@ -389,7 +401,7 @@ class Wt_Import_Export_For_Woo_basic_User {
         );
         
         $fields['date_from'] = array(
-            'label' => __('From date'),
+            'label' => __('Registered date from'),
             'placeholder' => __('Date from'),
             'field_name' => 'date_from',
             'sele_vals' => '',
@@ -399,7 +411,7 @@ class Wt_Import_Export_For_Woo_basic_User {
         );
         
         $fields['date_to'] = array(
-            'label' => __('To date'),
+            'label' => __('Registered date to'),
             'placeholder' => __('Date to'),
             'field_name' => 'date_to',
             'sele_vals' => '',
@@ -438,17 +450,20 @@ class Wt_Import_Export_For_Woo_basic_User {
         }
         unset($fields['export_shortcode_tohtml']);
         $out = array();
+		$out['header_empty_row'] = array(
+			'tr_html' => '<tr id="header_empty_row"><th></th><td></td></tr>'
+		);
+		if ( class_exists( 'woocommerce' ) ){
         $out['export_guest_user'] = array(
             'label' => __("Export guest users"),
-            'type' => 'radio',
-            'radio_fields' => array(
-                'Yes' => __('Yes'),
-                'No' => __('No')
-            ),
-            'value' => 'No',
+            'type' => 'checkbox',
+			'merge_right' => true,
+			'checkbox_fields' => array( 1 => __( 'Enable' ) ),
+            'value' => 0,
             'field_name' => 'export_guest_user',
-            'help_text' => __('Enable this option to export information related to guest users'),
+            'help_text' => __('Enabling this option will include all guest customers in the export.'),
         );
+		}
         
         foreach ($fields as $fieldk => $fieldv) {
             $out[$fieldk] = $fieldv;
@@ -462,9 +477,12 @@ class Wt_Import_Export_For_Woo_basic_User {
         }
         $out = array();
         
+		$out['header_empty_row'] = array(
+			'tr_html' => '<tr id="header_empty_row"><th></th><td></td></tr>'
+		);
 
         $out['found_action_merge'] = array(
-            'label' => __("Existing user"),
+            'label' => __("If User exists"),
             'type' => 'radio',
             'radio_fields' => array(
                 'skip' => __('Skip'),                                
@@ -472,6 +490,7 @@ class Wt_Import_Export_For_Woo_basic_User {
 //                'import' => __('Import as new item'),                
             ),
             'value' => 'skip',
+			'merge_right' => true,
             'field_name' => 'found_action',
             'help_text_conditional'=>array(
                 array(
@@ -502,6 +521,7 @@ class Wt_Import_Export_For_Woo_basic_User {
                 '0' => __('No')
             ),
             'value' => '1',
+			'merge_right' => true,
             'field_name' => 'use_same_password',
             'help_text' => __("WordPress encrypts passwords and stores the hashed value in database."),
             'help_text_conditional'=>array(

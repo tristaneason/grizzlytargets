@@ -21,7 +21,7 @@ if( ! defined( 'ABSPATH' ) ) {
 			<?php
 				foreach( $variations as $variation_id ) {
 					$selected = '';
-					if( isset( $item['variation_field'] ) && in_array( $variation_id, $item['variation_field'] ) ) {
+					if( isset( $item['variation_field'] ) && is_array($item['variation_field']) && in_array( $variation_id, $item['variation_field'] ) ) {
 						$selected = 'selected';
 					}
 					$variation = wc_get_product( $variation_id );

@@ -27,6 +27,25 @@ class QueryParameters {
 	}
 
 	/**
+	 * Return an array sanitized, unslashed query parameter by its key, validated with a nonce.
+	 *
+	 * @param String $key Key for the query parameter to return.
+	 * @param String $nonce_action  Name of the nonce action to verify the given nonce against.
+	 * @param String $nonce_arg Query parmeter the nonce is in.
+	 */
+	public static function get_param_array( $key, $nonce_action, $nonce_arg = '_wpnonce' ) {
+		if (
+			isset( $_GET[ $key ] ) &&
+			isset( $_GET[ $nonce_arg ] ) &&
+			wp_verify_nonce( sanitize_text_field( wp_unslash( ( $_GET[ $nonce_arg ] ) ) ), $nonce_action )
+		) {
+			return array_map( 'sanitize_text_field', wp_unslash( $_GET[ $key ] ) );
+		}
+
+		return array();
+	}
+
+	/**
 	 * Return an associative array of query param keys and values given an array of keys
 	 * that are sanitized and validated against a nonce
 	 *

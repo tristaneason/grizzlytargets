@@ -17,13 +17,13 @@
  * needs please refer to http://docs.woocommerce.com/document/authorize-net-cim/
  *
  * @author    SkyVerge
- * @copyright Copyright (c) 2013-2021, SkyVerge, Inc.
+ * @copyright Copyright (c) 2013-2022, SkyVerge, Inc.
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
 defined( 'ABSPATH' ) or exit;
 
-use SkyVerge\WooCommerce\PluginFramework\v5_10_8 as Framework;
+use SkyVerge\WooCommerce\PluginFramework\v5_10_12 as Framework;
 
 /**
  * WooCommerce Authorize.Net Gateway main plugin class.
@@ -36,7 +36,7 @@ class WC_Authorize_Net_CIM extends Framework\SV_WC_Payment_Gateway_Plugin {
 
 
 	/** string version number */
-	const VERSION = '3.6.2';
+	const VERSION = '3.7.0';
 
 
 	/** @var \WC_Authorize_Net_CIM_Webhooks the webhooks handler */
@@ -92,7 +92,7 @@ class WC_Authorize_Net_CIM extends Framework\SV_WC_Payment_Gateway_Plugin {
 		// display the admin Shipping Address ID user field
 		add_action( 'wc_payment_gateway_' . $this->get_id() . '_user_profile', array( $this, 'display_shipping_address_id_field' ), 15 );
 
-		if ( is_admin() && ! is_ajax() ) {
+		if ( is_admin() && ! wp_doing_ajax() ) {
 
 			// save the admin Shipping Address ID user field
 			add_action( 'personal_options_update',  array( $this, 'save_shipping_address_id_field' ) );

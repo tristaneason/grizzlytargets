@@ -321,7 +321,7 @@ class HubWooPropertyCallbacks {
 			$account_creation = strtotime( $account_creation );
 		}
 
-		if ( ! empty( $account_creation ) ) {
+		if ( ! empty( $account_creation ) && 0 < $account_creation ) {
 
 			$this->_cache['account_creation_date'] = HubwooGuestOrdersManager::hubwoo_set_utc_midnight( $account_creation );
 		}
@@ -1000,4 +1000,3 @@ class HubWooPropertyCallbacks {
 		return floor( $datediff / ( 60 * 60 * 24 ) );
 	}
 }
-

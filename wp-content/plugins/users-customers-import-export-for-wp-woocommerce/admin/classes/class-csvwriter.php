@@ -15,10 +15,12 @@ class Wt_Import_Export_For_Woo_Basic_Csvwriter
 	public $file_path='';
 	public $data_ar='';
 	public $csv_delimiter='';
-	public function __construct($file_path, $offset, $csv_delimiter=",")
+	public $use_bom=true;
+	public function __construct($file_path, $offset, $csv_delimiter=",", $use_bom=true)
 	{
 		$this->csv_delimiter=$csv_delimiter;
 		$this->file_path=$file_path;
+		$this->use_bom = $use_bom;
 		$this->get_file_pointer($offset);
 	}
 	
@@ -56,6 +58,11 @@ class Wt_Import_Export_For_Woo_Basic_Csvwriter
 		if($offset==0)
 		{
         	$this->file_pointer=fopen($this->file_path, 'w');
+			$this->use_bom = apply_filters('wt_ier_include_bom_in_csv', $this->use_bom);
+			if($this->use_bom){
+				$BOM = "\xEF\xBB\xBF"; // UTF-8 BOM
+				fwrite($this->file_pointer, $BOM); // NEW LINE
+			}
 		}else
 		{
 			$this->file_pointer=fopen($this->file_path, 'a+');

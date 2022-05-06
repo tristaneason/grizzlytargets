@@ -31,7 +31,7 @@ class Porto_Elementor_CP_Rating_Widget extends \Elementor\Widget_Base {
 		return array( 'product', 'rating', 'review', 'stars', 'feedback' );
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		$this->start_controls_section(
 			'section_cp_rating',

@@ -77,7 +77,11 @@ if (!function_exists('unishippers_freight_parse_url')) {
 
             $key = array_search('www', $domain_array);
             unset($domain_array[$key]);
-            $refinded_domain_name = implode($domain_array, '.');
+            if(phpversion() < 8) {
+                $refinded_domain_name = implode($domain_array, '.'); 
+            }else {
+                $refinded_domain_name = implode('.', $domain_array);
+            }
         }
 
         return $refinded_domain_name;

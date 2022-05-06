@@ -8,6 +8,7 @@ use Leadin\wp\User;
 use Leadin\auth\OAuth;
 use Leadin\admin\Connection;
 use Leadin\options\AccountOptions;
+use Leadin\options\LeadinOptions;
 
 /**
  * Class responsible of adding the script loader to the website, as well as rendering forms, live chat, etc.
@@ -25,6 +26,8 @@ class PageHooks {
 		add_filter( 'script_loader_tag', array( $this, 'add_id_to_tracking_code' ), 10, 2 );
 		add_shortcode( 'hubspot', array( $this, 'leadin_add_hubspot_shortcode' ) );
 	}
+
+
 
 	/**
 	 * Generates 10 characters long string with random values
@@ -45,9 +48,25 @@ class PageHooks {
 	}
 
 	/**
+	 * Checks if input is a valid uuid.
+	 *
+	 * @param String $uuid input to validate.
+	 */
+	private static function is_valid_uuid( $uuid ) {
+		if ( ! is_string( $uuid ) || ( preg_match( '/^[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}$/i', $uuid ) !== 1 ) ) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Adds the script loader to the page.
 	 */
 	public function add_frontend_scripts() {
+		if ( LeadinOptions::get( 'disable_internal_tracking' ) && ( is_user_logged_in() || current_user_can( 'install_plugins' ) ) ) {
+			return;
+		}
+
 		if ( is_single() ) {
 			$page_type = 'post';
 		} elseif ( is_front_page() ) {
@@ -81,16 +100,7 @@ class PageHooks {
 			<!-- DO NOT COPY THIS SNIPPET! Start of Page Analytics Tracking for HubSpot WordPress plugin v<?php echo esc_html( LEADIN_PLUGIN_VERSION ); ?>-->
 			<script type="text/javascript">
 				var _hsq = _hsq || [];
-				<?php
-				// Pass along the correct content-type.
-				if ( is_single() ) {
-					echo '_hsq.push(["setContentType", "blog-post"]);' . "\n";
-				} elseif ( is_archive() || is_search() ) {
-					echo '_hsq.push(["setContentType", "listing-page"]);' . "\n";
-				} else {
-					echo '_hsq.push(["setContentType", "standard-page"]);' . "\n";
-				}
-				?>
+				_hsq.push(["setContentId", "<?php echo esc_html( LeadinFilters::get_page_content_type() ); ?>"]);
 			</script>
 			<!-- DO NOT COPY THIS SNIPPET! End of Page Analytics Tracking for HubSpot WordPress plugin -->
 			<?php
@@ -125,18 +135,28 @@ class PageHooks {
 			$attributes
 		);
 
+		$type      = $parsed_attributes['type'];
+		$portal_id = $parsed_attributes['portal'];
+		$id        = $parsed_attributes['id'];
+
 		if (
-			! isset( $parsed_attributes['type'] ) ||
-			! isset( $parsed_attributes['portal'] ) ||
-			! isset( $parsed_attributes['id'] )
+			! isset( $type ) ||
+			! isset( $portal_id ) ||
+			! isset( $id )
 		) {
 			return;
 		}
 
-		$portal_id = $parsed_attributes['portal'];
-		$id        = $parsed_attributes['id'];
+		$is_valid_id = self::is_valid_uuid( $id ) || is_numeric( $id );
 
-		switch ( $parsed_attributes['type'] ) {
+		if (
+			! is_numeric( $portal_id ) ||
+			! $is_valid_id
+			) {
+				return;
+		}
+
+		switch ( $type ) {
 			case 'form':
 				$form_div_uuid = $this->generate_div_uuid();
 				$hublet        = LeadinFilters::get_leadin_hublet();
@@ -147,7 +167,6 @@ class PageHooks {
 							portalId: ' . $portal_id . ',
 							formId: "' . $id . '",
 							target: "#hbspt-form-' . $form_div_uuid . '",
-							shortcode: "wp",
 							region: "' . $hublet . '",
 							' . LeadinFilters::get_leadin_forms_payload() . '
 						});

@@ -33,25 +33,30 @@ class PortoBuilders {
 				$porto_settings_optimize = array();
 			}
 		}
-		if( ! is_admin() && ( isset( $_REQUEST['elementor-preview'] ) || ( defined( 'WPB_VC_VERSION' ) && isset( $_REQUEST[ 'vc_editable' ] ) ) ) ) {
-			add_filter( 'body_class', function( $classes ) {
-				global $post;
-				if ( $post && 'popup' == get_post_meta( (int) $post->ID, self::BUILDER_TAXONOMY_SLUG, true ) ) {
-					$classes[] = 'porto-popup-template';
-				}
-				return $classes;
-			});
-			//WPB Frontend Builder
-			if( isset( $_REQUEST[ 'vc_editable' ] ) ) {
-				add_action( 'wp_enqueue_scripts', function() {
+		if ( ! is_admin() && ( isset( $_REQUEST['elementor-preview'] ) || ( defined( 'WPB_VC_VERSION' ) && isset( $_REQUEST['vc_editable'] ) ) ) ) {
+			add_filter(
+				'body_class',
+				function( $classes ) {
 					global $post;
 					if ( $post && 'popup' == get_post_meta( (int) $post->ID, self::BUILDER_TAXONOMY_SLUG, true ) ) {
-						ob_start();
-						$popup_width = empty( get_post_meta( (int) $post->ID, 'popup_width', true ) ) ? '740px' : (int) get_post_meta( (int) $post->ID, 'popup_width', true ) . 'px';
-						?>
+						$classes[] = 'porto-popup-template';
+					}
+					return $classes;
+				}
+			);
+			// WPB Frontend Builder
+			if ( isset( $_REQUEST['vc_editable'] ) ) {
+				add_action(
+					'wp_enqueue_scripts',
+					function() {
+						global $post;
+						if ( $post && 'popup' == get_post_meta( (int) $post->ID, self::BUILDER_TAXONOMY_SLUG, true ) ) {
+							ob_start();
+							$popup_width = empty( get_post_meta( (int) $post->ID, 'popup_width', true ) ) ? '740px' : (int) get_post_meta( (int) $post->ID, 'popup_width', true ) . 'px';
+							?>
 						.page-wrapper {
 							position: absolute;
-							max-width: <?php echo porto_strip_script_tags( $popup_width );?>;
+							max-width: <?php echo porto_strip_script_tags( $popup_width ); ?>;
 							width: 100%;
 							left: 50%;
 							top: 50%;
@@ -59,11 +64,13 @@ class PortoBuilders {
 							z-index: 9999;
 							background: #fff;
 						}
-						<?php
-						$style = ob_get_clean();
-						wp_add_inline_style( 'porto-theme', $style );
-					}
-				}, 1001 );
+							<?php
+							$style = ob_get_clean();
+							wp_add_inline_style( 'porto-theme', $style );
+						}
+					},
+					1001
+				);
 			}
 		}
 		$this->builder_types = array(
@@ -135,12 +142,12 @@ class PortoBuilders {
 					}
 					if ( $load_search_lib ) {
 						require_once PORTO_BUILDERS_PATH . 'lib/class-condition.php';
-						new Porto_Builder_Condition;
+						new Porto_Builder_Condition();
 					}
 				}
 			);
 		}
-		if ( ! empty( $_REQUEST['post'] ) && ! empty( get_post_meta( $_REQUEST['post'], PortoBuilders::BUILDER_TAXONOMY_SLUG, true ) ) ) {
+		if ( ! empty( $_REQUEST['post'] ) && ! empty( get_post_meta( $_REQUEST['post'], self::BUILDER_TAXONOMY_SLUG, true ) ) ) {
 			add_filter(
 				'porto_builder',
 				function( $vars ) {
@@ -264,6 +271,10 @@ class PortoBuilders {
 					require_once PORTO_BUILDERS_PATH . 'elements/header/init.php';
 				}
 
+				if ( /*array_key_exists( 'type', $this->builder_types )*/ true ) {
+					require_once PORTO_BUILDERS_PATH . 'elements/type/init.php';
+				}
+
 				if ( class_exists( 'Woocommerce' ) ) {
 					if ( array_key_exists( 'product', $this->builder_types ) ) {
 						require_once PORTO_BUILDERS_PATH . 'elements/product/init.php';
@@ -349,11 +360,11 @@ class PortoBuilders {
 		if ( defined( 'ELEMENTOR_VERSION' ) ) {
 			$args['supports'][] = 'elementor';
 		}
-		if ( is_admin() && current_user_can( PortoBuilders::BUILDER_CAP ) ) {
+		if ( is_admin() && current_user_can( self::BUILDER_CAP ) ) {
 			if ( defined( 'VCV_VERSION' ) ) {
 				$support_types = get_option( 'vcv-post-types', array() );
-				if ( ! in_array( PortoBuilders::BUILDER_SLUG, $support_types ) ) {
-					$support_types[] = PortoBuilders::BUILDER_SLUG;
+				if ( ! in_array( self::BUILDER_SLUG, $support_types ) ) {
+					$support_types[] = self::BUILDER_SLUG;
 					update_option( 'vcv-post-types', $support_types );
 				}
 			}
@@ -375,7 +386,7 @@ class PortoBuilders {
 	}
 
 	public function add_builder_menu() {
-		add_submenu_page( 'porto', __( 'Templates Builder', 'porto' ), __( 'Templates Builder', 'porto' ), 'administrator', 'edit.php?post_type=' . PortoBuilders::BUILDER_SLUG );
+		add_submenu_page( 'porto', __( 'Templates Builder', 'porto' ), __( 'Templates Builder', 'porto' ), 'administrator', 'edit.php?post_type=' . self::BUILDER_SLUG );
 	}
 
 	public function add_meta_boxes() {
@@ -438,7 +449,7 @@ class PortoBuilders {
 		if ( 'condition' === $column_name ) {
 			$conditions = get_post_meta( $post_id, '_porto_builder_conditions', true );
 			if ( ! empty( $conditions ) ) {
-				$names = array(
+				$names       = array(
 					'archive/date'   => __( 'Date Archive', 'porto-functionaltiy' ),
 					'archive/author' => __( 'Author Archive', 'porto-functionaltiy' ),
 					'archive/search' => __( 'Search Results', 'porto-functionaltiy' ),
@@ -459,7 +470,8 @@ class PortoBuilders {
 					if ( isset( $condition[0] ) && empty( $condition[0] ) ) {
 						esc_html_e( 'All', 'porto-functionaltiy' );
 						continue;
-					}/* elseif ( ! empty( $condition[0] ) ) {
+					}/*
+					elseif ( ! empty( $condition[0] ) ) {
 						if ( 'single' == $condition[0] ) {
 							esc_html_e( 'Single', 'porto-functionaltiy' );
 						} else {
@@ -486,13 +498,13 @@ class PortoBuilders {
 							if ( $tax && ! empty( $tax->object_type ) && isset( $tax->label ) ) {
 								if ( isset( $condition[0] ) && 'single' === $condition[0] ) {
 									if ( ! empty( $condition[2] ) && ! empty( $condition[3] ) ) {
-										printf( esc_html__( 'All %s pages of "%s"', 'porto-functionaltiy' ), ucfirst( $tax->object_type[0] ), esc_html( $condition[3] ) );
+										printf( esc_html__( 'All %1$s pages of "%2$s"', 'porto-functionaltiy' ), ucfirst( $tax->object_type[0] ), esc_html( $condition[3] ) );
 									} else {
-										printf( esc_html__( 'All %s pages which have any %s', 'porto-functionaltiy' ), ucfirst( $tax->object_type[0] ), $tax->labels->singular_name );
+										printf( esc_html__( 'All %1$s pages which have any %2$s', 'porto-functionaltiy' ), ucfirst( $tax->object_type[0] ), $tax->labels->singular_name );
 									}
 								} elseif ( isset( $condition[0] ) && 'archive' === $condition[0] ) {
 									if ( ! empty( $condition[2] ) && ! empty( $condition[3] ) ) {
-										printf( esc_html__( '"%s" %s', 'porto-functionaltiy' ), esc_html( $condition[3] ), esc_html( $tax->label ) );
+										printf( esc_html__( '"%1$s" %2$s', 'porto-functionaltiy' ), esc_html( $condition[3] ), esc_html( $tax->label ) );
 									} else {
 										printf( esc_html__( 'All %s', 'porto-functionaltiy' ), esc_html( $tax->label ) );
 									}
@@ -501,7 +513,8 @@ class PortoBuilders {
 						}
 					}
 
-					/*if ( ! empty( $condition[2] ) && ! empty( $condition[3] ) ) {
+					/*
+					if ( ! empty( $condition[2] ) && ! empty( $condition[3] ) ) {
 						echo ' -> ';
 						echo $condition[3];
 					}*/
@@ -548,7 +561,7 @@ class PortoBuilders {
 		if ( ! defined( 'WPB_VC_VERSION' ) ) {
 			return false;
 		}
-		if ( 'post-new.php' == $GLOBALS['pagenow'] && isset( $_GET['post_type'] ) && PortoBuilders::BUILDER_SLUG == $_GET['post_type'] ) {
+		if ( 'post-new.php' == $GLOBALS['pagenow'] && isset( $_GET['post_type'] ) && self::BUILDER_SLUG == $_GET['post_type'] ) {
 			return true;
 		} elseif ( 'post.php' == $GLOBALS['pagenow'] && ( isset( $_GET['post'] ) || ! empty( $_REQUEST['post_ID'] ) ) ) {
 			if ( isset( $_GET['post'] ) ) {
@@ -562,17 +575,17 @@ class PortoBuilders {
 			}
 			$post_id = isset( $_GET['post'] ) ? (int) $_GET['post'] : (int) $_REQUEST['post_ID'];
 
-			if ( PortoBuilders::BUILDER_SLUG == $post_type && $type == get_post_meta( $post_id, PortoBuilders::BUILDER_TAXONOMY_SLUG, true ) ) {
+			if ( self::BUILDER_SLUG == $post_type && $type == get_post_meta( $post_id, self::BUILDER_TAXONOMY_SLUG, true ) ) {
 				return true;
 			}
 		} elseif ( function_exists( 'porto_is_ajax' ) && porto_is_ajax() && isset( $_REQUEST['post_id'] ) ) {
 			$post = get_post( intval( $_REQUEST['post_id'] ) );
-			if ( is_object( $post ) && ( PortoBuilders::BUILDER_SLUG == $post->post_type || $type == $post->post_type ) ) {
+			if ( is_object( $post ) && ( self::BUILDER_SLUG == $post->post_type || $type == $post->post_type ) ) {
 				return true;
 			}
 		} elseif ( function_exists( 'vc_is_inline' ) && vc_is_inline() ) {
-			if ( is_admin() && isset( $_GET['post_type'] ) && PortoBuilders::BUILDER_SLUG == $_GET['post_type'] && isset( $_GET['post_id'] ) ) {
-				$terms = wp_get_post_terms( (int) $_GET['post_id'], PortoBuilders::BUILDER_TAXONOMY_SLUG, array( 'fields' => 'names' ) );
+			if ( is_admin() && isset( $_GET['post_type'] ) && self::BUILDER_SLUG == $_GET['post_type'] && isset( $_GET['post_id'] ) ) {
+				$terms = wp_get_post_terms( (int) $_GET['post_id'], self::BUILDER_TAXONOMY_SLUG, array( 'fields' => 'names' ) );
 				if ( ! empty( $terms ) && $type == $terms[0] ) {
 					return true;
 				}
@@ -580,8 +593,8 @@ class PortoBuilders {
 				$post_id = (int) vc_get_param( 'vc_post_id' );
 				if ( $post_id ) {
 					$post  = get_post( $post_id );
-					$terms = wp_get_post_terms( $post_id, PortoBuilders::BUILDER_TAXONOMY_SLUG, array( 'fields' => 'names' ) );
-					if ( is_object( $post ) && PortoBuilders::BUILDER_SLUG == $post->post_type && ! empty( $terms ) && $type == $terms[0] ) {
+					$terms = wp_get_post_terms( $post_id, self::BUILDER_TAXONOMY_SLUG, array( 'fields' => 'names' ) );
+					if ( is_object( $post ) && self::BUILDER_SLUG == $post->post_type && ! empty( $terms ) && $type == $terms[0] ) {
 						return true;
 					}
 				}
@@ -616,4 +629,4 @@ class PortoBuilders {
 	}
 }
 
-new PortoBuilders;
+new PortoBuilders();

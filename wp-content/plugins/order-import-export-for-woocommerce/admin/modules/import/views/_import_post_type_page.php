@@ -28,4 +28,38 @@ if (!defined('ABSPATH')) {
 			<td></td>
 		</tr>
 	</table>
+	<br/>
+	<?php 
+	$wt_iew_post_types = array(
+		'product' => array(
+			'message' => __('The <b>Product Import Export for WooCommerce Add-On</b> is required to export WooCommerce Products.'),
+			'link' => admin_url('plugin-install.php?tab=plugin-information&plugin=product-import-export-for-woo')
+		),
+		'product_review' => array(
+			'message' => __('The <b>Product Import Export for WooCommerce Add-On</b> is required to export WooCommerce Product reviews.'),
+			'link' => admin_url('plugin-install.php?tab=plugin-information&plugin=product-import-export-for-woo')
+		),
+		'product_categories' => array(
+			'message' => __('The <b>Product Import Export for WooCommerce Add-On</b> is required to export WooCommerce Product categories.'),
+			'link' => admin_url('plugin-install.php?tab=plugin-information&plugin=product-import-export-for-woo')
+		),
+		'product_tags' => array(
+			'message' => __('The <b>Product Import Export for WooCommerce Add-On</b> is required to export WooCommerce Product tags.'),
+			'link' => admin_url('plugin-install.php?tab=plugin-information&plugin=product-import-export-for-woo')
+		),
+		'user' => array(
+			'message' => __('The <b>Import Export WordPress Users and WooCommerce Customers Add-On</b> is required to export users/customers.'),
+			'link' => admin_url('plugin-install.php?tab=plugin-information&plugin=users-customers-import-export-for-wp-woocommerce')
+		)
+	);
+	foreach ($wt_iew_post_types as $wt_iew_post_type => $wt_iew_post_type_detail) { ?>
+			
+	<div class="wt_iew_free_addon wt_iew_free_addon_warn <?php echo 'wt_iew_type_'.$wt_iew_post_type; ?>" style="display:none">
+		<p><?php echo $wt_iew_post_type_detail['message']; ?></p>
+		<a target="_blank" href="<?php echo $wt_iew_post_type_detail['link']; ?>"><?php _e( 'Install now for free' ); ?></a>
+	</div>
+	
+	<?php
+	}
+	?>
 </div>

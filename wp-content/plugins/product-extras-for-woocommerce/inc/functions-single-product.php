@@ -131,13 +131,29 @@ function pewc_enqueue_scripts() {
 		$vars['show_suffix'] 	= pewc_show_price_suffix();
 		$vars['price_suffix'] = $product->get_price_suffix();
 		$vars['price_suffix_setting'] = get_option( 'woocommerce_price_display_suffix' );
-		$vars['percent_exc_tax'] = wc_get_price_excluding_tax( $product, $args = array( 'price' => 100, 'qty' => 1 ) );
-		$vars['percent_inc_tax'] = wc_get_price_including_tax( $product, $args = array( 'price' => 100, 'qty' => 1 ) );
+
+		// 3.9.8 tax computations
+		$base_exc_tax = wc_get_price_excluding_tax( $product, $args = array( 'price' => 100, 'qty' => 1 ) );
+		$base_inc_tax = wc_get_price_including_tax( $product, $args = array( 'price' => 100, 'qty' => 1 ) );
+		$tax_display_shop = get_option('woocommerce_tax_display_shop');
+
+		// we do the following to avoid double computations of tax, e.g. in case a user decides to use {price_including_tax} when woocommerce_tax_display_shop is already incl
+		if ('yes' === get_option('woocommerce_prices_include_tax')) {
+			$vars['percent_exc_tax'] = $tax_display_shop == 'incl' ? $base_exc_tax : 100;
+			$vars['percent_inc_tax'] = $tax_display_shop == 'excl' ? 10000/$base_exc_tax : 100;
+		}
+		else {
+			$vars['percent_exc_tax'] = $tax_display_shop == 'incl' ? 10000/$base_inc_tax : 100;
+			$vars['percent_inc_tax'] = $tax_display_shop == 'excl' ? $base_inc_tax: 100;
+		}
+
 		$vars['contentAsHTML'] = apply_filters( 'pewc_tooltipster_html', false );
 		$vars['autoClose'] = apply_filters( 'pewc_tooltipster_autoclose', true );
 		$vars['interactive'] = apply_filters( 'pewc_tooltipster_interactive', false );
 		$vars['hideOnClick'] = apply_filters( 'pewc_tooltipster_hide_on_click', false );
-		$vars['trigger'] = apply_filters( 'pewc_tooltipster_trigger', 'hover' );
+		$vars['trigger'] = apply_filters( 'pewc_tooltipster_trigger', 'custom' );
+		$vars['triggerOpen'] = apply_filters( 'pewc_tooltipster_trigger_open', array('mouseenter' => true, 'tap' => true) );
+		$vars['triggerClose'] = apply_filters( 'pewc_tooltipster_trigger_close', array('mouseleave' => true, 'originClick' => true, 'tap' => true) );
 	}
 
 	if( pewc_is_pro() && function_exists( 'pewc_multiply_independent_quantities_by_parent_quantity' ) ) {
@@ -192,6 +208,9 @@ function pewc_product_extra_fields() {
 	}
 
 	global $product, $post;
+	if( ! isset( $post->ID ) ) {
+		return;
+	}
 	$post_id = $post->ID;
 	$licence = pewc_get_license_level();
 
@@ -398,10 +417,9 @@ function pewc_product_extra_fields() {
 								};
 
 								// Check for existing values for product fields
-
 								$quantity_field_values = array();
 
-								if( $item['field_type'] == 'products' && ! empty( $child_fields[$id] ) ) {
+								if( ( $item['field_type'] == 'products' || $item['field_type'] == 'product-categories' ) && ! empty( $child_fields[$id] ) ) {
 
 									// Get the list of child products seleected for this field
 									$value = array_keys( $child_fields[$id] );
@@ -415,7 +433,7 @@ function pewc_product_extra_fields() {
 
 								// Set the wrapper classes
 								$required_class = '';
-								if( isset( $item['field_required'] ) && $item['field_type'] != 'products' ) {
+								if( isset( $item['field_required'] ) && ( $item['field_type'] != 'products' && $item['field_type'] != 'product-categories' ) ) {
 									$required_class = 'required-field';
 								}
 
@@ -478,7 +496,8 @@ function pewc_product_extra_fields() {
 								}
 
 								if( pewc_reset_hidden_fields( $post_id ) == 'yes' ) {
-									$attributes['data-default-value'] = pewc_get_default_value( $id, $item, $_POST );
+									$default_value = pewc_get_default_value( $id, $item, $_POST );
+									$attributes['data-default-value'] = is_array( $default_value ) ? join( ', ', $default_value ) : $default_value;
 								} else {
 									$attributes['data-default-value'] = '';
 								}
@@ -502,7 +521,7 @@ function pewc_product_extra_fields() {
 								do_action( 'pewc_before_group_inner_tag_open', $item );
 
 								// Print the field
-								pewc_field( $item['field_id'], $item, $product, $id, $post_id, $classes, $attributes, $group_layout, $field_price, $value, $cart_item );
+								pewc_field( $item['field_id'], $item, $product, $id, $post_id, $classes, $attributes, $group_layout, $field_price, $value, $cart_item, $quantity_field_values );
 
 								$count_fields++;
 
@@ -559,7 +578,7 @@ add_action( 'woocommerce_before_add_to_cart_button', 'pewc_product_extra_fields'
 
  * @since 3.9.2
  */
-function pewc_field( $field_id=false, $item=array(), $product=false, $id=false, $post_id=false, $classes=array(), $attributes=array(), $group_layout='ul', $field_price=false, $value=false, $cart_item=false ) {
+function pewc_field( $field_id=false, $item=array(), $product=false, $id=false, $post_id=false, $classes=array(), $attributes=array(), $group_layout='ul', $field_price=false, $value=false, $cart_item=false, $quantity_field_values=array() ) {
 
 	// Get our field settings using just the field ID
 	if( empty( $item ) && $field_id ) {
@@ -814,7 +833,7 @@ add_action( 'pewc_after_group_wrap', 'pewc_totals_fields', 20, 4 );
  * For all fields except checkbox in list view
  */
 function pewc_before_frontend_template( $item, $id, $group_layout, $file ) {
-	if( $group_layout == 'table' || $item['field_type'] != 'checkbox' ) {
+	if( $group_layout == 'table' || ( $item['field_type'] != 'checkbox' && $item['field_type'] != 'checkbox-list' ) ) {
 		echo pewc_field_label( $item, $id, $group_layout );
 	}
 }
@@ -824,11 +843,43 @@ add_action( 'pewc_before_include_frontend_template', 'pewc_before_frontend_templ
  * Display the field label for the checkbox in list view
  */
 function pewc_after_frontend_template( $item, $id, $group_layout, $file ) {
-	if( $group_layout == 'ul' && $item['field_type'] == 'checkbox' ) {
+	if( $group_layout == 'ul' && ( $item['field_type'] == 'checkbox' || $item['field_type'] == 'checkbox-list' ) ) {
 		echo pewc_field_label( $item, $id, $group_layout );
 	}
 }
 add_action( 'pewc_after_include_frontend_template', 'pewc_after_frontend_template', 10, 4 );
+
+/**
+ * Populate the products currently assigned to categories
+ *
+ * @param array $item
+ * @param array $group
+ * @param int $group_id
+ * @param int $post_id
+ * @return array $item
+ */
+function pewc_populate_product_categories_fields( $item, $group, $group_id, $post_id ) {
+
+	if( $item['field_type'] !== 'product-categories' ){
+
+		return $item;
+	}
+
+	if( !isset( $item['child_categories']) || empty( $item['child_categories'])){
+
+		return $item;
+	}
+
+	$child_products = pewc_get_product_categories_addon_products( $item['field_id'], $item['child_categories'] );
+
+	if( $child_products ){
+
+		$item['child_products'] = $child_products;
+	}
+
+	return $item;
+}
+add_filter( 'pewc_filter_item_start_list', 'pewc_populate_product_categories_fields', 10, 4 );
 
 /**
  * Get the field classes
@@ -842,6 +893,10 @@ function pewc_get_field_classes( $item, $id, $post_id, $product, $count_fields, 
 	$classes[] = 'pewc-item-' . esc_attr( $item['field_type'] );
 	$classes[] = 'pewc-field-' . esc_attr( $item['field_id'] );
 	$classes[] = 'pewc-field-count-' . esc_attr( $count_fields );
+
+	if( in_array( $item['field_type'], array( 'radio', 'checkbox', 'checkbox_group' ) ) ) {
+		$classes[] = 'pewc-option-list';
+	}
 
 	// Hide certain fields if we're using the lightbox
 	if( $display == 'lightbox' && $count_fields >= $number_teaser_fields ) {
@@ -892,7 +947,7 @@ function pewc_get_field_classes( $item, $id, $post_id, $product, $count_fields, 
 		$classes[] = 'pewc-has-field-image';
 	}
 
-	if( $item['field_type'] == 'products' && ! empty( $item['products_layout'] ) ) {
+	if( ( $item['field_type'] == 'products' || $item['field_type'] == 'product-categories' ) && ! empty( $item['products_layout'] ) ) {
 		$classes[] = 'pewc-item-products-' . esc_attr( $item['products_layout'] );
 	}
 
@@ -919,11 +974,11 @@ function pewc_get_field_classes( $item, $id, $post_id, $product, $count_fields, 
  * Get the field price
  * @since 3.6.0
  */
-function pewc_get_field_price( $item, $product ) {
+function pewc_get_field_price( $item, $product, $cart_price = false ) {
 
 	$price = 0;
 
-	if( isset( $item['field_price'] ) && $item['field_type'] != 'products' ) {
+	if( isset( $item['field_price'] ) && $item['field_type'] != 'products' && $item['field_type'] != 'product-categories' ) {
 
 		$price = floatval( $item['field_price'] );
 		// Filter the field price, e.g. for role-based pricing
@@ -931,10 +986,10 @@ function pewc_get_field_price( $item, $product ) {
 
 	}
 
-	$price = pewc_maybe_include_tax( $product, $price );
+	$price = pewc_maybe_include_tax( $product, $price, $cart_price );
 
 	/**
-	 * Filtered by pewc_get_multicurrency_price
+	 * Filtered by pewc_get_multicurrency_price and pewc_aelia_cs_convert
 	 */
 	return apply_filters( 'pewc_filter_field_price', $price, $item, $product );
 
@@ -944,14 +999,14 @@ function pewc_get_field_price( $item, $product ) {
  * Get the option price
  * @since 3.6.0
  */
-function pewc_get_option_price( $option_value, $item, $product ) {
+function pewc_get_option_price( $option_value, $item, $product, $cart_price=false ) {
 
 	$option_price = ! empty( $option_value['price'] ) ? $option_value['price'] : 0;
 	$option_price = apply_filters( 'pewc_get_option_price_before_maybe_include_tax', $option_price, $option_value, $product );
-	$option_price = pewc_maybe_include_tax( $product, $option_price );
+	$option_price = pewc_maybe_include_tax( $product, $option_price, $cart_price );
 
 	/**
-	 * Filtered by pewc_get_multicurrency_price
+	 * Filtered by pewc_get_multicurrency_price and pewc_aelia_cs_convert
 	 */
 	return apply_filters( 'pewc_filter_option_price', $option_price, $item, $product );
 
@@ -961,6 +1016,10 @@ function pewc_get_option_price( $option_value, $item, $product ) {
  * Get the field label
  */
 function pewc_field_label( $item, $id, $group_layout='ul' ) {
+
+	if( $item['field_type'] == 'checkbox' ) {
+		return '';
+	}
 
 	global $product;
 
@@ -976,14 +1035,16 @@ function pewc_field_label( $item, $id, $group_layout='ul' ) {
 
 	if( isset( $item['field_label'] ) || isset( $item['field_price'] ) ) {
 
-		$label .= '<label class="pewc-field-label" for="' . esc_attr( $id ) . '">';
+		$label_tag = apply_filters( 'pewc_field_label_tag', 'label', $item );
+
+		$label .= '<' . $label_tag . ' class="pewc-field-label" for="' . esc_attr( $id ) . '">';
 		if( isset( $item['field_label'] ) ) {
 			$label .= wp_kses_post( $item['field_label'] );
 		}
 		$label .= '<span class="required"> &#42;</span>';
 
 		// Get the price
-		if( ! empty( $item['field_price'] ) && $item['field_type'] != 'name_price' && $item['field_type'] != 'products' && ( ! isset( $item['price_visibility'] ) || $item['price_visibility'] == 'visible' ) ) {
+		if( ! empty( $item['field_price'] ) && $item['field_type'] != 'name_price' && $item['field_type'] != 'products' && $item['field_type'] != 'product-categories' && ( empty( $item['price_visibility'] ) || $item['price_visibility'] == 'visible' ) ) {
 
 			$field_price = pewc_get_field_price( $item, $product );
 
@@ -1010,7 +1071,7 @@ function pewc_field_label( $item, $id, $group_layout='ul' ) {
 		$label .= $price_label;
 		$label = apply_filters( 'pewc_field_label_end', $label, $product, $item );
 
-		$label .= '</label>';
+		$label .= '</' . $label_tag . '>';
 
 		if( $group_layout == 'table' && pewc_enable_tooltips() != 'yes' ) {
 			$label .= pewc_get_field_description( $item, $id, $group_layout );
@@ -1212,6 +1273,7 @@ function pewc_minimum_price_html( $price, $product ) {
 
 	if( $minimum_price ) {
 
+		$minimum_price = pewc_maybe_include_tax( $product, $minimum_price );
 		$min_price_html = sprintf(
 			'<p class="pewc-minimum-price">%s %s</p>',
 			__( 'Minimum price:', 'pewc' ),
@@ -1328,7 +1390,7 @@ add_filter( 'pewc_field_formatted_price', 'pewc_add_tax_suffix_options', 10, 4 )
 function pewc_display_option_prices_product_page( $item ) {
 
 	$display = true;
-	if( isset( $item['option_price_visibility'] ) && $item['option_price_visibility'] != 'visible' ) {
+	if( ! empty( $item['option_price_visibility'] ) && $item['option_price_visibility'] != 'visible' ) {
 		$display = false;
 	}
 

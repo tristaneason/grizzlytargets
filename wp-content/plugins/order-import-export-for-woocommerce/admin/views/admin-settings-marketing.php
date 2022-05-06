@@ -5,14 +5,14 @@ if ( ! defined( 'WPINC' ) ) {
 ?>
 <div class="wt-iew-tab-content" data-id="<?php echo $target_id;?>">
     <div class="wt-ier-wrapper">
-    <h2 class="wt-ier-page-title"><?php _e('Make a complete import and export for your store\'s valuable data, all in one place.');?></h2>
-    <p class="wt-ier-subp"><?php _e('Get access to advanced features and premium support. Upgrade to the premium version.');?></p>
+    <h2 class="wt-ier-page-title"><?php _e('One stop solution for all your import-export needs.');?></h2>
+    <p class="wt-ier-subp"><?php _e('Upgrade to the premium version and get access to the advanced features with premium support.');?></p>
     <div class="wt-ier-row">
       <div class="wt-ier-col-12 wt-ier-col-lg-4 wt-ier-lg-4 wt-ier-mb-lg-0">
         <div class="wt-ier-p-5 wt-ier-box-wrapper wt-ier-box-highlight">
           <img src="<?php echo WT_O_IEW_PLUGIN_URL; ?>assets/images/upgrade/product-ie.svg" class="wt-ier-thumbnails">
-          <h3 class="wt-ier-plugin-name"><?php _e('Product import export plugin for wooCommerce');?></h3>
-          <p class="wt-ier-p"><?php _e('Easily export and import all types of products and product information.');?></p>
+          <h3 class="wt-ier-plugin-name"><?php _e('PRODUCT IMPORT EXPORT PLUGIN FOR WOOCOMMERCE');?></h3>
+          <p class="wt-ier-p"><?php _e('Imports and exports all product types and reviews. Supports both CSV and XML file formats.');?></p>
           <div class="wt-ier-d-sm-flex wt-ier-btn-group">
             <a href="https://www.webtoffee.com/product/product-import-export-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Product_Import_Export&utm_content=<?php echo WT_O_IEW_VERSION; ?>" target="_blank" class="wt-ier-primary-btn wt-ier-btn"><?php _e('Get Premium');?></a>
             <a href="" class="wt-ier-secondary-btn wt-ier-btn" data-toggle="modal" data-target="#wt-ier-comparison-modal-product"><?php _e('Compare with basic');?></a>
@@ -22,8 +22,8 @@ if ( ! defined( 'WPINC' ) ) {
       <div class="wt-ier-col-12 wt-ier-col-lg-4 wt-ier-lg-4 wt-ier-mb-lg-0">
         <div class="wt-ier-p-5 wt-ier-box-wrapper wt-ier-box-highlight">
           <img src="<?php echo WT_O_IEW_PLUGIN_URL; ?>assets/images/upgrade/customer-ie.svg" class="wt-ier-thumbnails">
-          <h3 class="wt-ier-plugin-name"><?php _e('Customer Import Export for WooCommerce');?></h3>
-          <p class="wt-ier-p"><?php _e('Easily import or export WordPress User and WooCommerce Customer data from/to a CSV file!');?></p>
+          <h3 class="wt-ier-plugin-name"><?php _e('WORDPRESS USERS & WOOCOMMERCE CUSTOMERS IMPORT EXPORT');?></h3>
+          <p class="wt-ier-p"><?php _e('Import and export all your WordPress User and WooCommerce Customer data in CSV/XML file formats.');?></p>
           <div class="wt-ier-d-sm-flex wt-ier-btn-group">
             <a href="https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=User_Import_Export&utm_content=<?php echo WT_O_IEW_VERSION; ?>" class="wt-ier-primary-btn wt-ier-btn" target="_blank"><?php _e('Get Premium');?></a>
             <a href="" class="wt-ier-secondary-btn wt-ier-btn" data-toggle="modal" data-target="#wt-ier-comparison-modal-customer"><?php _e('Compare with basic');?></a>
@@ -33,7 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
       <div class="wt-ier-col-12 wt-ier-col-lg-4 wt-ier-lg-4 wt-ier-mb-lg-0">
         <div class="wt-ier-p-5 wt-ier-box-wrapper wt-ier-box-highlight">
           <img src="<?php echo WT_O_IEW_PLUGIN_URL; ?>assets/images/upgrade/order-ie.svg" class="wt-ier-thumbnails">
-          <h3 class="wt-ier-plugin-name"><?php _e('Order, Coupon, Subscription Export Import for WooCommerce');?></h3>
+          <h3 class="wt-ier-plugin-name"><?php _e('ORDER, COUPON, SUBSCRIPTION EXPORT IMPORT FOR WOOCOMMERCE');?></h3>
           <p class="wt-ier-p"><?php _e('Export or Import WooCommerce orders, Coupons and Subscriptions.');?></p>
           <div class="wt-ier-d-sm-flex wt-ier-btn-group">
             <a  href="https://www.webtoffee.com/product/order-import-export-plugin-for-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Order_Import_Export&utm_content=<?php echo WT_O_IEW_VERSION; ?>" class="wt-ier-primary-btn wt-ier-btn" target="_blank"><?php _e('Get Premium');?></a>
@@ -503,7 +503,7 @@ if ( ! defined( 'WPINC' ) ) {
           <div class="wt-ier-col-12 wt-ier-col-lg-6">
             <img src="<?php echo WT_O_IEW_PLUGIN_URL; ?>assets/images/upgrade/suite.svg" class="wt-ier-thumbnails">
             <h2 class="wt-ier-page-title"><?php _e('Import Export Suite for WooCommerce');?></h2>
-            <p class="wt-ier-p"><?php _e('WooCommerce Import Export Suite is an all-in-one bundle of plugins that will enable you to import and export WooCommerce products, product reviews, orders, customers, coupons, and subscriptions.');?></p>
+            <p class="wt-ier-p"><?php _e('WooCommerce Import Export Suite is an all-in-one bundle of plugins with which you can import and export WooCommerce products, product reviews, orders, customers, coupons and subscriptions.');?></p>
             <a href="https://www.webtoffee.com/product/woocommerce-import-export-suite/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Import_Export_Suite&utm_content=<?php echo WT_O_IEW_VERSION; ?>" class="wt-ier-primary-btn" target="_blank"><?php _e('Get Premium');?></a>
           </div>
         </div>

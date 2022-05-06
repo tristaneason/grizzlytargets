@@ -67,9 +67,11 @@ if (!defined('ABSPATH')) {
 	<p><?php echo $this->step_description;?></p>
 
 	<p class="wt_iew_info_box wt_iew_info">
-		<?php _e('Columns are mapped automatically only if a matching header name is found in the input file. If not the value is left blank.');?>
+		-- <?php _e('The first row from your input file is considered as a header for mapping columns and hence will NOT BE imported.');?>
 		<br />
-		<?php _e('If your input file header does not have exact names or if you need to edit the existing mapping you can simply click on the respective value fields corresponding to each row. Furthermore you can also assign expressions based on the existing input file columns.');?>
+		-- <?php _e('Columns are mapped automatically only if a matching header name is found in the input file.');?>
+		<br/>
+		-- <?php _e('In the case of empty fields, you can simply click on the respective field and map the corresponding column from your input file.');?>
 	</p>
 
 	<div class="meta_mapping_box">

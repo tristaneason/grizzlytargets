@@ -20,7 +20,7 @@ function pewc_register_export_page() {
 		'pewc_home',
 		__( 'Export Orders', 'pewc' ),
 		__( 'Export Orders', 'pewc' ),
-		'manage_options',
+		apply_filters( 'pewc_export_orders_capability', 'manage_options' ),
 		'export-product-extras',
 		'pewc_export_page_callback'
 	);

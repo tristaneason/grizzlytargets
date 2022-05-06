@@ -35,7 +35,8 @@ ul li {
 }
 
 /* Header Logo */
-#header .header-left .logo {
+#header .header-left .logo,
+#header .header-center .logo {
 	max-width: 150px;
 	padding: .25rem 0;
 }
@@ -113,8 +114,14 @@ section.page-top .breadcrumbs-wrap a {
 	margin-bottom: 1.25rem;
 }
 
+/* Product Hover Effects */
+ul.products li.product:hover .product-inner .product-image {
+	box-shadow: none;
+}
+
 /* Product Titles */
 ul.products li.product-col .product-loop-title .woocommerce-loop-product__title {
+	font-family: 'Open Sans';
     white-space: normal;
 }
 

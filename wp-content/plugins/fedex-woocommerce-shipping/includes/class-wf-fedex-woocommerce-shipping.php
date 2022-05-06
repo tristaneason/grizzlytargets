@@ -245,6 +245,7 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 		$this->fallback_rate	= ( isset($this->settings['fedex_fallback']) && !empty($this->settings['fedex_fallback']) ) ? $this->settings['fedex_fallback'] : '';
 		$this->cut_off_time 	= ( isset($this->settings['cut_off_time']) && !empty($this->settings['cut_off_time']) ) ? $this->settings['cut_off_time'] : '';
 		$this->global_hs_code 	= ( isset($this->settings['global_hs_code']) && !empty($this->settings['global_hs_code']) ) ? $this->settings['global_hs_code'] : '';
+		$this->mode 			= isset( $this->settings['packing_algorithm'] ) ? $this->settings['packing_algorithm'] : 'volume_based';
 
 		if( $this->saturday_pickup ) {
 
@@ -282,6 +283,11 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 				}
 				break;
 		}
+
+		// Show services based on origin country
+		$countryServiceMapper	= include( 'data-wf-country-service-mapper.php' );
+		$mappedCountry			= array_key_exists( $this->origin_country, $countryServiceMapper ) ? $countryServiceMapper[$this->origin_country] : '';
+		$this->services			= array_key_exists( $mappedCountry, $this->services ) ? $this->services[$mappedCountry] : $this->services['US'];
 
 		add_action( 'woocommerce_update_options_shipping_' . $this->id, array( $this, 'process_admin_options' ) );
 
@@ -1092,7 +1098,7 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 			include_once 'class-wf-packing.php';
 		}
 
-		$boxpack = new PH_FedEx_Boxpack();
+		$boxpack = new PH_FedEx_Boxpack($this->mode);
 
 		// Merge default boxes for Backward Compatibility
 		foreach ( $this->default_boxes as $key => $box ) {
@@ -2208,6 +2214,24 @@ class wf_fedex_woocommerce_shipping_method extends WC_Shipping_Method {
 
 								$i++;
 							}	
+						}
+
+						$specialServiceType = $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_wf_fedex_special_service_types' );
+						
+						if( ! empty($specialServiceType) ) {
+							
+							foreach( $specialServiceType as $specialServiceTypeKey => $specialServiceTypeValue ) {
+								
+								if($specialServiceTypeValue == 'ALCOHOL') {
+									
+									$receipientType = $this->xa_get_custom_product_option_details( $parcel['packed_products'], '_wf_fedex_sst_alcohal_recipient' );
+									$SpecialServices['SpecialServiceTypes'][]	= 'ALCOHOL';
+									$alcohalRecipientType	= is_array($receipientType) ? current($receipientType) : '';
+									$SpecialServices['AlcoholDetail']['RecipientType'] = ! empty($alcohalRecipientType) ? $alcohalRecipientType : 'CONSUMER';
+								
+								}
+							}
+
 						}
 
 						if( $this->fedex_cod_rate && $this->origin_country == $package['destination']['country'] )

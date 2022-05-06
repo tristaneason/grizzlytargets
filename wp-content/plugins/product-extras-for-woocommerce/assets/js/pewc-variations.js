@@ -30,14 +30,14 @@
 			if( $( wrapper ).hasClass( 'checked' ) ) {
 				$( checkbox ).prop( 'checked', false );
 				$( wrapper ).removeClass( 'checked' );
-				$( wrapper ).find( 'input.pewc-child-quantity-field' ).val( 0 );
+				$( wrapper ).find( 'input.pewc-child-quantity-field' ).val( 0 ).change();
 			} else {
 				$( checkbox ).prop( 'checked', true );
 				$( wrapper ).addClass( 'checked' );
 				// If stock is available, or if we're not managing stock so don't care
 				if( stock || ! manage_stock ) {
 					// Update quantity field
-					$( wrapper ).find( 'input.pewc-child-quantity-field' ).val( 1 );
+					$( wrapper ).find( 'input.pewc-child-quantity-field' ).val( 1 ).change();
 				}
 			}
 			$( 'body' ).trigger( 'pewc_add_button_clicked' );

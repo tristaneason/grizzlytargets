@@ -121,6 +121,10 @@ if ( 'preset' == $layout ) {
 				$unit_num  .= esc_attr( $unit );
 				$grid_sizer = ' style="width:' . $unit_num . '; flex: 0 0 ' . $unit_num . '"';
 			}
+		} elseif ( 1 === count( $fractions ) ) {
+			$unit_num   = $numerators[0] / $denominators[0];
+			$unit_num  .= esc_attr( $unit );
+			$grid_sizer = ' style="width:' . $unit_num . '; flex: 0 0 ' . $unit_num . '"';
 		}
 	}
 }

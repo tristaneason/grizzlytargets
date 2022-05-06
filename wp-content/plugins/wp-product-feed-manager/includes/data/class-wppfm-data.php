@@ -294,6 +294,11 @@ if ( ! class_exists( 'WPPFM_Data' ) ) :
 				$parent_product_data = apply_filters( 'wpml_translation', $parent_product_data, $language );
 			}
 
+			// Polylang support.
+			if ( has_filter( 'pll_translation' ) ) {
+				$product_data = apply_filters( 'pll_translation', $product_data, $language );
+			}
+
 			$parent_product_data = (array)$parent_product_data;
 
 			$sources_that_always_use_parent_data = apply_filters( 'sources_that_always_use_data_from_parent', array( 'post_excerpt' ) );
@@ -577,6 +582,7 @@ if ( ! class_exists( 'WPPFM_Data' ) ) :
 			$feed->feedTypeId        = $data['feed_type_id'];
 			$feed->updateSchedule    = $data['schedule'];
 			$feed->language          = $data['language'] !== null ? $data['language'] : '';
+			$feed->currency          = $data['currency'] !== null ? $data['currency'] : ''; // @since 2.28.0
 
 			return $feed;
 		}

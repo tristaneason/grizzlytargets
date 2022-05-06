@@ -3,11 +3,11 @@ Contributors: MakeWebBetter
 Donate link: https://makewebbetter.com/
 Tags: Abandoned Cart, Email Marketing, Marketing Automation, WooCommerce, HubSpot
 Requires at least: 4.4.0
-Tested up to: 5.8.2
+Tested up to: 5.9.3
 WC requires at least: 3.5.0
-WC tested up to: 5.9.0
+WC tested up to: 6.4.0
 Requires PHP: 5.1
-Stable tag: 1.2.6
+Stable tag: 1.3.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
  
@@ -65,7 +65,7 @@ Build Facebook, Instagram, LinkedIn, and Google advertising campaigns with preci
 
 
 = NEED ADDITIONAL HELP OR CUSTOMIZATION? =
-Read the [MWB HubSpot for WooCommerce documentation guides](https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG) for easy-to-understand onboarding tips. If you need additional help with your onboarding or a customized implementation, learn about the [MakeWebBetter HubSpot Onboarding plans.](https://makewebbetter.com/hubspot-woocommerce-onboarding/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
+Read the [MWB HubSpot for WooCommerce documentation guides](https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG) for easy-to-understand onboarding tips. If you need additional help with your onboarding or a customized implementation, learn about the [MakeWebBetter HubSpot Onboarding plans.](https://makewebbetter.com/hubspot-onboarding-services/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
 
 = WHAT PEOPLE ARE SAYING ABOUT MWB HubSpot for WooCommerce - CRM, ABANDONED CART, EMAIL MARKETING, AUTOMATION & ANALYTICS? =
  
@@ -74,7 +74,7 @@ Read the [MWB HubSpot for WooCommerce documentation guides](https://docs.makeweb
 > Note “As a HubSpot agency, we’ve set up many eCommerce websites, and even more Inbound marketing campaigns. This plugin helps to bridge the gap between an online shop and the Inbound Methodology. Additionally, the implementation time is reduced by many hours. No question, this is one of the best investments we make for our eCom clients. Lower cost to implement, much faster Return on HubSpot Investment, and quicker time to market. It’s a win, win, win.
 ” *– MediaTown*
 
-If our documentation doesn’t contain the solution to your problem, you can visit the [MakeWebBetter Forums](https://forums.makewebbetter.com/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG) with your question.
+If you don’t find the solution to your problem in our documentation, you can [Contact us](https://makewebbetter.com/contact-us/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)  with your query.
 
  
 == Installation ==
@@ -122,12 +122,23 @@ Not at all! The MWB HubSpot for WooCommerce plugin is easy to download and start
 [MakeWebBetter](http://www.makewebbetter.com/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG) is a premier HubSpot partner, experts in WooCommerce, and creator of this free plugin! They build, maintain, and optimize WooCommerce stores to help businesses grow better. To learn more about MakeWebBetter, visit their website. 
 
 = Is there any way to make the synchronization faster for those who have 1000+ contacts? =
-If you have over a 1000+ contacts, synchronization may take a while. You can [connect with us](https://makewebbetter.com/hubspot-ecommerce-agency/?utm_source=MWB-hubspot-org&utm_medium=MWB-org-page&utm_campaign=MWB-hubspot-org) for faster syncing.
+If you have over 1000+ contacts, synchronization may take a while. You can [connect with us](https://makewebbetter.com/hubspot-ecommerce-agency/?utm_source=MWB-hubspot-org&utm_medium=MWB-org-page&utm_campaign=MWB-hubspot-org) for faster syncing.
 
 = My question is not listed =
 Please visit the MakeWebBetter [knowledge base](https://support.makewebbetter.com/hubspot-knowledge-base/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG) for more detailed [documentation and support.](https://docs.makewebbetter.com/hubspot-integration-for-woocommerce/?utm_source=MWB-HubspotFree-ORG&utm_medium=MWB-ORG&utm_campaign=ORG)
 
+= What product data can I send over HubSpot through this plugin?  =
+If you have the free HubSpot plan, you can sync Product Name, Product Image, Product Price, Product Description. And if you use a Marketing professional or enterprise plan, you can sync all the data included in the free plan along with the Product SKU and Product Image URL.
+
 == Changelog ==
+= 1.3.0 - Released on 14 April 2022 =
+* Added - Line item filter.
+= 1.2.9 - Released on 17 March 2022 =
+* Fix - Minor Bug Fixes.
+= 1.2.8 - Released on 31 Jan 2022 =
+* Added - Update Scopes.
+= 1.2.7 - Released on 13 Jan 2022 =
+* Added - Deal Company association.
 = 1.2.6 - Released on 06 Dec 2021 =
 * Fix - Newsletter Subscription Property issue.
 = 1.2.5 - Released on 12 Nov 2021 =
@@ -164,5 +175,5 @@ Please visit the MakeWebBetter [knowledge base](https://support.makewebbetter.co
  
 == Upgrade Notice ==
  
-= 1.2.6 - Released on 06 Dec 2021 =
-* Fix - Newsletter Subscription Property issue.
+= 1.3.0 - Released on 14 April 2022 =
+* Added - Line item filter

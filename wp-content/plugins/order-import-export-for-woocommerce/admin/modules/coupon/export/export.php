@@ -164,11 +164,13 @@ class Wt_Import_Export_For_Woo_Basic_Coupon_Export {
 
             $return['total'] = $total_records;
             $return['data'] = $data_array;
+
             return $return;
         }        
     }
 
     public function generate_row_data($coupon) {
+		
         $csv_columns = $this->parent_module->get_selected_column_names();                
         $row = array();
         

@@ -10,6 +10,10 @@ if( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if( ! pewc_is_pro() ) {
+	return;
+}
+
 /**
  * @hooked pewc_enqueue_variations_scripts
  */
@@ -63,6 +67,7 @@ $manage_stock = false; ?>
 		$variant_wrapper = '';
 		$wrapper_classes = array(
 			'pewc-checkbox-image-wrapper',
+			'pewc-checkbox-wrapper',
 			'pewc-child-variation-main'
 		);
 

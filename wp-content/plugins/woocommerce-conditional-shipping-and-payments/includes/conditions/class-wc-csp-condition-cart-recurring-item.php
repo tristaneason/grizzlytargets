@@ -2,7 +2,6 @@
 /**
  * WC_CSP_Condition_Cart_Recurring_Item class
  *
- * @author   SomewhereWarm <info@somewherewarm.com>
  * @package  WooCommerce Conditional Shipping and Payments
  * @since    1.4.0
  */
@@ -16,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Product on Subscription in Cart Condition.
  *
  * @class    WC_CSP_Condition_Cart_Reccuring_Item
- * @version  1.11.0
+ * @version  1.12.1
  */
 class WC_CSP_Condition_Cart_Recurring_Item extends WC_CSP_Condition {
 
@@ -49,7 +48,7 @@ class WC_CSP_Condition_Cart_Recurring_Item extends WC_CSP_Condition {
 
 		if ( $this->modifier_is( $data[ 'modifier' ], array( 'in' ) ) ) {
 
-			if ( sizeof( $data[ 'value' ] ) === 4 ) {
+			if ( count( $data[ 'value' ] ) === 4 ) {
 				$message  = __( 'remove all subscription products from your cart', 'woocommerce-conditional-shipping-and-payments' );
 			} else {
 				$subjects = $this->get_billing_period_adverb( $this->get_condition_violation_subjects( $data, $args ) );
@@ -58,7 +57,7 @@ class WC_CSP_Condition_Cart_Recurring_Item extends WC_CSP_Condition {
 
 		} elseif ( $this->modifier_is( $data[ 'modifier' ], array( 'not-in' ) ) ) {
 
-			if ( sizeof( $data[ 'value' ] ) === 4 ) {
+			if ( count( $data[ 'value' ] ) === 4 ) {
 				$message = __( 'add some subscription products to your cart', 'woocommerce-conditional-shipping-and-payments' );
 			} else {
 				$message = sprintf( __( 'add some %s subscription products to your cart', 'woocommerce-conditional-shipping-and-payments' ), $chosen_periods_placeholder );
@@ -66,7 +65,7 @@ class WC_CSP_Condition_Cart_Recurring_Item extends WC_CSP_Condition {
 
 		} elseif ( $this->modifier_is( $data[ 'modifier' ], array( 'all-in' ) ) ) {
 
-			if ( sizeof( $data[ 'value' ] ) === 4 ) {
+			if ( count( $data[ 'value' ] ) === 4 ) {
 				$message = __( 'make sure that your cart doesn\'t contain only subscription products', 'woocommerce-conditional-shipping-and-payments' );
 			} else {
 				$message = sprintf( __( 'make sure that your cart doesn\'t contain only %s subscription products', 'woocommerce-conditional-shipping-and-payments' ), $chosen_periods_placeholder );
@@ -74,7 +73,7 @@ class WC_CSP_Condition_Cart_Recurring_Item extends WC_CSP_Condition {
 
 		} elseif ( $this->modifier_is( $data[ 'modifier' ], array( 'not-all-in' ) ) ) {
 
-			if ( sizeof( $data[ 'value' ] ) === 4 ) {
+			if ( count( $data[ 'value' ] ) === 4 ) {
 				$message = __( 'make sure that your cart contains only subscription products', 'woocommerce-conditional-shipping-and-payments' );
 			} else {
 				$message = sprintf( __( 'make sure that your cart contains only %s subscription products', 'woocommerce-conditional-shipping-and-payments' ), $chosen_periods_placeholder );
@@ -185,7 +184,7 @@ class WC_CSP_Condition_Cart_Recurring_Item extends WC_CSP_Condition {
 			$order = $args[ 'order' ];
 
 			if ( ! ( $order instanceof WC_Subscription ) ) {
-				return false;
+				return $this->modifier_is( $data[ 'modifier' ], array( 'not-in', 'not-all-in' ) );
 			}
 
 			$billing_period       = $order->get_billing_period();

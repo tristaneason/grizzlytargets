@@ -43,7 +43,7 @@ class Porto_Elementor_Recent_Portfolios_Widget extends \Elementor\Widget_Base {
 		}
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 		$slider_options = porto_vc_product_slider_fields();
 		unset( $slider_options[8] );
 		unset( $slider_options[9] );

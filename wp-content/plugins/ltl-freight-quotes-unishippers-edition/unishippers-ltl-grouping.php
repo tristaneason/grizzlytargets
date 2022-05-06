@@ -122,15 +122,18 @@ if (!class_exists('group_unishippers_ltl_shipments')) {
 
                 $this->products_details[] = $product_unique_key;
                 // End compatability with Woocommerce Product Add-ons
-
-                $height = wc_get_dimension($_product->get_height(), 'in');
-                $width = wc_get_dimension($_product->get_width(), 'in');
-                $length = wc_get_dimension($_product->get_length(), 'in');
+                $p_height = str_replace( array( "'",'"' ),'',$_product->get_height());
+                $p_width = str_replace( array( "'",'"' ),'',$_product->get_width());
+                $p_length = str_replace( array( "'",'"' ),'',$_product->get_length());
+                $height = is_numeric($p_height) ? $p_height : 0;
+                $width = is_numeric($p_width) ? $p_width : 0;
+                $length = is_numeric($p_length) ? $p_length : 0;
+                $height = ceil(wc_get_dimension($height, 'in'));
+                $width = ceil(wc_get_dimension($width, 'in'));
+                $length = ceil(wc_get_dimension($length, 'in'));
+               
                 $product_weight = wc_get_weight($_product->get_weight(), 'lbs');
 
-                $height = (strlen($height) > 0) ? $height : "0";
-                $width = (strlen($width) > 0) ? $width : "0";
-                $length = (strlen($length) > 0) ? $length : "0";
                 $product_weight = (strlen($product_weight) > 0) ? $product_weight : "0";
 
                 $weight = ($values['quantity'] == 1) ? $product_weight : $product_weight * $values['quantity'];

@@ -429,6 +429,7 @@
 						set_summary_panel_data( $( this ), $(this).find( $('input[type=radio]:checked')).val(), added_price );
 					} else {
 						$( this ).removeClass( 'pewc-active-field' );
+						set_summary_panel_data( $( this ), '', 0 );
 					}
 
 				}
@@ -521,6 +522,7 @@
 					set_summary_panel_data( $( this ), field_value.join( ', ' ), checkbox_group_price );
 				} else {
 					$( this ).removeClass( 'pewc-active-field' );
+					set_summary_panel_data( $( this ), '', 0 );
 				}
 
 			}
@@ -550,6 +552,9 @@
 						} else if( quantities == 'independent' ) {
 							// Find the child_quantity field
 							qty = $(wrapper).find('.pewc-child-quantity-field').val();
+							if ( pewc_vars.multiply_independent == 'yes' && $('.quantity .qty').val() !== undefined ) {
+								qty = qty * parseFloat( $('.quantity .qty').val() );
+							}
 						} else if( quantities == 'one-only' ) {
 							qty = 1;
 						}
@@ -583,6 +588,9 @@
 						} else if( quantities == 'independent' ) {
 							// Find the child_quantity field
 							qty = $(this).closest('.pewc-item-field-wrapper').find('.pewc-child-quantity-field').val();
+							if ( pewc_vars.multiply_independent == 'yes' && $('.quantity .qty').val() !== undefined ) {
+								qty = qty * parseFloat( $('.quantity .qty').val() );
+							}
 						} else if( quantities == 'one-only' ) {
 							qty = 1;
 						}
@@ -602,6 +610,7 @@
 		});
 
 		$('form.cart .pewc-checkboxes-images-wrapper.child-product-wrapper').each(function() {
+
 			var this_child_total = 0;
 			var field_value = [];
 			var is_hidden = $( this ).closest( '.pewc-item' ).hasClass( 'pewc-hidden-field' );
@@ -621,7 +630,10 @@
 						if( quantities == 'linked' ) {
 							qty = $('.quantity .qty').val();
 						} else if( quantities == 'independent' ) {
-							qty = $(this).closest('.pewc-checkbox-image-wrapper').find('.pewc-child-quantity-field').val();
+							qty = $(this).closest('.pewc-checkbox-wrapper').find('.pewc-child-quantity-field').val();
+							if ( pewc_vars.multiply_independent == 'yes' && $('.quantity .qty').val() !== undefined ) {
+								qty = qty * parseFloat( $('.quantity .qty').val() );
+							}
 						} else if( quantities == 'one-only' ) {
 							qty = 1;
 						}
@@ -660,6 +672,9 @@
 							qty = $('.quantity .qty').val();
 						} else if( quantities == 'independent' ) {
 							qty = $(this).closest('.pewc-checkbox-image-wrapper').find('.pewc-child-quantity-field').val();
+							if ( pewc_vars.multiply_independent == 'yes' && $('.quantity .qty').val() !== undefined ) {
+								qty = qty * parseFloat( $('.quantity .qty').val() );
+							}
 						} else if( quantities == 'one-only' ) {
 							qty = 1;
 						}
@@ -696,6 +711,9 @@
 							qty = $('.quantity .qty').val();
 						} else if( quantities == 'independent' ) {
 							qty = $(this).closest('.pewc-simple-child-product-wrapper').find('.pewc-child-quantity-field').val();
+							if ( pewc_vars.multiply_independent == 'yes' && $('.quantity .qty').val() !== undefined ) {
+								qty = qty * parseFloat( $('.quantity .qty').val() );
+							}
 						} else if( quantities == 'one-only' ) {
 							qty = 1;
 						}
@@ -729,6 +747,9 @@
 							qty = $('.quantity .qty').val();
 						} else if( quantities == 'independent' ) {
 							qty = $(this).closest('.pewc-child-variation-main').find('.pewc-child-quantity-field').val();
+							if ( pewc_vars.multiply_independent == 'yes' && $('.quantity .qty').val() !== undefined ) {
+								qty = qty * parseFloat( $('.quantity .qty').val() );
+							}
 						} else if( quantities == 'one-only' ) {
 							qty = 1;
 						}
@@ -774,16 +795,23 @@
 			$( '#pewc-summary-row-' + field_id ).find( '.pewc-summary-panel-price' ).html( pewc_wc_price( field_price ) );
 		});
 
-		// Summary panel subtotal
-		var subtotal = parseFloat( child_products_total ) + parseFloat( total_price ) + parseFloat( product_price );
-		if( ! isNaN( subtotal ) ) {
-			$( '#pewc-summary-panel-subtotal' ).html( pewc_wc_price( subtotal.toFixed(pewc_vars.decimals) ) );
-		}
+		// Summary panel subtotal (3.9.7)
+		//var subtotal = parseFloat( child_products_total ) + parseFloat( total_price ) + parseFloat( product_price );
+		//if( ! isNaN( subtotal ) ) {
+		//	$( '#pewc-summary-panel-subtotal' ).html( pewc_wc_price( subtotal.toFixed(pewc_vars.decimals) ) );
+		//}
 
 		var qty = 1;
 		if($('.qty').val()) {
 			qty = $('.qty').val();
 		}
+
+		// Summary panel subtotal (3.9.8)
+		var subtotal = parseFloat( child_products_total ) + parseFloat( total_price ) + parseFloat( qty * product_price );
+		if( ! isNaN( subtotal ) ) {
+			$( '#pewc-summary-panel-subtotal' ).html( pewc_wc_price( subtotal.toFixed(pewc_vars.decimals) ) );
+		}
+
 		var total_grid_variations = $( '#pewc-grid-total-variations' ).val();
 
 		var product_price = qty * product_price;
@@ -836,7 +864,6 @@
 
 		// Re-run this because some browsers are too quick
 		// This won't run if we're using the optimised condition option
-		// console.log( 'update' );
 		if( $update == 0 && pewc_vars.conditions_timer < 1 ) {
 			var interval = setTimeout( function() {
 				pewc_update_total_js( 1 );
@@ -933,13 +960,22 @@
 			}
 		}
 
-		var floor = Math.floor( price );
+		if( price >= 0 ) {
+			var floor = Math.floor( price );
+			var is_negative = false;
+		} else {
+			var floor = Math.ceil( price );
+			var is_negative = true;
+		}
+
 		// Format the integer first
 		floor = format_separator( floor );
 		// Now replace the default separator
 		floor = floor.replace( /,/g, thousand_separator );
 		// Add the decimal back in with the correct separator
 		price = floor + decimal_string;
+		if (is_negative && floor == 0)
+			price = 0-price; // add negative sign back
 
 		var currency_symbol = '<span class="woocommerce-Price-currencySymbol">' + pewc_vars.currency_symbol + '</span>';
 
@@ -1040,9 +1076,11 @@
 		$( '.pewc-group-wrap' ).removeClass( 'group-active' );
 		$( '.pewc-group-wrap-' + tab_id ).addClass( 'group-active' );
 		// Scroll to top
-		$([document.documentElement, document.body]).animate({
-      scrollTop: $( '.pewc-steps-wrapper' ).offset().top
-    }, 150);
+		if( $( '.pewc-steps-wrapper' ).length > 0 ) {
+			$([document.documentElement, document.body]).animate({
+	      scrollTop: $( '.pewc-steps-wrapper' ).offset().top
+	    }, 150);
+		}
 	});
 
 	function pewc_get_text_str_len( str, wrapper ) {
@@ -1074,11 +1112,23 @@
 		str_len = Math.max(0,str_len);
 		return str_len;
 	}
-	$('.woocommerce-cart-form__cart-item.pewc-child-product').each(function() {
-		if( pewc_vars.disable_qty || pewc_vars.multiply_independent == 'yes' ) {
-			$(this).find('.product-quantity input').attr('disabled',true);
-		}
-	});
+
+	function pewc_disable_child_product_quantities() {
+		$('.woocommerce-cart-form__cart-item.pewc-child-product').each(function() {
+			if( pewc_vars.disable_qty || pewc_vars.multiply_independent == 'yes' ) {
+				$(this).find('.product-quantity input').attr('disabled',true);
+			}
+		});
+	}
+
+	// only do this if there are actually child products
+	if ( $('.woocommerce-cart-form__cart-item.pewc-child-product').length > 0 ) {
+		// call function on page load
+		pewc_disable_child_product_quantities();
+		// when cart is updated, disable quantities again
+		$('body').on('updated_cart_totals', pewc_disable_child_product_quantities);
+	}
+
 	// If child product is selected, manage allowable purchase quantity
 	// Applies to radio and select
 	$('body').on('change','.products-quantities-independent .pewc-child-select-field',function(){
@@ -1097,46 +1147,51 @@
 			$(number_field).removeAttr('max');
 		}
 	});
-	$('body').on('change input keyup paste','.products-quantities-independent .pewc-child-quantity-field',function(){
+	$('body').on('change input keyup paste','.products-quantities-independent .pewc-child-quantity-field',function() {
+
 		// Ensure this child product is selected
 		if( $(this).val() > 0 ) {
-			var checkbox = $(this).closest('.pewc-checkbox-image-wrapper').find('input[type=checkbox]').prop('checked',true);
+			var checkbox = $(this).closest('.pewc-checkbox-wrapper').find('input[type=checkbox]').prop('checked',true).change();
 			// $(this).closest('.pewc-checkbox-image-wrapper').addClass('checked');
 		} else {
-			var checkbox = $(this).closest('.pewc-checkbox-image-wrapper').find('input[type=checkbox]').prop('checked',false);
+			var checkbox = $(this).closest('.pewc-checkbox-wrapper').find('input[type=checkbox]').prop('checked',false).change();
 			// $(this).closest('.pewc-checkbox-image-wrapper').removeClass('checked');
 		}
 		var available_stock = $(this).find(':selected').data('stock');
-		$( 'body' ).trigger( 'pewc_update_child_quantity', [ $(this).closest('.pewc-checkbox-image-wrapper').find('input[type=checkbox]') ] );
+		// $( 'body' ).trigger( 'pewc_update_child_quantity', [ $(this).closest('.pewc-checkbox-image-wrapper').find('input[type=checkbox]') ] );
+		$( 'body' ).trigger( 'pewc_update_child_quantity', [ $(this).closest('.pewc-checkbox-wrapper').find('input[type=checkbox]') ] );
 		pewc_update_total_js();
 	});
 	$( 'body' ).on( 'click', '.products-quantities-independent .pewc-checkbox-form-field', function() {
 		if( $(this).is(':checked') ){
-			var number = $(this).closest('.pewc-checkbox-image-wrapper').find('input[type=number]').val();
+			var number = $(this).closest('.pewc-checkbox-wrapper').find('input[type=number]').val();
 			if(number==0) {
-				$(this).closest('.pewc-checkbox-image-wrapper').find('input[type=number]').val(1);
+				$(this).closest('.pewc-checkbox-wrapper').find('input[type=number]').val(1);
 			}
 		} else {
-			var number = $(this).closest('.pewc-checkbox-image-wrapper').find('input[type=number]').val(0);
+			var number = $(this).closest('.pewc-checkbox-wrapper').find('input[type=number]').val(0);
 		}
 	});
 
 	$( 'body' ).on( 'click', '.pewc-radio-image-wrapper', function( e ) {
 		var wrapper = $( this );
 		var radio;
+
 		// Remove all checked for radio button
 		if( ! $( wrapper ).closest( '.pewc-item' ).hasClass( 'pewc-item-image-swatch-checkbox' ) ) {
 			var checked = $( wrapper ).find( '.pewc-radio-form-field' ).prop( 'checked' );
 			var group = $( wrapper ).closest( '.pewc-radio-images-wrapper' ).find( '.pewc-radio-image-wrapper' ).removeClass( 'checked' );
+
 			if( ! checked ) {
-				radio = $( wrapper ).find( '.pewc-radio-form-field' ).trigger( 'click' );
 				$( wrapper ).addClass( 'checked' );
+				//radio = $( wrapper ).find( '.pewc-radio-form-field' ).trigger( 'click' );
 			}
+			radio = $( wrapper ).find( '.pewc-radio-form-field' ).trigger( 'click' ); // moved here 3.9.5 for lightbox
 		} else {
 			// Checkbox
 			radio = $( wrapper ).find( '.pewc-radio-form-field' );
 			var checked = $( radio ).prop( 'checked' );
-			$( radio ).prop( 'checked', ! checked );
+			$( radio ).prop( 'checked', ! checked ).trigger( 'click' ); // click added 3.9.5
 		}
 		$form = $( this ).closest( 'form' );
 		add_on_images.update_add_on_image( $( this ), $form );
@@ -1148,11 +1203,12 @@
 			// Deselect the radio button
 			var checked = $( this ).closest( '.pewc-radio-image-wrapper' ).hasClass( 'checked' );
 			if( ! checked ) {
-				$( this ).prop( 'checked', false );
+				$( this ).prop( 'checked', false ).trigger( 'change' ); // added on 3.9.5 for lightbox
 				pewc_update_total_js();
 			}
 		} else {
-			$( this ).closest( '.pewc-radio-image-wrapper' ).toggleClass( 'checked' );
+			e.stopPropagation(); // added on 3.9.5, for checkbox in lightbox
+			$( this ).closest( '.pewc-radio-image-wrapper' ).toggleClass( 'checked' ); // originally here before 3.9.5
 		}
 
 	});
@@ -1239,6 +1295,7 @@
 				var result = calculations.evaluate_formula( fields, formula, round, decimals, calc_field_id );
 
 				if( result == '*' ) {
+					$( calc_field ).closest( '.pewc-item-calculation' ).attr( 'data-price', 0 );
 					$( price_wrapper ).find( 'span' ).html( pewc_vars.null_signifier );
 					$( price_wrapper ).find( '.pewc-calculation-value' ).val( 0 ).trigger( 'calculation_field_updated' );
 					if( pewc_vars.disable_button_calcs == 'yes' ) {
@@ -1352,6 +1409,7 @@
 		find_nearest_index: function( value, axis ) {
 
 			var keys = Object.keys( axis ); // Just the keys
+			keys.sort( (a,b) => a-b ); // sort the keys numerically. This is needed if keys have decimals
 
 			if( parseFloat( value ) <= parseFloat( keys[0] ) ) {
 				return keys[0];
@@ -1468,6 +1526,14 @@
 			}
 			if( formula.includes( "{variable_3}" ) && pewc_vars.variable_3 ) {
 				calc_formula = calc_formula.replace( /{variable_3}/g, parseFloat( pewc_vars.variable_3 ) );
+			}
+			if( formula.includes( "{calculated_booking_cost}" ) ) {
+				var calculated_booking_cost = parseFloat( $( '#calculated_booking_cost' ).val() );
+				calc_formula = calc_formula.replace( /{calculated_booking_cost}/g, parseFloat( calculated_booking_cost ) );
+			}
+			if( formula.includes( "{num_units_int}" ) ) {
+				var num_units_int = parseFloat( $( '#num_units_int' ).val() );
+				calc_formula = calc_formula.replace( /{num_units_int}/g, parseFloat( num_units_int ) );
 			}
 
 			if( pewc_vars.global_calc_vars ) {
@@ -1673,12 +1739,14 @@
 				$( '.tooltip' ).tooltipster(
 					{
 						theme: 'tooltipster-shadow',
-		        side: 'right',
-		        contentAsHTML: pewc_vars.contentAsHTML,
-		        autoClose : pewc_vars.autoClose,
-		        interactive : pewc_vars.interactive,
-		        hideOnClick : pewc_vars.hideOnClick,
-		        trigger : pewc_vars.trigger
+		        		side: 'right',
+						contentAsHTML: pewc_vars.contentAsHTML,
+						autoClose : pewc_vars.autoClose,
+						interactive : pewc_vars.interactive,
+						hideOnClick : pewc_vars.hideOnClick,
+						trigger : pewc_vars.trigger,
+						triggerOpen : pewc_vars.triggerOpen,
+						triggerClose: pewc_vars.triggerClose
 					}
 				);
 			}
@@ -1700,7 +1768,7 @@
 			e.preventDefault();
 			$( 'body' ).addClass( 'pewc-quickview-active' );
 			// $( '.pewc-quickview-product-wrapper' ).hide();
-			$( '#pewc-quickview-' + $( this ).attr( 'data-child-product-id' ) ).css( 'left', '50%' );
+			$( '#pewc-quickview-' + $(this).closest( 'li.pewc-item' ).attr( 'data-id' ) + '_' + $( this ).attr( 'data-child-product-id' ) ).css( 'left', '50%' );
 		},
 
 		hide_quickview: function( e ) {

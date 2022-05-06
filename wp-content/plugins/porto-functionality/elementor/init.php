@@ -530,8 +530,16 @@ if ( ! class_exists( 'Porto_Elementor_Init' ) ) :
 			$self->unregister_widget_type( 'common' );
 			include_once dirname( PORTO_META_BOXES_PATH ) . '/elementor/widgets/common.php';
 			$self->register_widget_type( new Porto_Elementor_Common_Widget( array(), array( 'widget_name' => 'common' ) ) );
-			
 			foreach ( $this->widgets as $widget ) {
+				if ( 'portfolio' == $widget && ! post_type_exists( 'portfolio' ) ) {
+					continue;
+				}
+				if ( 'members' == $widget && ! post_type_exists( 'member' ) ) {
+					continue;
+				}
+				if ( 'faqs' == $widget && ! post_type_exists( 'faq' ) ) {
+					continue;
+				}
 				include dirname( PORTO_META_BOXES_PATH ) . '/elementor/widgets/' . $widget . '.php';
 				$class_name = 'Porto_Elementor_' . ucfirst( $widget ) . '_Widget';
 				$self->register_widget_type( new $class_name( array(), array( 'widget_name' => $class_name ) ) );

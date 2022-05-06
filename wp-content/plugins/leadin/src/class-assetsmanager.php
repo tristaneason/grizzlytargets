@@ -71,7 +71,7 @@ class AssetsManager {
 		$embed_domain = LeadinFilters::get_leadin_script_loader_domain();
 		$portal_id    = AccountOptions::get_portal_id();
 		$embed_url    = "https://$embed_domain/$portal_id.js?integration=WordPress";
-		wp_register_script( self::TRACKING_CODE, $embed_url, array( 'jquery' ), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		wp_register_script( self::TRACKING_CODE, $embed_url, array( 'jquery' ), LEADIN_PLUGIN_VERSION, true );
 		wp_localize_script( self::TRACKING_CODE, 'leadin_wordpress', $leadin_wordpress_info );
 		wp_enqueue_script( self::TRACKING_CODE );
 	}
@@ -80,11 +80,11 @@ class AssetsManager {
 	 * Register and enqueue forms script
 	 */
 	public static function enqueue_forms_script() {
-		wp_enqueue_script( // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		wp_enqueue_script(
 			self::FORMS_SCRIPT,
 			LeadinFilters::get_leadin_forms_script_url(),
 			array(),
-			null,
+			LEADIN_PLUGIN_VERSION,
 			true
 		);
 	}

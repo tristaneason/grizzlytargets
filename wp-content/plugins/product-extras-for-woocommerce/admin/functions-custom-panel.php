@@ -324,9 +324,7 @@ function pewc_save_product_extra_options( $post_id ) {
 							} else {
 
 								delete_post_meta( $field_id, $param );
-
 							}
-
 						}
 
 						// Filter any values here just before they're saved
@@ -410,6 +408,7 @@ function pewc_field_types() {
 		'name_price'			=> __( 'Name Your Price', 'pewc' ),
 		'number'					=> __( 'Number', 'pewc' ),
 		'products'				=> __( 'Products', 'pewc' ),
+		'product-categories'	=> __( 'Product Categories', 'pewc' ),
 		'radio'						=> __( 'Radio Group', 'pewc' ),
 		'select'					=> __( 'Select', 'pewc' ),
 		'select-box'			=> __( 'Select Box', 'pewc' ),
@@ -486,7 +485,7 @@ function pewc_save_custom_label_fields( $post_id ) {
 	$pewc_price_display = isset( $_POST['pewc_price_display'] ) ? $_POST['pewc_price_display'] : '';
 	$product->update_meta_data( 'pewc_price_display', sanitize_text_field( $pewc_price_display ) );
 	$minimum_price = isset( $_POST['pewc_minimum_price'] ) ? $_POST['pewc_minimum_price'] : '';
-	$product->update_meta_data( 'pewc_minimum_price', sanitize_text_field( $minimum_price ) );
+	$product->update_meta_data( 'pewc_minimum_price', wc_format_decimal( $minimum_price ) );
 	$force_minimum = isset( $_POST['pewc_force_minimum'] ) ? 'yes' : 'no';
 	update_post_meta( $post_id, 'pewc_force_minimum', $force_minimum );
 	$product->save();

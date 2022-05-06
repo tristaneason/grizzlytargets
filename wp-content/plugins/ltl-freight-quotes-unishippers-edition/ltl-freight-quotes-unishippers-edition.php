@@ -5,11 +5,11 @@
   Description: Dynamically retrieves your negotiated LTL freight rates from Unishippers and displays the results in the WooCommerce shopping cart..
   Author: Eniture Technology
   Author URI: http://eniture.com/
-  Version: 2.1.1
+  Version: 2.1.3
   Text Domain: eniture-technology
   License: GPL version 2 or later - http://www.eniture.com/
-  WC requires at least: 5.0.0
-  WC tested up to: 5.5.2
+  WC requires at least: 5.7
+  WC tested up to: 6.3.1
  */
 
 if (!defined('ABSPATH')) {
@@ -158,7 +158,7 @@ if (!function_exists('unishippers_freight_add_action_plugin')) {
         if ($plugin == $plugin_file) {
 
             $settings = array('settings' => '<a href="admin.php?page=wc-settings&tab=unishippers_freight">' . __('Settings', 'General') . '</a>');
-            $site_link = array('support' => '<a href="https://support.eniture.com/home" target="_blank">Support</a>');
+            $site_link = array('support' => '<a href="https://support.eniture.com/" target="_blank">Support</a>');
             $actions = array_merge($settings, $actions);
             $actions = array_merge($site_link, $actions);
         }

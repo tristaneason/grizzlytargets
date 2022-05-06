@@ -1788,7 +1788,13 @@ if ( ! class_exists( 'PortoBuildersHeader' ) ) :
 			if ( $inline_style ) {
 				$inline_style = ' style="' . $inline_style . '"';
 			}
-			echo '<a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '"' . ' title="' . esc_attr__( 'My Account', 'porto' ) . '" class="my-account' . ( $el_class ? ' ' . esc_attr( $el_class ) : '' ) . '"' . $inline_style . '><i class="' . esc_attr( $icon_cl ) . '"></i></a>';
+
+			if ( function_exists( 'porto_account_menu' ) ) {
+				porto_account_menu( $el_class, $icon_cl, $inline_style );
+			} else {
+				echo '<a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '"' . ' title="' . esc_attr__( 'My Account', 'porto' ) . '" class="my-account' . ( $el_class ? ' ' . esc_attr( $el_class ) : '' ) . '"' . $inline_style . '><i class="' . esc_attr( $icon_cl ) . '"></i></a>';
+			}
+
 			if ( ! $echo ) {
 				return ob_get_clean();
 			}

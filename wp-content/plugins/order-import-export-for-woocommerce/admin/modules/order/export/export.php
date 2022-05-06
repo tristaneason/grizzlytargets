@@ -14,6 +14,7 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
     private $line_item_meta;
     private $is_wt_invoice_active = false;
     private $is_yith_tracking_active = false;
+	private $shipment_tracking_active = false;
 
     public function __construct($parent_object) {
 
@@ -28,9 +29,12 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
         if (is_plugin_active('print-invoices-packing-slip-labels-for-woocommerce/print-invoices-packing-slip-labels-for-woocommerce.php')):
             $this->is_wt_invoice_active = true;
         endif;
-        if (is_plugin_active('yith-woocommerce-order-tracking-premium/init.php')):
+        if (class_exists('Zorem_Woocommerce_Advanced_Shipment_Tracking') || class_exists('WC_Shipment_Tracking')):
+            $this->shipment_tracking_active = true;
+        endif; 
+		if (is_plugin_active('yith-woocommerce-order-tracking-premium/init.php')):
             $this->is_yith_tracking_active = true;
-        endif;        
+        endif;  
 		
         $max_line_items = $this->line_items_max_count;
 
@@ -151,7 +155,7 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
         $email = !empty($form_data['filter_form_data']['wt_iew_email']) ? $form_data['filter_form_data']['wt_iew_email'] : array(); // user email fields return user ids
         $start_date = !empty($form_data['filter_form_data']['wt_iew_date_from']) ? $form_data['filter_form_data']['wt_iew_date_from'] . ' 00:00:00' : date('Y-m-d 00:00:00', 0);
         $end_date = !empty($form_data['filter_form_data']['wt_iew_date_to']) ? $form_data['filter_form_data']['wt_iew_date_to'] . ' 23:59:59.99' : date('Y-m-d 23:59:59.99', current_time('timestamp'));        
-        $coupons = !empty($form_data['filter_form_data']['wt_iew_coupons']) ? array_filter(explode(',', strtolower($form_data['filter_form_data']['wt_iew_coupons'])),'trim') : array();
+        $coupons = !empty($form_data['filter_form_data']['wt_iew_coupons']) ? $form_data['filter_form_data']['wt_iew_coupons'] : array();
         $orders = !empty($form_data['filter_form_data']['wt_iew_orders']) ? array_filter(explode(',', strtolower($form_data['filter_form_data']['wt_iew_orders'])),'trim') : array();
 
         $export_limit = !empty($form_data['filter_form_data']['wt_iew_limit']) ? intval($form_data['filter_form_data']['wt_iew_limit']) : 999999999; //user limit
@@ -159,10 +163,10 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
         $export_offset = $current_offset;
         $batch_count = !empty($form_data['advanced_form_data']['wt_iew_batch_count']) ? $form_data['advanced_form_data']['wt_iew_batch_count'] : Wt_Import_Export_For_Woo_Basic_Common_Helper::get_advanced_settings('default_export_batch');
 
-        $exclude_already_exported = (!empty($form_data['advanced_form_data']['wt_iew_exclude_already_exported']) && $form_data['advanced_form_data']['wt_iew_exclude_already_exported'] == 'Yes') ? true : false;
-                       
-        $this->export_to_separate_columns = (!empty($form_data['advanced_form_data']['wt_iew_export_to_separate']) && $form_data['advanced_form_data']['wt_iew_export_to_separate'] == 'column') ? true : false;                       
-        $this->export_to_separate_rows = (!empty($form_data['advanced_form_data']['wt_iew_export_to_separate']) && $form_data['advanced_form_data']['wt_iew_export_to_separate'] == 'row') ? true : false;               
+        $exclude_already_exported = (!empty($form_data['advanced_form_data']['wt_iew_exclude_already_exported']) && ( $form_data['advanced_form_data']['wt_iew_exclude_already_exported'] === 'Yes' || $form_data['advanced_form_data']['wt_iew_exclude_already_exported'] == 1 )) ? true : false;
+
+        $this->export_to_separate_columns = (!empty($form_data['advanced_form_data']['wt_iew_export_to_separate']) && $form_data['advanced_form_data']['wt_iew_export_to_separate'] === 'column') ? true : false;                       
+        $this->export_to_separate_rows = (!empty($form_data['advanced_form_data']['wt_iew_export_to_separate']) && $form_data['advanced_form_data']['wt_iew_export_to_separate'] === 'row') ? true : false;               
 
         
         $real_offset = ($current_offset + $batch_offset);
@@ -644,6 +648,7 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
                 'order_discount' => (defined('WC_VERSION') && (WC_VERSION >= 2.3)) ? wc_format_decimal($order->get_total_discount(), 2) : wc_format_decimal($order->get_order_discount(), 2),
                 'discount_total' => wc_format_decimal($order->get_discount_total(), 2),
                 'order_total' => wc_format_decimal($order->get_total(), 2),
+				'order_key' => $order->order_key,
                 'order_currency' => $order->get_order_currency(),
                 'payment_method' => $order->payment_method,
                 'payment_method_title' => $order->payment_method_title,
@@ -702,6 +707,7 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
                 'order_discount' => (defined('WC_VERSION') && (WC_VERSION >= 2.3)) ? wc_format_decimal($order->get_total_discount(), 2) : wc_format_decimal($order->get_order_discount(), 2),
                 'discount_total' => wc_format_decimal($order->get_total_discount(), 2),
                 'order_total' => wc_format_decimal($order->get_total(), 2),
+				'order_key' => $order->get_order_key(),
                 'order_currency' => $order->get_currency(),
                 'payment_method' => $order->get_payment_method(),
                 'payment_method_title' => $order->get_payment_method_title(),
@@ -762,7 +768,11 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
             $order_data['meta:ywot_carrier_id'] = empty($ywot_carrier_id) ? '' : $ywot_carrier_id;
             $order_data['meta:ywot_pick_up_date'] = empty($ywot_pick_up_date) ? '' : $ywot_pick_up_date;
             $order_data['meta:ywot_picked_up'] = empty($ywot_picked_up) ? '' : $ywot_picked_up;            
-        endif;        
+        endif; 
+		if ($this->shipment_tracking_active):
+            $advanced_shipment_tracking = get_post_meta($order_data['order_id'], '_wc_shipment_tracking_items', true);
+            $order_data['meta:_wc_shipment_tracking_items'] = empty($advanced_shipment_tracking) ? '' : json_encode($advanced_shipment_tracking);
+        endif;
 
         $order_export_data = array();
         foreach ($csv_columns as $key => $value) {
@@ -818,6 +828,7 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
 
     public static function hf_get_orders_of_products($products, $export_order_statuses, $export_limit, $export_offset, $end_date, $start_date, $exclude_already_exported, $retun_count = false) {
         global $wpdb;
+		$query = '';
         $query .= "SELECT DISTINCT po.ID FROM {$wpdb->posts} AS po
             LEFT JOIN {$wpdb->postmeta} AS pm ON pm.post_id = po.ID
             LEFT JOIN {$wpdb->prefix}woocommerce_order_items AS oi ON oi.order_id = po.ID
@@ -876,6 +887,7 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
         if ($retun_count == FALSE) {
             $query .= " LIMIT " . intval($export_limit) . ' ' . (!empty($export_offset) ? 'OFFSET ' . intval($export_offset) : '');
         }
+
         $order_ids = $wpdb->get_col($query);
         if ($retun_count == TRUE) {
             return count($order_ids);
@@ -1026,7 +1038,11 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
     public static function highest_line_item_count($line_item_keys) {
    
         $all_items  = array_count_values(array_column($line_item_keys, 'order_id'));
-        return max($all_items);
+		$max_count = 0;
+		if(count($all_items) > 0){
+			$max_count = max($all_items);
+		}
+        return $max_count;
         
     }
     

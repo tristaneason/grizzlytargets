@@ -17,12 +17,12 @@
  * needs please refer to http://docs.woocommerce.com/document/authorize-net-cim/
  *
  * @author    SkyVerge
- * @copyright Copyright (c) 2013-2021, SkyVerge, Inc.
+ * @copyright Copyright (c) 2013-2022, SkyVerge, Inc.
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
 namespace SkyVerge\WooCommerce\Authorize_Net\API\Hosted;
-use SkyVerge\WooCommerce\PluginFramework\v5_10_8 as Framework;
+use SkyVerge\WooCommerce\PluginFramework\v5_10_12 as Framework;
 
 defined( 'ABSPATH' ) or exit;
 

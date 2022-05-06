@@ -14,7 +14,8 @@ $final_workflows        = $hubwoo->hubwoo_get_final_workflows();
 $workflows_dependencies = $hubwoo->hubwoo_workflows_dependency();
 $hubwoo_workflow_desc   = $hubwoo->get_workflow_description();
 $automation_enabled     = $hubwoo->is_automation_enabled();
-$popup_display          = $automation_enabled ? 'true' : 'false';
+$access_workflow        = get_option( 'hubwoo_access_workflow', 'yes' );
+$popup_display          = ( 'yes' == $access_workflow ) ? 'true' : 'false';
 ?>
 
 <div class="hubwoo-fields-created">
@@ -44,7 +45,7 @@ $popup_display          = $automation_enabled ? 'true' : 'false';
 					<p>
 						<?php esc_html_e( 'MakeWebBetter is a HubSpot Platinum Solutions Partner. Schedule a meeting with our experts to learn more about HubSpot.', 'makewebbetter-hubspot-for-woocommerce' ); ?>
 					</p>
-					<a target="_blank" href="https://meetings.hubspot.com/makewebbetter/free-hubspot-consultation"><?php esc_html_e( 'Schedule meeting', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
+					<a target="_blank" href="https://meetings.hubspot.com/makewebbetter/free-hubspot-consultation?utm_source=MWB-HubspotFree-backend&utm_medium=MWB-backend&utm_campaign=backend"><?php esc_html_e( 'Schedule meeting', 'makewebbetter-hubspot-for-woocommerce' ); ?></a>
 				</div>
 			</div>
 		</div>

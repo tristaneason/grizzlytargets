@@ -123,7 +123,7 @@ function wppfm_changedOutputSelection( level ) {
 }
 
 function wppfm_hasExtraSourceRow( nrOfSources, value ) {
-	if ( value.length > 0 ) {
+	if ( value && value[ nrOfSources - 1 ] ) {
 		return value[ nrOfSources - 1 ].hasOwnProperty( 'c' );
 	} else {
 		return false;

@@ -319,9 +319,6 @@ $final_properties = array_map(
 					</div>
 					<form action="" method="post" id="plugin-settings-gen-adv" class="hubwoo-adv-settingg__form">
 						<?php
-						if ( empty( get_option( 'hubwoo-order-statuses', '' ) ) ) {
-							update_option( 'hubwoo-order-statuses', array_keys( wc_get_order_statuses() ) );
-						}
 
 						if ( empty( get_option( 'hubwoo-selected-user-roles', '' ) ) ) {
 							update_option( 'hubwoo-selected-user-roles', array_keys( Hubwoo_Admin::get_all_user_roles() ) );

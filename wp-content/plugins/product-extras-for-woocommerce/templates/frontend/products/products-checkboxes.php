@@ -10,6 +10,10 @@ if( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if( ! pewc_is_pro() ) {
+	return;
+}
+
 $number_columns = ( isset( $item['number_columns'] ) ) ? $item['number_columns'] : 3;
 $checkboxes_wrapper_classes = array(
 	'pewc-checkboxes-images-wrapper',
@@ -61,17 +65,18 @@ if( ! empty( $item['products_quantities'] ) ) {
 			}
 		}
 
-		$image_url = ( get_post_thumbnail_id( $child_product_id ) ) ? wp_get_attachment_url( get_post_thumbnail_id( $child_product_id ) ) : wc_placeholder_img_src();
+		$image_url = ( get_post_thumbnail_id( $child_product_id ) ) ? wp_get_attachment_image_url( get_post_thumbnail_id( $child_product_id ), apply_filters( 'pewc_child_product_image_size', 'full', $child_product_id ) ) : wc_placeholder_img_src();
 		$image = '<img src="' . esc_url( $image_url ) . '">';
 
-	  $name = apply_filters( 'pewc_child_product_title', get_the_title( $child_product_id ), $child_product ) . apply_filters( 'pewc_option_price_separator', '+', $item ) . $price;
+	  $name = apply_filters( 'pewc_child_product_title', get_the_title( $child_product_id ), $child_product ) . apply_filters( 'pewc_option_price_separator', '+', $item ) . apply_filters( 'pewc_option_price', $price, $item );
 
 		$field_name = $id . '_child_product';
 
 		$checkbox_id = $id . '_' . $child_product_id;
 
 		$wrapper_classes = array(
-			'pewc-checkbox-image-wrapper'
+			'pewc-checkbox-image-wrapper',
+			'pewc-checkbox-wrapper'
 		);
 		if( $disabled ) {
 			$wrapper_classes[] = 'pewc-checkbox-disabled';
@@ -105,6 +110,8 @@ if( ! empty( $item['products_quantities'] ) ) {
 			);
 		}
 
+		$quantity_field = apply_filters( 'pewc_filter_quantity_field', $quantity_field, $max, $child_product_id, $id, $quantity_field_value, $disabled );
+
 	  $checkbox = sprintf(
 	    '<div class="%s"><label for="%s"><input data-option-cost="%s" data-field-label="%s" type="checkbox" name="%s[]" id="%s" class="pewc-checkbox-form-field" value="%s" %s %s>%s</label><div class="pewc-checkbox-desc-wrapper">%s<div class="pewc-radio-image-desc">%s</div></div></div>',
 			join( ' ', $wrapper_classes ),
@@ -122,7 +129,7 @@ if( ! empty( $item['products_quantities'] ) ) {
 	  );
 	  echo apply_filters( 'pewc_filter_checkbox', $checkbox, $child_product_id, $price, $id, $name, $item );
 
-		do_action( 'pewc_after_child_product_item', $child_product, $child_product_id );
+		do_action( 'pewc_after_child_product_item', $id, $child_product, $child_product_id );
 	}
 
 } ?>

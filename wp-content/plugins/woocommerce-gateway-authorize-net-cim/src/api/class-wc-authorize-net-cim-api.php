@@ -17,13 +17,13 @@
  * needs please refer to http://docs.woocommerce.com/document/authorize-net-cim/
  *
  * @author    SkyVerge
- * @copyright Copyright (c) 2013-2021, SkyVerge, Inc.
+ * @copyright Copyright (c) 2013-2022, SkyVerge, Inc.
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
 defined( 'ABSPATH' ) or exit;
 
-use SkyVerge\WooCommerce\PluginFramework\v5_10_8 as Framework;
+use SkyVerge\WooCommerce\PluginFramework\v5_10_12 as Framework;
 use SkyVerge\WooCommerce\Authorize_Net\API;
 
 /**
@@ -982,24 +982,6 @@ class WC_Authorize_Net_CIM_API extends Framework\SV_WC_API_Base implements Frame
 	protected function get_gateway() {
 
 		return $this->get_plugin()->get_gateway( $this->gateway_id );
-	}
-
-
-	/**
-	 * Determine if TLS v1.2 is required for API requests.
-	 *
-	 * TODO: remove this method by version 4.0.0 or by 2021-01-09 {WV 2020-01-09}
-	 *
-	 * @since 2.6.4
-	 * @deprecated 3.2.0
-	 *
-	 * @return bool
-	 */
-	public function require_tls_1_2() {
-
-		wc_deprecated_function( __METHOD__, '3.2.0', 'WC_Authorize_Net_CIM::require_tls_1_2()' );
-
-		return $this->get_plugin()->require_tls_1_2();
 	}
 
 

@@ -14,6 +14,9 @@ if (!defined('ABSPATH')) {
 			<td colspan="2" style="width:75%;">
                 <div class="wt_iew_radio_block">
                     <?php
+					if(empty($this->mapping_templates)){
+						unset($this->import_obj->import_methods['template']);
+					}					
                     foreach($this->import_obj->import_methods as $key => $value) 
                     {
                         ?>

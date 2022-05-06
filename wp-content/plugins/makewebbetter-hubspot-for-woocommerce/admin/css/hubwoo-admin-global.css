@@ -1,0 +1,59 @@
+/*//deactivation screen*/
+
+.mwb-g-modal__cover {
+    background-color: rgba(0, 0, 0, 0.2);
+    bottom: 0;
+    display: none;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+}
+
+.mwb-g-modal__close {
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: 600;
+    position: absolute;
+    right: 7px;
+    top: 3px;
+    transform: rotate(45deg);
+}
+
+.mwb-g-modal__message {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #053500;
+    left: -200%;
+    max-width: 600px;
+    min-height: 50px;
+    padding: 15px 20px;
+    position: fixed;
+    text-align: center;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: centre 1.2s linear;
+    width: 80%;
+}
+
+.show-g_modal_cover {
+    display: block;
+}
+
+.show-g_modal_message {
+    left: 50%;
+}
+
+.mwb-g-modal__content__header {
+    margin: auto;
+}
+
+/* Additional fixes. */
+.mwb-g-modal__content {
+    margin-bottom: -80px;
+}
+
+.mwb-g-modal iframe {
+    height: 536px !important;
+}

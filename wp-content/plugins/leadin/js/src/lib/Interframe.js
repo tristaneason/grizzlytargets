@@ -11,7 +11,13 @@ import { leadinGetPortalInfo } from '../utils/portalInfo';
 import {
   leadinConnectPortal,
   leadinDisconnectPortal,
+  skipReview,
   skipSignup,
+  updateHublet,
+  getPortalHublet,
+  trackConsent,
+  disableInternalTracking,
+  fetchDisableInternalTracking,
 } from '../api/wordpressAjaxClient';
 
 import {
@@ -32,6 +38,12 @@ const methods = {
   setLeadinUnAuthedNavigation,
   makeInterframeProxyRequest,
   fetchOAuthToken,
+  skipReview,
+  updateHublet,
+  getPortalHublet,
+  trackConsent,
+  disableInternalTracking,
+  fetchDisableInternalTracking,
 };
 
 const UNAUTHORIZED = 'unauthorized';

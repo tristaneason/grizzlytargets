@@ -103,6 +103,15 @@ class Wt_Import_Export_For_Woo_Admin_Basic {
 			wp_enqueue_script(WT_IEW_PLUGIN_ID_BASIC.'-tiptip', WT_O_IEW_PLUGIN_URL.'admin/js/tiptip.js', array('jquery'), WT_O_IEW_VERSION, false);
 		}
 
+		$product_addon_active_status = false;
+		$user_addon_active_status = false;
+		if(is_plugin_active( 'product-import-export-for-woo/product-import-export-for-woo.php' )){
+			$product_addon_active_status = true;
+		}
+		if(is_plugin_active( 'users-customers-import-export-for-wp-woocommerce/users-customers-import-export-for-wp-woocommerce.php' )){
+			$user_addon_active_status = true;
+		}
+		
 		$params=array(
 			'nonces' => array(
 		        'main' => wp_create_nonce(WT_IEW_PLUGIN_ID_BASIC),
@@ -127,37 +136,51 @@ class Wt_Import_Export_For_Woo_Admin_Basic {
                             'order' => array(
                                 'url' => "https://www.webtoffee.com/product/order-import-export-plugin-for-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Order_Import_Export&utm_content=" . WT_O_IEW_VERSION,
                                 'name' => __('Order, Coupon, Subscription Export Import for WooCommerce'),
-                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/order-ie.svg'
+                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/order-ie.svg',
+								'sample_csv_url' => "https://www.webtoffee.com/wp-content/uploads/2021/03/Order_SampleCSV.csv",
+								'is_active' => true
                             ),
                             'coupon' => array(
                                 'url' => "https://www.webtoffee.com/product/order-import-export-plugin-for-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Order_Import_Export&utm_content=" . WT_O_IEW_VERSION,
                                 'name' => __('Order, Coupon, Subscription Export Import for WooCommerce'),
-                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/order-ie.svg'                                
+                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/order-ie.svg',
+								'sample_csv_url' => "https://www.webtoffee.com/wp-content/uploads/2016/09/Coupon_Sample_CSV.csv",
+								'is_active' => true
                             ),
                             'product' => array(
                                 'url' => "https://www.webtoffee.com/product/product-import-export-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Product_Import_Export&utm_content=" . WT_O_IEW_VERSION,
                                 'name' => __('Product Import Export Plugin For WooCommerce'),
-                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/product-ie.svg'                                
+                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/product-ie.svg',
+								'sample_csv_url' => "https://www.webtoffee.com/wp-content/uploads/2021/03/Product_SampleCSV.csv",
+								'is_active' => $product_addon_active_status
                             ),
                             'product_review' => array(
                                 'url' => "https://www.webtoffee.com/product/product-import-export-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Product_Import_Export&utm_content=" . WT_O_IEW_VERSION,
                                 'name' => __('Product Import Export Plugin For WooCommerce'),
-                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/product-ie.svg'
+                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/product-ie.svg',
+								'sample_csv_url' => "https://www.webtoffee.com/wp-content/uploads/2021/04/product_review_SampleCSV.csv",
+								'is_active' => $product_addon_active_status
                             ),
                             'product_categories' => array(
                                 'url' => "https://www.webtoffee.com/product/product-import-export-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Product_Import_Export&utm_content=" . WT_O_IEW_VERSION,
                                 'name' => __('Product Import Export Plugin For WooCommerce'),
-                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/product-ie.svg'
+                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/product-ie.svg',
+								'sample_csv_url' => "https://www.webtoffee.com/wp-content/uploads/2021/09/Sample-CSV-of-product-categories.csv",
+								'is_active' => $product_addon_active_status
                             ),
                             'product_tags' => array(
                                 'url' => "https://www.webtoffee.com/product/product-import-export-woocommerce/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=Product_Import_Export&utm_content=" . WT_O_IEW_VERSION,
                                 'name' => __('Product Import Export Plugin For WooCommerce'),
-                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/product-ie.svg'
+                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/product-ie.svg',
+								'sample_csv_url' => "https://www.webtoffee.com/wp-content/uploads/2021/09/Sample-CSV-with-product-tags.csv",
+								'is_active' => $product_addon_active_status
                             ),
                             'user' => array(
                                 'url' => "https://www.webtoffee.com/product/wordpress-users-woocommerce-customers-import-export/?utm_source=free_plugin_revamp&utm_medium=basic_revamp&utm_campaign=User_Import_Export&utm_content=" . WT_O_IEW_VERSION,
                                 'name' => __('WordPress Users & WooCommerce Customers Import Export'),
-                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/user-ie.svg'
+                                'icon_url' => WT_O_IEW_PLUGIN_URL.'assets/images/gopro/user-ie.svg',
+								'sample_csv_url' => "https://www.webtoffee.com/wp-content/uploads/2020/10/Sample_Users.csv",
+								'is_active' => $user_addon_active_status
                             )
                     )
                 );
@@ -267,6 +290,11 @@ class Wt_Import_Export_For_Woo_Admin_Basic {
 	            	$new_advanced_settings[$field_name]=Wt_Iew_Sh::sanitize_data($_POST[$field_name], $validation_key, $validation_rule);
 	            }
 	        }
+			$checkbox_items = array( 'wt_iew_enable_import_log', 'wt_iew_enable_history_auto_delete', 'wt_iew_include_bom' );
+			foreach ( $checkbox_items as $checkbox_item ){
+				$new_advanced_settings[$checkbox_item] = isset( $new_advanced_settings[$checkbox_item] ) ? $new_advanced_settings[$checkbox_item] : 0;
+			}
+
 	        Wt_Import_Export_For_Woo_Basic_Common_Helper::set_advanced_settings($new_advanced_settings);
 	        $out['status']=true;
 	        $out['msg']=__('Settings Updated');
@@ -376,7 +404,7 @@ class Wt_Import_Export_For_Woo_Admin_Basic {
                 {
                         if(is_plugin_active("{$module_path}/{$module_path}.php"))
                         {
-                                $module_file=WP_CONTENT_DIR."/plugins/{$module_path}/admin/modules/$module_key/$module_key.php";
+                                $module_file=WP_PLUGIN_DIR."/{$module_path}/admin/modules/$module_key/$module_key.php";
                                 if(file_exists($module_file))
                             {
                             self::$existing_modules[]=$module_key;
@@ -430,5 +458,70 @@ class Wt_Import_Export_For_Woo_Admin_Basic {
 		$links[] = '<a href="https://www.webtoffee.com/support/" target="_blank">'.__('Support').'</a>';
 		return $links;
 	}
-}
+	
+	public function tools_wtexport_text(){
+
+		echo "<p><b>" . sprintf( __( 'Export WooCommerce orders and coupons in CSV format using <a href="%s">this exporter</a>.' ), admin_url( 'admin.php?page=wt_import_export_for_woo_basic_export' ) ) . "</b></p>";
+		
+		if( !is_plugin_active( 'users-customers-import-export-for-wp-woocommerce/users-customers-import-export-for-wp-woocommerce.php' ) ){
+			echo "<p><b>" . sprintf(
+						/* translators: %s: User Import Export for WooCommerce plugin  URL */
+						__( 'You can export Users and WooCommerce customers in CSV format using the plugin <a href="%s" target="_blank">Import Export WordPress Users and WooCommerce Customers</a>.' ),
+						admin_url('plugin-install.php?tab=plugin-information&plugin=users-customers-import-export-for-wp-woocommerce')
+					) . "</b></p>";
+		 }else{
+			 echo "<p><b>" . sprintf( __( 'Export Users and WooCommerce customers in CSV format using <a href="%s">this exporter</a>.' ), admin_url( 'admin.php?page=wt_import_export_for_woo_basic_export' ) ) . "</b></p>";
+		 }
+		
+		if( !is_plugin_active( 'product-import-export-for-woo/product-import-export-for-woo.php' ) ){
+			echo "<p><b>" . sprintf(
+						/* translators: %s: Product Import Export for WooCommerce plugin  URL */
+						__( 'You can export WooCommerce products, product categories, product tags and product reviews in CSV format using the plugin <a href="%s" target="_blank">Product Import Export for WooCommerce</a>.' ),
+						admin_url('plugin-install.php?tab=plugin-information&plugin=product-import-export-for-woo')
+					) . "</b></p>";
+		 }else{
+			 echo "<p><b>" . sprintf( __( 'Export WooCommerce products, product categories, product tags and product reviews in CSV format using <a href="%s">this exporter</a>.' ), admin_url( 'admin.php?page=wt_import_export_for_woo_basic_export' ) ) . "</b></p>";
+		 }
+		 		
+	}
+
+
+	/**
+		 * Search for coupons and return json.
+		 */
+		public static function ajax_coupon_search() {
+
+			if (Wt_Iew_Sh::check_write_access(WT_IEW_PLUGIN_ID_BASIC)) {
+
+				if (!current_user_can('export')) {
+					wp_die(-1);
+				}
+
+				$term = isset($_POST['term']) ? (string) sanitize_text_field(wp_unslash($_POST['term'])) : '';
+
+				if (empty($term)) {
+					wp_die();
+				}
+
+
+				global $wpdb;
+
+				$like = $wpdb->esc_like($term);
+				$query = "
+                SELECT      post.post_title as id, post.post_title as text
+                FROM        " . $wpdb->posts . " as post
+                WHERE       post.post_title LIKE %s
+                AND         post.post_type = 'shop_coupon'
+                AND         post.post_status <> 'trash'
+                ORDER BY    post.post_title
+                LIMIT 0,10
+				";
+
+				$found_coupons = $wpdb->get_results($wpdb->prepare($query, '%' . $like . '%'));
+
+				wp_send_json(apply_filters('wt_json_search_found_coupons', $found_coupons));
+			}
+		}
+
+	}
 }

@@ -252,7 +252,7 @@ function pewc_create_item_object( $field_id ) {
 
 		$all_params = get_post_meta( $field_id, 'all_params', true );
 
-		if( ! empty( $all_params ) ) {
+		if( ! empty( $all_params ) && pewc_enable_groups_as_post_types() ) {
 			$item = $all_params;
 		} else {
 			if( $params ) {
@@ -263,6 +263,9 @@ function pewc_create_item_object( $field_id ) {
 			}
 		}
 
+		if( ! empty( $item ) ) {
+			$item = apply_filters( 'pewc_before_update_field_all_params', $item, $field_id );
+		}
 		set_transient( 'pewc_item_object_' . $field_id, $item, pewc_get_transient_expiration() );
 
 	}
@@ -291,6 +294,7 @@ function pewc_get_field_params( $field_id=null ) {
 		'field_minchecks',
 		'field_maxchecks',
 		'child_products',
+		'child_categories',
 		'products_layout',
 		'products_quantities',
 		'allow_none',
@@ -951,9 +955,97 @@ function pewc_get_simple_products() {
 }
 
 /**
+ * Get all product categories
+ *
+ * @return array $product_categories
+ */
+function pewc_get_product_categories() {
+
+	$args = array(
+		'hide_empty' => true,
+		'number' => 999,
+		'fields' => 'ids',
+		'update_term_meta_cache' => false
+	);
+
+	$product_categories = apply_filters(
+		'woocommerce_product_categories',
+		get_terms( 'product_cat', $args )
+	);
+
+	return $product_categories;
+}
+
+/**
+ * Get all products for a product category - with a cap for performance
+ *
+ * Since 3.9.7
+ * @param array $categories
+ * @return array $product_ids
+ */
+function pewc_get_products_for_cats( $categories ) {
+
+	$args = array(
+		'status'	=> 'publish',
+		'type'		=> ['simple','variable'],
+		'orderby' => 'menu_order',
+		'order' => 'ASC',
+		'limit'		=> 99,
+		'exclude' => [ get_queried_object_id() ],
+		'category' => $categories,
+		'stock_status' => 'instock',
+		'return'	=> 'ids'
+	);
+
+	$products = wc_get_products( $args );
+
+	if( !empty( $products ) ){
+
+		return $products;
+	}
+
+	return false;
+}
+
+
+/**
+ * Build the cache for Product Categories add ons
+ *
+ * Since 3.9.7
+ * @param int $field_id
+ * @param array $categories
+ * @return array | bool $product_ids
+ */
+function pewc_get_product_categories_addon_products( $field_id, $categories ){
+
+	if( !$field_id ){
+		return false;
+	}
+
+	$cached_products = get_transient( 'pewc_categories_field_products_' . $field_id );
+	if( $cached_products ){
+		return $cached_products;
+	}
+
+	if( !is_array( $categories ) || empty( $categories )){
+		return false;
+	}
+
+	$child_products = pewc_get_products_for_cats( $categories );
+
+	if( !$child_products ){
+		return false;
+	}
+
+    set_transient( 'pewc_categories_field_products_' . $field_id, $child_products, pewc_get_transient_expiration() );
+
+    return $child_products;
+}
+
+/**
  * Check whether we're displaying prices with tax or not
  */
-function pewc_maybe_include_tax( $product, $price ) {
+function pewc_maybe_include_tax( $product, $price, $cart_price = false ) {
 
 	// global $product;
 	$ignore = get_option( 'pewc_ignore_tax', 'no' );
@@ -967,7 +1059,14 @@ function pewc_maybe_include_tax( $product, $price ) {
 	}
 
 	if( is_object( $product ) ) {
-		$tax_display_mode = get_option( 'woocommerce_tax_display_shop' );
+		if ($cart_price) {
+			// this price is to be used on the cart page
+			$tax_display_mode = get_option( 'woocommerce_tax_display_cart' );
+		}
+		else {
+			// this price is to be used on the product page
+			$tax_display_mode = get_option( 'woocommerce_tax_display_shop' );
+		}
 		$display_price = $tax_display_mode == 'incl' ? wc_get_price_including_tax( $product, array( 'price' => $price, 'qty' => 1 ) ) : wc_get_price_excluding_tax( $product, array( 'price' => $price, 'qty' => 1 ) );
 	} else {
 		$display_price = $price;
@@ -1011,7 +1110,13 @@ function pewc_adjust_tax() {
 
 	$adjust = false;
 
-	$tax_display = get_option( 'woocommerce_tax_display_cart' );
+	// Ensure we don't modify the price if taxes are not enabled
+	if( get_option( 'woocommerce_calc_taxes' ) == 'no' ) {
+		return $adjust;
+	}
+
+	$tax_display = get_option( 'woocommerce_tax_display_cart' ); // original
+	//$tax_display = get_option( 'woocommerce_tax_display_shop' ); // use this so that add-on prices are stripped of taxes before getting added to the cart?
 
 	if( ( ! wc_prices_include_tax() && $tax_display == 'incl' ) ) {
 
@@ -1070,6 +1175,29 @@ function pewc_get_adjusted_product_addon_price( $cart_item, $cart_key ) {
 	return $new_price;
 
 }
+
+/**
+ * Get the adjusted add-on field price in the cart
+ * Adjusts price per field, then saved in the cart_item, so that they don't need to get adjusted in the cart
+ * @since 3.9.5
+ */
+function pewc_get_adjusted_product_addon_field_price( $price, $product ) {
+
+	if( pewc_adjust_tax() == 'remove' ) {
+		// Strip out the tax if prices entered excl tax but displayed incl tax
+		$price = pewc_get_price_without_tax( $price, $product );
+	} else if( pewc_adjust_tax() == 'add' ) {
+		// Add tax to the cart to match its original price in the backend
+		// This seems to be how WooCommerce saves the product price in the cart session, i.e. whatever was the value in the backend
+		$tmp_cart_item = array(
+			'data' => $product
+		); // we need cart_item below, but it's not available, so create a tmp one
+		$tax_rate = pewc_get_tax_rate( $tmp_cart_item );
+		$price = $price * $tax_rate;
+	}
+	return $price;
+}
+
 
 /**
  * Get the tax rate for an order line item

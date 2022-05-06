@@ -186,7 +186,7 @@ function pewc_do_global_settings_page() {
  */
 function pewc_global_after_group_title( $group_key, $group, $post_id, $import ) {
 	$screen = get_current_screen();
-	if( $screen && ( $screen->id == 'pewc_product_extra_page_global' || $screen->id == 'product-add-ons_page_global' ) ) {
+	if( $screen && ( $screen->id == 'pewc_product_extra_page_global' || strpos( $screen->id, 'page_global' ) ) ) {
 		include( PEWC_DIRNAME . '/templates/admin/global-rule.php' );
 	}
 }
@@ -207,7 +207,6 @@ add_action( 'pewc_after_new_group_title', 'pewc_global_after_new_group_title', 1
 /**
  * Save the globals
  * @since 1.6.0
- * @deprecated 3.3.0
  */
 function pewc_save_globals() {
 

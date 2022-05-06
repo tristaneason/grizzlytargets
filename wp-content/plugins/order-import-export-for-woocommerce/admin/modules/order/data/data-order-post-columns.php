@@ -20,6 +20,7 @@ $base_columns = array(
     'discount_total' => 'Discount total',
     'order_total' => 'Order total',
     //'refunded_total' => 'refunded_total',
+	'order_key' => 'Order key',
     'order_currency' => 'Order currency',
     'payment_method' => 'Payment method',
     'payment_method_title' => 'Payment method title',
@@ -76,6 +77,10 @@ if (is_plugin_active('yith-woocommerce-order-tracking-premium/init.php')):
     $base_columns['meta:ywot_carrier_id'] = 'Carrier name';
     $base_columns['meta:ywot_pick_up_date'] = 'Pickup date';
     $base_columns['meta:ywot_picked_up'] = 'Order picked up?';
+endif;
+
+if (class_exists('Zorem_Woocommerce_Advanced_Shipment_Tracking') || class_exists('WC_Shipment_Tracking')):
+    $base_columns['meta:_wc_shipment_tracking_items'] = 'Advanced/WC shipment tracking';
 endif;
 
 return apply_filters('hf_csv_order_post_columns', $base_columns);

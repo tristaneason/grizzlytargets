@@ -12,6 +12,7 @@
  * @param {string}  dataSource          Source id (for now only WooCommerce is supported)
  * @param {string}  country             Two letter country identifier
  * @param {string}  language
+ * @param {string}  currency
  * @param {string}  feedTitle           Google's feed title text
  * @param {string}  feedDescription     Google's feed description text
  * @param {string}  updateSchedule      Updates schedule string
@@ -22,7 +23,7 @@
  * @constructor
  */
 function Feed( feedId, title, includeVariations, aggregator, channel, mainCategory,
-	categoryMapping, url, dataSource, country, language, feedTitle,
+	categoryMapping, url, dataSource, country, language, currency, feedTitle,
 	feedDescription, updateSchedule, feedFilter, status, feedType ) {
 
 	this.feedId            = feedId;
@@ -38,6 +39,7 @@ function Feed( feedId, title, includeVariations, aggregator, channel, mainCatego
 	this.channel           = channel;
 	this.country           = channel !== '3' ? country : 'NL'; // for Beslist.nl only register the Netherlands
 	this.language          = language;
+	this.currency          = currency;
 	this.status            = status;
 	this.updateSchedule    = updateSchedule;
 	this.feedFilter        = feedFilter;

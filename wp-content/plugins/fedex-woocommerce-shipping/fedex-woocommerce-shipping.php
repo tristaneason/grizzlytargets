@@ -3,11 +3,11 @@
 	Plugin Name: WooCommerce FedEx Shipping Plugin with Print Label
 	Plugin URI: https://www.pluginhive.com/product/woocommerce-fedex-shipping-plugin-with-print-label/
 	Description: This plugin helps you completely automate FedEx shipping. It displays live shipping rates on WooCommerce cart page, helps you pay postage & print labels from within WooCommerce, and track your shipments.
-	Version: 4.9.5
+	Version: 4.9.7
 	Author: PluginHive
 	Author URI: http://pluginhive.com/about/
 	WC requires at least: 3.0.0
-	WC tested up to: 5.9.0
+	WC tested up to: 6.0.0
 	Text Domain : wf-shipping-fedex
 */
 
@@ -22,7 +22,7 @@ if( !defined('WF_FEDEX_ADV_DEBUG_MODE') ){
 // Define PH_FEDEX_PLUGIN_VERSION
 if ( !defined( 'PH_FEDEX_PLUGIN_VERSION' ) )
 {
-	define( 'PH_FEDEX_PLUGIN_VERSION', '4.9.5' );
+	define( 'PH_FEDEX_PLUGIN_VERSION', '4.9.7' );
 }
 
 // Include API Manager

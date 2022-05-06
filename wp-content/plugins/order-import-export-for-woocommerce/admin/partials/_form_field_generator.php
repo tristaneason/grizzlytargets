@@ -2,6 +2,7 @@
 if (!defined('ABSPATH')) {
     exit;
 }
+
 foreach($form_fields as $key=>$value)
 {
 	/* setting default value form fields list array */
@@ -229,7 +230,7 @@ foreach($form_fields as $key=>$value)
 	                    		}
 	                    	}
 	                    }
-                            if(in_array('wc-customer-search', $css_class_arr)){
+                            if(in_array('wc-customer-search', $css_class_arr) || in_array('wt-user-search', $css_class_arr)){
 	                    	foreach($vl as $single_vl)
 	                    	{
 	                    		$single_vl=(int) $single_vl;
@@ -250,6 +251,15 @@ foreach($form_fields as $key=>$value)
 	                    		}
 	                    	}
 	                    }
+                        if(in_array('wt-coupon-search', $css_class_arr)){
+	                    	foreach($vl as $single_vl)
+	                    	{
+	                    			?>
+	                  				<option value="<?php echo $single_vl;?>" selected><?php echo $single_vl;?></option>
+	                    			<?php
+	                    	}
+	                    }
+						
 	                    ?>	
 						</select>
 						<?php
@@ -331,6 +341,12 @@ foreach($form_fields as $key=>$value)
 							$checkbox_fields=isset($value['checkbox_fields']) ? $value['checkbox_fields'] : array();
 							foreach ($checkbox_fields as $chk_vl=>$chk_label) 
 							{
+								if( 'Yes' === $vl){
+									$vl = 1;
+								}
+								if( 'No' === $vl){
+									$vl = 0;
+								}
 							?>
 								<input <?php echo $css_attr;?> type="checkbox" id="<?php echo $form_data_key.'_'.$chk_vl;?>" name="<?php echo $form_data_key;?>" value="<?php echo $chk_vl;?>" <?php echo ($vl==$chk_vl) ? ' checked="checked"' : ''; ?> <?php echo $attr;?> <?php echo $form_toggler_register;?> /> <?php echo $chk_label; ?>
 								&nbsp;&nbsp;
@@ -356,7 +372,9 @@ foreach($form_fields as $key=>$value)
 						
 						<div id="<?php echo $dropzone_id;?>" class="wt_iew_dropzone" wt_iew_dropzone_target="#<?php echo $field_id; ?>">
 							<div class="dz-message">
-								<?php _e('Drop files here or click to upload');?>
+								<?php _e('Drag and Drop'); ?>
+								<?php _e('or'); ?>
+								<?php _e(' Click and Upload');?>
 								<br /><br /><div class="wt_iew_dz_file_success"></div> <br />
 								<div class="wt_iew_dz_file_name"></div> <br />
 								<div class="wt_iew_dz_remove_link"></div> <br />
@@ -369,13 +387,13 @@ foreach($form_fields as $key=>$value)
 				{
 					echo $field_html;
 				}
+				echo $conditional_help_html;				
 				if($help_text!="")
 				{
 					?>
 					<span class="wt-iew_form_help"><?php echo $help_text;?></span>
 					<?php
 				}
-				echo $conditional_help_html;
 				?>
 			</td>
 			<?php

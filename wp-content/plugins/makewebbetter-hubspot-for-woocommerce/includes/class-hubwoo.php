@@ -236,12 +236,16 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 			$this->loader->add_action( 'admin_init', $plugin_admin, 'hubwoo_get_plugin_log' );
 			$this->loader->add_action( 'admin_init', $plugin_admin, 'hubwoo_check_property_value' );
 			$this->loader->add_action( 'admin_notices', $plugin_admin, 'hubwoo_cron_notification' );
+			$this->loader->add_action( 'admin_notices', $plugin_admin, 'hubwoo_review_notice', 99 );
 			// hubspot deal hooks.
 			if ( 'yes' == get_option( 'hubwoo_ecomm_deal_enable', 'yes' ) ) {
 
 				$this->loader->add_filter( 'manage_edit-shop_order_columns', $plugin_admin, 'hubwoo_order_cols', 11 );
 				$this->loader->add_action( 'manage_shop_order_posts_custom_column', $plugin_admin, 'hubwoo_order_cols_value', 10, 2 );
 			}
+
+			// deactivation screen
+			$this->loader->add_action( 'admin_footer', $plugin_admin, 'init_deactivation' );
 
 			// hubspot abandon carts.
 			$this->loader->add_filter( 'hubwoo_users', $plugin_admin, 'hubwoo_abncart_users' );
@@ -287,6 +291,12 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 					$this->loader->add_action( 'hubwoo_products_sync_background', $plugin_admin, 'hubwoo_products_sync_background' );
 					$this->loader->add_action( 'hubwoo_products_status_background', $plugin_admin, 'hubwoo_products_status_background' );
 					$this->loader->add_action( 'hubwoo_deal_update_schedule', $plugin_admin, 'hubwoo_deal_update_schedule' );
+				}
+
+				// HubSpot deals hooks.
+				if ( 'yes' == get_option( 'hubwoo_ecomm_setup_completed', 'no' ) ) {
+
+					$this->loader->add_action( 'save_post_shop_order', $plugin_admin, 'hubwoo_ecomm_deal_update_order' );
 				}
 
 				$this->loader->add_action( 'hubwoo_contacts_sync_background', $plugin_admin, 'hubwoo_contacts_sync_background' );
@@ -340,17 +350,6 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 					$this->loader->add_action( 'woocommerce_customer_changed_subscription_to_on-hold', $plugin_public, 'hubwoo_save_changes_in_subs' );
 					$this->loader->add_action( 'init', $plugin_public, 'hubwoo_subscription_switch' );
 				}
-				// HubSpot deals hooks.
-				if ( 'yes' == get_option( 'hubwoo_ecomm_deal_enable', 'yes' ) && 'yes' == get_option( 'hubwoo_ecomm_setup_completed', 'no' ) ) {
-
-					if ( false === wp_cache_get( 'hubwoo_order_update_lock' ) ) {
-						wp_cache_set( 'hubwoo_order_update_lock', true );
-						$this->loader->add_action( 'woocommerce_update_order', $plugin_public, 'hubwoo_ecomm_deal_on_new_order' );
-					}
-				}
-
-				// Update existing order on admin.
-				$this->loader->add_action( 'woocommerce_update_order', $plugin_public, 'hubwoo_ecomm_deal_update_order' );
 
 				// HubSpot Abandon Carts.
 				if ( get_option( 'hubwoo_abncart_enable_addon', 'yes' ) == 'yes' ) {
@@ -1287,6 +1286,8 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 
 			$scopes = get_option( 'hubwoo_pro_account_scopes', array() );
 
+			HubWooConnectionMananager::get_instance()->get_workflows();
+
 			if ( empty( $scopes ) ) {
 
 				HubWooConnectionMananager::get_instance()->hubwoo_pro_get_access_token_info();
@@ -1346,10 +1347,10 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 		 * Get selected workflow.
 		 *
 		 * @since 1.0.0
-		 * @param string $workflow workflow name.
 		 * @param array  $all_workflows list of all workflows.
+		 * @param string $workflow workflow name.
 		 */
-		public static function hubwoo_get_selected_workflow( $workflow = '', $all_workflows ) {
+		public static function hubwoo_get_selected_workflow( $all_workflows, $workflow = '' ) {
 
 			$option = '';
 
@@ -1452,10 +1453,10 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 		 * Get selected list.
 		 *
 		 * @since 1.0.0
-		 * @param string $list name of list.
 		 * @param array  $all_lists array of all lists.
+		 * @param string $list name of list.
 		 */
-		public static function hubwoo_get_selected_list( $list = '', $all_lists ) {
+		public static function hubwoo_get_selected_list( $all_lists, $list = '' ) {
 
 			$option = '';
 
@@ -1645,8 +1646,8 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 			$hubspot_url = add_query_arg(
 				array(
 					'client_id'      => $hapikey,
-					'optional_scope' => 'automation%20files%20timeline%20content%20forms%20integration-sync%20e-commerce%20crm.import',
-					'scope'          => 'oauth%20contacts',
+					'optional_scope' => 'automation%20files%20timeline%20content%20forms%20integration-sync%20e-commerce%20crm.objects.custom.read%20crm.objects.custom.write',
+					'scope'          => 'oauth%20crm.objects.owners.read%20crm.objects.contacts.write%20crm.objects.companies.write%20crm.lists.write%20crm.objects.companies.read%20crm.lists.read%20crm.objects.deals.read%20crm.objects.deals.write%20crm.objects.contacts.read%20crm.schemas.companies.write%20crm.schemas.contacts.write%20crm.schemas.deals.read%20crm.schemas.deals.write%20crm.schemas.contacts.read%20crm.schemas.companies.read',
 					'redirect_uri'   => admin_url() . 'admin.php?type=hs-auth',
 				),
 				$url
@@ -1686,7 +1687,7 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 		public static function get_sync_status() {
 
 			$sync_status['current'] = get_option( 'hubwoo_deals_current_sync_count', 0 );
-			$sync_status['total']   = get_option( 'hubwoo_deals_sync_total', 0 );
+			$sync_status['total']   = get_option( 'hubwoo_deals_current_sync_total', 0 );
 			$sync_status['eta_deals_sync'] = '';
 
 			if ( $sync_status['total'] ) {
@@ -1695,7 +1696,7 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 				$sync_status['eta_deals_sync'] = self::hubwoo_create_sync_eta( $sync_status['current'], $sync_status['total'], 5, 5 );
 			}
 
-			if ( $sync_status['current'] == $sync_status['total'] ) {
+			if ( ( $sync_status['current'] == $sync_status['total'] ) || ( $sync_status['current'] > $sync_status['total'] ) ) {
 				self::hubwoo_stop_sync( 'stop-deal' );
 			}
 			return $sync_status;
@@ -1722,7 +1723,7 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 				case 'total_synced_contacts':
 					return $wpdb->get_results( "SELECT COUNT(user_id) FROM {$wpdb->usermeta} WHERE meta_key = 'hubwoo_pro_user_data_change' AND meta_value = 'synced'" );
 				case 'total_synced_guest_contacts':
-					return $wpdb->get_results( "SELECT COUNT(post_id) FROM {$wpdb->postmeta} WHERE meta_key = 'hubwoo_pro_guest_order' AND meta_value = 'synced'" );
+					return $wpdb->get_results( 'SELECT COUNT(customer_id) FROM wp_wc_customer_lookup WHERE user_id IS NULL' );
 				default:
 					return '';
 			}
@@ -2097,7 +2098,7 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 		 * Setup the overview section of the dashboard.
 		 *
 		 * @since 1.0.0
-		 * @param bool $install_plugin default ( true ).
+		 * @param bool $install_plugin default ( false ).
 		 * @return array|void $display_data  display data for the HS plugin.
 		 */
 		public function hubwoo_setup_overview( $install_plugin = false ) {
@@ -2511,6 +2512,57 @@ if ( ! class_exists( 'Hubwoo' ) ) {
 				default:
 					return array();
 			}
+		}
+
+		/**
+		 * Hubwoo update product
+		 *
+		 * @param array $properties product properties.
+		 * @param int   $hubwoo_ecomm_pro_id is the id of product.
+		 * @return array $response.
+		 */
+		public static function hubwoo_update_products( $properties, $hubwoo_ecomm_pro_id ) {
+			if ( ! empty( $properties ) ) {
+				$flag = true;
+
+				if ( Hubwoo::is_access_token_expired() ) {
+					$hapikey = HUBWOO_CLIENT_ID;
+					$hseckey = HUBWOO_SECRET_ID;
+					$status  = HubWooConnectionMananager::get_instance()->hubwoo_refresh_token( $hapikey, $hseckey );
+
+					if ( ! $status ) {
+						$flag = false;
+					}
+				}
+				if ( $flag ) {
+					$response = HubWooConnectionMananager::get_instance()->update_existing_products( $hubwoo_ecomm_pro_id, $properties );
+				}
+				return $response;
+			}
+		}
+
+		/**
+		 * Get contact sync status.
+		 *
+		 * @since 1.2.7
+		 * @return int $unique_users number of unique users.
+		 */
+		public static function hubwoo_get_total_contact_need_sync() {
+
+			$unique_users = count( get_users() );
+
+			$order_args = array(
+				'return'                 => 'ids',
+				'limit'                  => -1,
+				'type'                   => wc_get_order_types(),
+				'status'                 => array_keys( wc_get_order_statuses() ),
+				'customer'               => 0,
+			);
+
+			$guest_orders = wc_get_orders( $order_args );
+			$unique_users += count( $guest_orders );
+
+			return $unique_users;
 		}
 	}
 }

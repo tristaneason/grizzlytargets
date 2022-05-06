@@ -10,6 +10,10 @@ if( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if( ! pewc_is_pro() ) {
+	return;
+}
+
 $number_columns = ( isset( $item['number_columns'] ) ) ? $item['number_columns'] : 3;
 $radio_wrapper_classes = array(
 	'pewc-radio-images-wrapper',
@@ -20,6 +24,7 @@ if( ! empty( $item['hide_labels'] ) ) {
 	$radio_wrapper_classes[] = 'pewc-hide-labels';
 }
 
+$product_quantities = '';
 if( ! empty( $item['products_quantities'] ) ) {
 	$products_quantities = ! empty( $item['products_quantities'] ) ? $item['products_quantities'] : '';
 	$radio_wrapper_classes[] = 'products-quantities-' . $item['products_quantities'];
@@ -56,10 +61,10 @@ if( ! empty( $item['products_quantities'] ) ) {
 			$available_stock = $child_product->get_stock_quantity();
 		}
 
-		$image_url = ( get_post_thumbnail_id( $child_product_id ) ) ? wp_get_attachment_url( get_post_thumbnail_id( $child_product_id ) ) : wc_placeholder_img_src();
+		$image_url = ( get_post_thumbnail_id( $child_product_id ) ) ? wp_get_attachment_image_url( get_post_thumbnail_id( $child_product_id ), apply_filters( 'pewc_child_product_image_size', 'full', $child_product_id ) ) : wc_placeholder_img_src();
 		$image = '<img src="' . esc_url( $image_url ) . '">';
 
-		$name = apply_filters( 'pewc_child_product_title', get_the_title( $child_product_id ), $child_product ) . apply_filters( 'pewc_option_price_separator', '+', $item ) . $price;
+		$name = apply_filters( 'pewc_child_product_title', get_the_title( $child_product_id ), $child_product ) . apply_filters( 'pewc_option_price_separator', '+', $item ) . apply_filters( 'pewc_option_price', $price, $item );
 
 		$field_name = $id . '_child_product';
 
@@ -75,7 +80,7 @@ if( ! empty( $item['products_quantities'] ) ) {
 		$checked = ( $value == $child_product_id || ( is_array( $value ) && in_array( $child_product_id, $value ) ) ) ? 'checked="checked"' : '';
 
 	  $radio = sprintf(
-	    '<div class="%s"><label for="%s"><input %s data-stock="%s" data-option-cost="%s" data-field-label="%s" type="radio" name="%s[]" id="%s" class="pewc-radio-form-field" value="%s" %s>%s<div class="pewc-radio-image-desc">%s</div></label></div>',
+	    '<div class="%s"><label for="%s"><input %s data-stock="%s" data-option-cost="%s" data-field-label="%s" type="radio" name="%s[]" id="%s" class="pewc-radio-form-field" value="%s" %s>%s</label><div class="pewc-radio-image-desc">%s</div></div>',
 			join( ' ', $wrapper_classes ),
 	    esc_attr( $radio_id ),
 			esc_attr( $disabled ),
@@ -91,13 +96,14 @@ if( ! empty( $item['products_quantities'] ) ) {
 	  );
 	  echo apply_filters( 'pewc_filter_radio', $radio, $child_product_id, $price, $id, $name, $item );
 
-		do_action( 'pewc_after_child_product_item', $child_product, $child_product_id );
+		do_action( 'pewc_after_child_product_item', $id, $child_product, $child_product_id );
 
 	}
 
 } ?>
 
 </div><!-- .pewc-radio-images-wrapper -->
+
 
 <?php if( $products_quantities == 'independent' ) {
 

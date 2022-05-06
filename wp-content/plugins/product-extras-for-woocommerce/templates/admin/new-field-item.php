@@ -106,9 +106,25 @@ if( ! defined( 'ABSPATH' ) ) {
 					</div>
 				</div>
 			<?php } ?>
-
 			<?php if( pewc_is_pro() ) { ?>
-				<div class="pewc-fields-wrapper pewc-products-extras products-layout-checkboxes">
+				<div class="pewc-fields-wrapper pewc-product-categories-extras">
+					<div class="product-extra-field-full">
+						<div class="product-extra-field-third">
+							<label>
+								<?php _e( 'Product Categories', 'pewc' ); ?>
+								<?php echo wc_help_tip( 'Select which product categories you\'d like to autopopulate this field', 'pewc' ); ?>
+							</label>
+						</div>
+						<div class="product-extra-field-two-thirds-right">
+							<select class="wc-product-search pewc-field-child_categories pewc-field-product_categories pewc-data-options" multiple="multiple" style="width: 100%;" name="" data-action="json_search_categories" data-include="" data-exclude="">
+							</select>
+						</div>
+						<?php printf( '<p>%s</p>', __( 'You need to save or publish this product before this field becomes available', 'pewc' ) ); ?>
+					</div>
+				</div>
+			<?php } ?>
+			<?php if( pewc_is_pro() ) { ?>
+				<div class="pewc-fields-wrapper pewc-products-extras pewc-product-categories-extras products-layout-checkboxes">
 					<div class="pewc-products-layout product-extra-field-third">
 						<label>
 							<?php _e( 'Products Layout', 'pewc' ); ?>
@@ -116,8 +132,10 @@ if( ! defined( 'ABSPATH' ) ) {
 						</label>
 						<select class="pewc-field-products_layout" name="">
 							<option value="checkboxes"><?php _e( 'Checkboxes', 'pewc' ); ?></option>
+							<option value="checkboxes-list"><?php _e( 'Checkboxes List', 'pewc' ); ?></option>
 							<option value="column"><?php _e( 'Column', 'pewc' ); ?></option>
 							<option value="radio"><?php _e( 'Radio', 'pewc' ); ?></option>
+							<option value="radio-list"><?php _e( 'Radio List', 'pewc' ); ?></option>
 							<option value="select"><?php _e( 'Select', 'pewc' ); ?></option>
 						</select>
 					</div>

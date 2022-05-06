@@ -114,6 +114,7 @@ class OAuth {
 				$refreshed_credentials->expires_in
 			);
 		} catch ( \Exception $e ) {
+			self::deauthorize();
 			throw new \Exception( \json_encode( $e->getMessage() ), 401 );
 		}
 	}

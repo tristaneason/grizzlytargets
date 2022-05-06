@@ -33,13 +33,13 @@ class Impact {
 	public static function get_params() {
 		$params = array();
 
-		// phpcs:disable WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended
 		if ( isset( $_GET['leadin_irclickid'] ) ) {
-			$params[ IR_CLICK_ID ] = \filter_var( \wp_unslash( $_GET['leadin_irclickid'] ), FILTER_SANITIZE_STRING );
+			$params[ IR_CLICK_ID ] = sanitize_text_field( \wp_unslash( $_GET['leadin_irclickid'] ) );
 		}
 
 		if ( isset( $_GET['leadin_mpid'] ) ) {
-			$params[ MPID ] = \filter_var( \wp_unslash( $_GET['leadin_mpid'] ), FILTER_SANITIZE_STRING );
+			$params[ MPID ] = sanitize_text_field( \wp_unslash( $_GET['leadin_mpid'] ) );
 		}
 		// phpcs:enable
 

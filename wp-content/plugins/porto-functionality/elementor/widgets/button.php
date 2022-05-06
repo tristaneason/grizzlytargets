@@ -35,7 +35,7 @@ class Porto_Elementor_Button_Widget extends \Elementor\Widget_Base {
 		return 'eicon-button';
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		$floating_options = porto_update_vc_options_to_elementor( porto_shortcode_floating_fields() );
 

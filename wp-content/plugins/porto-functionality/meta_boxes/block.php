@@ -7,7 +7,7 @@ function porto_block_meta_fields() {
 
 	$builder_type = get_post_meta( $post->ID, 'porto_builder_type', true );
 
-	if ( $post && $post->ID && 'porto_builder' == $post->post_type && 'block' != $builder_type ) {
+	if ( $post && $post->ID && 'porto_builder' == $post->post_type && 'block' != $builder_type && 'type' != $builder_type ) {
 		$fields['condition'] = array(
 			'name'  => 'condition',
 			'title' => __( 'Display Condition', 'porto-functionality' ),

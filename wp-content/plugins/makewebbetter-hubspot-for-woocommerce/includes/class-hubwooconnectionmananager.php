@@ -171,21 +171,22 @@ class HubWooConnectionMananager {
 				update_option( 'hubwoo_pro_send_suggestions', true );
 				update_option( 'hubwoo_pro_oauth_success', true );
 				return true;
-			} elseif ( 400 === $status_code ) {
-				$message = ! empty( $api_body['message'] ) ? $api_body['message'] : '';
-			} elseif ( 403 === $status_code ) {
-				$message = esc_html__( 'You are forbidden to use this scope', 'makewebbetter-hubspot-for-woocommerce' );
-			} else {
-				$message = esc_html__( 'Something went wrong.', 'makewebbetter-hubspot-for-woocommerce' );
 			}
-			update_option( 'hubwoo_pro_send_suggestions', false );
-			update_option( 'hubwoo_pro_api_validation_error_message', $message );
-			update_option( 'hubwoo_pro_valid_client_ids_stored', false );
-			$this->create_log( $message, $endpoint, $parsed_response );
+		} elseif ( 400 === $status_code ) {
+			$message = ! empty( $api_body['message'] ) ? $api_body['message'] : '';
+		} elseif ( 403 === $status_code ) {
+			$message = esc_html__( 'You are forbidden to use this scope', 'makewebbetter-hubspot-for-woocommerce' );
+		} else {
+			$message = esc_html__( 'Something went wrong.', 'makewebbetter-hubspot-for-woocommerce' );
 		}
 
+		update_option( 'hubwoo_pro_send_suggestions', false );
+		update_option( 'hubwoo_pro_api_validation_error_message', $message );
+		update_option( 'hubwoo_pro_valid_client_ids_stored', false );
+		$this->create_log( $message, $endpoint, $parsed_response );
 		return false;
 	}
+
 
 	/**
 	 * Fetch access token info for automation enabling.
@@ -979,8 +980,10 @@ class HubWooConnectionMananager {
 			if ( $api_body ) {
 				$api_body = json_decode( $api_body, true );
 			}
+			update_option( 'hubwoo_access_workflow', 'yes' );
 		} else {
 			$workflows = array();
+			update_option( 'hubwoo_access_workflow', 'no' );
 		}
 
 		if ( ! empty( $response->workflows ) ) {
@@ -1276,6 +1279,51 @@ class HubWooConnectionMananager {
 			'response'    => $res_message,
 		);
 		$message         = __( 'Creating Deal Association With Contact', 'makewebbetter-hubspot-for-woocommerce' );
+		$this->create_log( $message, $url, $parsed_response );
+		return $parsed_response;
+	}
+
+	/**
+	 * Create deal and company associations.
+	 *
+	 * @since 1.2.7
+	 * @param string $deal_id id of the deal.
+	 * @param string $company_id id of the company.
+	 * @return array $response formatted aray for response.
+	 */
+	public function create_deal_company_associations( $deal_id, $company_id ) {
+
+		$url     = '/crm-associations/v1/associations';
+		$headers = $this->get_token_headers();
+		$request = array(
+			'fromObjectId' => $company_id,
+			'toObjectId'   => $deal_id,
+			'category'     => 'HUBSPOT_DEFINED',
+			'definitionId' => '6',
+		);
+		$request = json_encode( $request );
+
+		$response = wp_remote_request(
+			$this->base_url . $url,
+			array(
+				'body'    => $request,
+				'headers' => $headers,
+				'method'  => 'PUT',
+			)
+		);
+
+		if ( is_wp_error( $response ) ) {
+			$status_code = $response->get_error_code();
+			$res_message = $response->get_error_message();
+		} else {
+			$status_code = wp_remote_retrieve_response_code( $response );
+			$res_message = wp_remote_retrieve_response_message( $response );
+		}
+		$parsed_response = array(
+			'status_code' => $status_code,
+			'response'    => $res_message,
+		);
+		$message         = __( 'Creating Deal Association With Company', 'makewebbetter-hubspot-for-woocommerce' );
 		$this->create_log( $message, $url, $parsed_response );
 		return $parsed_response;
 	}
@@ -1978,6 +2026,45 @@ class HubWooConnectionMananager {
 		$message = esc_html__( 'Fetching Contact by email', 'makewebbetter-hubspot-for-woocommerce' );
 		$this->create_log( $message, $url, $parsed_response );
 		return $vid;
+	}
+
+	/**
+	 * Updating products.
+	 *
+	 * @since    1.2.7
+	 * @param string $hubwoo_ecomm_pro_id hubspot product id.
+	 * @param array  $properties product properties.
+	 */
+	public function update_existing_products( $hubwoo_ecomm_pro_id, $properties ) {
+
+		$url          = '/crm-objects/v1/objects/products/' . $hubwoo_ecomm_pro_id;
+		$headers      = $this->get_token_headers();
+		$properties   = json_encode( $properties );
+		$response     = wp_remote_request(
+			$this->base_url . $url,
+			array(
+				'body'    => $properties,
+				'headers' => $headers,
+				'method'  => 'PUT',
+			)
+		);
+
+		if ( is_wp_error( $response ) ) {
+			$status_code = $response->get_error_code();
+			$res_message = $response->get_error_message();
+		} else {
+			$status_code = wp_remote_retrieve_response_code( $response );
+			$res_message = wp_remote_retrieve_response_message( $response );
+			$res_body    = wp_remote_retrieve_body( $response );
+		}
+		$parsed_response = array(
+			'status_code' => $status_code,
+			'response'    => $res_message,
+			'body'        => $res_body,
+		);
+		$message         = __( 'Updating HubSpot Products', 'makewebbetter-hubspot-for-woocommerce' );
+		$this->create_log( $message, $url, $parsed_response );
+		return $parsed_response;
 	}
 
 }

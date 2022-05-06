@@ -11,6 +11,8 @@ extract(
 			'spacing'            => '',
 			'columns'            => '{"xl":"4"}',
 			'v_align'            => '',
+			'click_action'       => '',
+			'hover_effect'       => '',
 
 			'navigation'         => true,
 			'nav_pos'            => '',
@@ -44,11 +46,11 @@ if ( ! empty( $columns ) ) {
 	} else {
 		$columns_arr = $columns;
 	}
-	$columns     = empty( $columns_arr['xl'] ) ? 4 : (int) $columns_arr['xl'];
-	$columns_lg  = empty( $columns_arr['lg'] ) ? min( 4, $columns ) : (int) $columns_arr['lg'];
-	$columns_md  = empty( $columns_arr['md'] ) ? min( 3, $columns_lg ) : (int) $columns_arr['md'];
-	$columns_sm  = empty( $columns_arr['sm'] ) ? min( 2, $columns_md ) : (int) $columns_arr['sm'];
-	$columns_xs  = empty( $columns_arr['xs'] ) ? min( 1, $columns_sm ) : (int) $columns_arr['xs'];
+	$columns    = empty( $columns_arr['xl'] ) ? 4 : (int) $columns_arr['xl'];
+	$columns_lg = empty( $columns_arr['lg'] ) ? min( 4, $columns ) : (int) $columns_arr['lg'];
+	$columns_md = empty( $columns_arr['md'] ) ? min( 3, $columns_lg ) : (int) $columns_arr['md'];
+	$columns_sm = empty( $columns_arr['sm'] ) ? min( 2, $columns_md ) : (int) $columns_arr['sm'];
+	$columns_xs = empty( $columns_arr['xs'] ) ? min( 1, $columns_sm ) : (int) $columns_arr['xs'];
 } else {
 	$columns    = 1;
 	$columns_lg = 1;
@@ -147,19 +149,19 @@ if ( 'creative' == $view || 'masonry' == $view ) {
 
 	$iso_options                 = array();
 	$iso_options['layoutMode']   = 'masonry';
-	$iso_options['itemSelector'] = 'figure';
+	$iso_options['itemSelector'] = empty( $click_action ) ? 'figure' : 'a';
 	$extra_attrs                 = '';
 	$grid_sizer                  = '';
 	if ( 'creative' == $view ) {
 		$porto_grid_layout  = porto_creative_grid_layout( $grid_layout );
 		$grid_height_number = trim( preg_replace( '/[^0-9]/', '', $grid_height ) );
 		$unit               = trim( str_replace( $grid_height_number, '', $grid_height ) );
-		porto_creative_grid_style( $porto_grid_layout, $grid_height_number, '.' . trim( $shortcode_class ), false, true, $unit, 'figure', $grid_layout );
+		porto_creative_grid_style( $porto_grid_layout, $grid_height_number, '.' . trim( $shortcode_class ), false, true, $unit, empty( $click_action ) ? 'figure' : 'a', $grid_layout );
 
 		$wrapper_cls           .= ' porto-preset-layout';
 		$iso_options['masonry'] = array( 'columnWidth' => '.grid-col-sizer' );
 	} else {
-		$iso_options['masonry'] = array( 'columnWidth' => 'figure' );
+		$iso_options['masonry'] = array( 'columnWidth' => empty( $click_action ) ? 'figure' : 'a' );
 	}
 	$iso_options['animationEngine'] = 'best-available';
 	$iso_options['resizable']       = false;
@@ -176,6 +178,30 @@ if ( $animation_type ) {
 	}
 }
 
+if ( 'lightbox' == $click_action ) {
+	$wrapper_cls   .= ' lightbox';
+	$wrapper_attrs .= ' data-lightbox-options="' . esc_attr(
+		json_encode(
+			array(
+				'delegate'  => 'a',
+				'mainClass' => 'mfp-with-zoom',
+				'zoom'      => array(
+					'enabled'  => true,
+					'duration' => 300,
+				),
+				'gallery'   => array(
+					'enabled' => true,
+				),
+				'type'      => 'image',
+			)
+		)
+	) . '"';
+}
+
+if ( $hover_effect ) {
+	$wrapper_cls .= ' porto-ig-' . $hover_effect;
+}
+
 if ( $el_class ) {
 	$wrapper_cls .= ' ' . trim( $el_class );
 }
@@ -188,9 +214,20 @@ foreach ( $images as $index => $img_id ) {
 		$image_size  = $grid_layout['size'];
 	}
 
-	echo '<figure' . ( $col_cls ? ' class="' . esc_attr( $col_cls ) . '"' : '' ) . '>';
+	$full_src = wp_get_attachment_image_src( $img_id['id'], 'full' );
+	if ( ! $full_src ) {
+		continue;
+	}
+
+	if ( ! empty( $click_action ) ) {
+		echo '<a' . ( $col_cls ? ' class="' . esc_attr( $col_cls ) . '"' : '' ) . ' href="' . esc_url( $full_src[0] ) . '">';
+	}
+	echo '<figure' . ( $col_cls && ! $click_action ? ' class="' . esc_attr( $col_cls ) . '"' : '' ) . '>';
 	echo wp_get_attachment_image( $img_id['id'], $image_size ? $image_size : 'full' );
 	echo '</figure>';
+	if ( ! empty( $click_action ) ) {
+		echo '</a>';
+	}
 }
 if ( 'creative' == $view ) {
 	echo '<figure class="grid-col-sizer"></figure>';

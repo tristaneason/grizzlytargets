@@ -222,8 +222,21 @@ class Wt_Import_Export_For_Woo_Basic_Import_Ajax
 
 		/* This is the sample data from input file */
 		$file_heading_meta_fields=(isset($_POST['file_head_meta']) ? json_decode(stripslashes($_POST['file_head_meta']), true) : array());	
+
 		
-		//taking current page form data
+		$sample_data = array();
+		include_once WT_O_IEW_PLUGIN_PATH . 'admin/classes/class-csvreader.php';
+		$delimiter = (isset($_POST['delimiter']) ? ($_POST['delimiter']) : ','); //no sanitization 
+		$reader = new Wt_Import_Export_For_Woo_Basic_Csvreader($delimiter);
+
+		/* take first two rows in csv and in xml takes column keys and a sample data */
+		$temp_import_file = (isset($_POST['temp_import_file']) ? sanitize_file_name($_POST['temp_import_file']) : '');
+		if ($temp_import_file != "") {
+			$file_path = $this->import_obj->get_file_path($temp_import_file);
+			$sample_data = $reader->get_sample_data($file_path, true);
+		}
+
+			//taking current page form data
 		$meta_step_form_data=(isset($this->selected_template_form_data['meta_step_form_data']) ? $this->selected_template_form_data['meta_step_form_data'] : array());
 
 		/* formdata/template data of fields in mapping page */
@@ -295,6 +308,10 @@ class Wt_Import_Export_For_Woo_Basic_Import_Ajax
 						{
 							$checked=1; /* import this column? */
 							$val='{'.$key.'}';
+							unset($file_heading_meta_fields[$key]); //remove the field from file heading list
+						}elseif(isset($val_arr['field_type']) && 'alternates' == $val_arr['field_type'] && isset ($sample_data[$val_arr['similar_fields']]) ){
+							$checked=1; /* import this column? */
+							$val='{'.$val_arr['similar_fields'].'}';
 							unset($file_heading_meta_fields[$key]); //remove the field from file heading list
 						}
 						$temp_arr[$key]=array('label'=>$label, 'description'=>$description, 'val'=>$val, 'checked'=>$checked, 'type'=>$type);

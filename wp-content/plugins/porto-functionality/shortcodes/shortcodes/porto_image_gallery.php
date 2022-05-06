@@ -87,10 +87,10 @@ function porto_load_image_gallery_shortcode() {
 						'std'        => 600,
 					),
 					array(
-						'type'        => 'porto_number',
-						'heading'     => __( 'Column Spacing (px)', 'porto-functionality' ),
-						'param_name'  => 'spacing',
-						'selectors'   => array(
+						'type'       => 'porto_number',
+						'heading'    => __( 'Column Spacing (px)', 'porto-functionality' ),
+						'param_name' => 'spacing',
+						'selectors'  => array(
 							'{{WRAPPER}}' => '--porto-el-spacing: {{VALUE}}px;',
 						),
 					),
@@ -124,9 +124,46 @@ function porto_load_image_gallery_shortcode() {
 							),
 						),
 						'description' => esc_html__( 'Choose from top, middle, bottom and stretch in grid layout.', 'porto-functionality' ),
-						'dependency' => array(
+						'dependency'  => array(
 							'element' => 'view',
 							'value'   => array( 'grid', 'slider' ),
+						),
+					),
+					array(
+						'type'        => 'dropdown',
+						'heading'     => __( 'On click image', 'porto-functionality' ),
+						'description' => __( 'Select action for click on image.', 'porto-functionality' ),
+						'param_name'  => 'click_action',
+						'value'       => array(
+							__( 'None', 'porto-functionality' ) => '',
+							__( 'Link to large image', 'porto-functionality' ) => 'imgurl',
+							__( 'Open Lightbox', 'porto-functionality' ) => 'lightbox',
+						),
+						'std'         => '',
+						'dependency'  => array(
+							'element'   => 'images',
+							'not_empty' => true,
+						),
+					),
+					array(
+						'type'        => 'dropdown',
+						'heading'     => __( 'Hover Effect', 'porto-functionality' ),
+						'description' => __( 'Select an effect for hover on image.', 'porto-functionality' ),
+						'param_name'  => 'hover_effect',
+						'value'       => array(
+							__( 'None', 'porto-functionality' ) => '',
+							__( 'Zoom', 'porto-functionality' ) => 'zoom',
+							__( 'Fade In', 'porto-functionality' ) => 'fadein',
+							__( 'Add Overlay', 'porto-functionality' ) => 'overlay',
+							__( 'Add Box Shadow', 'porto-functionality' ) => 'boxshadow',
+							__( 'Effect 1', 'porto-functionality' ) => 'effect-1',
+							__( 'Effect 2', 'porto-functionality' ) => 'effect-2',
+							__( 'Effect 3', 'porto-functionality' ) => 'effect-3',
+							__( 'Effect 4', 'porto-functionality' ) => 'effect-4',
+						),
+						'dependency'  => array(
+							'element'   => 'images',
+							'not_empty' => true,
 						),
 					),
 					$custom_class,

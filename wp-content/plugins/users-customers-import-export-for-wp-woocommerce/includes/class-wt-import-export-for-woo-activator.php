@@ -57,7 +57,11 @@ class Wt_Import_Export_For_Woo_Basic_Activator_User {
 	public static function install_tables()
 	{
 		global $wpdb;
-		$charset_collate = $wpdb->get_charset_collate();
+		$charset_collate = '';
+
+		if ( $wpdb->has_cap( 'collation' ) ) {
+			$charset_collate = $wpdb->get_charset_collate();
+		}
 		//install necessary tables
 		
 		//creating table for saving template data================
@@ -74,7 +78,7 @@ class Wt_Import_Export_For_Woo_Basic_Activator_User {
 				`name` VARCHAR(255) NOT NULL, 
 				`data` LONGTEXT NOT NULL, 
 				PRIMARY KEY (`id`)
-			) DEFAULT CHARSET=utf8;";
+			) $charset_collate;";
             dbDelta($sql_settings);
         }
         //creating table for saving template data================
@@ -98,63 +102,11 @@ class Wt_Import_Export_For_Woo_Basic_Activator_User {
 				`total` INT NOT NULL DEFAULT '0', 
 				`data` LONGTEXT NOT NULL, 
 				PRIMARY KEY (`id`)
-			) DEFAULT CHARSET=utf8;";
+			) $charset_collate;";
             dbDelta($sql_settings);
         }
         //creating table for saving export/import history================
 
-        //creating table for saving ftp details================
-        $search_query = "SHOW TABLES LIKE %s";
-        $tb='wt_iew_ftp';
-        $like = '%'.$wpdb->prefix.$tb.'%';
-        $table_name = $wpdb->prefix.$tb;
-        if(!$wpdb->get_results($wpdb->prepare($search_query, $like), ARRAY_N)) 
-        {
-            $sql_settings = "CREATE TABLE IF NOT EXISTS `$table_name` (
-				`id` INT NOT NULL AUTO_INCREMENT, 
-				`name` VARCHAR(255) NOT NULL, 
-				`server` VARCHAR(255) NOT NULL, 
-				`user_name` VARCHAR(255) NOT NULL, 
-				`password` VARCHAR(255) NOT NULL, 
-				`port` INT NOT NULL DEFAULT '21', 
-				`ftps` INT NOT NULL DEFAULT '0', 
-				`is_sftp` INT NOT NULL DEFAULT '0', 
-				`passive_mode` INT NOT NULL DEFAULT '0',
-				`export_path` VARCHAR(255) NOT NULL, 
-				`import_path` VARCHAR(255) NOT NULL,
-				PRIMARY KEY (`id`)
-			) DEFAULT CHARSET=utf8;";
-            dbDelta($sql_settings);
-        }
-        //creating table for saving ftp details================
-
-
-        //creating table for saving cron data================
-        $search_query = "SHOW TABLES LIKE %s";
-        $tb='wt_iew_cron';
-        $like = '%'.$wpdb->prefix.$tb.'%';
-        $table_name = $wpdb->prefix.$tb;
-        if(!$wpdb->get_results($wpdb->prepare($search_query, $like), ARRAY_N)) 
-        {
-            $sql_settings = "CREATE TABLE IF NOT EXISTS `$table_name` (
-				`id` INT NOT NULL AUTO_INCREMENT, 
-				`status` INT NOT NULL DEFAULT '0',
-				`old_status` INT NOT NULL DEFAULT '0',
-				`action_type` VARCHAR(255) NOT NULL, 
-				`schedule_type` VARCHAR(50) NOT NULL, 
-				`item_type` VARCHAR(255) NOT NULL, 
-				`data` LONGTEXT NOT NULL, 
-				`start_time` INT NOT NULL, 
-				`cron_data` TEXT NOT NULL,
-				`last_run` INT NOT NULL,
-				`next_offset` INT NOT NULL DEFAULT '0',
-				`history_id_list` TEXT NOT NULL, 
-				`history_id` INT NOT NULL, 
-				PRIMARY KEY (`id`)
-			) DEFAULT CHARSET=utf8;";
-            dbDelta($sql_settings);
-        }
-        //creating table for saving cron data================
 	}
 }
 }

@@ -49,6 +49,51 @@ function pewc_add_product_extras_section( $wp_customize ) {
     )
   );
 
+  // $wp_customize->add_setting(
+  //   'pewc_preset_style',
+  //   array(
+  //     'default'     => 'inherit',
+  //     'type'        => 'option',
+  //     'capability'  => 'manage_woocommerce'
+  //   )
+  // );
+  //
+  // $wp_customize->add_control(
+  //   'pewc_preset_style',
+  //   array(
+  //     'label'    => __( 'Preset styles', 'pewc' ),
+  //     'section'  => 'pewc_styles_section',
+  //     'settings' => 'pewc_preset_style',
+  //     'type'        => 'select',
+  //     'choices'     => array(
+  //       'inherit'		=> __( 'Inherit from theme', 'pewc' ),
+  //       'colour'		=> __( 'Colour', 'pewc' ),
+  //       'shadow'		=> __( 'Shadow', 'pewc' ),
+  //       'simple'		=> __( 'Simple', 'pewc' )
+  //     ),
+  //   )
+  // );
+  //
+  // $wp_customize->add_setting(
+  //   'pewc_preset_accent_colour',
+  //   array(
+  //     'default'     => '#2196F3',
+  //     'type'        => 'option',
+  //     'capability'  => 'manage_woocommerce'
+  //   )
+  // );
+  //
+  // $wp_customize->add_control(
+  //   'pewc_preset_accent_colour',
+  //   array(
+  //     'label'           => __( 'Accent colour', 'pewc' ),
+  //     'section'         => 'pewc_styles_section',
+  //     'settings'        => 'pewc_preset_accent_colour',
+  //     'type'            => 'color',
+  //     'active_callback' => 'pewc_use_preset_style'
+  //   )
+  // );
+
   $wp_customize->add_setting(
     'pewc_list_margin_left',
     array(
@@ -597,7 +642,7 @@ function pewc_customize_css() { ?>
       height: <?php echo get_theme_mod( 'pewc_textarea_height', false ); ?>em;
     }
     <?php if( get_theme_mod( 'pewc_block_label' ) ) { ?>
-      ul.pewc-product-extra-groups .pewc-item:not(.pewc-item-checkbox) label {
+      ul.pewc-product-extra-groups .pewc-item:not(.pewc-item-checkbox)::not(.pewc-item-products-radio-list) label {
         display: block !important
       }
     <?php } ?>

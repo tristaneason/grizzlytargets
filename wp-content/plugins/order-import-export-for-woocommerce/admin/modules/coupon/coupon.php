@@ -131,7 +131,7 @@ class Wt_Import_Export_For_Woo_Basic_Coupon {
         $header_row = $export->prepare_header();
 
         $data_row = $export->prepare_data_to_export($form_data, $batch_offset);
-
+		
         $export_data = array(
             'head_data' => $header_row,
             'body_data' => $data_row['data'],
@@ -371,13 +371,13 @@ class Wt_Import_Export_For_Woo_Basic_Coupon {
             'field_name' => 'found_action',
             'help_text_conditional'=>array(
                 array(
-                    'help_text'=> __('Retains the coupon in the store as is and skips the matching coupon from the input file.'),
+                    'help_text'=> __('This option will not update the existing coupons and keeps the coupons as is.'),
                     'condition'=>array(
                         array('field'=>'wt_iew_found_action', 'value'=>'skip')
                     )
                 ),
                 array(
-                    'help_text'=> __('Update coupon as per data from the input file'),
+                    'help_text'=> __('This option will update the existing coupons as per the data from the input file.'),
                     'condition'=>array(
                         array('field'=>'wt_iew_found_action', 'value'=>'update')
                     )
@@ -405,16 +405,16 @@ class Wt_Import_Export_For_Woo_Basic_Coupon {
         {
             /* altering help text of default fields */
             $fields['limit']['label']=__('Total number of coupons to export'); 
-            $fields['limit']['help_text']=__('Exports specified number of coupons. e.g. Entering 500 with a skip count of 10 will export coupons from 11th to 510th position.');
+            $fields['limit']['help_text']=__('Provide the number of coupons you want to export. e.g. Entering 500 with a skip count of 10 will export coupons from 11th to 510th position.');
             $fields['offset']['label']=__('Skip first <i>n</i> coupons');
-            $fields['offset']['help_text']=__('Skips specified number of coupons from the beginning. e.g. Enter 10 to skip first 10 coupons from export.');
+            $fields['offset']['help_text']=__('Skips specified number of coupons from the beginning of the database. e.g. Enter 10 to skip first 10 coupons from export.');
 
             $fields['statuses'] = array(
                 'label' => __('Coupon status'),
                 'placeholder' => __('Any status'),
                 'field_name' => 'statuses',
                 'sele_vals' => self::get_coupon_statuses(),
-                'help_text' => __('Export coupons by their status. You can specify more than one status if required.'),
+                'help_text' => __('Filter coupons on the basis of status. Multiple statuses can be selected.'),
                 'type' => 'multi_select',
                 'css_class' => 'wc-enhanced-select',
                 'validation_rule' => array('type'=>'text_arr')
@@ -424,7 +424,7 @@ class Wt_Import_Export_For_Woo_Basic_Coupon {
                 'placeholder' => __('Any type'),
                 'field_name' => 'types',
                 'sele_vals' => self::get_coupon_types(),
-                'help_text' => __('Select the coupon type e.g, fixed cart, recurring etc to export only coupon of a specific type.'),
+                'help_text' => __('Filter coupons on the basis of type. Multiple types can be selected.'),
                 'type' => 'multi_select',
                 'css_class' => 'wc-enhanced-select',
                 'validation_rule' => array('type'=>'text_arr')
@@ -440,7 +440,7 @@ class Wt_Import_Export_For_Woo_Basic_Coupon {
                         'min'=>0,
                     ),
                 'field_name'=>'coupon_amount_from',
-                'help_text'=>__('Export coupons by their discount amount. Specify the minimum discount amount for which the coupon was levied.'),
+                'help_text'=>__('Minimum Coupon amount : Exports coupons of amount equal to or greater than specified amount.'),
                 'validation_rule'=>array('type'=>'floatval'),
             
             );
@@ -455,7 +455,7 @@ class Wt_Import_Export_For_Woo_Basic_Coupon {
                         'min'=>0,
                     ),
                 'field_name'=>'coupon_amount_to',
-                'help_text'=>__('Export coupons by their discount amount. Specify the maximum discount amount for which the coupon was levied.'),
+                'help_text'=>__('Maximum Coupon amount: Exports coupons of amount up to the specified amount.'),
                 'validation_rule'=>array('type'=>'floatval'),
             
             );
@@ -467,7 +467,7 @@ class Wt_Import_Export_For_Woo_Basic_Coupon {
                 'placeholder' => __('From date'),
                 'field_name' => 'coupon_exp_date_from',
                 'sele_vals' => '',
-                'help_text' => __('Date on which the coupon will expire. Export coupons with expiry date equal to or greater than the specified date.'),
+                'help_text' => __('Exports coupons that will expire on or after the specified date.'),
                 'type' => 'text',
                 'css_class' => 'wt_iew_datepicker',                
             );
@@ -477,7 +477,7 @@ class Wt_Import_Export_For_Woo_Basic_Coupon {
                 'placeholder' => __('To date'),
                 'field_name' => 'coupon_exp_date_to',
                 'sele_vals' => '',
-                'help_text' => __('Date on which the coupon will expire. Export coupons with expiry date equal to or less than the specified date.'),
+                'help_text' => __('Exports coupons that will expire on the specified date.'),
                 'type' => 'text',
                 'css_class' => 'wt_iew_datepicker',                
             );
@@ -487,7 +487,7 @@ class Wt_Import_Export_For_Woo_Basic_Coupon {
                 'placeholder' => __('ID'),
                 'field_name' => 'sort_columns',
                 'sele_vals' => self::get_coupon_sort_columns(),
-                'help_text' => __('Sort the exported data based on the selected columns in order specified. Defaulted to ascending order.'),
+                'help_text' => __('Select the columns on the basis of which you want to sort the exported data in the order specified.'),
                 'type' => 'multi_select',
                 'css_class' => 'wc-enhanced-select',
                 'validation_rule' => array('type'=>'text_arr')
@@ -498,7 +498,7 @@ class Wt_Import_Export_For_Woo_Basic_Coupon {
                 'placeholder' => __('ASC'),
                 'field_name' => 'order_by',
                 'sele_vals' => array('ASC' => 'Ascending', 'DESC' => 'Descending'),
-                'help_text' => __('Defaulted to Ascending. Applicable to above selected columns in the order specified.'),
+                'help_text' => __('Sort the exported data based on the above selected columns. Defaulted to ascending order.'),
                 'type' => 'select',
             );
         }

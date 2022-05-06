@@ -92,25 +92,32 @@ function wppfm_meta_key_is_money( $key ) {
  *
  * @param string $money_value The money value to be formatted
  * @param string $feed_language Selected Language in WPML add-on, leave empty if no exchange rate correction is required @since 1.9.0
+ * @param string $feed_currency Selected currency in WOOCS add-on, leave empty if no correction is required @since 2.28.0.
  *
  * @return string    A formatted money value
  * @since 1.9.0 added WPML support
+ * @since 2.28.0 Switched to the formal wc functions to get the separator and number of decimals values.
+ * @since 2.28.0 Added support for the WooCommerce Currency Switcher plugin.
  *
  * @since 1.1.0
  */
-function wppfm_prep_money_values( $money_value, $feed_language = '' ) {
-	$thousand_separator = get_option( 'woocommerce_price_thousand_sep' );
+function wppfm_prep_money_values( $money_value, $feed_language = '', $feed_currency = '' ) {
+	$thousand_separator = wc_get_price_thousand_separator();
 
 	if ( ! is_float( $money_value ) ) {
 		$val         = wppfm_number_format_parse( $money_value );
 		$money_value = floatval( $val );
 	}
 
-	if ( has_filter( 'wppfm_wpml_exchange_money_values' ) ) {
+	if ( has_filter( 'wppfm_woocs_exchange_money_values' ) ) { // WOOCS Support.
+		$money_value = apply_filters( 'wppfm_woocs_exchange_money_values', $money_value, $feed_currency );
+	}
+
+	if ( has_filter( 'wppfm_wpml_exchange_money_values' ) ) { // WPML Support.
 		return apply_filters( 'wppfm_wpml_exchange_money_values', $money_value, $feed_language );
 	} else {
-		$decimal_point   = get_option( 'woocommerce_price_decimal_sep' );
-		$number_decimals = absint( get_option( 'woocommerce_price_num_decimals', 2 ) );
+		$decimal_point   = wc_get_price_decimal_separator();
+		$number_decimals = wc_get_price_decimals();
 
 		// To prevent Google Merchant Centre to interpret a thousand separator as a decimal separator we need to remove
 		// the thousand separator if the decimals setting in WC is 0 and a period is used as decimal separator. Eg 1.452 would be interpreted by Google as 1,452.
@@ -274,13 +281,15 @@ function wppfm_convert_string_with_spaces_to_lower_case_string_with_dashes( $str
  *
  * @param string $number_string
  *
+ * @since 2.28.0 Switched to the formal wc functions to get the separator and number of decimals values.
+ *
  * @return string
  */
 function wppfm_number_format_parse( $number_string ) {
-	$decimal_separator  = get_option( 'woocommerce_price_decimal_sep' );
-	$thousand_separator = get_option( 'woocommerce_price_thousand_sep' );
+	$decimal_separator  = wc_get_price_decimal_separator();
+	$thousand_separator = wc_get_price_thousand_separator();
 
-	// convert a number string that is a actual standard number format whilst the woocommerce options are not standard
+	// convert a number string that is an actual standard number format whilst the woocommerce options are not standard
 	// to the woocommerce standard. This sometimes happens with meta values
 	if ( ! empty( $decimal_separator ) && strpos( $number_string, $decimal_separator ) === false ) {
 		$number_string = ! empty( $thousand_separator ) && strpos( $number_string, $thousand_separator ) === false ? $number_string : str_replace( $thousand_separator, $decimal_separator, $number_string );

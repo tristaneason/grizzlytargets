@@ -6,9 +6,12 @@ Plugin URI: https://wordpress.org/plugins/order-import-export-for-woocommerce/
 Description: Export and Import Order detail including line items, From and To your WooCommerce Store.
 Author: WebToffee
 Author URI: https://www.webtoffee.com/product/woocommerce-order-coupon-subscription-export-import/
-Version: 2.1.4
+Version: 2.2.2
 Text Domain: order-import-export-for-woocommerce
-WC tested up to: 5.9
+Domain Path: /languages
+Requires at least: 3.0
+Requires PHP: 5.6
+WC tested up to: 6.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 */
@@ -45,7 +48,7 @@ if ( !defined( 'WT_IEW_DEBUG_BASIC_TROUBLESHOOT' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'WT_O_IEW_VERSION', '2.1.4' );
+define( 'WT_O_IEW_VERSION', '2.2.2' );
 
 /**
  * The code that runs during plugin activation.
@@ -145,7 +148,6 @@ function run_wt_import_export_for_woo_basic_order() {
 }
 /** this added for a temporary when a plugin update with the option upload zip file. need to remove this after some version release */
 if ( !get_option( 'wt_o_iew_is_active' ) ) {
-	update_option( 'wt_order_show_legacy_menu', 1 );
 	activate_wt_import_export_for_woo_basic_order();
 }
 
@@ -159,7 +161,8 @@ add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'wt_oiew_plugi
 function wt_oiew_plugin_action_links_basic_order( $links ) {
 
 	$plugin_links = array(
-		'<a href="' . admin_url( 'admin.php?page=wt_import_export_for_woo_basic' ) . '">' . __( 'Settings' ) . '</a>',
+        '<a href="' . admin_url('admin.php?page=wt_import_export_for_woo_basic_export') . '">' . __('Export') . '</a>',
+		'<a href="' . admin_url('admin.php?page=wt_import_export_for_woo_basic_import') . '">' . __('Import') . '</a>',
 		'<a href="https://www.webtoffee.com/order-coupon-subscription-export-import-plugin-woocommerce-user-guide/" target="_blank">' . __( 'Documentation' ) . '</a>',
 		'<a href="https://wordpress.org/support/plugin/order-import-export-for-woocommerce/" target="_blank">' . __( 'Support' ) . '</a>',
 		'<a href="https://www.webtoffee.com/product/woocommerce-order-coupon-subscription-export-import/?utm_source=free_plugin_listing&utm_medium=order_imp_exp_basic&utm_campaign=Order_Import_Export&utm_content=' . WT_O_IEW_VERSION . '" style="color:#3db634;">' . __('Premium Upgrade') . '</a>'
@@ -208,16 +211,6 @@ if(!function_exists('wt_order_imex_basic_plugin_screen_update_js'))
 // uninstall feedback catch
 include_once plugin_dir_path( __FILE__ ) . 'includes/class-wf-orderimpexp-plugin-uninstall-feedback.php';
 
-
-// Add dismissble banner for legacy menu
-include_once plugin_dir_path( __FILE__ ) . 'includes/class-wt-order-legacy-menu-moved.php';
-$order_legacy_menu					 = new wt_order_legacy_menu_moved( 'order' );
-$order_legacy_menu->plugin_title	 = "Order Import Export";
-$order_legacy_menu->old_menu		 = "WooCommerce > Order Im-EX";
-$order_legacy_menu->banner_message	 = sprintf( __( "We have introduced a new main menu %sWebToffee Import Export(basic)%s for the %s plugin. Click the button below or dismiss this banner to remove the old menu from %s." ), '<b>', '</b>', $order_legacy_menu->plugin_title, $order_legacy_menu->old_menu );
-$order_legacy_menu->old_menu_params	 = array(
-	array( 'parent_slug' => 'woocommerce', 'menu_title' => 'Order Im-EX', 'capability' => 'import' )
-);
 
 include_once 'class-wt-order-review-request.php';
 

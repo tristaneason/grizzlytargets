@@ -19,6 +19,7 @@ function pewc_filter_field_types_pro( $field_types ) {
 		return $field_types;
 	}
 	$field_types['products'] = __( 'Products', 'pewc' );
+	$field_types['product-categories'] = __( 'Product Categories', 'pewc' );
 	$field_types['checkbox_group'] = __( 'Checkbox Group', 'pewc' );
 	$field_types['image_swatch'] = __( 'Image Swatch', 'pewc' );
 	ksort( $field_types );
