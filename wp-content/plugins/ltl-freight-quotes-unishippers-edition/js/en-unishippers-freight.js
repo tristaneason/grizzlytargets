@@ -358,6 +358,62 @@ jQuery(document).ready(function () {
         }
     });
 
+    /**
+     * EN apply coupon code send an API call to FDO server
+     */
+     jQuery(".en_fdo_unishippers_ltl_apply_promo_btn").on("click", function (e) {
+        
+        jQuery.ajax({
+            type: "POST",
+            url: ajaxurl,
+            data: {action: 'en_unishippers_ltl_fdo_apply_coupon',
+                    coupon: this.getAttribute('data-coupon')
+                    },
+            success: function (resp) {
+                response = JSON.parse(resp);
+                if(response.status == 'error'){
+                    jQuery('.en_fdo_unishippers_ltl_apply_promo_btn').after('<p id="en_fdo_unishippers_ltl_apply_promo_error_p" class="en-error-message">'+response.message+'</p>');
+                    setTimeout(function(){
+                        jQuery("#en_fdo_unishippers_ltl_apply_promo_error_p").fadeOut(500);
+                    }, 5000)
+                }else{
+                    window.location.reload(true);
+                }
+                
+            }
+        });
+
+        e.preventDefault();
+    });
+
+    /**
+     * EN apply coupon code send an API call to Validate addresses server
+     */
+     jQuery(".en_va_unishippers_ltl_apply_promo_btn").on("click", function (e) {
+        
+        jQuery.ajax({
+            type: "POST",
+            url: ajaxurl,
+            data: {action: 'en_unishippers_ltl_va_apply_coupon',
+                    coupon: this.getAttribute('data-coupon')
+                    },
+            success: function (resp) {
+                response = JSON.parse(resp);
+                if(response.status == 'error'){
+                    jQuery('.en_va_unishippers_ltl_apply_promo_btn').after('<p id="en_va_unishippers_ltl_apply_promo_error_p" class="en-error-message">'+response.message+'</p>');
+                    setTimeout(function(){
+                        jQuery("#en_va_unishippers_ltl_apply_promo_error_p").fadeOut(500);
+                    }, 5000)
+                }else{
+                    window.location.reload(true);
+                }
+                
+            }
+        });
+
+        e.preventDefault();
+    });
+
     // Changed
     var wc_settings_unishippers_freight_rate_method = jQuery("#wc_settings_unishippers_freight_rate_method").val();
     if (wc_settings_unishippers_freight_rate_method == 'Cheapest') {
@@ -606,4 +662,27 @@ if (typeof en_update_plan != 'function') {
             }
         });
     }
+}
+
+
+function en_unishippers_ltl_fdo_connection_status_refresh(input) {
+    jQuery.ajax({
+        type: "POST",
+        url: ajaxurl,
+        data: {action: 'en_unishippers_ltl_fdo_connection_status_refresh'},
+        success: function (data_response) {
+            window.location.reload(true);
+        }
+    });
+}
+
+function en_unishippers_ltl_va_connection_status_refresh(input) {
+    jQuery.ajax({
+        type: "POST",
+        url: ajaxurl,
+        data: {action: 'en_unishippers_ltl_va_connection_status_refresh'},
+        success: function (data_response) {
+            window.location.reload(true);
+        }
+    });
 }

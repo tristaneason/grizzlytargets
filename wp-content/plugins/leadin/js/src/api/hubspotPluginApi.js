@@ -26,6 +26,6 @@ export function monitorFormCreatedFromTemplate(type) {
   return callInterframeMethod('monitorFormCreatedFromTemplate', type);
 }
 
-export function monitorFormCreationFailed() {
-  return callInterframeMethod('monitorFormCreationFailed');
+export function monitorFormCreationFailed(error) {
+  return callInterframeMethod('monitorFormCreationFailed', error);
 }

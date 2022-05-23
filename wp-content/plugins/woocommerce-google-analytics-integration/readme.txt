@@ -3,7 +3,7 @@ Contributors: woocommerce, automattic, claudiosanches, bor0, royho, laurendaviss
 Tags: woocommerce, google analytics
 Requires at least: 3.9
 Tested up to: 5.9
-Stable tag: 1.5.8
+Stable tag: 1.5.9
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -59,6 +59,10 @@ Exact wording depends on the national data privacy laws and should be adjusted.
 1. Google Analytics Integration Settings.
 
 == Changelog ==
+
+= 1.5.9 - 2022-05-10 =
+* Tweak - WC 6.5 compatibility.
+* Tweak - WordPress 6.0 compatibility.
 
 = 1.5.8 - 2022-02-02 =
 * Add - Support for Google Analytics cross domain tracking features.

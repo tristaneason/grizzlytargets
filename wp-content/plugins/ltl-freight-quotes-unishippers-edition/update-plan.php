@@ -15,54 +15,107 @@ add_action('wp_ajax_nopriv_en_unishippers_freight_activate_hit_to_update_plan', 
  */
 if (!function_exists('en_unishippers_freight_activate_hit_to_update_plan')) {
 
-    function en_unishippers_freight_activate_hit_to_update_plan()
+    function en_unishippers_freight_activate_hit_to_update_plan($network_wide = null)
     {
+        if ( is_multisite() && $network_wide ) {
 
-        $domain = unishippers_freight_get_domain();
+            foreach (get_sites(['fields'=>'ids']) as $blog_id) {
+                switch_to_blog($blog_id);
+                $domain = unishippers_freight_get_domain();
 
-        $index = 'ltl-freight-quotes-unishippers-edition/unishippers-freight-quotes-unishippers-edition.php';
-        $plugin_info = get_plugins();
-        $plugin_version = isset($plugin_info[$index]['Version']) ? $plugin_info[$index]['Version'] : '';
+                $index = 'ltl-freight-quotes-unishippers-edition/unishippers-freight-quotes-unishippers-edition.php';
+                $plugin_info = get_plugins();
+                $plugin_version = isset($plugin_info[$index]['Version']) ? $plugin_info[$index]['Version'] : '';
 
-        $plugin_dir_url = plugin_dir_url(__FILE__) . 'en-hit-to-update-plan.php';
-        $post_data = array(
-            'platform' => 'wordpress',
-            'carrier' => '63',
-            'store_url' => $domain,
-            'webhook_url' => $plugin_dir_url,
-            'plugin_version' => $plugin_version,
-        );
+                $plugin_dir_url = plugin_dir_url(__FILE__) . 'en-hit-to-update-plan.php';
+                $post_data = array(
+                    'platform' => 'wordpress',
+                    'carrier' => '63',
+                    'store_url' => $domain,
+                    'webhook_url' => $plugin_dir_url,
+                    'plugin_version' => $plugin_version,
+                );
 
-        $license_key = get_option('wc_settings_unishippers_freight_licence_key');
-        strlen($license_key) > 0 ? $post_data['license_key'] = $license_key : '';
+                $license_key = get_option('wc_settings_unishippers_freight_licence_key');
+                strlen($license_key) > 0 ? $post_data['license_key'] = $license_key : '';
 
-        $url = esc_url(UNISHIPPERS_FREIGHT_DOMAIN_HITTING_URL . "/web-hooks/subscription-plans/create-plugin-webhook.php?");
-        $response = wp_remote_get($url, array(
-                'method' => 'GET',
-                'timeout' => 60,
-                'redirection' => 5,
-                'blocking' => true,
-                'body' => $post_data,
-            )
-        );
-        $output = wp_remote_retrieve_body($response);
-        $response = json_decode($output, TRUE);
+                $url = esc_url(UNISHIPPERS_FREIGHT_DOMAIN_HITTING_URL . "/web-hooks/subscription-plans/create-plugin-webhook.php?");
+                $response = wp_remote_get($url, array(
+                        'method' => 'GET',
+                        'timeout' => 60,
+                        'redirection' => 5,
+                        'blocking' => true,
+                        'body' => $post_data,
+                    )
+                );
+                $output = wp_remote_retrieve_body($response);
+                $response = json_decode($output, TRUE);
 
-        $plan = isset($response['pakg_group']) ? $response['pakg_group'] : '';
-        $expire_day = isset($response['pakg_duration']) ? $response['pakg_duration'] : '';
-        $expiry_date = isset($response['expiry_date']) ? $response['expiry_date'] : '';
-        $plan_type = isset($response['plan_type']) ? $response['plan_type'] : '';
+                $plan = isset($response['pakg_group']) ? $response['pakg_group'] : '';
+                $expire_day = isset($response['pakg_duration']) ? $response['pakg_duration'] : '';
+                $expiry_date = isset($response['expiry_date']) ? $response['expiry_date'] : '';
+                $plan_type = isset($response['plan_type']) ? $response['plan_type'] : '';
 
-        if (isset($response['pakg_price']) && $response['pakg_price'] == '0') {
-            $plan = '0';
+                if (isset($response['pakg_price']) && $response['pakg_price'] == '0') {
+                    $plan = '0';
+                }
+
+                update_option('unishippers_freight_packages_quotes_package', "$plan");
+                update_option('unishippers_freight_package_expire_days', "$expire_day");
+                update_option('unishippers_freight_package_expire_date', "$expiry_date");
+                update_option('unishippers_freight_store_type', "$plan_type");
+
+                en_check_unishippers_freight_plan_on_product_detail();
+                restore_current_blog();
+            }
+
+        } else {
+            $domain = unishippers_freight_get_domain();
+
+            $index = 'ltl-freight-quotes-unishippers-edition/unishippers-freight-quotes-unishippers-edition.php';
+            $plugin_info = get_plugins();
+            $plugin_version = isset($plugin_info[$index]['Version']) ? $plugin_info[$index]['Version'] : '';
+
+            $plugin_dir_url = plugin_dir_url(__FILE__) . 'en-hit-to-update-plan.php';
+            $post_data = array(
+                'platform' => 'wordpress',
+                'carrier' => '63',
+                'store_url' => $domain,
+                'webhook_url' => $plugin_dir_url,
+                'plugin_version' => $plugin_version,
+            );
+
+            $license_key = get_option('wc_settings_unishippers_freight_licence_key');
+            strlen($license_key) > 0 ? $post_data['license_key'] = $license_key : '';
+
+            $url = esc_url(UNISHIPPERS_FREIGHT_DOMAIN_HITTING_URL . "/web-hooks/subscription-plans/create-plugin-webhook.php?");
+            $response = wp_remote_get($url, array(
+                    'method' => 'GET',
+                    'timeout' => 60,
+                    'redirection' => 5,
+                    'blocking' => true,
+                    'body' => $post_data,
+                )
+            );
+            $output = wp_remote_retrieve_body($response);
+            $response = json_decode($output, TRUE);
+
+            $plan = isset($response['pakg_group']) ? $response['pakg_group'] : '';
+            $expire_day = isset($response['pakg_duration']) ? $response['pakg_duration'] : '';
+            $expiry_date = isset($response['expiry_date']) ? $response['expiry_date'] : '';
+            $plan_type = isset($response['plan_type']) ? $response['plan_type'] : '';
+
+            if (isset($response['pakg_price']) && $response['pakg_price'] == '0') {
+                $plan = '0';
+            }
+
+            update_option('unishippers_freight_packages_quotes_package', "$plan");
+            update_option('unishippers_freight_package_expire_days', "$expire_day");
+            update_option('unishippers_freight_package_expire_date', "$expiry_date");
+            update_option('unishippers_freight_store_type', "$plan_type");
+            en_check_unishippers_freight_plan_on_product_detail();
         }
 
-        update_option('unishippers_freight_packages_quotes_package', "$plan");
-        update_option('unishippers_freight_package_expire_days', "$expire_day");
-        update_option('unishippers_freight_package_expire_date', "$expiry_date");
-        update_option('unishippers_freight_store_type', "$plan_type");
-
-        en_check_unishippers_freight_plan_on_product_detail();
     }
 
 }
@@ -108,13 +161,28 @@ if (!function_exists('en_check_unishippers_freight_plan_on_product_detail')) {
  */
 if (!function_exists('en_unishippers_freight_deactivate_hit_to_update_plan')) {
 
-    function en_unishippers_freight_deactivate_hit_to_update_plan()
+    function en_unishippers_freight_deactivate_hit_to_update_plan($network_wide = null)
     {
-        delete_option('eniture_plugin_22');
-        delete_option('unishippers_freight_packages_quotes_package');
-        delete_option('unishippers_freight_package_expire_days');
-        delete_option('unishippers_freight_package_expire_date');
-        delete_option('unishippers_freight_store_type');
+        if ( is_multisite() && $network_wide ) {
+
+            foreach (get_sites(['fields'=>'ids']) as $blog_id) {
+                switch_to_blog($blog_id);
+                delete_option('eniture_plugin_22');
+                delete_option('unishippers_freight_packages_quotes_package');
+                delete_option('unishippers_freight_package_expire_days');
+                delete_option('unishippers_freight_package_expire_date');
+                delete_option('unishippers_freight_store_type');
+                restore_current_blog();
+            }
+
+        } else {
+            delete_option('eniture_plugin_22');
+            delete_option('unishippers_freight_packages_quotes_package');
+            delete_option('unishippers_freight_package_expire_days');
+            delete_option('unishippers_freight_package_expire_date');
+            delete_option('unishippers_freight_store_type');
+        }
+
     }
 
 }

@@ -1,5 +1,8 @@
 *** WooCommerce Authorize.Net Gateway Changelog ***
 
+2022.05.09 - version 3.7.1
+ * Fix - Revert COF/MIT changes from version 3.7.0
+
 2022.04.25 - version 3.7.0
  * Misc - Compliance with COF (card on file) and MIT (merchant initiated transactions) mandates
 

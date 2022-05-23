@@ -25,7 +25,6 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
 
         $export_columns = $this->parent_module->get_selected_column_names();
 
-        $this->line_item_meta = self::get_all_line_item_metakeys();
         if (is_plugin_active('print-invoices-packing-slip-labels-for-woocommerce/print-invoices-packing-slip-labels-for-woocommerce.php')):
             $this->is_wt_invoice_active = true;
         endif;
@@ -44,22 +43,15 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
 
         if ($this->export_to_separate_columns) {
             for ($i = 1; $i <= $max_line_items; $i++) {
-                foreach ($this->line_item_meta as $meta_value) {
-                    $new_val = str_replace("_", " ", $meta_value);
                     $export_columns["line_item_{$i}_name"] = "Product Item {$i} Name";
                     $export_columns["line_item_{$i}_product_id"] = "Product Item {$i} id";
                     $export_columns["line_item_{$i}_sku"] = "Product Item {$i} SKU";
                     $export_columns["line_item_{$i}_quantity"] = "Product Item {$i} Quantity";
                     $export_columns["line_item_{$i}_total"] = "Product Item {$i} Total";
                     $export_columns["line_item_{$i}_subtotal"] = "Product Item {$i} Subtotal";
-                    if (in_array($meta_value, array("_product_id", "_qty", "_variation_id", "_line_total", "_line_subtotal", "_tax_class", "_line_tax", "_line_tax_data", "_line_subtotal_tax"))) {
-                        continue;
-                    } else {
-                        $export_columns["line_item_{$i}_$meta_value"] = "Product Item {$i} $new_val";
-                    }
-                }
             }
         }
+		
         if ($this->export_to_separate_rows) {
             $export_columns = $this->wt_line_item_separate_row_csv_header($export_columns);
         }
@@ -797,26 +789,18 @@ class Wt_Import_Export_For_Woo_Basic_Order_Export {
         }
 
         if ($this->export_to_separate_columns) {
-            $line_item_values = self::get_all_metakeys_and_values($order);
-            $this->line_item_meta = self::get_all_line_item_metakeys();
-            $max_line_items = $this->line_items_max_count;                                                                   
+
             for ($i = 1; $i <= $max_line_items; $i++) {
-                $line_item_array = explode('|', $order_export_data["line_item_{$i}"]);                                               
-                foreach ($this->line_item_meta as $meta_val) {
-                    $order_export_data["line_item_{$i}_name"] = !empty($line_item_array[0]) ? substr($line_item_array[0], strpos($line_item_array[0], ':') + 1) : '';
-                    $order_export_data["line_item_{$i}_product_id"] = !empty($line_item_array[1]) ? substr($line_item_array[1], strpos($line_item_array[1], ':') + 1) : '';
-                    $order_export_data["line_item_{$i}_sku"] = !empty($line_item_array[2]) ? substr($line_item_array[2], strpos($line_item_array[2], ':') + 1) : '';
-                    $order_export_data["line_item_{$i}_quantity"] = !empty($line_item_array[3]) ? substr($line_item_array[3], strpos($line_item_array[3], ':') + 1) : '';
-                    $order_export_data["line_item_{$i}_total"] = !empty($line_item_array[4]) ? substr($line_item_array[4], strpos($line_item_array[4], ':') + 1) : '';
-                    $order_export_data["line_item_{$i}_subtotal"] = !empty($line_item_array[5]) ? substr($line_item_array[5], strpos($line_item_array[5], ':') + 1) : '';
-                    if (in_array($meta_val, array("_product_id", "_qty", "_variation_id", "_line_total", "_line_subtotal", "_tax_class", "_line_tax", "_line_tax_data", "_line_subtotal_tax"))) {
-                        continue;
-                    } else {
-                        $order_export_data["line_item_{$i}_$meta_val"] = !empty($line_item_values[$i][$meta_val]) ? $line_item_values[$i][$meta_val] : '';
-                    }
-                }
+
+			        $order_export_data["line_item_{$i}_name"] = !empty($line_items[$i-1]['name']) ? $line_items[$i-1]['name'] : '';
+                    $order_export_data["line_item_{$i}_product_id"] = !empty($line_items[$i-1]['product_id']) ? $line_items[$i-1]['product_id'] : '';
+                    $order_export_data["line_item_{$i}_sku"] = !empty($line_items[$i-1]['sku']) ? $line_items[$i-1]['sku'] : '';
+                    $order_export_data["line_item_{$i}_quantity"] = !empty($line_items[$i-1]['quantity']) ? $line_items[$i-1]['quantity'] : '';
+                    $order_export_data["line_item_{$i}_total"] = !empty($line_items[$i-1]['total']) ? $line_items[$i-1]['total'] : '';
+                    $order_export_data["line_item_{$i}_subtotal"] = !empty($line_items[$i-1]['sub_total']) ? $line_items[$i-1]['sub_total'] : '';
             }
-        }      
+        }
+		
         $order_data_filter_args = array('max_line_items' => $max_line_items);
         
         if ($this->export_to_separate_rows) {

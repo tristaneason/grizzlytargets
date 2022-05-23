@@ -54,6 +54,8 @@ if (!class_exists('WC_unishippers_ltl_Settings_tabs')) {
                 'section-2' => __('Quote Settings', 'woocommerce-settings-unishipper_quetes'),
                 'section-3' => __('Warehouses', 'woocommerce-settings-unishipper_quetes'),
                 'section-4' => __('User Guide', 'woocommerce-settings-unishipper_quetes'),
+                'section-5' => __('FreightDesk Online', 'woocommerce-settings-unishipper_quetes'),
+                'section-6' => __('Validate Addresses', 'woocommerce-settings-unishipper_quetes'),
             );
 
             $sections = apply_filters('en_woo_addons_sections', $sections, en_woo_plugin_unishippers_freight);
@@ -518,6 +520,16 @@ if (!class_exists('WC_unishippers_ltl_Settings_tabs')) {
                     $settings = array();
                     break;
 
+                case 'section-5' :
+                    $this->freightdesk_online_section();
+                    $settings = [];
+                    break;
+    
+                case 'section-6' :
+                    $this->validate_addresses_section();
+                    $settings = [];
+                    break;
+
                 default:
 
                     echo '<div class="unishippers_ltl_connection_section_class">';
@@ -591,6 +603,24 @@ if (!class_exists('WC_unishippers_ltl_Settings_tabs')) {
             $meridiem = $cutOffTime[3];
             $cutOffTime = "{$hours}{$separator}{$minutes} $meridiem";
             return date("H:i", strtotime($cutOffTime));
+        }
+
+        /**
+         * FreightDesk Online section
+         */
+        public function freightdesk_online_section()
+        {
+
+            include_once('fdo/freightdesk-online-section.php');
+        }
+
+        /**
+         * Validate Addresses Section
+         */
+        public function validate_addresses_section()
+        {
+
+            include_once('fdo/validate-addresses-section.php');
         }
 
 

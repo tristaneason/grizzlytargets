@@ -185,6 +185,24 @@ var wt_iew_basic_history=(function( $ ) {
 					}
 				}
 			});
+                        $('.wt_iew_bulk_action_logs_btn').click(function(){
+				if($('.wt_iew_history_checkbox_sub:checked').length>0 && $('.wt_iew_bulk_action option:selected').val()!="")
+				{
+					var cr_action=$('.wt_iew_bulk_action option:selected').val();
+					if(cr_action=='delete')
+					{
+						if(confirm(wt_iew_history_basic_params.msgs.sure))
+						{
+							var id_arr=new Array();
+							$('.wt_iew_history_checkbox_sub:checked').each(function(){
+								id_arr.push($(this).val());
+							});
+							var delete_url=wt_iew_history_basic_params.delete_url.replace('_log_file_', id_arr.join(','));
+							window.location.href=delete_url;
+						}
+					}
+				}
+			});                        
 		}
 	}
 	return wt_iew_basic_history;

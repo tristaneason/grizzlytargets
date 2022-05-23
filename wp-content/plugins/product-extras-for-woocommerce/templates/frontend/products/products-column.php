@@ -135,7 +135,7 @@ if ( ! empty( $_GET['pewc_key'] ) && pewc_user_can_edit_products() ) {
 
 		if( $child_product->get_type() == 'variable' ) {
 
-			$variants = $child_product->get_children();
+			$variants = apply_filters( 'pewc_product_column_variants', $child_product->get_children(), $child_product, $item );
 
 			if( $variants ) {
 

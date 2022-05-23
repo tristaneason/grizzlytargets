@@ -52,7 +52,7 @@ export default function FormSelect({ formId, formName, handleChange }) {
         .then(({ guid, name }) => handleChange({ value: guid, label: name }))
         .catch(error => {
           setSearchFormError(error);
-          monitorFormCreationFailed();
+          monitorFormCreationFailed({ ...error, type: option.value });
         })
         .finally(() => setLoading(false));
     } else {

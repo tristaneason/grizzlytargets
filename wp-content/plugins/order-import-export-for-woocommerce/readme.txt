@@ -5,7 +5,7 @@ Tags: order export, woocommerce, order, export, csv, order import, woocommerce e
 Requires at least: 3.0.1
 Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.2.2
+Stable tag: 2.2.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -28,7 +28,7 @@ The following are functionalities offered by the basic version of the plugin.
  &#128312; Bulk update WooCommerce orders and coupons.
  &#128312; Compatible with YITH WooCommerce Order Tracking plugin.
  &#128312; Supports various export filters (order status, product, coupon, customer, date range)
- &#128312; Tested OK with WooCommerce 6.3
+ &#128312; Tested OK with WooCommerce 6.4
  &#128312; Tested OK with WP 5.9
  &#128312; Tested OK with PHP 8.0
 
@@ -228,6 +228,9 @@ Yes.
 
 == Changelog ==
 
+= 2.2.3 2022-05-09 =
+* WC 6.4 Tested OK.
+* Enhancement: Bulk delete import logs.
 = 2.2.2 2022-04-05 =
 * Enhancement: Option to - Update stock status and sales count of products upon order import.
 * Enhancement: Compatibility with WooCommerce shipment tracking and Advanced Shipment Tracking for WooCommerce.
@@ -499,6 +502,6 @@ Yes.
 
 == Upgrade Notice ==
 
-= 2.2.2 =
-* Enhancement: Option to - Update stock status and sales count of products upon order import.
-* Enhancement: Compatibility with WooCommerce shipment tracking and Advanced Shipment Tracking for WooCommerce.
+= 2.2.3 =
+* WC 6.4 Tested OK.
+* Enhancement: Bulk delete import logs.

@@ -37,20 +37,37 @@ if(isset($_GET['wt_iew_delete_log']))
                 $log_files = $indexed_log_files;
 
 		?>
+	<div class="wt_iew_bulk_action_box">
+		<select class="wt_iew_bulk_action wt_iew_select">
+			<option value=""><?php _e( 'Bulk Actions' ); ?></option>
+			<option value="delete"><?php _e( 'Delete' ); ?></option>
+		</select>
+		<button class="button button-primary wt_iew_bulk_action_logs_btn" type="button" style="float:left;"><?php _e( 'Apply' ); ?></button>
+	</div>
 		<table class="wp-list-table widefat fixed striped history_list_tb log_list_tb">
 		<thead>
 			<tr>
+				<th width="100">
+					<input type="checkbox" name="" class="wt_iew_history_checkbox_main">
+					<?php _e("No."); ?>
+				</th>
 				<th class="log_file_name_col"><?php _e("File"); ?></th>
 				<th><?php _e("Actions"); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php
+		$i = 0;
 		foreach($log_files as $log_file)
 		{
+			$i++;
 			$file_name=basename($log_file);
 			?>
 			<tr>
+				<th>
+					<input type="checkbox" value="<?php echo $file_name;?>" name="logfile_name[]" class="wt_iew_history_checkbox_sub">
+					<?php echo $i;?>						
+				</td>
 				<td class="log_file_name_col"><a class="wt_iew_view_log_btn" data-log-file="<?php echo $file_name;?>"><?php echo $file_name; ?></a></td>
 				<td>
 					<a class="wt_iew_delete_log" data-href="<?php echo str_replace('_log_file_', $file_name, $delete_url);?>"><?php _e('Delete'); ?></a>

@@ -427,3 +427,33 @@ tr.hide_en_weight_threshold_lfq {
 .quote_section_class_unishippers_ltl td.forminp.forminp-radio ul li {
     display: block !important;
 }
+
+.en-coupon-code-div{
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-left-width: 4px;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+    margin: 5px 15px 2px;
+    padding: 1px 12px;
+}
+
+.en-coupon-notice{
+    border-left-color: #72aee6;
+}
+
+.en-coupon-success{
+    border-left-color: #00a32a;
+}
+
+.en-coupon-error{
+    border-left-color: #d63638;
+}
+
+.en-coupon-btn-div{
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.en-error-message{
+    color: #dc3232 !important;
+}

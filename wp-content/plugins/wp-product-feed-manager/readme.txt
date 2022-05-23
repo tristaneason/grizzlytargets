@@ -2,10 +2,11 @@
 
 Contributors: WPMarketingRobot, Michel Jongbloed, AukeJomm
 Tags: Google Merchant Export, Product feed, woocommerce, Google product feed export, google, shopping, Google Adwords, Google Merchant, wooCommerce export, woocommerce variations, e-commerce, google merchant product feed, product variations, variations export, wp-e-commerce export, wp marketing robot
+Donate link: https://www.wpmarketingrobot.com/
 Requires at least: 5.4
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 1.39.0
+Stable tag: 1.40.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -96,10 +97,14 @@ In case it does please do submit your feed in your Google Merchant center and ch
 3. Save and generate your feed
 
 == Changelog ==
+= 1.40.0 - 12/05/2022 =
+* Updated the price date function such that it outputs a data format that better complies with the example the Google Feed Specifications provide.
+* Tested on WooCommerce 6.5.
+
 = 1.39.0 - 14/03/2022 =
 * Added some extra test code to prevent a fatal PHP error when the feed attribute data contains some invalid code.
 * Changed the way the WooCommerce Google Product Review Feed Manager is initiated to prevent a PHP Fatal error in a specific setting.
-* Tested on WooCommerce 6.2 and 6.3
+* Tested on WooCommerce 6.2 and 6.3.
 
 = 1.38.0 - 23/01/2022 =
 * Fixed an issue that could cause incorrect price values when using specific third party plugins. 

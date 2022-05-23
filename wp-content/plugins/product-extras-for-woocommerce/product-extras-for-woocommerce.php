@@ -2,7 +2,7 @@
 /*
 Plugin Name: WooCommerce Product Add-Ons Ultimate
 Description: Add extra fields to WooCommerce products
-Version: 3.10.3
+Version: 3.10.4
 Author: Plugin Republic
 Author URI: https://pluginrepublic.com/
 Plugin URI: https://pluginrepublic.com/wordpress-plugins/woocommerce-product-add-ons-ultimate/
@@ -24,7 +24,7 @@ if ( ! defined( 'PEWC_FILE' ) ) {
 	define( 'PEWC_FILE', __FILE__ );
 }
 if ( ! defined( 'PEWC_PLUGIN_VERSION' ) ) {
-	define( 'PEWC_PLUGIN_VERSION', '3.10.3' );
+	define( 'PEWC_PLUGIN_VERSION', '3.10.4' );
 }
 if ( ! defined( 'PEWC_DIRNAME' ) ) {
 	define( 'PEWC_DIRNAME', dirname( __FILE__ ) );

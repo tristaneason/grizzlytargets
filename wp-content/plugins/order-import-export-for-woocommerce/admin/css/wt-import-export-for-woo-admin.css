@@ -977,7 +977,7 @@ ul.wt-ierpro-newfeat li {
 }
 .wt-ier-table tr td li{
     text-align: left;
-    list-style: inside;
+    list-style: none;
 }
 
 @media (min-width: 992px){

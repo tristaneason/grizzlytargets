@@ -47,7 +47,6 @@ if ( ! defined( 'WPINC' ) ) {
       <div class="wt-ier-modal-content">
         <div class="wt-ier-resposive-table">
           <table class="wt-ier-table">
-
             <thead>
               <tr class="wt-ier-top-tr">
                 <td></td>
@@ -62,147 +61,194 @@ if ( ! defined( 'WPINC' ) ) {
             </thead>
             <tbody>
               <tr>
-                <td><?php _e('Import and export products');?></td>
-                <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+                <td><?php _e('Import and export');?></td>
+                <td>
+					<ul>				
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Products');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Product Reviews');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Product Categories');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Product Tags');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Orders');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Coupons');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Subscriptions');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('WordPress Users');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('WooCommerce Customers');?></li>					  
+                    </ul>
+				</td>
+                <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Products');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Product Reviews');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Product Categories');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Product Tags');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Orders');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Coupons');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Subscriptions');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('WordPress Users');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('WooCommerce Customers');?></li>					  
+                    </ul>
+				</td>
                   <td>
-                    <ul>
-                      <li><?php _e('Products');?></li>
-                      <li><?php _e('Reviews');?></li>
-                      <li><?php _e('Orders');?></li>
-                      <li><?php _e('Coupons');?></li>
-                      <li><?php _e('Subscriptions');?></li>
-                      <li><?php _e('Users');?></li>
+					<ul>	                						
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Products');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Product Reviews');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Product Categories');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Product Tags');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Orders');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Coupons');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Subscriptions');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('WordPress Users');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('WooCommerce Customers');?></li>					  
                     </ul>
                   </td>
                 </tr>
                 <tr>
-                  <td><?php _e('Export and import with product images');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+                  <td><?php _e('Supported product types');?></td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Simple Products');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Grouped Products');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('External/Affiliate Products');?></li>
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Variable product');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Simple subscription');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Variable subscription');?></li>
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('WooCommerce Bookings');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Custom Products');?></li>
+                    </ul>
+				</td>
+                <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Simple Products');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Grouped Products');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('External/Affiliate Products');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Variable product');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Simple subscription');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Variable subscription');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('WooCommerce Bookings');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Custom Products');?></li>
+                    </ul>
+				</td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Simple Products');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Grouped Products');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('External/Affiliate Products');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Variable product');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Simple subscription');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Variable subscription');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('WooCommerce Bookings');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Custom Products');?></li>
+                    </ul>
+                  </td>
+                </tr>
+				<tr>
+                  <td><?php _e('Supported file types');?></td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('CSV');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('XML');?></li>
+                    </ul>
+				  </td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('CSV');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('XML');?></li>
+                    </ul>
+				  </td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('CSV');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('XML');?></li>
+                    </ul>
+				  </td>
+                </tr>
+				<tr>
+                  <td><?php _e('Supported import methods');?></td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Local');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('FTP/SFTP');?></li>
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('From URL');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('From existing files');?></li>
+                    </ul>
+				  </td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Local');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('FTP/SFTP');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('From URL');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('From existing files');?></li>
+                    </ul>
+				  </td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Local');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('FTP/SFTP');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('From URL');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('From existing files');?></li>
+                    </ul>
+				  </td>
                 </tr>
                 <tr>
-                  <td><?php _e('Batch import/export');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+                  <td><?php _e('Automatic scheduled import & export');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                </tr>
+				<tr>
+                  <td><?php _e('Import & export custom fields ( metadata )');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                </tr>
+				<tr>
+                  <td><?php _e('Import & export hidden meta');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                </tr>
+				<tr>
+                  <td><?php _e('Bulk delete products');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
                 <tr>
-                  <td><?php _e('Quick import/export');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+                  <td><?php _e('Option to import products as new item during post id conflicts');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
-                <tr>
-                  <td><?php _e('Bulk product update');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+				<tr>
+                  <td><?php _e('Export to FTP/SFTP');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
-                <tr>
-                  <td><?php _e('Advanced import/export filters');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"><p><?php _e('Limited');?></p></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+				<tr>
+                  <td><?php _e('Set CSV delimiter for export');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
-                <tr>
-                  <td><?php _e('Option to save a template for future import/exports');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+				<tr>
+                  <td><?php _e('Export images as a separate zip');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
-                <tr>
-                  <td><?php _e('Export/Import mapping');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+				<tr>
+                  <td><?php _e('Convert shortcodes to HTML on export');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
-                <tr>
-                  <td><?php _e('Import by uploading CSV');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+				<tr>
+                  <td><?php _e('Custom export filename');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
-                <tr>
-                  <td><?php _e('Import/Export history');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Debug logs');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Supports multiple file formats');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"><p><?php _e('Only supports CSV');?></p></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Import/Export file via FTP/SFTP');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Import from URL');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Export product images as a zip');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Choose delimiter');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Support for multiple product types');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Automatic scheduled import/export');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Import/Export hidden meta');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Third-party plugin filter support');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Import/Export Product ratings');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Import/export products reviews');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-
               </tbody>
             </table>
           </div>
@@ -213,138 +259,151 @@ if ( ! defined( 'WPINC' ) ) {
         <div class="wt-ier-modal-content">
           <div class="wt-ier-resposive-table">
             <table class="wt-ier-table">
-
-              <thead>
-                <tr class="wt-ier-top-tr">
-                  <td></td>
-                  <td colspan="3"><span class="wt-ier-close">&times;</span></td>
-                </tr>
-                <tr>
-                  <th><?php _e('Features');?></th>
-                  <th><?php _e('Free');?></th>
-                  <th><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/pre-icon.svg" class="wt-ier-pre-icon"><?php _e('Premium');?></th>
-                  <th><?php _e('Import Export Suite');?></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><?php _e('Import/Export Users');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+            <thead>
+              <tr class="wt-ier-top-tr">
+                <td></td>
+                <td colspan="3"><span class="wt-ier-close">&times;</span></td>
+              </tr>
+              <tr>
+                <th><?php _e('Features');?></th>
+                <th><?php _e('Free');?></th>
+                <th><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/pre-icon.svg" class="wt-ier-pre-icon"><?php _e('Premium');?></th>
+                <th><?php _e('Import Export Suite');?></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><?php _e('Import and export');?></td>
+                <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('WordPress Users');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('WooCommerce Customers');?></li>						
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Products');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Product Reviews');?></li>
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Product Categories');?></li>
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Product Tags');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Orders');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Coupons');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Subscriptions');?></li>                      
+                    </ul>
+				</td>
+                <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('WordPress Users');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('WooCommerce Customers');?></li>						
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Products');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Product Reviews');?></li>
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Product Categories');?></li>
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Product Tags');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Orders');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Coupons');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Subscriptions');?></li>                     
+                    </ul>
+				</td>
                   <td>
-                    <ul>
-                      <li><?php _e('Products');?></li>
-                      <li><?php _e('Reviews');?></li>
-                      <li><?php _e('Orders');?></li>
-                      <li><?php _e('Coupons');?></li>
-                      <li><?php _e('Subscriptions');?></li>
-                      <li><?php _e('Users');?></li>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('WordPress Users');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('WooCommerce Customers');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Products');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Product Reviews');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Product Categories');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Product Tags');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Orders');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Coupons');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Subscriptions');?></li>                      
                     </ul>
                   </td>
+                </tr>          
+				<tr>
+                  <td><?php _e('Supported file types');?></td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('CSV');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('XML');?></li>
+                    </ul>
+				  </td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('CSV');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('XML');?></li>
+                    </ul>
+				  </td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('CSV');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('XML');?></li>
+                    </ul>
+				  </td>
+                </tr>
+				<tr>
+                  <td><?php _e('Supported import methods');?></td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Local');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('FTP/SFTP');?></li>
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('From URL');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('From existing files');?></li>
+                    </ul>
+				  </td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Local');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('FTP/SFTP');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('From URL');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('From existing files');?></li>
+                    </ul>
+				  </td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Local');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('FTP/SFTP');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('From URL');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('From existing files');?></li>
+                    </ul>
+				  </td>
                 </tr>
                 <tr>
-                  <td><?php _e('Import/Export customers');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+                  <td><?php _e('Automatic scheduled import & export');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                </tr>
+				<tr>
+                  <td><?php _e('Import & export custom fields ( metadata )');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                </tr>
+				<tr>
+                  <td><?php _e('Import & export hidden meta');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
                 <tr>
-                  <td><?php _e('Retain user password on Import/Export');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+                  <td><?php _e('Option to email new users on import');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
-                <tr>
-                  <td><?php _e('Bulk update data');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+				<tr>
+                  <td><?php _e('Export to FTP/SFTP');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
-                <tr>
-                  <td><?php _e('Evaluation fields');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+				<tr>
+                  <td><?php _e('Set CSV delimiter for export');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
-                <tr>
-                  <td><?php _e('Advanced filters');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"><p><?php _e('Limited options');?></p></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+				<tr>
+                  <td><?php _e('Custom export filename');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
-                <tr>
-                  <td><?php _e('Quick Import/Export');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Import/Export with pre-saved template');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('View Import/Export history');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('View debug log');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Batch Import/Export');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr> 
-                <tr>
-                  <td><?php _e('Customer Notification via email');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr> 
-                <tr>
-                  <td><?php _e('Supports multiple file formats');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"><p><?php _e('CSV only');?></p></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Choose delimiter');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Import from URL');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Import/export via FTP');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Scheduled Import/Export using Cron');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Third-party plugin filter support');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                
               </tbody>
             </table>
           </div>
@@ -355,142 +414,162 @@ if ( ! defined( 'WPINC' ) ) {
         <div class="wt-ier-modal-content">
           <div class="wt-ier-resposive-table">
             <table class="wt-ier-table">
-
-              <thead>
-                <tr class="wt-ier-top-tr">
-                  <td></td>
-                  <td colspan="3"><span class="wt-ier-close">&times;</span></td>
-                </tr>
-                <tr>
-                  <th><?php _e('Features');?></th>
-                  <th><?php _e('Free');?></th>
-                  <th><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/pre-icon.svg" class="wt-ier-pre-icon"><?php _e('Premium');?></th>
-                  <th><?php _e('Import Export Suite');?></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><?php _e('Export and Import orders');?> </td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+            <thead>
+              <tr class="wt-ier-top-tr">
+                <td></td>
+                <td colspan="3"><span class="wt-ier-close">&times;</span></td>
+              </tr>
+              <tr>
+                <th><?php _e('Features');?></th>
+                <th><?php _e('Free');?></th>
+                <th><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/pre-icon.svg" class="wt-ier-pre-icon"><?php _e('Premium');?></th>
+                <th><?php _e('Import Export Suite');?></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><?php _e('Import and export');?></td>
+                <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Orders');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Coupons');?></li>	
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Subscriptions');?></li>					  
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Products');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Product Reviews');?></li>
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Product Categories');?></li>
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Product Tags');?></li>
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('WordPress Users');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('WooCommerce Customers');?></li>
+                    </ul>
+				</td>
+                <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Orders');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Coupons');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Subscriptions');?></li>						
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Products');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Product Reviews');?></li>
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Product Categories');?></li>
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('Product Tags');?></li>                      
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('WordPress Users');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('WooCommerce Customers');?></li>
+                    </ul>
+				</td>
                   <td>
-                    <ul>
-                      <li><?php _e('Products');?></li>
-                      <li><?php _e('Reviews');?></li>
-                      <li><?php _e('Orders');?></li>
-                      <li><?php _e('Coupons');?></li>
-                      <li><?php _e('Subscriptions');?></li>
-                      <li><?php _e('Users');?></li>
+					<ul>
+						<li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Orders');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Coupons');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Subscriptions');?></li>					 
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Products');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Product Reviews');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Product Categories');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Product Tags');?></li> 
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('WordPress Users');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('WooCommerce Customers');?></li>
                     </ul>
                   </td>
+                </tr>          
+				<tr>
+                  <td><?php _e('Supported file types');?></td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('CSV');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('XML');?></li>
+                    </ul>
+				  </td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('CSV');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('XML');?></li>
+                    </ul>
+				  </td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('CSV');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('XML');?></li>
+                    </ul>
+				  </td>
+                </tr>
+				<tr>
+                  <td><?php _e('Supported import methods');?></td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Local');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('FTP/SFTP');?></li>
+					  <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('From URL');?></li>
+                      <li><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span> <?php _e('From existing files');?></li>
+                    </ul>
+				  </td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Local');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('FTP/SFTP');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('From URL');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('From existing files');?></li>
+                    </ul>
+				  </td>
+                  <td>
+					<ul>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('Local');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('FTP/SFTP');?></li>
+					  <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('From URL');?></li>
+                      <li><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span> <?php _e('From existing files');?></li>
+                    </ul>
+				  </td>
                 </tr>
                 <tr>
-                  <td><?php _e('Export and Import Coupons');?> </td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+                  <td><?php _e('Automatic scheduled import & export');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                </tr>
+				<tr>
+                  <td><?php _e('Import & export custom fields ( metadata )');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                </tr>
+				<tr>
+                  <td><?php _e('Import & export hidden meta');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
                 <tr>
-                  <td><?php _e('Batch Import/Export');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+                  <td><?php _e('Email customers on order status update');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
                 <tr>
-                  <td><?php _e('Quick Import/Export');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+                  <td><?php _e('Create customers on order import');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
                 <tr>
-                  <td><?php _e('Easy Import/export with pre-saved template');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+                  <td><?php _e('Bulk delete orders/coupons/subcriptions');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                </tr>					
+				<tr>
+                  <td><?php _e('Export to FTP/SFTP');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
-                <tr>
-                  <td><?php _e('Export/Import column mapping');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+				<tr>
+                  <td><?php _e('Set CSV delimiter for export');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
-                <tr>
-                  <td><?php _e('Bulk update of data');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Support evaluation fields');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('View debug logs');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Import/Export history');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Advanced filters');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"><p><?php _e('Limited');?></p></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Supports multiple file formats');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"><p><?php _e('CSV only');?></p></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Export/Import subscription orders');?> </td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Import and Export via FTP/SFTP');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Scheduled automatic Import/Export using Cron job');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Platform independent XML Import/Export');?> </td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Multiple Import methods');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"><p><?php _e('Upload CSV only');?></p></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Choose delimiter');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                </tr>
-                <tr>
-                  <td><?php _e('Third-party plugin filter support');?></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/no.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
-                  <td><img src="<?php echo WT_U_IEW_PLUGIN_URL; ?>assets/images/upgrade/yes.svg"></td>
+				<tr>
+                  <td><?php _e('Custom export filename');?></td>
+                  <td><span style="color:red; line-height:inherit;" class="dashicons dashicons-dismiss"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
+                  <td><span style="color:#36D144; line-height:inherit;" class="dashicons dashicons-yes-alt"></span></td>
                 </tr>
               </tbody>
             </table>

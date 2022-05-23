@@ -21,15 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function wppfm_convert_price_date_to_feed_format( $date_stamp ) {
 	if ( $date_stamp ) {
-		// register the date
-		$feed_string = date( 'Y-m-d', $date_stamp );
-
-		// if set, add the time
-		if ( date( 'H', $date_stamp ) !== '00' || date( 'i', $date_stamp ) !== '00' || date( 's', $date_stamp ) !== '00' ) {
-			$feed_string .= 'T' . date( 'H:i:s', $date_stamp );
-		}
-
-		return $feed_string;
+		return date( 'Y-m-d\TH:iO', $date_stamp );
 	} else {
 		return '';
 	}

@@ -6,7 +6,7 @@
  * Description: Adds the Authorize.Net Payment Gateway to your WooCommerce site, allowing customers to securely save their credit card or bank account to their account for use with single purchases, pre-orders, subscriptions, and more!
  * Author: SkyVerge
  * Author URI: http://www.woocommerce.com/
- * Version: 3.7.0
+ * Version: 3.7.1
  * Text Domain: woocommerce-gateway-authorize-net-cim
  * Domain Path: /i18n/languages/
  *

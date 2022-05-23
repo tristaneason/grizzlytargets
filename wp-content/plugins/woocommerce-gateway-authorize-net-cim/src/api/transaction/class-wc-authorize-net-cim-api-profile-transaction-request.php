@@ -37,21 +37,6 @@ use SkyVerge\WooCommerce\PluginFramework\v5_10_12 as Framework;
 class WC_Authorize_Net_CIM_API_Profile_Transaction_Request extends WC_Authorize_Net_CIM_API_Transaction_Request  {
 
 
-	/** auth/capture transaction type */
-	const AUTH_CAPTURE = 'authCaptureTransaction';
-
-	/** authorize only transaction type */
-	const AUTH_ONLY = 'authOnlyTransaction';
-
-	/** prior auth-only capture transaction type */
-	const PRIOR_AUTH_CAPTURE = 'priorAuthCaptureTransaction';
-
-	/** refund transaction type */
-	const REFUND = 'refundTransaction';
-
-	/** void transaction type */
-	const VOID = 'voidTransaction';
-
 	/**
 	 * Construct request object, overrides parent to set the request type for
 	 * every request in the class, as all profile transactions use the same
@@ -66,7 +51,7 @@ class WC_Authorize_Net_CIM_API_Profile_Transaction_Request extends WC_Authorize_
 
 		parent::__construct( $api_login_id, $api_transaction_key );
 
-		$this->request_type = 'createTransactionRequest';
+		$this->request_type = 'createCustomerProfileTransactionRequest';
 	}
 
 
@@ -79,92 +64,29 @@ class WC_Authorize_Net_CIM_API_Profile_Transaction_Request extends WC_Authorize_
 	 */
 	protected function create_transaction( $type ) {
 
-		$transaction_type = ( $type === 'auth_only' ) ? self::AUTH_ONLY : self::AUTH_CAPTURE;
+		$transaction_type = ( $type === 'auth_only' ) ? 'profileTransAuthOnly' : 'profileTransAuthCapture';
 
-		$request_data = array(
-			'refId'              => $this->order->get_id(),
-			'transactionRequest' => array(
-				'transactionType'    => $transaction_type,
-				'amount'             => $this->order->payment_total,
-				'currencyCode'       => $this->order->get_currency(),
-				'profile'            => array(
-					'customerProfileId'    => $this->order->customer_id,
-					'paymentProfile'       => array(
-						'paymentProfileId' => $this->order->payment->token,
+		$this->request_data = array(
+			'refId'        => $this->order->get_id(),
+			'transaction'  => array(
+				$transaction_type => array(
+					'amount'                    => $this->order->payment_total,
+					'tax'                       => $this->get_taxes(),
+					'shipping'                  => $this->get_shipping(),
+					'lineItems'                 => $this->get_line_items(),
+					'customerProfileId'         => $this->order->customer_id,
+					'customerPaymentProfileId'  => $this->order->payment->token,
+					'customerShippingAddressId' => $this->order->payment->shipping_address_id,
+					'order'                     => array(
+						'invoiceNumber'       => ltrim( $this->order->get_order_number(), _x( '#', 'hash before the order number', 'woocommerce-gateway-authorize-net-cim' ) ),
+						'description'         => Framework\SV_WC_Helper::str_truncate( $this->order->description, 255 ),
+						'purchaseOrderNumber' => Framework\SV_WC_Helper::str_truncate( preg_replace( '/\W/', '', $this->order->payment->po_number ), 25 ),
 					),
-				),
-				'payment'           => array(
-					'creditCard' => array(
-						'cardCode' => ! empty( $this->order->payment->csc ) ? $this->order->payment->csc : null,
-					),
-				),
-				'order'             => array(
-					'invoiceNumber'       => ltrim( $this->order->get_order_number(), _x( '#', 'hash before the order number', 'woocommerce-gateway-authorize-net-cim' ) ),
-					'description'         => Framework\SV_WC_Helper::str_truncate( $this->order->description, 255 ),
-					'purchaseOrderNumber' => Framework\SV_WC_Helper::str_truncate( preg_replace( '/\W/', '', $this->order->payment->po_number ), 25 ),
-				),
-				'lineItems'         => $this->get_line_items(),
-				'tax'               => $this->get_taxes(),
-				'shipping'          => $this->get_shipping(),
-				'poNumber'          => Framework\SV_WC_Helper::str_truncate( preg_replace( '/\W/', '', $this->order->payment->po_number ), 25 ),
-				'customerIP'        => $this->order->get_customer_ip_address(),
-				'processingOptions' => $this->get_processing_options()
+					'cardCode'                  => ! empty( $this->order->payment->csc ) ? $this->order->payment->csc : null,
+				)
 			),
+			'extraOptions' => $this->get_extra_options(),
 		);
-
-		$this->request_data = $this->set_sub_auth_info( $transaction_type, $request_data);
-	}
-
-
-	/**
-	 * Adds order line items to the request.
-	 *
-	 * @since 2.0.0
-	 * @return array
-	 */
-	protected function get_line_items() {
-
-		$line_items = array();
-
-		// order line items
-		foreach ( Framework\SV_WC_Helper::get_order_line_items( $this->order ) as $item ) {
-
-			if ( $item->item_total >= 0 ) {
-
-				$line_items['lineItem'][] = array(
-					'itemId'      => Framework\SV_WC_Helper::str_truncate( $item->id, 31 ),
-					'name'        => Framework\SV_WC_Helper::str_to_sane_utf8( Framework\SV_WC_Helper::str_truncate( htmlentities( $item->name, ENT_QUOTES, 'UTF-8', false ), 31 ) ),
-					'description' => Framework\SV_WC_Helper::str_to_sane_utf8( Framework\SV_WC_Helper::str_truncate( htmlentities( $item->description, ENT_QUOTES, 'UTF-8', false ), 255 ) ),
-					'quantity'    => $item->quantity,
-					'unitPrice'   => Framework\SV_WC_Helper::number_format( $item->item_total ),
-					'taxable'     => 'taxable' === $item->item->get_tax_status(),
-				);
-			}
-		}
-
-		// order fees
-		foreach ( $this->order->get_fees() as $fee_id => $fee ) {
-
-			/** @var \WC_Order_Item_Fee $fee object */
-			if ( $this->order->get_item_total( $fee ) >= 0 ) {
-
-				$line_items['lineItem'][] = array(
-					'itemId'      => Framework\SV_WC_Helper::str_truncate( $fee_id, 31 ),
-					'name'        => ! empty( $fee['name'] ) ? Framework\SV_WC_Helper::str_truncate( htmlentities( $fee['name'], ENT_QUOTES, 'UTF-8', false ), 31 ) : __( 'Fee', 'woocommerce-gateway-authorize-net-cim' ),
-					'description' => __( 'Order Fee', 'woocommerce-gateway-authorize-net-cim' ),
-					'quantity'    => 1,
-					'unitPrice'   => Framework\SV_WC_Helper::number_format( $this->order->get_item_total( $fee ) ),
-					'taxable'     => 'taxable' === $fee->get_tax_status(),
-				);
-			}
-		}
-
-		// maximum of 30 line items per order
-		if ( count( $line_items ) > 30 ) {
-			$line_items = array_slice( $line_items, 0, 30 );
-		}
-
-		return $line_items;
 	}
 
 
@@ -179,16 +101,14 @@ class WC_Authorize_Net_CIM_API_Profile_Transaction_Request extends WC_Authorize_
 		$this->order = $order;
 
 		$this->request_data = array(
-			'refId'              => $this->order->get_id(),
-			'transactionRequest' => array(
-				'transactionType' => self::PRIOR_AUTH_CAPTURE,
-				'amount'          => $order->capture->amount,
-				'refTransId'      => $order->capture->trans_id,
-				'order'           => array(
-					'invoiceNumber' => ltrim( $this->order->get_order_number(), _x( '#', 'hash before the order number', 'woocommerce-gateway-authorize-net-cim' ) ),
-					'description'   => Framework\SV_WC_Helper::str_truncate( $this->order->description, 255 ),
-				)
+			'refId'       => $this->order->get_id(),
+			'transaction' => array(
+				'profileTransPriorAuthCapture' => array(
+					'amount'  => $order->capture->amount,
+					'transId' => $order->capture->trans_id,
+				),
 			),
+			'extraOptions' => $this->get_extra_options(),
 		);
 	}
 
@@ -203,18 +123,20 @@ class WC_Authorize_Net_CIM_API_Profile_Transaction_Request extends WC_Authorize_
 		$this->order = $order;
 
 		$this->request_data = array(
-			'refId'       			=> $this->order->get_id(),
-			'transactionRequest' => array(
-				'transactionType'		 => self::REFUND,
-				'amount'  				 => $order->refund->amount,
-				'refTransId' 			 => $order->refund->trans_id,
-				'payment'        => array(
-					'creditCard' => array(
-						'cardNumber'     => $order->refund->last_four,
-						'expirationDate' => $order->refund->expiry_date,
+			'refId'       => $this->order->get_id(),
+			'transaction' => array(
+				'profileTransRefund' => array(
+					'amount'                   => $order->refund->amount,
+					'customerProfileId'        => $order->refund->customer_profile_id,
+					'customerPaymentProfileId' => $order->refund->customer_payment_profile_id,
+					'order'                    => array(
+						'invoiceNumber' => ltrim( $this->order->get_order_number(), _x( '#', 'hash before the order number', 'woocommerce-gateway-authorize-net-cim' ) ),
+						'description'   => Framework\SV_WC_Helper::str_truncate( $this->order->refund->reason, 255 ),
 					),
+					'transId' => $order->refund->trans_id,
 				),
 			),
+			'extraOptions' => $this->get_extra_options(),
 		);
 	}
 
@@ -229,79 +151,39 @@ class WC_Authorize_Net_CIM_API_Profile_Transaction_Request extends WC_Authorize_
 		$this->order = $order;
 
 		$this->request_data = array(
-			'refId'              => $this->order->get_id(),
-			'transactionRequest' => array(
-				'transactionType' => self::VOID,
-				'refTransId'      => $order->refund->trans_id,
+			'refId'       => $this->order->get_id(),
+			'transaction' => array(
+				'profileTransVoid' => array(
+					'transId' => $order->refund->trans_id,
+				),
 			),
+			'extraOptions' => $this->get_extra_options(),
 		);
 	}
 
-	/**
-	 * Set processing options according to transaction type to compliance COF
-	 * @see https://developer.authorize.net/api/reference/features/card-on-file.html
-	 *
-	 * @since 3.7.0
-	 *
-	 * @return array $params processing options params
-	 */
-	protected function get_processing_options() {
-
-		$params = [];
-		if( $this->is_current_user_customer() ) {
-			$params['isStoredCredentials'] = 'true';
-		} else {
-			$params['isSubsequentAuth'] = 'true';
-		}
-
-		return $params;
-	}
 
 	/**
-	 * Set conditional subsequent auth information for MIT to compliance COF
-	 * Only adds parameter in case of Subscription Renewal
-	 * @see https://developer.authorize.net/api/reference/features/card-on-file.html#MerchantInitiated_Transactions_MITs
+	 * Get extra options for the CIM transaction.
 	 *
-	 * @since 3.7.0
+	 * Extra options are fields that auth.net accepts but aren't part of the CIM API
 	 *
-	 * @param string $transaction_type transaction type
-	 * @param array $request_data transaction request data
-	 *
-	 * @return array $request_data transaction request data
+	 * @since 2.0.0
+	 * @return string
 	 */
-	protected function set_sub_auth_info( $transaction_type, $request_data ) {
+	protected function get_extra_options() {
 
-		if ( $this->is_subscription_renewal_order() ) {
-			$request_data['transactionRequest']['subsequentAuthInformation'] = array( 'reason' => 'resubmission' );
-		}
+		$options = array(
+			'x_solution_id'      => 'A1000065',
+			'x_customer_ip'      => $this->order->get_customer_ip_address(),
+			'x_currency_code'    => $this->order->get_currency(),
+			// TODO: this can be improved by detecting certain failure conditions (AVS/CVV failures) and dynamically setting the duplicate window to 0 as needed @MR
+			'x_duplicate_window' => 0,
+			'x_delim_char' => '|',
+			'x_encap_char' => ':',
+		);
 
-		return $request_data;
+		return http_build_query( $options, '', '&' );
 	}
 
-	/**
-	 * Whether the logged in user is customer
-	 *
-	 * @since 3.7.0
-	 * @return boolean
-	 */
-	protected function is_current_user_customer() {
-		return get_current_user_id() == $this->order->get_user_id();
-	}
-
-	/**
-	 * Whether the order for subscription renewal
-	 *
-	 * @since 3.7.0
-	 * @return boolean $is_renewal_order
-	 */
-	protected function is_subscription_renewal_order() {
-
-		$is_renewal_order = false;
-		if ( function_exists( 'wcs_order_contains_renewal' ) ) {
-			$is_renewal_order = wcs_order_contains_renewal( $this->order->get_id() );
-		}
-
-		return $is_renewal_order;
-	}
 
 }

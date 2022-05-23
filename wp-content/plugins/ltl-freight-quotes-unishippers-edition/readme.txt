@@ -2,8 +2,8 @@
 Contributors: Eniture Technology
 Tags: Unishippers,Unishippers freight,freight,shipping,shipping rates,shipping calculator,shipping estimate,estimator,carriers, woocommerce,woocommerce shipping,eniture,eniture technology,small package,shipping quotes,eniture unishippers_ltl freight quotes
 Requires at least: 5.7
-Tested up to: 5.9
-Stable tag: 2.1.3
+Tested up to: 5.9.3
+Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,7 +32,7 @@ result as shipping charges in your WooCommerce shopping cart. To establish a Uni
 
 **Requirements**
 
-* WooCommerce 5.0 or newer.
+* WooCommerce 5.7 or newer.
 * A Unishippers account number.
 * Your username and password to Unishippers's online shipping system.
 * Your Unishippers web services authentication key.
@@ -165,6 +165,9 @@ then you have one or more of the following licensing issues:
 3. Quotes displayed in cart
 
 == Changelog ==
+
+= 2.2.0 =
+* Update: Introduced coupon code for freightdesk.online and validate-addresses.com.
 
 = 2.1.3 =
 * Update: Compatibility with WordPress multisite network

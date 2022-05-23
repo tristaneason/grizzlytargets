@@ -5,11 +5,11 @@
   Description: Dynamically retrieves your negotiated LTL freight rates from Unishippers and displays the results in the WooCommerce shopping cart..
   Author: Eniture Technology
   Author URI: http://eniture.com/
-  Version: 2.1.3
+  Version: 2.2.0
   Text Domain: eniture-technology
   License: GPL version 2 or later - http://www.eniture.com/
-  WC requires at least: 5.7
-  WC tested up to: 6.3.1
+  WC requires at least: 6.0
+  WC tested up to: 6.5.1
  */
 
 if (!defined('ABSPATH')) {
@@ -17,6 +17,8 @@ if (!defined('ABSPATH')) {
 }
 define('UNISHIPPERS_FREIGHT_DOMAIN_HITTING_URL', 'https://ws063.eniture.com');
 define('UNISHIPPERS_FREIGHT_FDO_HITTING_URL', 'https://freightdesk.online/api/updatedWoocomData');
+define('UNISHIPPERS_FREIGHT_FDO_COUPON_BASE_URL', 'https://freightdesk.online');
+define('UNISHIPPERS_FREIGHT_VA_COUPON_BASE_URL', 'https://validate-addresses.com');
 
 define('UNISHIPPERS_MAIN_FILE', __FILE__);
 
@@ -252,6 +254,11 @@ register_activation_hook(__FILE__, 'create_unishippers_ltl_wh_db');
 register_activation_hook(__FILE__, 'unishippers_ltl_freihgt_installation_carrier');
 register_deactivation_hook(__FILE__, 'unishippers_ltl_truncat_carrier_table');
 
+register_activation_hook(__FILE__, 'en_fdo_unishippers_ltl_update_coupon_status_activate');
+register_deactivation_hook(__FILE__, 'en_fdo_unishippers_ltl_update_coupon_status_deactivate');
+register_activation_hook(__FILE__, 'en_va_unishippers_ltl_update_coupon_status_activate');
+register_deactivation_hook(__FILE__, 'en_va_unishippers_ltl_update_coupon_status_deactivate');
+
 /**
  * Unishippers plugin update now
  */
@@ -279,7 +286,6 @@ if (!function_exists('en_unishippers_freight_update_now')) {
 
     add_action('init', 'en_unishippers_freight_update_now');
 }
-
 $arr = array();
 apply_filters('product_detail_freight_class', $arr);
 
@@ -353,3 +359,125 @@ if (!defined('EN_UNISHIPPER_LOADER')) {
 
     define('EN_UNISHIPPER_LOADER', plugin_dir_url(__FILE__));
 }
+
+
+/**
+ * Function that will trigger on activation
+ */
+function en_fdo_unishippers_ltl_update_coupon_status_activate()
+{
+    $fdo_coupon_data = get_option('en_fdo_coupon_data');
+    if(!empty($fdo_coupon_data)){
+        $fdo_coupon_data_decorded = json_decode($fdo_coupon_data);
+        if(isset($fdo_coupon_data_decorded->promo)){
+            $data = array(
+                'marketplace' => 'wp',
+                'promocode' => $fdo_coupon_data_decorded->promo->coupon,
+                'action' => 'install',
+                'carrier' => 'Unishiper'
+            );
+        
+            $url = UNISHIPPERS_FREIGHT_FDO_COUPON_BASE_URL . "/change_promo_code_status";
+            $response = wp_remote_get($url,
+                array(
+                    'method' => 'GET',
+                    'timeout' => 60,
+                    'redirection' => 5,
+                    'blocking' => true,
+                    'body' => $data,
+                )
+            );
+        }
+    }
+}
+/**
+ * Function that will trigger on deactivation
+ */
+function en_fdo_unishippers_ltl_update_coupon_status_deactivate()
+{
+    $fdo_coupon_data = get_option('en_fdo_coupon_data');
+    if(!empty($fdo_coupon_data)){
+        $fdo_coupon_data_decorded = json_decode($fdo_coupon_data);
+        if(isset($fdo_coupon_data_decorded->promo)){
+            $data = array(
+                'marketplace' => 'wp',
+                'promocode' => $fdo_coupon_data_decorded->promo->coupon,
+                'action' => 'uninstall',
+                'carrier' => 'Unishiper'
+            );
+        
+            $url = UNISHIPPERS_FREIGHT_FDO_COUPON_BASE_URL . "/change_promo_code_status";
+            $response = wp_remote_get($url,
+                array(
+                    'method' => 'GET',
+                    'timeout' => 60,
+                    'redirection' => 5,
+                    'blocking' => true,
+                    'body' => $data,
+                )
+            );
+        }
+    }
+}
+
+/**
+ * Function that will trigger on activation
+ */
+function en_va_unishippers_ltl_update_coupon_status_activate()
+{
+    $va_coupon_data = get_option('en_va_coupon_data');
+    if(!empty($va_coupon_data)){
+        $va_coupon_data_decorded = json_decode($va_coupon_data);
+        if(isset($va_coupon_data_decorded->promo)){
+            $data = array(
+                'marketplace' => 'wp',
+                'promocode' => $va_coupon_data_decorded->promo->coupon,
+                'action' => 'install',
+                'carrier' => 'Unishiper'
+            );
+        
+            $url = UNISHIPPERS_FREIGHT_VA_COUPON_BASE_URL . "/change_promo_code_status?";
+            $response = wp_remote_get($url,
+                array(
+                    'method' => 'GET',
+                    'timeout' => 60,
+                    'redirection' => 5,
+                    'blocking' => true,
+                    'body' => $data,
+                )
+            );
+        }
+    }
+}
+/**
+ * Function that will trigger on deactivation
+ */
+function en_va_unishippers_ltl_update_coupon_status_deactivate()
+{
+    $va_coupon_data = get_option('en_va_coupon_data');
+    if(!empty($va_coupon_data)){
+        $va_coupon_data_decorded = json_decode($va_coupon_data);
+        if(isset($va_coupon_data_decorded->promo)){
+            $data = array(
+                'marketplace' => 'wp',
+                'promocode' => $va_coupon_data_decorded->promo->coupon,
+                'action' => 'uninstall',
+                'carrier' => 'Unishiper'
+            );
+        
+            $url = UNISHIPPERS_FREIGHT_VA_COUPON_BASE_URL . "/change_promo_code_status?";
+            $response = wp_remote_get($url,
+                array(
+                    'method' => 'GET',
+                    'timeout' => 60,
+                    'redirection' => 5,
+                    'blocking' => true,
+                    'body' => $data,
+                )
+            );
+        }
+    }
+}
+
+require_once 'fdo/en-coupon-api.php';
+new EnUnishippersLtlCouponAPI();

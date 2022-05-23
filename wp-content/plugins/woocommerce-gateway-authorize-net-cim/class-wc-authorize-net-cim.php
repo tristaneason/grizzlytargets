@@ -36,7 +36,7 @@ class WC_Authorize_Net_CIM extends Framework\SV_WC_Payment_Gateway_Plugin {
 
 
 	/** string version number */
-	const VERSION = '3.7.0';
+	const VERSION = '3.7.1';
 
 
 	/** @var \WC_Authorize_Net_CIM_Webhooks the webhooks handler */

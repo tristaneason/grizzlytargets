@@ -1,3 +1,6 @@
+= 8.11.150 (2022-05-13) =
+* Update build steps
+
 = 8.11.0 (2022-04-27) =
 * Add option to disable HS analytics tracking for internal WP users
 
@@ -338,12 +341,4 @@
 * Add missing translations
 * Update author's URL
 * Fix getting started page not loading
-
-= 7.19.146 (2020-02-19) =
-* New getting started page
-* Update forms builder to not open full screen
-* Fix broken login screen when not authenticated
-* Create new settings page
-* Improve connection flow and fix known bugs
-* Refactor code into classes
 

@@ -48,7 +48,7 @@
 
 						// Iterate through each field that is conditional on the updated field
 						for( var g in triggers_for ) {
-							conditions_obtain = pewc_conditions.check_field_conditions( triggers_for[g], field_value );
+							conditions_obtain = pewc_conditions.check_field_conditions( triggers_for[g], field_value, parent );
 							var action = $( '.pewc-field-' + triggers_for[g] ).attr( 'data-field-conditions-action' );
 							pewc_conditions.assign_field_classes( conditions_obtain, action, triggers_for[g], parent );
 						}
@@ -144,19 +144,15 @@
 			// Ensures fields with dependent conditions will also get reset correctly
 			trigger_field_reset_condition_check: function() {
 
-				console.log( 'trigger_field_reset_condition_check' );
-
 				// Use a timer to allow complex pages to catch up
 				var reset_timer = setTimeout(
 					function() {
 						$( '.pewc-reset' ).each( function() {
 							$( this ).removeClass( 'pewc-reset' );
 							var field = $( this );
-							console.log( 'field', field );
               var parent = pewc_conditions.get_field_parent( field );
 							var field_value = pewc_conditions.get_field_value( $( field ).attr( 'data-field-id' ), $( field ).attr( 'data-field-type' ), parent );
 							var triggers_for = $( field ).attr( 'data-triggers-for' );
-							console.log( 'triggers_for', triggers_for );
 							if( triggers_for != undefined ) {
 
 								var triggers_for = JSON.parse( $( field ).attr( 'data-triggers-for' ) );
@@ -205,7 +201,6 @@
 			check_group_conditions: function( group_id ) {
 
 				var conditions = JSON.parse( $( '#pewc-group-' + group_id ).attr( 'data-conditions' ) );
-				console.log( conditions );
 				var match = $( '#pewc-group-' + group_id ).attr( 'data-condition-match' );
 				var is_visible = false;
 				if( match == 'all' ) {
@@ -218,18 +213,12 @@
 					}
 
 					var field = $( '.pewc-field-' + $( '.' + condition.field ).attr( 'data-field-id' ) );
-					console.log( field );
-					console.log( $( '.' + condition.field ).attr( 'data-field-id' ) );
 					var parent = pewc_conditions.get_field_parent( field );
-					console.log( parent );
 					var value = pewc_conditions.get_field_value( $( '.' + condition.field ).attr( 'data-field-id' ), condition.field_type, parent );
-					console.log( 'val', value );
 					var meets_condition = this.field_meets_condition( value, condition.rule, condition.value );
-					console.log( 'meets_condition', meets_condition );
 					if( meets_condition && match =='any' ) {
 						return true;
 					} else if( ! meets_condition && match =='all' ) {
-						console.log( 'returning false ' );
 						return false;
 					}
 				}
@@ -453,8 +442,6 @@
 
 			reset_fields: function() {
 
-				console.log( 'reset fields' );
-
 				if( $( '.pewc-reset-me' ).length < 1 && $( '.pewc-reset-group' ).length < 1 ) {
 					return;
 				}
@@ -469,8 +456,6 @@
 
 				$( '.pewc-reset-group' ).each( function() {
 
-					console.log( 'reset group', $( this ) );
-
 					$( this ).find( '.pewc-item' ).each( function() {
 
 						var field = $( this );
@@ -484,14 +469,11 @@
 
 			reset_field_value: function( field ) {
 
-				console.log( 'reset_field_value', field );
-
 				// Iterate through all fields with pewc-reset-me class
 				var inputs = ['date', 'name_price', 'number', 'text', 'textarea'];
 				var checks = ['checkbox', 'checkbox_group', 'radio'];
 				var field_type = $( field ).attr( 'data-field-type' );
 				var new_value = $( field ).attr( 'data-default-value' );
-				console.log( new_value );
 				$( field ).attr( 'data-field-value', new_value );
 				if( inputs.includes( field_type ) ) {
 					$( field ).find( '.pewc-form-field' ).val( new_value );

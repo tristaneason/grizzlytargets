@@ -3,7 +3,7 @@ Contributors: Gareth Harris
 Tags: add-ons, ecommerce
 Requires at least: 4.7
 Tested up to: 5.9
-Stable tag: 3.10.3
+Stable tag: 3.10.4
 Allow your users to customise products through additional fields
 
 == Description ==
@@ -36,6 +36,12 @@ WooCommerce Product Add Ons Ultimate allows your users to customise products thr
 * modal pop-up with child product after added to cart
 
 == Changelog ==
+
+= 3.10.4, 5 May 2022 =
+* Added: pewc_product_column_variants filter
+* Fixed: checkbox field price not hidden correctly when set in Field Price Visibility
+* Fixed: checkbox field price does not display percentage when setting is enabled
+* Fixed: optimised conditions not doing initial check correctly
 
 = 3.10.3, 2 May 2022 =
 * Fixed: fatal error in Customizer

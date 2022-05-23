@@ -250,20 +250,21 @@ class Wt_Import_Export_For_Woo_Basic_History
 		{
 			if(Wt_Iew_Sh::check_write_access(WT_IEW_PLUGIN_ID_BASIC))
 			{
-				$log_file_name=(isset($_GET['wt_iew_log_file']) ? sanitize_text_field($_GET['wt_iew_log_file']) : '');
-				if($log_file_name!="")
-				{
-					$ext_arr=explode(".", $log_file_name);
-					$ext=end($ext_arr);
-					if($ext=='log')
-					{
-						$log_file_path=Wt_Import_Export_For_Woo_Basic_Log::get_file_path($log_file_name);
-						if(file_exists($log_file_path) && is_file($log_file_path))
-						{
-							@unlink($log_file_path);
+				$log_file_arr = isset($_GET['wt_iew_log_file']) ? explode(",", $_GET['wt_iew_log_file']) : array();
+				$log_file_arr = Wt_Iew_Sh::sanitize_item($log_file_arr, 'text_arr');
+
+				if (is_array($log_file_arr)) {
+					foreach ($log_file_arr as $log_file_name) {
+						$ext_arr = explode(".", $log_file_name);
+						$ext = end($ext_arr);
+						if ($ext == 'log') {
+							$log_file_path = Wt_Import_Export_For_Woo_Basic_Log::get_file_path($log_file_name);
+							if (file_exists($log_file_path) && is_file($log_file_path)) {
+								@unlink($log_file_path);
+							}
 						}
 					}
-				}			
+				}
 			}
 		}
 

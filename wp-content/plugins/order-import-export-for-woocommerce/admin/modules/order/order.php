@@ -500,7 +500,7 @@ class Wt_Import_Export_For_Woo_Basic_Order {
 					$out['ord_link_using_sku']['help_text'] = sprintf(
 						/* translators: %s: Product Import Export for WooCommerce plugin  URL */
 						__( 'If you do not already have corresponding products added in your store, we recommend that you import them first using <a href="%s" target="_blank">Product Import Export for WooCommerce</a>.' ),
-						admin_url('plugin-install.php?s=product import export for woocommerce by webtoffee&tab=search&type=term')
+						admin_url('plugin-install.php?tab=plugin-information&plugin=product-import-export-for-woo')
 					);
 		 }
         
